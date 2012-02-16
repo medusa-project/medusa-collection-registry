@@ -1,6 +1,3 @@
-require 'lib/medusa/african_maps/premis_parser'
-require 'lib/medusa/african_maps/premis_collection'
-
 module Medusa
   module AfricanMaps
     class PremisCollectionParser < PremisParser

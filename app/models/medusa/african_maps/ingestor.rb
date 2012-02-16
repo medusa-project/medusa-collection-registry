@@ -1,9 +1,3 @@
-require 'lib/medusa/african_maps/premis_collection_parser'
-require 'lib/medusa/african_maps/premis_item_parser'
-require 'lib/medusa/generic_ingestor'
-require 'lib/medusa/african_maps/object'
-require 'active_fedora'
-
 module Medusa
   module AfricanMaps
     class Ingestor < Medusa::GenericIngestor

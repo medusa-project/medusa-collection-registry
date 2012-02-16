@@ -2,8 +2,6 @@
 #Also has concept of package_path to hold the root of the ingest package
 #Subclasses should typically define the ingest method, which will ingest the package
 #based at package_path
-require 'active_fedora'
-
 module Medusa
   class GenericIngestor
 

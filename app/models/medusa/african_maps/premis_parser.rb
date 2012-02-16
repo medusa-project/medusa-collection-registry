@@ -1,6 +1,4 @@
-require 'nokogiri'
-
-#parses both the collection and items
+#common code for item and collection parsers
 module Medusa
   module AfricanMaps
     class PremisParser
