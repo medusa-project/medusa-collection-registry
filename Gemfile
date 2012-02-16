@@ -6,6 +6,7 @@ gem 'rails', '3.2.1'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem 'pg'
 gem 'active-fedora'
+gem 'solrizer-fedora'
 
 # Gems used only for assets and not required
 # in production environments by default.
