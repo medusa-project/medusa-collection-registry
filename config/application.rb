@@ -57,3 +57,6 @@ module MedusaRails3
     config.assets.version = '1.0'
   end
 end
+
+#solrizer-fedora still uses RAILS_ENV
+RAILS_ENV = Rails.env
