@@ -30,12 +30,14 @@ module Medusa
             add_xml_datastream_from_file(item_object, 'MODS', premis_item.mods_file)
             add_xml_datastream_from_file(item_object, 'CONTENT_DM_MD', premis_item.content_dm_file)
             add_xml_datastream_from_file(item_object, 'MARC', premis_item.marc_file) if premis_item.marc_file
+            item_object.add_relationship(:is_member_of, fedora_collection)
             item_object.save
             #finally ingest the image file as another object - for now I give a pid that is the
             #item pid with ~image appended
             image_object_id = premis_item.medusa_id + "~image"
-            fedora_image = with_fresh_object(image_object_id, Medusa::Part) do |image_object|
+            with_fresh_object(image_object_id, Medusa::Part) do |image_object|
               add_managed_datastream_from_file(image_object, 'IMAGE', premis_item.image_file, :mimeType => 'image/jpeg')
+              #image_object.add_relationship(:is_part_of, fedora_item)
               image_object.save
             end
           end
