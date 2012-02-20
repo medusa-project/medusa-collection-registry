@@ -8,7 +8,7 @@ module Medusa
         #attach metadata streams
         premis_collection = PremisCollectionParser.new(File.join(self.package_root, 'collection', 'premis.xml')).parse
         puts "INGESTING COLLECTION: |#{premis_collection.medusa_id}|"
-        fedora_collection = with_fresh_object(premis_collection.medusa_id, Medusa::AfricanMaps::Object) do |collection_object|
+        fedora_collection = with_fresh_object(premis_collection.medusa_id, Medusa::Set) do |collection_object|
           add_xml_datastream_from_file(collection_object, 'PREMIS', premis_collection.premis_file)
           add_xml_datastream_from_file(collection_object, 'MODS', premis_collection.mods_file)
           collection_object.save
@@ -25,7 +25,7 @@ module Medusa
         Dir[File.join(self.package_root, '*', '*', 'premis.xml')].each do |item_file|
           premis_item = PremisItemParser.new(item_file).parse
           puts "INGESTING ITEM: #{premis_item.medusa_id}"
-          fedora_item = with_fresh_object(premis_item.medusa_id, Medusa::AfricanMaps::Object) do |item_object|
+          fedora_item = with_fresh_object(premis_item.medusa_id, Medusa::Parent) do |item_object|
             add_xml_datastream_from_file(item_object, 'PREMIS', premis_item.premis_file)
             add_xml_datastream_from_file(item_object, 'MODS', premis_item.mods_file)
             add_xml_datastream_from_file(item_object, 'CONTENT_DM_MD', premis_item.content_dm_file)
@@ -34,7 +34,7 @@ module Medusa
             #finally ingest the image file as another object - for now I give a pid that is the
             #item pid with ~image appended
             image_object_id = premis_item.medusa_id + "~image"
-            fedora_image = with_fresh_object(image_object_id, Medusa::AfricanMaps::Object) do |image_object|
+            fedora_image = with_fresh_object(image_object_id, Medusa::Part) do |image_object|
               add_managed_datastream_from_file(image_object, 'IMAGE', premis_item.image_file, :mimeType => 'image/jpeg')
               image_object.save
             end
