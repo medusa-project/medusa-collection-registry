@@ -12,16 +12,19 @@ module Medusa
       ActiveFedora.init
     end
 
-    #If there is an object with the given pid delete it and yield to the block.
-    #For making this repeatable without hassle.
-    def replacing_object(pid, klass = ActiveFedora::Base)
+    #If there is an object with the given pid delete it
+    #Create a new object with the given class and yield to the block
+    #return the new object
+    def with_fresh_object(pid, klass = ActiveFedora::Base)
       begin
         object = klass.load_instance(pid)
         object.delete unless object.nil?
       rescue ActiveFedora::ObjectNotFoundError
         #nothing
       end
-      yield
+      klass.new(:pid => pid).tap do |object|
+        yield object
+      end
     end
 
     #return a Nokogiri::XML::Document on the file contents
@@ -31,6 +34,18 @@ module Medusa
 
     def ingest
       raise NotImplementedError, "Subclass responsibility"
+    end
+
+    def add_xml_datastream(object, dsid, xml_string_or_doc, options = {})
+      object.create_datastream(ActiveFedora::NokogiriDatastream, dsid,
+                               options.reverse_merge(:controlGroup => 'X', :dsLabel => dsid)).tap do |datastream|
+        datastream.content = xml_string_or_doc.to_s
+        object.add_datastream(datastream)
+      end
+    end
+
+    def add_xml_datastream_from_file(object, dsid, file, options = {})
+      add_xml_datastream(object, dsid, File.open(file).read, options)
     end
 
   end

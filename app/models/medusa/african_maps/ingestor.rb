@@ -6,17 +6,14 @@ module Medusa
         #ingest collection
         #create collection object
         #attach metadata streams
-        collection = PremisCollectionParser.new(File.join(self.package_root, 'collection', 'premis.xml')).parse
-        puts "INGESTING COLLECTION: |#{collection.medusa_id}|"
-        fedora_collection = nil
-        replacing_object(collection.medusa_id, Medusa::AfricanMaps::Object) do
-          fedora_collection = Medusa::AfricanMaps::Object.new(:pid => collection.medusa_id)
-          premis = fedora_collection.create_datastream(ActiveFedora::NokogiriDatastream, 'PREMIS', :controlGroup => 'X')
-          premis.content =  File.open(collection.premis_file).read
-          fedora_collection.add_datastream(premis)
-          fedora_collection.save
+        premis_collection = PremisCollectionParser.new(File.join(self.package_root, 'collection', 'premis.xml')).parse
+        puts "INGESTING COLLECTION: |#{premis_collection.medusa_id}|"
+        fedora_collection = with_fresh_object(premis_collection.medusa_id, Medusa::AfricanMaps::Object) do |collection_object|
+          add_xml_datastream_from_file(collection_object, 'PREMIS', premis_collection.premis_file)
+          add_xml_datastream_from_file(collection_object, 'MODS', premis_collection.mods_file)
+          collection_object.save
         end
-        puts "INGESTED COLLECTION: #{collection.medusa_id}"
+        puts "INGESTED COLLECTION: #{premis_collection.medusa_id}"
 
         #ingest each item in collection
         ## create item object
