@@ -1,0 +1,15 @@
+This directory is for relevant examples or sample files.
+
+- schema.xml and solrconfig.xml are examples of how solr (3.5) can be
+configured to work with fedora (3.4.2). These reside in the solr
+installation
+
+- solr.xml is an example of how to configure tomcat to use a solr
+  installation
+
+- The akubra-llstore.xml.* files are examples of how to set up fedora
+  (3.4.2) to work with the Dell DX / Caringo storage. Note that these
+  change a little bit for fedora 3.5. Note that if you're using
+  authentication then a section needs to be added for that as
+  well. We'll try to drop in an example showing both once we're up on
+  such an installation.
