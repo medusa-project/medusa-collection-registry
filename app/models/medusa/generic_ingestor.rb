@@ -15,16 +15,36 @@ module Medusa
     #If there is an object with the given pid delete it
     #Create a new object with the given class and yield to the block
     #return the new object
-    def with_fresh_object(pid, klass = ActiveFedora::Base)
+    def with_fresh_object(pid, klass = Medusa::GenericObject)
+      delete_if_exists(pid, klass)
+      klass.new(:pid => pid).tap do |object|
+        yield object
+      end
+    end
+
+    #Return the fedora object with the given pid and class
+    #If it already exists simply return it
+    #If not, then create it, yield it to the block, then return it
+    def do_if_new_object(pid, klass = Medusa::GenericObject)
       begin
         object = klass.load_instance(pid)
-        object.delete unless object.nil?
+        return object if object and !object.new_object?
       rescue ActiveFedora::ObjectNotFoundError
-        #nothing
+        #do nothing - just proceed
       end
       klass.new(:pid => pid).tap do |object|
         yield object
       end
+    end
+
+    #If the specified object exists in fedora then delete it
+    def delete_if_exists(pid, klass = Medusa::GenericObject)
+      begin
+        object = klass.load_instance(pid)
+      rescue ActiveFedora::ObjectNotFoundError
+        return
+      end
+      object.delete if object and not object.new_object?
     end
 
     #return a Nokogiri::XML::Document on the file contents
@@ -46,7 +66,7 @@ module Medusa
     end
 
     def add_xml_datastream_from_file(object, dsid, file, options = {})
-      contents = File.open(file) {|f| f.read}
+      contents = File.open(file) { |f| f.read }
       add_xml_datastream(object, dsid, contents, options)
     end
 
@@ -60,7 +80,7 @@ module Medusa
     end
 
     def add_managed_datastream_from_file(object, dsid, file, options = {})
-      bytes = File.open(file, 'r:binary') {|f| f.read}
+      bytes = File.open(file, 'r:binary') { |f| f.read }
       add_managed_binary_datastream(object, dsid, bytes, options)
     end
 
