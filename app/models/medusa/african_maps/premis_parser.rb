@@ -54,7 +54,7 @@ module Medusa
         related_id('DERIVATION', 'HAS_SOURCE', 'FILENAME', self.file(derived_file))
       end
 
-      #common pattern - given xml node, select subnode with css and compare to given texct
+      #common pattern - given xml node, select subnode with css and compare to given text
       def text_at_css?(node, css, text)
         node.at_css(css).text == text
       end
