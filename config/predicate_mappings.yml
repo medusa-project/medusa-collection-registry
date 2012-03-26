@@ -29,7 +29,6 @@
     :has_part: hasPart
     :has_subset: hasSubset
     :is_annotation_of: isAnnotationOf
-
     :is_constituent_of: isConstituentOf
     :is_dependent_of: isDependentOf
     :is_derivation_of: isDerivationOf
