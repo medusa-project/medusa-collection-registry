@@ -59,7 +59,7 @@ module Medusa
     def add_xml_datastream(object, dsid, xml_string_or_doc, options = {})
       object.create_datastream(ActiveFedora::NokogiriDatastream, dsid,
                                options.reverse_merge(:controlGroup => 'X', :dsLabel => dsid,
-                                                     :contentType => 'text/xml')).tap do |datastream|
+                                                     :contentType => 'text/xml', :checksumType => 'SHA-1')).tap do |datastream|
         datastream.content = xml_string_or_doc.to_s
         object.add_datastream(datastream)
       end
@@ -73,7 +73,7 @@ module Medusa
     def add_managed_binary_datastream(object, dsid, bytes, options = {})
       object.create_datastream(ActiveFedora::Datastream, dsid,
                                options.reverse_merge(:controlGroup => 'M', :dsLabel => dsid,
-                                                     :contentType => 'application/octet-stream')).tap do |datastream|
+                                                     :contentType => 'application/octet-stream', :checksumType => 'SHA-1')).tap do |datastream|
         datastream.content = bytes
         object.add_datastream(datastream)
       end
