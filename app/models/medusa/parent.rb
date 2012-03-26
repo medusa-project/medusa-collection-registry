@@ -1,5 +1,5 @@
 module Medusa
-  class Parent < ActiveFedora::Base
+  class Parent < Medusa::Object
     has_relationship "member_of", :is_member_of
     has_relationship "parts", :is_part_of, :inbound => true
     has_relationship "children", :is_child_of, :inbound => true
@@ -12,7 +12,7 @@ module Medusa
     def recursive_delete
       self.children.each {|child| child.recursive_delete}
       self.parts.each {|part| part.recursive_delete}
-      self.delete
+      super
     end
   end
 end
