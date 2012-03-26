@@ -29,6 +29,7 @@
     :has_part: hasPart
     :has_subset: hasSubset
     :is_annotation_of: isAnnotationOf
+
     :is_constituent_of: isConstituentOf
     :is_dependent_of: isDependentOf
     :is_derivation_of: isDerivationOf
@@ -42,7 +43,6 @@
     :is_child_of: isChildOf
     :is_first_child_of: isFirstChildOf
     :has_previous_sibling: hasPreviousSibling
-    :has_next_sibling: hasNextSibling
   info:fedora/fedora-system:def/model#:
     :has_model: hasModel
     :has_service: hasService
