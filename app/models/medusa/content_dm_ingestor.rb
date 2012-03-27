@@ -30,7 +30,7 @@ module Medusa
       Dir[File.join(self.package_root, '*', '*', '*')]
     end
 
-    def item_file_data(item_dir)
+    def file_data(item_dir)
       files = Dir[File.join(item_dir, '*.*')]
       files.collect { |f| parse_filename(f) }
     end
@@ -43,20 +43,68 @@ module Medusa
       collection.recursive_delete
     end
 
-    def ingest_collection
+    #this is a general procedure for ingesting a collection with an appropriate tree structure
+    #a subclass need only define build_parent and build_asset methods that correctly build and
+    #return an unsaved Medusa::Parent or Medusa::Asset and then this method should be able to use
+    #those to create the correct fedora structure out of those.
+    def ingest
+      fedora_collection = create_collection
+      self.item_dirs.each do |item_dir|
+        fedora_item = build_parent(item_dir)
+        fedora_item.add_relationship(:is_member_of, fedora_collection)
+        fedora_item.save
+        add_assets_and_children(item_dir, fedora_item)
+      end
+    end
+
+    #create and return collection
+    def create_collection
       collection_files = self.collection_file_data
       collection_premis_file = collection_files.detect { |f| f[:base] == 'premis_object' }
       collection_mods_file = collection_files.detect { |f| f[:base] == 'mods' }
       collection_pid = collection_premis_file[:pid]
-      puts "INGESTING COLLECTION: " + collection_pid
-      fedora_collection = do_if_new_object(collection_pid, Medusa::Set) do |collection_object|
+      do_if_new_object(collection_pid, Medusa::Set) do |collection_object|
+        puts "INGESTING COLLECTION: " + collection_pid
         add_xml_datastream_from_file(collection_object, 'PREMIS', collection_premis_file[:original])
         add_xml_datastream_from_file(collection_object, 'MODS', collection_mods_file[:original])
         collection_object.save
+        puts "INGESTED COLLECTION: #{collection_pid}"
       end
-      puts "INGESTED COLLECTION: #{collection_pid}"
-      return fedora_collection
     end
+
+    def add_child(child_dir, parent_object)
+      child = build_parent(child_dir)
+      child.add_relationship(:is_part_of, parent_object)
+      child.save
+      child
+    end
+
+    def add_assets_and_children(dir, parent_object)
+      #get the asset subdirs and the child subdirs (ordered correctly)
+      subdirectories = subdirs(dir)
+      assets = subdirectories.collect { |d| leaf_directory?(d) }
+      children = (subdirectories - assets).sort_by { |name| File.basename(name).split('.').last.to_i }
+      #make assets and add them to parent_object
+      assets.each do |asset_dir|
+        asset = build_asset(asset_dir)
+        asset.add_relationship(:is_part_of, parent_object)
+        asset.save
+      end
+      #make and attach child objects to parent, calling this recursively on the child dirs and objects. Depth first.
+      previous_child = nil
+      children.each do |child_dir|
+        child = add_child(child_dir, parent_object)
+        if previous_child
+          child.add_relationship(:has_previous_sibling, previous_child)
+        else
+          child.add_relationship(:is_first_child_of, parent_object)
+        end
+        child.save
+        previous_child = child
+        add_assets_and_children(child_dir, child)
+      end
+    end
+
 
   end
 end

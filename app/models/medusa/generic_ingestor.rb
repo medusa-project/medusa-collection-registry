@@ -84,5 +84,15 @@ module Medusa
       add_managed_binary_datastream(object, dsid, bytes, options)
     end
 
+    #return an array of all subdirectories of the given directory except for . and ..
+    def subdirs(dir)
+      Dir["#{dir}/*"].select { |d| File.directory?(d) } - ['.', '..']
+    end
+
+    #answer true if dir has no subdirectories and false otherwise
+    def leaf_directory?(dir)
+      subdirs(dir).empty?
+    end
+
   end
 end

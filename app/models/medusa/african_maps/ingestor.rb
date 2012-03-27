@@ -3,12 +3,12 @@ module Medusa
     class Ingestor < Medusa::ContentDmIngestor
 
       def ingest
-        fedora_collection = ingest_collection
-        
+        fedora_collection = create_collection
+
         self.item_dirs.each do |item_dir|
           item_pid = File.basename(item_dir).sub('_', ':')
           puts "INGESTING ITEM: #{item_pid}"
-          item_files = self.item_file_data(item_dir)
+          item_files = self.file_data(item_dir)
           item_premis_file = item_files.detect {|f| f[:base] == 'premis'}
           item_mods_file = item_files.detect {|f| f[:base] == 'mods'}
           item_content_dm_file = item_files.detect {|f| f[:base] == 'contentdm'}
