@@ -8,6 +8,7 @@ module Medusa
     def recursive_delete
       self.subsets.each {|subset| subset.recursive_delete}
       self.members.each {|member| member.recursive_delete}
+      self.parts.each {|part| part.recursive_delete}
       super
     end
   end
