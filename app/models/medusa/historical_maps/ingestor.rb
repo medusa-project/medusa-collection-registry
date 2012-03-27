@@ -3,21 +3,21 @@ module Medusa
     class Ingestor < Medusa::ContentDmIngestor
 
       #build and return, but do not yet save, parent object. Caller is responsible for setting up relationships and then saving
-      def build_parent(item_dir)
-        item_pid = File.basename(item_dir).sub('_', ':')
-        puts "INGESTING PARENT #{item_pid}"
-        item_files = self.file_data(item_dir)
-        item_premis_file = item_files.detect { |f| f[:base] == 'premis' }
-        item_mods_file = item_files.detect { |f| f[:base] == 'mods' }
-        item_content_dm_file = item_files.detect { |f| f[:base] == 'contentdm' }
-        item_mods_from_marc_file = item_files.detect { |f| f[:base].match('mods_') }
-        item_cpd_file = item_files.detect { |f| f[:extension] == 'cpd' }
-        do_if_new_object(item_pid, Medusa::Parent) do |item_object|
-          add_xml_datastream_from_file(item_object, 'PREMIS', item_premis_file[:original])
-          add_xml_datastream_from_file(item_object, 'MODS', item_mods_file[:original])
-          add_xml_datastream_from_file(item_object, 'CONTENT_DM_MD', item_content_dm_file[:original]) if item_content_dm_file
-          add_xml_datastream_from_file(item_object, 'MODS_FROM_MARC', item_mods_from_marc_file[:original]) if item_mods_from_marc_file
-          add_xml_datastream_from_file(item_object, 'CONTENT_DM_CPD', item_cpd_file[:original]) if item_cpd_file
+      def build_parent(dir)
+        pid = File.basename(dir).sub('_', ':')
+        puts "INGESTING PARENT #{pid}"
+        files = self.file_data(dir)
+        premis_file = files.detect { |f| f[:base] == 'premis' }
+        mods_file = files.detect { |f| f[:base] == 'mods' }
+        content_dm_file = files.detect { |f| f[:base] == 'contentdm' }
+        mods_from_marc_file = files.detect { |f| f[:base].match('mods_') }
+        cpd_file = files.detect { |f| f[:extension] == 'cpd' }
+        do_if_new_object(pid, Medusa::Parent) do |item_object|
+          add_xml_datastream_from_file(item_object, 'PREMIS', premis_file[:original])
+          add_xml_datastream_from_file(item_object, 'MODS', mods_file[:original])
+          add_xml_datastream_from_file(item_object, 'CONTENT_DM_MD', content_dm_file[:original]) if content_dm_file
+          add_xml_datastream_from_file(item_object, 'MODS_FROM_MARC', mods_from_marc_file[:original]) if mods_from_marc_file
+          add_xml_datastream_from_file(item_object, 'CONTENT_DM_CPD', cpd_file[:original]) if cpd_file
         end
       end
 
