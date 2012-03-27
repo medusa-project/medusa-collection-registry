@@ -42,13 +42,6 @@ module Medusa
       end
     end
 
-    #build and return, but do not yet save, a child of parent on the given dir
-    def build_child(dir, parent)
-      child = build_parent(dir)
-      child.add_relationship(:is_child_of, parent)
-      child
-    end
-
     def add_assets_and_children(dir, parent)
       #get the asset subdirs and the child subdirs (ordered correctly)
       subdirectories = subdirs(dir)
@@ -63,7 +56,8 @@ module Medusa
       #make and attach child objects to parent, calling this recursively on the child dirs and objects. Depth first.
       previous_child = nil
       children.each do |child_dir|
-        child = build_child(child_dir, parent)
+        child = build_parent(child_dir)
+        child.add_relationship(:is_child_of, parent)
         if previous_child
           child.add_relationship(:has_previous_sibling, previous_child)
         else
