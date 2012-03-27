@@ -42,18 +42,21 @@ module Medusa
       end
     end
 
+    #Use any asset directories present in dir to add assets to parent
+    #Use any child directories present in dir to add children to parent
+    #Recursively call on any children found, depth first
     def add_assets_and_children(dir, parent)
       #get the asset subdirs and the child subdirs (ordered correctly)
       subdirectories = subdirs(dir)
       assets = subdirectories.collect { |d| leaf_directory?(d) }
       children = (subdirectories - assets).sort_by { |name| File.basename(name).split('.').last.to_i }
-      #make assets and add them to parent_object
+      #Make assets and add them to parent_object
       assets.each do |asset_dir|
         asset = build_asset(asset_dir)
         asset.add_relationship(:is_part_of, parent)
         asset.save
       end
-      #make and attach child objects to parent, calling this recursively on the child dirs and objects. Depth first.
+      #Make children and add to parent. Recursively process children.
       previous_child = nil
       children.each do |child_dir|
         child = build_parent(child_dir)
