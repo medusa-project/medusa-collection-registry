@@ -53,7 +53,6 @@ module Medusa
       #and then blow them all away.
       #So really we just need to find the one collection pid and then away we go.
       def uningest
-        ActiveFedora.init
         collection_files = self.collection_file_data
         collection_premis_file = collection_files.detect { |f| f[:base] == 'premis_object' }
         collection_pid = collection_premis_file[:pid]
