@@ -47,6 +47,7 @@ module Medusa
     #a subclass need only define build_parent and build_asset methods that correctly build and
     #return an unsaved Medusa::Parent or Medusa::Asset and then this method should be able to use
     #those to create the correct fedora structure out of those.
+    #Of course for custom use you can just completely override this.
     def ingest
       fedora_collection = create_collection
       self.item_dirs.each do |item_dir|
