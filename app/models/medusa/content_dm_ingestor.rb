@@ -43,5 +43,20 @@ module Medusa
       collection.recursive_delete
     end
 
+    def ingest_collection
+      collection_files = self.collection_file_data
+      collection_premis_file = collection_files.detect { |f| f[:base] == 'premis_object' }
+      collection_mods_file = collection_files.detect { |f| f[:base] == 'mods' }
+      collection_pid = collection_premis_file[:pid]
+      puts "INGESTING COLLECTION: " + collection_pid
+      fedora_collection = do_if_new_object(collection_pid, Medusa::Set) do |collection_object|
+        add_xml_datastream_from_file(collection_object, 'PREMIS', collection_premis_file[:original])
+        add_xml_datastream_from_file(collection_object, 'MODS', collection_mods_file[:original])
+        collection_object.save
+      end
+      puts "INGESTED COLLECTION: #{collection_pid}"
+      return fedora_collection
+    end
+
   end
 end
