@@ -47,6 +47,7 @@ module Medusa
     #Recursively call on any children found, depth first
     def add_assets_and_children(dir, parent)
       #get the asset subdirs and the child subdirs (ordered correctly)
+      #this assumes that the pid suffixes for children are generated numerically in the right order
       subdirectories = subdirs(dir)
       assets = subdirectories.collect { |d| leaf_directory?(d) }
       children = (subdirectories - assets).sort_by { |name| File.basename(name).split('.').last.to_i }
