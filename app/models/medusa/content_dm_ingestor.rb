@@ -49,7 +49,7 @@ module Medusa
       #get the asset subdirs and the child subdirs (ordered correctly)
       #this assumes that the pid suffixes for children are generated numerically in the right order
       subdirectories = subdirs(dir)
-      assets = subdirectories.collect { |d| leaf_directory?(d) }
+      assets = subdirectories.select { |d| leaf_directory?(d) }
       children = (subdirectories - assets).sort_by { |name| File.basename(name).split('.').last.to_i }
       #Make assets and add them to parent_object
       assets.each do |asset_dir|
