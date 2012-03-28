@@ -11,7 +11,7 @@ module Medusa
         mods_file = files.detect { |f| f[:base] == 'mods' }
         content_dm_file = files.detect { |f| f[:base] == 'contentdm' }
         mods_from_marc_file = files.detect { |f| f[:base].match('mods_') }
-        cpd_file = files.detect { |f| f[:extension] == '.cpd' }
+        cpd_file = files.detect { |f| f[:extension].downcase == '.cpd' }
         do_if_new_object(pid, Medusa::Parent) do |item|
           add_metadata(item, 'PREMIS', premis_file)
           add_metadata(item, 'MODS', mods_file, true)
@@ -34,7 +34,7 @@ module Medusa
         files = file_data(dir)
         premis_file = files.detect { |f| f[:base] == 'premis' }
         image_file = files.detect { |f| f[:base] == 'image' }
-        mime_type = image_file[:extension] == '.jp2' ? 'image/jp2' : 'image/jpeg'
+        mime_type = image_file[:extension].downcase == '.jp2' ? 'image/jp2' : 'image/jpeg'
         asset_pid = image_file[:pid]
         puts "INGESTING ASSET: #{asset_pid}"
         do_if_new_object(asset_pid, Medusa::Asset) do |asset|
