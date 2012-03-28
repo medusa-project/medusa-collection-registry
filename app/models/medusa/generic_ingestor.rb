@@ -58,7 +58,7 @@ module Medusa
 
     def add_xml_datastream(object, dsid, xml_string_or_doc, options = {})
       object.create_datastream(ActiveFedora::NokogiriDatastream, dsid,
-                               options.reverse_merge(:controlGroup => 'X', :dsLabel => dsid,
+                               options.reverse_merge(:controlGroup => 'M', :dsLabel => dsid,
                                                      :contentType => 'text/xml', :checksumType => 'SHA-1')).tap do |datastream|
         datastream.content = xml_string_or_doc.to_s
         object.add_datastream(datastream)
