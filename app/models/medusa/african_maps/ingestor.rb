@@ -16,7 +16,7 @@ module Medusa
           item_image_file = item_files.detect {|f| f[:base] == 'image'}
           fedora_item = do_if_new_object(item_pid, Medusa::Parent) do |item_object|
             add_xml_datastream_from_file(item_object, 'PREMIS', item_premis_file[:original])
-            add_xml_datastream_from_file(item_object, 'MODS', item_mods_file[:original])
+            add_mods_and_dc(item_object, item_mods_file[:original])
             add_xml_datastream_from_file(item_object, 'CONTENT_DM_MD', item_content_dm_file[:original])
             add_xml_datastream_from_file(item_object, 'MODS_FROM_MARC', item_mods_from_marc_file[:original])
             item_object.add_relationship(:is_member_of, fedora_collection)

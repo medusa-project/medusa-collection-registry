@@ -14,7 +14,7 @@ module Medusa
         cpd_file = files.detect { |f| f[:extension].downcase == '.cpd' }
         do_if_new_object(pid, Medusa::Parent) do |item|
           add_metadata(item, 'PREMIS', premis_file)
-          add_metadata(item, 'MODS', mods_file, true)
+          add_mods_and_dc(item, mods_file[:original]) if mods_file
           add_metadata(item, 'CONTENT_DM_MD', content_dm_file, true)
           add_metadata(item, 'MODS_FROM_MARC', mods_from_marc_file, true)
           add_metadata(item, 'CONTENT_DM_CPD', cpd_file, true)

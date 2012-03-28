@@ -65,6 +65,12 @@ module Medusa
       end
     end
 
+    def add_mods_and_dc(object, mods_file_name)
+      add_xml_datastream_from_file(object, 'MODS', mods_file_name)
+      add_xml_datastream(object, 'DC', Medusa::ModsToDublinCoreConverter.instance.dc_from_mods_file_and_object(mods_file_name, object).to_s)
+    end
+
+
     def add_xml_datastream_from_file(object, dsid, file, options = {})
       contents = File.open(file, 'r:binary') { |f| f.read }
       add_xml_datastream(object, dsid, contents, options)
