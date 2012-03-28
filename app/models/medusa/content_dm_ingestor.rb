@@ -75,7 +75,7 @@ module Medusa
 
     #parse the filename, returning a hash which has components for:
     #:pid -> unique id for this content, suitable for medusa pid after small transformation (which we do here)
-    #:extension -> extension of filename
+    #:extension -> extension of filename. Includes '.', e.g. '.jpg', not 'jpg'
     #:base -> rest of the filename. This may be further parseable, but this method doesn't do it.
     #:dir -> directory where the file lies
     #:original - the original filename
