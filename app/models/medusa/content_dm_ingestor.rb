@@ -24,6 +24,7 @@ module Medusa
         fedora_item.save
         add_assets_and_children(item_dir, fedora_item)
       end
+      return fedora_collection
     end
 
     #create and return collection, assuming directory structure convention is met
