@@ -56,17 +56,17 @@ module Medusa
       raise NotImplementedError, "Subclass responsibility"
     end
 
-    def add_xml_datastream(object, dsid, xml_string_or_doc, options = {})
-      object.create_datastream(ActiveFedora::NokogiriDatastream, dsid,
+    def add_xml_datastream(object, dsid, bytes, options = {})
+      object.create_datastream(ActiveFedora::Datastream, dsid,
                                options.reverse_merge(:controlGroup => 'M', :dsLabel => dsid,
                                                      :contentType => 'text/xml', :checksumType => 'SHA-1')).tap do |datastream|
-        datastream.content = xml_string_or_doc.to_s
+        datastream.content = bytes
         object.add_datastream(datastream)
       end
     end
 
     def add_xml_datastream_from_file(object, dsid, file, options = {})
-      contents = File.open(file) { |f| f.read }
+      contents = File.open(file, 'r:binary') { |f| f.read }
       add_xml_datastream(object, dsid, contents, options)
     end
 
