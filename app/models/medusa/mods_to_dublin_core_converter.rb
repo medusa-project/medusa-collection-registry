@@ -6,17 +6,17 @@ module Medusa
     attr_accessor :xslt
 
     def initialize
-      self.xslt = Nokogiri::XSLT.parse(File.read(self.dc_file_path))
+      self.xslt = Nokogiri::XSLT.parse(File.read(self.xslt_file_path))
     end
 
-    def dc_file_path
+    def xslt_file_path
       File.join(Rails.root, 'vendor', 'assets', 'xslts', 'MODS3-22simpleDC.xsl')
     end
 
     def transform_mods_file(filename)
       self.transform_mods_xml(File.read(filename))
     end
-
+bos
     def transform_mods_xml(xml)
       self.xslt.transform(Nokogiri::XML::Document.parse(xml))
     end
