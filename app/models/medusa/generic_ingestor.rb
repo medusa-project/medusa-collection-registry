@@ -57,12 +57,7 @@ module Medusa
     end
 
     def add_xml_datastream(object, dsid, bytes, options = {})
-      object.create_datastream(ActiveFedora::Datastream, dsid,
-                               options.reverse_merge(:controlGroup => 'M', :dsLabel => dsid,
-                                                     :contentType => 'text/xml', :checksumType => 'SHA-1')).tap do |datastream|
-        datastream.content = bytes
-        object.add_datastream(datastream)
-      end
+      add_managed_binary_datastream(object, dsid, bytes, options.reverse_merge(:contentType => 'text/xml'))
     end
 
     def add_mods_and_dc(object, mods_file_name)
