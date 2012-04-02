@@ -16,7 +16,7 @@ module Medusa
     def transform_mods_file(filename)
       self.transform_mods_xml(File.read(filename))
     end
-bos
+
     def transform_mods_xml(xml)
       self.xslt.transform(Nokogiri::XML::Document.parse(xml))
     end
