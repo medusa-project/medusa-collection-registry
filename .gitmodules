@@ -1,0 +1,3 @@
+[submodule "submodules/akubra-caringo"]
+	path = submodules/akubra-caringo
+	url = git@github.com:medusa-project/akubra-caringo.git
