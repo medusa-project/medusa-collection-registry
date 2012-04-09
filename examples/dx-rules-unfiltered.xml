@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE rule-set PUBLIC "-//CARINGO//DTD 1.0 PORTALRULES//EN"
+    "file:/home/hading/repos/medusa-rails3/war-rules.dtd">
+<rule-set>
+  <!-- Note: modifications to this publish element are disallowed -->
+  <publish>
+    <select name="PublishAll"></select>
+  </publish>
+  <!-- Note: add your site-specific publish element(s) here -->
+  <publish>
+    <select name="development-test-repo">
+      <filter header="x-fedora-meta-repository-name">
+        matches('development-test-repo')
+      </filter>
+    </select>
+  </publish>
+  <publish>
+    <select name="medusa-test-repo">
+      <filter header="x-fedora-meta-repository-name">
+        matches('medusa-test-repo')
+      </filter>
+    </select>
+  </publish>
+  <publish>
+    <select name="medusa-production-repo">
+      <filter header="x-fedora-meta-repository-name">
+        matches('medusa-production-repo')
+      </filter>
+    </select>
+  </publish>
+</rule-set>

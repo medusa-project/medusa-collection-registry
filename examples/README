@@ -13,3 +13,8 @@ installation
   authentication then a section needs to be added for that as
   well. We'll try to drop in an example showing both once we're up on
   such an installation.
+
+- dx-rules-unfiltered.xml is an example of how you might set up content
+  router rules when using dx(caringo) storage. Note that the akubra-caringo
+  plugin takes care of distinguishing objects from datastreams - the
+  rules should ensure that both are published to the channel.
