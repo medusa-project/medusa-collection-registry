@@ -2,37 +2,33 @@ module Medusa
   module AfricanMaps
     class Ingestor < Medusa::ContentDmIngestor
 
-      def ingest
-        fedora_collection = create_collection
-
-        self.item_dirs.each do |item_dir|
-          item_pid = File.basename(item_dir).sub('_', ':')
-          puts "INGESTING ITEM: #{item_pid}"
-          item_files = self.file_data(item_dir)
-          item_premis_file = item_files.detect {|f| f[:base] == 'premis'}
-          item_mods_file = item_files.detect {|f| f[:base] == 'mods'}
-          item_content_dm_file = item_files.detect {|f| f[:base] == 'contentdm'}
-          item_mods_from_marc_file = item_files.detect {|f| f[:base].match('mods_')}
-          item_image_file = item_files.detect {|f| f[:base] == 'image'}
-          fedora_item = do_if_new_object(item_pid, Medusa::Parent) do |item_object|
-            add_xml_datastream_from_file(item_object, 'PREMIS', item_premis_file[:original])
-            add_mods_and_dc(item_object, item_mods_file[:original])
-            add_xml_datastream_from_file(item_object, 'CONTENT_DM_MD', item_content_dm_file[:original])
-            add_xml_datastream_from_file(item_object, 'MODS_FROM_MARC', item_mods_from_marc_file[:original])
-            item_object.add_relationship(:is_member_of, fedora_collection)
-            item_object.save
-          end
-          asset_pid = item_image_file[:pid]
-          puts "INGESTING ASSET: #{asset_pid}"
-          fedora_asset = do_if_new_object(asset_pid, Medusa::Asset) do |asset|
-            add_managed_datastream_from_file(asset, 'JP2', item_image_file[:original], :mimeType => 'image/jp2')
-          end
-          fedora_asset.add_relationship(:is_part_of, fedora_item)
-          fedora_asset.save
-          puts "INGESTED ASSET: #{asset_pid}"
-          puts "INGESTED ITEM: #{item_pid}"
+      def build_parent(dir)
+        pid = File.basename(dir) == self.item_pid ? self.item_pid : "#{self.item_pid}.#{File.basename(dir)}"
+        puts "INGESTING PARENT #{pid}"
+        files = self.file_data(dir)
+        premis_file = files.detect { |f| f[:base] == 'premis' }
+        mods_file = files.detect { |f| f[:base] == 'mods' }
+        content_dm_file = files.detect { |f| f[:base] == 'contentdm' }
+        marc_file = files.detect { |f| f[:base] == ('opac') }
+        do_if_new_object(pid, Medusa::Parent) do |item|
+          add_metadata(item, 'PREMIS', premis_file)
+          add_mods_and_dc(item, mods_file[:original]) if mods_file
+          add_metadata(item, 'CONTENT_DM_MD', content_dm_file, true)
+          add_metadata(item, 'MODS_FROM_MARC', marc_file, true)
         end
-        puts ""
+      end
+
+      def build_asset(dir)
+        files = file_data(dir)
+        premis_file = files.detect { |f| f[:base] == 'premis' }
+        image_file = files.detect { |f| f[:base] == 'image' }
+        mime_type = image_file[:extension].downcase == '.jp2' ? 'image/jp2' : 'image/jpeg'
+        asset_pid = image_file[:pid]
+        puts "INGESTING ASSET: #{asset_pid}"
+        do_if_new_object(asset_pid, Medusa::Asset) do |asset|
+          add_managed_datastream_from_file(asset, 'IMAGE', image_file[:original], :mimeType => mime_type)
+          add_metadata(asset, 'PREMIS', premis_file)
+        end
       end
 
     end
