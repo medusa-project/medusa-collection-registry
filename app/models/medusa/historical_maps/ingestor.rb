@@ -4,19 +4,19 @@ module Medusa
 
       #build and return, but do not yet save, parent object. Caller is responsible for setting up relationships and then saving
       def build_parent(dir)
-        pid = File.basename(dir).sub('_', ':')
+        pid = File.basename(dir) == self.item_pid ? self.item_pid : "#{self.item_pid}.#{File.basename(dir)}"
         puts "INGESTING PARENT #{pid}"
         files = self.file_data(dir)
         premis_file = files.detect { |f| f[:base] == 'premis' }
         mods_file = files.detect { |f| f[:base] == 'mods' }
         content_dm_file = files.detect { |f| f[:base] == 'contentdm' }
-        mods_from_marc_file = files.detect { |f| f[:base].match('mods_') }
+        marc_file = files.detect { |f| f[:base] == ('opac') }
         cpd_file = files.detect { |f| f[:extension].downcase == '.cpd' }
         do_if_new_object(pid, Medusa::Parent) do |item|
           add_metadata(item, 'PREMIS', premis_file)
           add_mods_and_dc(item, mods_file[:original]) if mods_file
           add_metadata(item, 'CONTENT_DM_MD', content_dm_file, true)
-          add_metadata(item, 'MODS_FROM_MARC', mods_from_marc_file, true)
+          add_metadata(item, 'MODS_FROM_MARC', marc_file, true)
           add_metadata(item, 'CONTENT_DM_CPD', cpd_file, true)
         end
       end

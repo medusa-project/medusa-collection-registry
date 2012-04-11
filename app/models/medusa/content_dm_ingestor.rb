@@ -2,6 +2,7 @@
 #It is to encapsulate some things common to our ContentDm ingests
 module Medusa
   class ContentDmIngestor < GenericIngestor
+    attr_accessor :item_pid
 
     def uningest
       files = self.collection_file_data
@@ -19,6 +20,7 @@ module Medusa
     def ingest
       fedora_collection = create_collection
       self.item_dirs.each do |item_dir|
+        self.item_pid = File.basename(item_dir)
         fedora_item = build_parent(item_dir)
         fedora_item.add_relationship(:is_member_of, fedora_collection)
         fedora_item.save
@@ -105,6 +107,14 @@ module Medusa
     def file_data(item_dir)
       files = Dir[File.join(item_dir, '*.*')]
       files.collect { |f| parse_filename(f) }
+    end
+
+    def build_parent(dir)
+      raise RuntimeException, "Subclass responsibility"
+    end
+
+    def build_asset(dir)
+      raise RuntimeException, "Subclass responsibility"
     end
 
   end
