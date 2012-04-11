@@ -21,8 +21,8 @@ module Medusa
     def ingest
       fedora_collection = create_collection
       self.item_dirs.each do |item_dir|
-        self.item_pid = File.basename(item_dir)
-        fedora_item = build_parent(item_dir)
+        self.item_pid = File.basename(item_dir).gsub('_', ':')
+        fedora_item = build_parent(item_dir, self.item_pid)
         fedora_item.add_relationship(:is_member_of, fedora_collection)
         fedora_item.save
         add_assets_and_children(item_dir, fedora_item)
