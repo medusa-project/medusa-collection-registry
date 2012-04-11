@@ -21,7 +21,8 @@ module Medusa
         end
       end
 
-      #build and return, but do not save, a new asset on the given directorydef build_asset(dir)
+      #build and return, but do not save, a new asset on the given directory
+      def build_asset(dir)
         files = file_data(dir)
         premis_file = files.detect { |f| f[:base] == 'premis' }
         image_file = files.detect { |f| f[:base] == 'image' }
