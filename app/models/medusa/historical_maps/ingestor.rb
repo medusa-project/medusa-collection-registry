@@ -21,16 +21,7 @@ module Medusa
         end
       end
 
-      #If file_data is true, take the data in the file file_data[:original] and put it into an XML metadata stream
-      #on the given object with stream_name as the dsId.
-      #If file_data is false, then if allow_skip is true just skip adding this stream. If allow_skip is false (the default)
-      #then an error should be raised.
-      def add_metadata(object, stream_name, file_data, allow_skip = false)
-        add_xml_datastream_from_file(object, stream_name, file_data[:original]) if file_data or !allow_skip
-      end
-
-      #build and return, but do not save, a new asset on the given directory
-      def build_asset(dir)
+      #build and return, but do not save, a new asset on the given directorydef build_asset(dir)
         files = file_data(dir)
         premis_file = files.detect { |f| f[:base] == 'premis' }
         image_file = files.detect { |f| f[:base] == 'image' }

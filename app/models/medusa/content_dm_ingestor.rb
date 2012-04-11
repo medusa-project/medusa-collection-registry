@@ -2,6 +2,7 @@
 #It is to encapsulate some things common to our ContentDm ingests
 module Medusa
   class ContentDmIngestor < GenericIngestor
+
     attr_accessor :item_pid
 
     def uningest
@@ -74,6 +75,14 @@ module Medusa
         previous_child = child
         add_assets_and_children(child_dir, child)
       end
+    end
+
+    #If file_data is true, take the data in the file file_data[:original] and put it into an XML metadata stream
+    #on the given object with stream_name as the dsId.
+    #If file_data is false, then if allow_skip is true just skip adding this stream. If allow_skip is false (the default)
+    #then an error should be raised.
+    def add_metadata(object, stream_name, file_data, allow_skip = false)
+      add_xml_datastream_from_file(object, stream_name, file_data[:original]) if file_data or !allow_skip
     end
 
     #parse the filename, returning a hash which has components for:
