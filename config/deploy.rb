@@ -52,7 +52,7 @@ namespace :akubra_caringo do
 
   desc "build akubra-caringo jar"
   task :build_jar do
-    result = system("cd #{akubra_dir} ; mvn package")
+    result = system("cd #{akubra_dir} ; mvn package -DskipTests")
     unless result
       puts "Build of akubra-caringo jar failed"
       exit(result)
