@@ -42,7 +42,7 @@ module Medusa
 
     def add_label_to_object(dc_doc, fedora_object)
       title = dc_doc.at_xpath('//dc:title')
-      fedora_object.label = title.text if title
+      fedora_object.label = title.text.truncate(255) if title
     end
 
   end

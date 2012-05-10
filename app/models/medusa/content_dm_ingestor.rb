@@ -6,11 +6,14 @@ module Medusa
     attr_accessor :item_pid
 
     def uningest
+      collection = Medusa::Set.load_instance(self.collection_pid)
+      collection.recursive_delete
+    end
+
+    def collection_pid
       files = self.collection_file_data
       premis_file = files.detect { |f| f[:base] == 'premis_object' }
-      pid = premis_file[:pid]
-      collection = Medusa::Set.load_instance(pid)
-      collection.recursive_delete
+      premis_file[:pid]
     end
 
     #this is a general procedure for ingesting a collection with an appropriate tree structure
@@ -38,8 +41,12 @@ module Medusa
       collection_mods_file = collection_files.detect { |f| f[:base] == 'mods' }
       collection_pid = collection_premis_file[:pid]
       do_if_new_object(collection_pid, Medusa::Set) do |collection_object|
-        puts "INGESTING COLLECTION: " + collection_pid
+        puts "INGESTING COLLECTION:" + collection_pid
+        collection_object.save
+        sleep 60
         add_xml_datastream_from_file(collection_object, 'PREMIS', collection_premis_file[:original])
+        collection_object.save
+        sleep 60
         add_mods_and_dc(collection_object, collection_mods_file[:original])
         collection_object.save
         puts "INGESTED COLLECTION: #{collection_pid}"
@@ -118,7 +125,7 @@ module Medusa
       files.collect { |f| parse_filename(f) }
     end
 
-    def build_parent(dir)
+    def build_parent(dir, pid = nil)
       raise RuntimeException, "Subclass responsibility"
     end
 
