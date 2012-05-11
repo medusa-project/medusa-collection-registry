@@ -6,7 +6,7 @@ module Medusa
     attr_accessor :item_pid
 
     def uningest
-      collection = Medusa::Set.load_instance(self.collection_pid)
+      collection = Medusa::Set.find(self.collection_pid)
       collection.recursive_delete
     end
 

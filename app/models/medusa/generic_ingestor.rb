@@ -27,7 +27,7 @@ module Medusa
     #If not, then create it, yield it to the block, then return it
     def do_if_new_object(pid, klass = Medusa::GenericObject)
       begin
-        object = klass.load_instance(pid)
+        object = klass.find(pid)
         return object if object and !object.new_object?
       rescue ActiveFedora::ObjectNotFoundError
         #do nothing - just proceed
@@ -40,7 +40,7 @@ module Medusa
     #If the specified object exists in fedora then delete it
     def delete_if_exists(pid, klass = Medusa::GenericObject)
       begin
-        object = klass.load_instance(pid)
+        object = klass.find(pid)
       rescue ActiveFedora::ObjectNotFoundError
         return
       end
