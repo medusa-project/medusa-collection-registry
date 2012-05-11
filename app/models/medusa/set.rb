@@ -6,9 +6,9 @@ module Medusa
     has_relationship "parts", :is_part_of, :inbound => true
 
     def recursive_delete
-      self.subsets.each {|subset| subset.recursive_delete}
-      self.members.each {|member| member.recursive_delete}
-      self.parts.each {|part| part.recursive_delete}
+      self.subsets(:rows => 1000000).each {|subset| subset.recursive_delete}
+      self.members(:rows => 1000000).each {|member| member.recursive_delete}
+      self.parts(:rows => 1000000).each {|part| part.recursive_delete}
       super
     end
   end

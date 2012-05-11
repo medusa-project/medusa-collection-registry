@@ -43,10 +43,8 @@ module Medusa
       do_if_new_object(collection_pid, Medusa::Set) do |collection_object|
         puts "INGESTING COLLECTION:" + collection_pid
         collection_object.save
-        sleep 60
         add_xml_datastream_from_file(collection_object, 'PREMIS', collection_premis_file[:original])
         collection_object.save
-        sleep 60
         add_mods_and_dc(collection_object, collection_mods_file[:original])
         collection_object.save
         puts "INGESTED COLLECTION: #{collection_pid}"

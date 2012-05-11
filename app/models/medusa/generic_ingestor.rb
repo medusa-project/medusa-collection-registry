@@ -97,3 +97,17 @@ module Medusa
 
   end
 end
+
+#test to try to resolve DX problem
+module ActiveFedora
+  class Datastream
+    alias original_save save
+
+    #def save
+    #  puts "Sleeping before saving #{pid} #{dsid}"
+    #  sleep 15
+    #  puts "Attempting save"
+    #  original_save
+    #end
+  end
+end

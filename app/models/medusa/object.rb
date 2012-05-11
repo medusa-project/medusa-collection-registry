@@ -1,5 +1,8 @@
 module Medusa
+
   class Object < ActiveFedora::Base
+    include ActiveFedora::Relationships
+
     def recursive_delete
       puts "DELETING class: #{self.class.to_s} pid: #{self.pid}"
       self.delete
