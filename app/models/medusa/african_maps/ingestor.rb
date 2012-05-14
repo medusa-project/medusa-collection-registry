@@ -2,8 +2,8 @@ module Medusa
   module AfricanMaps
     class Ingestor < Medusa::ContentDmIngestor
 
-      def build_parent(dir, pid = nil)
-        pid ||= "#{self.item_pid}.#{File.basename(dir)}"
+      def build_parent(dir, item_pid, pid = nil)
+        pid ||= "#{item_pid}.#{File.basename(dir)}"
         puts "INGESTING PARENT #{pid}"
         files = self.file_data(dir)
         premis_file = files.detect { |f| f[:base] == 'premis' }

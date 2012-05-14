@@ -3,8 +3,6 @@
 module Medusa
   class ContentDmIngestor < GenericIngestor
 
-    attr_accessor :item_pid
-
     def uningest
       collection = Medusa::Set.find(self.collection_pid)
       collection.recursive_delete
@@ -30,17 +28,17 @@ module Medusa
     end
 
     def ingest_item(item_dir, collection, retries = 5)
-      self.item_pid = File.basename(item_dir).gsub('_', ':')
+      item_pid = File.basename(item_dir).gsub('_', ':')
       begin
-        fedora_item = build_parent(item_dir, self.item_pid)
+        fedora_item = build_parent(item_dir, item_pid, item_pid)
         fedora_item.add_relationship(:is_member_of, collection)
         fedora_item.save
-        add_assets_and_children(item_dir, fedora_item)
+        add_assets_and_children(item_dir, item_pid, fedora_item)
       rescue Exception => e
-        puts "Error ingesting item, pid: #{self.item_pid}"
+        puts "Error ingesting item, pid: #{item_pid}"
         if retries > 0
           puts "Trying to delete item"
-          recursive_delete_if_exists(self.item_pid, Medusa::Parent)
+          recursive_delete_if_exists(item_pid, Medusa::Parent)
           puts "Deleted item if it existed."
           puts "Preparing to try ingesting again"
           sleep 5
@@ -71,7 +69,7 @@ module Medusa
     #Use any asset directories present in dir to add assets to parent
     #Use any child directories present in dir to add children to parent
     #Recursively call on any children found, depth first
-    def add_assets_and_children(dir, parent)
+    def add_assets_and_children(dir, item_pid, parent)
       #get the asset subdirs and the child subdirs (ordered correctly)
       #this assumes that the pid suffixes for children are generated numerically in the right order
       subdirectories = subdirs(dir)
@@ -86,7 +84,7 @@ module Medusa
       #Make children and add to parent. Recursively process children.
       previous_child = nil
       children.each do |child_dir|
-        child = build_parent(child_dir)
+        child = build_parent(child_dir, item_pid)
         child.add_relationship(:is_child_of, parent)
         if previous_child
           child.add_relationship(:has_previous_sibling, previous_child)
@@ -95,7 +93,7 @@ module Medusa
         end
         child.save
         previous_child = child
-        add_assets_and_children(child_dir, child)
+        add_assets_and_children(child_dir, item_pid, child)
       end
     end
 
@@ -140,7 +138,7 @@ module Medusa
       files.collect { |f| parse_filename(f) }
     end
 
-    def build_parent(dir, pid = nil)
+    def build_parent(dir, item_pid, pid = nil)
       raise RuntimeException, "Subclass responsibility"
     end
 
