@@ -47,6 +47,15 @@ module Medusa
       object.delete if object and not object.new_object?
     end
 
+    def recursive_delete_if_exists(pid, klass = Medusa::Object)
+      begin
+        object = klass.find(pid)
+      rescue ActiveFedora::ObjectNotFoundError
+        return
+      end
+      object.recursive_delete if object and not object.new_object?
+    end
+
     #return a Nokogiri::XML::Document on the file contents
     def file_to_xml(file)
       Nokogiri::XML::Document.parse(File.read(file))
@@ -95,19 +104,5 @@ module Medusa
       subdirs(dir).empty?
     end
 
-  end
-end
-
-#test to try to resolve DX problem
-module ActiveFedora
-  class Datastream
-    alias original_save save
-
-    #def save
-    #  puts "Sleeping before saving #{pid} #{dsid}"
-    #  sleep 15
-    #  puts "Attempting save"
-    #  original_save
-    #end
   end
 end

@@ -24,13 +24,32 @@ module Medusa
     def ingest
       fedora_collection = create_collection
       self.item_dirs.each do |item_dir|
-        self.item_pid = File.basename(item_dir).gsub('_', ':')
-        fedora_item = build_parent(item_dir, self.item_pid)
-        fedora_item.add_relationship(:is_member_of, fedora_collection)
-        fedora_item.save
-        add_assets_and_children(item_dir, fedora_item)
+        ingest_item(item_dir, fedora_collection)
       end
       return fedora_collection
+    end
+
+    def ingest_item(item_dir, collection, retries = 5)
+      self.item_pid = File.basename(item_dir).gsub('_', ':')
+      begin
+        fedora_item = build_parent(item_dir, self.item_pid)
+        fedora_item.add_relationship(:is_member_of, collection)
+        fedora_item.save
+        add_assets_and_children(item_dir, fedora_item)
+      rescue Exception => e
+        puts "Error ingesting item, pid: #{self.item_pid}"
+        if retries > 0
+          puts "Trying to delete item"
+          recursive_delete_if_exists(self.item_pid, Medusa::Parent)
+          puts "Deleted item if it existed."
+          puts "Preparing to try ingesting again"
+          sleep 5
+          ingest_item(item_dir, collection, retries - 1)
+        else
+          puts "Out of retries - aborting"
+          raise e
+        end
+      end
     end
 
     #create and return collection, assuming directory structure convention is met
@@ -42,9 +61,7 @@ module Medusa
       collection_pid = collection_premis_file[:pid]
       do_if_new_object(collection_pid, Medusa::Set) do |collection_object|
         puts "INGESTING COLLECTION:" + collection_pid
-        collection_object.save
         add_xml_datastream_from_file(collection_object, 'PREMIS', collection_premis_file[:original])
-        collection_object.save
         add_mods_and_dc(collection_object, collection_mods_file[:original])
         collection_object.save
         puts "INGESTED COLLECTION: #{collection_pid}"
