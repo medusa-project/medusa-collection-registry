@@ -42,8 +42,13 @@ module Medusa
     end
 
     def self.find_all_with_subclasses
-      self.find(:all, :rows => 1000000) + self.subclasses.collect {|subclass| subclass.find_all_with_subclasses}.flatten
+      self.find_all + self.subclasses.collect {|subclass| subclass.find_all_with_subclasses}.flatten
     end
 
+    #not quite aptly named - actually finds a million
+    def self.find_all
+      self.find(:all, :rows => 1000000)
+    end
+    
   end
 end

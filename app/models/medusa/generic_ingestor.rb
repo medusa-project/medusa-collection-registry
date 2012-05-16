@@ -5,10 +5,11 @@
 module Medusa
   class GenericIngestor
 
-    attr_accessor :package_root
+    attr_accessor :package_root, :item_ingest_thread_count
 
-    def initialize(package_root)
-      self.package_root = package_root
+    def initialize(args = {})
+      self.package_root = args[:package_root] || raise(RuntimeError, "Must specify package foor for ingestor")
+      self.item_ingest_thread_count = args[:item_ingest_thread_count] || 1
       ActiveFedora.init
     end
 

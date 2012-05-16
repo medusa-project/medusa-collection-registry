@@ -21,9 +21,21 @@ module Medusa
     #Of course for custom use you can just completely override this.
     def ingest
       fedora_collection = create_collection
-      self.item_dirs.each do |item_dir|
-        ingest_item(item_dir, fedora_collection)
+      ingest_threads = Array.new
+      self.item_dirs.in_groups(self.item_ingest_thread_count, false).each_with_index do |item_group, i|
+        t = Thread.new do
+          t[:id] = i
+          t.abort_on_exception = true
+          item_group.each do |item_dir|
+            ingest_item(item_dir, fedora_collection)
+          end
+          puts "THREAD #{t[:id]} FINISHED PROCESSING"
+        end
+        ingest_threads << t
       end
+      puts "Number of threads: #{ingest_threads.count}"
+      ingest_threads.each { |thread| thread.join }
+      puts "Ingest complete"
       return fedora_collection
     end
 
@@ -31,8 +43,10 @@ module Medusa
       item_pid = File.basename(item_dir).gsub('_', ':')
       begin
         fedora_item = build_parent(item_dir, item_pid, item_pid)
+        puts "ITEM PID: #{fedora_item.pid}"
         fedora_item.add_relationship(:is_member_of, collection)
         fedora_item.save
+        puts "Ingested parent #{fedora_item.pid} on thread #{Thread.current[:id]}"
         add_assets_and_children(item_dir, item_pid, fedora_item)
       rescue Exception => e
         puts "Error ingesting item, pid: #{item_pid}"
@@ -80,6 +94,7 @@ module Medusa
         asset = build_asset(asset_dir)
         asset.add_relationship(:is_part_of, parent)
         asset.save
+        puts "Ingested Asset #{asset.pid} on thread #{Thread.current[:id]}"
       end
       #Make children and add to parent. Recursively process children.
       previous_child = nil
@@ -92,6 +107,7 @@ module Medusa
           child.add_relationship(:is_first_child_of, parent)
         end
         child.save
+        puts "Ingested Parent #{child.pid} on thread #{Thread.current[:id]} "
         previous_child = child
         add_assets_and_children(child_dir, item_pid, child)
       end

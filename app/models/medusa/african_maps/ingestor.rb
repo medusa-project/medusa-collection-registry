@@ -4,7 +4,7 @@ module Medusa
 
       def build_parent(dir, item_pid, pid = nil)
         pid ||= "#{item_pid}.#{File.basename(dir)}"
-        puts "INGESTING PARENT #{pid}"
+        puts "INGESTING PARENT #{pid} ON THREAD #{Thread.current[:id]}"
         files = self.file_data(dir)
         premis_file = files.detect { |f| f[:base] == 'premis' }
         mods_file = files.detect { |f| f[:base] == 'mods' }
@@ -24,7 +24,7 @@ module Medusa
         image_file = files.detect { |f| f[:base] == 'image' }
         mime_type = image_file[:extension].downcase == '.jp2' ? 'image/jp2' : 'image/jpeg'
         asset_pid = image_file[:pid]
-        puts "INGESTING ASSET: #{asset_pid}"
+        puts "INGESTING ASSET: #{asset_pid} ON THREAD #{Thread.current[:id]}"
         do_if_new_object(asset_pid, Medusa::Asset) do |asset|
           add_managed_datastream_from_file(asset, 'IMAGE', image_file[:original], :mimeType => mime_type)
           add_metadata(asset, 'PREMIS', premis_file)
