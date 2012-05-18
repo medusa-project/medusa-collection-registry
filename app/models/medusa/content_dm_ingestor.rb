@@ -4,8 +4,22 @@ module Medusa
   class ContentDmIngestor < GenericIngestor
 
     def uningest
-      collection = Medusa::Set.find(self.collection_pid)
-      collection.recursive_delete
+      with_timing do
+        retries = 50
+        while (retries > 0)
+          begin
+            collection = Medusa::Set.find(self.collection_pid)
+            collection.recursive_delete
+            break
+          rescue Exception => e
+            retries = retries - 1
+            raise e if retries == 0
+            puts "Got exception #{e}. #{retries} retries left. Restarting in five seconds."
+            sleep 5
+          end
+        end
+        puts "Finished uningest with #{retries} retries remaining."
+      end
     end
 
     def collection_pid
@@ -20,23 +34,25 @@ module Medusa
     #those to create the correct fedora structure out of those.
     #Of course for custom use you can just completely override this.
     def ingest
-      fedora_collection = create_collection
-      ingest_threads = Array.new
-      self.item_dirs.in_groups(self.item_ingest_thread_count, false).each_with_index do |item_group, i|
-        t = Thread.new do
-          t[:id] = i
-          t.abort_on_exception = true
-          item_group.each do |item_dir|
-            ingest_item(item_dir, fedora_collection)
+      with_timing do
+        fedora_collection = create_collection
+        ingest_threads = Array.new
+        self.item_dirs.in_groups(self.item_ingest_thread_count, false).each_with_index do |item_group, i|
+          t = Thread.new do
+            t[:id] = i
+            t.abort_on_exception = true
+            item_group.each do |item_dir|
+              ingest_item(item_dir, fedora_collection)
+            end
+            puts "THREAD #{t[:id]} FINISHED PROCESSING"
           end
-          puts "THREAD #{t[:id]} FINISHED PROCESSING"
+          ingest_threads << t
         end
-        ingest_threads << t
+        puts "Number of threads: #{ingest_threads.count}"
+        ingest_threads.each { |thread| thread.join }
+        puts "Ingest complete"
+        fedora_collection
       end
-      puts "Number of threads: #{ingest_threads.count}"
-      ingest_threads.each { |thread| thread.join }
-      puts "Ingest complete"
-      return fedora_collection
     end
 
     def ingest_item(item_dir, collection, retries = 5)
@@ -160,6 +176,14 @@ module Medusa
 
     def build_asset(dir)
       raise RuntimeException, "Subclass responsibility"
+    end
+
+    def with_timing
+      start_time = Time.now
+      result = yield
+      end_time = Time.now
+      puts "Started: #{start_time} Ended: #{end_time} Seconds: #{end_time - start_time} Minutes: #{(end_time - start_time) / 60.0}"
+      return result
     end
 
   end

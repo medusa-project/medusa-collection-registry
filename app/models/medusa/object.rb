@@ -49,6 +49,6 @@ module Medusa
     def self.find_all
       self.find(:all, :rows => 1000000)
     end
-    
+
   end
 end
