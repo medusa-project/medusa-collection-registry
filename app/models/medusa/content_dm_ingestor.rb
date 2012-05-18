@@ -49,7 +49,7 @@ module Medusa
           ingest_threads << t
         end
         ingest_threads.each { |thread| thread.join }
-        Rails.looger.info "INGEST: COMPLETE"
+        Rails.logger.info "INGEST: COMPLETE"
         fedora_collection
       end
     end
