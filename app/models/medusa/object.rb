@@ -4,8 +4,25 @@ module Medusa
     include ActiveFedora::Relationships
 
     def recursive_delete
-      puts "DELETING class: #{self.class.to_s} pid: #{self.pid}"
-      self.delete
+      retries = 5
+      deleted = false
+      until deleted
+        begin
+          puts "DELETING class: #{self.class.to_s} pid: #{self.pid}"
+          self.delete
+          deleted = true
+        rescue Exception => e
+          retries = retries - 1
+          puts "Exception #{e.to_s} deleting #{self.class.to_s} pid: #{self.pid}"
+          if retries < 0
+            puts "Aborting from recursive delete"
+            raise e
+          else
+            puts "Retrying after 5 seconds. #{retries} retries remaining."
+            sleep 5
+          end
+        end
+      end
     end
 
     #use the fedora config to generate a url where this object can be accessed
@@ -42,7 +59,7 @@ module Medusa
     end
 
     def self.find_all_with_subclasses
-      self.find_all + self.subclasses.collect {|subclass| subclass.find_all_with_subclasses}.flatten
+      self.find_all + self.subclasses.collect { |subclass| subclass.find_all_with_subclasses }.flatten
     end
 
     #not quite aptly named - actually finds a million
