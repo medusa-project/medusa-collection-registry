@@ -8,17 +8,17 @@ module Medusa
       deleted = false
       until deleted
         begin
-          puts "DELETING class: #{self.class.to_s} pid: #{self.pid}"
+          Rails.logger.info "DELETING CLASS: #{self.class.to_s} PID: #{self.pid}"
           self.delete
           deleted = true
         rescue Exception => e
           retries = retries - 1
-          puts "Exception #{e.to_s} deleting #{self.class.to_s} pid: #{self.pid}"
+          Rails.logger.error "DELETE ERROR. EXCEPTION: #{e.to_s} CLASS: #{self.class.to_s} PID: #{self.pid}"
           if retries < 0
-            puts "Aborting from recursive delete"
+            Rails.logger.error "ABORTING FROM RECURSIVE DELETE"
             raise e
           else
-            puts "Retrying after 5 seconds. #{retries} retries remaining."
+            Rails.logger.error "RETRYING AFTER 5 SECONDS. #{retries} RETRIES REMAINING."
             sleep 5
           end
         end
@@ -42,15 +42,15 @@ module Medusa
           try_again = false
         rescue RestClient::RequestTimeout => e
           retries = retries - 1
-          puts "Got REST timeout. #{retries} retries left."
+          Rails.logger.error "SAVE ERROR. GOT REST TIMEOUT. #{retries} RETRIES LEFT."
           raise e if retries == 0
         rescue RestClient::ResourceNotFound => e
           retries = retries - 1
-          puts "Didn't find resource. #{retries} retries left."
+          Rails.logger.error "SAVE ERROR. DIDN'T FIND RESOURCE. #{retries} RETRIES LEFT."
           raise e if retries == 0
         rescue Rubydora::FedoraInvalidRequest => e
           retries = retries - 1
-          puts "Invalid Fedora Request. #{retries} retries left."
+          Rails.logger.error "SAVE ERROR. INVALID FEDORA REQUEST. #{retries} RETRIES LEFT."
           raise e if retries == 0
         ensure
           sleep 5 if try_again

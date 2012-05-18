@@ -14,11 +14,11 @@ module Medusa
           rescue Exception => e
             retries = retries - 1
             raise e if retries == 0
-            puts "Got exception #{e}. #{retries} retries left. Restarting in five seconds."
+            Rails.logger.error "UNINGEST: EXCEPTION #{e}. #{retries} RETRIES LEFT. RESTARTING IN FIVE SECONDS."
             sleep 5
           end
         end
-        puts "Finished uningest with #{retries} retries remaining."
+        Rails.logger.info "UNINGEST: FINISHED WITH #{retries} RETRIES REMAINING."
       end
     end
 
@@ -44,13 +44,12 @@ module Medusa
             item_group.each do |item_dir|
               ingest_item(item_dir, fedora_collection)
             end
-            puts "THREAD #{t[:id]} FINISHED PROCESSING"
+            Rails.logger.info "INGEST: THREAD #{t[:id]} FINISHED PROCESSING"
           end
           ingest_threads << t
         end
-        puts "Number of threads: #{ingest_threads.count}"
         ingest_threads.each { |thread| thread.join }
-        puts "Ingest complete"
+        Rails.looger.info "INGEST: COMPLETE"
         fedora_collection
       end
     end
@@ -59,22 +58,22 @@ module Medusa
       item_pid = File.basename(item_dir).gsub('_', ':')
       begin
         fedora_item = build_parent(item_dir, item_pid, item_pid)
-        puts "ITEM PID: #{fedora_item.pid}"
+        Rails.logger.info "INGEST: ITEM PID: #{fedora_item.pid}"
         fedora_item.add_relationship(:is_member_of, collection)
         fedora_item.save
-        puts "Ingested parent #{fedora_item.pid} on thread #{Thread.current[:id]}"
+        Rails.logger.info "INGEST: INGESTED PARENT #{fedora_item.pid} ON THREAD #{Thread.current[:id]}"
         add_assets_and_children(item_dir, item_pid, fedora_item)
       rescue Exception => e
-        puts "Error ingesting item, pid: #{item_pid}"
+        Rails.logger.error "INGEST: ERROR INGESTING ITEM, PID: #{item_pid}"
         if retries > 0
-          puts "Trying to delete item"
+          Rails.logger.error "ITEM: TRYING TO DELETE"
           recursive_delete_if_exists(item_pid, Medusa::Parent)
-          puts "Deleted item if it existed."
-          puts "Preparing to try ingesting again"
+          Rails.logger.error "ITEM: DELETED IF IT EXISTED."
+          Rails.logger.error "ITEM: PREPARING TO TRY INGESTING AGAIN"
           sleep 5
           ingest_item(item_dir, collection, retries - 1)
         else
-          puts "Out of retries - aborting"
+          Rails.logger.error "ITEM: OUT OF RETRIES - ABORTING"
           raise e
         end
       end
@@ -88,11 +87,11 @@ module Medusa
       collection_mods_file = collection_files.detect { |f| f[:base] == 'mods' }
       collection_pid = collection_premis_file[:pid]
       do_if_new_object(collection_pid, Medusa::Set) do |collection_object|
-        puts "INGESTING COLLECTION:" + collection_pid
+        Rails.logger.info "COLLECTION: INGESTING PID: #{collection_pid}"
         add_xml_datastream_from_file(collection_object, 'PREMIS', collection_premis_file[:original])
         add_mods_and_dc(collection_object, collection_mods_file[:original])
         collection_object.save
-        puts "INGESTED COLLECTION: #{collection_pid}"
+        Rails.logger.info "COLLECTION: INGESTED PID: #{collection_pid}"
       end
     end
 
@@ -110,7 +109,7 @@ module Medusa
         asset = build_asset(asset_dir)
         asset.add_relationship(:is_part_of, parent)
         asset.save
-        puts "Ingested Asset #{asset.pid} on thread #{Thread.current[:id]}"
+        Rails.logger.info "ASSET: INGESTED PID: #{asset.pid} ON THREAD #{Thread.current[:id]}"
       end
       #Make children and add to parent. Recursively process children.
       previous_child = nil
@@ -123,7 +122,7 @@ module Medusa
           child.add_relationship(:is_first_child_of, parent)
         end
         child.save
-        puts "Ingested Parent #{child.pid} on thread #{Thread.current[:id]} "
+        Rails.logger.info "PARENT: INGESTED PID: #{child.pid} ON THREAD #{Thread.current[:id]} "
         previous_child = child
         add_assets_and_children(child_dir, item_pid, child)
       end
@@ -182,7 +181,7 @@ module Medusa
       start_time = Time.now
       result = yield
       end_time = Time.now
-      puts "Started: #{start_time} Ended: #{end_time} Seconds: #{end_time - start_time} Minutes: #{(end_time - start_time) / 60.0}"
+      Rails.logger.info "STARTED: #{start_time}\nENDED: #{end_time}\nSECONDS: #{end_time - start_time}\nMINUTES: #{(end_time - start_time) / 60.0}"
       return result
     end
 
