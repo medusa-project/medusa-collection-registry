@@ -8,7 +8,12 @@ module Medusa
         retries = 50
         while (retries > 0)
           begin
-            collection = Medusa::Set.find(self.collection_pid)
+            begin
+              collection = Medusa::Set.find(self.collection_pid)
+            rescue ActiveFedora::ObjectNotFoundError
+              Rails.logger.error "UNINGEST: COLLECTION NOT FOUND - ABORTING"
+              break
+            end
             collection.recursive_delete
             break
           rescue Exception => e
