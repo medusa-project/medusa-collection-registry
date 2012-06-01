@@ -58,6 +58,7 @@ module Medusa
       end
     end
 
+    #should work as well as find_all does, but that may have limitations
     def self.find_all_with_subclasses
       self.find_all + self.subclasses.collect { |subclass| subclass.find_all_with_subclasses }.flatten
     end
