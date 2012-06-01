@@ -40,17 +40,9 @@ module Medusa
           solrizer = Solrizer::Fedora::Solrizer.new(:index_full_text => true)
           solrizer.solrize(self)
           try_again = false
-        rescue RestClient::RequestTimeout => e
+        rescue RestClient::RequestTimeout, RestClient::ResourceNotFound, Rubydora::FedoraInvalidRequest => e
           retries = retries - 1
-          Rails.logger.error "SAVE ERROR. GOT REST TIMEOUT. #{retries} RETRIES LEFT."
-          raise e if retries == 0
-        rescue RestClient::ResourceNotFound => e
-          retries = retries - 1
-          Rails.logger.error "SAVE ERROR. DIDN'T FIND RESOURCE. #{retries} RETRIES LEFT."
-          raise e if retries == 0
-        rescue Rubydora::FedoraInvalidRequest => e
-          retries = retries - 1
-          Rails.logger.error "SAVE ERROR. INVALID FEDORA REQUEST. #{retries} RETRIES LEFT."
+          Rails.logger.error "SAVE ERROR. #{e.class.to_s}. #{e.message}. #{retries} RETRIES LEFT."
           raise e if retries == 0
         ensure
           sleep 5 if try_again
