@@ -10,8 +10,8 @@ module Medusa
     has_relationship "previous_sibling", :has_previous_sibling
 
     def recursive_delete
-      self.children(:rows => 1000000).each {|child| child.recursive_delete}
-      self.parts(:rows => 1000000).each {|part| part.recursive_delete}
+      self.children(:rows => 1000000).reverse.each { |child| child.recursive_delete }
+      self.parts(:rows => 1000000).each { |part| part.recursive_delete }
       super
     end
   end
