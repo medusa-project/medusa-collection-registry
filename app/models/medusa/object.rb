@@ -37,8 +37,7 @@ module Medusa
       while (try_again)
         begin
           super
-          solrizer = Solrizer::Fedora::Solrizer.new(:index_full_text => true)
-          solrizer.solrize(self)
+          self.index_to_solr
           try_again = false
         rescue RestClient::RequestTimeout, RestClient::ResourceNotFound, Rubydora::FedoraInvalidRequest => e
           retries = retries - 1
@@ -48,6 +47,22 @@ module Medusa
           sleep 5 if try_again
         end
       end
+    end
+
+    #index this object to solr
+    def index_to_solr
+      @@solrizer ||= Solrizer::Fedora::Solrizer.new(:index_full_text => true)
+      @@solrizer.solrize(self)
+    rescue Exception => e
+      Rails.logger.error "SAVE: Problem indexing in solr: #{e.class}:#{e.message}"
+      @@solrizer = nil
+    end
+
+    #remove object with given pid from solr
+    def self.remove_from_solr(pid)
+      conn = ActiveFedora::SolrService.instance.conn
+      conn.delete_by_id(pid)
+      conn.commit
     end
 
     #should work as well as find_all does, but that may have limitations
