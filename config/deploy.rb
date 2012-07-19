@@ -28,10 +28,9 @@ set :use_sudo, false
 
 set :home, "/services/medusa"
 set :deploy_to, "#{home}/medusa-rails3-capistrano"
-set :current, "#{deploy_to}/current"
 set :shared, "#{deploy_to}/shared"
 set :shared_config, "#{shared}/config"
-set :public, "#{current}/public"
+set :public, "#{current_path}/public"
 set :tomcat_home, "#{home}/tomcat"
 
 set :local_root, File.expand_path('..', File.dirname(__FILE__))
@@ -40,8 +39,21 @@ namespace :deploy do
   desc "link shared configuration"
   task :link_config do
     ['database.yml', 'fedora.yml', 'solr.yml'].each do |file|
-      run "ln -nfs #{shared_config}/#{file} #{current}/config/#{file}"
+      run "ln -nfs #{shared_config}/#{file} #{current_path}/config/#{file}"
     end
+  end
+
+  desc "Start rails"
+  task :start do
+    #run "cd #{home}/bin ; ./start-rails"
+  end
+  desc "Stop rails"
+  task :stop do
+    #run "cd #{home}/bin ; ./stop-rails"
+  end
+  desc "Restart rails"
+  task :restart, :roles => :app, :except => {:no_release => true} do
+    ;
   end
 
 end
@@ -103,12 +115,3 @@ end
 after 'deploy:update', 'deploy:link_config'
 before 'deploy:update_jar', 'medusa:stop_tomcat'
 after 'deploy:update_jar', 'medusa:start_tomcat'
-
-# If you are using Passenger mod_rails uncomment this:
-# namespace :deploy do
-#   task :start do ; end
-#   task :stop do ; end
-#   task :restart, :roles => :app, :except => { :no_release => true } do
-#     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-#   end
-# end
