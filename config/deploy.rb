@@ -45,11 +45,11 @@ namespace :deploy do
 
   desc "Start rails"
   task :start do
-    #run "cd #{home}/bin ; ./start-rails"
+    run "cd #{home}/bin ; ./start-rails"
   end
   desc "Stop rails"
   task :stop do
-    #run "cd #{home}/bin ; ./stop-rails"
+    run "cd #{home}/bin ; ./stop-rails"
   end
   desc "Restart rails"
   task :restart, :roles => :app, :except => {:no_release => true} do
