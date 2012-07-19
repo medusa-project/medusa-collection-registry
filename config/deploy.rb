@@ -4,6 +4,7 @@ require 'rvm/capistrano'
 
 set :production_server, "stribog.grainger.illinois.edu"
 set :staging_server, "dagda.grainger.uiuc.edu"
+default_run_options[:shell] = '/bin/bash -l'
 
 task :production do
   role :web, production_server
@@ -49,7 +50,7 @@ namespace :deploy do
   end
   desc "Stop rails"
   task :stop do
-    run "cd #{home}/bin ; ./stop-rails"
+    run "cd #{home}/bin ; ./stop-rails || echo 'Passenger not currently runningPro'"
   end
   desc "Restart rails"
   task :restart, :roles => :app, :except => {:no_release => true} do
@@ -115,3 +116,6 @@ end
 after 'deploy:update', 'deploy:link_config'
 before 'deploy:update_jar', 'medusa:stop_tomcat'
 after 'deploy:update_jar', 'medusa:start_tomcat'
+
+before 'deploy:create_symlink', 'deploy:stop'
+after 'deploy:create_symlink', 'deploy:start'
