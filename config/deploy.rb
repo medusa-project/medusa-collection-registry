@@ -1,5 +1,5 @@
 require 'bundler/capistrano'
-set :rvm_ruby_string, "1.9.2@medusa-rails3"
+set :rvm_ruby_string, "1.9.3-p194@medusa-rails3"
 require 'rvm/capistrano'
 
 set :production_server, "stribog.grainger.illinois.edu"
