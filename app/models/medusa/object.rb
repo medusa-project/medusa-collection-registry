@@ -65,6 +65,12 @@ module Medusa
       conn.commit
     end
 
+    #remove object from solr if present and index again
+    def reindex_to_solr
+      self.class.remove_from_solr(self.pid)
+      self.index_to_solr
+    end
+
     #should work as well as find_all does, but that may have limitations
     def self.find_all_with_subclasses
       self.find_all + self.subclasses.collect { |subclass| subclass.find_all_with_subclasses }.flatten
