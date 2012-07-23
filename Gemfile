@@ -43,4 +43,11 @@ gem 'rvm-capistrano'
 group :development, :test do
   # To use debugger
   gem 'ruby-debug19'
+  gem 'rspec-rails'
+  gem 'factory_girl'
+end
+
+group :test do
+  gem 'cucumber-rails', :require => false
+  gem 'database_cleaner'
 end
