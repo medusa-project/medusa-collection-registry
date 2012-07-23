@@ -6,6 +6,10 @@ Feature: Repository description
   Scenario: Create repository
     Given I am logged in
     When I go to the repository creation page
-    And I enter creation information
+    And I fill in fields:
+      |field|value|
+      |title|Sample Repo|
+      |url  |http://repo.example.com|
+      |notes|This is a sample repository for the test|
     And I press Create
     Then a repository should be created

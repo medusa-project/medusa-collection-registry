@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120723183454) do
+ActiveRecord::Schema.define(:version => 20120723212328) do
+
+  create_table "repositories", :force => true do |t|
+    t.string   "title"
+    t.string   "url"
+    t.text     "notes"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false

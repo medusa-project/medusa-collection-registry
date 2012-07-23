@@ -11,6 +11,8 @@ gem 'solrizer-fedora'
 #deployment webserver
 gem 'passenger'
 
+gem 'haml'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

@@ -1,7 +1,4 @@
 MedusaRails3::Application.routes.draw do
-  get "repository/new"
-
-  get "repository/create"
 
   resources :repositories
 
