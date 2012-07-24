@@ -11,7 +11,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120723212328) do
+ActiveRecord::Schema.define(:version => 20120724205839) do
+
+  create_table "collections", :force => true do |t|
+    t.integer  "repository_id"
+    t.string   "title"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.boolean  "published"
+    t.boolean  "ongoing"
+    t.text     "description"
+    t.text     "access_url"
+    t.text     "file_package_summary"
+    t.text     "rights_statement"
+    t.text     "rights_restrictions"
+    t.text     "notes"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
 
   create_table "repositories", :force => true do |t|
     t.string   "title"

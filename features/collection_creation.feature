@@ -13,10 +13,22 @@ Feature: Collection Management
       | Sample Collection |
 
   Scenario: View collections of a repository
-    Given PENDING
+    When I view the repository titled 'Sample Repo'
+    Then I should see the repository collection table
+    And I should see 'Sample Collection'
 
   Scenario: Delete collection from a repository
-    Given PENDING
+    When I view the repository titled 'Sample Repo'
+    And I click on 'Delete' in the collections table
+    Then I should be on the view page for the repository titled 'Sample Repo'
+    And I should not see 'Sample Collection'
 
   Scenario: Add a collection to a repository
-    Given PENDING
+    When I view the repository titled 'Sample Repo'
+    And I click on 'Add Collection'
+    Then I should be on the new collection page
+
+  Scenario: Navigate to collection
+    When I view the repository titled 'Sample Repo'
+    And I click on 'Sample Collection'
+    Then I should be on the view page for the collection titled 'Sample Collection'

@@ -4,3 +4,14 @@
 %p Notes:
 %p #{@repository.notes}
 %p #{button_to 'Delete Repository', repository_path(@repository), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}
+
+%h2 Collections
+%p #{link_to 'Add Collection', new_collection_path}
+%table#collections
+  %tr
+    %th Title
+    %th
+  - @repository.collections.each do |collection|
+    %tr
+      %td #{link_to collection.title, collection_path(collection)}
+      %td #{link_to 'Delete', collection_path(collection), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}

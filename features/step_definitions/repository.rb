@@ -30,3 +30,13 @@ And /^the repository titled '(.*)' has collections with fields:$/ do |repository
     FactoryGirl.create(:collection, hash.merge(:repository => repository))
   end
 end
+
+Then /^I should see the repository collection table$/ do
+  page.should have_selector('table#collections')
+end
+
+And /^I click on 'Delete' in the collections table$/ do
+  within_table('collections') do
+    click_on 'Delete'
+  end
+end
