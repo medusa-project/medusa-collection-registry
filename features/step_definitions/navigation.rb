@@ -13,3 +13,11 @@ end
 When /^I edit the repository titled '(.*)'$/ do |title|
   visit edit_repository_path(Repository.find_by_title(title))
 end
+
+When /^I view the collection titled '(.*)'$/ do |title|
+  visit collection_path(Collection.find_by_title(title))
+end
+
+When /^I edit the collection titled '(.*)'$/ do |title|
+  visit edit_collection_path(Collection.find_by_title(title))
+end
