@@ -1,5 +1,7 @@
 MedusaRails3::Application.routes.draw do
 
+  resources :collections
+
   resources :repositories
 
   # The priority is based upon order of creation:

@@ -1,5 +1,6 @@
 %h2 #{@repository.title}
+%p #{link_to 'Index', repositories_path} | #{link_to 'Edit', edit_repository_path(@repository)}
 %p URL: #{link_to @repository.url, @repository.url}
 %p Notes:
 %p #{@repository.notes}
-%p #{button_to 'Delete Repository', repository_path(@repository), :method => :delete}
+%p #{button_to 'Delete Repository', repository_path(@repository), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}

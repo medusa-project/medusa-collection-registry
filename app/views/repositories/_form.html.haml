@@ -3,3 +3,7 @@
   = f.input :url
   = f.input :notes
   = f.button :submit
+  - if @repository.new_record?
+    = link_to('Index', repositories_path)
+  - else
+    = button_to('Cancel', repository_path(@repository))

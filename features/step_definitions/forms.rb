@@ -16,5 +16,9 @@ Then /^I should not see '(.*)'$/ do |text|
   page.should_not have_content(text)
 end
 
+And /^I click on '(.*)'$/ do |link_name|
+  click_link(link_name)
+end
+
 
 

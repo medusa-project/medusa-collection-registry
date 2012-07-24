@@ -1,0 +1,45 @@
+<h1>Listing collections</h1>
+
+<table>
+  <tr>
+    <th>Repository</th>
+    <th>Title</th>
+    <th>Start date</th>
+    <th>End date</th>
+    <th>Published</th>
+    <th>Ongoing</th>
+    <th>Description</th>
+    <th>Access url</th>
+    <th>File package summary</th>
+    <th>Rights statement</th>
+    <th>Rights restrictions</th>
+    <th>Notes</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @collections.each do |collection| %>
+  <tr>
+    <td><%= collection.repository_id %></td>
+    <td><%= collection.title %></td>
+    <td><%= collection.start_date %></td>
+    <td><%= collection.end_date %></td>
+    <td><%= collection.published %></td>
+    <td><%= collection.ongoing %></td>
+    <td><%= collection.description %></td>
+    <td><%= collection.access_url %></td>
+    <td><%= collection.file_package_summary %></td>
+    <td><%= collection.rights_statement %></td>
+    <td><%= collection.rights_restrictions %></td>
+    <td><%= collection.notes %></td>
+    <td><%= link_to 'Show', collection %></td>
+    <td><%= link_to 'Edit', edit_collection_path(collection) %></td>
+    <td><%= link_to 'Destroy', collection, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Collection', new_collection_path %>

@@ -1,10 +1,16 @@
+%p= link_to('New Repository', new_repository_path)
 %table
   %tr
     %th Title
     %th URL
     %th Notes
+    %th
   - @repositories.each do |repository|
     %tr
       %td #{repository.title}
-      %td ${link_to repository.url, repository.url
-      %td repository.notes
+      %td #{link_to repository.url, repository.url}
+      %td #{repository.notes}
+      %td
+        #{link_to 'View', repository_path(repository)} |
+        #{link_to 'Edit', edit_repository_path(repository)} |
+        #{link_to 'Delete', repository_path(repository), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}
