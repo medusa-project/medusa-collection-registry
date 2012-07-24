@@ -1,0 +1,10 @@
+%table
+  %tr
+    %th Title
+    %th URL
+    %th Notes
+  - @repositories.each do |repository|
+    %tr
+      %td #{repository.title}
+      %td ${link_to repository.url, repository.url
+      %td repository.notes

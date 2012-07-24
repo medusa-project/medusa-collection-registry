@@ -2,3 +2,4 @@
 %p URL: #{link_to @repository.url, @repository.url}
 %p Notes:
 %p #{@repository.notes}
+%p #{button_to 'Delete Repository', repository_path(@repository), :method => :delete}

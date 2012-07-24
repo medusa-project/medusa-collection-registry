@@ -17,4 +17,27 @@ class RepositoriesController < ApplicationController
     @repository = Repository.find(params[:id])
   end
 
+  def index
+    @repositories = Repository.all
+  end
+
+  def edit
+    @repository = Repository.find(params[:id])
+  end
+
+  def update
+    @repository = Repository.find(params[:id])
+    if @repository.update_attributes(params[:repository])
+      redirect_to repository_path(@repository)
+    else
+      render 'edit'
+    end
+  end
+
+  def destroy
+    @repository = Repository.find(params[:id])
+    @repository.destroy
+    redirect_to repositories_path
+  end
+
 end
