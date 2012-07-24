@@ -25,7 +25,7 @@ Then /^I should be on the repository creation page$/ do
 end
 
 And /^the repository titled '(.*)' has collections with fields:$/ do |repository_title, table|
-  repository = Repository.find_by_title(repository_title)
+  repository = Repository.find_or_create_by_title(repository_title)
   table.hashes.each do |hash|
     FactoryGirl.create(:collection, hash.merge(:repository => repository))
   end

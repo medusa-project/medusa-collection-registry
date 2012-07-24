@@ -5,9 +5,6 @@ Feature: Collection Management
 
   Background:
     Given I am logged in
-    And I have repositories with fields:
-      | title       |
-      | Sample Repo |
     And the repository titled 'Sample Repo' has collections with fields:
       | title             |
       | Sample Collection |
