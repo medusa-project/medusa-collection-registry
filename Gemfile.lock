@@ -235,6 +235,15 @@ GEM
       libwebsocket (~> 0.1.3)
       multi_json (~> 1.0)
       rubyzip
+    shoulda (3.1.1)
+      shoulda-context (~> 1.0)
+      shoulda-matchers (~> 1.2)
+    shoulda-context (1.0.0)
+    shoulda-matchers (1.2.0)
+      activesupport (>= 3.0.0)
+    simple_form (2.0.2)
+      actionpack (~> 3.0)
+      activemodel (~> 3.0)
     solrizer (1.2.2)
       daemons
       mediashelf-loggable (~> 0.4.7)
@@ -287,6 +296,8 @@ DEPENDENCIES
   ruby-debug19
   rvm-capistrano
   sass-rails (~> 3.2.3)
+  shoulda
+  simple_form
   solrizer-fedora
   therubyracer
   uglifier (>= 1.0.3)

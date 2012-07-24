@@ -12,6 +12,7 @@ gem 'solrizer-fedora'
 gem 'passenger'
 
 gem 'haml'
+gem 'simple_form'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -47,6 +48,7 @@ group :development, :test do
   gem 'ruby-debug19'
   gem 'rspec-rails'
   gem 'factory_girl'
+  gem 'shoulda'
 end
 
 group :test do

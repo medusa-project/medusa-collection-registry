@@ -8,8 +8,10 @@ Feature: Repository description
     When I go to the repository creation page
     And I fill in fields:
       |field|value|
-      |title|Sample Repo|
-      |url  |http://repo.example.com|
-      |notes|This is a sample repository for the test|
-    And I press Create
-    Then a repository should be created
+      |Title|Sample Repo|
+      |Url  |http://repo.example.com|
+      |Notes|This is a sample repository for the test|
+    And I press 'Create Repository'
+    Then A repository with title 'Sample Repo' should exist
+    And I should see 'This is a sample repository for the test'
+    And I should see 'http://repo.example.com'
