@@ -1,5 +1,5 @@
 Feature: Collection Management
-  In order to make manage collections
+  In order to manage collections
   As a librarian
   I want to be able to create and delete collections from repositories
 

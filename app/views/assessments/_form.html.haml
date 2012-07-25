@@ -1,0 +1,10 @@
+= simple_form_for @assessment do |f|
+  = f.input :date, :use_month_numbers => true
+  = f.input :preservation_risks
+  = f.input :notes
+  = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
+  = f.button :submit
+  - if @assessment.new_record?
+    = link_to("Back to #{@collection.title}", collection_path(@collection))
+  - else
+    = button_to('Cancel', assessment_path(@assessment))

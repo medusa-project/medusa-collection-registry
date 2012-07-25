@@ -14,3 +14,17 @@ And /^the repository titled '(.*)' should have a collection titled '(.*)'$/ do |
   Collection.find_by_title(collection_title).repository.should ==
       Repository.find_by_title(repository_title)
 end
+
+Then /^I should see the assessment collection table$/ do
+  page.should have_selector('table#assessments')
+end
+
+And /^I click on 'Delete' in the assessments table$/ do
+  within_table('assessments') do
+    click_on 'Delete'
+  end
+end
+
+And /^the collection titled 'Dogs' should have (\d+) assessments$/ do |count|
+  Collection.find_by_title('Dogs').assessments.count.should == count.to_i
+end

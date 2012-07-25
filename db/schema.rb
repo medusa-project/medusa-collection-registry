@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120724205839) do
+ActiveRecord::Schema.define(:version => 20120725162036) do
+
+  create_table "assessments", :force => true do |t|
+    t.date     "date"
+    t.text     "preservation_risks"
+    t.text     "notes"
+    t.integer  "collection_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
 
   create_table "collections", :force => true do |t|
     t.integer  "repository_id"

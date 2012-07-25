@@ -6,6 +6,7 @@ MedusaRails3::Application.routes.draw do
 
   resources :repositories
 
+  resources :assessments
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
