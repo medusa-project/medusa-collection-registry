@@ -22,6 +22,14 @@ Feature: Repository description
     And I should see 'This is a sample repository for the test'
     And I should see 'http://repo.example.com'
 
+  Scenario: View all repository fields
+    When I view the repository titled 'Sample 1'
+    Then I should see all repository fields
+
+  Scenario: Edit all repository fields
+    When I edit the repository titled 'Sample 1'
+    Then I should see all repository fields
+
   Scenario: View index
     When I go to the repository index page
     Then I should see 'Sample 1'

@@ -1,7 +1,14 @@
 %h2 #{@repository.title}
 %div #{link_to 'Index', repositories_path} | #{link_to 'Edit', edit_repository_path(@repository)}
 %div
-  %div URL: #{link_to @repository.url, @repository.url}
+  %div Address 1: #{@repository.address_1}
+  %div Address 2: #{@repository.address_2}
+  %div City: #{@repository.city}
+  %div State: #{@repository.state}
+  %div Zip: #{@repository.zip}
+  %div Phone number: #{@repository.phone_number}
+  %div Email: #{@repository.email}
+  %div Url: #{link_to @repository.url, @repository.url}
   %div Notes:
   %div #{@repository.notes}
   %div #{button_to 'Delete Repository', repository_path(@repository), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}
