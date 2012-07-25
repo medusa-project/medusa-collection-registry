@@ -244,6 +244,10 @@ GEM
     simple_form (2.0.2)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
+    simplecov (0.6.4)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.5.3)
+    simplecov-html (0.5.3)
     solrizer (1.2.2)
       daemons
       mediashelf-loggable (~> 0.4.7)
@@ -298,6 +302,7 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   shoulda
   simple_form
+  simplecov
   solrizer-fedora
   therubyracer
   uglifier (>= 1.0.3)
