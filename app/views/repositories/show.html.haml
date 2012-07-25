@@ -1,17 +1,19 @@
 %h2 #{@repository.title}
-%p #{link_to 'Index', repositories_path} | #{link_to 'Edit', edit_repository_path(@repository)}
-%p URL: #{link_to @repository.url, @repository.url}
-%p Notes:
-%p #{@repository.notes}
-%p #{button_to 'Delete Repository', repository_path(@repository), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}
+%div #{link_to 'Index', repositories_path} | #{link_to 'Edit', edit_repository_path(@repository)}
+%div
+  %div URL: #{link_to @repository.url, @repository.url}
+  %div Notes:
+  %div #{@repository.notes}
+  %div #{button_to 'Delete Repository', repository_path(@repository), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}
 
-%h2 Collections
-%p #{link_to 'Add Collection', new_collection_path}
-%table#collections
-  %tr
-    %th Title
-    %th
-  - @repository.collections.each do |collection|
-    %tr
-      %td #{link_to collection.title, collection_path(collection)}
-      %td #{link_to 'Delete', collection_path(collection), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}
+  %h2 Collections
+  %div #{link_to 'Add Collection', new_collection_path(:repository_id => @repository.id)}
+  %div
+    %table#collections
+      %tr
+        %th Title
+        %th
+      - @repository.collections.each do |collection|
+        %tr
+          %td #{link_to collection.title, collection_path(collection)}
+          %td #{link_to 'Delete', collection_path(collection), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}

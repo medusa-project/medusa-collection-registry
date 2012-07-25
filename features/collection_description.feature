@@ -36,9 +36,14 @@ Feature: Collection description
     And I click on 'Sample Repo'
     Then I should be on the view page for the repository titled 'Sample Repo'
 
+  Scenario: Navigate from collection view page to its edit page
+    When I view the collection titled 'dogs'
+    And I click on 'Edit'
+    Then I should be on the edit page for the collection titled 'dogs'
+
   Scenario: Delete a collection from its view page
     When I view the collection titled 'dogs'
-    And I click on 'Delete Collection'
+    And I click on 'Delete'
     Then I should be on the view page for the repository titled 'Sample Repo'
     And I should not see 'dogs'
 

@@ -1,0 +1,19 @@
+%h2 #{@collection.title}
+%div Repository: #{link_to @collection.repository.title, repository_path(@collection.repository)}
+%div
+  #{link_to 'Edit', edit_collection_path(@collection)} |
+  #{link_to 'Delete', collection_path(@collection), :method => :delete, :data => {:confirm => 'This is irreversible. Are you sure?'}}
+%div
+  %div Start Date: #{@collection.start_date}
+  %div End Date: #{@collection.end_date}
+  %div Description:
+  %div #{@collection.description}
+  %div Access URL: #{@collection.access_url}
+  %div File Package Summary:
+  %div #{@collection.file_package_summary}
+  %div Rights Statement:
+  %div #{@collection.rights_statement}
+  %div Rights Restrictions:
+  %div #{@collection.rights_restrictions}
+  %div Notes:
+  %div #{@collection.notes}

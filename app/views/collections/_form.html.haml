@@ -1,0 +1,16 @@
+= simple_form_for @collection do |f|
+  = f.input :title
+  = f.input :start_date
+  = f.input :end_date
+  = f.input :description
+  = f.input :access_url
+  = f.input :file_package_summary
+  = f.input :rights_statement
+  = f.input :rights_restrictions
+  = f.input :notes
+  = f.input :repository_id, :as => :hidden, :input_html => {:value => @repository.id}
+  = f.button :submit
+  - if @collection.new_record?
+    = link_to("Back to #{@repository.title}", repository_path(@repository))
+  - else
+    = button_to('Cancel', collection_path(@collection))
