@@ -1,0 +1,14 @@
+%h2 Assessments
+%div #{link_to 'Add Assessment', new_assessment_path(:collection_id => @collection.id)}
+%div
+  %table#assessments
+    %tr
+      %th Date
+      %th
+    - @collection.assessments.each do |assessment|
+      %tr
+        %td #{link_to assessment.date.to_s, assessment_path(assessment)}
+        %td
+          = link_to 'Edit', edit_assessment_path(assessment)
+          |
+          = link_to 'Delete', assessment_path(assessment), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}

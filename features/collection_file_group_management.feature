@@ -19,11 +19,11 @@ Feature: File Group Management
 
   Scenario: Delete file group from collection
     When I view the collection titled 'Dogs'
-    And I click 'Delete' in the file groups table
+    And I click on 'Delete' in the file groups table
     Then I should be on the view page for the collection titled 'Dogs'
     And the collection titled 'Dogs' should have 1 file group
 
   Scenario: Navigate to file group
     When I view the collection titled 'Dogs'
     And I click on 'View' in the file groups table
-    Then I should be on the view page for the file group with file location 'Main Library' for the collection titled 'Dogs'
+    Then I should be on the view page for the file group with location 'Main Library' for the collection titled 'Dogs'

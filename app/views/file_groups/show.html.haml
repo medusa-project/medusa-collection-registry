@@ -1,0 +1,12 @@
+%h2 File Group:
+%div Collection: #{link_to @collection.title, collection_path(@collection)}
+%div
+  = link_to 'Edit', edit_file_group_path(@file_group)
+  |
+  = link_to 'Delete', file_group_path(@file_group), :method => :delete, :data => {:confirm => 'This is irreversible. Are you sure?'}
+%div
+  %div File location: #{@file_group.file_location}
+  %div File format: #{@file_group.file_format}
+  %div Total file size: #{@file_group.total_file_size} GB
+  %div Total files: #{@file_group.total_files}
+  %div Last access date: #{@file_group.last_access_date}

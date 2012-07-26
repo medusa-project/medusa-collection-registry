@@ -1,0 +1,12 @@
+= simple_form_for @file_group do |f|
+  = f.input :file_location
+  = f.input :file_format
+  = f.input :total_file_size
+  = f.input :total_files
+  = f.input :last_access_date
+  = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
+  = f.button :submit
+  - if @file_group.new_record?
+    = link_to("Back to #{@collection.title}", collection_path(@collection))
+  - else
+    = button_to('Cancel', file_group_path(@file_group))

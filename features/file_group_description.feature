@@ -14,16 +14,16 @@ Feature: File Group description
       | Grainger      | text/xml    | 4               | 2400        | 2012-06-16       |
 
   Scenario: View a file group
-    When I view the file group with file location 'Main Library' for the collection titled 'Dogs'
+    When I view the file group with location 'Main Library' for the collection titled 'Dogs'
     Then I should see 'image/jpeg'
     And I should see '2012-05-15'
     And I should see '1200'
 
   Scenario: Edit a file group
-    When I edit the file group with file location 'Main Library' for the collection titled 'Dogs'
+    When I edit the file group with location 'Main Library' for the collection titled 'Dogs'
     And I fill in fields:
       | field       | value |
-      | total_files | 1300  |
+      | Total files | 1300  |
     And I press 'Update File group'
     Then I should be on the view page for the file group with location 'Main Library' for the collection titled 'Dogs'
     And I should see '1300'
@@ -50,10 +50,10 @@ Feature: File Group description
     And I click on 'Add File Group'
     And I fill in fields:
       | field           | value      |
-      | file_location   | Undergrad  |
-      | file_format     | image/tiff |
-      | total_file_size | 22         |
-      | total_files     | 333        |
+      | File location   | Undergrad  |
+      | File format     | image/tiff |
+      | Total file size | 22         |
+      | Total files     | 333        |
     And I fill in file group form date '2012-07-17'
     And I press 'Create File group'
     Then I should be on the view page for the file group with location 'Undergrad' for the collection titled 'Dogs'

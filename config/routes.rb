@@ -3,10 +3,9 @@ MedusaRails3::Application.routes.draw do
   root :to => 'repositories#index'
 
   resources :collections
-
   resources :repositories
-
   resources :assessments
+  resources :file_groups
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
