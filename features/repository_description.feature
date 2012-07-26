@@ -56,7 +56,7 @@ Feature: Repository description
 
   Scenario: Navigate from index page to view page
     When I go to the repository index page
-    And I click on 'View'
+    And I click on 'Sample 1'
     Then I should be on the view page for the repository titled 'Sample 1'
 
   Scenario: Navigate from index page to edit page
