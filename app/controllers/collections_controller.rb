@@ -1,7 +1,26 @@
 class CollectionsController < ApplicationController
 
+  before_filter :find_collection_and_repository, :only => [:show, :destroy, :edit, :update]
+
   def show
-    @collection = Collection.find(params[:id])
+
+  end
+
+  def destroy
+    @collection.destroy
+    redirect_to repository_path(@repository)
+  end
+
+  def edit
+
+  end
+
+  def update
+    if @collection.update_attributes(params[:collection])
+      redirect_to collection_path(@collection)
+    else
+      render "edit"
+    end
   end
 
   def new
@@ -9,37 +28,21 @@ class CollectionsController < ApplicationController
     @repository = Repository.find(params[:repository_id])
   end
 
-  # GET /collections/1/edit
-  def edit
+  def create
+    @collection = Collection.new(params[:collection])
+    @repository = Repository.find(params[:collection][:repository_id])
+    if @collection.save
+      redirect_to collection_path(@collection)
+    else
+      render "new"
+    end
+  end
+
+  protected
+
+  def find_collection_and_repository
     @collection = Collection.find(params[:id])
     @repository = @collection.repository
   end
 
-  def create
-    @collection = Collection.new(params[:collection])
-
-      if @collection.save
-        redirect_to collection_path(@collection)
-      else
-        @repository = Repository.find(params[:collection][:repository_id])
-        render "new"
-    end
-  end
-
-  def update
-    @collection = Collection.find(params[:id])
-      if @collection.update_attributes(params[:collection])
-        redirect_to collection_path(@collection)
-      else
-        @repository = @collection.repository
-        render "edit"
-      end
-  end
-
-  def destroy
-    @collection = Collection.find(params[:id])
-    repository = @collection.repository
-    @collection.destroy
-    redirect_to repository_path(repository)
-  end
 end

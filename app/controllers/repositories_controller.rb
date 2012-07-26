@@ -1,5 +1,7 @@
 class RepositoriesController < ApplicationController
 
+  before_filter :find_repository, :only => [:show, :edit, :update, :destroy]
+
   def new
     @repository = Repository.new
   end
@@ -14,7 +16,7 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repository = Repository.find(params[:id])
+
   end
 
   def index
@@ -22,11 +24,10 @@ class RepositoriesController < ApplicationController
   end
 
   def edit
-    @repository = Repository.find(params[:id])
+
   end
 
   def update
-    @repository = Repository.find(params[:id])
     if @repository.update_attributes(params[:repository])
       redirect_to repository_path(@repository)
     else
@@ -35,9 +36,14 @@ class RepositoriesController < ApplicationController
   end
 
   def destroy
-    @repository = Repository.find(params[:id])
     @repository.destroy
     redirect_to repositories_path
+  end
+
+  protected
+
+  def find_repository
+    @repository = Repository.find(params[:id])
   end
 
 end

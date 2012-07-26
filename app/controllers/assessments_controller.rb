@@ -1,25 +1,21 @@
 class AssessmentsController < ApplicationController
 
+  before_filter :find_assessment_and_collection, :only => [:destroy, :show, :edit, :update]
+
   def destroy
-    @assessment = Assessment.find(params[:id])
-    collection = @assessment.collection
     @assessment.destroy
-    redirect_to collection_path(collection)
+    redirect_to collection_path(@collection)
   end
 
   def show
-    @assessment = Assessment.find(params[:id])
-    @collection = @assessment.collection
+
   end
 
   def edit
-    @assessment = Assessment.find(params[:id])
-    @collection = @assessment.collection
+
   end
 
   def update
-    @assessment = Assessment.find(params[:id])
-    @collection = @assessment.collection
     if @assessment.update_attributes(params[:assessment])
       redirect_to assessment_path(@assessment)
     else
@@ -42,6 +38,13 @@ class AssessmentsController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  protected
+
+  def find_assessment_and_collection
+    @assessment = Assessment.find(params[:id])
+    @collection = @assessment.collection
   end
 
 
