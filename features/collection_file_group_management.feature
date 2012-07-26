@@ -1,4 +1,4 @@
-Feature: File Group Managemnt
+Feature: File Group Management
   In order to manage File Groups connected with a collection
   As a librarian
   I want to create and delete File Groups for a collection
