@@ -33,7 +33,7 @@ Feature: Assessment description
     And I click on 'Dogs'
     Then I should be on the view page for the collection titled 'Dogs'
 
-  Scenario: Navigate from collection view page to its edit page
+  Scenario: Navigate from assessment view page to its edit page
     When I view the assessment with date '2012-01-09' for the collection titled 'Dogs'
     And I click on 'Edit'
     Then I should be on the edit page for the assessment with date '2012-01-09' for the collection titled 'Dogs'
