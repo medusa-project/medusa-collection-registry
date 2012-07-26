@@ -47,6 +47,7 @@ Feature: Repository description
       |Notes |New Notes Value|
     And I press 'Update Repository'
     Then I should see 'New Notes Value'
+    And I should not see 'This is a sample repository for the test'
 
   Scenario: Delete repository from view page
     When I view the repository titled 'Sample 1'

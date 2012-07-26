@@ -1,0 +1,16 @@
+= simple_form_for @production_unit do |f|
+  = f.input :title
+  = f.input :address_1
+  = f.input :address_2
+  = f.input :city
+  = f.input :state
+  = f.input :zip
+  = f.input :phone_number
+  = f.input :email
+  = f.input :url
+  = f.input :notes
+  = f.button :submit
+  - if @production_unit.new_record?
+    = link_to('Index', production_units_path)
+  - else
+    = button_to('Cancel', production_unit_path(@production_unit))
