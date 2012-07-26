@@ -3,7 +3,7 @@
   = f.input :file_format
   = f.input :total_file_size
   = f.input :total_files
-  = f.input :last_access_date
+  = f.input :last_access_date, :use_month_numbers => true
   = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
   = f.button :submit
   - if @file_group.new_record?

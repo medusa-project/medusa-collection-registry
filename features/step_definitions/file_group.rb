@@ -35,9 +35,7 @@ And /^The collection titled '(.*)' should have a file group with location '(.*)'
 end
 
 And /^I fill in file group form date '(\d+)\-(\d+)\-(\d+)'$/ do |year, month, day|
-  select year, :from => 'file_group_last_access_date_1i'
-  select month.to_i.to_s, :from => 'file_group_last_access_date_1i'
-  select day.to_i.to_s, :from => 'file_group_last_access_date_1i'
+  fill_in_date_select(year, month, day, 'file_group_last_access_date')
 end
 
 private

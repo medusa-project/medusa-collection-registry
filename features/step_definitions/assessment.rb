@@ -30,9 +30,7 @@ And /^The collection titled '(.*)' should have an assessment with date '(.*)'$/ 
 end
 
 And /^I fill in assessment form date '(\d+)\-(\d+)\-(\d+)'$/ do |year, month, day|
-  select year, :from => 'assessment_date_1i'
-  select month.to_i.to_s, :from => 'assessment_date_2i'
-  select day.to_i.to_s, :from => 'assessment_date_3i'
+  fill_in_date_select(year, month, day, 'assessment_date')
 end
 
 private
