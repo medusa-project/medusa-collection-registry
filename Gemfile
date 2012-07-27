@@ -48,7 +48,7 @@ group :development, :test do
   gem 'ruby-debug19'
   gem 'rspec-rails'
   gem 'factory_girl'
-  gem 'shoulda'
+  gem 'shoulda-matchers'
 end
 
 group :test do
