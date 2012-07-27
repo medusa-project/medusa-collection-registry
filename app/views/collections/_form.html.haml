@@ -11,6 +11,6 @@
   = f.input :repository_id, :as => :hidden, :input_html => {:value => @repository.id}
   = f.button :submit
   - if @collection.new_record?
-    = link_to("Back to #{@repository.title}", repository_path(@repository))
+    = link_to("Back to #{@repository.title}", @repository)
   - else
-    = button_to('Cancel', collection_path(@collection))
+    = button_to('Cancel', @collection)

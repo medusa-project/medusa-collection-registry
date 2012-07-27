@@ -13,4 +13,4 @@
   - if @repository.new_record?
     = link_to('Index', repositories_path)
   - else
-    = button_to('Cancel', repository_path(@repository))
+    = button_to('Cancel', @repository)

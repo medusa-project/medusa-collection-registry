@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120726210554) do
+ActiveRecord::Schema.define(:version => 20120727170444) do
 
   create_table "assessments", :force => true do |t|
     t.date     "date"
@@ -49,9 +49,10 @@ ActiveRecord::Schema.define(:version => 20120726210554) do
     t.decimal  "total_file_size"
     t.integer  "total_files"
     t.integer  "collection_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.date     "last_access_date"
+    t.integer  "production_unit_id"
   end
 
   create_table "production_units", :force => true do |t|

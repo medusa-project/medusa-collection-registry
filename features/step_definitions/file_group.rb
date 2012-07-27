@@ -1,5 +1,5 @@
 And /^the collection titled '(.*)' has file groups with fields:$/ do |title, table|
-  collection = Collection.find_by_title(title) || FactoryGirl.create(:collection, title)
+  collection = Collection.find_by_title(title) || FactoryGirl.create(:collection, :title => title)
   table.hashes.each do |hash|
     FactoryGirl.create(:file_group, hash.merge({:collection => collection}))
   end
@@ -36,6 +36,20 @@ end
 
 And /^I fill in file group form date '(\d+)\-(\d+)\-(\d+)'$/ do |year, month, day|
   fill_in_date_select(year, month, day, 'file_group_last_access_date')
+end
+
+And /^The file group with location '(.*)' for the collection titled '(.*)' should have production unit titled '(.*)'$/ do |location, collection_title, production_unit_title|
+  find_file_group(collection_title, location).production_unit.title.should == production_unit_title
+end
+
+Given /^The file group with location '(.*)' for the collection titled '(.*)' has production unit titled '(.*)'$/ do |location, collection_title, production_unit_title|
+  file_group = find_file_group(collection_title, location)
+  file_group.production_unit = ProductionUnit.find_by_title(production_unit_title)
+  file_group.save
+end
+
+And /^I select the production unit '(.*)'$/ do |title|
+  select(title, :from => 'file_group_production_unit_id')
 end
 
 private

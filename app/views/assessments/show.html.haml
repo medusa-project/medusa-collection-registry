@@ -1,9 +1,9 @@
 %h2 Assessment: #{@assessment.date}
-%div Collection: #{link_to @collection.title, collection_path(@collection)}
+%div Collection: #{link_to @collection.title, @collection}
 %div
   = link_to 'Edit', edit_assessment_path(@assessment)
   |
-  = link_to 'Delete', assessment_path(@assessment), :method => :delete, :data => {:confirm => 'This is irreversible. Are you sure?'}
+  = link_to 'Delete', @assessment, :method => :delete, :data => {:confirm => 'This is irreversible. Are you sure?'}
 %div
   %div Preservation Risks:
   %div #{@assessment.preservation_risks}

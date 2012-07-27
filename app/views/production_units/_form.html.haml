@@ -13,4 +13,4 @@
   - if @production_unit.new_record?
     = link_to('Index', production_units_path)
   - else
-    = button_to('Cancel', production_unit_path(@production_unit))
+    = button_to('Cancel', @production_unit)

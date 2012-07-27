@@ -11,6 +11,6 @@
   %div Url: #{link_to @repository.url, @repository.url}
   %div Notes:
   %div #{@repository.notes}
-  %div #{button_to 'Delete Repository', repository_path(@repository), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}
+  %div #{button_to 'Delete Repository', @repository, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}
 
   = render 'collections_table'

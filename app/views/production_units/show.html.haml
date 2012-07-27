@@ -11,4 +11,4 @@
   %div Url: #{link_to @production_unit.url, @production_unit.url}
   %div Notes:
   %div #{@production_unit.notes}
-  %div #{button_to 'Delete Production Unit', production_unit_path(@production_unit), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}
+  %div #{button_to 'Delete Production Unit', @production_unit, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}

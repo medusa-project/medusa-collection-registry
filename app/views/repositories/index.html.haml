@@ -7,9 +7,9 @@
     %th
   - @repositories.each do |repository|
     %tr
-      %td #{link_to repository.title, repository_path(repository)}
+      %td #{link_to repository.title, repository}
       %td #{link_to repository.url, repository.url}
       %td #{repository.notes}
       %td
         #{link_to 'Edit', edit_repository_path(repository)} |
-        #{link_to 'Delete', repository_path(repository), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}
+        #{link_to 'Delete', repository, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}

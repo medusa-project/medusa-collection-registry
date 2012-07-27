@@ -1,10 +1,11 @@
 %h2 File Group:
-%div Collection: #{link_to @collection.title, collection_path(@collection)}
+%div Collection: #{link_to @collection.title, @collection}
 %div
   = link_to 'Edit', edit_file_group_path(@file_group)
   |
-  = link_to 'Delete', file_group_path(@file_group), :method => :delete, :data => {:confirm => 'This is irreversible. Are you sure?'}
+  = link_to 'Delete', @file_group, :method => :delete, :data => {:confirm => 'This is irreversible. Are you sure?'}
 %div
+  %div Production unit: #{link_to(@file_group.production_unit.title, @file_group.production_unit) if @file_group.production_unit}
   %div File location: #{@file_group.file_location}
   %div File format: #{@file_group.file_format}
   %div Total file size: #{@file_group.total_file_size} GB

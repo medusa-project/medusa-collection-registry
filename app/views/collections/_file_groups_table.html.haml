@@ -17,7 +17,7 @@
         %td #{file_group.total_files}
         %td #{file_group.last_access_date}
         %td
-          = link_to 'View', file_group_path(file_group)
+          = link_to 'View', file_group
           |
-          = link_to 'Delete', file_group_path(file_group), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}
+          = link_to 'Delete', file_group, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}
 
