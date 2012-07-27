@@ -1,7 +1,9 @@
 = simple_form_for @file_group do |f|
   = f.input :production_unit_id, :collection => production_units_select_collection
+  = f.input :file_type_id, :collection => file_types_select_collection
   = f.input :file_location
   = f.input :file_format
+  = f.input :storage_medium_id, :collection => storage_media_select_collection
   = f.input :total_file_size
   = f.input :total_files
   = f.input :last_access_date, :use_month_numbers => true

@@ -16,3 +16,8 @@
 'computer card (e.g. punchboard)', 'paper tape'].each do |media_name|
   StorageMedium.find_or_create_by_name(media_name)
 end
+
+#File types
+['Access Content', 'Archival Content', 'Other Metadata', 'Master Metadata', 'Other'].each do |name|
+  FileType.find_or_create_by_name(name)
+end

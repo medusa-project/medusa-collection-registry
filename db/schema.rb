@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120727190840) do
+ActiveRecord::Schema.define(:version => 20120727212826) do
 
   create_table "assessments", :force => true do |t|
     t.date     "date"
@@ -53,6 +53,17 @@ ActiveRecord::Schema.define(:version => 20120727190840) do
     t.datetime "updated_at",         :null => false
     t.date     "last_access_date"
     t.integer  "production_unit_id"
+    t.integer  "storage_medium_id"
+    t.integer  "file_type_id"
+  end
+
+  add_index "file_groups", ["file_type_id"], :name => "index_file_groups_on_file_type_id"
+  add_index "file_groups", ["storage_medium_id"], :name => "index_file_groups_on_storage_medium_id"
+
+  create_table "file_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "production_units", :force => true do |t|

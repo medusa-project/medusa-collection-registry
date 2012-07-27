@@ -26,6 +26,10 @@ When /^I edit the file group with location '(.*)' for the collection titled '(.*
   visit edit_file_group_path(find_file_group(title, location))
 end
 
+Given /^I am editing a file group$/ do
+  visit edit_file_group_path(FactoryGirl.create(:file_group))
+end
+
 And /^The collection titled '(.*)' should not have a file group with location '(.*)'$/ do |title, location|
   Collection.find_by_title(title).file_groups.where(:file_location => location).should be_empty
 end
@@ -50,6 +54,14 @@ end
 
 And /^I select the production unit '(.*)'$/ do |title|
   select(title, :from => 'file_group_production_unit_id')
+end
+
+When /^I select storage medium '(.*)'$/ do |medium|
+  select(medium, :from => 'file_group_storage_medium_id')
+end
+
+When /^I select file type '(.*)'$/ do |type|
+  select(type, :from => 'file_group_file_type_id')
 end
 
 private

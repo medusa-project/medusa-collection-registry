@@ -6,8 +6,10 @@
   = link_to 'Delete', @file_group, :method => :delete, :data => {:confirm => 'This is irreversible. Are you sure?'}
 %div
   %div Production unit: #{link_to(@file_group.production_unit.title, @file_group.production_unit) if @file_group.production_unit}
+  %div File type: #{@file_group.file_type.try(:name)}
   %div File location: #{@file_group.file_location}
   %div File format: #{@file_group.file_format}
+  %div Storage medium: #{@file_group.storage_medium.try(:name)}
   %div Total file size: #{@file_group.total_file_size} GB
   %div Total files: #{@file_group.total_files}
   %div Last access date: #{@file_group.last_access_date}

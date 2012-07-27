@@ -3,6 +3,13 @@ Feature: Storage media
   As a librarian
   I want to track media used to store various file groups
 
-  Scenario: Seeded groups
+  Scenario: Some values are provided by default
     Given Nothing
     Then There should be standard default storage media
+
+  Scenario: Select storage medium while editing file group and view results
+    Given I am editing a file group
+    When I select storage medium 'file server'
+    And I press 'Update File group'
+    Then I should see 'file server'
+    And I should see 'Storage medium'
