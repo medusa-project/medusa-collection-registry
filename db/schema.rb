@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120727212826) do
+ActiveRecord::Schema.define(:version => 20120727222206) do
 
   create_table "assessments", :force => true do |t|
     t.date     "date"
@@ -39,9 +39,17 @@ ActiveRecord::Schema.define(:version => 20120727212826) do
     t.text     "notes"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
+    t.integer  "content_type_id"
   end
 
+  add_index "collections", ["content_type_id"], :name => "index_collections_on_content_type_id"
   add_index "collections", ["repository_id"], :name => "index_collections_on_repository_id"
+
+  create_table "content_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "file_groups", :force => true do |t|
     t.string   "file_location"

@@ -42,3 +42,11 @@ When /^I start a new collection for the repository titled '(.*)'$/ do |title|
   steps %Q( When I view the repository titled '#{title}'
             And I click on 'Add Collection')
 end
+
+Given /^I am editing a collection$/ do
+  visit edit_collection_path(FactoryGirl.create(:collection))
+end
+
+When /^I select content type '(.*)'$/ do |type|
+  select(type, :from => 'collection_content_type_id')
+end

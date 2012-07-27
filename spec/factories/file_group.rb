@@ -5,6 +5,7 @@ FactoryGirl.define do
     total_file_size 10
     total_files 100
     storage_medium StorageMedium.find_by_name('DVD')
+    file_type FileType.find_by_name('Other')
     collection
   end
 end

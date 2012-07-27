@@ -6,6 +6,7 @@
 %div
   %div Start Date: #{@collection.start_date}
   %div End Date: #{@collection.end_date}
+  %div Content type: #{@collection.content_type.try(:name)}
   %div Description:
   %div #{@collection.description}
   %div Access URL: #{@collection.access_url}
