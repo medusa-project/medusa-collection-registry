@@ -3,4 +3,11 @@ class ProductionUnit < ActiveRecord::Base
 
   validates_presence_of :title
   validates_uniqueness_of :title
+  has_many :file_groups
+  before_destroy :destroyable?
+
+  def destroyable?
+    self.file_groups.count == 0
+  end
+
 end

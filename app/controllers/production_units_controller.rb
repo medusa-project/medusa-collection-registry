@@ -11,8 +11,11 @@ class ProductionUnitsController < ApplicationController
   end
 
   def destroy
-    @production_unit.destroy
-    redirect_to production_units_path
+    if @production_unit.destroy
+      redirect_to production_units_path
+    else
+      redirect_to :back, :alert=> 'Production Units with associated file groups cannot be deleted.'
+    end
   end
 
   def new

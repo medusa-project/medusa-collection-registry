@@ -1,9 +1,10 @@
 !!! 5
 %html
   %head
-    %title MedusaRails3
+    %title Medusa
     = stylesheet_link_tag    "application", :media => "all"
     = javascript_include_tag "application"
     = csrf_meta_tags
 %body
+  = render 'shared/flash', :flash => flash
   = yield
