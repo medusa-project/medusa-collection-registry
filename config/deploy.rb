@@ -123,6 +123,4 @@ before 'deploy:update_jar', 'medusa:stop_tomcat'
 after 'deploy:update_jar', 'medusa:start_tomcat'
 
 before 'deploy:create_symlink', 'deploy:stop'
-after 'deploy:create_symlink', 'deploy:migrate'
 after 'deploy:create_symlink', 'deploy:start'
-after 'deploy:start', 'deploy:seed'
