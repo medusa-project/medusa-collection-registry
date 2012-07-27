@@ -21,7 +21,6 @@ Feature: Assessment description
   Scenario: Edit an assessment
     When I edit the assessment with date '2012-01-09' for the collection titled 'Dogs'
     And I fill in fields:
-      | field | value             |
       | Notes | Images of canines |
     And I press 'Update Assessment'
     Then I should be on the view page for the assessment with date '2012-01-09' for the collection titled 'Dogs'
@@ -48,7 +47,6 @@ Feature: Assessment description
     When I view the collection titled 'Dogs'
     And I click on 'Add Assessment'
     And I fill in fields:
-      | field              | value                       |
       | Preservation risks | There are corrupt files too |
       | Notes              | I like dogs                 |
     And I fill in assessment form date '2012-02-10'

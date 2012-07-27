@@ -13,7 +13,6 @@ Feature: Repository description
   Scenario: Create repository
     When I go to the repository creation page
     And I fill in fields:
-      | field | value                                    |
       | Title | Sample Repo                              |
       | Url   | http://repo.example.com                  |
       | Notes | This is a sample repository for the test |
@@ -43,7 +42,6 @@ Feature: Repository description
   Scenario: Edit repository
     When I edit the repository titled 'Sample 1'
     And I fill in fields:
-      | field|value|
       |Notes |New Notes Value|
     And I press 'Update Repository'
     Then I should see 'New Notes Value'

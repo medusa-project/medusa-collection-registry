@@ -22,7 +22,6 @@ Feature: File Group description
   Scenario: Edit a file group
     When I edit the file group with location 'Main Library' for the collection titled 'Dogs'
     And I fill in fields:
-      | field       | value |
       | Total files | 1300  |
     And I press 'Update File group'
     Then I should be on the view page for the file group with location 'Main Library' for the collection titled 'Dogs'
@@ -49,7 +48,6 @@ Feature: File Group description
     When I view the collection titled 'Dogs'
     And I click on 'Add File Group'
     And I fill in fields:
-      | field           | value      |
       | File location   | Undergrad  |
       | File format     | image/tiff |
       | Total file size | 22         |

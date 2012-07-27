@@ -12,7 +12,6 @@ Feature: Production Unit description
   Scenario: Create production unit
     When I go to the new production unit page
     And I fill in fields:
-      | field        | value                       |
       | Title        | Scraping                    |
       | Address 1    | 200 Oak Street              |
       | Address 2    |                             |
@@ -50,8 +49,7 @@ Feature: Production Unit description
   Scenario: Edit production unit
     When I edit the production unit titled 'Scanning'
     And I fill in fields:
-    |field|value|
-    |Notes|New notes|
+      | Notes | New notes |
     And I press 'Update Production unit'
     Then I should see 'New notes'
     And I should not see 'They scan stuff here'

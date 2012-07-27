@@ -1,6 +1,6 @@
 When /^I fill in fields:$/ do |table|
-  table.hashes.each do |hash|
-    fill_in(hash[:field], :with => hash[:value])
+  table.raw.each do |row|
+    fill_in(row.first, :with => row.last)
   end
 end
 

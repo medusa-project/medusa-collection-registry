@@ -24,7 +24,6 @@ Feature: Collection description
   Scenario: Edit a collection
     When I edit the collection titled 'dogs'
     And I fill in fields:
-      | field       | value       |
       | Description | Puppy stuff |
     And I press 'Update Collection'
     Then I should be on the view page for the collection titled 'dogs'
@@ -51,7 +50,6 @@ Feature: Collection description
     When I view the repository titled 'Sample Repo'
     And I click on 'Add Collection'
     And I fill in fields:
-      | field       | value         |
       | Title       | reptiles      |
       | Description | Reptile stuff |
     And I press 'Create Collection'
