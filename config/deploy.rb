@@ -57,6 +57,11 @@ namespace :deploy do
     ;
   end
 
+  desc "seed database"
+  task :seed do
+    run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
+  end
+
 end
 
 namespace :akubra_caringo do
@@ -118,4 +123,6 @@ before 'deploy:update_jar', 'medusa:stop_tomcat'
 after 'deploy:update_jar', 'medusa:start_tomcat'
 
 before 'deploy:create_symlink', 'deploy:stop'
+after 'deploy:create_symlink', 'deploy:migrate'
 after 'deploy:create_symlink', 'deploy:start'
+after 'deploy:start', 'deploy:seed'
