@@ -3,4 +3,7 @@ class Collection < ActiveRecord::Base
   belongs_to :repository
   has_many :assessments, :dependent => :destroy
   has_many :file_groups, :dependent => :destroy
+
+  validates_presence_of :title
+  validates_uniqueness_of :title, :scope => :repository_id
 end

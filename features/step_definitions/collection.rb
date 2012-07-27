@@ -11,8 +11,7 @@ Then /^I should be on the edit page for the collection titled '(.*)'$/ do |title
 end
 
 And /^the repository titled '(.*)' should have a collection titled '(.*)'$/ do |repository_title, collection_title|
-  Collection.find_by_title(collection_title).repository.should ==
-      Repository.find_by_title(repository_title)
+  Repository.find_by_title(repository_title).collections.where(:title => collection_title).count.should == 1
 end
 
 Then /^I should see the assessment collection table$/ do
@@ -37,4 +36,9 @@ And /^I click on '(.*)' in the file groups table$/ do |button|
   within_table('file_groups') do
     click_on(button)
   end
+end
+
+When /^I start a new collection for the repository titled '(.*)'$/ do |title|
+  steps %Q( When I view the repository titled '#{title}'
+            And I click on 'Add Collection')
 end

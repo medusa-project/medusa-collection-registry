@@ -47,8 +47,7 @@ Feature: Collection description
     And I should not see 'dogs'
 
   Scenario: Create a new collection
-    When I view the repository titled 'Sample Repo'
-    And I click on 'Add Collection'
+    When I start a new collection for the repository titled 'Sample Repo'
     And I fill in fields:
       | Title       | reptiles      |
       | Description | Reptile stuff |
