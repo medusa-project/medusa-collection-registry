@@ -1,0 +1,7 @@
+= simple_form_for @access_system do |f|
+  = f.input :name
+  = f.button :submit
+  - if @access_system.new_record?
+    = link_to('Index', access_systems_path)
+  - else
+    = button_to('Cancel', @access_system)

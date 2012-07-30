@@ -1,0 +1,9 @@
+%h2 #{@access_system.name}
+%div
+  = link_to 'Index', access_systems_path
+  |
+  = link_to 'Edit', edit_access_system_path(@access_system)
+  |
+  = link_to 'Delete', @access_system, :method => :delete, :data => {:confirm => 'This is irreversible. Are you sure?'}
+%div
+  %div Name: #{@access_system.name}
