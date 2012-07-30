@@ -50,3 +50,11 @@ end
 When /^I select content type '(.*)'$/ do |type|
   select(type, :from => 'collection_content_type_id')
 end
+
+When /^I view the collection titled '(.*)'$/ do |title|
+  visit collection_path(Collection.find_by_title(title))
+end
+
+When /^I edit the collection titled '(.*)'$/ do |title|
+  visit edit_collection_path(Collection.find_by_title(title))
+end

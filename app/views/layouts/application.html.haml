@@ -6,5 +6,6 @@
     = javascript_include_tag "application"
     = csrf_meta_tags
 %body
+  = render 'shared/global_navigation'
   = render 'shared/flash', :flash => flash
   = yield
