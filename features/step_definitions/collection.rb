@@ -14,6 +14,10 @@ And /^the repository titled '(.*)' should have a collection titled '(.*)'$/ do |
   Repository.find_by_title(repository_title).collections.where(:title => collection_title).count.should == 1
 end
 
+Given /^There is a collection titled '(.*)'$/ do |title|
+  FactoryGirl.create(:collection, :title => title)
+end
+
 Then /^I should see the assessment collection table$/ do
   page.should have_selector('table#assessments')
 end
@@ -57,4 +61,16 @@ end
 
 When /^I edit the collection titled '(.*)'$/ do |title|
   visit edit_collection_path(Collection.find_by_title(title))
+end
+
+And /^I select access system '(.*)'$/ do |name|
+  select(name, :from => 'collection_access_system_ids')
+end
+
+And /^The collection titled '(.*)' should have (\d+) access systems$/ do |title, count|
+  Collection.find_by_title(title).access_systems.count.should == count.to_i
+end
+
+And /^The collection titled '(.*)' should have access system named '(.*)'$/ do |title, name|
+  Collection.find_by_title(title).access_systems.where(:name => name).count.should == 1
 end

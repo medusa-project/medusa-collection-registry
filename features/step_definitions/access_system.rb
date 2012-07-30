@@ -2,6 +2,12 @@ And /^The access system named '(.*)' exists$/ do |name|
   FactoryGirl.create(:access_system, :name => name)
 end
 
+And /^There are access systems named:$/ do |table|
+ table.headers.each do |header|
+   step "The access system named '#{header}' exists"
+ end
+end
+
 When /^I go to the access system index page$/ do
   visit access_systems_path
 end

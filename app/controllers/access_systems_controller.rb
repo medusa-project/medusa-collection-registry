@@ -26,6 +26,7 @@ class AccessSystemsController < ApplicationController
   end
 
   def create
+    @access_system = AccessSystem.new(params[:access_system])
     if @access_system.save
       redirect_to @access_system
     else

@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120730190034) do
+ActiveRecord::Schema.define(:version => 20120730204420) do
+
+  create_table "access_system_collection_joins", :force => true do |t|
+    t.integer  "access_system_id"
+    t.integer  "collection_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "access_system_collection_joins", ["access_system_id"], :name => "index_access_system_collection_joins_on_access_system_id"
+  add_index "access_system_collection_joins", ["collection_id"], :name => "index_access_system_collection_joins_on_collection_id"
 
   create_table "access_systems", :force => true do |t|
     t.string   "name"

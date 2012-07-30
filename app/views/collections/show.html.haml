@@ -6,6 +6,12 @@
 %div
   %div Start Date: #{@collection.start_date}
   %div End Date: #{@collection.end_date}
+  %div
+    Access Systems:
+    - if access_systems = @collection.access_systems
+      %ul#access_systems
+        - access_systems.each do |access_system|
+          %li #{link_to access_system.name, access_system}
   %div Content type: #{@collection.content_type.try(:name)}
   %div Description:
   %div #{@collection.description}
