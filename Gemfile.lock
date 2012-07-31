@@ -107,6 +107,7 @@ GEM
       activesupport (~> 3.0)
       haml (~> 3.0)
       railties (~> 3.0)
+    hashie (1.2.0)
     highline (1.6.13)
     hike (1.2.1)
     hooks (0.2.0)
@@ -147,6 +148,9 @@ GEM
     om (1.6.1)
       mediashelf-loggable
       nokogiri (>= 1.4.2)
+    omniauth (1.1.0)
+      hashie (~> 1.2)
+      rack
     passenger (3.0.15)
       daemon_controller (>= 1.0.0)
       fastthread (>= 1.0.1)
@@ -306,6 +310,7 @@ DEPENDENCIES
   haml-rails
   jquery-rails
   nokogiri
+  omniauth
   passenger
   pg
   rails (= 3.2.6)

@@ -9,6 +9,10 @@ MedusaRails3::Application.routes.draw do
   resources :production_units
   resources :access_systems
 
+  match '/auth/:provider/callback', to: 'sessions#create'
+  match '/login', to: 'sessions#new', as: :login
+  match '/logout', to: 'sessions#destroy', as: :logout
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

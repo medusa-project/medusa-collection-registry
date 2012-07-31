@@ -4,7 +4,8 @@ Feature: Relate access systems to collections
   I want to be able to record relationships between collections and access systems
 
   Background:
-    Given There is a collection titled 'Dogs'
+    Given I am logged in
+    And There is a collection titled 'Dogs'
     And There are access systems named:
       | ContentDM | Dspace    | Olive     |
 

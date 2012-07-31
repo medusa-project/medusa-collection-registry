@@ -3,6 +3,9 @@ Feature: File type
   As a librarian
   I want to be able to record the type (purpose) of files in a file group
 
+  Background:
+    Given I am logged in
+
   Scenario: Some values are provided by default
     Given Nothing
     Then There should be standard default file types

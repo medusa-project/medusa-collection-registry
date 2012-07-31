@@ -3,8 +3,10 @@ Feature: Storage media
   As a librarian
   I want to track media used to store various file groups
 
+  Background:
+    Given I am logged in
+
   Scenario: Some values are provided by default
-    Given Nothing
     Then There should be standard default storage media
 
   Scenario: Select storage medium while editing file group and view results
