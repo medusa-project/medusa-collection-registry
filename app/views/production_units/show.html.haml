@@ -1,6 +1,7 @@
 %h2 #{@production_unit.title}
 %div #{link_to 'Index', production_units_path} | #{link_to 'Edit', edit_production_unit_path(@production_unit)}
 %div
+  %div Administrator Net ID: #{@production_unit.administrator_net_id  }
   %div Address 1: #{@production_unit.address_1}
   %div Address 2: #{@production_unit.address_2}
   %div City: #{@production_unit.city}

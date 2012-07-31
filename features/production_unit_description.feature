@@ -91,4 +91,10 @@ Feature: Production Unit description
     And I click on 'Edit'
     Then I should be on the edit page for the production unit titled 'Scanning'
 
-
+  Scenario: Associate contact with collection
+    When I edit the production unit titled 'Scanning'
+    And I fill in fields:
+      | Adminstrator Net ID | hding2 |
+    And I press 'Update Production unit'
+    Then I should see 'hding2'
+    And There should be a person with net ID 'hding2'
