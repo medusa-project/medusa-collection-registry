@@ -6,6 +6,7 @@
 %div
   %div Start Date: #{@collection.start_date}
   %div End Date: #{@collection.end_date}
+  %div Contact Person Net ID: #{@collection.contact.try(:net_id)}
   %div
     Access Systems:
     - if access_systems = @collection.access_systems

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120730204420) do
+ActiveRecord::Schema.define(:version => 20120731174612) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -56,8 +56,10 @@ ActiveRecord::Schema.define(:version => 20120730204420) do
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
     t.integer  "content_type_id"
+    t.integer  "contact_id"
   end
 
+  add_index "collections", ["contact_id"], :name => "index_collections_on_contact_id"
   add_index "collections", ["content_type_id"], :name => "index_collections_on_content_type_id"
   add_index "collections", ["repository_id"], :name => "index_collections_on_repository_id"
 
@@ -89,6 +91,14 @@ ActiveRecord::Schema.define(:version => 20120730204420) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "people", :force => true do |t|
+    t.string   "net_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "people", ["net_id"], :name => "index_people_on_net_id"
 
   create_table "production_units", :force => true do |t|
     t.string   "title"

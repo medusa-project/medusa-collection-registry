@@ -2,6 +2,7 @@
   = f.input :title
   = f.input :start_date
   = f.input :end_date
+  = f.input :contact_net_id, :label => 'Contact Person Net ID'
   = f.association :access_systems, :collection => access_system_select_collection, :html => {:multiple => true}
   = f.input :content_type_id, :collection => content_type_select_collection
   = f.input :description

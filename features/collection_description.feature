@@ -70,3 +70,11 @@ Feature: Collection description
     When I go to the collection index page
     And I click on 'Sample Repo'
     Then I should be on the view page for the repository titled 'Sample Repo'
+
+  Scenario: Associate contact with collection
+    When I edit the collection titled 'dogs'
+    And I fill in fields:
+      | Contact Person Net ID | hding2 |
+    And I press 'Update Collection'
+    Then I should see 'hding2'
+    And There should be a person with net ID 'hding2'

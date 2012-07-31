@@ -3,5 +3,6 @@ FactoryGirl.define do
     sequence(:title) {|n| "Collection #{n}"}
     repository
     content_type ContentType.find_by_name('metadata')
+    association :contact, :factory => :person
   end
 end
