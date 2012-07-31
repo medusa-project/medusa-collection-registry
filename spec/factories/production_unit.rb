@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :production_unit do
     sequence(:title) {|n| "Sample Production Unit #{n}"}
+    association :administrator, :factory => :person
     address_1 'Address 1'
     address_2 'Address 2'
     city 'Urbana'
