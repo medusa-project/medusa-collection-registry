@@ -42,7 +42,7 @@ Feature: Repository description
   Scenario: Edit repository
     When I edit the repository titled 'Sample 1'
     And I fill in fields:
-      |Notes |New Notes Value|
+      | Notes | New Notes Value |
     And I press 'Update Repository'
     Then I should see 'New Notes Value'
     And I should not see 'This is a sample repository for the test'
@@ -82,3 +82,11 @@ Feature: Repository description
     When I view the repository titled 'Sample 1'
     And I click on 'Edit'
     Then I should be on the edit page for the repository titled 'Sample 1'
+
+  Scenario: Associate contact with repository
+    When I edit the repository titled 'Sample 1'
+    And I fill in fields:
+      | Contact Person Net ID | hding2 |
+    And I press 'Update Repository'
+    Then I should see 'hding2'
+    And There should be a person with net ID 'hding2'

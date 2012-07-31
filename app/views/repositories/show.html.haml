@@ -1,6 +1,7 @@
 %h2 #{@repository.title}
 %div #{link_to 'Index', repositories_path} | #{link_to 'Edit', edit_repository_path(@repository)}
 %div
+  %div Contact Net ID: #{@repository.contact_net_id}
   %div Address 1: #{@repository.address_1}
   %div Address 2: #{@repository.address_2}
   %div City: #{@repository.city}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120731174612) do
+ActiveRecord::Schema.define(:version => 20120731195332) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -128,7 +128,10 @@ ActiveRecord::Schema.define(:version => 20120731174612) do
     t.string   "zip"
     t.string   "phone_number"
     t.string   "email"
+    t.integer  "contact_id"
   end
+
+  add_index "repositories", ["contact_id"], :name => "index_repositories_on_contact_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
