@@ -59,3 +59,5 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 
 #require factories
 Dir[Rails.root.join("spec/factories/**/*.rb")].each {|f| require f}
+#make sure database is seeded
+require File.join(Rails.root, 'db', 'seeds')

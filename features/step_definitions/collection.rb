@@ -74,3 +74,15 @@ end
 And /^The collection titled '(.*)' should have access system named '(.*)'$/ do |title, name|
   Collection.find_by_title(title).access_systems.where(:name => name).count.should == 1
 end
+
+When /^I go to the collection index page$/ do
+  visit collections_path
+end
+
+Then /^I should be on the collection index page$/ do
+  current_path.should == collections_path
+end
+
+And /^I should see a list of all collections$/ do
+  page.should have_selector('table#collections')
+end

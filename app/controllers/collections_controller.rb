@@ -38,6 +38,10 @@ class CollectionsController < ApplicationController
     end
   end
 
+  def index
+    @collections = Collection.order(:title).includes(:repository).all
+  end
+
   protected
 
   def find_collection_and_repository

@@ -55,3 +55,18 @@ Feature: Collection description
     Then I should be on the view page for the collection titled 'reptiles'
     And I should see 'Reptile stuff'
     And the repository titled 'Sample Repo' should have a collection titled 'reptiles'
+
+  Scenario: Index of all collections
+    When I go to the collection index page
+    Then I should be on the collection index page
+    And I should see a list of all collections
+
+  Scenario: Navigate index to collection
+    When I go to the collection index page
+    And I click on 'dogs'
+    Then I should be on the view page for the collection titled 'dogs'
+
+  Scenario: Navigate index to repository
+    When I go to the collection index page
+    And I click on 'Sample Repo'
+    Then I should be on the view page for the repository titled 'Sample Repo'
