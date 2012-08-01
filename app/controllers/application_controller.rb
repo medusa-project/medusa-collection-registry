@@ -1,12 +1,18 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :require_logged_in
+  helper_method :current_user, :logged_in?
 
   protected
 
   def set_current_user(user)
     @current_user = user
     session[:current_user_id] = user.id
+  end
+
+  def unset_current_user
+    @current_user = nil
+    session[:current_user_id] = nil
   end
 
   def current_user

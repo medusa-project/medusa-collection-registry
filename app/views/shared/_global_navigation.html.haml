@@ -15,5 +15,6 @@
           %li=link_to 'Production Units', production_units_path
           %li=link_to 'Access Systems', access_systems_path
         %ul.nav.pull-right
-          %li=link_to 'Sign In', '#'
+          - if logged_in?
+            %li= link_to('Logout', logout_path)
           %li=link_to 'Help', '#'

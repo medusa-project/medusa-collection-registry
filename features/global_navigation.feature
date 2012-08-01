@@ -25,3 +25,5 @@ Feature: Global navigation
   Scenario: Go to collections
     When I click on 'Collections' in the global navigation bar
     Then I should be on the collection index page
+
+

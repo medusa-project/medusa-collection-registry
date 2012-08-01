@@ -8,3 +8,10 @@ Feature: Authentication
     When I go to the site home
     Then I should be on the login page
 
+  Scenario: Log out
+    Given I am logged in
+    When I click on 'Logout' in the global navigation bar
+    And I should be on the login page
+
+
+

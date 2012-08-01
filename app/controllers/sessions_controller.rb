@@ -19,4 +19,9 @@ class SessionsController < ApplicationController
       redirect_to login_path
     end
   end
+
+  def destroy
+    unset_current_user
+    redirect_to login_path
+  end
 end
