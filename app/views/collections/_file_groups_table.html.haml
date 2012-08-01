@@ -1,7 +1,9 @@
 %h2 File Groups
-%div #{link_to 'Add File Group', new_file_group_path(:collection_id => @collection.id)}
-%div
-  %table#file_groups
+
+= link_to 'Add File Group', new_file_group_path(:collection_id => @collection.id), :class => 'btn btn-primary btn-mini'
+
+%table#file_groups.table.table-striped
+  %thead
     %tr
       %th Production Unit
       %th File type
@@ -12,6 +14,7 @@
       %th Total files
       %th Last access date
       %th
+  %tbody
     - @collection.file_groups.each do |file_group|
       %tr
         %td #{link_to(file_group.production_unit.title, file_group.production_unit) if file_group.production_unit}
@@ -23,7 +26,6 @@
         %td #{file_group.total_files}
         %td #{file_group.last_access_date}
         %td
-          = link_to 'View', file_group
-          |
-          = link_to 'Delete', file_group, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}
+          = link_to 'View', file_group, :class => 'btn btn-mini'
+          = link_to 'Delete', file_group, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-mini btn-danger'
 

@@ -1,16 +1,18 @@
 %h2 Assessments
-%div #{link_to 'Add Assessment', new_assessment_path(:collection_id => @collection.id)}
-%div
-  %table#assessments
+
+= link_to 'Add Assessment', new_assessment_path(:collection_id => @collection.id), :class => 'btn btn-primary btn-mini'
+
+%table#assessments.table.table-striped
+  %thead
     %tr
       %th Date
       %th Author
       %th
+  %tbody
     - @collection.assessments.each do |assessment|
       %tr
         %td #{link_to assessment.date.to_s, assessment}
         %td #{assessment.author_net_id}
         %td
-          = link_to 'Edit', edit_assessment_path(assessment)
-          |
-          = link_to 'Delete', assessment, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}
+          = link_to 'Edit', edit_assessment_path(assessment), :class => 'btn btn-mini'
+          = link_to 'Delete', assessment, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-mini btn-danger'

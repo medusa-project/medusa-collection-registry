@@ -8,57 +8,58 @@
 .page-header
   %h1 #{@collection.title}
   %p.lead Repository: #{link_to @collection.repository.title, @collection.repository}
+.row
+  .span4
+    %p
+      %strong= 'Start Date:'
+      %br
+      = @collection.start_date
+    %p
+      %strong= 'End Date:'
+      %br
+      = @collection.end_date
+    %p
+      %strong= 'Contact Person NetID:'
+      %br
+      = @collection.contact_id
+    %p
+      %strong= 'Access Systems:'
+      %br
+      - if access_systems = @collection.access_systems
+        %ul#access_systems
+          - access_systems.each do |access_system|
+            %li #{link_to access_system.name, access_system}
+    %p
+      %strong= 'Content Type:'
+      %br
+      = @collection.content_type.try(:name)
+    %p
+      %strong= 'Description:'
+      %br
+      = @collection.description
+    %p
+      %strong= 'Access URL:'
+      %br
+      = @collection.access_url
+    %p
+      %strong= 'File Package Summary:'
+      %br
+      = @collection.file_package_summary
+    %p
+      %strong= 'Rights Statement:'
+      %br
+      = @collection.rights_statement
+    %p
+      %strong= 'Rights Restrictions:'
+      %br
+      = @collection.rights_restrictions
+    %p
+      %strong= 'Notes:'
+      %br
+      = @collection.notes
 
-.span4
-  %p
-    %strong= 'Start Date:'
-    %br
-    = @collection.start_date
-  %p
-    %strong= 'End Date:'
-    %br
-    = @collection.end_date
-  %p
-    %strong= 'Contact Person NetID:'
-    %br
-    = @collection.contact_id
-  %p
-    %strong= 'Access Systems:'
-    %br
-    - if access_systems = @collection.access_systems
-      %ul#access_systems
-        - access_systems.each do |access_system|
-          %li #{link_to access_system.name, access_system}
-  %p
-    %strong= 'Content Type:'
-    %br
-    = @collection.content_type.try(:name)
-  %p
-    %strong= 'Description:'
-    %br
-    = @collection.description
-  %p
-    %strong= 'Access URL:'
-    %br
-    = @collection.access_url
-  %p
-    %strong= 'File Package Summary:'
-    %br
-    = @collection.file_package_summary
-  %p
-    %strong= 'Rights Statement:'
-    %br
-    = @collection.rights_statement
-  %p
-    %strong= 'Rights Restrictions:'
-    %br
-    = @collection.rights_restrictions
-  %p
-    %strong= 'Notes:'
-    %br
-    = @collection.notes
+  .span8
+    = render 'assessments_table'
 
-= render 'assessments_table'
-
-= render 'file_groups_table'
+    = render 'file_groups_table'
 
