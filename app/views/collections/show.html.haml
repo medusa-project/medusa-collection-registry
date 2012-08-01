@@ -1,31 +1,57 @@
-%h2 #{@collection.title}
-%div Repository: #{link_to @collection.repository.title, @collection.repository}
-%div
-  #{link_to 'Edit', edit_collection_path(@collection)} |
-  #{link_to 'Delete', @collection, :method => :delete, :data => {:confirm => 'This is irreversible. Are you sure?'}}
-%div
-  %div Start Date: #{@collection.start_date}
-  %div End Date: #{@collection.end_date}
-  %div Contact Person Net ID: #{@collection.contact.try(:net_id)}
-  %div
-    Access Systems:
+- model_class = Collection
+
+.pull-right
+  = link_to "Back", collections_path, :class => 'btn'
+  = link_to "Edit", edit_collection_path(@collection), :class => 'btn'
+  = link_to "Delete Collection", collection_path(@collection), :method => "delete", :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-danger'
+
+.page-header
+  %h1 #{@collection.title}
+  %p.lead Repository: #{link_to @collection.repository.title, @collection.repository}
+
+%dl.dl-horizontal
+  %dt= 'Start Date:'
+  %dd= @collection.start_date
+  %dt= 'End Date:'
+  %dd= @collection.end_date
+  %dt
+    = 'Contact Person'
+    %br
+    = 'NetID:'
+  %dd= @collection.contact_id
+  %dt= 'Access Systems:'
+  %dd
     - if access_systems = @collection.access_systems
       %ul#access_systems
         - access_systems.each do |access_system|
           %li #{link_to access_system.name, access_system}
-  %div Content type: #{@collection.content_type.try(:name)}
-  %div Description:
-  %div #{@collection.description}
-  %div Access URL: #{@collection.access_url}
-  %div File Package Summary:
-  %div #{@collection.file_package_summary}
-  %div Rights Statement:
-  %div #{@collection.rights_statement}
-  %div Rights Restrictions:
-  %div #{@collection.rights_restrictions}
-  %div Notes:
-  %div #{@collection.notes}
 
-  = render 'assessments_table'
+  %dt= 'Content Type:'
+  %dd= @collection.content_type.try(:name)
+  %dt= 'Description:'
+  %dd= @collection.description
+  %dt= 'Access URL:'
+  %dd= @collection.access_url
+  %dt
+    = 'File Package'
+    %br
+    = 'Summary:'
+  %dd= @collection.file_package_summary
+  %dt
+    = 'Rights '
+    %br
+    = 'Statement:'
+  %dd= @collection.rights_statement
+  %dt
+    = 'Rights '
+    %br
+    = 'Restrictions:'
+  %dd= @collection.rights_restrictions
+  %dt= 'Notes:'
+  %dd= @collection.notes
 
-  = render 'file_groups_table'
+
+
+= render 'assessments_table'
+
+= render 'file_groups_table'

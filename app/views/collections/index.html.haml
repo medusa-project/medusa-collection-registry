@@ -1,19 +1,25 @@
-%h2 Collections
+- model_class = Collection
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human.pluralize
 
-%table#collections
-  %tr
-    %th Title
-    %th Repository
-    %th Contact
-    %th Content Type
-    %th
-  - @collections.each do |collection|
+%table.table.table-striped
+  %thead
     %tr
-      %td #{link_to collection.title, collection}
-      %td #{link_to collection.repository.title, collection.repository}
-      %td #{collection.contact_net_id}
-      %td #{collection.content_type.try(:name)}
-      %td
-        = link_to 'Edit', edit_collection_path(collection)
-        |
-        = link_to 'Delete', collection, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}
+      %th Title
+      %th Repository
+      %th Contact
+      %th Content Type
+      %th
+  %tbody
+    - @collections.each do |collection|
+      %tr
+        %td #{link_to collection.title, collection}
+        %td #{link_to collection.repository.title, collection.repository}
+        %td #{collection.contact_net_id}
+        %td #{collection.content_type.try(:name)}
+        %td
+        %td
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_collection_path(collection), :class => 'btn btn-mini'
+          = link_to t('.destroy', :default => t("helpers.links.destroy")), collection_path(collection), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-mini btn-danger'
+
+/= link_to t('.new', :default => t("helpers.links.new")), new_collection_path, :class => 'btn btn-primary'

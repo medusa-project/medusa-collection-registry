@@ -1,4 +1,4 @@
-= simple_form_for @collection do |f|
+= simple_form_for @collection, :html => { :class => 'form-horizontal' } do |f|
   = f.input :title
   = f.input :start_date
   = f.input :end_date
@@ -12,8 +12,6 @@
   = f.input :rights_restrictions
   = f.input :notes
   = f.input :repository_id, :as => :hidden, :input_html => {:value => @repository.id}
-  = f.button :submit
-  - if @collection.new_record?
-    = link_to("Back to #{@repository.title}", @repository)
-  - else
-    = button_to('Cancel', @collection)
+  .form-actions
+    = f.button :submit, :class => 'btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), collections_path, :class => 'btn'
