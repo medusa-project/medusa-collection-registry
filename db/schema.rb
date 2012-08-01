@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120731200900) do
+ActiveRecord::Schema.define(:version => 20120801141451) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -36,8 +36,10 @@ ActiveRecord::Schema.define(:version => 20120731200900) do
     t.integer  "collection_id"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.integer  "author_id"
   end
 
+  add_index "assessments", ["author_id"], :name => "index_assessments_on_author_id"
   add_index "assessments", ["collection_id"], :name => "index_assessments_on_collection_id"
 
   create_table "collections", :force => true do |t|
@@ -151,5 +153,13 @@ ActiveRecord::Schema.define(:version => 20120731200900) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "users", :force => true do |t|
+    t.string   "uid"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "users", ["uid"], :name => "index_users_on_uid"
 
 end

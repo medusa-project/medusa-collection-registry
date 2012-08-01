@@ -5,6 +5,7 @@
   |
   = link_to 'Delete', @assessment, :method => :delete, :data => {:confirm => 'This is irreversible. Are you sure?'}
 %div
+  %div Author Net ID: #{@assessment.author_net_id}
   %div Preservation Risks:
   %div #{@assessment.preservation_risks}
   %div Notes:

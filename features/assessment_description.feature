@@ -54,3 +54,11 @@ Feature: Assessment description
     Then I should be on the view page for the assessment with date '2012-02-10' for the collection titled 'Dogs'
     And I should see 'I like dogs'
     And The collection titled 'Dogs' should have an assessment with date '2012-02-10'
+
+  Scenario: Associate author with assessment
+    When I edit the assessment with date '2012-01-09' for the collection titled 'Dogs'
+    And I fill in fields:
+      | Author Net ID | wingram2 |
+    And I press 'Update Assessment'
+    Then I should see 'wingram2'
+    And There should be a person with net ID 'wingram2'
