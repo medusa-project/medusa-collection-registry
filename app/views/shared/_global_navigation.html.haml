@@ -1,8 +1,14 @@
-%div#global-navigation
-  = link_to 'Repositories', repositories_path
-  |
-  = link_to 'Collections', collections_path
-  |
-  = link_to 'Production Units', production_units_path
-  |
-  = link_to 'Access Systems', access_systems_path
+.navbar.navbar-fixed-top#global-navigation
+  .navbar-inner
+    .container
+      %a.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse"}
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      %a.brand{:href => root_url}Connecting-2-Collections
+      .container.nav-collapse
+        %ul.nav
+          %li=link_to 'Repositories', repositories_path
+          %li=link_to 'Collections', collections_path
+          %li=link_to 'Production Units', production_units_path
+          %li=link_to 'Access Systems', access_systems_path
