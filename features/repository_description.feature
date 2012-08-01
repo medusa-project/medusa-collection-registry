@@ -49,7 +49,7 @@ Feature: Repository description
 
   Scenario: Delete repository from view page
     When I view the repository titled 'Sample 1'
-    And I press 'Delete Repository'
+    And I click on 'Delete Repository'
     Then I should not see 'Sample 1'
 
   Scenario: Navigate from index page to view page
@@ -72,11 +72,6 @@ Feature: Repository description
     When I go to the repository index page
     And I click on 'New Repository'
     Then I should be on the repository creation page
-
-  Scenario: Navigate from view page to index page
-    When I view the repository titled 'Sample 1'
-    And I click on 'Index'
-    Then I should be on the repository index page
 
   Scenario: Navigate from view page to edit page
     When I view the repository titled 'Sample 1'

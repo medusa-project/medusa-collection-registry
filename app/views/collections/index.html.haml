@@ -4,11 +4,15 @@
   %tr
     %th Title
     %th Repository
+    %th Contact
+    %th Content Type
     %th
   - @collections.each do |collection|
     %tr
       %td #{link_to collection.title, collection}
       %td #{link_to collection.repository.title, collection.repository}
+      %td #{collection.contact_net_id}
+      %td #{collection.content_type.try(:name)}
       %td
         = link_to 'Edit', edit_collection_path(collection)
         |

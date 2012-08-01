@@ -6,15 +6,15 @@
   %thead
     %tr
       %th Title
+      %th Contact
       %th URL
-      %th Notes
       %th
   %tbody
     - @repositories.each do |repository|
       %tr
         %td #{link_to repository.title, repository}
+        %td #{link_to repository.contact_net_id}
         %td #{link_to repository.url, repository.url}
-        %td #{repository.notes}
         %td
           = link_to 'Edit', edit_repository_path(repository), :class => 'btn btn-mini'
           = link_to 'Delete', repository_path(repository), :method => :delete, :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'This is irreversible - are you sure?')), :class => 'btn btn-mini btn-danger'

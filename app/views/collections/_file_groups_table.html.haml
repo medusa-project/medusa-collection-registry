@@ -3,16 +3,22 @@
 %div
   %table#file_groups
     %tr
+      %th Production Unit
+      %th File type
       %th File location
       %th File format
+      %th Storage Medium
       %th Total file size (GB)
       %th Total files
       %th Last access date
       %th
     - @collection.file_groups.each do |file_group|
       %tr
+        %td #{link_to(file_group.production_unit.title, file_group.production_unit) if file_group.production_unit}
+        %td #{file_group.file_type.try(:name)}
         %td #{file_group.file_location}
         %td #{file_group.file_format}
+        %td #{file_group.storage_medium.try(:name)}
         %td #{file_group.total_file_size}
         %td #{file_group.total_files}
         %td #{file_group.last_access_date}

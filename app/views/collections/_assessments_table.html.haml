@@ -4,10 +4,12 @@
   %table#assessments
     %tr
       %th Date
+      %th Author
       %th
     - @collection.assessments.each do |assessment|
       %tr
         %td #{link_to assessment.date.to_s, assessment}
+        %td #{assessment.author_net_id}
         %td
           = link_to 'Edit', edit_assessment_path(assessment)
           |
