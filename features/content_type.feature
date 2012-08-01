@@ -12,4 +12,4 @@ Feature: File type
     When I select content type 'research data'
     And I press 'Update Collection'
     Then I should see 'research data'
-    And I should see 'Content type'
+    And I should see 'Content Type'

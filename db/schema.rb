@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120801141451) do
+ActiveRecord::Schema.define(:version => 20120801193922) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(:version => 20120801141451) do
     t.boolean  "published"
     t.boolean  "ongoing"
     t.text     "description"
-    t.text     "access_url"
+    t.string   "access_url"
     t.text     "file_package_summary"
     t.text     "rights_statement"
     t.text     "rights_restrictions"
@@ -153,5 +153,13 @@ ActiveRecord::Schema.define(:version => 20120801141451) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "users", :force => true do |t|
+    t.string   "uid"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "users", ["uid"], :name => "index_users_on_uid"
 
 end
