@@ -9,7 +9,7 @@ class RepositoriesController < ApplicationController
   def create
     @repository = Repository.new(params[:repository])
     if @repository.save
-      redirect_to repository_path(@repository)
+      redirect_to repository_path(@repository), notice: 'Repository was successfully created.'
     else
       render 'new'
     end
@@ -29,7 +29,7 @@ class RepositoriesController < ApplicationController
 
   def update
     if @repository.update_attributes(params[:repository])
-      redirect_to repository_path(@repository)
+      redirect_to repository_path(@repository), notice: 'Repository was successfully updated.'
     else
       render 'edit'
     end

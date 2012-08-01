@@ -1,4 +1,4 @@
-= simple_form_for @repository do |f|
+= simple_form_for @repository, :html => { :class => 'form-horizontal' } do |f|
   = f.input :title
   = f.input :contact_net_id, :label => 'Contact Person Net ID'
   = f.input :address_1
@@ -10,8 +10,6 @@
   = f.input :email
   = f.input :url
   = f.input :notes
-  = f.button :submit
-  - if @repository.new_record?
-    = link_to('Index', repositories_path)
-  - else
-    = button_to('Cancel', @repository)
+  .form-actions
+    = f.button :submit, :class => 'btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), repositories_path, :class => 'btn'
