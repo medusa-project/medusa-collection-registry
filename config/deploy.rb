@@ -122,10 +122,11 @@ namespace :medusa do
 
 end
 
-after 'deploy:update', 'deploy:link_config'
-before 'deploy:update_jar', 'medusa:stop_tomcat'
-after 'deploy:update_jar', 'medusa:start_tomcat'
-
 before 'deploy:create_symlink', 'deploy:stop'
+
+after 'deploy:create_symlink', 'deploy:link_config'
 after 'deploy:create_symlink', 'deploy:precompile_assets'
 after 'deploy:create_symlink', 'deploy:start'
+
+before 'deploy:update_jar', 'medusa:stop_tomcat'
+after 'deploy:update_jar', 'medusa:start_tomcat'
