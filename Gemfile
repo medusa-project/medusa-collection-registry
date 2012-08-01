@@ -12,6 +12,7 @@ gem 'solrizer-fedora'
 gem 'passenger'
 
 gem 'haml'
+gem 'haml-rails'
 gem 'simple_form'
 
 # Gems used only for assets and not required
@@ -24,6 +25,9 @@ group :assets do
   gem 'therubyracer'
 
   gem 'uglifier', '>= 1.0.3'
+  
+  gem 'twitter-bootstrap-rails'
+  
 end
 
 gem 'jquery-rails'

@@ -1,17 +1,36 @@
-%h2 #{@repository.title}
-%div #{link_to 'Index', repositories_path} | #{link_to 'Edit', edit_repository_path(@repository)}
-%div
-  %div Contact Net ID: #{@repository.contact_net_id}
-  %div Address 1: #{@repository.address_1}
-  %div Address 2: #{@repository.address_2}
-  %div City: #{@repository.city}
-  %div State: #{@repository.state}
-  %div Zip: #{@repository.zip}
-  %div Phone number: #{@repository.phone_number}
-  %div Email: #{@repository.email}
-  %div Url: #{link_to @repository.url, @repository.url}
-  %div Notes:
-  %div #{@repository.notes}
-  %div #{button_to 'Delete Repository', @repository, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}
+- model_class = Repository
 
-  = render 'collections_table'
+.pull-right
+  = link_to "Back", repositories_path, :class => 'btn'
+  = link_to "Edit", edit_repository_path(@repository), :class => 'btn'
+  = link_to "Delete Repository", repository_path(@repository), :method => "delete", :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'This is irreversible - are you sure?')), :class => 'btn btn-danger'
+
+.page-header
+  %h1 #{@repository.title}
+
+%dl.dl-horizontal
+  %dt Contact Net ID:
+  %dd #{@repository.contact_net_id}
+  %dt Address 1:
+  %dd #{@repository.address_1}
+  %dt Address 2:
+  %dd #{@repository.address_2}
+  %dt City:
+  %dd #{@repository.city}
+  %dt State:
+  %dd #{@repository.state}
+  %dt Zip:
+  %dd #{@repository.zip}
+  %dt Phone number:
+  %dd #{@repository.phone_number}
+  %dt Email:
+  %dd #{@repository.email}
+  %dt Url:
+  %dd #{link_to @repository.url, @repository.url}
+  %dt Notes:
+  %dd #{@repository.notes}
+  
+%hr/    
+= render 'collections_table'
+
+  
