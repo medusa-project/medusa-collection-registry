@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/medusa-project/omniauth-shibboleth.git
+  revision: 6323242f6c4e2b42f3c2aa2f284be598725487ae
+  specs:
+    omniauth-shibboleth (1.0.6)
+      omniauth (>= 1.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -316,6 +323,7 @@ DEPENDENCIES
   jquery-rails
   nokogiri
   omniauth
+  omniauth-shibboleth!
   passenger
   pg
   rails (= 3.2.6)
