@@ -9,49 +9,56 @@
   %h1 #{@collection.title}
   %p.lead Repository: #{link_to @collection.repository.title, @collection.repository}
 
-%dl.dl-horizontal
-  %dt= 'Start Date:'
-  %dd= @collection.start_date
-  %dt= 'End Date:'
-  %dd= @collection.end_date
-  %dt
-    = 'Contact Person'
+.span4
+  %p
+    %strong= 'Start Date:'
     %br
-    = 'NetID:'
-  %dd= @collection.contact_net_id
-  %dt= 'Access Systems:'
-  %dd
+    = @collection.start_date
+  %p
+    %strong= 'End Date:'
+    %br
+    = @collection.end_date
+  %p
+    %strong= 'Contact Person NetID:'
+    %br
+    = @collection.contact_id
+  %p
+    %strong= 'Access Systems:'
+    %br
     - if access_systems = @collection.access_systems
       %ul#access_systems
         - access_systems.each do |access_system|
           %li #{link_to access_system.name, access_system}
-
-  %dt= 'Content Type:'
-  %dd= @collection.content_type.try(:name)
-  %dt= 'Description:'
-  %dd= @collection.description
-  %dt= 'Access URL:'
-  %dd= @collection.access_url
-  %dt
-    = 'File Package'
+  %p
+    %strong= 'Content Type:'
     %br
-    = 'Summary:'
-  %dd= @collection.file_package_summary
-  %dt
-    = 'Rights '
+    = @collection.content_type.try(:name)
+  %p
+    %strong= 'Description:'
     %br
-    = 'Statement:'
-  %dd= @collection.rights_statement
-  %dt
-    = 'Rights '
+    = @collection.description
+  %p
+    %strong= 'Access URL:'
     %br
-    = 'Restrictions:'
-  %dd= @collection.rights_restrictions
-  %dt= 'Notes:'
-  %dd= @collection.notes
-
-
+    = @collection.access_url
+  %p
+    %strong= 'File Package Summary:'
+    %br
+    = @collection.file_package_summary
+  %p
+    %strong= 'Rights Statement:'
+    %br
+    = @collection.rights_statement
+  %p
+    %strong= 'Rights Restrictions:'
+    %br
+    = @collection.rights_restrictions
+  %p
+    %strong= 'Notes:'
+    %br
+    = @collection.notes
 
 = render 'assessments_table'
 
 = render 'file_groups_table'
+

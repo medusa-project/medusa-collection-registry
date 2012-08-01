@@ -1,0 +1,1 @@
+$.extend($.fn.datepicker.defaults,{parse:function(a){var b;if(b=a.match(/^(\d{2,2})\/(\d{2,2})\/(\d{4,4})$/)){return new Date(b[3],b[1]-1,b[2])}else{return null}},format:function(a){var b=(a.getMonth()+1).toString(),c=a.getDate().toString();if(b.length===1){b="0"+b}if(c.length===1){c="0"+c}return b+"/"+c+"/"+a.getFullYear()}})
