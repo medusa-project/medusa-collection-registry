@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 
   def new
     if Rails.env.production?
-      redirect_to('/auth/shibboleth/callback')
+      redirect_to('/Shibboleth.sso/Login')
     else
       redirect_to('/auth/developer')
     end
