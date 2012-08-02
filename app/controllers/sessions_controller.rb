@@ -14,6 +14,7 @@ class SessionsController < ApplicationController
     auth_hash = request.env['omniauth.auth']
     if auth_hash and auth_hash[:uid] then
       set_current_user(User.find_or_create_by_uid(auth_hash[:uid]))
+      Rails.logger.error auth_hash.to_yaml
       redirect_to root_path
     else
       redirect_to login_path
