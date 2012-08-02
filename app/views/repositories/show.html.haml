@@ -1,36 +1,63 @@
 - model_class = Repository
 
-.pull-right
-  = link_to "Back", repositories_path, :class => 'btn'
-  = link_to "Edit", edit_repository_path(@repository), :class => 'btn'
-  = link_to "Delete Repository", repository_path(@repository), :method => "delete", :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-danger'
-
 .page-header
-  %h1 #{@repository.title}
+  %h1
+    = @repository.title
+    %small Repository
 
-%dl.dl-horizontal
-  %dt Contact Net ID:
-  %dd #{@repository.contact_net_id}
-  %dt Address 1:
-  %dd #{@repository.address_1}
-  %dt Address 2:
-  %dd #{@repository.address_2}
-  %dt City:
-  %dd #{@repository.city}
-  %dt State:
-  %dd #{@repository.state}
-  %dt Zip:
-  %dd #{@repository.zip}
-  %dt Phone number:
-  %dd #{@repository.phone_number}
-  %dt Email:
-  %dd #{@repository.email}
-  %dt Url:
-  %dd #{link_to @repository.url, @repository.url}
-  %dt Notes:
-  %dd #{@repository.notes}
-  
-%hr/    
-= render 'collections_table'
+.span3#sidebar
+  .well
+    %p
+      %strong='Contact Net ID:'
+      %br
+      = @repository.contact_net_id
+    %p
+      %strong='Address 1:'
+      %br
+      = @repository.address_1
+    %p
+      %strong='Address 2:'
+      %br
+      = @repository.address_2
+    %p
+      %strong='City:'
+      %br
+      = @repository.city
+    %p
+      %strong='State:'
+      %br
+      = @repository.state
+    %p
+      %strong='Zip:'
+      %br
+      = @repository.zip
+    %p
+      %strong='Phone number:'
+      %br
+      = @repository.phone_number
+    %p
+      %strong='Email:'
+      %br
+      = @repository.email
+    %p
+      %strong='URL:'
+      %br
+      = link_to @repository.url, @repository.url
+    %p
+      %strong='Notes:'
+      %br
+      = @repository.notes
+
+    .btn-group
+      = link_to "Back", repositories_path, :class => 'btn'
+      = link_to "Edit", edit_repository_path(@repository), :class => 'btn'
+      = link_to "Delete Repository", repository_path(@repository), :method => "delete", :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-danger'
+    
+.span9#content 
+  %a.toggles{:href=>"#", :rel => "tooltip", :title => "Hide or show the sidebar", }
+    %i.icon-chevron-left
+  = render 'collections_table'
+
+
 
   
