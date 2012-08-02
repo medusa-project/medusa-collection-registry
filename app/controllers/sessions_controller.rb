@@ -16,7 +16,9 @@ class SessionsController < ApplicationController
       set_current_user(User.find_or_create_by_uid(auth_hash[:uid]))
       #We can access other information via auth_hash[:extra][:raw_info][key]
       #where key is a string from config/shibboleth.yml (and of course these
-      #have to correspond to passed attributes)
+      #have to correspond to passed attributes) One idea is to stuff them
+      #into the session hash at this point and then have them available if needed
+      #elsewhere.
       redirect_to root_path
     else
       redirect_to login_path
