@@ -2,7 +2,6 @@
 .page-header
   %h1=t '.title', :default => model_class.model_name.human.pluralize
   
-= link_to 'Add Collection', new_collection_path, :class => 'btn btn-primary btn-mini'
 
 %table#collections.table.table-striped
   %thead
@@ -22,3 +21,5 @@
         %td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_collection_path(collection), :class => 'btn btn-mini'
           = link_to t('.destroy', :default => t("helpers.links.destroy")), collection_path(collection), :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-mini btn-danger'
+
+= link_to 'Add Collection', new_collection_path, :class => 'btn btn-primary'

@@ -29,7 +29,7 @@ $.extend($.fn.datepicker.defaults, {
  * Toggle collapse the sidebar
  */
 $('a.toggles').click(function() {
-    $('a.toggles i').toggleClass('icon-chevron-left icon-chevron-right');
+    $('a.toggles i').toggleClass('icon-arrow-left icon-arrow-right');
 
     $('#sidebar').animate({
         width: 'toggle'

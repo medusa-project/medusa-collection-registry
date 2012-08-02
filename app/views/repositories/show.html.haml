@@ -54,8 +54,8 @@
       = link_to "Delete Repository", repository_path(@repository), :method => "delete", :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-danger'
     
 .span9#content 
-  %a.toggles{:href=>"#", :rel => "tooltip", :title => "Hide or show the sidebar", }
-    %i.icon-chevron-left
+  %a.toggles{:href=>"#", :rel => "tooltip", :title => "Hide or show the sidebar" }
+    %i.icon-arrow-left
   = render 'collections_table'
 
 
