@@ -14,7 +14,7 @@ Feature: Repository description
     When I go to the repository creation page
     And I fill in fields:
       | Title | Sample Repo                              |
-      | Url   | http://repo.example.com                  |
+      | URL   | http://repo.example.com                  |
       | Notes | This is a sample repository for the test |
     And I press 'Create Repository'
     Then A repository with title 'Sample Repo' should exist

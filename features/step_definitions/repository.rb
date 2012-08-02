@@ -42,7 +42,7 @@ And /^I click on 'Delete' in the collections table$/ do
 end
 
 Then /^I should see all repository fields$/ do
-  ['Title', 'Url', 'Notes', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Phone number', 'Email'].each do |field|
+  ['Title', 'URL', 'Notes', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Phone number', 'Email'].each do |field|
     step "I should see '#{field}'"
   end
 end
