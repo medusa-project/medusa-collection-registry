@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/medusa-project/omniauth-shibboleth.git
-  revision: 802c698553ab721eaacbc8f818687b8b4ea0c599
+  revision: a488a9bea90a578ce83b7064b2b07f4c3cfe01f6
   specs:
     omniauth-shibboleth (1.0.6)
       omniauth (>= 1.0.0)
