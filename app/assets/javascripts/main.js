@@ -21,7 +21,7 @@ $.extend($.fn.datepicker.defaults, {
 		if (c.length === 1) {
 			c = "0" + c
 		}
-		return b + "/" + c + "/" + a.getFullYear()
+    return a.getFullYear() + "-" + b + "-" + c;
 	}
 })
 
