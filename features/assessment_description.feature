@@ -49,7 +49,7 @@ Feature: Assessment description
     And I fill in fields:
       | Preservation risks | There are corrupt files too |
       | Notes              | I like dogs                 |
-    And I fill in assessment form date '2012-02-10'
+      | Date               | 2012-02-10                  |
     And I press 'Create Assessment'
     Then I should be on the view page for the assessment with date '2012-02-10' for the collection titled 'Dogs'
     And I should see 'I like dogs'
