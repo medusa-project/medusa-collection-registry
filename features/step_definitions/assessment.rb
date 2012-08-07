@@ -29,10 +29,6 @@ And /^The collection titled '(.*)' should have an assessment with date '(.*)'$/ 
   find_assessment(date, title).should_not be_nil
 end
 
-And /^I fill in assessment form date '(\d+)\-(\d+)\-(\d+)'$/ do |year, month, day|
-  fill_in_date_select(year, month, day, 'assessment_date')
-end
-
 private
 
 def find_assessment(date, collection_title)
