@@ -1,11 +1,12 @@
-= simple_form_for @assessment do |f|
+= simple_form_for @assessment, :html => {:class => 'form-horizontal'} do |f|
   = f.input :author_net_id, :label => 'Author Net ID'
-  = f.input :date, :use_month_numbers => true
-  = f.input :preservation_risks
-  = f.input :notes
+  = f.input :date, :as => :string, :use_month_numbers => true, :input_html => {'data-datepicker' => 'datepicker'}, :order => [:day, :month, :year]
+  = f.input :preservation_risks, :input_html => {:rows => 10}
+  = f.input :notes, :input_html => {:rows => 10}
   = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
-  = f.button :submit
-  - if @assessment.new_record?
-    = link_to("Back to #{@collection.title}", @collection)
-  - else
-    = button_to('Cancel', @assessment)
+  .form-actions
+    = f.button :submit, :class => 'btn-primary'
+    - if @assessment.new_record?
+      = link_to("Back to #{@collection.title}", @collection, :class => 'btn')
+    - else
+      = link_to(t('.cancel', :default => t('helpers.links.cancel')), @assessment, :class => 'btn')
