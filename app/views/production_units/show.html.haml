@@ -9,7 +9,7 @@
   %div Zip: #{@production_unit.zip}
   %div Phone number: #{@production_unit.phone_number}
   %div Email: #{@production_unit.email}
-  %div Url: #{link_to @production_unit.url, @production_unit.url}
+  %div URL: #{link_to @production_unit.url, @production_unit.url}
   %div Notes:
   %div #{@production_unit.notes}
   %div #{button_to 'Delete Production Unit', @production_unit, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}

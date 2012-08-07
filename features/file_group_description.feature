@@ -52,7 +52,7 @@ Feature: File Group description
       | File format     | image/tiff |
       | Total file size | 22         |
       | Total files     | 333        |
-    And I fill in file group form date '2012-07-17'
+    | Last access date            |2012-07-17  |
     And I press 'Create File group'
     Then I should be on the view page for the file group with location 'Undergrad' for the collection titled 'Dogs'
     And I should see 'Undergrad'

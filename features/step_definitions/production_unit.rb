@@ -25,7 +25,7 @@ Then /^A production unit with the title '(.*)' should exist$/ do |title|
 end
 
 Then /^I should see all production unit fields$/ do
-  ['Address 1', 'Address 2', 'City', 'State', 'Zip', 'Phone number', 'Email', 'Url', 'Notes'].each do |field|
+  ['Address 1', 'Address 2', 'City', 'State', 'Zip', 'Phone number', 'Email', 'URL', 'Notes'].each do |field|
     step "I should see '#{field}'"
   end
 end

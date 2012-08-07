@@ -20,7 +20,7 @@ Feature: Production Unit description
       | Zip          | 61820                       |
       | Phone number | 555-1234                    |
       | Email        | scraping@example.com        |
-      | Url          | http://scraping.example.com |
+      | URL          | http://scraping.example.com |
       | Notes        | Archiving web content       |
     And I press 'Create Production unit'
     Then A production unit with the title 'Scraping' should exist
