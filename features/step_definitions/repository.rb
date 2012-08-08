@@ -8,6 +8,11 @@ And /^I have repositories with fields:$/ do |table|
   end
 end
 
+And /^the repository titled '(.*)' is managed by '(.*)'$/ do |title, net_id|
+  person = FactoryGirl.create(:person, :net_id => net_id,)
+  FactoryGirl.create(:repository, :contact => person,  :title => title)
+end
+
 Then /^I should be on the repository index page$/ do
   current_path.should == repositories_path
 end
