@@ -10,7 +10,7 @@
     %p
       %strong Contact Net ID:
       %br
-      = link_to @repository.contact_net_id, net_id_search_url(@repository.contact_net_id), :target => '_blank', :class => 'net-id-search'
+      = net_id_search_link(@repository.contact_net_id)
     %p
       %strong Address 1:
       %br
