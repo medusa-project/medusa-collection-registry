@@ -32,6 +32,9 @@
       %br
       = @collection.content_type.try(:name)
     %p
+      %strong Total Size (GB):
+      = @collection.total_size
+    %p
       %strong Description:
       %br
       = @collection.description

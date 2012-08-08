@@ -1,4 +1,4 @@
-%h2 
+%h2
   Collections
   = link_to 'Add Collection', new_collection_path(:repository_id => @repository.id), :class => 'btn btn-primary btn-mini pull-right'
 
@@ -9,6 +9,7 @@
         %th Title
         %th Contact
         %th Content Type
+        %th Size (GB)
         %th
     %tbody
       - @repository.collections.each do |collection|
@@ -16,6 +17,7 @@
           %td #{link_to collection.title, collection}
           %td #{collection.contact_net_id}
           %td #{collection.content_type.try(:name)}
+          %td #{collection.total_size}
           %td
             = link_to 'Edit', edit_collection_path(collection), :class => 'btn btn-mini'
             = link_to 'Delete', collection, :method => :delete, :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-mini btn-danger'

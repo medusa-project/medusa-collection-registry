@@ -8,6 +8,7 @@
       %th Title
       %th Contact
       %th URL
+      %th Total Size (GB)
       %th
   %tbody
     - @repositories.each do |repository|
@@ -15,6 +16,7 @@
         %td #{link_to repository.title, repository}
         %td #{link_to repository.contact_net_id}
         %td #{link_to repository.url, repository.url}
+        %td #{repository.total_size}
         %td
           = link_to 'Edit', edit_repository_path(repository), :class => 'btn btn-mini'
           = link_to 'Delete', repository_path(repository), :method => :delete, :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-mini btn-danger'

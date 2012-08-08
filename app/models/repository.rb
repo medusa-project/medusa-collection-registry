@@ -8,4 +8,8 @@ class Repository < ActiveRecord::Base
   validates_uniqueness_of :title
   validates_presence_of :title
 
+  def total_size
+    self.collections.collect {|c| c.total_size}.sum
+  end
+
 end

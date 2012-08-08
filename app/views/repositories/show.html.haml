@@ -47,7 +47,9 @@
       %strong Notes:
       %br
       = @repository.notes
-
+    %p
+      %strong Total Size (GB):
+      = @repository.total_size
     .btn-group
       = link_to "Back", repositories_path, :class => 'btn'
       = link_to "Edit", edit_repository_path(@repository), :class => 'btn'

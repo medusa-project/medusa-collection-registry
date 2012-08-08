@@ -15,4 +15,8 @@ class Collection < ActiveRecord::Base
   validates_presence_of :title
   validates_uniqueness_of :title, :scope => :repository_id
 
+  def total_size
+    self.file_groups.sum(:total_file_size)
+  end
+
 end
