@@ -1,9 +1,14 @@
-%h2 #{@access_system.name}
-%div
-  = link_to 'Index', access_systems_path
-  |
-  = link_to 'Edit', edit_access_system_path(@access_system)
-  |
-  = link_to 'Delete', @access_system, :method => :delete, :data => {:confirm => 'This is irreversible. Are you sure?'}
-%div
-  %div Name: #{@access_system.name}
+.pull-right
+  = link_to 'Index', access_systems_path, :class => 'btn'
+  = link_to 'Edit', edit_access_system_path(@access_system), :class => 'btn'
+  = link_to 'Delete', @access_system, :method => :delete, :data => {:confirm => 'This is irreversible. Are you sure?'}, :class => 'btn btn-danger'
+
+.page_header
+  %h1 Access System: #{@access_system.name}
+
+.row
+  .span8
+    %p
+      %strong Name:
+      %br
+      = @access_system.name
