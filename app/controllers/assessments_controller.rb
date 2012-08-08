@@ -26,6 +26,7 @@ class AssessmentsController < ApplicationController
   def new
     @collection = Collection.find(params[:collection_id])
     @assessment = Assessment.new
+    @assessment.author = Person.find_or_create_by_net_id(current_user.uid)
     @assessment.collection = @collection
   end
 

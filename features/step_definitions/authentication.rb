@@ -1,9 +1,9 @@
+Given /^I am logged in as '(.*)'$/ do |uid|
+  login_user(:uid => uid)
+end
+
 Given /^I am logged in$/ do
-  user = FactoryGirl.create(:user)
-  visit(login_path)
-  fill_in('name', :with => user.uid)
-  fill_in('email', :with => "#{user.uid}@example.com" )
-  click_button('Sign In')
+  login_user
 end
 
 Given /^I am not logged in$/ do
@@ -12,4 +12,14 @@ end
 
 Then /^I should be on the login page$/ do
   current_path.should == '/auth/developer'
+end
+
+private
+
+def login_user(opts = {})
+  user = FactoryGirl.create(:user, opts)
+  visit(login_path)
+  fill_in('name', :with => user.uid)
+  fill_in('email', :with => user.uid) #this is to accommodate the developer strategy, which uses the email as the UIN
+  click_button('Sign In')
 end

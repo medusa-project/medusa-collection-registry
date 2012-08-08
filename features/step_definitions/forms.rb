@@ -4,6 +4,11 @@ When /^I fill in fields:$/ do |table|
   end
 end
 
+Then /^The field '(.*)' should be filled in with '(.*)'$/ do |field, value|
+  find_field(field).value.should == value
+end
+
+
 When /^I press '(.*)'$/ do |button_name|
   click_button(button_name)
 end
