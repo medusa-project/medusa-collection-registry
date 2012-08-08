@@ -29,7 +29,7 @@ Feature: Production Units for File Groups
 
   Scenario: Deleting a production unit should fail if it has file groups
     When I view the production unit titled 'Scanning'
-    And I press 'Delete Production Unit'
+    And I click on 'Delete Production Unit'
     Then I should be on the view page for the production unit titled 'Scanning'
     And I should see 'Production Units with associated file groups cannot be deleted.'
 

@@ -11,50 +11,50 @@
 .row
   .span4
     %p
-      %strong= 'Start Date:'
+      %strong Start Date:
       %br
       = @collection.start_date
     %p
-      %strong= 'End Date:'
+      %strong End Date:
       %br
       = @collection.end_date
     %p
-      %strong= 'Contact Person NetID:'
+      %strong Contact Person NetID:
       %br
       = @collection.contact_net_id
     %p
-      %strong= 'Access Systems:'
+      %strong Access Systems:
       %br
       - if access_systems = @collection.access_systems
         %ul#access_systems
           - access_systems.each do |access_system|
             %li #{link_to access_system.name, access_system}
     %p
-      %strong= 'Content Type:'
+      %strong Content Type:
       %br
       = @collection.content_type.try(:name)
     %p
-      %strong= 'Description:'
+      %strong Description:
       %br
       = @collection.description
     %p
-      %strong= 'Access URL:'
+      %strong Access URL:
       %br
       = @collection.access_url
     %p
-      %strong= 'File Package Summary:'
+      %strong File Package Summary:
       %br
       = @collection.file_package_summary
     %p
-      %strong= 'Rights Statement:'
+      %strong Rights Statement:
       %br
       = @collection.rights_statement
     %p
-      %strong= 'Rights Restrictions:'
+      %strong Rights Restrictions:
       %br
       = @collection.rights_restrictions
     %p
-      %strong= 'Notes:'
+      %strong Notes:
       %br
       = @collection.notes
 

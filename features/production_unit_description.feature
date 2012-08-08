@@ -56,7 +56,7 @@ Feature: Production Unit description
 
   Scenario: Delete production unit from view page
     When I view the production unit titled 'Scanning'
-    And I press 'Delete Production Unit'
+    And I click on 'Delete Production Unit'
     Then I should be on the production unit index page
     And I should not see 'Scanning'
 
@@ -83,7 +83,7 @@ Feature: Production Unit description
 
   Scenario: Navigate from view page to index page
     When I view the production unit titled 'Scanning'
-    And I click on 'Index'
+    And I click on 'Back'
     Then I should be on the production unit index page
 
   Scenario: Navigate from view page to edit page

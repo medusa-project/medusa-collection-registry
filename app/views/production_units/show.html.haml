@@ -1,15 +1,50 @@
-%h2 #{@production_unit.title}
-%div #{link_to 'Index', production_units_path} | #{link_to 'Edit', edit_production_unit_path(@production_unit)}
-%div
-  %div Administrator Net ID: #{@production_unit.administrator_net_id  }
-  %div Address 1: #{@production_unit.address_1}
-  %div Address 2: #{@production_unit.address_2}
-  %div City: #{@production_unit.city}
-  %div State: #{@production_unit.state}
-  %div Zip: #{@production_unit.zip}
-  %div Phone number: #{@production_unit.phone_number}
-  %div Email: #{@production_unit.email}
-  %div URL: #{link_to @production_unit.url, @production_unit.url}
-  %div Notes:
-  %div #{@production_unit.notes}
-  %div #{button_to 'Delete Production Unit', @production_unit, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}}
+.pull-right
+  = link_to 'Back', production_units_path, :class => 'btn'
+  = link_to 'Edit', edit_production_unit_path(@production_unit), :class => 'btn'
+  = link_to 'Delete Production Unit', @production_unit, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-danger'
+
+.page-header
+  %h1 #{@production_unit.title}
+
+.row
+  .span8
+    %p
+      %strong Administrator Net ID:
+      %br
+      = @production_unit.administrator_net_id
+    %p
+      %strong Address 1:
+      %br
+      = @production_unit.address_1
+    %p
+      %strong Address 2:
+      %br
+      = @production_unit.address_2
+    %p
+      %strong City:
+      %br
+      = @production_unit.city
+    %p
+      %strong State:
+      %br
+      = @production_unit.state
+    %p
+      %strong Zip:
+      %br
+      = @production_unit.zip
+    %p
+      %strong Phone number:
+      %br
+      = @production_unit.phone_number
+    %p
+      %strong Email:
+      %br
+      = @production_unit.email
+    %p
+      %strong URL:
+      %br
+      = link_to @production_unit.url, @production_unit.url
+    %p
+      %strong Notes:
+      %br
+      = @production_unit.notes
