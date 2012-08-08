@@ -8,43 +8,43 @@
 .span3#sidebar
   .well
     %p
-      %strong='Contact Net ID:'
+      %strong Contact Net ID:
       %br
       = @repository.contact_net_id
     %p
-      %strong='Address 1:'
+      %strong Address 1:
       %br
       = @repository.address_1
     %p
-      %strong='Address 2:'
+      %strong Address 2:
       %br
       = @repository.address_2
     %p
-      %strong='City:'
+      %strong City:
       %br
       = @repository.city
     %p
-      %strong='State:'
+      %strong State:
       %br
       = @repository.state
     %p
-      %strong='Zip:'
+      %strong Zip:
       %br
       = @repository.zip
     %p
-      %strong='Phone number:'
+      %strong Phone number:
       %br
       = @repository.phone_number
     %p
-      %strong='Email:'
+      %strong Email:
       %br
       = @repository.email
     %p
-      %strong='URL:'
+      %strong URL:
       %br
       = link_to @repository.url, @repository.url
     %p
-      %strong='Notes:'
+      %strong Notes:
       %br
       = @repository.notes
 
@@ -52,12 +52,11 @@
       = link_to "Back", repositories_path, :class => 'btn'
       = link_to "Edit", edit_repository_path(@repository), :class => 'btn'
       = link_to "Delete Repository", repository_path(@repository), :method => "delete", :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-danger'
-    
-.span9#content 
+
+.span9#content
   %a.toggles{:href=>"#", :rel => "tooltip", :title => "Hide or show the sidebar" }
     %i.icon-arrow-left
   = render 'collections_table'
 
 
 
-  
