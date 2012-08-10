@@ -25,12 +25,12 @@ class CollectionsController < ApplicationController
 
   def new
     @collection = Collection.new
-    @repository = Repository.find(params[:repository_id])
+    @repository = Repository.find(params[:repository_id]) rescue Repository.order(:title).first
   end
 
   def create
     @collection = Collection.new(params[:collection])
-    @repository = Repository.find(params[:collection][:repository_id])
+    @repository = Repository.find(params[:collection][:repository_id]) rescue Repository.order(:title).first
     if @collection.save
       redirect_to collection_path(@collection)
     else

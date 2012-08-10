@@ -10,6 +10,16 @@ Feature: Collection description
       | dogs  | 2010-01-01 | 2012-02-02 | true      | true    | Dog stuff   | http://dogs.example.com | Dog files, not so orderly | Dog rights       | Dog restrictions    | Stuff about dogs |
       | cats  | 2011-10-10 |            | false     | true    | Cat stuff   | http://cats.example.com | Cat files, very orderly   | Cat rights       | Cat restrictions    | Stuff about cats |
 
+  Scenario: Change repository of a collection
+    Given the repository titled 'Plays' has collections with fields:
+      | title |
+      | Proof |
+    When I edit the collection titled 'cats'
+    And I select repository 'Plays'
+    And I click on 'Update Collection'
+    Then I should see 'Plays'
+    And the repository titled 'Plays' should have a collection titled 'cats'
+
   Scenario: View a collection
     When I view the collection titled 'dogs'
     Then I should see '2010-01-01'

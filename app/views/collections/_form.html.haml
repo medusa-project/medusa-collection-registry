@@ -3,6 +3,7 @@
     .span8
       = f.input :title, :input_html => {:class => "span6" }
     .span4
+      = f.association :repository, :collection => repository_select_collection, :include_blank => false, :selected => @repository.id
       = f.input :start_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true, :prepend => "$"
       = f.input :end_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true
       = f.input :contact_net_id, :label => 'Contact Person Net ID'
@@ -16,7 +17,6 @@
       = f.input :rights_restrictions, :input_html => { :rows => 2 }
 
       = f.input :notes, :input_html => { :rows => 3 }
-      = f.input :repository_id, :as => :hidden, :input_html => {:value => @repository.id}
 
     .form-actions.span8
       = f.button :submit, :class => 'btn-primary'

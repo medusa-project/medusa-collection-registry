@@ -67,6 +67,10 @@ And /^I select access system '(.*)'$/ do |name|
   select(name, :from => 'collection_access_system_ids')
 end
 
+And /^I select repository '(.*)'$/ do |title|
+  select(title, :from => 'collection_repository_id')
+end
+
 And /^The collection titled '(.*)' should have (\d+) access systems$/ do |title, count|
   Collection.find_by_title(title).access_systems.count.should == count.to_i
 end

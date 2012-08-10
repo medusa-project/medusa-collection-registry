@@ -28,8 +28,11 @@ And /^I should see all of:$/ do |table|
 end
 
 And /^I click on '(.*)'$/ do |link_name|
-  click_link(link_name)
+  click_on(link_name)
 end
+
+
+
 
 
 
