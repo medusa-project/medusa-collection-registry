@@ -15,7 +15,7 @@
       - @repository.collections.each do |collection|
         %tr
           %td #{link_to collection.title, collection}
-          %td #{collection.contact_net_id}
+          %td #{net_id_search_link(collection.contact_net_id)}
           %td #{collection.content_type.try(:name)}
           %td #{collection.total_size}
           %td

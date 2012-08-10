@@ -13,7 +13,7 @@
   - @production_units.each do |production_unit|
     %tr
       %td #{link_to production_unit.title, production_unit}
-      %td #{production_unit.administrator_net_id}
+      %td #{net_id_search_link(production_unit.administrator_net_id)}
       %td #{link_to production_unit.url, production_unit.url}
       %td
         = link_to 'Edit', edit_production_unit_path(production_unit), :class => 'btn btn-mini'

@@ -14,7 +14,7 @@
     - @repositories.each do |repository|
       %tr
         %td #{link_to repository.title, repository}
-        %td #{link_to repository.contact_net_id}
+        %td #{net_id_search_link(repository.contact_net_id)}
         %td #{link_to repository.url, repository.url}
         %td #{repository.total_size}
         %td
