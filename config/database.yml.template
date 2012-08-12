@@ -1,22 +1,32 @@
-# PostgreSQL version 9.x
-#   gem install pg
-#
-#   Ensure the PostgreSQL gem is defined in your Gemfile
-#   gem 'pg'
-development:
-  adapter: postgresql
-  database: medusa_development
-  host: localhost
+sqlite: &sqlite
+  adapter: sqlite3
+  database: db/<%= Rails.env %>.sqlite3
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
-test:
+mysql: &mysql
+  adapter: mysql2
+  username: root
+  password:
+  database: <%= Rails.root.basename.to_s %>_<%= Rails.env %>
+
+postgresql: &postgresql
   adapter: postgresql
-  database: medusa_test
+  username: postgres
+  password:
+  database: <%= Rails.root.basename.to_s %>_<%= Rails.env %>
+  min_messages: ERROR
+
+defaults: &defaults
+  pool: 5
+  timeout: 5000
   host: localhost
+  <<: *<%= ENV['DB'] || "postgresql" %>
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
 
 production:
-  adapter: postgresql
-  database: medusa_production
-  host: localhost
+  <<: *defaults
+  # Change this to erb-echo the production password from /etc/something here.
