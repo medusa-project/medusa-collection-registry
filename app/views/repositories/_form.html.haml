@@ -1,15 +1,19 @@
 = simple_form_for @repository, :html => { :class => 'form-horizontal' } do |f|
-  = f.input :title
-  = f.input :contact_net_id, :label => 'Contact Person Net ID'
-  = f.input :address_1
-  = f.input :address_2
-  = f.input :city
-  = f.input :state
-  = f.input :zip
-  = f.input :phone_number
-  = f.input :email
-  = f.input :url, :label => 'URL'
-  = f.input :notes
-  .form-actions
-    = f.button :submit, :class => 'btn-primary'
-    = link_to t('.cancel', :default => t("helpers.links.cancel")), repositories_path, :class => 'btn'
+  .row
+    .span8
+      = f.input :title, :input_html => {:class => "span6" }
+    .span4
+      = f.input :contact_net_id, :label => 'Contact Person Net ID'
+      = f.input :address_1
+      = f.input :address_2
+      = f.input :city
+      = f.input :state
+      = f.input :zip
+    .span4
+      = f.input :phone_number
+      = f.input :email
+      = f.input :url, :label => 'URL'
+      = f.input :notes, :input_html => { :rows => 3 }
+    .form-actions.span8
+      = f.button :submit, :class => 'btn-primary'
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), repositories_path, :class => 'btn'
