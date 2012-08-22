@@ -11,7 +11,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120801193922) do
+ActiveRecord::Schema.define(:version => 20120822153335) do
+
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
     t.integer  "collection_id"
@@ -40,6 +41,16 @@ ActiveRecord::Schema.define(:version => 20120801193922) do
 
   add_index "assessments", ["author_id"], :name => "index_assessments_on_author_id"
   add_index "assessments", ["collection_id"], :name => "index_assessments_on_collection_id"
+
+  create_table "collection_object_type_joins", :force => true do |t|
+    t.integer  "collection_id"
+    t.integer  "object_type_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "collection_object_type_joins", ["collection_id"], :name => "index_collection_object_type_joins_on_collection_id"
+  add_index "collection_object_type_joins", ["object_type_id"], :name => "index_collection_object_type_joins_on_object_type_id"
 
   create_table "collections", :force => true do |t|
     t.integer  "repository_id"
@@ -88,6 +99,12 @@ ActiveRecord::Schema.define(:version => 20120801193922) do
   add_index "file_groups", ["storage_medium_id"], :name => "index_file_groups_on_storage_medium_id"
 
   create_table "file_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "object_types", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -152,5 +169,13 @@ ActiveRecord::Schema.define(:version => 20120801193922) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "users", :force => true do |t|
+    t.string   "uid"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "users", ["uid"], :name => "index_users_on_uid"
 
 end

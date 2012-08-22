@@ -31,6 +31,10 @@
       %br
       = @collection.content_type.try(:name)
     %p
+      %strong Object Types:
+      %br
+      = @collection.object_types.collect(&:name).join(", ")
+    %p
       %strong Total Size (GB):
       = @collection.total_size
     %p

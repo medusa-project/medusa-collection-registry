@@ -15,7 +15,7 @@ And /^the repository titled '(.*)' should have a collection titled '(.*)'$/ do |
 end
 
 Given /^There is a collection titled '(.*)'$/ do |title|
-  FactoryGirl.create(:collection, :title => title)
+  ensure_collection(title)
 end
 
 Then /^I should see the assessment collection table$/ do
@@ -89,4 +89,33 @@ end
 
 And /^I should see a list of all collections$/ do
   page.should have_selector('table#collections')
+end
+
+And /^the collection titled '(.*)' has object types named:$/ do |title, table|
+  collection = ensure_collection(title)
+  table.headers.each do |name|
+    collection.object_types << ensure_object_type(name)
+  end
+end
+
+And /^I uncheck object type '(.*)'$/ do |name|
+  within('#collection_object_types') do
+    uncheck(name)
+  end
+end
+
+And /^I check object type '(.*)'$/ do |name|
+  within('#collection_object_types') do
+    check(name)
+  end
+end
+
+private
+
+def ensure_collection(title)
+  Collection.find_by_title(title) || FactoryGirl.create(:collection, :title => title)
+end
+
+def ensure_object_type(name)
+  ObjectType.find_by_name(name) || FactoryGirl.create(:object_type, :name => name)
 end

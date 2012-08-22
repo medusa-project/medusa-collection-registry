@@ -3,7 +3,7 @@ class Collection < ActiveRecord::Base
   net_id_person_association(:contact)
   attr_accessible :access_url, :description, :end_date, :file_package_summary, :notes,
                   :ongoing, :published, :repository_id, :rights_restrictions, :rights_statement,
-                  :start_date, :title, :content_type_id, :access_system_ids
+                  :start_date, :title, :content_type_id, :access_system_ids, :object_type_ids
 
   belongs_to :repository
   belongs_to :content_type
@@ -11,6 +11,8 @@ class Collection < ActiveRecord::Base
   has_many :file_groups, :dependent => :destroy
   has_many :access_system_collection_joins, :dependent => :destroy
   has_many :access_systems, :through => :access_system_collection_joins
+  has_many :collection_object_type_joins, :dependent => :destroy
+  has_many :object_types, :through => :collection_object_type_joins
 
   validates_presence_of :title
   validates_uniqueness_of :title, :scope => :repository_id

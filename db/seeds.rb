@@ -29,3 +29,11 @@ end
  'research data', 'metadata'].each do |name|
   ContentType.find_or_create_by_name(name)
 end
+
+#Object types
+['Books and pamphlets', 'Photographs/slides/negatives', 'Music (audio files)',
+ 'Newspapers', 'Posters and broadsides', 'Sheet music and scores', 'Periodicals',
+ 'Prints and drawings', 'Physical artifacts', 'Interactive learning objects',
+ 'Oral histories (audio files)', 'Physical specimens (plants/animals/etc)'].each do |name|
+  ObjectType.find_or_create_by_name(name)
+end

@@ -10,6 +10,7 @@
       = f.association :access_systems, :collection => access_system_select_collection, :html => {:multiple => true}
       = f.input :access_url, :as => :string, :label => 'Access URL'
       = f.input :content_type_id, :collection => content_type_select_collection
+      = f.association :object_types, :as => :check_boxes, :wrapper_html => {:id => 'collection_object_types'}
     .span4
       = f.input :description, :input_html => { :rows => 2 }
       = f.input :file_package_summary, :input_html => { :rows => 2 }
