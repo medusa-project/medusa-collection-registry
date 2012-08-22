@@ -25,7 +25,10 @@ Feature: Collection Object types
     And I should not see 'Periodicals'
 
   Scenario: Create new object type
-    Given PENDING
+    When I edit the collection titled 'Dogs'
+    And I create an object type named 'Code type'
+    Then there should be an object type named 'Code type'
+    And I should see 'Code type'
 
   Scenario: Object types are seeded with common values
   #this is just a spot check - see seed file for all values

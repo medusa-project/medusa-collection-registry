@@ -110,6 +110,13 @@ And /^I check object type '(.*)'$/ do |name|
   end
 end
 
+And /^I create an object type named '(.*)'$/ do |name|
+  within('#new_object_type') do
+    fill_in('Name', :with => name)
+    click_on('Create Object type')
+  end
+end
+
 private
 
 def ensure_collection(title)

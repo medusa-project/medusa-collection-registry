@@ -22,3 +22,8 @@
     .form-actions.span8
       = f.button :submit, :class => 'btn-primary'
       = link_to t('.cancel', :default => t("helpers.links.cancel")), collections_path, :class => 'btn'
+
+%strong New Object Type
+= simple_form_for ObjectType.new, :url => new_object_type_collections_path(:format => :json), :method => :post, :remote => true  do |f|
+  = f.input :name
+  = f.button :submit
