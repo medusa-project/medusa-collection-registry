@@ -1,13 +1,12 @@
-.pull-right
-  = link_to "Back", collections_path, :class => 'btn'
-  = link_to "Edit", edit_collection_path(@collection), :class => 'btn'
-  = link_to "Delete Collection", collection_path(@collection), :method => "delete", :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-danger'
+- model_class = Collection
 
 .page-header
-  %h1 #{@collection.title}
-  %p.lead Repository: #{link_to @collection.repository.title, @collection.repository}
-.row
-  .span4
+  %h1
+    = @collection.title
+    %small Collection
+
+.span3#sidebar
+  .well
     %p
       %strong Start Date:
       %br
@@ -59,8 +58,19 @@
       %br
       = @collection.notes
 
-  .span8
-    = render 'assessments_table'
+    .btn-group
+      = link_to "Back", repository_path(@collection.repository), :class => 'btn'
+      = link_to "Edit", edit_collection_path(@collection), :class => 'btn'
+      = link_to "Delete Collection", collection_path(@collection), :method => "delete", :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-danger'
 
-    = render 'file_groups_table'
+    
+.span9#content 
+  %a.toggles{:href=>"#", :rel => "tooltip", :title => "Hide or show the sidebar" }
+    %i.icon-arrow-left
+    
+  = render 'assessments_table'
+
+  %hr/
+
+  = render 'file_groups_table'
 
