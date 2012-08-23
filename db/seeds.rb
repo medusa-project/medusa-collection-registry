@@ -43,7 +43,7 @@ end
   PreservationPriority.find_or_create_by_name(:name => name, :priority => priority)
 end
 
-#Fix preservatoin priorities for collections that might not have them
+#Fix preservation priorities for collections that might not have them
 Collection.all.each do |c|
   unless c.preservation_priority
     c.preservation_priority = PreservationPriority.default
