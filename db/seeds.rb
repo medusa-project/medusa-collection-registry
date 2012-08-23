@@ -42,3 +42,11 @@ end
 {0.0 => 'migrated', 1.0 => 'low', 2.0 => 'medium', 3.0 => 'high', 4.0 => 'urgent'}.each do |priority, name|
   PreservationPriority.find_or_create_by_name(:name => name, :priority => priority)
 end
+
+#Fix preservatoin priorities for collections that might not have them
+Collection.all.each do |c|
+  unless c.preservation_priority
+    c.preservation_priority = PreservationPriority.default
+    c.save!
+  end
+end

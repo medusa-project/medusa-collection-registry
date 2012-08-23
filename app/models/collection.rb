@@ -21,14 +21,8 @@ class Collection < ActiveRecord::Base
   validates_presence_of :repository_id
   validates_presence_of :preservation_priority_id
 
-  before_validation :set_defaults
-
   def total_size
     self.file_groups.sum(:total_file_size)
-  end
-
-  def set_defaults
-    self.preservation_priority ||= PreservationPriority.default
   end
 
 end
