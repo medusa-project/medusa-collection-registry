@@ -117,6 +117,20 @@ And /^I create an object type named '(.*)'$/ do |name|
   end
 end
 
+And /^The collection titled '(.*)' has preservation priority '(.*)'$/ do |title, priority|
+  collection = Collection.find_by_title(title)
+  collection.preservation_priority = PreservationPriority.find_by_name(priority)
+  collection.save
+end
+
+And /^I select preservation priority '(.*)'$/ do |priority|
+  select(priority, :from => 'collection_preservation_priority_id')
+end
+
+And /^The collection titled '(.*)' should have preservation priority '(.*)'$/ do |title, priority|
+  Collection.find_by_title(title).preservation_priority.name.should == priority
+end
+
 private
 
 def ensure_collection(title)

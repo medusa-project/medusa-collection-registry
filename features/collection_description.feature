@@ -17,8 +17,7 @@ Feature: Collection description
     When I edit the collection titled 'cats'
     And I select repository 'Plays'
     And I click on 'Update Collection'
-    Then I should see 'Plays'
-    And the repository titled 'Plays' should have a collection titled 'cats'
+    Then the repository titled 'Plays' should have a collection titled 'cats'
 
   Scenario: View a collection
     When I view the collection titled 'dogs'
@@ -39,11 +38,6 @@ Feature: Collection description
     Then I should be on the view page for the collection titled 'dogs'
     And I should see 'Puppy stuff'
     And I should not see 'Dog stuff'
-
-  Scenario: Navigate from collection view page to owning repository
-    When I view the collection titled 'dogs'
-    And I click on 'Sample Repo'
-    Then I should be on the view page for the repository titled 'Sample Repo'
 
   Scenario: Navigate from collection view page to its edit page
     When I view the collection titled 'dogs'

@@ -35,6 +35,10 @@
       %br
       = @collection.object_types.collect(&:name).join(", ")
     %p
+      %strong Preservation Priority:
+      %br
+      = @collection.preservation_priority.try(:name)
+    %p
       %strong Total Size (GB):
       = @collection.total_size
     %p
@@ -67,11 +71,11 @@
       = link_to "Edit", edit_collection_path(@collection), :class => 'btn'
       = link_to "Delete Collection", collection_path(@collection), :method => "delete", :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-danger'
 
-    
-.span9#content 
+
+.span9#content
   %a.toggles{:href=>"#", :rel => "tooltip", :title => "Hide or show the sidebar" }
     %i.icon-arrow-left
-    
+
   = render 'assessments_table'
 
   %hr/

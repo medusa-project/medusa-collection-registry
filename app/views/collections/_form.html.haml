@@ -12,11 +12,11 @@
       = f.input :content_type_id, :collection => content_type_select_collection
       = f.association :object_types, :as => :check_boxes, :wrapper_html => {:id => 'collection_object_types'}
     .span4
+      = f.association :preservation_priority, :include_blank => false, :selected => (@collection.preservation_priority.id rescue PreservationPriority.default.id)
       = f.input :description, :input_html => { :rows => 2 }
       = f.input :file_package_summary, :input_html => { :rows => 2 }
       = f.input :rights_statement, :input_html => { :rows => 2 }
       = f.input :rights_restrictions, :input_html => { :rows => 2 }
-
       = f.input :notes, :input_html => { :rows => 3 }
 
     .form-actions.span8
