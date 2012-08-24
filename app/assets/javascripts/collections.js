@@ -11,6 +11,7 @@ $(function () {
     new_checkbox.text(data.name);
     new_checkbox.prepend(input);
     $('#collection_object_types div.controls label').last().after(new_checkbox);
+    $('#newObjectTypeModal').modal("hide");
   });
   $('#new_object_type').on('ajax:complete', function (event, data, status, xhr) {
     if(status == 'error') {

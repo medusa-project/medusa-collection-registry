@@ -1,6 +1,7 @@
 - model_class = Collection
 
 .page-header
+  %p.lead Repository: #{link_to @collection.repository.title, @collection.repository}
   %h1
     = @collection.title
     %small Collection

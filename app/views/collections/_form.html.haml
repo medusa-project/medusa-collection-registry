@@ -1,29 +1,77 @@
 = simple_form_for @collection, :html => { :class => 'form-horizontal' } do |f|
   .row
-    .span8
-      = f.input :title, :input_html => {:class => "span6" }
-    .span4
-      = f.association :repository, :collection => repository_select_collection, :include_blank => false, :selected => @repository.id
-      = f.input :start_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true, :prepend => "$"
-      = f.input :end_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true
-      = f.input :contact_net_id, :label => 'Contact Person Net ID'
-      = f.association :access_systems, :collection => access_system_select_collection, :html => {:multiple => true}
-      = f.input :access_url, :as => :string, :label => 'Access URL'
-      = f.input :content_type_id, :collection => content_type_select_collection
-      = f.association :object_types, :as => :check_boxes, :wrapper_html => {:id => 'collection_object_types'}
-    .span4
-      = f.association :preservation_priority, :include_blank => false, :selected => (@collection.preservation_priority.id rescue PreservationPriority.default.id)
-      = f.input :description, :input_html => { :rows => 2 }
-      = f.input :file_package_summary, :input_html => { :rows => 2 }
-      = f.input :rights_statement, :input_html => { :rows => 2 }
-      = f.input :rights_restrictions, :input_html => { :rows => 2 }
-      = f.input :notes, :input_html => { :rows => 3 }
+    .span3.affix-sidebar
+      %ul.nav.nav-list.affix-sidenav{'data-spy' => 'affix', 'data-offset-top' => '60'}
+        %li
+          %a{:href => '#required'}
+            %i.icon-chevron-right
+            Required Information
+        %li
+          %a{:href => '#about'}
+            %i.icon-chevron-right
+            About this Collection
+        %li
+          %a{:href => '#content'}
+            %i.icon-chevron-right
+            About the content
+        %li
+          %a{:href => '#rights'}
+            %i.icon-chevron-right
+            Rights Information
+        %li
+          %a{:href => '#notes'}
+            %i.icon-chevron-right
+            Notes
 
-    .form-actions.span6
-      = f.button :submit, :class => 'btn-primary'
-      = link_to t('.cancel', :default => t("helpers.links.cancel")), collections_path, :class => 'btn'
+    .span9
+      %section#required
+        %div.page-header
+          %h1 Required Information
+        = f.input :title, :input_html => {:class => "span4" }
+        = f.association :repository, :collection => repository_select_collection, :include_blank => false, :selected => @repository.id
+      %section#about
+        %div.page-header
+          %h1 About this Collection
+        = f.input :description, :input_html => { :rows => 2 }
+        = f.input :start_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true, :prepend => "$"
+        = f.input :end_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true
+        = f.input :contact_net_id, :label => 'Contact Person Net ID'
+        = f.association :access_systems, :collection => access_system_select_collection, :html => {:multiple => true}
+        = f.input :access_url, :as => :string, :label => 'Access URL'
+        = f.association :preservation_priority, :include_blank => false, :selected => (@collection.preservation_priority.id rescue PreservationPriority.default.id)
+      %section#content
+        %div.page-header
+          %h1 About the Content
+        = f.input :content_type_id, :collection => content_type_select_collection
+        = f.input :file_package_summary, :input_html => { :rows => 2 }
+        = f.association :object_types, :as => :check_boxes, :wrapper_html => {:id => 'collection_object_types'}
+        // Button to trigger modal
+        .span2
+          = link_to "Add new type", '#newObjectTypeModal', :role => 'button', 'data-toggle' => 'modal', :class => 'btn btn-primary pull-right'
+      %section#rights
+        %div.page-header
+          %h1 Rights
+        = f.input :rights_statement, :input_html => { :rows => 2 }
+        = f.input :rights_restrictions, :input_html => { :rows => 2 }
+      %section#notes
+        %div.page-header
+          %h1 Notes
+        = f.input :notes, :input_html => { :rows => 3 }
 
-%strong New Object Type
-= simple_form_for ObjectType.new, :url => new_object_type_collections_path(:format => :json), :method => :post, :remote => true  do |f|
-  = f.input :name
-  = f.button :submit
+      .form-actions.span6
+        = f.button :submit, :class => 'btn-primary'
+        = link_to t('.cancel', :default => t("helpers.links.cancel")), collections_path, :class => 'btn'
+
+
+// Modal
+.modal.hide.fade#newObjectTypeModal{:tabindex => '-1', :role => 'dialog', 'aria-labelledby' => 'modalLabel', 'aria-hidden' => 'true'}
+  = simple_form_for ObjectType.new, :url => new_object_type_collections_path(:format => :json), :html => {:method => :post, :class => 'form-search'}, :remote => true  do |f|
+    .modal-header
+      %button{:type => "button", :class => "close", 'data-dismiss' => 'modal', 'aria-hidden' => 'true'}
+        ×
+      %h3#modalLabel Add new object type
+    .modal-body
+      = f.input :name, :input_html => {:placeholder => 'New type'}
+    .modal-footer
+      %button{:class => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Close
+      = f.button :submit
