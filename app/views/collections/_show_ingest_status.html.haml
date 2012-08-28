@@ -1,0 +1,17 @@
+%h3 Ingest status
+%p
+  %strong Ingest state:
+  %br
+  = @collection.ingest_status.state
+%p
+  %strong Staff:
+  %br
+  = net_id_search_links(@collection.ingest_status.staff)
+%p
+  %strong Date:
+  %br
+  = @collection.ingest_status.date
+%p
+  %strong Notes:
+  %br
+  = @collection.ingest_status.notes

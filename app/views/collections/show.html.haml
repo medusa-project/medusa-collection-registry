@@ -71,7 +71,9 @@
       = link_to "Back", repository_path(@collection.repository), :class => 'btn'
       = link_to "Edit", edit_collection_path(@collection), :class => 'btn'
       = link_to "Delete Collection", collection_path(@collection), :method => "delete", :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-danger'
-
+  %hr
+  .well
+    = render 'show_ingest_status'
 
 .span9#content
   %a.toggles{:href=>"#", :rel => "tooltip", :title => "Hide or show the sidebar" }

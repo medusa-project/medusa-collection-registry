@@ -13,3 +13,4 @@ end
 Then /^There should be an external link '(.*)' to the UIUC Net ID search$/ do |net_id|
   page.has_link?(net_id, :href => "http://illinois.edu/ds/search?skinId=0&search_type=userid&search=#{net_id}")
 end
+

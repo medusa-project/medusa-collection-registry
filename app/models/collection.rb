@@ -14,6 +14,7 @@ class Collection < ActiveRecord::Base
   has_many :access_systems, :through => :access_system_collection_joins
   has_many :collection_object_type_joins, :dependent => :destroy
   has_many :object_types, :through => :collection_object_type_joins
+  has_one :ingest_status
   belongs_to :preservation_priority
 
   validates_presence_of :title
@@ -21,8 +22,14 @@ class Collection < ActiveRecord::Base
   validates_presence_of :repository_id
   validates_presence_of :preservation_priority_id
 
+  after_create :ensure_ingest_status
+
   def total_size
     self.file_groups.sum(:total_file_size)
+  end
+
+  def ensure_ingest_status
+    self.ingest_status ||= IngestStatus.new(:state => :unstarted)
   end
 
 end

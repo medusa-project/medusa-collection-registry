@@ -131,6 +131,10 @@ And /^The collection titled '(.*)' should have preservation priority '(.*)'$/ do
   Collection.find_by_title(title).preservation_priority.name.should == priority
 end
 
+Then /^the collection titled '(.*)' has an associated ingest status$/ do |title|
+  Collection.find_by_title(title).ingest_status.class.should == IngestStatus
+end
+
 private
 
 def ensure_collection(title)
