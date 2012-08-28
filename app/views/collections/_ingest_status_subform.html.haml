@@ -1,0 +1,14 @@
+.modal.hide.fade#editIngestStatusModal{:tabindex => '-2', :role => 'dialog', 'aria-labelledby' => 'modalLabel', 'aria-hidden' => 'true'}
+  = simple_form_for @collection.ingest_status, :class => 'form-search', :remote => true do |f|
+    .modal-header
+      %button{:type => "button", :class => "close", 'data-dismiss' => 'modal', 'aria-hidden' => 'true'}
+        ×
+      %h3#modalLabel Edit ingest status
+    .modal-body
+      = f.input :state, :collection => IngestStatus::INGEST_STATUS_STATES, :include_blank => false
+      = f.input :staff, :label => 'Ingest Staff Net Ids (comma separated)'
+      = f.input :date
+      = f.input :notes
+    .modal-footer
+      %button{:class => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Close
+      = f.button :submit
