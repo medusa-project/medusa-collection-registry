@@ -1,5 +1,7 @@
 MedusaRails3::Application.routes.draw do
 
+  get "ingest_statuses/update"
+
   root :to => 'repositories#index'
 
   resources :collections do
@@ -12,6 +14,7 @@ MedusaRails3::Application.routes.draw do
   resources :file_groups
   resources :production_units
   resources :access_systems
+  resources :ingest_statuses
 
   match '/auth/:provider/callback', to: 'sessions#create'
   match '/login', to: 'sessions#new', as: :login

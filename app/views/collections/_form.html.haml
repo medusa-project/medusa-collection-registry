@@ -61,7 +61,7 @@
       .form-actions.span6
         = f.button :submit, :class => 'btn-primary'
         = link_to t('.cancel', :default => t("helpers.links.cancel")), collections_path, :class => 'btn'
-
+        = link_to("Edit Ingest status", '#editIngestStatusModal', :role => 'button', 'data-toggle' => 'modal', :class => 'btn btn-primary pull-right') if @collection.ingest_status
 
 // Modal
 .modal.hide.fade#newObjectTypeModal{:tabindex => '-1', :role => 'dialog', 'aria-labelledby' => 'modalLabel', 'aria-hidden' => 'true'}
@@ -72,6 +72,23 @@
       %h3#modalLabel Add new object type
     .modal-body
       = f.input :name, :input_html => {:placeholder => 'New type'}
+      = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
     .modal-footer
       %button{:class => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Close
       = f.button :submit
+
+- if @collection.ingest_status
+  .modal.hide.fade#editIngestStatusModal{:tabindex => '-2', :role => 'dialog', 'aria-labelledby' => 'modalLabel', 'aria-hidden' => 'true'}
+    = simple_form_for @collection.ingest_status, :class => 'form-search', :remote => true do |f|
+      .modal-header
+        %button{:type => "button", :class => "close", 'data-dismiss' => 'modal', 'aria-hidden' => 'true'}
+          ×
+        %h3#modalLabel Edit ingest status
+      .modal-body
+        = f.input :state, :collection => IngestStatus::INGEST_STATUS_STATES, :include_blank => false
+        = f.input :staff, :label => 'Ingest Staff Net Ids (comma separated)'
+        = f.input :date
+        = f.input :notes
+      .modal-footer
+        %button{:class => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Close
+        = f.button :submit

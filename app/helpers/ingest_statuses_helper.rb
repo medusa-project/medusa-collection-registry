@@ -1,0 +1,2 @@
+module IngestStatusesHelper
+end

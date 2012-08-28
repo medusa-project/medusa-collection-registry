@@ -1,6 +1,8 @@
 class IngestStatus < ActiveRecord::Base
   attr_accessible :collection_id, :date, :notes, :staff, :state
 
+  belongs_to :collection
+
   INGEST_STATUS_STATES = [:unstarted, :started, :complete]
 
   validates_presence_of :collection_id

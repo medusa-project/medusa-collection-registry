@@ -11,3 +11,15 @@ Given /^the collection titled '(.*)' has ingest status with fields:$/ do |title,
   end
   status.save!
 end
+
+And /^I select ingest state '(.*)'$/ do |status|
+  select(status, :from => 'ingest_status_state')
+end
+
+And /^I fill in ingest status fields:$/ do |table|
+  within('#editIngestStatusModal') do
+    table.raw.each do |row|
+      fill_in(row.first, :with => row.last)
+    end
+  end
+end

@@ -43,12 +43,17 @@ class CollectionsController < ApplicationController
   end
 
   def new_object_type
+    @collection = Collection.find(params[:object_type].delete(:collection_id))
     object_type = ObjectType.new(params[:object_type])
     if object_type.save
-      respond_to do |format|
-        format.json do
-          render :json => object_type
+      if request.xhr?
+        respond_to do |format|
+          format.json do
+            render :json => object_type
+          end
         end
+      else
+        redirect_to edit_collection_path(@collection)
       end
     else
       respond_to do |format|

@@ -14,7 +14,7 @@ class Collection < ActiveRecord::Base
   has_many :access_systems, :through => :access_system_collection_joins
   has_many :collection_object_type_joins, :dependent => :destroy
   has_many :object_types, :through => :collection_object_type_joins
-  has_one :ingest_status
+  has_one :ingest_status, :dependent => :destroy
   belongs_to :preservation_priority
 
   validates_presence_of :title

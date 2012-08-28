@@ -11,11 +11,19 @@ $(function () {
     new_checkbox.text(data.name);
     new_checkbox.prepend(input);
     $('#collection_object_types div.controls label').last().after(new_checkbox);
-    $('#newObjectTypeModal').modal("hide");
   });
   $('#new_object_type').on('ajax:complete', function (event, data, status, xhr) {
-    if(status == 'error') {
+    $('#newObjectTypeModal').modal("hide");
+    if (status == 'error') {
       alert('Error creating new object type. May be blank or duplicate.');
+    }
+  });
+
+  $('.edit_ingest_status').on('ajax:complete', function (event, data, status, xhr) {
+    $('#editIngestStatusModal').modal("hide");
+    if(status == 'error') {
+      alert('Unknown error updating ingest status.');
     }
   })
 });
+
