@@ -16,7 +16,7 @@
         %tr
           %td #{link_to collection.title, collection}
           %td #{net_id_search_link(collection.contact_net_id)}
-          %td #{collection.content_type.try(:name)}
+          %td #{collection.content_type_name}
           %td #{collection.total_size}
           %td
             = link_to 'Edit', edit_collection_path(collection), :class => 'btn btn-mini'
