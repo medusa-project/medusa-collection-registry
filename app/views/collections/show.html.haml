@@ -8,18 +8,9 @@
 
 .span3#sidebar
   .well
-    %p
-      %strong Start Date:
-      %br
-      = @collection.start_date
-    %p
-      %strong End Date:
-      %br
-      = @collection.end_date
-    %p
-      %strong Contact Person NetID:
-      %br
-      = net_id_search_link(@collection.contact_net_id)
+    = show_field @collection, :start_date
+    = show_field @collection, :end_date
+    = show_value net_id_search_link(@collection.contact_net_id), 'Contact Person NetID'
     %p
       %strong Access Systems:
       %br
@@ -27,49 +18,17 @@
         %ul#access_systems
           - access_systems.each do |access_system|
             %li #{link_to access_system.name, access_system}
-    %p
-      %strong Content Type:
-      %br
-      = @collection.content_type.try(:name)
-    %p
-      %strong Object Types:
-      %br
-      = @collection.object_types.collect(&:name).join(", ")
-    %p
-      %strong Preservation Priority:
-      %br
-      = @collection.preservation_priority.try(:name)
-    %p
-      %strong Total Size (GB):
-      = @collection.total_size
-    %p
-      %strong Description:
-      %br
-      = @collection.description
-    %p
-      %strong Private description:
-      %br
-      = @collection.private_description
-    %p
-      %strong Access URL:
-      %br
-      = @collection.access_url
-    %p
-      %strong File Package Summary:
-      %br
-      = @collection.file_package_summary
-    %p
-      %strong Rights Statement:
-      %br
-      = @collection.rights_statement
-    %p
-      %strong Rights Restrictions:
-      %br
-      = @collection.rights_restrictions
-    %p
-      %strong Notes:
-      %br
-      = @collection.notes
+    = show_field @collection, :content_type_name, 'Content Type'
+    = show_field @collection, :object_type_names, 'Object Types'
+    = show_field @collection, :preservation_priority_name, 'Preservation Priority'
+    = show_field @collection, :total_size, 'Total Size (GB)'
+    = show_field @collection, :description
+    = show_field @collection, :private_description
+    = show_field @collection, :access_url, 'Access URL'
+    = show_field @collection, :file_package_summary
+    = show_field @collection, :rights_statement
+    = show_field @collection, :rights_restrictions
+    = show_field @collection, :notes
 
     .btn-group
       = link_to "Back", repository_path(@collection.repository), :class => 'btn'

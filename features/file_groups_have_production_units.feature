@@ -19,7 +19,7 @@ Feature: Production Units for File Groups
     And I select the production unit 'Scraping'
     And I press 'Update File group'
     Then I should see 'Scraping'
-    And I should see 'Production unit'
+    And I should see 'Production Unit'
     And The file group with location 'Grainger' for the collection titled 'Dogs' should have production unit titled 'Scraping'
 
   Scenario: Navigate from a file group to its production unit

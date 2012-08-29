@@ -7,35 +7,11 @@
   %p.lead Collection: #{link_to @collection.title, @collection}
 .row
   .span8
-    %p
-      %strong Production unit:
-      %br
-      = link_to(@file_group.production_unit.title, @file_group.production_unit) if @file_group.production_unit
-    %p
-      %strong File type:
-      %br
-      = @file_group.file_type.try(:name)
-    %p
-      %strong File location:
-      %br
-      = @file_group.file_location
-    %p
-      %strong File format:
-      %br
-      = @file_group.file_format
-    %p
-      %strong Storage medium:
-      %br
-      = @file_group.storage_medium.try(:name)
-    %p
-      %strong Total file size:
-      %br
-        #{@file_group.total_file_size} GB
-    %p
-      %strong Total files:
-      %br
-      = @file_group.total_files
-    %p
-      %strong Last access date:
-      %br
-      = @file_group.last_access_date
+    = show_value((link_to(@file_group.production_unit.title, @file_group.production_unit) if @file_group.production_unit), 'Production Unit')
+    = show_field @file_group, :file_type_name, 'File type'
+    = show_field @file_group, :file_location
+    = show_field @file_group, :file_format
+    = show_field @file_group, :storage_medium_name
+    = show_value "#{@file_group.total_file_size} GB", 'Total file size:'
+    = show_field @file_group, :total_files
+    = show_field @file_group, :last_access_date

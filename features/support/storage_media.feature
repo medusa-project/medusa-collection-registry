@@ -14,4 +14,4 @@ Feature: Storage media
     When I select storage medium 'file server'
     And I press 'Update File group'
     Then I should see 'file server'
-    And I should see 'Storage medium'
+    And I should see 'Storage Medium'

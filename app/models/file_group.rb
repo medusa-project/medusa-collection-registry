@@ -5,4 +5,13 @@ class FileGroup < ActiveRecord::Base
   belongs_to :production_unit
   belongs_to :storage_medium
   belongs_to :file_type
+
+  def file_type_name
+    self.file_type.try(:name)
+  end
+
+  def storage_medium_name
+    self.storage_medium.try(:name)
+  end
+
 end

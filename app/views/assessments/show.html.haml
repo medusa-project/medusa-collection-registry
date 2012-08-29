@@ -8,15 +8,6 @@
 
 .row
   .span8
-    %p
-      %strong Author Net ID:
-      %br
-      = net_id_search_link(@assessment.author_net_id)
-    %p
-      %strong Preservation Risks:
-      %br
-      = @assessment.preservation_risks
-    %p
-      %strong Notes:
-      %br
-      = @assessment.notes
+    = show_value net_id_search_link(@assessment.author_net_id), 'Author Net ID'
+    = show_field @assessment, :preservation_risks
+    = show_field @assessment, :notes

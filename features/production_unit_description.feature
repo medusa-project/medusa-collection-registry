@@ -18,7 +18,7 @@ Feature: Production Unit description
       | City         | Champaign                   |
       | State        | Illinois                    |
       | Zip          | 61820                       |
-      | Phone number | 555-1234                    |
+      | Phone Number | 555-1234                    |
       | Email        | scraping@example.com        |
       | URL          | http://scraping.example.com |
       | Notes        | Archiving web content       |

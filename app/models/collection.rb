@@ -32,4 +32,16 @@ class Collection < ActiveRecord::Base
     self.ingest_status ||= IngestStatus.new(:state => :unstarted)
   end
 
+  def content_type_name
+    self.content_type.try(:name)
+  end
+
+  def object_type_names
+    self.object_types.collect(&:name).join(', ')
+  end
+
+  def preservation_priority_name
+    self.preservation_priority.try(:name)
+  end
+
 end

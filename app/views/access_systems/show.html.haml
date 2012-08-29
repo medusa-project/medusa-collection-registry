@@ -8,7 +8,4 @@
 
 .row
   .span8
-    %p
-      %strong Name:
-      %br
-      = @access_system.name
+    = show_field @access_system, :name

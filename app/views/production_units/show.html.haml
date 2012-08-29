@@ -8,43 +8,13 @@
 
 .row
   .span8
-    %p
-      %strong Administrator Net ID:
-      %br
-      = net_id_search_link(@production_unit.administrator_net_id)
-    %p
-      %strong Address 1:
-      %br
-      = @production_unit.address_1
-    %p
-      %strong Address 2:
-      %br
-      = @production_unit.address_2
-    %p
-      %strong City:
-      %br
-      = @production_unit.city
-    %p
-      %strong State:
-      %br
-      = @production_unit.state
-    %p
-      %strong Zip:
-      %br
-      = @production_unit.zip
-    %p
-      %strong Phone number:
-      %br
-      = @production_unit.phone_number
-    %p
-      %strong Email:
-      %br
-      = @production_unit.email
-    %p
-      %strong URL:
-      %br
-      = link_to @production_unit.url, @production_unit.url
-    %p
-      %strong Notes:
-      %br
-      = @production_unit.notes
+    = show_value net_id_search_link(@production_unit.administrator_net_id), 'Administrator Net ID'
+    = show_field @production_unit, :address_1
+    = show_field @production_unit, :address_2
+    = show_field @production_unit, :city
+    = show_field @production_unit, :state
+    = show_field @production_unit, :zip
+    = show_field @production_unit, :phone_number
+    = show_field @production_unit, :email
+    = show_value link_to(@production_unit.url, @production_unit.url), 'URL'
+    = show_field @production_unit, :notes
