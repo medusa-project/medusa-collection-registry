@@ -1,7 +1,7 @@
 require 'net_id_person_associator'
 class Collection < ActiveRecord::Base
   net_id_person_association(:contact)
-  attr_accessible :access_url, :description, :end_date, :file_package_summary, :notes,
+  attr_accessible :access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
                   :ongoing, :published, :repository_id, :rights_restrictions, :rights_statement,
                   :start_date, :title, :content_type_id, :access_system_ids, :object_type_ids,
                   :preservation_priority_id

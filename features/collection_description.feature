@@ -6,9 +6,9 @@ Feature: Collection description
   Background:
     Given I am logged in
     And the repository titled 'Sample Repo' has collections with fields:
-      | title | start_date | end_date   | published | ongoing | description | access_url              | file_package_summary      | rights_statement | rights_restrictions | notes            |
-      | dogs  | 2010-01-01 | 2012-02-02 | true      | true    | Dog stuff   | http://dogs.example.com | Dog files, not so orderly | Dog rights       | Dog restrictions    | Stuff about dogs |
-      | cats  | 2011-10-10 |            | false     | true    | Cat stuff   | http://cats.example.com | Cat files, very orderly   | Cat rights       | Cat restrictions    | Stuff about cats |
+      | title | start_date | end_date   | published | ongoing | description | private_description | access_url              | file_package_summary      | rights_statement | rights_restrictions | notes            |
+      | dogs  | 2010-01-01 | 2012-02-02 | true      | true    | Dog stuff   | private dog info    | http://dogs.example.com | Dog files, not so orderly | Dog rights       | Dog restrictions    | Stuff about dogs |
+      | cats  | 2011-10-10 |            | false     | true    | Cat stuff   | private cat info    | http://cats.example.com | Cat files, very orderly   | Cat rights       | Cat restrictions    | Stuff about cats |
 
   Scenario: Change repository of a collection
     Given the repository titled 'Plays' has collections with fields:
@@ -24,6 +24,7 @@ Feature: Collection description
     Then I should see '2010-01-01'
     And I should see '2012-02-02'
     And I should see 'Dog stuff'
+    And I should see 'private dog info'
     And I should see 'http://dogs.example.com'
     And I should see 'Dog files, not so orderly'
     And I should see 'Dog rights'
@@ -33,10 +34,12 @@ Feature: Collection description
   Scenario: Edit a collection
     When I edit the collection titled 'dogs'
     And I fill in fields:
-      | Description | Puppy stuff |
+      | Description         | Puppy stuff          |
+      | Private description | Internal puppy stuff |
     And I press 'Update Collection'
     Then I should be on the view page for the collection titled 'dogs'
     And I should see 'Puppy stuff'
+    And I should see 'Internal puppy stuff'
     And I should not see 'Dog stuff'
 
   Scenario: Navigate from collection view page to its edit page
@@ -53,11 +56,13 @@ Feature: Collection description
   Scenario: Create a new collection
     When I start a new collection for the repository titled 'Sample Repo'
     And I fill in fields:
-      | Title       | reptiles      |
-      | Description | Reptile stuff |
+      | Title               | reptiles      |
+      | Description         | Reptile stuff |
+      | Private description | Snake farm    |
     And I press 'Create Collection'
     Then I should be on the view page for the collection titled 'reptiles'
     And I should see 'Reptile stuff'
+    And I should see 'Snake farm'
     And the repository titled 'Sample Repo' should have a collection titled 'reptiles'
 
   Scenario: Index of all collections

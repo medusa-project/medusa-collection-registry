@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120828182138) do
+ActiveRecord::Schema.define(:version => 20120829153644) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20120828182138) do
     t.integer  "content_type_id"
     t.integer  "contact_id"
     t.integer  "preservation_priority_id"
+    t.text     "private_description"
   end
 
   add_index "collections", ["contact_id"], :name => "index_collections_on_contact_id"
