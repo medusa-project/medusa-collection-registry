@@ -9,4 +9,4 @@ Feature: Net ID links
 
   Scenario: Link repository manager
     When I view the repository titled 'Animals'
-    Then There should be an external link 'hding2' to the UIUC Net ID search
+    Then I should see an external link 'hding2' to the UIUC Net ID search

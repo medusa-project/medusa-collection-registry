@@ -9,8 +9,8 @@ Feature: Assessment description
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has assessments with fields:
-      | date       | preservation_risks | notes            |
-      | 2012-01-09 | Old formats        | Pictures of dogs |
+      | date       | preservation_risks                           | notes                                      |
+      | 2012-01-09 | Old formats. http://preservation.example.com | Pictures of dogs. https://dogs.example.com |
 
   Scenario: View an assessment
     When I view the assessment with date '2012-01-09' for the collection titled 'Dogs'
@@ -67,3 +67,8 @@ Feature: Assessment description
     And I press 'Update Assessment'
     Then I should see 'wingram2'
     And There should be a person with net ID 'wingram2'
+
+  Scenario: Auto link links from notes and preservation risks
+    When I view the assessment with date '2012-01-09' for the collection titled 'Dogs'
+    Then I should see a link to 'http://preservation.example.com'
+    And I should see a link to 'https://dogs.example.com'

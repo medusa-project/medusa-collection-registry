@@ -10,7 +10,13 @@ When /^I click on '(.*)' in the global navigation bar$/ do |name|
   within('#global-navigation') {click_link name}
 end
 
-Then /^There should be an external link '(.*)' to the UIUC Net ID search$/ do |net_id|
-  page.has_link?(net_id, :href => "http://illinois.edu/ds/search?skinId=0&search_type=userid&search=#{net_id}")
+Then /^I should see an external link '(.*)' to the UIUC Net ID search$/ do |net_id|
+  #page.has_link?(net_id, :href => "http://illinois.edu/ds/search?skinId=0&search_type=userid&search=#{net_id}").should be_true
+  page.should have_link(net_id, :href => "http://illinois.edu/ds/search?skinId=0&search_type=userid&search=#{net_id}")
+end
+
+Then /^I should see a link to '(.*)'$/ do |url|
+  #page.has_link?(url, :href => url).should be_true
+  page.should have_link(url)
 end
 

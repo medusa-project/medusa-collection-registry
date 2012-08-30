@@ -24,6 +24,14 @@ class Collection < ActiveRecord::Base
 
   after_create :ensure_ingest_status
 
+  [:description, :private_description, :notes].each do |field|
+    auto_html_for field do
+      html_escape
+      link :target => "_blank"
+    end
+  end
+
+
   def total_size
     self.file_groups.sum(:total_file_size)
   end

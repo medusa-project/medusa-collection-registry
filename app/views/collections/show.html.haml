@@ -22,13 +22,13 @@
     = show_field @collection, :object_type_names, 'Object Types'
     = show_field @collection, :preservation_priority_name, 'Preservation Priority'
     = show_field @collection, :total_size, 'Total Size (GB)'
-    = show_field @collection, :description
-    = show_field @collection, :private_description
+    = show_field @collection, :description_html, 'Description'
+    = show_field @collection, :private_description_html, 'Private Description'
     = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
     = show_field @collection, :file_package_summary
     = show_field @collection, :rights_statement
     = show_field @collection, :rights_restrictions
-    = show_field @collection, :notes
+    = show_field @collection, :notes_html, 'Notes'
 
     .btn-group
       = link_to "Back", repository_path(@collection.repository), :class => 'btn'

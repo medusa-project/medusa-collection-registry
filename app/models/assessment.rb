@@ -4,4 +4,12 @@ class Assessment < ActiveRecord::Base
 
   attr_accessible :collection_id, :date, :notes, :preservation_risks
   belongs_to :collection
+
+  [:notes, :preservation_risks].each do |field|
+    auto_html_for field do
+      html_escape
+      link :target => "_blank"
+    end
+  end
+
 end

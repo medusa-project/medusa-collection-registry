@@ -8,7 +8,7 @@ Feature: Collection description
     And the repository titled 'Sample Repo' has collections with fields:
       | title | start_date | end_date   | published | ongoing | description | private_description | access_url              | file_package_summary      | rights_statement | rights_restrictions | notes            |
       | dogs  | 2010-01-01 | 2012-02-02 | true      | true    | Dog stuff   | private dog info    | http://dogs.example.com | Dog files, not so orderly | Dog rights       | Dog restrictions    | Stuff about dogs |
-      | cats  | 2011-10-10 |            | false     | true    | Cat stuff   | private cat info    | http://cats.example.com | Cat files, very orderly   | Cat rights       | Cat restrictions    | Stuff about cats |
+      | cats  | 2011-10-10 |            | false     | true    | Cat stuff. http://description.example.com   | private cat info. http://private.example.com    | http://cats.example.com | Cat files, very orderly   | Cat rights       | Cat restrictions    | Stuff about cats. https://notes.example.com |
 
   Scenario: Change repository of a collection
     Given the repository titled 'Plays' has collections with fields:
@@ -87,3 +87,9 @@ Feature: Collection description
     And I press 'Update Collection'
     Then I should see 'hding2'
     And There should be a person with net ID 'hding2'
+
+  Scenario: Auto link links from description fields and notes
+    When I view the collection titled 'cats'
+    Then I should see a link to 'http://private.example.com'
+    Then I should see a link to 'http://description.example.com'
+    Then I should see a link to 'https://notes.example.com'

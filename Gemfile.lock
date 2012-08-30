@@ -53,6 +53,9 @@ GEM
       nokogiri (>= 1.4.0)
     archive-tar-minitar (0.5.2)
     arel (3.0.2)
+    auto_html (1.6.0)
+      redcarpet (~> 2.0)
+      rinku (~> 1.5.0)
     backports (2.6.2)
     builder (3.0.0)
     capistrano (2.12.0)
@@ -200,8 +203,10 @@ GEM
       rdf (>= 0.3.4)
     rdoc (3.12)
       json (~> 1.4)
+    redcarpet (2.1.1)
     rest-client (1.6.7)
       mime-types (>= 1.16)
+    rinku (1.5.1)
     rsolr (1.0.8)
       builder (>= 2.1.2)
     rspec (2.11.0)
@@ -313,6 +318,7 @@ PLATFORMS
 
 DEPENDENCIES
   active-fedora
+  auto_html
   capistrano
   coffee-rails (~> 3.2.1)
   cucumber-rails

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120829153644) do
+ActiveRecord::Schema.define(:version => 20120830210252) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -34,9 +34,11 @@ ActiveRecord::Schema.define(:version => 20120829153644) do
     t.text     "preservation_risks"
     t.text     "notes"
     t.integer  "collection_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
     t.integer  "author_id"
+    t.text     "notes_html"
+    t.text     "preservation_risks_html"
   end
 
   add_index "assessments", ["author_id"], :name => "index_assessments_on_author_id"
@@ -71,6 +73,9 @@ ActiveRecord::Schema.define(:version => 20120829153644) do
     t.integer  "contact_id"
     t.integer  "preservation_priority_id"
     t.text     "private_description"
+    t.text     "notes_html"
+    t.text     "description_html"
+    t.text     "private_description_html"
   end
 
   add_index "collections", ["contact_id"], :name => "index_collections_on_contact_id"
@@ -151,6 +156,7 @@ ActiveRecord::Schema.define(:version => 20120829153644) do
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "administrator_id"
+    t.text     "notes_html"
   end
 
   add_index "production_units", ["administrator_id"], :name => "index_production_units_on_administrator_id"
@@ -169,6 +175,7 @@ ActiveRecord::Schema.define(:version => 20120829153644) do
     t.string   "phone_number"
     t.string   "email"
     t.integer  "contact_id"
+    t.text     "notes_html"
   end
 
   add_index "repositories", ["contact_id"], :name => "index_repositories_on_contact_id"

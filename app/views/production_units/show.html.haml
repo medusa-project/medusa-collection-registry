@@ -17,4 +17,4 @@
     = show_field @production_unit, :phone_number
     = show_field @production_unit, :email
     = show_value link_to_external(@production_unit.url, @production_unit.url), 'URL'
-    = show_field @production_unit, :notes
+    = show_field @production_unit, :notes_html, 'Notes'

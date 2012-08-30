@@ -8,6 +8,11 @@ class Repository < ActiveRecord::Base
   validates_uniqueness_of :title
   validates_presence_of :title
 
+  auto_html_for :notes do
+    html_escape
+    link :target => "_blank"
+  end
+
   def total_size
     self.collections.collect {|c| c.total_size}.sum
   end

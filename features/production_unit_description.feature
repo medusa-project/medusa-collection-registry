@@ -7,21 +7,21 @@ Feature: Production Unit description
     Given I am logged in
     And I have production_units with fields:
       | title    | address_1      | address_2 | city   | state    | zip   | phone_number | email                | url                         | notes                |
-      | Scanning | 100 Elm Street | Suite 10  | Urbana | Illinois | 61801 | 555-2345     | scanning@example.com | http://scanning.example.com | They scan stuff here |
+      | Scanning | 100 Elm Street | Suite 10  | Urbana | Illinois | 61801 | 555-2345     | scanning@example.com | http://scanning.example.com | They scan stuff here. http://notes.example.com |
 
   Scenario: Create production unit
     When I go to the new production unit page
     And I fill in fields:
-      | Title        | Scraping                    |
-      | Address 1    | 200 Oak Street              |
-      | Address 2    |                             |
-      | City         | Champaign                   |
-      | State        | Illinois                    |
-      | Zip          | 61820                       |
-      | Phone Number | 555-1234                    |
-      | Email        | scraping@example.com        |
-      | URL          | http://scraping.example.com |
-      | Notes        | Archiving web content       |
+      | Title        | Scraping                                           |
+      | Address 1    | 200 Oak Street                                     |
+      | Address 2    |                                                    |
+      | City         | Champaign                                          |
+      | State        | Illinois                                           |
+      | Zip          | 61820                                              |
+      | Phone Number | 555-1234                                           |
+      | Email        | scraping@example.com                               |
+      | URL          | http://scraping.example.com                        |
+      | Notes        | Archiving web content |
     And I press 'Create Production unit'
     Then A production unit with the title 'Scraping' should exist
     And I should see all of:
@@ -98,3 +98,7 @@ Feature: Production Unit description
     And I press 'Update Production unit'
     Then I should see 'hding2'
     And There should be a person with net ID 'hding2'
+
+  Scenario: Auto link from the notes text
+    When I view the production unit titled 'Scanning'
+    Then I should see a link to 'http://notes.example.com'

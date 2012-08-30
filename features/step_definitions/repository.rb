@@ -36,6 +36,10 @@ And /^the repository titled '(.*)' has collections with fields:$/ do |repository
   end
 end
 
+When /^the repository titled '(.*)' has been deleted$/ do |title|
+  Repository.find_by_title(title).destroy
+end
+
 Then /^I should see the repository collection table$/ do
   page.should have_selector('table#collections')
 end

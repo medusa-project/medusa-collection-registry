@@ -10,6 +10,11 @@ class ProductionUnit < ActiveRecord::Base
   has_many :file_groups
   before_destroy :destroyable?
 
+  auto_html_for :notes do
+      html_escape
+      link :target => "_blank"
+    end
+
   def destroyable?
     self.file_groups.count == 0
   end

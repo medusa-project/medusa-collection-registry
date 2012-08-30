@@ -8,7 +8,7 @@ Feature: Repository description
     And I have repositories with fields:
       | title    | notes            |
       | Sample 1 | Some notes       |
-      | Sample 2 | Some other notes |
+      | Sample 2 | Some other notes. http://animals.example.com. More notes. |
 
   Scenario: Create repository
     When I go to the repository creation page
@@ -58,7 +58,8 @@ Feature: Repository description
     Then I should be on the view page for the repository titled 'Sample 1'
 
   Scenario: Navigate from index page to edit page
-    When I go to the repository index page
+    When the repository titled 'Sample 2' has been deleted
+    And I go to the repository index page
     And I click on 'Edit'
     Then I should be on the edit page for the repository titled 'Sample 1'
 
@@ -85,3 +86,7 @@ Feature: Repository description
     And I press 'Update Repository'
     Then I should see 'hding2'
     And There should be a person with net ID 'hding2'
+
+  Scenario: Automatically convert things that look like links in notes to links in show view
+    When I view the repository titled 'Sample 2'
+    Then I should see a link to 'http://animals.example.com'
