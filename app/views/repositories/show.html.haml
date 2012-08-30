@@ -15,7 +15,7 @@
     = show_field @repository, :zip
     = show_field @repository, :phone_number
     = show_field @repository, :email
-    = show_value link_to(@repository.url, @repository.url), 'URL'
+    = show_value link_to_external(@repository.url, @repository.url), 'URL'
     = show_field @repository, :notes
     = show_field @repository, :total_size, 'Total Size (GB)'
     .btn-group

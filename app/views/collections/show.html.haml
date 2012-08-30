@@ -24,7 +24,7 @@
     = show_field @collection, :total_size, 'Total Size (GB)'
     = show_field @collection, :description
     = show_field @collection, :private_description
-    = show_field @collection, :access_url, 'Access URL'
+    = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
     = show_field @collection, :file_package_summary
     = show_field @collection, :rights_statement
     = show_field @collection, :rights_restrictions

@@ -19,7 +19,16 @@ module ApplicationHelper
   end
 
   def link_to_external(name, url, opts = {})
-    link_to name, url, opts.merge(:target => '_blank')
+    link_to name, external_url(url), opts.merge(:target => '_blank')
+  end
+
+  #if url doesn't contain the protocol then add it here
+  def external_url(url)
+    if url.blank?
+      ''
+    else
+      url.match(/^http(s?):\/\//) ? url : "http://#{url}"
+    end
   end
 
   #standard way to render a value in a show view

@@ -15,7 +15,7 @@
       %tr
         %td #{link_to repository.title, repository}
         %td #{net_id_search_link(repository.contact_net_id)}
-        %td #{link_to repository.url, repository.url}
+        %td #{link_to_external repository.url, repository.url}
         %td #{repository.total_size}
         %td
           = link_to 'Edit', edit_repository_path(repository), :class => 'btn btn-mini'
