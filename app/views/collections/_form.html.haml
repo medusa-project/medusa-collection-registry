@@ -16,7 +16,7 @@
         = f.input :start_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true, :prepend => "$"
         = f.input :end_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true
         = f.input :contact_net_id, :label => 'Contact Person Net ID'
-        = f.association :access_systems, :collection => access_system_select_collection, :html => {:multiple => true}
+        = f.association :access_systems, :collection => access_system_select_collection, :html => {:multiple => true}, :as => :check_boxes
         = f.input :access_url, :as => :string, :label => 'Access URL'
         = f.association :preservation_priority, :include_blank => false, :selected => (@collection.preservation_priority.id rescue PreservationPriority.default.id)
       %section#content

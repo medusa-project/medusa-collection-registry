@@ -63,8 +63,8 @@ When /^I edit the collection titled '(.*)'$/ do |title|
   visit edit_collection_path(Collection.find_by_title(title))
 end
 
-And /^I select access system '(.*)'$/ do |name|
-  select(name, :from => 'collection_access_system_ids')
+And /^I check access system '(.*)'$/ do |name|
+  check(name)
 end
 
 And /^I select repository '(.*)'$/ do |title|
