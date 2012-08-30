@@ -1,7 +1,7 @@
 .pull-right
   = link_to 'Back', production_units_path, :class => 'btn'
   = link_to 'Edit', edit_production_unit_path(@production_unit), :class => 'btn'
-  = link_to 'Delete Production Unit', @production_unit, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-danger'
+  = link_to 'Delete Production Unit', @production_unit, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
 
 .page-header
   %h1 #{@production_unit.title}

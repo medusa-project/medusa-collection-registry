@@ -30,7 +30,7 @@ module ApplicationHelper
       url.match(/^http(s?):\/\//) ? url : "http://#{url}"
     end
   end
-  
+
   #standard way to render a value in a show view
   def show_value(value, label)
     render 'shared/show_value', :label => label, :value => value
@@ -40,5 +40,9 @@ module ApplicationHelper
   def show_field(model, field, label = nil)
     label ||= field.to_s.titlecase
     show_value(model.send(field), label)
+  end
+
+  def generic_confirm_message
+    'This is irreversible - are you sure?'
   end
 end

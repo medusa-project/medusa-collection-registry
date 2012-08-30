@@ -11,4 +11,8 @@ module CollectionsHelper
   def repository_select_collection
     Repository.order(:title).collect {|repository| [repository.title, repository.id]}
   end
+
+  def collection_confirm_message
+    'This is irreversible. Associated assessments and file groups will also be deleted.'
+  end
 end

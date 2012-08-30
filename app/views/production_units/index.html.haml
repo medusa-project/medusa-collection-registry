@@ -17,6 +17,6 @@
       %td #{link_to_external production_unit.url, production_unit.url}
       %td
         = link_to 'Edit', edit_production_unit_path(production_unit), :class => 'btn btn-mini'
-        = link_to 'Delete', production_unit, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-mini btn-danger'
+        = link_to 'Delete', production_unit, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-mini btn-danger'
 
 = link_to 'New Production Unit', new_production_unit_path, :class => 'btn btn-primary'

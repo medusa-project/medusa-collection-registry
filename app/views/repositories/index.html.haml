@@ -19,6 +19,6 @@
         %td #{repository.total_size}
         %td
           = link_to 'Edit', edit_repository_path(repository), :class => 'btn btn-mini'
-          = link_to 'Delete', repository_path(repository), :method => :delete, :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-mini btn-danger'
+          = link_to 'Delete', repository_path(repository), :method => :delete, :data => { :confirm => repository_confirm_message}, :class => 'btn btn-mini btn-danger'
 
 = link_to "New Repository", new_repository_path, :class => 'btn btn-primary'

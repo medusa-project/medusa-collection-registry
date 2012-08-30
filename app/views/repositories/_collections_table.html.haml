@@ -20,4 +20,4 @@
           %td #{collection.total_size}
           %td
             = link_to 'Edit', edit_collection_path(collection), :class => 'btn btn-mini'
-            = link_to 'Delete', collection, :method => :delete, :data => { :confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-mini btn-danger'
+            = link_to 'Delete', collection, :method => :delete, :data => { :confirm => collection_confirm_message}, :class => 'btn btn-mini btn-danger'
