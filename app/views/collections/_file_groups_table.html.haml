@@ -27,5 +27,6 @@
         %td #{file_group.last_access_date}
         %td
           = link_to 'View', file_group, :class => 'btn btn-mini'
+          = link_to 'Edit', edit_file_group_path(file_group), :class => 'btn btn-mini'
           = link_to 'Delete', file_group, :method => :delete, :data => {:confirm => 'This is irreversible - are you sure?'}, :class => 'btn btn-mini btn-danger'
 

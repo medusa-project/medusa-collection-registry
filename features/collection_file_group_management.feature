@@ -27,3 +27,8 @@ Feature: File Group Management
     When I view the collection titled 'Dogs'
     And I click on 'View' in the file groups table
     Then I should be on the view page for the file group with location 'Main Library' for the collection titled 'Dogs'
+
+  Scenario: Edit file group from collection
+    When I view the collection titled 'Dogs'
+    And I click on 'Edit' in the file groups table
+    Then I should be on the edit page for the file group with location 'Main Library' for the collection titled 'Dogs'
