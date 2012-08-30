@@ -7,7 +7,7 @@ module ApplicationHelper
     if net_id.blank?
       ''
     else
-      link_to net_id, net_id_search_url(net_id), :target => '_blank', :class => 'net-id-search'
+      link_to_external net_id, net_id_search_url(net_id), :class => 'net-id-search'
     end
   end
 
@@ -16,6 +16,10 @@ module ApplicationHelper
     net_ids.split(',').collect do |net_id|
       net_id_search_link(net_id.strip)
     end.join(', ').html_safe
+  end
+
+  def link_to_external(name, url, opts = {})
+    link_to name, url, opts.merge(:target => '_blank')
   end
 
   #standard way to render a value in a show view
