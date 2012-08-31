@@ -13,7 +13,7 @@ module FileGroupsHelper
   end
 
   def file_types_select_collection
-    FileType.all.collect do |type|
+    FileType.order(:name).all.collect do |type|
       [type.name, type.id]
     end
   end
