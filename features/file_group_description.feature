@@ -4,7 +4,7 @@ Feature: File Group description
   I want to edit file group information
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And the repository titled 'Animals' has collections with fields:
       | title |
       | Dogs  |

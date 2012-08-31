@@ -4,7 +4,7 @@ Feature: Production Units for File Groups
   I want file groups to track their production unit
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And I have production_units with fields:
       | title    |
       | Scanning |

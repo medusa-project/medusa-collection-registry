@@ -4,7 +4,7 @@ Feature: File type
   I want to be able to record the type (purpose) of files in a file group
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
 
   Scenario: Some values are provided by default
     Given Nothing

@@ -2,8 +2,16 @@ Given /^I am logged in as '(.*)'$/ do |uid|
   login_user(:uid => uid)
 end
 
-Given /^I am logged in$/ do
-  login_user
+#Given /^I am logged in$/ do
+#  login_user
+#end
+
+Given /^I am logged in as a visitor$/ do
+  login_user(:uid => 'visitor')
+end
+
+Given /^I am logged in as an admin$/ do
+  login_user(:uid => 'admin')
 end
 
 Given /^I am not logged in$/ do

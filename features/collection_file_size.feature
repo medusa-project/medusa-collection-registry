@@ -4,7 +4,7 @@ Feature: Collection File Size
   I want to be able to see the total size of collections
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And the repository titled 'Animals' has collections with fields:
       | title |
       | Dogs  |

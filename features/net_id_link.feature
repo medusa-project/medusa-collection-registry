@@ -4,7 +4,7 @@ Feature: Net ID links
   I want to be able to get information about UIUC actors on the collections
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And the repository titled 'Animals' is managed by 'hding2'
 
   Scenario: Link repository manager

@@ -4,7 +4,7 @@ Feature: Production Unit description
   I want to create and edit descriptive information about production units
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And I have production_units with fields:
       | title    | address_1      | address_2 | city   | state    | zip   | phone_number | email                | url                         | notes                |
       | Scanning | 100 Elm Street | Suite 10  | Urbana | Illinois | 61801 | 555-2345     | scanning@example.com | http://scanning.example.com | They scan stuff here. http://notes.example.com |

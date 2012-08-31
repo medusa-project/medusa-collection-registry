@@ -4,7 +4,7 @@ Feature: Storage media
   I want to track media used to store various file groups
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
 
   Scenario: Some values are provided by default
     Then There should be standard default storage media

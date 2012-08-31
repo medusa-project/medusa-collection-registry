@@ -4,7 +4,7 @@ Feature: Access Systems
   I want to track the access systems used by a collection
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And The access system named 'ContentDM' exists
     And The access system named 'Dspace' exists
 

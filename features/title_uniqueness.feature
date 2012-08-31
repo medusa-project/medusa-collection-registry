@@ -4,7 +4,7 @@ Feature: Title uniqueness and presence
   I want duplicate titles to be forbidden
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And the repository titled 'Animals' has collections with fields:
       | title |
       | Dogs  |

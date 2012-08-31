@@ -4,7 +4,7 @@ Feature: Collection description
   I want to be able to edit collection information
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And the repository titled 'Sample Repo' has collections with fields:
       | title | start_date | end_date   | published | ongoing | description | private_description | access_url              | file_package_summary      | rights_statement | rights_restrictions | notes            |
       | dogs  | 2010-01-01 | 2012-02-02 | true      | true    | Dog stuff   | private dog info    | http://dogs.example.com | Dog files, not so orderly | Dog rights       | Dog restrictions    | Stuff about dogs |

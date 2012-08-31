@@ -9,7 +9,7 @@ Feature: Authentication
     Then I should be on the login page
 
   Scenario: Log out
-    Given I am logged in
+    Given I am logged in as an admin
     When I click on 'Logout' in the global navigation bar
     And I should be on the login page
 

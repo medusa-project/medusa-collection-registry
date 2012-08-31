@@ -4,7 +4,7 @@ Feature: Repository description
   I want to be able to create repositories and edit descriptive information about them
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And I have repositories with fields:
       | title    | notes            |
       | Sample 1 | Some notes       |

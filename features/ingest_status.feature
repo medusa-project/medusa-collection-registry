@@ -4,7 +4,7 @@ Feature: Medusa ingest status
   I want to record information about the ingest in parallel with the corresponding collection
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And There is a collection titled 'Dogs'
 
   Scenario: Every collection has an ingest status after creation

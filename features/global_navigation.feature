@@ -4,7 +4,7 @@ Feature: Global navigation
   I want to be able to navigate to the 'root' indexes easily
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     When I go to the site home
 
   Scenario: View global navigation

@@ -4,7 +4,7 @@ Feature: Preservation Priority
   I want to be able to set different preservation priorities on a collection by collection basis
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And There is a collection titled 'Dogs'
     And The collection titled 'Dogs' has preservation priority 'low'
 

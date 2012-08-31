@@ -15,6 +15,7 @@ MedusaRails3::Application.routes.draw do
   match '/auth/:provider/callback', to: 'sessions#create'
   match '/login', to: 'sessions#new', as: :login
   match '/logout', to: 'sessions#destroy', as: :logout
+  match '/unauthorized', to: 'sessions#unauthorized', as: :unauthorized
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

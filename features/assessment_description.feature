@@ -4,7 +4,7 @@ Feature: Assessment description
   I want to edit assessment information
 
   Background:
-    Given I am logged in as 'hding2'
+    Given I am logged in as an admin
     And the repository titled 'Animals' has collections with fields:
       | title |
       | Dogs  |
@@ -58,7 +58,7 @@ Feature: Assessment description
   Scenario: Autofill user id for new assessment
     When I view the collection titled 'Dogs'
     And I click on 'Add Assessment'
-    Then The field 'Author Net ID' should be filled in with 'hding2'
+    Then The field 'Author Net ID' should be filled in with 'admin'
 
   Scenario: Associate author with assessment
     When I edit the assessment with date '2012-01-09' for the collection titled 'Dogs'

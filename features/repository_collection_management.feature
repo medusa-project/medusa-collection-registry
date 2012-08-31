@@ -4,7 +4,7 @@ Feature: Collection Management
   I want to be able to create and delete collections from repositories
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And the repository titled 'Sample Repo' has collections with fields:
       | title             |
       | Sample Collection |

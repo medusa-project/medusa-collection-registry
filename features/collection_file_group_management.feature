@@ -4,7 +4,7 @@ Feature: File Group Management
   I want to create and delete File Groups for a collection
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And the repository titled 'Animals' has collections with fields:
       | title |
       | Dogs  |

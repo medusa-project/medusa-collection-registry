@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
 
   skip_before_filter :require_logged_in
+  skip_before_filter :check_authorization
 
   def new
     if Rails.env.production?
@@ -28,5 +29,9 @@ class SessionsController < ApplicationController
   def destroy
     unset_current_user
     redirect_to login_path
+  end
+
+  def unauthorized
+
   end
 end
