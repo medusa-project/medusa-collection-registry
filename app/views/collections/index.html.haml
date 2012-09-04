@@ -26,4 +26,6 @@
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_collection_path(collection), :class => 'btn btn-mini'
           = link_to t('.destroy', :default => t("helpers.links.destroy")), collection_path(collection), :method => :delete, :data => {:confirm => collection_confirm_message}, :class => 'btn btn-mini btn-danger'
 
+%br
+
 = link_to 'Add Collection', new_collection_path, :class => 'btn btn-primary'
