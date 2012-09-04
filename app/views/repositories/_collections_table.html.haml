@@ -10,6 +10,7 @@
         %th Contact
         %th Content Type
         %th Size (GB)
+        %th Preservation Priority
         %th
     %tbody
       - @repository.collections.each do |collection|
@@ -18,6 +19,7 @@
           %td #{net_id_search_link(collection.contact_net_id)}
           %td #{collection.content_type_name}
           %td #{collection.total_size}
+          %td #{collection.preservation_priority_name}
           %td
             = link_to 'Edit', edit_collection_path(collection), :class => 'btn btn-mini'
             = link_to 'Delete', collection, :method => :delete, :data => { :confirm => collection_confirm_message}, :class => 'btn btn-mini btn-danger'

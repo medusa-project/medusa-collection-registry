@@ -68,6 +68,11 @@ When /^I view the repository titled '(.*)'$/ do |title|
   visit repository_path(Repository.find_by_title(title))
 end
 
+When /^I view the repository with a collection titled '(.*)'$/ do |title|
+  collection = Collection.find_by_title(title)
+  visit repository_path(collection.repository)
+end
+
 When /^I edit the repository titled '(.*)'$/ do |title|
   visit edit_repository_path(Repository.find_by_title(title))
 end

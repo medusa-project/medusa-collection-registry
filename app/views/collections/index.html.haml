@@ -11,6 +11,7 @@
       %th Contact
       %th Content Type
       %th Total Size (GB)
+      %th Preservation Priority
       %th
   %tbody
     - @collections.each do |collection|
@@ -20,6 +21,7 @@
         %td #{net_id_search_link(collection.contact_net_id)}
         %td #{collection.content_type_name}
         %td #{collection.total_size}
+        %td #{collection.preservation_priority_name}
         %td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_collection_path(collection), :class => 'btn btn-mini'
           = link_to t('.destroy', :default => t("helpers.links.destroy")), collection_path(collection), :method => :delete, :data => {:confirm => collection_confirm_message}, :class => 'btn btn-mini btn-danger'
