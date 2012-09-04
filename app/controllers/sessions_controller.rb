@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
 
   skip_before_filter :require_logged_in
-  skip_before_filter :check_authorization
+  skip_before_filter :authorize
 
   def new
     if Rails.env.production?

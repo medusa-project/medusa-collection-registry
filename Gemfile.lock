@@ -58,6 +58,7 @@ GEM
       rinku (~> 1.5.0)
     backports (2.6.2)
     builder (3.0.0)
+    cancan (1.6.8)
     capistrano (2.12.0)
       highline
       net-scp (>= 1.0.0)
@@ -320,6 +321,7 @@ PLATFORMS
 DEPENDENCIES
   active-fedora
   auto_html
+  cancan (~> 1.6.0)
   capistrano
   coffee-rails (~> 3.2.1)
   cucumber-rails

@@ -8,3 +8,8 @@ Feature: Authorization
     When I go to the repository index page
     Then I should be redirected to the unauthorized page
     And I should see 'You are not authorized to view the requested page.'
+
+  Scenario: An admin should be able to view things
+    Given I am logged in as an admin
+    When I go to the repository index page
+    Then I should be on the repository index page

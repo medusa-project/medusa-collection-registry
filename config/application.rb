@@ -56,6 +56,11 @@ module MedusaRails3
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    def self.authorized?(user, action, instance)
+      ApplicationController.is_member_of?('Medusa', user)
+    end
+
   end
 end
 

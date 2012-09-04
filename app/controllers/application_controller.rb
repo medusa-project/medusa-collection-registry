@@ -1,17 +1,19 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :require_logged_in
-  before_filter :check_authorization
+  before_filter :authorize
   helper_method :current_user, :logged_in?
 
   protected
 
   def set_current_user(user)
     @current_user = user
+    self.class.clear_ldap_cache(user)
     session[:current_user_id] = user.id
   end
 
   def unset_current_user
+    self.class.clear_ldap_cache(current_user)
     @current_user = nil
     session[:current_user_id] = nil
   end
@@ -32,31 +34,45 @@ class ApplicationController < ActionController::Base
     redirect_to(login_path) unless logged_in?
   end
 
-  if Rails.env == 'production'
-    def check_authorization
-      redirect_to(unauthorized_path) unless is_authorized?
-    end
-  else
-    def check_authorization
-      redirect_to(unauthorized_path) unless is_authorized_devel?
-    end
+  def authorize
+    authorize! :manage, MedusaRails3::Application
   end
 
-  #TODO make this use session information and LDAP lookup if needed from user uid
-  def is_authorized?
-    return true
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to unauthorized_path
   end
 
-  #TODO make this work well for development/testing purposes
-  def is_authorized_devel?
-    case current_user_uid
-      when /admin/
-        return true
-      when /visitor/
-        return false
-      else
-        return false
-    end
-  end
+
+  #TODO we cache the ldap lookups if possible. There are possible problems with this,
+  #but it should do for now.
+  #Possible problems:
+  #- changes in LDAP won't be picked up right away if user already has session
+  #(so must restart server or browser to ensure that they are)
+  #- cache is local to rails instance, so still may need to do same lookup when user goes
+  #  over to another passenger instance (solve with memcache?). This could be solved if I
+  #  could get into the session, but I don't see any way to do this from the class side
+  #  nor to get hold of the actual controller instance while in the auth process to do it
+  #  from that side.
+  #- things are still not really set up well if the call to the service fails. UiucLdap will
+  #  raise an error, but then what?
+  #- possibly more that I haven't thought of
+  
+
+  def self.is_member_of?(group, user)
+     @ldap_cache ||= Hash.new
+     user_cache = (@ldap_cache[user.uid] ||= Hash.new)
+     if user_cache.has_key?(group)
+       return user_cache[group]
+     else
+       membership = UiucLdap.is_member_of?(group, user.uid)
+       user_cache[group] = membership
+       return membership
+     end
+   end
+
+   def self.clear_ldap_cache(user)
+     @ldap_cache ||= Hash.new
+     @ldap_cache[user.uid] = {}
+   end
 
 end
