@@ -8,6 +8,8 @@ gem 'pg'
 gem 'active-fedora'
 gem 'solrizer-fedora'
 
+gem 'rb-readline'
+
 #deployment webserver
 gem 'passenger'
 

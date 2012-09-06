@@ -192,6 +192,7 @@ GEM
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
     rake (0.9.2.2)
+    rb-readline (0.4.2)
     rdf (0.3.7)
       addressable (>= 2.2.6)
     rdf-rdfxml (0.3.8)
@@ -333,6 +334,7 @@ DEPENDENCIES
   passenger
   pg
   rails (= 3.2.6)
+  rb-readline
   rspec-rails
   ruby-debug19
   rvm-capistrano
