@@ -42,28 +42,6 @@ class CollectionsController < ApplicationController
     @collections = Collection.order(:title).includes(:repository).all
   end
 
-  def new_object_type
-    @collection = Collection.find(params[:object_type].delete(:collection_id))
-    object_type = ObjectType.new(params[:object_type])
-    if object_type.save
-      if request.xhr?
-        respond_to do |format|
-          format.json do
-            render :json => object_type
-          end
-        end
-      else
-        redirect_to edit_collection_path(@collection)
-      end
-    else
-      respond_to do |format|
-        format.json do
-          render :status => :bad_request, :json => object_type
-        end
-      end
-    end
-  end
-
   protected
 
   def find_collection_and_repository

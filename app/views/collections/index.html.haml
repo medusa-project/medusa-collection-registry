@@ -9,7 +9,6 @@
       %th Title
       %th Repository
       %th Contact
-      %th Content Type
       %th Total Size (GB)
       %th Preservation Priority
       %th
@@ -19,7 +18,6 @@
         %td #{link_to collection.title, collection}
         %td #{link_to collection.repository.title, collection.repository}
         %td #{net_id_search_link(collection.contact_net_id)}
-        %td #{collection.content_type_name}
         %td #{collection.total_size}
         %td #{collection.preservation_priority_name}
         %td

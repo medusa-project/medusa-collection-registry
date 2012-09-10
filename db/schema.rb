@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120830210252) do
+ActiveRecord::Schema.define(:version => 20120910162212) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -44,15 +44,15 @@ ActiveRecord::Schema.define(:version => 20120830210252) do
   add_index "assessments", ["author_id"], :name => "index_assessments_on_author_id"
   add_index "assessments", ["collection_id"], :name => "index_assessments_on_collection_id"
 
-  create_table "collection_object_type_joins", :force => true do |t|
+  create_table "collection_resource_type_joins", :force => true do |t|
     t.integer  "collection_id"
-    t.integer  "object_type_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.integer  "resource_type_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
-  add_index "collection_object_type_joins", ["collection_id"], :name => "index_collection_object_type_joins_on_collection_id"
-  add_index "collection_object_type_joins", ["object_type_id"], :name => "index_collection_object_type_joins_on_object_type_id"
+  add_index "collection_resource_type_joins", ["collection_id"], :name => "index_collection_resource_type_joins_on_collection_id"
+  add_index "collection_resource_type_joins", ["resource_type_id"], :name => "index_collection_resource_type_joins_on_resource_type_id"
 
   create_table "collections", :force => true do |t|
     t.integer  "repository_id"
@@ -69,7 +69,6 @@ ActiveRecord::Schema.define(:version => 20120830210252) do
     t.text     "notes"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.integer  "content_type_id"
     t.integer  "contact_id"
     t.integer  "preservation_priority_id"
     t.text     "private_description"
@@ -79,14 +78,7 @@ ActiveRecord::Schema.define(:version => 20120830210252) do
   end
 
   add_index "collections", ["contact_id"], :name => "index_collections_on_contact_id"
-  add_index "collections", ["content_type_id"], :name => "index_collections_on_content_type_id"
   add_index "collections", ["repository_id"], :name => "index_collections_on_repository_id"
-
-  create_table "content_types", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
 
   create_table "file_groups", :force => true do |t|
     t.string   "file_location"
@@ -119,12 +111,6 @@ ActiveRecord::Schema.define(:version => 20120830210252) do
     t.integer  "collection_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
-  end
-
-  create_table "object_types", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
   end
 
   create_table "people", :force => true do |t|
@@ -179,6 +165,12 @@ ActiveRecord::Schema.define(:version => 20120830210252) do
   end
 
   add_index "repositories", ["contact_id"], :name => "index_repositories_on_contact_id"
+
+  create_table "resource_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
