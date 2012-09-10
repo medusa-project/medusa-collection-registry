@@ -33,23 +33,6 @@ ActiveRecord::Base.transaction do
     end
   end
 
-
-#Content types
-  ['digitized book', 'digitized images', 'born digital images',
-   'born digital audio', 'digitized audio', 'born digital moving image',
-   'digitized moving image', 'electronic thesis or dissertation',
-   'research data', 'metadata'].each do |name|
-    ContentType.find_or_create_by_name(name)
-  end
-
-#Object types
-  ['Books and pamphlets', 'Photographs/slides/negatives', 'Music (audio files)',
-   'Newspapers', 'Posters and broadsides', 'Sheet music and scores', 'Periodicals',
-   'Prints and drawings', 'Physical artifacts', 'Interactive learning objects',
-   'Oral histories (audio files)', 'Physical specimens (plants/animals/etc)'].each do |name|
-    ObjectType.find_or_create_by_name(name)
-  end
-
 #Resource types
   ['text', 'cartographic', 'notated music', 'sound recording', 'sound recording-musical',
    'sound recording-nonmusical', 'still image', 'moving image', 'animated computer graphics',

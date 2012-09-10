@@ -3,17 +3,13 @@ class Collection < ActiveRecord::Base
   net_id_person_association(:contact)
   attr_accessible :access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
                   :ongoing, :published, :repository_id, :rights_restrictions, :rights_statement,
-                  :start_date, :title, :content_type_id, :access_system_ids, :object_type_ids,
-                  :preservation_priority_id, :resource_type_ids
+                  :start_date, :title, :access_system_ids, :preservation_priority_id, :resource_type_ids
 
   belongs_to :repository
-  belongs_to :content_type
   has_many :assessments, :dependent => :destroy
   has_many :file_groups, :dependent => :destroy
   has_many :access_system_collection_joins, :dependent => :destroy
   has_many :access_systems, :through => :access_system_collection_joins
-  has_many :collection_object_type_joins, :dependent => :destroy
-  has_many :object_types, :through => :collection_object_type_joins
   has_many :collection_resource_type_joins, :dependent => :destroy
   has_many :resource_types, :through => :collection_resource_type_joins
   has_one :ingest_status, :dependent => :destroy
@@ -40,14 +36,6 @@ class Collection < ActiveRecord::Base
 
   def ensure_ingest_status
     self.ingest_status ||= IngestStatus.new(:state => :unstarted)
-  end
-
-  def content_type_name
-    self.content_type.try(:name)
-  end
-
-  def object_type_names
-    self.object_types.collect(&:name).join(', ')
   end
 
   def resource_type_names

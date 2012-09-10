@@ -4,11 +4,7 @@ MedusaRails3::Application.routes.draw do
 
   root :to => 'repositories#index'
 
-  resources :collections do
-    collection do
-      post :new_object_type
-    end
-  end
+  resources :collections
   resources :repositories
   resources :assessments
   resources :file_groups

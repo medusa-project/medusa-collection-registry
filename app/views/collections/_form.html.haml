@@ -22,13 +22,8 @@
       %section#content
         %div.page-header
           %h1 About the Content
-        = f.input :content_type_id, :collection => content_type_select_collection
         = f.input :file_package_summary, :input_html => { :rows => 2 }
-        = f.association :object_types, :as => :check_boxes, :wrapper_html => {:id => 'collection_object_types'}
         = f.association :resource_types, :as => :check_boxes, :wrapper_html => {:id => 'collection_resource_types'}
-        // Button to trigger modal
-        .span2
-          = link_to "Add new type", '#newObjectTypeModal', :role => 'button', 'data-toggle' => 'modal', :class => 'btn btn-primary pull-right'
       %section#rights
         %div.page-header
           %h1 Rights
@@ -43,8 +38,6 @@
         = f.button :submit, :class => 'btn-primary'
         = link_to t('.cancel', :default => t("helpers.links.cancel")), collections_path, :class => 'btn'
         = link_to("Edit Ingest status", '#editIngestStatusModal', :role => 'button', 'data-toggle' => 'modal', :class => 'btn btn-primary pull-right') if @collection.ingest_status
-
-= render 'new_object_type_subform'
 
 - if @collection.ingest_status
   = render 'ingest_status_subform'

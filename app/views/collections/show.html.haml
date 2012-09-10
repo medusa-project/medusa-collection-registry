@@ -18,8 +18,6 @@
         %ul#access_systems
           - access_systems.each do |access_system|
             %li #{link_to access_system.name, access_system}
-    = show_field @collection, :content_type_name, 'Content Type'
-    = show_field @collection, :object_type_names, 'Object Types'
     = show_field @collection, :resource_type_names, 'Type of Resource'
     = show_field @collection, :preservation_priority_name, 'Preservation Priority'
     = show_field @collection, :total_size, 'Total Size (GB)'

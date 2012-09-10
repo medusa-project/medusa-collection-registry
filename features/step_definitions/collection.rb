@@ -51,10 +51,6 @@ Given /^I am editing a collection$/ do
   visit edit_collection_path(FactoryGirl.create(:collection))
 end
 
-When /^I select content type '(.*)'$/ do |type|
-  select(type, :from => 'collection_content_type_id')
-end
-
 When /^I view the collection titled '(.*)'$/ do |title|
   visit collection_path(Collection.find_by_title(title))
 end
@@ -110,33 +106,6 @@ And /^I check resource type '(.*)'$/ do |name|
   end
 end
 
-
-And /^the collection titled '(.*)' has object types named:$/ do |title, table|
-  collection = ensure_collection(title)
-  table.headers.each do |name|
-    collection.object_types << ensure_object_type(name)
-  end
-end
-
-And /^I uncheck object type '(.*)'$/ do |name|
-  within('#collection_object_types') do
-    uncheck(name)
-  end
-end
-
-And /^I check object type '(.*)'$/ do |name|
-  within('#collection_object_types') do
-    check(name)
-  end
-end
-
-And /^I create an object type named '(.*)'$/ do |name|
-  within('#new_object_type') do
-    fill_in('Name', :with => name)
-    click_on('Create Object type')
-  end
-end
-
 And /^The collection titled '(.*)' has preservation priority '(.*)'$/ do |title, priority|
   collection = Collection.find_by_title(title)
   collection.preservation_priority = PreservationPriority.find_by_name(priority)
@@ -159,10 +128,6 @@ private
 
 def ensure_collection(title)
   Collection.find_by_title(title) || FactoryGirl.create(:collection, :title => title)
-end
-
-def ensure_object_type(name)
-  ObjectType.find_by_name(name) || FactoryGirl.create(:object_type, :name => name)
 end
 
 def ensure_resource_type(name)
