@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120830210252) do
+ActiveRecord::Schema.define(:version => 20120910151633) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -53,6 +53,16 @@ ActiveRecord::Schema.define(:version => 20120830210252) do
 
   add_index "collection_object_type_joins", ["collection_id"], :name => "index_collection_object_type_joins_on_collection_id"
   add_index "collection_object_type_joins", ["object_type_id"], :name => "index_collection_object_type_joins_on_object_type_id"
+
+  create_table "collection_resource_type_joins", :force => true do |t|
+    t.integer  "collection_id"
+    t.integer  "resource_type_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "collection_resource_type_joins", ["collection_id"], :name => "index_collection_resource_type_joins_on_collection_id"
+  add_index "collection_resource_type_joins", ["resource_type_id"], :name => "index_collection_resource_type_joins_on_resource_type_id"
 
   create_table "collections", :force => true do |t|
     t.integer  "repository_id"
@@ -179,6 +189,12 @@ ActiveRecord::Schema.define(:version => 20120830210252) do
   end
 
   add_index "repositories", ["contact_id"], :name => "index_repositories_on_contact_id"
+
+  create_table "resource_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false

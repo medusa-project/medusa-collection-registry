@@ -25,7 +25,7 @@ ActiveRecord::Base.transaction do
   end
 #Changes in File type names from originals
   {'Access Content' => 'Derivative Content', 'Archival Content' => 'Master Content',
-  'Other Metadata' => 'Derivative Metadata'}.each do |k,v|
+   'Other Metadata' => 'Derivative Metadata'}.each do |k, v|
     type = FileType.find_by_name(k)
     if type
       type.name = v
@@ -48,6 +48,13 @@ ActiveRecord::Base.transaction do
    'Prints and drawings', 'Physical artifacts', 'Interactive learning objects',
    'Oral histories (audio files)', 'Physical specimens (plants/animals/etc)'].each do |name|
     ObjectType.find_or_create_by_name(name)
+  end
+
+#Resource types
+  ['text', 'cartographic', 'notated music', 'sound recording', 'sound recording-musical',
+   'sound recording-nonmusical', 'still image', 'moving image', 'animated computer graphics',
+   'three dimensional object', 'software, multimedia, mixed material'].each do |name|
+    ResourceType.find_or_create_by_name(name)
   end
 
 #PreservationPriorities

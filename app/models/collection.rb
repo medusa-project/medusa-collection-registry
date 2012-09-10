@@ -4,7 +4,7 @@ class Collection < ActiveRecord::Base
   attr_accessible :access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
                   :ongoing, :published, :repository_id, :rights_restrictions, :rights_statement,
                   :start_date, :title, :content_type_id, :access_system_ids, :object_type_ids,
-                  :preservation_priority_id
+                  :preservation_priority_id, :resource_type_ids
 
   belongs_to :repository
   belongs_to :content_type
@@ -14,6 +14,8 @@ class Collection < ActiveRecord::Base
   has_many :access_systems, :through => :access_system_collection_joins
   has_many :collection_object_type_joins, :dependent => :destroy
   has_many :object_types, :through => :collection_object_type_joins
+  has_many :collection_resource_type_joins, :dependent => :destroy
+  has_many :resource_types, :through => :collection_resource_type_joins
   has_one :ingest_status, :dependent => :destroy
   belongs_to :preservation_priority
 
@@ -46,6 +48,10 @@ class Collection < ActiveRecord::Base
 
   def object_type_names
     self.object_types.collect(&:name).join(', ')
+  end
+
+  def resource_type_names
+    self.resource_types.collect(&:name).join('; ')
   end
 
   def preservation_priority_name

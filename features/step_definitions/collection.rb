@@ -91,6 +91,26 @@ And /^I should see a list of all collections$/ do
   page.should have_selector('table#collections')
 end
 
+And /^the collection titled '(.*)' has resource types named:$/ do |title, table|
+  collection = ensure_collection(title)
+  table.headers.each do |name|
+    collection.resource_types << ensure_resource_type(name)
+  end
+end
+
+And /^I uncheck resource type '(.*)'$/ do |name|
+  within('#collection_resource_types') do
+    uncheck(name)
+  end
+end
+
+And /^I check resource type '(.*)'$/ do |name|
+  within('#collection_resource_types') do
+    check(name)
+  end
+end
+
+
 And /^the collection titled '(.*)' has object types named:$/ do |title, table|
   collection = ensure_collection(title)
   table.headers.each do |name|
@@ -143,4 +163,8 @@ end
 
 def ensure_object_type(name)
   ObjectType.find_by_name(name) || FactoryGirl.create(:object_type, :name => name)
+end
+
+def ensure_resource_type(name)
+  ResourceType.find_by_name(name) || FactoryGirl.create(:resource_type, :name => name)
 end
