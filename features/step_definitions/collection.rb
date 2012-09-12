@@ -55,6 +55,10 @@ When /^I view the collection titled '(.*)'$/ do |title|
   visit collection_path(Collection.find_by_title(title))
 end
 
+When /^I view MODS for the collection titled '(.*)'$/ do |title|
+  visit collection_path(Collection.find_by_title(title), :format => 'xml')
+end
+
 When /^I edit the collection titled '(.*)'$/ do |title|
   visit edit_collection_path(Collection.find_by_title(title))
 end
