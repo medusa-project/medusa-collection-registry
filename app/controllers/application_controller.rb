@@ -44,8 +44,7 @@ class ApplicationController < ActionController::Base
   end
 
 
-  #TODO we cache the ldap lookups if possible. There are possible problems with this,
-  #but it should do for now.
+  #TODO Figure out a reasonable way to cache here
   #Possible problems:
   #- changes in LDAP won't be picked up right away if user already has session
   #(so must restart server or browser to ensure that they are)
@@ -57,18 +56,17 @@ class ApplicationController < ActionController::Base
   #- things are still not really set up well if the call to the service fails. UiucLdap will
   #  raise an error, but then what?
   #- possibly more that I haven't thought of
-
-
   def self.is_member_of?(group, user, domain = nil)
-     @ldap_cache ||= Hash.new
-     user_cache = (@ldap_cache[user.uid] ||= Hash.new)
-     if user_cache.has_key?(group)
-       return user_cache[group]
-     else
-       membership = UiucLdap.is_member_of?(group, user.uid, domain)
-       user_cache[group] = membership
-       return membership
-     end
+    return UiucLdap.is_member_of?(group, user.uid, domain)
+     #@ldap_cache ||= Hash.new
+     #user_cache = (@ldap_cache[user.uid] ||= Hash.new)
+     #if user_cache.has_key?(group)
+     #  return user_cache[group]
+     #else
+     #  membership = UiucLdap.is_member_of?(group, user.uid, domain)
+     #  user_cache[group] = membership
+     #  return membership
+     #end
    end
 
    def self.clear_ldap_cache(user)
