@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
   end
 
 
-  #TODO Figure out a reasonable way to cache here
+  #TODO Figure out a reasonable way to cache here - maybe a DB level cache?
   #Possible problems:
   #- changes in LDAP won't be picked up right away if user already has session
   #(so must restart server or browser to ensure that they are)
