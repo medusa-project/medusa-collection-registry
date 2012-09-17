@@ -44,34 +44,47 @@ class ApplicationController < ActionController::Base
   end
 
 
-  #TODO Figure out a reasonable way to cache here - maybe a DB level cache?
-  #Possible problems:
+  #TODO Possible problems:
   #- changes in LDAP won't be picked up right away if user already has session
-  #(so must restart server or browser to ensure that they are)
-  #- cache is local to rails instance, so still may need to do same lookup when user goes
-  #  over to another passenger instance (solve with memcache?). This could be solved if I
-  #  could get into the session, but I don't see any way to do this from the class side
-  #  nor to get hold of the actual controller instance while in the auth process to do it
-  #  from that side.
+  # (so must restart server or browser to ensure that they are or allow timeouts to take effect)
   #- things are still not really set up well if the call to the service fails. UiucLdap will
   #  raise an error, but then what?
   #- possibly more that I haven't thought of
-  def self.is_member_of?(group, user, domain = nil)
-    return UiucLdap.is_member_of?(group, user.uid, domain)
-     #@ldap_cache ||= Hash.new
-     #user_cache = (@ldap_cache[user.uid] ||= Hash.new)
-     #if user_cache.has_key?(group)
-     #  return user_cache[group]
-     #else
-     #  membership = UiucLdap.is_member_of?(group, user.uid, domain)
-     #  user_cache[group] = membership
-     #  return membership
-     #end
-   end
+  def self.is_member_of?(group, user, domain = 'uofi')
+    permission = find_cached_permission(group, user, domain)
+    if permission
+      return permission.member
+    else
+      membership = UiucLdap.is_member_of?(group, user.uid, domain)
+      self.cache_permission(user, group, domain, membership)
+      return membership
+    end
+  end
 
-   def self.clear_ldap_cache(user)
-     @ldap_cache ||= Hash.new
-     @ldap_cache[user.uid] = {}
-   end
+  #see if there is a cached permission that hasn't timed out. If so, return. If there is one that needs timing out
+  #do it. If there is not one then return false.
+  #In fact for now we time out everything that needs timing out at this point.
+  def self.find_cached_permission(group, user, domain = 'uiuc')
+    permission = user.cache_ldap_groups.where(:group => group).where(:domain => domain).first
+    if permission
+      cutoff_time = Time.now - 10.minutes
+      if cutoff_time > permission.created_at
+        CacheLdapGroup.where("created_at < ?", cutoff_time).delete_all
+        return false
+      else
+        return permission
+      end
+    else
+      return false
+    end
+  end
+
+  def self.cache_permission(user, group, domain, membership)
+    user.cache_ldap_groups.create(:group => group, :domain => domain, :member => membership)
+  end
+
+  def self.clear_ldap_cache(user)
+    user.cache_ldap_groups.clear
+  end
 
 end
