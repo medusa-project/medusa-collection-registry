@@ -58,7 +58,7 @@ module MedusaRails3
     config.assets.version = '1.0'
 
     def self.authorized?(user, action, instance)
-      ApplicationController.is_member_of?('Medusa Admins', user, 'uiuc')
+      ApplicationController.is_member_of?('Medusa Admins', user, 'uofi')
     end
 
   end
