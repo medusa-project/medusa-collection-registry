@@ -1,3 +1,4 @@
+require 'uiuc_ldap'
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :require_logged_in
@@ -56,15 +57,15 @@ class ApplicationController < ActionController::Base
   #- things are still not really set up well if the call to the service fails. UiucLdap will
   #  raise an error, but then what?
   #- possibly more that I haven't thought of
-  
 
-  def self.is_member_of?(group, user)
+
+  def self.is_member_of?(group, user, domain = nil)
      @ldap_cache ||= Hash.new
      user_cache = (@ldap_cache[user.uid] ||= Hash.new)
      if user_cache.has_key?(group)
        return user_cache[group]
      else
-       membership = UiucLdap.is_member_of?(group, user.uid)
+       membership = UiucLdap.is_member_of?(group, user.uid, domain)
        user_cache[group] = membership
        return membership
      end
