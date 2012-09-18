@@ -63,6 +63,7 @@ Feature: Collection description
     Then I should be on the view page for the collection titled 'reptiles'
     And I should see 'Reptile stuff'
     And I should see 'Snake farm'
+    And The collection titled 'reptiles' should have a valid UUID
     And the repository titled 'Sample Repo' should have a collection titled 'reptiles'
 
   Scenario: Index of all collections

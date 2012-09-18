@@ -53,12 +53,15 @@ ActiveRecord::Base.transaction do
     end
   end
 
-#Make sure every Collection has an attached IngestStatus
+#Make sure every Collection has an attached IngestStatus and uuid
   Collection.all.each do |c|
     unless c.ingest_status
       c.ingest_status = IngestStatus.new(:state => :unstarted)
-      c.save!
     end
+    unless c.uuid
+      c.ensure_uuid
+    end
+    c.save!
   end
 
 end

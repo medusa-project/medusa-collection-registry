@@ -1,3 +1,5 @@
+require 'utils/luhn'
+
 Then /^I should be on the new collection page$/ do
   current_path.should == new_collection_path
 end
@@ -126,6 +128,14 @@ end
 
 Then /^the collection titled '(.*)' has an associated ingest status$/ do |title|
   Collection.find_by_title(title).ingest_status.class.should == IngestStatus
+end
+
+And /^I should see the UUID of the collection titled '(.*)'$/ do |title|
+  steps "Then I should see '#{Collection.find_by_title(title).uuid}'"
+end
+
+Then /^The collection titled '(.*)' should have a valid UUID$/ do |title|
+  Utils::Luhn.verify(Collection.find_by_title(title).uuid).should be_true
 end
 
 private

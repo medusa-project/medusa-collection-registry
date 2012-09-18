@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120917195429) do
+ActiveRecord::Schema.define(:version => 20120918181620) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -87,10 +87,12 @@ ActiveRecord::Schema.define(:version => 20120917195429) do
     t.text     "notes_html"
     t.text     "description_html"
     t.text     "private_description_html"
+    t.string   "uuid"
   end
 
   add_index "collections", ["contact_id"], :name => "index_collections_on_contact_id"
   add_index "collections", ["repository_id"], :name => "index_collections_on_repository_id"
+  add_index "collections", ["uuid"], :name => "index_collections_on_uuid"
 
   create_table "file_groups", :force => true do |t|
     t.string   "file_location"

@@ -54,6 +54,8 @@ gem 'cancan', '~> 1.6.0'
 gem 'capistrano'
 gem 'rvm-capistrano'
 
+gem 'uuid'
+
 group :development, :test do
   # To use debugger
   gem 'ruby-debug19'

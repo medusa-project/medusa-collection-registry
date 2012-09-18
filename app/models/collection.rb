@@ -1,4 +1,6 @@
 require 'net_id_person_associator'
+require 'utils/luhn'
+
 class Collection < ActiveRecord::Base
   net_id_person_association(:contact)
   attr_accessible :access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
@@ -19,8 +21,13 @@ class Collection < ActiveRecord::Base
   validates_uniqueness_of :title, :scope => :repository_id
   validates_presence_of :repository_id
   validates_presence_of :preservation_priority_id
+  validates_uniqueness_of :uuid
+  validates_each :uuid do |record, attr, value|
+    record.errors.add attr, 'is not a valid uuid' unless Utils::Luhn.verify(value)
+  end
 
   after_create :ensure_ingest_status
+  before_validation :ensure_uuid
 
   [:description, :private_description, :notes].each do |field|
     auto_html_for field do
@@ -36,6 +43,10 @@ class Collection < ActiveRecord::Base
 
   def ensure_ingest_status
     self.ingest_status ||= IngestStatus.new(:state => :unstarted)
+  end
+
+  def ensure_uuid
+    self.uuid ||= Utils::Luhn.add_check_character(UUID.generate)
   end
 
   def resource_type_names
