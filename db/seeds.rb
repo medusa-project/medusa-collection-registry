@@ -45,22 +45,14 @@ ActiveRecord::Base.transaction do
     PreservationPriority.find_or_create_by_name(:name => name, :priority => priority)
   end
 
-#Fix preservation priorities for collections that might not have them
+#Make sure every Collection has
+# - a preservation priority
+# - an attached IngestStatus
+# - a uuid
   Collection.all.each do |c|
-    unless c.preservation_priority
-      c.preservation_priority = PreservationPriority.default
-      c.save!
-    end
-  end
-
-#Make sure every Collection has an attached IngestStatus and uuid
-  Collection.all.each do |c|
-    unless c.ingest_status
-      c.ingest_status = IngestStatus.new(:state => :unstarted)
-    end
-    unless c.uuid
-      c.ensure_uuid
-    end
+    c.preservation_priority = PreservationPriority.default unless c.preservation_priority
+    c.ingest_status = IngestStatus.new(:state => :unstarted) unless c.ingest_status
+    c.ensure_uuid
     c.save!
   end
 
