@@ -20,17 +20,8 @@ ActiveRecord::Base.transaction do
   end
 
 #File types
-  ['Access Content', 'Archival Content', 'Other Metadata', 'Master Metadata', 'Other'].each do |name|
+  ['Derivative Content', 'Master Content', 'Derivative Metadata', 'Master Metadata', 'Other'].each do |name|
     FileType.find_or_create_by_name(name)
-  end
-#Changes in File type names from originals
-  {'Access Content' => 'Derivative Content', 'Archival Content' => 'Master Content',
-   'Other Metadata' => 'Derivative Metadata'}.each do |k, v|
-    type = FileType.find_by_name(k)
-    if type
-      type.name = v
-      type.save!
-    end
   end
 
 #Resource types
