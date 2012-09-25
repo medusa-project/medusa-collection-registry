@@ -8,7 +8,7 @@ MedusaRails3::Application.routes.draw do
   resources :repositories
   resources :assessments
   resources :file_groups
-  resources :production_units
+  resources :producers
   resources :access_systems
   resources :ingest_statuses
 

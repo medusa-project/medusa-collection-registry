@@ -11,7 +11,7 @@ class AddHtmlCacheFields < ActiveRecord::Migration
 
   def down
     remove_column :repositories, :notes_html
-    remove_column :production_units, :notes_html
+    remove_column :producers, :notes_html
     remove_column :assessments, :notes_html
     remove_column :assessments, :preservation_risks_html
     remove_column :collections, :notes_html

@@ -1,8 +1,8 @@
 module FileGroupsHelper
 
-  def production_units_select_collection
-    ProductionUnit.order(:title).all.collect do |production_unit|
-      [production_unit.title, production_unit.id]
+  def producers_select_collection
+    Producer.order(:title).all.collect do |producer|
+      [producer.title, producer.id]
     end
   end
 

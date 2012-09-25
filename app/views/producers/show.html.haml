@@ -1,0 +1,26 @@
+.page-header
+  %h1 #{@producer.title}
+
+.span3#sidebar
+  .well
+    = show_value net_id_search_link(@producer.administrator_net_id), 'Administrator Net ID'
+    = show_field @producer, :address_1
+    = show_field @producer, :address_2
+    = show_field @producer, :city
+    = show_field @producer, :state
+    = show_field @producer, :zip
+    = show_field @producer, :phone_number
+    = show_field @producer, :email
+    = show_value link_to_external(@producer.url, @producer.url), 'URL'
+    = show_field @producer, :active_start_date, 'Active Start Date'
+    = show_field @producer, :active_end_date, 'Active End Date'
+    = show_field @producer, :notes_html, 'Notes'
+  .btn-group
+    = link_to 'Back', producers_path, :class => 'btn'
+    = link_to 'Edit', edit_producer_path(@producer), :class => 'btn'
+    = link_to 'Delete Producer', @producer, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
+
+.span9#content
+  %a.toggles{:href=>"#", :rel => "tooltip", :title => "Hide or show the sidebar" }
+    %i.icon-arrow-left
+  = render 'collections_table'

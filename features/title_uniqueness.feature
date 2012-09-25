@@ -11,7 +11,7 @@ Feature: Title uniqueness and presence
     And the repository titled 'Plants' has collections with fields:
       | title |
       | Roses |
-    And I have production_units with fields:
+    And I have producers with fields:
       | title    |
       | Scanning |
 
@@ -27,16 +27,16 @@ Feature: Title uniqueness and presence
     And I press 'Create Repository'
     Then I should see 'can't be blank'
 
-  Scenario: Prevent duplicate production unit titles
-    When I go to the new production unit page
+  Scenario: Prevent duplicate producer titles
+    When I go to the new producer page
     And I fill in fields:
       | Title | Scanning |
-    And I press 'Create Production unit'
+    And I press 'Create Producer'
     Then I should see 'has already been taken'
 
-  Scenario: Prevent blank production unit titles
-    When I go to the new production unit page
-    And I press 'Create Production unit'
+  Scenario: Prevent blank producer titles
+    When I go to the new producer page
+    And I press 'Create Producer'
     Then I should see 'can't be blank'
 
   Scenario: Prevent duplicate collection titles under same repository

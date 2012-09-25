@@ -17,7 +17,7 @@
   %tbody
     - @collection.file_groups.each do |file_group|
       %tr
-        %td #{link_to(file_group.production_unit.title, file_group.production_unit) if file_group.production_unit}
+        %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
         %td #{file_group.file_type_name}
         %td #{file_group.file_location}
         %td #{file_group.file_format}

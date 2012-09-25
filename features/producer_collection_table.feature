@@ -1,11 +1,11 @@
-Feature: Production unit collection table
+Feature: Producer collection table
   In order to manage preservation
   As a librarian
-  I want to be able to see what collections a production unit has worked on
+  I want to be able to see what collections a producer has worked on
 
   Background:
     Given I am logged in as an admin
-    And I have production_units with fields:
+    And I have producers with fields:
       | title    |
       | Scanning |
     And the repository titled 'Animals' has collections with fields:
@@ -17,11 +17,11 @@ Feature: Production unit collection table
     And The collection titled 'Cats' has 1 file group produced by 'Scanning'
 
   Scenario: Collection table should exist
-    When I view the production unit titled 'Scanning'
+    When I view the producer titled 'Scanning'
     Then I should see a table of collections
 
   Scenario: Collection table should be correct
-    When I view the production unit titled 'Scanning'
+    When I view the producer titled 'Scanning'
     Then I should see all of:
       | Dogs | Cats |
     And I should not see 'Bears'

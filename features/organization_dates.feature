@@ -8,7 +8,7 @@ Feature: Track organization active dates
     And I have repositories with fields:
       | title   | active_start_date | active_end_date |
       | Animals | 2012-09-13        | 2012-10-14      |
-    And I have production_units with fields:
+    And I have producers with fields:
       | title    | active_start_date | active_end_date |
       | Scanning | 2012-11-15        | 2012-12-16      |
 
@@ -17,8 +17,8 @@ Feature: Track organization active dates
     Then I should see all of:
       | Active Start Date | Active End Date | 2012-09-13 | 2012-10-14 |
 
-  Scenario: View production unit active dates
-    When I view the production unit titled 'Scanning'
+  Scenario: View producer active dates
+    When I view the producer titled 'Scanning'
     Then I should see all of:
       | Active Start Date | Active End Date | 2012-11-15 | 2012-12-16 |
 
@@ -32,12 +32,12 @@ Feature: Track organization active dates
       | 2011-01-20 | 2011-02-21 |
     And I should not see '2012-09-13'
 
-  Scenario: Edit production unit active dates
-    When I edit the production unit titled 'Scanning'
+  Scenario: Edit producer active dates
+    When I edit the producer titled 'Scanning'
     And I fill in fields:
       | Active Start Date | 2011-01-20 |
       | Active End Date   | 2011-02-21 |
-    And I click on 'Update Production unit'
+    And I click on 'Update Producer'
     Then I should see all of:
       | 2011-01-20 | 2011-02-21 |
     And I should not see '2012-12-16'
@@ -50,10 +50,10 @@ Feature: Track organization active dates
     Then I should not see '2020-01-01'
     And I should see 'Start date must not be later than end date.'
 
-  Scenario: Incorrectly edit production unit active dates
-    When I edit the production unit titled 'Scanning'
+  Scenario: Incorrectly edit producer active dates
+    When I edit the producer titled 'Scanning'
     And I fill in fields:
       | Active End Date | 1990-01-01 |
-    And I click on 'Update Production unit'
+    And I click on 'Update Producer'
     Then I should not see '1990-01-01'
     And I should see 'Start date must not be later than end date.'

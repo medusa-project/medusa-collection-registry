@@ -1,4 +1,4 @@
-= simple_form_for @production_unit, :html => {:class => 'form-horizontal'} do |f|
+= simple_form_for @producer, :html => {:class => 'form-horizontal'} do |f|
   = f.input :title
   = f.input :administrator_net_id, :label => 'Adminstrator Net ID'
   = f.input :address_1
@@ -14,7 +14,7 @@
   = f.input :notes
   .form-actions
     = f.button :submit, :class => 'btn-primary'
-    - if @production_unit.new_record?
-      = link_to('Index', production_units_path, :class => 'btn')
+    - if @producer.new_record?
+      = link_to('Index', producers_path, :class => 'btn')
     - else
-      = link_to(t('.cancel', :default => t('helpers.links.cancel')), @production_unit, :class => 'btn')
+      = link_to(t('.cancel', :default => t('helpers.links.cancel')), @producer, :class => 'btn')

@@ -1,5 +1,5 @@
 require 'net_id_person_associator'
-class ProductionUnit < ActiveRecord::Base
+class Producer < ActiveRecord::Base
   net_id_person_association(:administrator)
 
   attr_accessible :address_1, :address_2, :city, :email, :notes,

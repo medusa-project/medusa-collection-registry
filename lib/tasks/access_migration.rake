@@ -8,7 +8,7 @@ task :access_migrate => :environment do
   #read csv as hashes
   @access_systems = read_access_systems
   @repositories = read_repositories
-  @production_units = read_production_units
+  @producers = read_production_units
   @file_types = read_file_types
   @collections = read_collections
   @file_groups = read_file_groups
@@ -51,16 +51,16 @@ def create_repositories
 end
 
 def read_production_units
-  @production_units = read_csv('ProductionUnit.csv', [:id, :title])
+  @producers = read_csv('ProductionUnit.csv', [:id, :title])
 end
 
 def create_production_units
-  puts "Existing Production Units: #{ProductionUnit.count}"
-  puts "Input Size: #{@production_units.count}"
-  @production_units.each do |pu|
-    ProductionUnit.find_or_create_by_title(pu[:title])
+  puts "Existing Production Units: #{Producer.count}"
+  puts "Input Size: #{@producers.count}"
+  @producers.each do |pu|
+    Producer.find_or_create_by_title(pu[:title])
   end
-  puts "Total Production Units: #{ProductionUnit.count}"
+  puts "Total Production Units: #{Producer.count}"
 end
 
 def read_file_types
@@ -104,7 +104,7 @@ def read_file_groups
   @file_groups.each do |fg|
     #prepare for joins
     fg[:collection_title] = @collections.detect { |c| c[:id] == fg[:collection_id] }[:title]
-    fg[:production_unit_title] = @production_units.detect { |pu| pu[:id] == fg[:production_unit_id] }[:title]
+    fg[:production_unit_title] = @producers.detect { |pu| pu[:id] == fg[:production_unit_id] }[:title]
     fg[:file_type_name] = @file_types.detect { |ft| ft[:id] == fg[:file_type_id] }[:type]
   end
 end
@@ -114,7 +114,7 @@ def create_file_groups
   puts "Input Size: #{@file_groups.count}"
   @file_groups.each do |fg|
     collection = Collection.find_by_title(fg[:collection_title])
-    production_unit = ProductionUnit.find_by_title(fg[:production_unit_title])
+    production_unit = Producer.find_by_title(fg[:production_unit_title])
     file_type = FileType.find_by_name(fg[:file_type_name])
     raise(RuntimeError, "Can't find associated model") unless collection and production_unit and file_type
     FileGroup.create(:collection_id => collection.id, :production_unit_id => production_unit.id,

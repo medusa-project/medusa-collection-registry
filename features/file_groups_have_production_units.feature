@@ -1,36 +1,36 @@
-Feature: Production Units for File Groups
+Feature: producers for File Groups
   In order to know the origin of files
   As a librarian
-  I want file groups to track their production unit
+  I want file groups to track their producer
 
   Background:
     Given I am logged in as an admin
-    And I have production_units with fields:
+    And I have producers with fields:
       | title    |
       | Scanning |
       | Scraping |
     And the collection titled 'Dogs' has file groups with fields:
       | file_location |
       | Grainger |
-    And The file group with location 'Grainger' for the collection titled 'Dogs' has production unit titled 'Scanning'
+    And The file group with location 'Grainger' for the collection titled 'Dogs' has producer titled 'Scanning'
 
-  Scenario: Edit and view the production unit of a file group
+  Scenario: Edit and view the producer of a file group
     When I edit the file group with location 'Grainger' for the collection titled 'Dogs'
-    And I select the production unit 'Scraping'
+    And I select the producer 'Scraping'
     And I press 'Update File group'
     Then I should see 'Scraping'
-    And I should see 'Production Unit'
-    And The file group with location 'Grainger' for the collection titled 'Dogs' should have production unit titled 'Scraping'
+    And I should see 'Producer'
+    And The file group with location 'Grainger' for the collection titled 'Dogs' should have producer titled 'Scraping'
 
-  Scenario: Navigate from a file group to its production unit
+  Scenario: Navigate from a file group to its producer
     When I view the file group with location 'Grainger' for the collection titled 'Dogs'
     And I click on 'Scanning'
-    Then I should be on the view page for the production unit titled 'Scanning'
+    Then I should be on the view page for the producer titled 'Scanning'
 
-  Scenario: Deleting a production unit should fail if it has file groups
-    When I view the production unit titled 'Scanning'
-    And I click on 'Delete Production Unit'
-    Then I should be on the view page for the production unit titled 'Scanning'
-    And I should see 'Production Units with associated file groups cannot be deleted.'
+  Scenario: Deleting a producer should fail if it has file groups
+    When I view the producer titled 'Scanning'
+    And I click on 'Delete Producer'
+    Then I should be on the view page for the producer titled 'Scanning'
+    And I should see 'Producers with associated file groups cannot be deleted.'
 
 

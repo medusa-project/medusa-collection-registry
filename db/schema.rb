@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120925175758) do
+ActiveRecord::Schema.define(:version => 20120925221448) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -100,10 +100,10 @@ ActiveRecord::Schema.define(:version => 20120925175758) do
     t.decimal  "total_file_size"
     t.integer  "total_files"
     t.integer  "collection_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.date     "last_access_date"
-    t.integer  "production_unit_id"
+    t.integer  "producer_id"
     t.integer  "storage_medium_id"
     t.integer  "file_type_id"
   end
@@ -142,7 +142,7 @@ ActiveRecord::Schema.define(:version => 20120925175758) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "production_units", :force => true do |t|
+  create_table "producers", :force => true do |t|
     t.string   "title"
     t.string   "address_1"
     t.string   "address_2"
@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(:version => 20120925175758) do
     t.date     "active_end_date"
   end
 
-  add_index "production_units", ["administrator_id"], :name => "index_production_units_on_administrator_id"
+  add_index "producers", ["administrator_id"], :name => "index_production_units_on_administrator_id"
 
   create_table "repositories", :force => true do |t|
     t.string   "title"

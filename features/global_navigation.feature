@@ -18,9 +18,9 @@ Feature: Global navigation
     When I click on 'Access Systems' in the global navigation bar
     Then I should be on the access system index page
 
-  Scenario: Go to production units
-    When I click on 'Production Units' in the global navigation bar
-    Then I should be on the production unit index page
+  Scenario: Go to producers
+    When I click on 'Producer' in the global navigation bar
+    Then I should be on the producer index page
 
   Scenario: Go to collections
     When I click on 'Collections' in the global navigation bar

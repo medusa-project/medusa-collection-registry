@@ -1,0 +1,24 @@
+- model_class = Producer
+.page-header
+  %h1= t('.title', :default => model_class.model_name.human.pluralize)
+
+= render 'shared/definitions/producer'
+
+%table.table.table-striped#producers
+  %thead
+    %tr
+      %th Title
+      %th Administrator
+      %th URL
+      %th
+  %tbody
+  - @producers.each do |producer|
+    %tr
+      %td #{link_to producer.title, producer}
+      %td #{net_id_search_link(producer.administrator_net_id)}
+      %td #{link_to_external producer.url, producer.url}
+      %td
+        = link_to 'Edit', edit_producer_path(producer), :class => 'btn btn-mini'
+        = link_to 'Delete', producer, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-mini btn-danger'
+
+= link_to 'New Producer', new_producer_path, :class => 'btn btn-primary'

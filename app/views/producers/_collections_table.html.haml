@@ -11,7 +11,7 @@
         %th Preservation Priority
         %th
     %tbody
-      - @production_unit.collections.each do |collection|
+      - @producer.collections.each do |collection|
         %tr
           %td #{link_to collection.title, collection}
           %td #{net_id_search_link(collection.contact_net_id)}
