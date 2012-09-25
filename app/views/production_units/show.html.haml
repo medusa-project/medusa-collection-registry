@@ -1,13 +1,8 @@
-.pull-right
-  = link_to 'Back', production_units_path, :class => 'btn'
-  = link_to 'Edit', edit_production_unit_path(@production_unit), :class => 'btn'
-  = link_to 'Delete Production Unit', @production_unit, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
-
 .page-header
   %h1 #{@production_unit.title}
 
-.row
-  .span8
+.span3#sidebar
+  .well
     = show_value net_id_search_link(@production_unit.administrator_net_id), 'Administrator Net ID'
     = show_field @production_unit, :address_1
     = show_field @production_unit, :address_2
@@ -20,3 +15,12 @@
     = show_field @production_unit, :active_start_date, 'Active Start Date'
     = show_field @production_unit, :active_end_date, 'Active End Date'
     = show_field @production_unit, :notes_html, 'Notes'
+  .btn-group
+    = link_to 'Back', production_units_path, :class => 'btn'
+    = link_to 'Edit', edit_production_unit_path(@production_unit), :class => 'btn'
+    = link_to 'Delete Production Unit', @production_unit, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
+
+.span9#content
+  %a.toggles{:href=>"#", :rel => "tooltip", :title => "Hide or show the sidebar" }
+    %i.icon-arrow-left
+  = render 'collections_table'

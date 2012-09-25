@@ -28,4 +28,8 @@ class ProductionUnit < ActiveRecord::Base
     end
   end
 
+  def collections
+    self.file_groups.includes(:collection).collect {|group| group.collection}.uniq
+  end
+
 end
