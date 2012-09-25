@@ -56,3 +56,11 @@ end
 Then /^I should be on the production unit creation page$/ do
   current_path.should == new_production_unit_path
 end
+
+And /^I set the production unit active start date to '(\d+)\-(\d+)\-(\d+)'$/ do |arg1, arg2, arg3|
+  fill_in_date_select(arg1, arg2, arg3, 'production_unit_active_start_date')
+end
+
+And /^I set the production unit active end date to '(\d+)\-(\d+)\-(\d+)'$/ do |arg1, arg2, arg3|
+  fill_in_date_select(arg1, arg2, arg3, 'production_unit_active_end_date')
+end

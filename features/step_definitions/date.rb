@@ -3,3 +3,6 @@ def fill_in_date_select(year, month, day, selector_root)
   select month.to_i.to_s, :from => "#{selector_root}_2i"
   select day.to_i.to_s, :from => "#{selector_root}_3i"
 end
+
+
+

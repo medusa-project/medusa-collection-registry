@@ -13,6 +13,8 @@
       = f.input :phone_number, :label => 'Phone Number'
       = f.input :email
       = f.input :url, :label => 'URL'
+      = f.input :active_start_date, :label => 'Active Start Date', :as => :string, :use_month_numbers => true, :input_html => {'data-datepicker' => 'datepicker'}, :order => [:day, :month, :year]
+      = f.input :active_end_date, :label => 'Active End Date', :as => :string, :use_month_numbers => true, :input_html => {'data-datepicker' => 'datepicker'}, :order => [:day, :month, :year]
       = f.input :notes, :input_html => { :rows => 3 }
     .form-actions.span6
       = f.button :submit, :class => 'btn-primary'

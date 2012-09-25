@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120918181620) do
+ActiveRecord::Schema.define(:version => 20120925175758) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -153,10 +153,12 @@ ActiveRecord::Schema.define(:version => 20120918181620) do
     t.string   "email"
     t.string   "url"
     t.text     "notes"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.integer  "administrator_id"
     t.text     "notes_html"
+    t.date     "active_start_date"
+    t.date     "active_end_date"
   end
 
   add_index "production_units", ["administrator_id"], :name => "index_production_units_on_administrator_id"
@@ -165,8 +167,8 @@ ActiveRecord::Schema.define(:version => 20120918181620) do
     t.string   "title"
     t.string   "url"
     t.text     "notes"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.string   "address_1"
     t.string   "address_2"
     t.string   "city"
@@ -176,6 +178,8 @@ ActiveRecord::Schema.define(:version => 20120918181620) do
     t.string   "email"
     t.integer  "contact_id"
     t.text     "notes_html"
+    t.date     "active_start_date"
+    t.date     "active_end_date"
   end
 
   add_index "repositories", ["contact_id"], :name => "index_repositories_on_contact_id"

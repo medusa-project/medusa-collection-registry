@@ -18,6 +18,8 @@
     = show_value link_to_external(@repository.url, @repository.url), 'URL'
     = show_field @repository, :notes_html, 'Notes'
     = show_field @repository, :total_size, 'Total Size (GB)'
+    = show_field @repository, :active_start_date, 'Active Start Date'
+    = show_field @repository, :active_end_date, 'Active End Date'
     .btn-group
       = link_to "Back", repositories_path, :class => 'btn'
       = link_to "Edit", edit_repository_path(@repository), :class => 'btn'

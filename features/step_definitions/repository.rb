@@ -76,3 +76,11 @@ end
 When /^I edit the repository titled '(.*)'$/ do |title|
   visit edit_repository_path(Repository.find_by_title(title))
 end
+
+And /^I set the repository active start date to '(\d+)\-(\d+)\-(\d+)'$/ do |arg1, arg2, arg3|
+  fill_in_date_select(arg1, arg2, arg3, 'repository_active_start_date')
+end
+
+And /^I set the repository active end date to '(\d+)\-(\d+)\-(\d+)'$/ do |arg1, arg2, arg3|
+  fill_in_date_select(arg1, arg2, arg3, 'repository_active_end_date')
+end
