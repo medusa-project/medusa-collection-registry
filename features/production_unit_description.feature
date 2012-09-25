@@ -40,6 +40,7 @@ Feature: Production Unit description
     When I go to the production unit index page
     Then I should see a table of production units
     And I should see 'Scanning'
+    And I should see the producer definition
 
   Scenario: View production unit
     When I view the production unit titled 'Scanning'
@@ -53,6 +54,10 @@ Feature: Production Unit description
     And I press 'Update Production unit'
     Then I should see 'New notes'
     And I should not see 'They scan stuff here'
+
+  Scenario: Edit production unit shows definition
+    When I edit the production unit titled 'Scanning'
+    Then I should see the producer definition
 
   Scenario: Delete production unit from view page
     When I view the production unit titled 'Scanning'

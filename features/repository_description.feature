@@ -33,6 +33,7 @@ Feature: Repository description
     When I go to the repository index page
     Then I should see 'Sample 1'
     And I should see 'Sample 2'
+    And I should see the repository definition
 
   Scenario: View repository
     When I view the repository titled 'Sample 1'
@@ -46,6 +47,10 @@ Feature: Repository description
     And I press 'Update Repository'
     Then I should see 'New Notes Value'
     And I should not see 'This is a sample repository for the test'
+
+  Scenario: Edit repository show definition
+    When I edit the repository titled 'Sample 1'
+    Then I should see the repository definition
 
   Scenario: Delete repository from view page
     When I view the repository titled 'Sample 1'
