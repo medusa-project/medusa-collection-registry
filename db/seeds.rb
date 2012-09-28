@@ -20,7 +20,8 @@ ActiveRecord::Base.transaction do
   end
 
 #File types
-  ['Derivative Content', 'Master Content', 'Derivative Metadata', 'Master Metadata', 'Other', 'Mixed Content'].each do |name|
+  ['Derivative Content', 'Master Content', 'Derivative Metadata', 'Master Metadata', 'Other',
+   'Mixed Content', 'Master Mixed Content', 'Derivative Mixed Content'].each do |name|
     FileType.find_or_create_by_name(name)
   end
 
