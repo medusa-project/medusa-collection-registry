@@ -23,4 +23,6 @@
           = link_to 'Edit', edit_repository_path(repository), :class => 'btn btn-mini'
           = link_to 'Delete', repository_path(repository), :method => :delete, :data => { :confirm => repository_confirm_message}, :class => 'btn btn-mini btn-danger'
 
+%br
+
 = link_to "New Repository", new_repository_path, :class => 'btn btn-primary'
