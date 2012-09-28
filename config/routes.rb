@@ -2,7 +2,7 @@ MedusaRails3::Application.routes.draw do
 
   get "ingest_statuses/update"
 
-  root :to => 'static#page'
+  root :to => 'static#page', :page => 'landing'
 
   resources :collections
   resources :repositories
