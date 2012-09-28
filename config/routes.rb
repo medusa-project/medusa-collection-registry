@@ -2,7 +2,7 @@ MedusaRails3::Application.routes.draw do
 
   get "ingest_statuses/update"
 
-  root :to => 'repositories#index'
+  root :to => 'static#page'
 
   resources :collections
   resources :repositories
@@ -16,6 +16,7 @@ MedusaRails3::Application.routes.draw do
   match '/login', to: 'sessions#new', as: :login
   match '/logout', to: 'sessions#destroy', as: :logout
   match '/unauthorized', to: 'sessions#unauthorized', as: :unauthorized
+  match '/static/:page', to: 'static#page', as: :static
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

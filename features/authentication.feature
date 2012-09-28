@@ -5,7 +5,7 @@ Feature: Authentication
 
   Scenario: Unauthenticated users are asked to log in
     Given I am not logged in
-    When I go to the site home
+    When I go to the repository index page
     Then I should be on the login page
 
   Scenario: Log out
