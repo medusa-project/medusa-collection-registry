@@ -27,6 +27,12 @@ And /^I should see all of:$/ do |table|
   end
 end
 
+And /^I should see none of:$/ do |table|
+  table.headers.each do |header|
+    step "I should not see '#{header}'"
+  end
+end
+
 And /^I click on '(.*)'$/ do |link_name|
   click_on(link_name)
 end
