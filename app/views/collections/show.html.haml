@@ -25,7 +25,6 @@
     = show_field @collection, :description_html, 'Description'
     = show_field @collection, :private_description_html, 'Private Description'
     = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
-    = show_field @collection, :file_package_summary
     = show_field @collection, :rights_statement
     = show_field @collection, :rights_restrictions
     = show_field @collection, :notes_html, 'Notes'
@@ -45,6 +44,10 @@
   = render 'assessments_table'
 
   %hr/
+
+  %h1 File Manager
+
+  %p #{@collection.file_package_summary}
 
   = render 'file_groups_table'
 
