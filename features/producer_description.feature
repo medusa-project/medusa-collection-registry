@@ -85,6 +85,7 @@ Feature: Producer description
     When I go to the producer index page
     And I click on 'New Producer'
     Then I should be on the producer creation page
+    And I should see the producer definition
 
   Scenario: Navigate from view page to index page
     When I view the producer titled 'Scanning'

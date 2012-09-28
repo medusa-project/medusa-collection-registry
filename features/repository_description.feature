@@ -78,6 +78,7 @@ Feature: Repository description
     When I go to the repository index page
     And I click on 'New Repository'
     Then I should be on the repository creation page
+    And I should see the repository definition
 
   Scenario: Navigate from view page to edit page
     When I view the repository titled 'Sample 1'
