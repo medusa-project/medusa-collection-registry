@@ -28,6 +28,11 @@ Feature: File Group description
     And I should see '1300'
     And I should not see '1200'
 
+  Scenario: Edit a file group and see owning repository and collection
+    When I edit the file group with location 'Main Library' for the collection titled 'Dogs'
+    Then I should see 'Dogs'
+    And I should see 'Animals'
+
   Scenario: Navigate from the file group view page to owning collection
     When I view the file group with location 'Main Library' for the collection titled 'Dogs'
     And I click on 'Dogs'

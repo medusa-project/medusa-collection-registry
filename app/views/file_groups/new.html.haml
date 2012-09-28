@@ -1,1 +1,8 @@
-= render 'form'
+- model_class = FileGroup
+.page-header
+  %h1
+    %i.icon-pencil
+    =t '.title', :default => t('helpers.titles.edit', :model => model_class.model_name.human, :default => "New #{model_class.model_name.human}")
+
+= render "collection_title"
+= render "form"
