@@ -1,5 +1,1 @@
-$(document).ready(function () {
-  $('#repositories').dataTable({
-    "aaSorting" : [[0, "asc"]]
-  });
-})
+initialize_data_table("#repositories")

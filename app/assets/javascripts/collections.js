@@ -7,9 +7,4 @@ $(function () {
   })
 });
 
-$(document).ready(function () {
-  $('#collections').dataTable({
-    "aaSorting" : [[0, "asc"]]
-  });
-})
-
+initialize_data_table("#collections")
