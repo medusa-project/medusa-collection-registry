@@ -17,3 +17,6 @@
     = show_field @file_group, :last_access_date
     = show_field @file_group, :summary
     = show_field @file_group, :provenance_note
+  .span4
+    %p.lead Collection file package summary
+    %p= @file_group.collection.file_package_summary

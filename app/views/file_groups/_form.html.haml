@@ -1,18 +1,31 @@
 = simple_form_for @file_group, :html => {:class => 'form-horizontal'} do |f|
-  = f.input :producer_id, :collection => producers_select_collection
-  = f.input :file_type_id, :collection => file_types_select_collection
-  = f.input :file_location
-  = f.input :file_format
-  = f.input :storage_medium_id, :collection => storage_media_select_collection
-  = f.input :total_file_size, :label => 'Total file size (GB)'
-  = f.input :total_files
-  = f.input :last_access_date, :as => :string, :input_html => {'data-datepicker' => 'datepicker'}, :order => [:day, :month, :year], :use_month_numbers => true
-  = f.input :summary
-  = f.input :provenance_note, :label => 'Provenance Note'
-  = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
-  .form-actions
-    = f.button :submit, :class => 'btn-primary'
-    - if @file_group.new_record?
-      = link_to("Back to #{@collection.title}", @collection, :class => 'btn')
-    - else
-      = link_to(t('.cancel', :default => t('helpers.links.cancel')), @file_group, :class => 'btn')
+  .row
+    .span8
+      = f.input :producer_id, :collection => producers_select_collection
+      = f.input :file_type_id, :collection => file_types_select_collection
+      = f.input :file_location
+      = f.input :file_format
+      = f.input :storage_medium_id, :collection => storage_media_select_collection
+      = f.input :total_file_size, :label => 'Total file size (GB)'
+      = f.input :total_files
+      = f.input :last_access_date, :as => :string, :input_html => {'data-datepicker' => 'datepicker'}, :order => [:day, :month, :year], :use_month_numbers => true
+      = f.input :summary
+      = f.input :provenance_note, :label => 'Provenance Note'
+      = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
+      .form-actions
+        = f.button :submit, :class => 'btn-primary'
+        - if @file_group.new_record?
+          = link_to("Back to #{@collection.title}", @collection, :class => 'btn')
+        - else
+          = link_to(t('.cancel', :default => t('helpers.links.cancel')), @file_group, :class => 'btn')
+    .span4
+      = f.simple_fields_for :collection, @collection do |c|
+        = c.input :file_package_summary, :label => "Collection File Package Summary"
+
+
+
+
+
+
+
+
