@@ -29,10 +29,11 @@ class Collection < ActiveRecord::Base
   after_create :ensure_ingest_status
   before_validation :ensure_uuid
 
-  [:description, :private_description, :notes].each do |field|
+  [:description, :private_description, :notes, :file_package_summary].each do |field|
     auto_html_for field do
       html_escape
       link :target => "_blank"
+      simple_format
     end
   end
 

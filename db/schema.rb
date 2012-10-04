@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120928195102) do
+ActiveRecord::Schema.define(:version => 20121004210537) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -79,8 +79,8 @@ ActiveRecord::Schema.define(:version => 20120928195102) do
     t.text     "rights_statement"
     t.text     "rights_restrictions"
     t.text     "notes"
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.integer  "contact_id"
     t.integer  "preservation_priority_id"
     t.text     "private_description"
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(:version => 20120928195102) do
     t.text     "description_html"
     t.text     "private_description_html"
     t.string   "uuid"
+    t.text     "file_package_summary_html"
   end
 
   add_index "collections", ["contact_id"], :name => "index_collections_on_contact_id"

@@ -9,6 +9,7 @@ class Assessment < ActiveRecord::Base
     auto_html_for field do
       html_escape
       link :target => "_blank"
+      simple_format
     end
   end
 
