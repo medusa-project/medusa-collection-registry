@@ -1,0 +1,13 @@
+=# require form to be passed as f
+- fields = [:naming_conventions, :file_hierarchy, :file_types, :origin, :misc_notes]
+%h3 Group package summary
+%fieldset#package-summary
+  #package-summary-tabs
+    %ul.nav.nav-tabs
+      - fields.each_with_index do |field, i|
+        %li
+          %a{:href => "#package-summary-tab-#{i}"} #{field.to_s.humanize}
+    .tab-content
+      - fields.each_with_index do |field, i|
+        %div{:id => "package-summary-tab-#{i}", :class => 'tab-pane'}
+          = f.input field
