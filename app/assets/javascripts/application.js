@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require data_tables_common
+//= require common
 //= require_tree .
