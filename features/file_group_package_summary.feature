@@ -30,7 +30,7 @@ Feature: Package summary
       | File hierarchy     | New hierarchy |
       | File types         | New types     |
       | Origin             | New origin    |
-      | Misc. notes        | New notes     |
+      | Misc notes        | New notes     |
     And I click on 'Update File group'
     Then I should see all of:
       | New naming | New hierarchy | New types | New origin | New notes |
