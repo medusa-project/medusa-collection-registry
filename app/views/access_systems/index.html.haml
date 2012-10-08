@@ -7,11 +7,11 @@
     %th Name
     %th
   %tbody
-  - @access_systems.each do |access_system|
-    %tr
-      %td #{link_to access_system.name, access_system}
-      %td
-        = link_to 'Edit', edit_access_system_path(access_system), :class => 'btn btn-mini'
-        = link_to 'Delete', access_system, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-mini btn-danger'
+    - @access_systems.each do |access_system|
+      %tr
+        %td #{link_to access_system.name, access_system}
+        %td
+          = link_to 'Edit', edit_access_system_path(access_system), :class => 'btn btn-mini'
+          = link_to 'Delete', access_system, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-mini btn-danger'
 
 = link_to 'New Access System', new_access_system_path, :class => 'btn btn-primary'

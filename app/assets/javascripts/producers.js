@@ -1,0 +1,1 @@
+initialize_data_table("#producers");
