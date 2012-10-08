@@ -6,8 +6,8 @@
     %ul.nav.nav-tabs
       - fields.each_with_index do |field, i|
         %li
-          %a{:href => "#package-summary-tab-#{i}"} #{field.to_s.humanize}
+          %a{:href => "#package-summary-tab-#{i}", :"data-toggle" => 'tab', :class => [(i == 0) && 'active']} #{field.to_s.humanize}
     .tab-content
       - fields.each_with_index do |field, i|
-        %div{:id => "package-summary-tab-#{i}", :class => 'tab-pane'}
+        %div{:id => "package-summary-tab-#{i}", :class => ['tab-pane', (i == 0) && 'active']}
           = f.input field
