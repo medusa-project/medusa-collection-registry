@@ -1,1 +1,1 @@
-initialize_data_table("#access_systems");
+initialize_data_table("table#access_systems");

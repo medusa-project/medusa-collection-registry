@@ -7,4 +7,4 @@ $(function () {
   })
 });
 
-initialize_data_table("#collections")
+initialize_data_table("table#collections")
