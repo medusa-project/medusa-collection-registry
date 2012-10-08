@@ -21,6 +21,13 @@
     .span4
       = f.simple_fields_for :collection, @collection do |c|
         = c.input :file_package_summary, :label => "Collection File Package Summary"
+      %h3 Group package summary
+      %fieldset#package-summary
+        = f.input :naming_conventions
+        = f.input :file_hierarchy
+        = f.input :file_types
+        = f.input :origin
+        = f.input :misc_notes, :label => 'Misc. notes'
 
 
 

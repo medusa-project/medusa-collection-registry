@@ -8,6 +8,14 @@ class FileGroup < ActiveRecord::Base
   belongs_to :file_type
   accepts_nested_attributes_for :collection
 
+  [:naming_conventions, :file_hierarchy, :file_types, :origin, :misc_notes].each do |field|
+    auto_html_for field do
+      html_escape
+      link :target => "_blank"
+      simple_format
+    end
+  end
+
   def file_type_name
     self.file_type.try(:name)
   end
