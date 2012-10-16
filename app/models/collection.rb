@@ -37,7 +37,6 @@ class Collection < ActiveRecord::Base
     end
   end
 
-
   def total_size
     self.file_groups.sum(:total_file_size)
   end
@@ -48,6 +47,25 @@ class Collection < ActiveRecord::Base
 
   def ensure_uuid
     self.uuid ||= Utils::Luhn.add_check_character(UUID.generate)
+  end
+
+  def ensure_handle
+    client = MedusaRails3::Application.handle_client
+    if self.uuid and client
+      if client.exists?(self.collection_handle)
+        client.update_url(self.collection_handle, self.collection_url)
+      else
+        client.create_from_url(self.collection_handle, self.collection_url)
+      end
+    end
+  end
+
+  def collection_handle
+    "10111/MEDUSA:#{self.uuid}"
+  end
+
+  def collection_url
+    Rails.application.routes.url_helpers.collection_url(self, :host => MedusaRails3::Application.medusa_host, :protocol => 'https')
   end
 
   def resource_type_names
