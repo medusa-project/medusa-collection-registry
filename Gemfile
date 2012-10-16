@@ -41,6 +41,8 @@ gem 'omniauth'
 gem 'omniauth-shibboleth', :git => 'git://github.com/medusa-project/omniauth-shibboleth.git'
 gem 'cancan', '~> 1.6.0'
 
+gem 'handle-server', :git => 'git://github.com/medusa-project/handle-server.git'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
