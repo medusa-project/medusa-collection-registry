@@ -52,21 +52,30 @@ class Collection < ActiveRecord::Base
 
   def ensure_handle
     client = MedusaRails3::Application.handle_client
-    if self.uuid and client
-      if client.exists?(self.collection_handle)
-        client.update_url(self.collection_handle, self.collection_url)
+    if self.handle and client
+      if client.exists?(self.handle)
+        client.update_url(self.handle, self.medusa_url)
       else
-        client.create_from_url(self.collection_handle, self.collection_url)
+        client.create_from_url(self.handle, self.medusa_url)
       end
     end
   end
 
-  def collection_handle
-    "10111/MEDUSA:#{self.uuid}"
+  def remove_handle
+    client = MedusaRails3::Application.handle_client
+    if self.handle and client
+      if client.exists?(self.handle)
+        client.delete(self.handle)
+      end
+    end
   end
 
-  def collection_url
-    Rails.application.routes.url_helpers.collection_url(self, :host => MedusaRails3::Application.medusa_host, :protocol => 'https')
+  def handle
+    self.uuid ? "10111/MEDUSA:#{self.uuid}" : nil
+  end
+
+  def medusa_url
+    Rails.application.routes.url_helpers.medusa_url(self, :host => MedusaRails3::Application.medusa_host, :protocol => 'https')
   end
 
   def resource_type_names
