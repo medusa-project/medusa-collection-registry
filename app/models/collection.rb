@@ -1,7 +1,9 @@
 require 'net_id_person_associator'
 require 'utils/luhn'
+require 'registers_handle'
 
 class Collection < ActiveRecord::Base
+  include RegistersHandle
   net_id_person_association(:contact)
   attr_accessible :access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
                   :ongoing, :published, :repository_id, :rights_restrictions, :rights_statement,
@@ -48,26 +50,6 @@ class Collection < ActiveRecord::Base
 
   def ensure_uuid
     self.uuid ||= Utils::Luhn.add_check_character(UUID.generate)
-  end
-
-  def ensure_handle
-    client = MedusaRails3::Application.handle_client
-    if self.handle and client
-      if client.exists?(self.handle)
-        client.update_url(self.handle, self.medusa_url)
-      else
-        client.create_from_url(self.handle, self.medusa_url)
-      end
-    end
-  end
-
-  def remove_handle
-    client = MedusaRails3::Application.handle_client
-    if self.handle and client
-      if client.exists?(self.handle)
-        client.delete(self.handle)
-      end
-    end
   end
 
   def handle
