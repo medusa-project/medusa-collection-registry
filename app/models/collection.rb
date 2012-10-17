@@ -57,7 +57,7 @@ class Collection < ActiveRecord::Base
   end
 
   def medusa_url
-    Rails.application.routes.url_helpers.medusa_url(self, :host => MedusaRails3::Application.medusa_host, :protocol => 'https')
+    Rails.application.routes.url_helpers.collection_url(self, :host => MedusaRails3::Application.medusa_host, :protocol => 'https')
   end
 
   def resource_type_names
