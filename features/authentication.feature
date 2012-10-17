@@ -3,9 +3,10 @@ Feature: Authentication
   As anyone
   I want to provide an authentication mechanism
 
-  Scenario: Unauthenticated users are asked to log in
+  Scenario: Unauthenticated users are asked to log in if they visit a restricted page
     Given I am not logged in
-    When I go to the repository index page
+    And There is a collection titled 'Dogs'
+    When I edit the collection titled 'Dogs'
     Then I should be on the login page
 
   Scenario: Log out
