@@ -1,5 +1,7 @@
 class AccessSystemsController < ApplicationController
   before_filter :find_access_system, :only => [:show, :edit, :update, :destroy]
+  skip_before_filter :require_logged_in, :only => [:show, :index]
+  skip_before_filter :authorize, :only => [:show, :index]
 
   def index
     @access_systems = AccessSystem.all

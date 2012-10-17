@@ -1,6 +1,8 @@
 class RepositoriesController < ApplicationController
 
   before_filter :find_repository, :only => [:show, :edit, :update, :destroy]
+  skip_before_filter :require_logged_in, :only => [:show, :index]
+  skip_before_filter :authorize, :only => [:show, :index]
 
   def new
     @repository = Repository.new

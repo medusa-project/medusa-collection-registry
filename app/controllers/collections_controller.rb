@@ -1,6 +1,8 @@
 class CollectionsController < ApplicationController
 
   before_filter :find_collection_and_repository, :only => [:show, :destroy, :edit, :update]
+  skip_before_filter :require_logged_in, :only => [:show, :index]
+  skip_before_filter :authorize, :only => [:show, :index]
 
   def show
 
