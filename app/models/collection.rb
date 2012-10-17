@@ -30,6 +30,7 @@ class Collection < ActiveRecord::Base
 
   after_create :ensure_ingest_status
   after_create :ensure_handle
+  before_destroy :remove_handle
   before_validation :ensure_uuid
 
   [:description, :private_description, :notes, :file_package_summary].each do |field|
