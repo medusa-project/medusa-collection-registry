@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/medusa-project/handle-server.git
-  revision: d6db7dbb8c283740be990b9454d5dfb0eecc1915
+  revision: d4f9632d60601073e06d0905c9ab9b1bff05b2fe
   specs:
-    handle-server (1.0.0)
+    handle-server (1.0.1)
       httparty
 
 GIT
@@ -345,7 +345,7 @@ DEPENDENCIES
   factory_girl
   haml
   haml-rails
-  handle-server!
+  handle-server (~> 1.0.1)!
   jquery-rails
   nokogiri
   omniauth
