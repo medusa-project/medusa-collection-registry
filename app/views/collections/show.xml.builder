@@ -5,6 +5,7 @@ xml.mods(:version => '3.4', 'xsi:schemaLocation' => 'http://www.loc.gov/mods/v3 
     xml.title @collection.title
   end
   xml.identifier(@collection.uuid, :type => 'uuid')
+  xml.identifier(@collection.handle, :type => 'handle')
   @collection.resource_types.each do |resource_type|
     xml.typeOfResource(resource_type.name, :collection => 'yes')
   end
