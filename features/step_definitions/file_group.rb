@@ -64,10 +64,6 @@ When /^I select file type '(.*)'$/ do |type|
   select(type, :from => 'file_group_file_type_id')
 end
 
-Then /^There should be a field set for the file group package summary$/ do
-  page.should have_selector('fieldset#package-summary')
-end
-
 private
 
 def find_file_group(collection_title, location)

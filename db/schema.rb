@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121008164346) do
+ActiveRecord::Schema.define(:version => 20121024154347) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -101,8 +101,8 @@ ActiveRecord::Schema.define(:version => 20121008164346) do
     t.decimal  "total_file_size"
     t.integer  "total_files"
     t.integer  "collection_id"
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
     t.date     "last_access_date"
     t.integer  "producer_id"
     t.integer  "storage_medium_id"
@@ -111,14 +111,8 @@ ActiveRecord::Schema.define(:version => 20121008164346) do
     t.text     "provenance_note"
     t.text     "naming_conventions"
     t.text     "naming_conventions_html"
-    t.text     "file_hierarchy"
-    t.text     "file_hierarchy_html"
-    t.text     "file_types"
-    t.text     "file_types_html"
-    t.text     "origin"
-    t.text     "origin_html"
-    t.text     "misc_notes"
-    t.text     "misc_notes_html"
+    t.text     "directory_structure"
+    t.text     "directory_structure_html"
   end
 
   add_index "file_groups", ["file_type_id"], :name => "index_file_groups_on_file_type_id"

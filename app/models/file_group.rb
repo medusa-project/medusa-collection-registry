@@ -1,15 +1,14 @@
 class FileGroup < ActiveRecord::Base
   attr_accessible :collection_id, :file_format, :file_location, :total_file_size, :total_files,
       :last_access_date, :producer_id, :storage_medium_id, :file_type_id, :summary, :provenance_note,
-      :collection_attributes,
-      :naming_conventions, :file_hierarchy, :file_types, :origin, :misc_notes
+      :collection_attributes, :naming_conventions, :directory_structure
   belongs_to :collection
   belongs_to :producer
   belongs_to :storage_medium
   belongs_to :file_type
   accepts_nested_attributes_for :collection
 
-  [:naming_conventions, :file_hierarchy, :file_types, :origin, :misc_notes].each do |field|
+  [:naming_conventions, :directory_structure].each do |field|
     auto_html_for field do
       html_escape
       link :target => "_blank"
