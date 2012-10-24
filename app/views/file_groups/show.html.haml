@@ -11,7 +11,9 @@
     = show_field @file_group, :file_type_name, 'File type'
     = show_field @file_group, :file_location
     = show_field @file_group, :file_format
+    = show_field @file_group, :naming_conventions_html, 'Naming Conventions'
     = show_field @file_group, :storage_medium_name
+    = show_field @file_group, :directory_structure_html, 'Directory Structure'
     = show_value "#{@file_group.total_file_size} GB", 'Total file size:'
     = show_field @file_group, :total_files
     = show_field @file_group, :last_access_date
@@ -20,6 +22,3 @@
   .span4
     %p.lead Collection file package summary
     %p= @file_group.collection.file_package_summary_html
-    %p.lead Group file package summary
-    = show_field @file_group, :naming_conventions_html, 'Naming Conventions'
-    = show_field @file_group, :directory_structure_html, 'Directory Structure'
