@@ -27,10 +27,13 @@ ActiveRecord::Base.transaction do
 
 #Resource types
   ['text', 'cartographic', 'notated music', 'sound recording', 'sound recording-musical',
-   'sound recording-nonmusical', 'still image', 'moving image', 'animated computer graphics',
+   'sound recording-nonmusical', 'still image', 'moving image',
    'three dimensional object', 'software, multimedia', 'mixed material'].each do |name|
     ResourceType.find_or_create_by_name(name)
     if bad_type = ResourceType.find_by_name('software, multimedia, mixed material')
+      bad_type.destroy
+    end
+    if bad_type = ResourceType.find_by_name('animated computer graphics')
       bad_type.destroy
     end
   end
