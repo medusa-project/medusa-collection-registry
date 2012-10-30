@@ -1,3 +1,6 @@
 [submodule "submodules/akubra-caringo"]
 	path = submodules/akubra-caringo
 	url = git@github.com:medusa-project/akubra-caringo.git
+[submodule "fedora/hydra-jetty"]
+	path = fedora/hydra-jetty
+	url = git://github.com/projecthydra/hydra-jetty.git
