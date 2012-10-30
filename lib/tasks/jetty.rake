@@ -3,7 +3,7 @@ require 'nokogiri'
 require 'fileutils'
 require 'daemons'
 
-namespace :jetty do 
+namespace :jetty do
   desc 'Remove old hydra jetty for this environment'
   task :delete => [:environment, :stop] do
     check_environment
@@ -30,7 +30,7 @@ namespace :jetty do
 
   desc 'Start jetty for this environment'
   task :start => :environment do
-    puts "Starting #{Rails.env} jetty."    
+    puts "Starting #{Rails.env} jetty."
     Daemons.daemonize
     Dir.chdir(jetty_path)
     File.open(pid_file, 'w') {|f| f.puts Process.pid}
@@ -57,8 +57,22 @@ namespace :jetty do
 
   desc 'Restart jetty for this environment'
   task :restart => [:stop, :start] do
-    
+
   end
+
+  desc 'Remove all objects for this environment'
+  task :delete_objects => :environment do
+    check_environment
+    ActiveFedora.init
+    while objects = ActiveFedora::Base.find(:all, :rows => 100)
+      break if objects.empty?
+      objects.each do |object|
+        puts "Deleting #{object.pid}"
+        object.delete
+      end
+    end
+  end
+
 end
 
 #only do the task if the env variable FORCE=true if in the development
@@ -88,7 +102,7 @@ def jetty_start_jar
 end
 
 def start_script_file
-  File.join(jetty_path, 'start.sh')  
+  File.join(jetty_path, 'start.sh')
 end
 
 JETTY_PORT_MAP = {'production' => '8983', 'development' => '18983', 'test' => '28983'}
