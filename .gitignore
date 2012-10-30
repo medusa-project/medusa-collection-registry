@@ -19,3 +19,5 @@
 
 #ignore emacs backup files
 *~
+
+daemons.rb.pid
