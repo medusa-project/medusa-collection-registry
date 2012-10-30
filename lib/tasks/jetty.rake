@@ -63,6 +63,7 @@ namespace :jetty do
   desc 'Remove all objects for this environment'
   task :delete_objects => :environment do
     check_environment
+    puts "Preparing to delete all objects in the #{Rails.env} fedora."
     ActiveFedora.init
     while objects = ActiveFedora::Base.find(:all, :rows => 100)
       break if objects.empty?
@@ -71,6 +72,7 @@ namespace :jetty do
         object.delete
       end
     end
+    puts "All objects in the #{Rails.env} fedora deleted."
   end
 
 end
