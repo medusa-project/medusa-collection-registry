@@ -22,10 +22,9 @@ namespace :jetty do
     puts "Copied jetty for #{Rails.env}"
   end
 
-  desc 'Reinstall hydra jetty for this environment'
-  task :reinstall => [:delete, :copy] do
+  desc 'Install hydra jetty for this environment, removing the old copy if present'
+  task :install => [:delete, :copy] do
     fix_jetty_port
-#    write_scripts
   end
 
   desc 'Start jetty for this environment'
@@ -126,17 +125,3 @@ def fix_jetty_port
   config.at_css('SystemProperty[name="jetty.port"]')['default'] = jetty_port
   File.open(jetty_config_file, 'w') {|f| f.puts(config.to_xml)}
 end
-
-def write_scripts
-  File.open(start_script_file, 'w') do |f|
-    f. puts <<-SCRIPT
-#!/bin/bash
-
-echo $$ > fedora.pid
-
-exec java -XX:+CMSPermGenSweepingEnabled -XX:+CMSClassUnloadingEnabled -XX:PermSize=64M -XX:MaxPermSize=128M -jar start.jar
-SCRIPT
-  end
-  File.chmod(0755, start_script_file)
-end
-
