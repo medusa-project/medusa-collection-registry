@@ -1,6 +1,7 @@
 require 'net_id_person_associator'
 require 'utils/luhn'
 require 'registers_handle'
+require 'builder/xmlmarkup'
 
 class Collection < ActiveRecord::Base
   include RegistersHandle
@@ -75,6 +76,32 @@ class Collection < ActiveRecord::Base
 
   def ensure_rights_declaration
     self.rights_declaration ||= self.build_rights_declaration
+  end
+
+  def to_mods
+    xml = ::Builder::XmlMarkup.new
+    xml.instruct!
+    xml.mods(:version => '3.4', 'xsi:schemaLocation' => 'http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/mods.xsd',
+             'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance", :xmlns => "http://www.loc.gov/mods/v3") do
+      xml.titleInfo do
+        xml.title self.title
+      end
+      xml.identifier(self.uuid, :type => 'uuid')
+      xml.identifier(self.handle, :type => 'handle')
+      self.resource_types.each do |resource_type|
+        xml.typeOfResource(resource_type.name, :collection => 'yes')
+      end
+      xml.abstract self.description
+      xml.location do
+        xml.url(self.access_url, :access => 'object in context', :usage => 'primary')
+      end
+      xml.originInfo do
+        xml.publisher(self.repository.title)
+        xml.dateOther(self.start_date, :point => 'start')
+        xml.dateOther(self.end_date, :point => 'end')
+      end
+    end
+    xml.target!
   end
 
 end

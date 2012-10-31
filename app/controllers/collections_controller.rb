@@ -5,7 +5,10 @@ class CollectionsController < ApplicationController
   skip_before_filter :authorize, :only => [:show, :index]
 
   def show
-
+    respond_to do |format|
+      format.html
+      format.xml {render :xml => @collection.to_mods}
+    end
   end
 
   def destroy
