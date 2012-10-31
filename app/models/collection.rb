@@ -1,10 +1,11 @@
 require 'net_id_person_associator'
 require 'utils/luhn'
 require 'registers_handle'
-require 'builder/xmlmarkup'
+require 'mods_helper'
 
 class Collection < ActiveRecord::Base
   include RegistersHandle
+  include ModsHelper
   net_id_person_association(:contact)
   attr_accessible :access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
                   :ongoing, :published, :repository_id, :start_date, :title, :access_system_ids,
@@ -79,10 +80,7 @@ class Collection < ActiveRecord::Base
   end
 
   def to_mods
-    xml = ::Builder::XmlMarkup.new
-    xml.instruct!
-    xml.mods(:version => '3.4', 'xsi:schemaLocation' => 'http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/mods.xsd',
-             'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance", :xmlns => "http://www.loc.gov/mods/v3") do
+    with_mods_boilerplate do |xml|
       xml.titleInfo do
         xml.title self.title
       end
@@ -101,7 +99,6 @@ class Collection < ActiveRecord::Base
         xml.dateOther(self.end_date, :point => 'end')
       end
     end
-    xml.target!
   end
 
 end
