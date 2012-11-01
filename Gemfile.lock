@@ -63,6 +63,8 @@ GEM
     auto_html (1.6.0)
       redcarpet (~> 2.0)
       rinku (~> 1.5.0)
+    auto_strip_attributes (2.0.2)
+      activerecord (>= 3.0)
     backports (2.6.2)
     builder (3.0.0)
     cancan (1.6.8)
@@ -338,6 +340,7 @@ PLATFORMS
 DEPENDENCIES
   active-fedora
   auto_html
+  auto_strip_attributes
   cancan (~> 1.6.0)
   capistrano
   coffee-rails (~> 3.2.1)

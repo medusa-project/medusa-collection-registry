@@ -40,6 +40,8 @@ class Collection < ActiveRecord::Base
 
   accepts_nested_attributes_for :rights_declaration
 
+  auto_strip_attributes :description, :private_description, :notes, :file_package_summary, :nullify => false
+
   [:description, :private_description, :notes, :file_package_summary].each do |field|
     auto_html_for field do
       html_escape
@@ -94,7 +96,7 @@ class Collection < ActiveRecord::Base
       self.resource_types.each do |resource_type|
         xml.typeOfResource(resource_type.name, :collection => 'yes')
       end
-      xml.abstract self.description.strip
+      xml.abstract self.description
       xml.location do
         xml.url(self.access_url, :access => 'object in context', :usage => 'primary')
       end
