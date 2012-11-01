@@ -33,6 +33,7 @@ class Collection < ActiveRecord::Base
 
   after_create :ensure_ingest_status
   after_create :ensure_handle
+  after_save :ensure_fedora_collection
   before_destroy :remove_handle
   before_validation :ensure_uuid
   before_validation :ensure_rights_declaration
@@ -67,6 +68,10 @@ class Collection < ActiveRecord::Base
     Rails.application.routes.url_helpers.collection_url(self, :host => MedusaRails3::Application.medusa_host, :protocol => 'https')
   end
 
+  def medusa_pid
+    "MEDUSA:#{self.uuid}"
+  end
+
   def resource_type_names
     self.resource_types.collect(&:name).join('; ')
   end
@@ -89,7 +94,7 @@ class Collection < ActiveRecord::Base
       self.resource_types.each do |resource_type|
         xml.typeOfResource(resource_type.name, :collection => 'yes')
       end
-      xml.abstract self.description
+      xml.abstract self.description.strip
       xml.location do
         xml.url(self.access_url, :access => 'object in context', :usage => 'primary')
       end
@@ -101,4 +106,38 @@ class Collection < ActiveRecord::Base
     end
   end
 
+  #make sure there is a corresponding collection object in fedora and that its mods is up to date
+  def ensure_fedora_collection
+    unless self.fedora_class.exists?(self.medusa_pid)
+      self.fedora_class.new(:pid => self.medusa_pid).save
+    end
+    collection = self.fedora_collection
+    mods_stream = collection.datastreams['MODS']
+    unless mods_stream
+      mods_stream = collection.create_datastream(ActiveFedora::Datastream, 'MODS', :controlGroup => 'M',
+                                                        :dsLabel => 'MODS', :contentType => 'text/xml', :checksumType => 'SHA-1')
+      collection.add_datastream(mods_stream)
+    end
+    unless mods_stream.content == self.to_mods
+      mods_stream.content = self.to_mods
+    end
+    collection.save
+  end
+
+  #Note - you have to be careful with this since it fetches the collection anew.
+  #If you already have the collection then you probably want to operate on
+  #its datastreams directly!
+  def fedora_mods_datastream
+    self.fedora_collection.datastreams['MODS']
+  end
+
+  def fedora_collection
+    self.fedora_class.find(self.medusa_pid)
+  end
+
+  def fedora_class
+    ActiveFedora::Base
+  end
+
 end
+
