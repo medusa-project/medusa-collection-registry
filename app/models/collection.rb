@@ -35,6 +35,7 @@ class Collection < ActiveRecord::Base
   after_create :ensure_handle
   after_save :ensure_fedora_collection
   before_destroy :remove_handle
+  before_destroy :delete_fedora_collection
   before_validation :ensure_uuid
   before_validation :ensure_rights_declaration
 
@@ -124,6 +125,10 @@ class Collection < ActiveRecord::Base
       mods_stream.content = self.to_mods
     end
     collection.save
+  end
+
+  def delete_fedora_collection
+    self.fedora_collection.delete
   end
 
   #Note - you have to be careful with this since it fetches the collection anew.

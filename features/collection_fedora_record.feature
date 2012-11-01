@@ -27,4 +27,9 @@ Feature: Persist collection record into Fedora
     Then The collection titled 'Dogs' should have 1 MODS version in fedora
 
   Scenario: Destroying a collection should destroy its fedora collection record
-    Given PENDING
+    Given the repository titled 'Animals' has collections with fields:
+      | title | uuid                                   |
+      | Cats  | f071d2a0-0666-0130-bb75-000c2967d45f-c |
+    When I view the collection titled 'Cats'
+    And I click on 'Delete Collection'
+    Then There should be no fedora object with pid 'MEDUSA:f071d2a0-0666-0130-bb75-000c2967d45f-c'
