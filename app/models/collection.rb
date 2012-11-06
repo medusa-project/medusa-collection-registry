@@ -18,6 +18,7 @@ class Collection < ActiveRecord::Base
   has_many :resource_types, :through => :collection_resource_type_joins
   has_one :ingest_status, :dependent => :destroy
   belongs_to :preservation_priority
+  has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
 
   validates_presence_of :title
   validates_uniqueness_of :title, :scope => :repository_id
@@ -32,6 +33,7 @@ class Collection < ActiveRecord::Base
   after_create :ensure_handle
   before_destroy :remove_handle
   before_validation :ensure_uuid
+  before_validation :ensure_rights_declaration
 
   [:description, :private_description, :notes, :file_package_summary].each do |field|
     auto_html_for field do
@@ -67,6 +69,10 @@ class Collection < ActiveRecord::Base
 
   def preservation_priority_name
     self.preservation_priority.try(:name)
+  end
+
+  def ensure_rights_declaration
+    self.rights_declaration ||= self.build_rights_declaration
   end
 
 end

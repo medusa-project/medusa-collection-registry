@@ -6,7 +6,10 @@ class FileGroup < ActiveRecord::Base
   belongs_to :producer
   belongs_to :storage_medium
   belongs_to :file_type
+  has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
   accepts_nested_attributes_for :collection
+
+  before_validation :ensure_rights_declaration
 
   [:naming_conventions, :directory_structure].each do |field|
     auto_html_for field do
@@ -22,6 +25,10 @@ class FileGroup < ActiveRecord::Base
 
   def storage_medium_name
     self.storage_medium.try(:name)
+  end
+
+  def ensure_rights_declaration
+    self.rights_declaration ||= self.build_rights_declaration
   end
 
 end
