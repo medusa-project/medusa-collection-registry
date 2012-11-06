@@ -14,6 +14,12 @@
       = f.input :summary
       = f.input :provenance_note, :label => 'Provenance Note'
       = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
+      %section#rights
+        %div.page-header
+          %h1 Rights declaration
+        #rights-declaration
+          = f.simple_fields_for :rights_declaration do |rd|
+            =rd.input :rights_basis, :as => :select, :collection => RightsDeclaration::RIGHTS_BASES, :default => 'copyright', :allow_blank => false
       .form-actions
         = f.button :submit, :class => 'btn-primary'
         - if @file_group.new_record?

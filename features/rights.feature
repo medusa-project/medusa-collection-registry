@@ -17,3 +17,40 @@ Feature: Record structured rights data for collections and file groups
 
   Scenario: Every file group should have rights attached
     Then The file group with location 'Grainger' for the collection titled 'Dogs' should have rights attached
+
+  Scenario: A rights declaration created with the default parameters defaults to copyright
+    Then The rights declaration for the collection titled 'Dogs' should have rights basis 'copyright'
+
+  Scenario: Viewing a collection I see rights declaration information
+    When I view the collection titled 'Dogs'
+    Then I should see the rights declaration section
+    And I should see 'copyright'
+
+  Scenario: Viewing a file group I see rights declaration information
+    When I view the file group with location 'Grainger' for the collection titled 'Dogs'
+    Then I should see the rights declaration section
+    And I should see 'copyright'
+
+  Scenario: Editing a collection I see a section to edit the rights declaration
+    When I edit the collection titled 'Dogs'
+    Then I should see the rights declaration section
+
+  Scenario: Creating a collection I see a section to edit the rights declaration
+    When I view the repository titled 'Animals'
+    And I click on 'Add Collection'
+    Then I should see the rights declaration section
+
+  Scenario: Editing a file group I see a section to edit the rights declaration
+    When I edit the file group with location 'Grainger' for the collection titled 'Dogs'
+    Then I should see the rights declaration section
+
+  Scenario: Creating a file group I see a section to edit the rights declaration
+    When I view the collection titled 'Dogs'
+    And I click on 'Add File Group'
+    Then I should see the rights declaration section
+
+  Scenario: Editing and changing rights information for a collection
+    When PENDING
+
+  Scenario: Editing and changing rights information for a file group
+    When PENDING

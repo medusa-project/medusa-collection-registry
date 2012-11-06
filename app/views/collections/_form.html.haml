@@ -29,6 +29,11 @@
           %h1 Rights
         = f.input :rights_statement, :input_html => { :rows => 2 }
         = f.input :rights_restrictions, :input_html => { :rows => 2 }
+        %div.page-header
+          %h1 Rights declaration
+        #rights-declaration
+          = f.simple_fields_for :rights_declaration do |rd|
+            =rd.input :rights_basis, :as => :select, :collection => RightsDeclaration::RIGHTS_BASES, :default => 'copyright', :allow_blank => false
       %section#notes
         %div.page-header
           %h1 Notes

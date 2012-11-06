@@ -35,6 +35,9 @@
       = link_to "Delete Collection", collection_path(@collection), :method => "delete", :data => { :confirm => collection_confirm_message}, :class => 'btn btn-danger'
   %hr
   .well
+    = render 'show_rights_declaration'
+  %hr
+  .well
     = render 'show_ingest_status'
 
 .span9#content

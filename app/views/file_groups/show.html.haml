@@ -19,6 +19,9 @@
     = show_field @file_group, :last_access_date
     = show_field @file_group, :summary
     = show_field @file_group, :provenance_note
+    %h3 Rights Declaration
+    = render :partial => 'shared/rights_declaration', :locals => {:rights_declaration => @file_group.rights_declaration}
+
   .span4
     %p.lead Collection file package summary
     %p= @file_group.collection.file_package_summary_html
