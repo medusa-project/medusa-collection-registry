@@ -17,9 +17,7 @@
       %section#rights
         %div.page-header
           %h1 Rights declaration
-        #rights-declaration
-          = f.simple_fields_for :rights_declaration, @file_group.rights_declaration do |rd|
-            =rd.input :rights_basis, :as => :select, :collection => RightsDeclaration::RIGHTS_BASES, :default => 'copyright', :allow_blank => false
+        = render :partial => 'rights_declarations/form', :locals => {:containing_form => f, :rights_declaration => @file_group.rights_declaration}
       .form-actions
         = f.button :submit, :class => 'btn-primary'
         - if @file_group.new_record?

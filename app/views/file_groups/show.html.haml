@@ -20,7 +20,7 @@
     = show_field @file_group, :summary
     = show_field @file_group, :provenance_note
     %h3 Rights Declaration
-    = render :partial => 'shared/rights_declaration', :locals => {:rights_declaration => @file_group.rights_declaration}
+    = render :partial => 'rights_declarations/show', :locals => {:rights_declaration => @file_group.rights_declaration}
 
   .span4
     %p.lead Collection file package summary
