@@ -54,12 +54,12 @@ Feature: Record structured rights data for collections and file groups
     And I select 'statute' from 'Rights basis'
     And I select 'Canada' from 'Copyright jurisdiction'
     And I select 'Public domain.' from 'Copyright statement'
-    And I select 'Access is restricted' from 'Access restrictions'
+    And I select 'Access is open and unrestricted.' from 'Access restrictions'
     And I click on 'Update Collection'
     Then I should be on the view page for the collection titled 'Dogs'
     And I should not see 'copyright'
     And I should see all of:
-      | statute | Canada | Public domain. | Access is restricted |
+      | statute | Canada | Public domain. | Access is open and unrestricted. |
 
   Scenario: Editing and changing rights information for a file group
     When I edit the file group with location 'Grainger' for the collection titled 'Dogs'
