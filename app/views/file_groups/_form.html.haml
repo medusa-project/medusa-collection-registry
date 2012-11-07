@@ -18,7 +18,7 @@
         %div.page-header
           %h1 Rights declaration
         #rights-declaration
-          = f.simple_fields_for :rights_declaration do |rd|
+          = f.simple_fields_for :rights_declaration, @file_group.rights_declaration do |rd|
             =rd.input :rights_basis, :as => :select, :collection => RightsDeclaration::RIGHTS_BASES, :default => 'copyright', :allow_blank => false
       .form-actions
         = f.button :submit, :class => 'btn-primary'

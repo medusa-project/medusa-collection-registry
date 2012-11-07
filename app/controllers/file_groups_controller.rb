@@ -26,6 +26,7 @@ class FileGroupsController < ApplicationController
   def new
     @collection = Collection.find(params[:collection_id])
     @file_group = FileGroup.new(:collection_id => @collection.id)
+    @file_group.rights_declaration = @file_group.build_rights_declaration
   end
 
   def create

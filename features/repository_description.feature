@@ -71,8 +71,10 @@ Feature: Repository description
   Scenario: Delete from index page
     When I go to the repository index page
     And I click on 'Delete'
+    And I click on 'Delete'
     Then I should be on the repository index page
     And I should not see 'Sample 1'
+    And I should not see 'Sample 2'
 
   Scenario: Create from index page
     When I go to the repository index page

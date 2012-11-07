@@ -1,13 +1,13 @@
 class FileGroup < ActiveRecord::Base
   attr_accessible :collection_id, :file_format, :file_location, :total_file_size, :total_files,
       :last_access_date, :producer_id, :storage_medium_id, :file_type_id, :summary, :provenance_note,
-      :collection_attributes, :naming_conventions, :directory_structure
+      :collection_attributes, :naming_conventions, :directory_structure, :rights_declaration_attributes
   belongs_to :collection
   belongs_to :producer
   belongs_to :storage_medium
   belongs_to :file_type
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
-  accepts_nested_attributes_for :collection
+  accepts_nested_attributes_for :collection, :rights_declaration
 
   before_validation :ensure_rights_declaration
 
