@@ -27,6 +27,7 @@ class CollectionsController < ApplicationController
 
   def new
     @collection = Collection.new
+    @collection.rights_declaration = @collection.build_rights_declaration
     @repository = Repository.find(params[:repository_id]) rescue Repository.order(:title).first
   end
 

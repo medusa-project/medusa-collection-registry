@@ -50,7 +50,17 @@ Feature: Record structured rights data for collections and file groups
     Then I should see the rights declaration section
 
   Scenario: Editing and changing rights information for a collection
-    When PENDING
+    When I edit the collection titled 'Dogs'
+    And I select rights basis 'statute'
+    And I click on 'Update Collection'
+    Then I should be on the view page for the collection titled 'Dogs'
+    And I should see 'statute'
+    And I should not see 'copyright'
 
   Scenario: Editing and changing rights information for a file group
-    When PENDING
+    When I edit the file group with location 'Grainger' for the collection titled 'Dogs'
+    And I select rights basis 'license'
+    And I click on 'Update File group'
+    Then I should be on the view page for the file group with location 'Grainger' for the collection titled 'Dogs'
+    And I should see 'license'
+    And I should not see 'copyright'

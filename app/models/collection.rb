@@ -7,7 +7,7 @@ class Collection < ActiveRecord::Base
   net_id_person_association(:contact)
   attr_accessible :access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
                   :ongoing, :published, :repository_id, :rights_restrictions, :rights_statement,
-                  :start_date, :title, :access_system_ids, :preservation_priority_id, :resource_type_ids
+                  :start_date, :title, :access_system_ids, :preservation_priority_id, :resource_type_ids, :rights_declaration_attributes
 
   belongs_to :repository
   has_many :assessments, :dependent => :destroy
@@ -34,6 +34,8 @@ class Collection < ActiveRecord::Base
   before_destroy :remove_handle
   before_validation :ensure_uuid
   before_validation :ensure_rights_declaration
+
+  accepts_nested_attributes_for :rights_declaration
 
   [:description, :private_description, :notes, :file_package_summary].each do |field|
     auto_html_for field do
