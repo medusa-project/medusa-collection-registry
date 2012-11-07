@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121106182743) do
+ActiveRecord::Schema.define(:version => 20121107205541) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -203,6 +203,9 @@ ActiveRecord::Schema.define(:version => 20121106182743) do
     t.string   "rights_basis"
     t.datetime "created_at",             :null => false
     t.datetime "updated_at",             :null => false
+    t.string   "copyright_jurisdiction"
+    t.string   "copyright_statement"
+    t.string   "access_restrictions"
   end
 
   add_index "rights_declarations", ["rights_declarable_id"], :name => "index_rights_declarations_on_rights_declarable_id"

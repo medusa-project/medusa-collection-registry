@@ -17,6 +17,7 @@ gem 'haml'
 gem 'haml-rails'
 gem 'simple_form'
 gem 'auto_html'
+gem 'simple_memoize'
 
 # Gems used only for assets and not required
 # in production environments by default.

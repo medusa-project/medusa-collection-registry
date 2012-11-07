@@ -1,4 +1,7 @@
 -#must pass containing_form and rights_declaration as locals
 #rights-declaration
   = containing_form.simple_fields_for :rights_declaration, rights_declaration do |rd|
-    =rd.input :rights_basis, :as => :select, :collection => RightsDeclaration::RIGHTS_BASES, :default => 'copyright', :allow_blank => false
+    = rd.input :rights_basis, :as => :select, :collection => RightsDeclaration.all_rights_bases, :include_blank => false
+    = rd.input :copyright_jurisdiction, :as => :select, :collection => copyright_jurisdiction_select_items, :include_blank => false
+    = rd.input :copyright_statement, :as => :select, :include_blank => true, :collection => copyright_statement_select_items
+    = rd.input :access_restrictions, :as => :select, :collection => access_restriction_select_items, :default => 'DISSEMINATE'

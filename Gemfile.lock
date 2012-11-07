@@ -283,6 +283,7 @@ GEM
     simple_form (2.0.2)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
+    simple_memoize (1.1.2)
     simplecov (0.6.4)
       multi_json (~> 1.0)
       simplecov-html (~> 0.5.3)
@@ -360,6 +361,7 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   shoulda-matchers
   simple_form
+  simple_memoize
   simplecov
   solrizer-fedora
   therubyracer
