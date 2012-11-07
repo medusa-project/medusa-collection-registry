@@ -15,7 +15,3 @@ end
 Then /^I should see the rights declaration section$/ do
   page.should have_selector('#rights-declaration')
 end
-
-And /^I select rights basis '(.*)'$/ do |rights_basis|
-  select(rights_basis, :from => 'Rights basis')
-end

@@ -16,7 +16,7 @@ Feature: producers for File Groups
 
   Scenario: Edit and view the producer of a file group
     When I edit the file group with location 'Grainger' for the collection titled 'Dogs'
-    And I select the producer 'Scraping'
+    And I select 'Scraping' from 'Producer'
     And I press 'Update File group'
     Then I should see 'Scraping'
     And I should see 'Producer'

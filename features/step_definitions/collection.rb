@@ -69,10 +69,6 @@ And /^I check access system '(.*)'$/ do |name|
   check(name)
 end
 
-And /^I select repository '(.*)'$/ do |title|
-  select(title, :from => 'collection_repository_id')
-end
-
 And /^The collection titled '(.*)' should have (\d+) access systems$/ do |title, count|
   Collection.find_by_title(title).access_systems.count.should == count.to_i
 end
@@ -116,10 +112,6 @@ And /^The collection titled '(.*)' has preservation priority '(.*)'$/ do |title,
   collection = Collection.find_by_title(title)
   collection.preservation_priority = PreservationPriority.find_by_name(priority)
   collection.save
-end
-
-And /^I select preservation priority '(.*)'$/ do |priority|
-  select(priority, :from => 'collection_preservation_priority_id')
 end
 
 And /^The collection titled '(.*)' should have preservation priority '(.*)'$/ do |title, priority|

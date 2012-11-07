@@ -11,7 +11,7 @@ Feature: Storage media
 
   Scenario: Select storage medium while editing file group and view results
     Given I am editing a file group
-    When I select storage medium 'file server'
+    When I select 'file server' from 'Storage medium'
     And I press 'Update File group'
     Then I should see 'file server'
     And I should see 'Storage Medium'

@@ -15,7 +15,7 @@ Feature: Collection description
       | title |
       | Proof |
     When I edit the collection titled 'cats'
-    And I select repository 'Plays'
+    And I select 'Plays' from 'Repository'
     And I click on 'Update Collection'
     Then the repository titled 'Plays' should have a collection titled 'cats'
 

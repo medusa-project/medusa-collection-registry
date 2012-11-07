@@ -25,7 +25,7 @@ Feature: Medusa ingest status
       | state   | staff          | date       | notes               |
       | started | staff1, staff2 | 2012-08-28 | Ingest status notes |
     When I edit the collection titled 'Dogs'
-    And I select ingest state 'complete'
+    And I select 'complete' from 'State'
     And I fill in ingest status fields:
       | Notes                                  | Revised notes |
     And I click on 'Update Ingest status'

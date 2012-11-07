@@ -37,6 +37,9 @@ And /^I click on '(.*)'$/ do |link_name|
   click_on(link_name)
 end
 
+And /^I select '(.*)' from '(.*)'$/ do |value, label|
+  select(value, :from => label)
+end
 
 
 

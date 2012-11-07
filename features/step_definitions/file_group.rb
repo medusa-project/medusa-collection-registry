@@ -52,18 +52,6 @@ Given /^The file group with location '(.*)' for the collection titled '(.*)' has
   file_group.save
 end
 
-And /^I select the producer '(.*)'$/ do |title|
-  select(title, :from => 'file_group_producer_id')
-end
-
-When /^I select storage medium '(.*)'$/ do |medium|
-  select(medium, :from => 'file_group_storage_medium_id')
-end
-
-When /^I select file type '(.*)'$/ do |type|
-  select(type, :from => 'file_group_file_type_id')
-end
-
 private
 
 def find_file_group(collection_title, location)

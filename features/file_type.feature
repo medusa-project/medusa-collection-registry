@@ -12,7 +12,7 @@ Feature: File type
 
   Scenario: Select file type while editing file group and view results
     Given I am editing a file group
-    When I select file type 'Derivative Metadata'
+    When I select 'Derivative Metadata' from 'File type'
     And I press 'Update File group'
     Then I should see 'Derivative Metadata'
     And I should see 'File type'

@@ -51,7 +51,7 @@ Feature: Record structured rights data for collections and file groups
 
   Scenario: Editing and changing rights information for a collection
     When I edit the collection titled 'Dogs'
-    And I select rights basis 'statute'
+    And I select 'statute' from 'Rights basis'
     And I click on 'Update Collection'
     Then I should be on the view page for the collection titled 'Dogs'
     And I should see 'statute'
@@ -59,7 +59,7 @@ Feature: Record structured rights data for collections and file groups
 
   Scenario: Editing and changing rights information for a file group
     When I edit the file group with location 'Grainger' for the collection titled 'Dogs'
-    And I select rights basis 'license'
+    And I select 'license' from 'Rights basis'
     And I click on 'Update File group'
     Then I should be on the view page for the file group with location 'Grainger' for the collection titled 'Dogs'
     And I should see 'license'
