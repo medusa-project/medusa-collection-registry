@@ -31,7 +31,7 @@
         = f.input :rights_restrictions, :input_html => { :rows => 2 }
         %div.page-header
           %h1 Rights declaration
-        = render :partial => 'rights_declarations/form', :locals => {:containing_form => f, :rights_declaration => @collection.rights_declaration}
+        = render :partial => 'rights_declarations/nested_form', :locals => {:containing_form => f, :rights_declaration => @collection.rights_declaration}
       %section#notes
         %div.page-header
           %h1 Notes

@@ -17,7 +17,7 @@
       %section#rights
         %div.page-header
           %h1 Rights declaration
-        = render :partial => 'rights_declarations/form', :locals => {:containing_form => f, :rights_declaration => @file_group.rights_declaration}
+        = render :partial => 'rights_declarations/nested_form', :locals => {:containing_form => f, :rights_declaration => @file_group.rights_declaration}
       .form-actions
         = f.button :submit, :class => 'btn-primary'
         - if @file_group.new_record?
