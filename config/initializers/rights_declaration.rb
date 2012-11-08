@@ -1,0 +1,1 @@
+RightsDeclaration.load_rights_data

@@ -6,7 +6,7 @@ class RightsDeclaration < ActiveRecord::Base
                  :copyright_statements, :default_copyright_statement, :access_restrictions,
                  :default_access_restrictions, :instance_accessor => false
 
-  #initialization
+  #initialization of fields
   def self.load_rights_data
     rights_yaml = YAML.load_file(File.join(Rails.root, 'config', 'rights_fields.yml'))
     %w(rights_bases default_rights_basis copyright_jurisdictions default_copyright_jurisdiction
@@ -14,9 +14,6 @@ copyright_statements default_copyright_statement access_restrictions default_acc
       self.send("#{field}=", rights_yaml[field])
     end
   end
-
-  #we need to call this as we're loading the class so that the validations for inclusion will work properly
-  load_rights_data
 
   def set_defaults
     self.rights_basis ||= self.class.default_rights_basis
