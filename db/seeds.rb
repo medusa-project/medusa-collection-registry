@@ -51,9 +51,15 @@ ActiveRecord::Base.transaction do
   Collection.all.each do |c|
     c.preservation_priority = PreservationPriority.default unless c.preservation_priority
     c.ingest_status = IngestStatus.new(:state => :unstarted) unless c.ingest_status
+    c.ensure_rights_declaration
     c.ensure_uuid
     c.save!
     c.ensure_handle
+  end
+
+  FileGroup.all.each do |fg|
+    fg.ensure_rights_declaration
+    fg.save!
   end
 
 end
