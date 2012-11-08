@@ -19,9 +19,7 @@ module RightsDeclarationsHelper
   def hash_to_sorted_select_items(hash, default_key = nil)
     hash = hash.clone
     default_value = hash.delete(default_key) if default_key
-    items = hash.collect do |k, v|
-      [v, k]
-    end.sort_by(&:first)
+    items = hash.invert.sort
     items.unshift [default_value, default_key] if default_key
     items
   end
