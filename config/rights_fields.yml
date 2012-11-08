@@ -9,13 +9,23 @@ default_copyright_jurisdiction: us
 copyright_jurisdictions:
   us: United States
   xxc: Canada
+  xx: No place, unknown, or undetermined
 
 default_copyright_statement: pd
 copyright_statements:
-  pd: Public domain.
+  per: In copyright. Digitized with permission.  Contact digicc@library.illinois.edu for information.
+  ui: In copyright. Digitized with permission of the University of Illinois Board of Trustees.  Contact digicc@library.illinois.edu for information.
+  ddd: Orphaned work. Due diligence documentation on file. Contact digicc@library.Illinois.edu for information.
+  ncn: Published 1923-1977 in U.S. without printed copyright notice.
+  ren: Public domain. Published 1923-1963 with notice but no evidence of copyright renewal found in Stanford Copyright Renewal Database. Contact digicc@library.illinois.edu.edu for information.
   us: Public domain. U.S. Government document.
+  il: Public domain. Illinois state government document.
+  md: Public domain. Municipal document.
+  pd: Public domain.
 
 default_access_restrictions: DISSEMINATE/DISALLOW
 access_restrictions:
   DISSEMINATE: Access is open and unrestricted.
   DISSEMINATE/DISALLOW: Access is restricted.
+  DISSEMINATE/CAMPUS_ONLY: Access is restricted to campus use only.
+  DISSEMINATE/LIBRARY_ONLY: Access is restricted to library use only.
