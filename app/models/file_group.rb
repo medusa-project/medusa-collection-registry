@@ -1,7 +1,7 @@
 class FileGroup < ActiveRecord::Base
   attr_accessible :collection_id, :file_format, :file_location, :total_file_size, :total_files,
-      :last_access_date, :producer_id, :storage_medium_id, :file_type_id, :summary, :provenance_note,
-      :collection_attributes, :naming_conventions, :directory_structure, :rights_declaration_attributes
+                  :last_access_date, :producer_id, :storage_medium_id, :file_type_id, :summary, :provenance_note,
+                  :collection_attributes, :naming_conventions, :directory_structure, :rights_declaration_attributes
   belongs_to :collection
   belongs_to :producer
   belongs_to :storage_medium
@@ -28,7 +28,13 @@ class FileGroup < ActiveRecord::Base
   end
 
   def ensure_rights_declaration
-    self.rights_declaration ||= self.build_rights_declaration
+    self.rights_declaration ||= self.clone_collection_rights_declaration
+  end
+
+  def clone_collection_rights_declaration
+    collection_rights = self.collection.rights_declaration
+    self.build_rights_declaration(:rights_basis => collection_rights.rights_basis, :copyright_jurisdiction => collection_rights.copyright_jurisdiction,
+                                  :copyright_statement => collection_rights.copyright_statement, :access_restrictions => collection_rights.access_restrictions)
   end
 
 end
