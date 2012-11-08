@@ -1,0 +1,21 @@
+default_rights_basis: copyright
+rights_bases:
+  - copyright
+  - statute
+  - licenses
+  - other
+
+default_copyright_jurisdiction: us
+copyright_jurisdictions:
+  us: United States
+  xxc: Canada
+
+default_copyright_statement: pd
+copyright_statements:
+  pd: Public domain.
+  us: Public domain. U.S. Government document.
+
+default_access_restrictions: DISSEMINATE/DISALLOW
+access_restrictions:
+  DISSEMINATE: Access is open and unrestricted.
+  DISSEMINATE/DISALLOW: Access is restricted.
