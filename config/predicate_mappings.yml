@@ -42,6 +42,9 @@
     :is_child_of: isChildOf
     :is_first_child_of: isFirstChildOf
     :has_previous_sibling: hasPreviousSibling
+    :is_bit_level_root_for: isBitLevelRootFor
+    :is_subdirectory_of: isSubdirectoryOf
+    :has_directory: hasDirectory
   info:fedora/fedora-system:def/model#:
     :has_model: hasModel
     :has_service: hasService

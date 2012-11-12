@@ -1,5 +1,4 @@
 require 'net_id_person_associator'
-require 'utils/luhn'
 require 'registers_handle'
 require 'mods_helper'
 
@@ -118,13 +117,23 @@ class Collection < ActiveRecord::Base
     mods_stream = collection.datastreams['MODS']
     unless mods_stream
       mods_stream = collection.create_datastream(ActiveFedora::Datastream, 'MODS', :controlGroup => 'M',
-                                                        :dsLabel => 'MODS', :contentType => 'text/xml', :checksumType => 'SHA-1')
+                                                 :dsLabel => 'MODS', :contentType => 'text/xml', :checksumType => 'SHA-1')
       collection.add_datastream(mods_stream)
     end
     unless mods_stream.content == self.to_mods
       mods_stream.content = self.to_mods
     end
     collection.save
+  end
+
+  def ensure_fedora_bit_level_root
+    self.ensure_fedora_collection
+    fc = self.fedora_collection
+    if fc.bit_level_root.empty?
+      bit_level_root = Medusa::BitLevel::Directory.new(:pid => self.medusa_pid + "-BIT_LEVEL_ROOT")
+      bit_level_root.add_relationship(:is_bit_level_root_for, fc)
+      bit_level_root.save
+    end
   end
 
   def delete_fedora_collection
@@ -142,8 +151,21 @@ class Collection < ActiveRecord::Base
     self.fedora_class.find(self.medusa_pid)
   end
 
+  def fedora_bit_level_root
+    self.fedora_collection.bit_level_root.first
+  end
+
   def fedora_class
-    ActiveFedora::Base
+    Medusa::Collection
+  end
+
+  def bit_ingest(directory, opts = {})
+    self.fedora_bit_level_root.ingest(directory, opts)
+  end
+
+  def clear_bit_store
+    self.fedora_bit_level_root.subdirectories.each {|sd| sd.recursive_delete}
+    self.fedora_bit_level_root.clear_files
   end
 
 end

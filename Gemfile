@@ -7,6 +7,7 @@ gem 'rails', '3.2.6'
 gem 'pg'
 gem 'active-fedora'
 gem 'solrizer-fedora'
+gem 'hydra-head'
 
 gem 'rb-readline'
 

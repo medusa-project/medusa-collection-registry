@@ -1,3 +1,5 @@
+require 'utils/luhn'
+
 module Medusa
 
   class Object < ActiveFedora::Base
@@ -79,6 +81,14 @@ module Medusa
     #not quite aptly named - actually finds a million
     def self.find_all
       self.find(:all, :rows => 1000000)
+    end
+
+    def self.random_pid
+      "MEDUSA:#{Utils::Luhn.add_check_character(UUID.generate)}"
+    end
+
+    def random_pid
+      self.class.random_pid
     end
 
   end
