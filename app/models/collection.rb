@@ -168,5 +168,9 @@ class Collection < ActiveRecord::Base
     self.fedora_bit_level_root.clear_files
   end
 
+  def bit_export(directory)
+    self.fedora_bit_level_root.export(directory)
+  end
+
 end
 

@@ -1,4 +1,6 @@
 require 'set'
+require 'fileutils'
+
 module Medusa
   module BitLevel
     class Directory < Medusa::Object
@@ -23,6 +25,7 @@ module Medusa
       end
 
       def ingest(source_directory, opts = {})
+        Rails.logger.info("Bit Ingesting Directory #{source_directory}")
         opts = opts.reverse_merge!(:duplicate_files => :error)
         duplicate_file_action = opts[:duplicate_files]
         #find files in source
@@ -37,7 +40,7 @@ module Medusa
         #handle files
         source_files.each do |file|
           #check name - if dup take appropriate action
-          if medusa_subdirectories.include?(file)
+          if medusa_files.include?(file)
             case duplicate_file_action
               when :error
                 raise RuntimeError, "Duplicate file #{file} under #{self.pid}:#{self.name}"
@@ -65,6 +68,23 @@ module Medusa
           medusa_subdirectories[source_subdir].ingest(::File.join(source_directory, source_subdir), opts)
         end
 
+      end
+
+      def export(target_directory)
+        FileUtils.mkdir_p(target_directory)
+        self.all_files.each do |f|
+          #depends on whether file has content or is empty
+          if f.has_content?
+            ::File.open(::File.join(target_directory, f.name), 'w') do |target_file|
+              target_file.puts f.content
+            end
+          else
+            FileUtils.touch(::File.join(target_directory, f.name))
+          end
+        end
+        self.all_subdirectories.each do |sd|
+          sd.export(::File.join(target_directory, sd.name))
+        end
       end
 
       def all_files
