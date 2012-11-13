@@ -22,7 +22,7 @@ module Medusa
           content_datastream = fedora_file.create_datastream(ActiveFedora::Datastream, 'CONTENT',
                                                              :controlGroup => 'M', :dsLabel => 'CONTENT',
                                                              :contentType => 'application/octet-stream',
-                                                             :checksumType => 'SHA-1', :blob => ::File.new(source_file))
+                                                             :checksumType => 'SHA-1', :blob => ::File.new(source_file, 'rb'))
           fedora_file.add_datastream(content_datastream)
         end
         fedora_file.name = ::File.basename(source_file)

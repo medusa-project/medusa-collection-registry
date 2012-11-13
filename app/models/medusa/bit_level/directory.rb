@@ -30,6 +30,7 @@ module Medusa
         duplicate_file_action = opts[:duplicate_files]
         #find files in source
         entries = Dir[::File.join(source_directory, '*')].collect { |f| ::File.basename(f) }
+        entries += Dir[::File.join(source_directory, '.*')].collect {|f| ::File.basename(f)} - ['.', '..']
         source_files = entries.select { |f| ::File.file?(::File.join(source_directory, f)) }
         source_subdirectories = entries.select { |f| ::File.directory?(::File.join(source_directory, f)) }
         #find current files
@@ -75,8 +76,8 @@ module Medusa
         self.all_files.each do |f|
           #depends on whether file has content or is empty
           if f.has_content?
-            ::File.open(::File.join(target_directory, f.name), 'w') do |target_file|
-              target_file.puts f.content
+            ::File.open(::File.join(target_directory, f.name), 'wb') do |target_file|
+              target_file.write f.content
             end
           else
             FileUtils.touch(::File.join(target_directory, f.name))
