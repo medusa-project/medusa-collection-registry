@@ -30,7 +30,7 @@ module Medusa
         duplicate_file_action = opts[:duplicate_files]
         #find files in source
         entries = Dir[::File.join(source_directory, '*')].collect { |f| ::File.basename(f) }
-        entries += Dir[::File.join(source_directory, '.*')].collect {|f| ::File.basename(f)} - ['.', '..']
+        entries += Dir[::File.join(source_directory, '.*')].collect { |f| ::File.basename(f) } - ['.', '..']
         source_files = entries.select { |f| ::File.file?(::File.join(source_directory, f)) }
         source_subdirectories = entries.select { |f| ::File.directory?(::File.join(source_directory, f)) }
         #find current files
@@ -46,6 +46,7 @@ module Medusa
               when :error
                 raise RuntimeError, "Duplicate file #{file} under #{self.pid}:#{self.name}"
               when :skip
+                Rails.logger.info "Skipping bit ingest of duplicate file #{file} under #{self.pid}:#{self.name}"
                 next
               when :replace
                 raise RuntimeError, "Replacing duplicate file in bit level store not yet supported"
@@ -73,7 +74,7 @@ module Medusa
 
       def export(target_directory)
         FileUtils.mkdir_p(target_directory)
-        self.all_files.each do |f|
+        self.each_file do |f|
           #depends on whether file has content or is empty
           if f.has_content?
             ::File.open(::File.join(target_directory, f.name), 'wb') do |target_file|
@@ -83,36 +84,97 @@ module Medusa
             FileUtils.touch(::File.join(target_directory, f.name))
           end
         end
-        self.all_subdirectories.each do |sd|
+        self.each_subdirectory do |sd|
           sd.export(::File.join(target_directory, sd.name))
         end
       end
 
-      def all_files
-        self.files(:rows => 1000000)
+      #note that it's dangerous to do destructive operations (i.e. delete objects) here
+      def each_file
+        Medusa::BitLevel::File.find_each(self.files_query) do |file|
+          yield file
+        end
+      end
+
+      #note that it's dangerous to do destructive operations (i.e. delete objects) here
+      def each_subdirectory
+        Medusa::BitLevel::Directory.find_each(self.subdirectories_query) do |subdirectory|
+          yield subdirectory
+        end
       end
 
       def all_subdirectories
-        self.subdirectories(:rows => 1000000)
+        Array.new.tap do |subdirectories|
+          self.each_subdirectory do |sd|
+            subdirectories << sd
+          end
+        end
+      end
+
+      def all_file_pids
+        Array.new.tap do |pids|
+          Medusa::BitLevel::File.find_in_batches(self.files_query) do |batch|
+            batch.each { |item| pids << item['id'] }
+          end
+        end
+      end
+
+      def all_subdirectory_pids
+        Array.new.tap do |pids|
+          Medusa::BitLevel::Directory.find_in_batches(self.subdirectories_query) do |batch|
+            batch.each { |item| pids << item['id'] }
+          end
+        end
+      end
+
+      #will allow deletion as we traverse
+      def each_file!
+        self.all_file_pids.each do |pid|
+          yield Medusa::BitLevel::File.find(pid)
+        end
+      end
+
+      #will allow deletion as we traverse
+      def each_subdirectory!
+        self.all_subdirectory_pids.each do |pid|
+          yield Medusa::BitLevel::Directory.find(pid)
+        end
+      end
+
+
+      def file_count
+        Medusa::BitLevel::File.count(:conditions => self.files_query)
+      end
+
+      def subdirectory_count
+        Medusa::BitLevel::Directory.count(:conditions => self.subdirectories_query)
       end
 
       def all_file_names
-        self.all_files.collect { |f| f.name }
+        Array.new.tap do |names|
+          self.each_file do |f|
+            names << f.name
+          end
+        end
       end
 
       def all_subdirectory_names
-        self.all_subdirectories.collect { |f| f.name }
+        Array.new.tap do |names|
+          self.each_subdirectory do |sd|
+            names << sd.name
+          end
+        end
       end
 
       def clear_files
-        self.all_files.each do |f|
+        self.each_file! do |f|
           f.recursive_delete
         end
       end
 
       def recursive_delete
         self.clear_files
-        self.all_subdirectories.each do |sd|
+        self.each_subdirectory! do |sd|
           sd.recursive_delete
         end
         super

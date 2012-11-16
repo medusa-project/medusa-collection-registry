@@ -6,16 +6,16 @@ module Medusa
     include ActiveFedora::Relationships
 
     def recursive_delete
+      pid = self.pid
       retries = 5
       deleted = false
       until deleted
         begin
-          Rails.logger.info "DELETING CLASS: #{self.class.to_s} PID: #{self.pid}"
           self.delete
           deleted = true
         rescue Exception => e
           retries = retries - 1
-          Rails.logger.error "DELETE ERROR. EXCEPTION: #{e.to_s} CLASS: #{self.class.to_s} PID: #{self.pid}"
+          Rails.logger.error "DELETE ERROR. EXCEPTION: #{e.to_s} CLASS: #{self.class.to_s} PID: #{pid}"
           if retries < 0
             Rails.logger.error "ABORTING FROM RECURSIVE DELETE"
             raise e
@@ -25,6 +25,7 @@ module Medusa
           end
         end
       end
+      Rails.logger.info "Recursive deleted: #{pid}"
     end
 
     #use the fedora config to generate a url where this object can be accessed

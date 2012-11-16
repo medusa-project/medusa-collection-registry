@@ -164,7 +164,7 @@ class Collection < ActiveRecord::Base
   end
 
   def clear_bit_store
-    self.fedora_bit_level_root.subdirectories.each {|sd| sd.recursive_delete}
+    self.fedora_bit_level_root.each_subdirectory {|sd| sd.recursive_delete}
     self.fedora_bit_level_root.clear_files
   end
 
