@@ -23,9 +23,9 @@
     = show_field @collection, :preservation_priority_name, 'Preservation Priority'
     = show_field @collection, :total_size, 'Total Size (GB)'
     = show_field @collection, :description_html, 'Description'
-    = show_field @collection, :private_description_html, 'Private Description'
+    = show_field(@collection, :private_description_html, 'Private Description') if logged_in?
     = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
-    = show_field @collection, :notes_html, 'Notes'
+    = show_field(@collection, :notes_html, 'Notes') if logged_in?
     .btn-group
       = link_to "Back", repository_path(@collection.repository), :class => 'btn'
       = link_to "Edit", edit_collection_path(@collection), :class => 'btn'
