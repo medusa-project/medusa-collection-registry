@@ -10,7 +10,7 @@
       %th Title
       %th Contact
       %th URL
-      %th Total Size (GB) [Medusa: #{Repository.aggregate_size.round} GB]
+      %th Total Size (GB)
       %th
   %tbody
     - @repositories.each do |repository|
@@ -22,6 +22,10 @@
         %td
           = link_to 'Edit', edit_repository_path(repository), :class => 'btn btn-mini'
           = link_to 'Delete', repository_path(repository), :method => :delete, :data => { :confirm => repository_confirm_message}, :class => 'btn btn-mini btn-danger'
+
+%br
+
+%div Total Medusa Size: #{Repository.aggregate_size.round} GB
 
 %br
 
