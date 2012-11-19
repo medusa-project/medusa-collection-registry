@@ -76,3 +76,17 @@ end
 When /^I edit the repository titled '(.*)'$/ do |title|
   visit edit_repository_path(Repository.find_by_title(title))
 end
+
+And /^I have some repositories with files totalling '(\d+)' GB$/ do |size|
+  repositories = 3.times.collect {|r| FactoryGirl.create(:repository)}
+  repositories.each do |r|
+    3.times do
+      FactoryGirl.create(:collection, :repository => r)
+    end
+  end
+  size.to_i.times do
+    repository = repositories.sample
+    collection = repository.collections.sample
+    FactoryGirl.create(:file_group, :collection => collection, :total_file_size => 1)
+  end
+end

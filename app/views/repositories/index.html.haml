@@ -10,7 +10,7 @@
       %th Title
       %th Contact
       %th URL
-      %th Total Size (GB)
+      %th Total Size (GB) [Medusa: #{Repository.aggregate_size.round} GB]
       %th
   %tbody
     - @repositories.each do |repository|

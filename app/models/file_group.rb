@@ -37,4 +37,7 @@ class FileGroup < ActiveRecord::Base
                                   :copyright_statement => collection_rights.copyright_statement, :access_restrictions => collection_rights.access_restrictions)
   end
 
+  def self.aggregate_size
+    self.sum('total_file_size')
+  end
 end

@@ -26,4 +26,8 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def self.aggregate_size
+    FileGroup.aggregate_size
+  end
+
 end
