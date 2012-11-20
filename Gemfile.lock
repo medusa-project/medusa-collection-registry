@@ -6,6 +6,12 @@ GIT
       httparty
 
 GIT
+  remote: git://github.com/medusa-project/net-http-digest_auth.git
+  revision: 9060b6cbd4ad661048667d16ee8c26f10e2f2172
+  specs:
+    net-http-digest_auth (1.2.1)
+
+GIT
   remote: git://github.com/medusa-project/omniauth-shibboleth.git
   revision: 93bc101825c50b12642de8044bfbce3bf1839565
   specs:
@@ -136,6 +142,8 @@ GEM
       railties (~> 3.1)
       warden (~> 1.2.1)
     diff-lcs (1.1.3)
+    domain_name (0.5.4)
+      unf (~> 0.0.3)
     equivalent-xml (0.2.9)
       nokogiri (>= 1.4.3)
     erubis (2.7.0)
@@ -165,6 +173,7 @@ GEM
     httparty (0.9.0)
       multi_json (~> 1.0)
       multi_xml
+    httpclient (2.3.0.1)
     httpi (1.1.1)
       rack
     hydra-access-controls (0.0.5)
@@ -213,10 +222,19 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     marc (0.5.0)
+    mechanize (2.5.1)
+      domain_name (~> 0.5, >= 0.5.1)
+      mime-types (~> 1.17, >= 1.17.2)
+      net-http-digest_auth (~> 1.1, >= 1.1.1)
+      net-http-persistent (~> 2.5, >= 2.5.2)
+      nokogiri (~> 1.4)
+      ntlm-http (~> 0.1, >= 0.1.1)
+      webrobots (~> 0.0, >= 0.0.9)
     mediashelf-loggable (0.4.9)
     mime-types (1.19)
     multi_json (1.3.6)
     multi_xml (0.5.1)
+    net-http-persistent (2.8)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -226,6 +244,7 @@ GEM
       net-ssh (>= 1.99.1)
     nokogiri (1.5.5)
     nori (1.1.3)
+    ntlm-http (0.1.1)
     om (1.6.1)
       mediashelf-loggable
       nokogiri (>= 1.4.2)
@@ -384,6 +403,9 @@ GEM
     uglifier (1.2.7)
       execjs (>= 0.3.0)
       multi_json (~> 1.3)
+    unf (0.0.5)
+      unf_ext
+    unf_ext (0.0.5)
     unicode (0.4.3)
     uuid (2.3.5)
       macaddr (~> 1.0)
@@ -392,6 +414,7 @@ GEM
     wasabi (2.5.0)
       httpi (~> 1.0)
       nokogiri (>= 1.4.0)
+    webrobots (0.0.13)
     xml-simple (1.1.1)
     xpath (0.1.4)
       nokogiri (~> 1.3)
@@ -412,8 +435,11 @@ DEPENDENCIES
   haml
   haml-rails
   handle-server (~> 1.0.1)!
+  httpclient
   hydra-head
   jquery-rails
+  mechanize
+  net-http-digest_auth!
   nokogiri
   omniauth
   omniauth-shibboleth!

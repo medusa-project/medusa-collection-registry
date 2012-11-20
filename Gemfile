@@ -21,6 +21,11 @@ gem 'auto_html'
 gem 'simple_memoize'
 gem 'auto_strip_attributes'
 
+gem 'httpclient'
+gem 'mechanize'
+#need slightly patched version of this
+gem 'net-http-digest_auth', :git => 'git://github.com/medusa-project/net-http-digest_auth.git'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

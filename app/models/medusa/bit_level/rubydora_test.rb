@@ -30,8 +30,18 @@ module Medusa
         end
       end
 
-      def export(target_directory, root_pid)
-
+      def export(target_directory, source_directory)
+        Rails.logger.info("Rubydora bit exporing Directory #{source_directory}")
+        connection = ActiveFedora::Base.connection_for_pid('any_pid_here:1')
+        FileUtils.mkdir_p(target_directory)
+        source_files = Dir[File.join(source_directory, '*')].sort
+        source_files.each do |filename|
+          name = ::File.basename(filename)
+          object = connection.find(pid(name))
+          content = object.datastream['CONTENT'].content
+          File.open(File.join(target_directory, name), 'wb') {|f| f.write content}
+          Rails.logger.info("Rubydora exported file: #{pid(name)}")
+        end
       end
 
       def clear(source_directory)
