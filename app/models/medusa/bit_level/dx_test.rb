@@ -9,7 +9,7 @@ module Medusa
       def ingest(source_directory)
         Rails.logger.info("DX Ingesting Directory #{source_directory}")
         #ingest source files
-        source_files = Dir[File.join(source_directory, '*')].sort
+        source_files = Dir[::File.join(source_directory, '*')].sort
         client = get_client
         source_files.each do |filename|
           ingest_file(client, filename)
@@ -17,10 +17,10 @@ module Medusa
       end
 
       def ingest_file(client, filename)
-        content = File.open(filename, 'rb') { |f| f.read }
+        content = ::File.open(filename, 'rb') { |f| f.read }
         client.post(file_url(filename), content, {'Host' => 'medusa.grainger.illinois.edu',
                                                   'Content-Type' => 'text/plain',
-                                                  'Content-MD5' => Digest::MD5.file(filename).base64digest })
+                                                  'Content-MD5' => Digest::MD5.file(filename).base64digest})
         Rails.logger.info("DX ingested file: #{filename}")
       rescue Exception => e
         Rails.logger.error "#{e} raised ingesting #{filename}. Retrying."
@@ -30,7 +30,7 @@ module Medusa
       def export(source_directory, target_directory)
         Rails.logger.info("DX bit exporing Directory #{source_directory}")
         FileUtils.mkdir_p(target_directory)
-        source_files = Dir[File.join(source_directory, '*')].sort
+        source_files = Dir[::File.join(source_directory, '*')].sort
         client = get_client
         source_files.each do |filename|
           export_file(client, filename, target_directory)
@@ -39,7 +39,7 @@ module Medusa
 
       def export_file(client, filename, target_directory)
         response = client.get(file_url(filename), [], nil, 'Host' => 'medusa.grainger.illinois.edu')
-        ::File.open(File.join(target_directory, ::File.basename(filename)), 'wb') do |f|
+        ::File.open(::File.join(target_directory, ::File.basename(filename)), 'wb') do |f|
           f.write response.body
         end
         Rails.logger.info("DX exported file: #{filename}")
@@ -54,7 +54,7 @@ module Medusa
 
       def clear(source_directory)
         Rails.logger.info("DX Bit Clearing Directory #{source_directory}")
-        source_files = Dir[File.join(source_directory, '*')].sort
+        source_files = Dir[::File.join(source_directory, '*')].sort
         client = get_client
         source_files.each do |filename|
           clear_file(client, filename)
