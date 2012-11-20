@@ -81,6 +81,18 @@ module Medusa
         YAML.load_file(::File.join(Rails.root, 'config', 'dx_test.yml'))
       end
 
+      def make_test_file(filename, size)
+        letters = ('a'..'z').to_a + ('A'..'Z').to_a
+        File.open(filename, 'w') do |f|
+          while size > 0
+            line_size = [79, size-1].min
+            size -= (line_size + 1)
+            line = line_size.times.collect {letters.sample}
+            f.puts line.join('')
+          end
+        end
+      end
+
     end
   end
 end
