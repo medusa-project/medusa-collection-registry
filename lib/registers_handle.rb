@@ -37,6 +37,8 @@ module RegistersHandle
     if self.handle and client
       yield client
     end
+  rescue Exception => e
+    Rails.logger.error "Handle server error: #{e}"
   end
 
 end
