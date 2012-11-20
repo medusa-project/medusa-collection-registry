@@ -55,6 +55,8 @@ ActiveRecord::Base.transaction do
     c.ensure_uuid
     c.save!
     c.ensure_handle
+    c.ensure_fedora_collection
+    c.ensure_fedora_bit_level_root
   end
 
   FileGroup.all.each do |fg|
