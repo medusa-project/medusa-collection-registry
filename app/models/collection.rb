@@ -1,6 +1,7 @@
 require 'net_id_person_associator'
 require 'registers_handle'
 require 'mods_helper'
+require 'utils/luhn'
 
 class Collection < ActiveRecord::Base
   include RegistersHandle
@@ -139,14 +140,15 @@ class Collection < ActiveRecord::Base
   end
 
   def delete_fedora_collection
-    self.fedora_collection.delete
+    collection = self.fedora_collection
+    collection.delete if collection.present?
   end
 
   def delete_fedora_bit_level_root
     root = self.fedora_bit_level_root
     root.delete if root
   end
-  
+
   #Note - you have to be careful with this since it fetches the collection anew.
   #If you already have the collection then you probably want to operate on
   #its datastreams directly!
@@ -155,11 +157,12 @@ class Collection < ActiveRecord::Base
   end
 
   def fedora_collection
-    self.fedora_class.find(self.medusa_pid)
+    self.fedora_class.find(self.medusa_pid) rescue nil
   end
 
   def fedora_bit_level_root
-    self.fedora_collection.bit_level_root.first
+    collection = self.fedora_collection
+    collection ? self.fedora_collection.bit_level_root.first : nil
   end
 
   def fedora_class
