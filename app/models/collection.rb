@@ -32,9 +32,11 @@ class Collection < ActiveRecord::Base
 
   after_create :ensure_ingest_status
   after_create :ensure_handle
+  after_create :ensure_fedora_bit_level_root
   after_save :ensure_fedora_collection
   before_destroy :remove_handle
   before_destroy :delete_fedora_collection
+  before_destroy :delete_fedora_bit_level_root
   before_validation :ensure_uuid
   before_validation :ensure_rights_declaration
 
@@ -140,6 +142,11 @@ class Collection < ActiveRecord::Base
     self.fedora_collection.delete
   end
 
+  def delete_fedora_bit_level_root
+    root = self.fedora_bit_level_root
+    root.delete if root
+  end
+  
   #Note - you have to be careful with this since it fetches the collection anew.
   #If you already have the collection then you probably want to operate on
   #its datastreams directly!
