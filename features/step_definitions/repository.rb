@@ -78,15 +78,25 @@ When /^I edit the repository titled '(.*)'$/ do |title|
 end
 
 And /^I have some repositories with files totalling '(\d+)' GB$/ do |size|
+  size = size.to_i
+  raise(RuntimeError, 'Please use an integral value for this test') unless size.integer?
   repositories = 3.times.collect {|r| FactoryGirl.create(:repository)}
   repositories.each do |r|
     3.times do
       FactoryGirl.create(:collection, :repository => r)
     end
   end
-  size.to_i.times do
+  decompose_size(size).each do |x|
     repository = repositories.sample
     collection = repository.collections.sample
-    FactoryGirl.create(:file_group, :collection => collection, :total_file_size => 1)
+    FactoryGirl.create(:file_group, :collection => collection, :total_file_size => x)
   end
+end
+
+#break down number into summands of powers of two - just a convenient way to
+#get some different sizes from a single number for the above step
+def decompose_size(size, current = 1, acc = [])
+  return acc if size == 0
+  acc << current if size % 2 == 1
+  decompose_size(size / 2, current * 2, acc)
 end
