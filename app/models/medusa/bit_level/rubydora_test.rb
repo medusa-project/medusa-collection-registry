@@ -16,7 +16,7 @@ module Medusa
         add_properties_datastream(directory, name)
         Rails.logger.info("Rubydora ingested directory: #{pid(name)}")
         #ingest source files
-        source_files = Dir[File.join(source_directory, '*')].sort
+        source_files = Dir[::File.join(source_directory, '*')].sort
         source_files.each do |filename|
           name = ::File.basename(filename)
           #file = connection.create(pid(name))
@@ -24,7 +24,7 @@ module Medusa
           #file.add_relationship('has_directory', directory)
           file.save
           add_properties_datastream(file, name)
-          content = File.open(filename, 'rb') { |f| f.read }
+          content = ::File.open(filename, 'rb') { |f| f.read }
           add_content_datastream(file, content)
           Rails.logger.info("Rubydora ingested file: #{pid(name)}")
         end
@@ -34,12 +34,12 @@ module Medusa
         Rails.logger.info("Rubydora bit exporing Directory #{source_directory}")
         connection = ActiveFedora::Base.connection_for_pid('any_pid_here:1')
         FileUtils.mkdir_p(target_directory)
-        source_files = Dir[File.join(source_directory, '*')].sort
+        source_files = Dir[::File.join(source_directory, '*')].sort
         source_files.each do |filename|
           name = ::File.basename(filename)
           object = connection.find(pid(name))
           content = object.datastream['CONTENT'].content
-          File.open(File.join(target_directory, name), 'wb') {|f| f.write content}
+          ::File.open(::File.join(target_directory, name), 'wb') {|f| f.write content}
           Rails.logger.info("Rubydora exported file: #{pid(name)}")
         end
       end
@@ -49,7 +49,7 @@ module Medusa
         connection = ActiveFedora::Base.connection_for_pid('any_pid_here:1')
         #make source directory object
         name = ::File.basename(source_directory)
-        source_files = Dir[File.join(source_directory, '*')].sort
+        source_files = Dir[::File.join(source_directory, '*')].sort
         source_files.each do |filename|
           name = ::File.basename(filename)
           begin
