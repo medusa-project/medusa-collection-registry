@@ -83,7 +83,7 @@ module Medusa
 
       def make_test_file(filename, size)
         letters = ('a'..'z').to_a + ('A'..'Z').to_a
-        File.open(filename, 'w') do |f|
+        ::File.open(filename, 'w') do |f|
           while size > 0
             line_size = [79, size-1].min
             size -= (line_size + 1)
