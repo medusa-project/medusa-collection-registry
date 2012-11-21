@@ -113,6 +113,9 @@ class Collection < ActiveRecord::Base
 
   #make sure there is a corresponding collection object in fedora and that its mods is up to date
   def ensure_fedora_collection
+    #TODO - temporarily removed
+    return
+
     unless self.fedora_class.exists?(self.medusa_pid)
       self.fedora_class.new(:pid => self.medusa_pid).save
     end
@@ -130,6 +133,9 @@ class Collection < ActiveRecord::Base
   end
 
   def ensure_fedora_bit_level_root
+    #TODO temporarily removed
+    return
+
     self.ensure_fedora_collection
     fc = self.fedora_collection
     if fc.bit_level_root.empty?
@@ -140,11 +146,17 @@ class Collection < ActiveRecord::Base
   end
 
   def delete_fedora_collection
+    #TODO temporarily removed
+    return
+
     collection = self.fedora_collection
     collection.delete if collection.present?
   end
 
   def delete_fedora_bit_level_root
+    #TODO temporarily removed
+    return
+
     root = self.fedora_bit_level_root
     root.delete if root
   end
@@ -153,14 +165,23 @@ class Collection < ActiveRecord::Base
   #If you already have the collection then you probably want to operate on
   #its datastreams directly!
   def fedora_mods_datastream
+    #TODO temporarily removed
+    return
+
     self.fedora_collection.datastreams['MODS']
   end
 
   def fedora_collection
+    #TODO temporarily removed
+    return
+
     self.fedora_class.find(self.medusa_pid) rescue nil
   end
 
   def fedora_bit_level_root
+    #TODO temporarily removed
+    return
+
     collection = self.fedora_collection
     collection ? self.fedora_collection.bit_level_root.first : nil
   end
@@ -174,7 +195,7 @@ class Collection < ActiveRecord::Base
   end
 
   def clear_bit_store
-    self.fedora_bit_level_root.each_subdirectory {|sd| sd.recursive_delete}
+    self.fedora_bit_level_root.each_subdirectory { |sd| sd.recursive_delete }
     self.fedora_bit_level_root.clear_files
   end
 
