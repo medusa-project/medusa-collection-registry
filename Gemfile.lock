@@ -6,6 +6,17 @@ GIT
       httparty
 
 GIT
+  remote: git://github.com/medusa-project/mechanize.git
+  revision: 8918539934efd3c38a1b0657fd32c30121417c6c
+  specs:
+    mechanize (2.5.1)
+      domain_name
+      net-http-persistent
+      nokogiri
+      ntlm-http
+      webrobots
+
+GIT
   remote: git://github.com/medusa-project/net-http-digest_auth.git
   revision: 9060b6cbd4ad661048667d16ee8c26f10e2f2172
   specs:
@@ -60,6 +71,8 @@ GEM
     activesupport (3.2.6)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    acts_as_tree (1.2.0)
+      activerecord (>= 3.0.0)
     addressable (2.3.2)
     akami (1.2.0)
       gyoku (>= 0.4.0)
@@ -113,7 +126,7 @@ GEM
     deprecation (0.0.5)
       activesupport
     diff-lcs (1.1.3)
-    domain_name (0.5.4)
+    domain_name (0.5.6)
       unf (~> 0.0.3)
     equivalent-xml (0.2.9)
       nokogiri (>= 1.4.3)
@@ -162,20 +175,13 @@ GEM
       addressable
     linecache19 (0.5.13)
       ruby_core_source (>= 0.1.4)
+    logger (1.2.8)
     macaddr (1.6.1)
       systemu (~> 2.5.0)
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mechanize (2.5.1)
-      domain_name (~> 0.5, >= 0.5.1)
-      mime-types (~> 1.17, >= 1.17.2)
-      net-http-digest_auth (~> 1.1, >= 1.1.1)
-      net-http-persistent (~> 2.5, >= 2.5.2)
-      nokogiri (~> 1.4)
-      ntlm-http (~> 0.1, >= 0.1.1)
-      webrobots (~> 0.0, >= 0.0.9)
     mediashelf-loggable (0.4.9)
     mime-types (1.19)
     multi_json (1.3.6)
@@ -266,6 +272,7 @@ GEM
       columnize (>= 0.3.1)
       linecache19 (>= 0.5.11)
       ruby-debug-base19 (>= 0.11.19)
+    ruby-filemagic (0.4.2)
     ruby_core_source (0.1.5)
       archive-tar-minitar (>= 0.5.2)
     rubydora (0.5.13)
@@ -362,6 +369,7 @@ PLATFORMS
 
 DEPENDENCIES
   active-fedora
+  acts_as_tree
   auto_html
   auto_strip_attributes
   cancan (~> 1.6.0)
@@ -375,7 +383,8 @@ DEPENDENCIES
   handle-server (~> 1.0.1)!
   httpclient
   jquery-rails
-  mechanize
+  logger
+  mechanize!
   net-http-digest_auth!
   nokogiri
   omniauth
@@ -386,6 +395,7 @@ DEPENDENCIES
   rb-readline
   rspec-rails
   ruby-debug19
+  ruby-filemagic
   rvm-capistrano
   sass-rails (~> 3.2.3)
   shoulda-matchers

@@ -56,6 +56,7 @@ ActiveRecord::Base.transaction do
     c.save!
     c.ensure_handle
     c.ensure_fedora_collection
+    c.ensure_root_directory
   end
 
   FileGroup.all.each do |fg|

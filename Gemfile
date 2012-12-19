@@ -21,9 +21,13 @@ gem 'simple_memoize'
 gem 'auto_strip_attributes'
 
 gem 'httpclient'
-gem 'mechanize'
+gem 'mechanize', :git => 'git://github.com/medusa-project/mechanize.git'
+gem 'logger'
 #need slightly patched version of this
 gem 'net-http-digest_auth', :git => 'git://github.com/medusa-project/net-http-digest_auth.git'
+
+gem 'acts_as_tree'
+gem 'ruby-filemagic', :require => 'filemagic'
 
 # Gems used only for assets and not required
 # in production environments by default.

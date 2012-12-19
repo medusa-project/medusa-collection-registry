@@ -2,5 +2,6 @@ database.yml
 fedora.yml
 solr.yml
 handle_client.yml
-dx_test.yml
+dx.yml
+
 

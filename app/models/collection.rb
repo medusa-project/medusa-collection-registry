@@ -21,6 +21,8 @@ class Collection < ActiveRecord::Base
   has_one :ingest_status, :dependent => :destroy
   belongs_to :preservation_priority
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
+  has_many :directories
+  has_one :root_directory, :class_name => Directory, :conditions => {:parent_id => nil}
 
   validates_presence_of :title
   validates_uniqueness_of :title, :scope => :repository_id
@@ -33,6 +35,7 @@ class Collection < ActiveRecord::Base
 
   after_create :ensure_ingest_status
   after_create :ensure_handle
+  after_create :ensure_root_directory
   after_save :ensure_fedora_collection
   before_destroy :remove_handle
   before_destroy :delete_fedora_collection
@@ -146,6 +149,24 @@ class Collection < ActiveRecord::Base
 
   def fedora_class
     Medusa::Collection
+  end
+
+  def ensure_root_directory
+    unless self.root_directory
+      self.create_root_directory!(:name => "root-#{self.id}")
+    end
+  end
+
+  def bit_ingest(source_directory, opts = {})
+    self.root_directory.bit_ingest(source_directory, opts)
+  end
+
+  def bit_export(target_directory, opts = {})
+    self.root_directory.bit_export(target_directory, opts)
+  end
+
+  def bit_recursive_delete()
+    self.root_directory.recursive_delete
   end
 
 end

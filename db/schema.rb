@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121108180509) do
+ActiveRecord::Schema.define(:version => 20121219211931) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -43,6 +43,23 @@ ActiveRecord::Schema.define(:version => 20121108180509) do
 
   add_index "assessments", ["author_id"], :name => "index_assessments_on_author_id"
   add_index "assessments", ["collection_id"], :name => "index_assessments_on_collection_id"
+
+  create_table "bit_files", :force => true do |t|
+    t.integer  "directory_id"
+    t.string   "md5sum"
+    t.string   "name"
+    t.string   "dx_name"
+    t.string   "content_type"
+    t.boolean  "dx_ingested",  :default => false
+    t.integer  "size"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
+  add_index "bit_files", ["content_type"], :name => "index_bit_files_on_content_type"
+  add_index "bit_files", ["directory_id"], :name => "index_bit_files_on_directory_id"
+  add_index "bit_files", ["dx_name"], :name => "index_bit_files_on_dx_name"
+  add_index "bit_files", ["name"], :name => "index_bit_files_on_name"
 
   create_table "cache_ldap_groups", :force => true do |t|
     t.integer  "user_id"
@@ -92,6 +109,17 @@ ActiveRecord::Schema.define(:version => 20121108180509) do
   add_index "collections", ["contact_id"], :name => "index_collections_on_contact_id"
   add_index "collections", ["repository_id"], :name => "index_collections_on_repository_id"
   add_index "collections", ["uuid"], :name => "index_collections_on_uuid"
+
+  create_table "directories", :force => true do |t|
+    t.string   "name"
+    t.integer  "parent_id"
+    t.integer  "collection_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "directories", ["collection_id"], :name => "index_directories_on_collection_id"
+  add_index "directories", ["parent_id"], :name => "index_directories_on_parent_id"
 
   create_table "file_groups", :force => true do |t|
     t.string   "file_location"

@@ -1,3 +1,5 @@
+require 'uuid'
+
 module Utils
   module Luhn
     module_function
@@ -20,6 +22,10 @@ module Utils
 
     def add_check_character(string, separator = '-')
       string + separator + check_character(string)
+    end
+
+    def generate_checked_uuid
+      add_check_character(UUID.generate)
     end
 
     def verify(string_plus_check_digit)
