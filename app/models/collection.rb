@@ -33,11 +33,9 @@ class Collection < ActiveRecord::Base
 
   after_create :ensure_ingest_status
   after_create :ensure_handle
-  after_create :ensure_fedora_bit_level_root
   after_save :ensure_fedora_collection
   before_destroy :remove_handle
   before_destroy :delete_fedora_collection
-  before_destroy :delete_fedora_bit_level_root
   before_validation :ensure_uuid
   before_validation :ensure_rights_declaration
 
@@ -130,24 +128,9 @@ class Collection < ActiveRecord::Base
     collection.save
   end
 
-  def ensure_fedora_bit_level_root
-    self.ensure_fedora_collection
-    fc = self.fedora_collection
-    if fc.bit_level_root.empty?
-      bit_level_root = Medusa::BitLevel::Directory.new(:pid => self.medusa_pid + "-BIT_LEVEL_ROOT")
-      bit_level_root.add_relationship(:is_bit_level_root_for, fc)
-      bit_level_root.save
-    end
-  end
-
   def delete_fedora_collection
     collection = self.fedora_collection
     collection.delete if collection.present?
-  end
-
-  def delete_fedora_bit_level_root
-    root = self.fedora_bit_level_root
-    root.delete if root
   end
 
   #Note - you have to be careful with this since it fetches the collection anew.
@@ -161,26 +144,8 @@ class Collection < ActiveRecord::Base
     self.fedora_class.find(self.medusa_pid) rescue nil
   end
 
-  def fedora_bit_level_root
-    collection = self.fedora_collection
-    collection ? self.fedora_collection.bit_level_root.first : nil
-  end
-
   def fedora_class
     Medusa::Collection
-  end
-
-  def bit_ingest(directory, opts = {})
-    self.fedora_bit_level_root.ingest(directory, opts)
-  end
-
-  def clear_bit_store
-    self.fedora_bit_level_root.each_subdirectory { |sd| sd.recursive_delete }
-    self.fedora_bit_level_root.clear_files
-  end
-
-  def bit_export(directory)
-    self.fedora_bit_level_root.export(directory)
   end
 
 end
