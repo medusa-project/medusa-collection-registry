@@ -15,5 +15,5 @@ namespace :bit_level do
     dir = ENV['EXPORT_DIR']
     collection.bit_export(dir)
   end
-  
+
 end
