@@ -166,7 +166,7 @@ class Collection < ActiveRecord::Base
   end
 
   def bit_recursive_delete()
-    self.root_directory.recursive_delete
+    self.root_directory.recursive_delete(false)
   end
 
 end

@@ -32,7 +32,7 @@ class Directory < ActiveRecord::Base
     end
   end
 
-  def recursive_delete
+  def recursive_delete(delete_self = true)
     self.reload
     #recursively delete subdirs
     self.children(true).each do |subdir|
@@ -42,7 +42,7 @@ class Directory < ActiveRecord::Base
       bit_file.full_delete
     end
     self.bit_files(true)
-    self.destroy
+    self.destroy if delete_self
   end
 
   def recursive_export(target_directory, opts = {})

@@ -3,7 +3,7 @@ require 'fileutils'
 
 class Dx < Object
   include Singleton
-  attr_accessor :client, :domain, :entry_host, :bucket, :use_test_headers
+  attr_accessor :client, :domain, :entry_host, :bucket, :use_test_headers, :object_auth_realm
 
   def initialize(args = {})
     self.configure
@@ -82,6 +82,7 @@ class Dx < Object
     self.entry_host = config['entry_host']
     self.bucket = config['bucket']
     self.use_test_headers = config['use_test_headers'] || false
+    self.object_auth_realm = config['object_auth_realm']
   end
 
   def ingest_headers(bit_file, file_path, opts)
@@ -94,6 +95,7 @@ class Dx < Object
       headers['x-bit-meta-mtime'] = File.mtime(file_path).to_s
       headers['x-bit-meta-path'] = File.join(opts[:path], bit_file.name)
       headers['x-bit-meta-collection-id'] = bit_file.directory.collection_id
+      headers['Castor-Authorization'] = self.object_auth_realm if self.object_auth_realm
       add_lifepoint_header(headers)
     end
   end
