@@ -40,6 +40,6 @@
       %th This directory only
   %tbody
     %tr
-      %td= @directory.root_file_size
-      %td= @directory.recursive_file_size
-      %td= @directory.owned_file_size
+      %td= number_with_delimiter(@directory.root_file_size)
+      %td= number_with_delimiter(@directory.recursive_file_size)
+      %td= number_with_delimiter(@directory.owned_file_size)

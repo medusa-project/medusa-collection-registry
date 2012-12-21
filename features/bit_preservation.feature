@@ -71,4 +71,4 @@ Feature: Bit Preservation
     When I view the directory named 'small'
     Then I should see a cumulative file size table
     And I should see all of:
-      | 380099 | 414566 | 1525677 |
+      | 380,099 | 414,566 | 1,525,677 |
