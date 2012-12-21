@@ -14,6 +14,7 @@ copyright_statements default_copyright_statement access_restrictions default_acc
       self.send("#{field}=", rights_yaml[field])
     end
   end
+  load_rights_data
 
   def set_defaults
     self.rights_basis ||= self.class.default_rights_basis

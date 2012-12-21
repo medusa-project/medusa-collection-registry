@@ -11,6 +11,7 @@ MedusaRails3::Application.routes.draw do
   resources :producers
   resources :access_systems
   resources :ingest_statuses
+  resources :directories
 
   match '/auth/:provider/callback', to: 'sessions#create'
   match '/login', to: 'sessions#new', as: :login

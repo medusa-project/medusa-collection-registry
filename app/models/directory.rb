@@ -19,6 +19,10 @@ class Directory < ActiveRecord::Base
 
   before_validation :set_collection_id
 
+  def root?
+    !self.parent_id
+  end
+
   def bit_ingest(source_directory, opts = {})
     Dir.chdir(source_directory) do
       self.recursive_ingest('.', opts)
@@ -145,6 +149,42 @@ class Directory < ActiveRecord::Base
 
   def set_collection_id
     (self.collection_id ||= self.parent.collection_id) if self.parent
+  end
+
+  #total size of files owned directly by this directory
+  def owned_file_size
+    BitFile.where(:directory_id => self.id).sum(:size)
+  end
+
+  #total size of files owned by this directory and subdirectory
+  def recursive_file_size
+    self.descendant_file_size + self.owned_file_size
+  end
+
+  #total size of files owned by descendants of this directory (but not this directory itself)
+  def descendant_file_size
+    BitFile.where(:directory_id => descendant_directory_ids).sum(:size)
+  end
+
+  #total size of files owned by root directory of this directory
+  def root_file_size
+    BitFile.where(:directory_id => collection_directory_ids).sum(:size)
+  end
+
+  def collection_directory_ids
+    Directory.where(:collection_id => self.collection_id).order('id').select('id').collect(&:id)
+  end
+
+  #this shouldn't do too badly unless we have deep trees - nested_set instead of acts_as_tree
+  #would make this easier, but has its own problems of course. If it becomes a problem
+  #we could write something in postgres itself to do it more efficiently.
+  def descendant_directory_ids
+    ids, old_ids = [], nil
+    until ids == old_ids
+      old_ids = ids
+      ids = Directory.where(:parent_id => (old_ids.clone << self.id)).order('id').select('id').collect(&:id)
+    end
+    ids
   end
 
 end

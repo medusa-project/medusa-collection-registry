@@ -49,5 +49,7 @@
 
   %p #{@collection.file_package_summary_html}
 
+  %p #{link_to "Bit root directory", directory_path(@collection.root_directory)}
+
   = render 'file_groups_table'
 

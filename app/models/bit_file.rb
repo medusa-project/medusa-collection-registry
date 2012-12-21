@@ -1,7 +1,7 @@
 require 'utils/luhn'
 
 class BitFile < ActiveRecord::Base
-  attr_accessible :content_type, :directory_id, :dx_ingested, :dx_name, :md5sum, :name
+  attr_accessible :content_type, :directory_id, :dx_ingested, :dx_name, :md5sum, :name, :size
   belongs_to :directory
   before_create :assign_uuid
   before_destroy :not_dx_ingested
@@ -11,7 +11,7 @@ class BitFile < ActiveRecord::Base
   validates_uniqueness_of :dx_name
 
   def assign_uuid
-    self.dx_name = Utils::Luhn.generate_checked_uuid
+    self.dx_name ||= Utils::Luhn.generate_checked_uuid
   end
 
   def full_delete

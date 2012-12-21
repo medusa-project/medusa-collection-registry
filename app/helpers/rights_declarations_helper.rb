@@ -12,7 +12,7 @@ module RightsDeclarationsHelper
     hash_to_sorted_select_items(RightsDeclaration.access_restrictions, RightsDeclaration.default_access_restrictions)
   end
 
-  memoize :copyright_jurisdiction_select_items, :copyright_statement_select_items, :access_restriction_select_items
+  #memoize :copyright_jurisdiction_select_items, :copyright_statement_select_items, :access_restriction_select_items
 
   protected
 

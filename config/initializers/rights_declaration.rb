@@ -1,1 +1,1 @@
-RightsDeclaration.load_rights_data
+#RightsDeclaration.load_rights_data
