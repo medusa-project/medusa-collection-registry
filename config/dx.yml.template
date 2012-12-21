@@ -24,4 +24,7 @@ development:
   #bucket for the objects to live in
   bucket: test
   #if true, add lifepoint headers in order to assure deletion of test/development content after set period (2 weeks)
+  #This may become more sophisticated in the future
   use_test_headers: true
+  #if present used to set a Castor-Authorization header on ingest
+  object_auth_realm: medusa.grainger.illinois.edu/bucket
