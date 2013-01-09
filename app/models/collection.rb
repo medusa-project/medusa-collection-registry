@@ -102,7 +102,7 @@ class Collection < ActiveRecord::Base
       end
       xml.abstract self.description
       xml.location do
-        xml.url(self.access_url, :access => 'object in context', :usage => 'primary')
+        xml.url(self.access_url || '', :access => 'object in context', :usage => 'primary')
       end
       xml.originInfo do
         xml.publisher(self.repository.title)
@@ -125,8 +125,10 @@ class Collection < ActiveRecord::Base
                                                  :dsLabel => 'MODS', :contentType => 'text/xml', :checksumType => 'SHA-1')
       collection.add_datastream(mods_stream)
     end
-    unless mods_stream.content == self.to_mods
-      mods_stream.content = self.to_mods
+    current_mods = self.to_mods
+    content = mods_stream.content
+    unless mods_stream.content == current_mods
+      mods_stream.content = current_mods
     end
     collection.save
   end
