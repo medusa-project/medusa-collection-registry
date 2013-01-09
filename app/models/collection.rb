@@ -126,7 +126,6 @@ class Collection < ActiveRecord::Base
       collection.add_datastream(mods_stream)
     end
     current_mods = self.to_mods
-    content = mods_stream.content
     unless mods_stream.content == current_mods
       mods_stream.content = current_mods
     end
