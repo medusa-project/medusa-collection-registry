@@ -107,12 +107,12 @@ class Directory < ActiveRecord::Base
         bit_file.md5sum = Digest::MD5.file(file_path).base64digest
         bit_file.content_type = file_typer.file(file_path) rescue 'application/octet-stream'
         bit_file.size = File.size(file_path)
-        bit_file.save
+        bit_file.save!
         Rails.logger.info "DX ingesting #{file_path}"
         Dx.instance.ingest_file(file_path, bit_file, opts)
         #mark as ingested and resave.
         bit_file.dx_ingested = true
-        bit_file.save
+        bit_file.save!
       end
     end
   end
