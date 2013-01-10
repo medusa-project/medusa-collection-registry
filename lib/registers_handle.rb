@@ -4,7 +4,7 @@ module RegistersHandle
 
   def ensure_handle
     with_handle_setup do |client|
-      if client.exists?(self.handle)
+      if self.handle_exists?
         client.update_url(self.handle, self.medusa_url)
       else
         client.create_from_url(self.handle, self.medusa_url)
@@ -14,9 +14,15 @@ module RegistersHandle
 
   def remove_handle
     with_handle_setup do |client|
-      if client.exists?(self.handle)
+      if self.handle_exists?
         client.delete(self.handle)
       end
+    end
+  end
+
+  def handle_exists?
+    with_handle_setup do |client|
+      client.exists?(self.handle)
     end
   end
 
