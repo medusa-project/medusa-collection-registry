@@ -9,6 +9,13 @@ And /^the collection titled '(.*)' should have (\d+) file group$/ do |title, cou
   Collection.find_by_title(title).file_groups.count.should == count.to_i
 end
 
+Then /^I should see the file group id for the file group with location '(.*)' in the file group collection table$/ do |location|
+  id = FileGroup.find_by_file_location(location).id
+  within_table('file_groups') do
+    step "I should see '#{id}'"
+  end
+end
+
 Then /^I should be on the view page for the file group with location '(.*)' for the collection titled '(.*)'$/ do |location, title|
   current_path.should == file_group_path(find_file_group(title, location))
 end

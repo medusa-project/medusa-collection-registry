@@ -5,6 +5,7 @@
 %table#file_groups.table.table-striped
   %thead
     %tr
+      %th Id
       %th Producer
       %th File type
       %th File location
@@ -17,6 +18,7 @@
   %tbody
     - @collection.file_groups.each do |file_group|
       %tr
+        %td #{file_group.id}
         %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
         %td #{file_group.file_type_name}
         %td #{file_group.file_location}

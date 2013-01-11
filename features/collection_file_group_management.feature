@@ -32,3 +32,7 @@ Feature: File Group Management
     When I view the collection titled 'Dogs'
     And I click on 'Edit' in the file groups table
     Then I should be on the edit page for the file group with location 'Main Library' for the collection titled 'Dogs'
+
+  Scenario: See id of file group in table
+    When I view the collection titled 'Dogs'
+    Then I should see the file group id for the file group with location 'Main Library' in the file group collection table
