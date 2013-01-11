@@ -26,3 +26,8 @@ Feature: Producer collection table
       | Dogs | Cats |
     And I should not see 'Bears'
     And The table of collections should have 2 rows
+
+  Scenario: Collection table should link repository owning each collection
+    When I view the producer titled 'Scanning'
+    And I click on 'Animals'
+    Then I should be on the view page for the repository titled 'Animals'
