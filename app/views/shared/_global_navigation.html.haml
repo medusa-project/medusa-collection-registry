@@ -17,4 +17,5 @@
         %ul.nav.pull-right
           - if logged_in?
             %li= link_to('Logout', logout_path)
+          %li= link_to('Wiki', 'https://wiki.cites.uiuc.edu/wiki/display/LibraryDigitalPreservation/Home', :target => '_blank')
           %li=link_to 'Help', '#'
