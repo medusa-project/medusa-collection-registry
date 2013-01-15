@@ -12,7 +12,7 @@ Feature: Authentication
   Scenario: Log out
     Given I am logged in as an admin
     When I click on 'Logout' in the global navigation bar
-    And I should be on the login page
+    And I should be on the site home page
 
 
 

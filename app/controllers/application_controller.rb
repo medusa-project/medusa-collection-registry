@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
 
   def require_logged_in
      unless logged_in?
-       x = session[:login_return_uri] = request.env['REQUEST_URI']
+       session[:login_return_uri] = request.env['REQUEST_URI']
        redirect_to(login_path)
      end
   end
@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
   #see if there is a cached permission that hasn't timed out. If so, return. If there is one that needs timing out
   #do it. If there is not one then return false.
   #In fact for now we time out everything that needs timing out at this point.
-  def self.find_cached_permission(group, user, domain = 'uiuc')
+  def self.find_cached_permission(group, user, domain = 'uofi')
     permission = user.cache_ldap_groups.where(:group => group).where(:domain => domain).first
     if permission
       cutoff_time = Time.now - 10.minutes
