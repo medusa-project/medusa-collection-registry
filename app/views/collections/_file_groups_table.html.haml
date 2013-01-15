@@ -2,33 +2,34 @@
 
 = link_to 'Add File Group', new_file_group_path(:collection_id => @collection.id), :class => 'btn btn-primary btn-mini'
 
-%table#file_groups.table.table-striped
-  %thead
-    %tr
-      %th Id
-      %th Producer
-      %th File type
-      %th File location
-      %th File format
-      %th Storage Medium
-      %th Total file size (GB)
-      %th Total files
-      %th Last access date
-      %th
-  %tbody
-    - @collection.file_groups.each do |file_group|
+- if @collection.file_groups.present?
+  %table#file_groups.table.table-striped
+    %thead
       %tr
-        %td #{file_group.id}
-        %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
-        %td #{file_group.file_type_name}
-        %td #{file_group.file_location}
-        %td #{file_group.file_format}
-        %td #{file_group.storage_medium_name}
-        %td #{file_group.total_file_size}
-        %td #{file_group.total_files}
-        %td #{file_group.last_access_date}
-        %td
-          = link_to 'View', file_group, :class => 'btn btn-mini'
-          = link_to 'Edit', edit_file_group_path(file_group), :class => 'btn btn-mini'
-          = link_to 'Delete', file_group, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-mini btn-danger'
+        %th Id
+        %th Producer
+        %th File type
+        %th File location
+        %th File format
+        %th Storage Medium
+        %th Total file size (GB)
+        %th Total files
+        %th Last access date
+        %th
+    %tbody
+      - @collection.file_groups.each do |file_group|
+        %tr
+          %td #{file_group.id}
+          %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
+          %td #{file_group.file_type_name}
+          %td #{file_group.file_location}
+          %td #{file_group.file_format}
+          %td #{file_group.storage_medium_name}
+          %td #{file_group.total_file_size}
+          %td #{file_group.total_files}
+          %td #{file_group.last_access_date}
+          %td
+            = link_to 'View', file_group, :class => 'btn btn-mini'
+            = link_to 'Edit', edit_file_group_path(file_group), :class => 'btn btn-mini'
+            = link_to 'Delete', file_group, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-mini btn-danger'
 
