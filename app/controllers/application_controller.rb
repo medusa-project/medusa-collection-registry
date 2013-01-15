@@ -3,16 +3,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :require_logged_in
   before_filter :authorize
-  before_filter :log_session
   helper_method :current_user, :logged_in?
 
   protected
-
-  def log_session
-    Rails.logger.info("SESSION_DUMP")
-    Rails.logger.info("#{self.controller_name}##{self.action_name}")
-    Rails.logger.info(self.session.to_s)
-  end
 
   def set_current_user(user)
     @current_user = user
