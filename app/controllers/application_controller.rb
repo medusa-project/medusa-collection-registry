@@ -3,9 +3,16 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :require_logged_in
   before_filter :authorize
+  before_filter :log_session
   helper_method :current_user, :logged_in?
 
   protected
+
+  def log_session
+    Rails.logger.info("SESSION_DUMP")
+    Rails.logger.info("#{self.controller_name}##{self.action_name}")
+    Rails.logger.info(self.session.to_s)
+  end
 
   def set_current_user(user)
     @current_user = user
@@ -32,7 +39,10 @@ class ApplicationController < ActionController::Base
   end
 
   def require_logged_in
-    redirect_to(login_path) unless logged_in?
+     unless logged_in?
+       x = session[:login_return_uri] = request.env['REQUEST_URI']
+       redirect_to(login_path)
+     end
   end
 
   def authorize
