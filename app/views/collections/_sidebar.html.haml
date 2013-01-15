@@ -1,22 +1,8 @@
-.span3.affix-sidebar
-  %ul.nav.nav-list.affix-sidenav{'data-spy' => 'affix', 'data-offset-top' => '60'}
-    %li
-      %a{:href => '#required'}
-        %i.icon-chevron-right
-        Required Information
-    %li
-      %a{:href => '#about'}
-        %i.icon-chevron-right
-        About this Collection
-    %li
-      %a{:href => '#content'}
-        %i.icon-chevron-right
-        About the content
-    %li
-      %a{:href => '#rights'}
-        %i.icon-chevron-right
-        Rights Information
-    %li
-      %a{:href => '#notes'}
-        %i.icon-chevron-right
-        Notes
+-#Must pass form variable
+.span3
+  %div
+    %p= form.button :submit, :class => 'btn-primary'
+  %div
+    %p= link_to("Edit Ingest status", '#editIngestStatusModal', :role => 'button', 'data-toggle' => 'modal', :class => 'btn btn-primary') if @collection.ingest_status
+  %div
+    %p= link_to t('.cancel', :default => t("helpers.links.cancel")), collections_path, :class => 'btn'
