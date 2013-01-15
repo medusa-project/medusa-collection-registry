@@ -17,5 +17,7 @@
         %ul.nav.pull-right
           - if logged_in?
             %li= link_to('Logout', logout_path)
+          - else
+            %li= link_to('Login', login_path)
           %li= wiki_link('Wiki')
           %li=link_to 'Help', '#'

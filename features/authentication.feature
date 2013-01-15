@@ -14,5 +14,10 @@ Feature: Authentication
     When I click on 'Logout' in the global navigation bar
     And I should be on the site home page
 
+  Scenario: There is a login link for those not logged in
+    Given I am not logged in
+    And I go to the site home
+    When I click on 'Login' in the global navigation bar
+    Then I should be on the login page
 
 
