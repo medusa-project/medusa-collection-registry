@@ -29,6 +29,8 @@ gem 'net-http-digest_auth', :git => 'git://github.com/medusa-project/net-http-di
 gem 'acts_as_tree'
 gem 'ruby-filemagic', :require => 'filemagic'
 
+gem 'json_builder'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
