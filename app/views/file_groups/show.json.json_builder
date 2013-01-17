@@ -1,0 +1,5 @@
+id @file_group.id
+root_directory_id @file_group.root_directory_id
+collection_id @collection.id
+location @file_group.file_location
+type @file_group.file_type_name

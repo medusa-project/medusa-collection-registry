@@ -5,6 +5,7 @@
 # files.
 
 require 'cucumber/rails'
+require 'json_spec/cucumber'
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd
@@ -71,3 +72,7 @@ end
 ActiveFedora.init
 system('bundle exec rake jetty:delete_objects')
 puts 'Test Fedora ready'
+
+def last_json
+  page.source
+end

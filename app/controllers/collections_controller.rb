@@ -8,6 +8,7 @@ class CollectionsController < ApplicationController
     respond_to do |format|
       format.html
       format.xml {render :xml => @collection.to_mods}
+      format.json
     end
   end
 

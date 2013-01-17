@@ -59,6 +59,12 @@ Given /^The file group with location '(.*)' for the collection titled '(.*)' has
   file_group.save
 end
 
+Given /^The file group with location '(.*)' has file type '(.*)'$/ do |location, file_type|
+  file_group = FileGroup.find_by_file_location(location)
+  file_group.file_type = FileType.find_by_name(file_type)
+  file_group.save
+end
+
 private
 
 def find_file_group(collection_title, location)

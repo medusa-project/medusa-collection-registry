@@ -19,6 +19,11 @@ class FileGroup < ActiveRecord::Base
     end
   end
 
+  #note that this depends on our convention that the files are staged as /collection_id/file_group_id.
+  def root_directory_id
+    self.collection.root_directory.children.detect {|c| c.name == self.id}
+  end
+
   def file_type_name
     self.file_type.try(:name)
   end
