@@ -14,11 +14,11 @@ namespace :bit_level do
   end
 
   desc 'Export from collection id EXPORT_COLLECTION to directory EXPORT_DIR on server'
-  unless (ENV['EXPORT_COLLECTION'].present? and ENV['EXPORT_DIR'].present?)
-    puts "Must specify EXPORT_COLLECTION and EXPORT_DIR"
-    exit 0
-  end
   task :export => :environment do
+    unless (ENV['EXPORT_COLLECTION'].present? and ENV['EXPORT_DIR'].present?)
+      puts "Must specify EXPORT_COLLECTION and EXPORT_DIR"
+      exit 0
+    end
     collection = Collection.find ENV['EXPORT_COLLECTION']
     dir = ENV['EXPORT_DIR']
     collection.bit_export(dir)
