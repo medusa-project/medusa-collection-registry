@@ -1,0 +1,22 @@
+id @directory.id
+parent_directory_id @directory.parent_id
+collection_id @directory.collection_id
+root_directory_id @directory.root.id
+name @directory.name
+unless params[:include_subdirectories] == 'false'
+  subdirectory_ids @directory.child_ids
+end
+path @directory.path_from_root
+if params[:include_files] == 'false'
+  file_ids @directory.bit_file_ids
+else
+  files @directory.bit_files do |file|
+    id file.id
+    md5sum file.md5sum
+    name file.name
+    content_type file.content_type
+    ingested file.dx_ingested
+    size file.size
+    url file.dx_url
+  end
+end

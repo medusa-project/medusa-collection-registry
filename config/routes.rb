@@ -11,7 +11,7 @@ MedusaRails3::Application.routes.draw do
   resources :producers
   resources :access_systems
   resources :ingest_statuses
-  resources :directories
+  resources :directories, :only => :show
   resources :files, :only => :show, :controller => "bit_files"
 
 
