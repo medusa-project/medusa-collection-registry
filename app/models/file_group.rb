@@ -21,7 +21,7 @@ class FileGroup < ActiveRecord::Base
 
   #note that this depends on our convention that the files are staged as /collection_id/file_group_id.
   def root_directory_id
-    self.collection.root_directory.children.where(:name => self.id.to_s).first
+    self.collection.root_directory.children.where(:name => self.id.to_s).first.id rescue nil
   end
 
   def file_type_name
