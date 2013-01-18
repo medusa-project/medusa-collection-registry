@@ -12,6 +12,8 @@ MedusaRails3::Application.routes.draw do
   resources :access_systems
   resources :ingest_statuses
   resources :directories
+  resources :files, :only => :show, :controller => "bit_files"
+
 
   match '/auth/:provider/callback', to: 'sessions#create'
   match '/login', to: 'sessions#new', as: :login

@@ -29,4 +29,8 @@ class BitFile < ActiveRecord::Base
     !self.dx_ingested
   end
 
+  def dx_url
+    Dx.instance.file_url(self)
+  end
+
 end
