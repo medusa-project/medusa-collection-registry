@@ -60,12 +60,11 @@ class FileGroup < ActiveRecord::Base
       end
     else
       root_dir = self.collection.make_file_group_root(root_name)
-      puts "returned class: #{root_dir.class}"
       self.root_directory = root_dir
       self.save!
     end
     #do the ingest if things check out
-    root_dir.bit_ingest(source_directory, opts.merge(:from_bit_root => true))
+    root_dir.bit_ingest(source_directory, opts)
   end
 
   def bit_export(target_directory, opts = {})
@@ -74,6 +73,8 @@ class FileGroup < ActiveRecord::Base
 
   def bit_recursive_delete
     self.root_directory(true).recursive_delete(true)
+    self.root_directory = nil
+    self.save
   end
 
 end

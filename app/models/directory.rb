@@ -29,12 +29,13 @@ class Directory < ActiveRecord::Base
 
   #answer the owning file group of nil if this is a collection root
   def file_group
-    self.self_and_ancestors.detect {|directory| directory.file_group_root?}
+    self.self_and_ancestors.detect { |directory| directory.file_group_root? }
   end
 
   def bit_ingest(source_directory, opts = {})
     Dir.chdir(source_directory) do
-      self.recursive_ingest('.', opts)
+      self.recursive_ingest(opts.merge(:path => self.path_from_root,
+                                       :root_id => self.root.id))
     end
   end
 
@@ -72,11 +73,11 @@ class Directory < ActiveRecord::Base
     end
   end
 
-  def recursive_ingest(source_directory, opts = {})
-    Rails.logger.info "Bit ingesting directory #{source_directory}"
-    initialize_ingest_opts(opts)
+  #ingest files in the current directory and recursively in subdirectories
+  def recursive_ingest(opts)
+    Rails.logger.info "Bit ingesting directory #{opts[:path]}"
     #find all files and directories in the source directory
-    sources = (Dir[File.join(source_directory, '*')] + Dir[File.join(source_directory, '.*')].reject { |f| ['.', '..'].include?(File.basename(f)) }).sort
+    sources = (Dir['*'] + Dir['.*'].reject { |f| ['.', '..'].include?(File.basename(f)) }).sort
     source_dirs = sources.select { |s| File.directory?(s) }
     source_files = sources.select { |s| File.file?(s) }
     #ingest each file in the directory
@@ -84,16 +85,19 @@ class Directory < ActiveRecord::Base
     #ensure subdirectories are present
     subdirs = ensure_subdirectories(source_dirs, opts)
     #recursively ingest each subdirectory
-    subdirs.each { |subdir| subdir.recursive_ingest(File.join(source_directory, subdir.name), opts.merge(:path => File.join(opts[:path], subdir.name))) }
-    Rails.logger.info "Bit ingest finished for directory #{source_directory}"
+    subdirs.each do |subdir|
+      Dir.chdir(subdir.name) do
+        subdir.recursive_ingest(opts.merge(:path => File.join(opts[:path], subdir.name)))
+      end
+    end
+    Rails.logger.info "Bit ingest finished for directory #{opts[:path]}"
   end
 
-  def initialize_ingest_opts(opts)
-    opts[:path] ||= self.path_from_root
-    opts[:root_id] ||= self.root.id
-  end
-
+  #this should always be called after chdir'ing to the directory it applies to
+  #opts will have :path to help make the dx information
   def bit_ingest_files(files, opts = {})
+    puts "Ingesting in #{Dir.pwd}"
+    puts "File List: #{files}"
     #ensure file objects exist
     current_files = existing_file_names
     BitFile.transaction do
@@ -107,22 +111,17 @@ class Directory < ActiveRecord::Base
       end
     end
     #ingest into dx if necessary for each one
-    #As things are now (ingesting from file groups) we need different paths
-    #for finding things on the filesystem to upload and for recording dx metadata
-    base_path = self.relative_path(opts)
-    dx_base_path = self.path_from_root
     file_typer = FileMagic.new(FileMagic::MAGIC_MIME_TYPE)
-    puts "working in: #{Dir.pwd}"
     self.bit_files(true).each do |bit_file|
       unless bit_file.dx_ingested
-        file_path = base_path.blank? ? bit_file.name : File.join(base_path, bit_file.name)
+        file_path = bit_file.name
         #compute file stuff as needed. Save file.
         bit_file.md5sum = Digest::MD5.file(file_path).base64digest
         bit_file.content_type = file_typer.file(file_path) rescue 'application/octet-stream'
         bit_file.size = File.size(file_path)
         bit_file.save!
-        Rails.logger.info "DX ingesting #{file_path}"
-        Dx.instance.ingest_file(file_path, bit_file, opts.merge(:path => dx_base_path))
+        Rails.logger.info "DX ingesting #{opts[:path]}/#{file_path}"
+        Dx.instance.ingest_file(file_path, bit_file, opts)
         #mark as ingested and resave.
         bit_file.dx_ingested = true
         bit_file.save!
@@ -150,17 +149,15 @@ class Directory < ActiveRecord::Base
     self.children.collect { |dir| dir.name }.to_set
   end
 
-  def relative_path(opts = {})
+  def relative_path()
     dirs = self.self_and_ancestors.reverse
     #remove collection root
     dirs.shift
-    #if using to ingest from bit root then remove bit root as well
-    dirs.shift if opts[:from_bit_root]
     File.join(*(dirs.collect { |dir| dir.name }))
   end
 
-  def path_from_root(opts = {})
-    '/' + self.relative_path(opts)
+  def path_from_root()
+    '/' + self.relative_path
   end
 
   def set_collection_id
