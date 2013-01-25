@@ -53,7 +53,7 @@ class FileGroup < ActiveRecord::Base
     #make sure we have a root directory and that it matches up with the passed source
     #directory
     root_name = File.basename(source_directory)
-    root_dir = self.root_directory
+    root_dir = self.root_directory(true)
     if root_dir
       unless root_name == root_dir.name
         raise RuntimeError, "Name of file group ingest directory has changed."
@@ -69,11 +69,11 @@ class FileGroup < ActiveRecord::Base
   end
 
   def bit_export(target_directory, opts = {})
-    self.root_directory.bit_export(target_directory, opts)
+    self.root_directory(true).bit_export(target_directory, opts)
   end
 
   def bit_recursive_delete
-    self.root_directory.recursive_delete(true)
+    self.root_directory(true).recursive_delete(true)
   end
 
 end
