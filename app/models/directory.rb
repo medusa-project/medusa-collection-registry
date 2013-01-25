@@ -23,6 +23,15 @@ class Directory < ActiveRecord::Base
     !self.parent_id
   end
 
+  def file_group_root?
+    !self.root? and self.parent.root?
+  end
+
+  #answer the owning file group of nil if this is a collection root
+  def file_group
+    self.self_and_ancestors.detect {|directory| directory.file_group_root?}
+  end
+
   def bit_ingest(source_directory, opts = {})
     Dir.chdir(source_directory) do
       self.recursive_ingest('.', opts)
@@ -98,8 +107,12 @@ class Directory < ActiveRecord::Base
       end
     end
     #ingest into dx if necessary for each one
-    base_path = self.relative_path
+    #As things are now (ingesting from file groups) we need different paths
+    #for finding things on the filesystem to upload and for recording dx metadata
+    base_path = self.relative_path(opts)
+    dx_base_path = self.path_from_root
     file_typer = FileMagic.new(FileMagic::MAGIC_MIME_TYPE)
+    puts "working in: #{Dir.pwd}"
     self.bit_files(true).each do |bit_file|
       unless bit_file.dx_ingested
         file_path = base_path.blank? ? bit_file.name : File.join(base_path, bit_file.name)
@@ -109,7 +122,7 @@ class Directory < ActiveRecord::Base
         bit_file.size = File.size(file_path)
         bit_file.save!
         Rails.logger.info "DX ingesting #{file_path}"
-        Dx.instance.ingest_file(file_path, bit_file, opts)
+        Dx.instance.ingest_file(file_path, bit_file, opts.merge(:path => dx_base_path))
         #mark as ingested and resave.
         bit_file.dx_ingested = true
         bit_file.save!
@@ -137,14 +150,17 @@ class Directory < ActiveRecord::Base
     self.children.collect { |dir| dir.name }.to_set
   end
 
-  def relative_path
+  def relative_path(opts = {})
     dirs = self.self_and_ancestors.reverse
+    #remove collection root
     dirs.shift
+    #if using to ingest from bit root then remove bit root as well
+    dirs.shift if opts[:from_bit_root]
     File.join(*(dirs.collect { |dir| dir.name }))
   end
 
-  def path_from_root
-    '/' + self.relative_path
+  def path_from_root(opts = {})
+    '/' + self.relative_path(opts)
   end
 
   def set_collection_id

@@ -6,10 +6,13 @@ class FileGroup < ActiveRecord::Base
   belongs_to :producer
   belongs_to :storage_medium
   belongs_to :file_type
+  belongs_to :root_directory, :class_name => 'Directory'
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
   accepts_nested_attributes_for :collection, :rights_declaration
 
   before_validation :ensure_rights_declaration
+
+  validates_uniqueness_of :root_directory_id, :allow_nil => true
 
   [:naming_conventions, :directory_structure].each do |field|
     auto_html_for field do
@@ -45,4 +48,32 @@ class FileGroup < ActiveRecord::Base
   def self.aggregate_size
     self.sum('total_file_size')
   end
+
+  def bit_ingest(source_directory, opts = {})
+    #make sure we have a root directory and that it matches up with the passed source
+    #directory
+    root_name = File.basename(source_directory)
+    root_dir = self.root_directory
+    if root_dir
+      unless root_name == root_dir.name
+        raise RuntimeError, "Name of file group ingest directory has changed."
+      end
+    else
+      root_dir = self.collection.make_file_group_root(root_name)
+      puts "returned class: #{root_dir.class}"
+      self.root_directory = root_dir
+      self.save!
+    end
+    #do the ingest if things check out
+    root_dir.bit_ingest(source_directory, opts.merge(:from_bit_root => true))
+  end
+
+  def bit_export(target_directory, opts = {})
+    self.root_directory.bit_export(target_directory, opts)
+  end
+
+  def bit_recursive_delete
+    self.root_directory.recursive_delete(true)
+  end
+
 end

@@ -158,8 +158,8 @@ class Collection < ActiveRecord::Base
     end
   end
 
-  def bit_ingest(source_directory, opts = {})
-    self.root_directory.bit_ingest(source_directory, opts)
+  def make_file_group_root(name)
+    self.root_directory.children.create!(:name => name)
   end
 
   def bit_export(target_directory, opts = {})
