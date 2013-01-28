@@ -158,8 +158,11 @@ class Collection < ActiveRecord::Base
     end
   end
 
-  def make_file_group_root(name)
-    self.root_directory.children.create!(:name => name)
+  def make_file_group_root(name, file_group)
+    self.root_directory.children.create!(:name => name).tap do |dir|
+      file_group.root_directory = dir
+      file_group.save!
+    end
   end
 
   def bit_export(target_directory, opts = {})

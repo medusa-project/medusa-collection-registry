@@ -5,6 +5,9 @@
 .page_header
   %h1 File Group
   %p.lead Collection: #{link_to @collection.title, @collection}
+  - if @file_group.root_directory
+    %p= link_to 'Bit root directory', directory_path(@file_group.root_directory)
+
 .row
   .span8
     = show_value((link_to(@file_group.producer.title, @file_group.producer) if @file_group.producer), 'Production Unit')

@@ -65,6 +65,16 @@ Given /^The file group with location '(.*)' has file type '(.*)'$/ do |location,
   file_group.save
 end
 
+Given /^The file group with location '(.*)' has a root directory$/ do |location|
+  file_group = FileGroup.find_by_file_location(location)
+  file_group.collection.make_file_group_root("file_group_#{file_group.id}", file_group)
+end
+
+Then /^I should be on the view page for the root directory for the file group with location '(.*)'$/ do |location|
+  file_group = FileGroup.find_by_file_location(location)
+  current_path.should == directory_path(file_group.root_directory)
+end
+
 private
 
 def find_file_group(collection_title, location)

@@ -59,9 +59,7 @@ class FileGroup < ActiveRecord::Base
         raise RuntimeError, "Name of file group ingest directory has changed."
       end
     else
-      root_dir = self.collection.make_file_group_root(root_name)
-      self.root_directory = root_dir
-      self.save!
+      root_dir = self.collection.make_file_group_root(root_name, self)
     end
     #do the ingest if things check out
     root_dir.bit_ingest(source_directory, opts)

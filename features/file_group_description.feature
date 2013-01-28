@@ -1,6 +1,6 @@
 Feature: File Group description
   In order to track information about file groups
-  As a librarian
+  As a libraadmirian
   I want to edit file group information
 
   Background:
@@ -68,4 +68,13 @@ Feature: File Group description
     And I should see 'image/tiff'
     And The collection titled 'Dogs' should have a file group with location 'Undergrad'
 
+  Scenario: Navigate to root directory of file group if present
+    Given The file group with location 'Main Library' has a root directory
+    When I view the file group with location 'Main Library' for the collection titled 'Dogs'
+    And I click on 'Bit root directory'
+    Then I should be on the view page for the root directory for the file group with location 'Main Library'
+
+  Scenario: No link to root directory
+    When I view the file group with location 'Main Library' for the collection titled 'Dogs'
+    Then I should not see 'Bit root directory'
 
