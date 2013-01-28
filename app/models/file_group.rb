@@ -72,9 +72,11 @@ class FileGroup < ActiveRecord::Base
   end
 
   def bit_recursive_delete
-    self.root_directory(true).recursive_delete(true)
-    self.root_directory = nil
-    self.save
+    if self.root_directory(true)
+      self.root_directory.recursive_delete(true)
+      self.root_directory = nil
+      self.save
+    end
   end
 
 end

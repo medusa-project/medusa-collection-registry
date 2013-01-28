@@ -167,7 +167,9 @@ class Collection < ActiveRecord::Base
   end
 
   def bit_recursive_delete()
-    self.root_directory.recursive_delete(false)
+    self.file_groups.each do |file_group|
+      file_group.bit_recursive_delete
+    end
   end
 
 end
