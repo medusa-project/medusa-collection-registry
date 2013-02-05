@@ -33,4 +33,8 @@ class BitFile < ActiveRecord::Base
     Dx.instance.file_url(self)
   end
 
+  def file_group
+    self.directory.file_group
+  end
+
 end

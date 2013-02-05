@@ -27,9 +27,11 @@ class Directory < ActiveRecord::Base
     !self.root? and self.parent.root?
   end
 
-  #answer the owning file group of nil if this is a collection root
+  #answer the owning file group or nil if this is a collection root
   def file_group
-    self.self_and_ancestors.detect { |directory| directory.file_group_root? }
+    file_group_directory = self.self_and_ancestors.detect { |directory| directory.file_group_root? }
+    return nil unless file_group_directory
+    return  FileGroup.find_by_root_directory_id(file_group_directory.id)
   end
 
   def bit_ingest(source_directory, opts = {})

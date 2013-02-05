@@ -17,4 +17,4 @@ Feature: JSON data about bit file
       And the JSON at "content_type" should be "image/jpeg"
       And the JSON at "ingested" should be true
       And the JSON at "md5sum" should be "G7jiO82hrgstPNSD2t00Hw=="
-      And the JSON at "url" should be "http://libstor.grainger.illinois.edu/test/0cdf6b50-2d1e-0130-bc56-000c2967d45f-9"
+      And the JSON at "url" should be "http://libstor.grainger.illinois.edu/bit-test/0cdf6b50-2d1e-0130-bc56-000c2967d45f-9"
