@@ -98,8 +98,6 @@ class Directory < ActiveRecord::Base
   #this should always be called after chdir'ing to the directory it applies to
   #opts will have :path to help make the dx information
   def bit_ingest_files(files, opts = {})
-    puts "Ingesting in #{Dir.pwd}"
-    puts "File List: #{files}"
     #ensure file objects exist
     current_files = existing_file_names
     BitFile.transaction do
@@ -171,14 +169,27 @@ class Directory < ActiveRecord::Base
     BitFile.where(:directory_id => self.id).sum(:size)
   end
 
+  #total size of ingested files owned directly by this directory
+  def owned_ingested_file_size
+    BitFile.where(:directory_id => self.id).where(:dx_ingested => true).sum(:size)
+  end
+
   #total size of files owned by this directory and subdirectory
   def recursive_file_size
     self.descendant_file_size + self.owned_file_size
   end
 
+  def recursive_ingested_file_size
+    self.descendant_ingested_file_size + self.owned_ingested_file_size
+  end
+
   #total size of files owned by descendants of this directory (but not this directory itself)
   def descendant_file_size
     BitFile.where(:directory_id => descendant_directory_ids).sum(:size)
+  end
+
+  def descendant_ingested_file_size
+    BitFile.where(:directory_id => descendant_directory_ids).where(:dx_ingested => true).sum(:size)
   end
 
   #total size of files owned by root directory of this directory
@@ -200,6 +211,12 @@ class Directory < ActiveRecord::Base
       ids = Directory.where(:parent_id => (old_ids.clone << self.id)).order('id').select('id').collect(&:id)
     end
     ids
+  end
+
+  #how many ingested files are owned by this and descendant directories
+  def recursive_ingested_file_count
+    ids = self.descendant_directory_ids << self.id
+    BitFile.where(:directory_id => ids).where(:dx_ingested => true).count
   end
 
 end
