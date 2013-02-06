@@ -64,7 +64,7 @@ namespace :bit_level do
   end
 
   def count_files(dir)
-    output, status = Open3.capture2("tree #{dir} | tail -n 1")
+    output, status = Open3.capture2("tree -a #{dir} | tail -n 1")
     output.match(/(\d+)\s+files/)
     $1
   end
