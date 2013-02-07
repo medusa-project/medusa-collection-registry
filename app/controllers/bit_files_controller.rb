@@ -1,4 +1,4 @@
-require 'stringio'
+require 'fileutils'
 
 class BitFilesController < ApplicationController
 
@@ -13,9 +13,11 @@ class BitFilesController < ApplicationController
   end
 
   def contents
-    buffer = StringIO.new('')
-    Dx.instance.export_file_2(@bit_file, buffer)
-    send_data buffer.string, :type => @bit_file.content_type, :filename => @bit_file.name, :disposition => 'inline'
+    file = Tempfile.new(@bit_file.name, MedusaRails3::Application.bit_file_tmp_dir, :encoding => 'binary')
+    file.chmod(0644)
+    Dx.instance.export_file_2(@bit_file, file)
+    file.close
+    send_file file.path, :type => @bit_file.content_type, :filename => @bit_file.name, :disposition => 'inline'
   end
 
   protected
