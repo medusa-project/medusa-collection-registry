@@ -96,6 +96,7 @@ class Dx < Object
       headers['x-bit-meta-path'] = File.join(opts[:path], bit_file.name)
       headers['x-bit-meta-collection-id'] = bit_file.directory.collection_id
       headers['Castor-Authorization'] = self.object_auth_realm if self.object_auth_realm
+      headers['Expect'] = '100-continue'
       add_lifepoint_header(headers)
     end
   end
