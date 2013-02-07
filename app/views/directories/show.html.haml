@@ -24,7 +24,7 @@
   %tbody
     - @directory.bit_files.each do |file|
       %tr
-        %td= file.name
+        %td= link_to file.name, contents_file_path(file)
         %td= file.size
         %td= file.content_type
         %td= file.md5sum

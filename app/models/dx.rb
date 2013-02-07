@@ -60,6 +60,11 @@ class Dx < Object
     end
   end
 
+  #this variation is useful for getting one specific file
+  def export_file_2(bit_file, io_or_file_name)
+    self.client.download(file_url(bit_file), io_or_file_name, [], nil, export_headers(bit_file))
+  end
+
   def file_url(bit_file)
     "http://#{self.entry_host}/#{self.bucket}/#{bit_file.dx_name}"
   end
