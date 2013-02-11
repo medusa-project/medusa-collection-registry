@@ -1,7 +1,7 @@
 And /^the collection titled '(.*)' has assessments with fields:$/ do |title, table|
   collection = Collection.find_by_title(title) || FactoryGirl.create(:collection, title => title)
   table.hashes.each do |hash|
-    FactoryGirl.create(:assessment, hash.merge({:collection => collection}))
+    FactoryGirl.create(:assessment, hash.merge({:assessable => collection}))
   end
 end
 

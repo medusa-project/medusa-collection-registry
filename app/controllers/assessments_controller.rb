@@ -1,10 +1,10 @@
 class AssessmentsController < ApplicationController
 
-  before_filter :find_assessment_and_collection, :only => [:destroy, :show, :edit, :update]
+  before_filter :find_assessment_and_assessable, :only => [:destroy, :show, :edit, :update]
 
   def destroy
     @assessment.destroy
-    redirect_to collection_path(@collection)
+    redirect_to @assessable
   end
 
   def show
@@ -24,16 +24,18 @@ class AssessmentsController < ApplicationController
   end
 
   def new
-    @collection = Collection.find(params[:collection_id])
+    klass = assessable_class(params)
+    @assessable = klass.find(params[:assessable_id])
     @assessment = Assessment.new
     @assessment.author = Person.find_or_create_by_net_id(current_user.uid)
-    @assessment.collection = @collection
+    @assessment.assessable = @assessable
   end
 
   def create
-    @collection = Collection.find(params[:assessment].delete(:collection_id))
+    klass = assessable_class(params[:assessment])
+    @assessable = klass.find(params[:assessment].delete(:assessable_id))
     @assessment = Assessment.new(params[:assessment])
-    @assessment.collection = @collection
+    @assessment.assessable = @assessable
     if @assessment.save
       redirect_to assessment_path(@assessment)
     else
@@ -43,10 +45,19 @@ class AssessmentsController < ApplicationController
 
   protected
 
-  def find_assessment_and_collection
+  def find_assessment_and_assessable
     @assessment = Assessment.find(params[:id])
-    @collection = @assessment.collection
+    @assessable = @assessment.assessable
   end
 
+  def assessable_class(hash)
+    assessable_type_name = hash.delete(:assessable_type)
+    case assessable_type_name
+      when 'Collection'
+        Collection
+      else
+        raise RuntimeError, 'Unrecognized assessable type'
+    end
+  end
 
 end

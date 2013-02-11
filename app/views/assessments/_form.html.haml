@@ -11,11 +11,12 @@
       .span8
         = f.input :preservation_risks, :input_html => {:class => "span6", :rows => 3}
         = f.input :notes, :input_html => {:class => "span6", :rows => 3}
-        = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
+        = f.input :assessable_id, :as => :hidden, :input_html => {:value => @assessable.id}
+        = f.input :assessable_type, :as => :hidden, :input_html => {:value => @assessable.class.name}
 
       .form-actions.span6
         = f.button :submit, :class => 'btn-primary'
         - if @assessment.new_record?
-          = link_to("Back to #{@collection.title}", @collection, :class => 'btn')
+          = link_to("Back to #{@assessable.title}", @assessable, :class => 'btn')
         - else
           = link_to(t('.cancel', :default => t('helpers.links.cancel')), @assessment, :class => 'btn')

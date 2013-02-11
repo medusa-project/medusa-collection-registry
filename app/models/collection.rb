@@ -12,7 +12,7 @@ class Collection < ActiveRecord::Base
                   :preservation_priority_id, :resource_type_ids, :rights_declaration_attributes
 
   belongs_to :repository
-  has_many :assessments, :dependent => :destroy
+  has_many :assessments, :dependent => :destroy, :as => :assessable
   has_many :file_groups, :dependent => :destroy
   has_many :access_system_collection_joins, :dependent => :destroy
   has_many :access_systems, :through => :access_system_collection_joins

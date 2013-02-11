@@ -1,6 +1,6 @@
 %h2 Assessments
 
-= link_to 'Add Assessment', new_assessment_path(:collection_id => @collection.id), :class => 'btn btn-primary btn-mini'
+= link_to 'Add Assessment', new_assessment_path(:assessable_id => @collection.id, :assessable_type => 'Collection'), :class => 'btn btn-primary btn-mini'
 
 - if @collection.assessments.present?
   %table#assessments.table.table-striped

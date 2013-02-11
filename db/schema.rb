@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130125155156) do
+ActiveRecord::Schema.define(:version => 20130211181738) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -33,16 +33,17 @@ ActiveRecord::Schema.define(:version => 20130125155156) do
     t.date     "date"
     t.text     "preservation_risks"
     t.text     "notes"
-    t.integer  "collection_id"
+    t.integer  "assessable_id"
     t.datetime "created_at",              :null => false
     t.datetime "updated_at",              :null => false
     t.integer  "author_id"
     t.text     "notes_html"
     t.text     "preservation_risks_html"
+    t.string   "assessable_type"
   end
 
+  add_index "assessments", ["assessable_id"], :name => "index_assessments_on_collection_id"
   add_index "assessments", ["author_id"], :name => "index_assessments_on_author_id"
-  add_index "assessments", ["collection_id"], :name => "index_assessments_on_collection_id"
 
   create_table "bit_files", :force => true do |t|
     t.integer  "directory_id"
