@@ -20,10 +20,6 @@ Given /^There is a collection titled '(.*)'$/ do |title|
   ensure_collection(title)
 end
 
-Then /^I should see the assessment collection table$/ do
-  page.should have_selector('table#assessments')
-end
-
 And /^I click on 'Delete' in the assessments table$/ do
   within_table('assessments') do
     click_on 'Delete'

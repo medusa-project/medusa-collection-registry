@@ -14,7 +14,7 @@ Feature: Assessment Management
 
   Scenario: View assessments of a collection
     When I view the collection titled 'Dogs'
-    Then I should see the assessment collection table
+    Then I should see an assessment table
 
   Scenario: Delete assessment from collection
     When I view the collection titled 'Dogs'
