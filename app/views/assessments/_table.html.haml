@@ -1,0 +1,20 @@
+%h2 Assessments
+
+= link_to 'Add Assessment', new_assessment_path(:assessable_id => @assessable.id, :assessable_type => @assessable.class.name), :class => 'btn btn-primary btn-mini'
+
+- if @assessable.assessments.present?
+  %table#assessments.table.table-striped
+    %thead
+      %tr
+        %th Date
+        %th Author
+        %th
+    %tbody
+      - @assessable.assessments.each do |assessment|
+        %tr
+          %td #{link_to assessment.date.to_s, assessment}
+          %td #{assessment.author_net_id}
+          %td
+            = link_to 'View', assessment, :class => 'btn btn-mini'
+            = link_to 'Edit', edit_assessment_path(assessment), :class => 'btn btn-mini'
+            = link_to 'Delete', assessment, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-mini btn-danger'

@@ -8,6 +8,7 @@ class FileGroup < ActiveRecord::Base
   belongs_to :file_type
   belongs_to :root_directory, :class_name => 'Directory'
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
+  has_many :assessments, :as => :assessable, :dependent => :destroy
   accepts_nested_attributes_for :collection, :rights_declaration
 
   before_validation :ensure_rights_declaration
@@ -75,6 +76,10 @@ class FileGroup < ActiveRecord::Base
       self.root_directory = nil
       self.save
     end
+  end
+
+  def assessable_label
+    "File Group #{self.id}"
   end
 
 end

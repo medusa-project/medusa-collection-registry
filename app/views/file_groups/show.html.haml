@@ -9,7 +9,7 @@
     %p= link_to 'Bit root directory', directory_path(@file_group.root_directory)
 
 .row
-  .span8
+  .span4
     = show_value((link_to(@file_group.producer.title, @file_group.producer) if @file_group.producer), 'Production Unit')
     = show_field @file_group, :file_type_name, 'File type'
     = show_field @file_group, :file_location
@@ -25,6 +25,9 @@
     %h3 Rights Declaration
     = render :partial => 'rights_declarations/show', :locals => {:rights_declaration => @file_group.rights_declaration}
 
-  .span4
+  .span8
+
     %p.lead Collection file package summary
     %p= @file_group.collection.file_package_summary_html
+
+    = render 'assessments_table'

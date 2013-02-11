@@ -55,6 +55,8 @@ class AssessmentsController < ApplicationController
     case assessable_type_name
       when 'Collection'
         Collection
+      when 'FileGroup'
+        FileGroup
       else
         raise RuntimeError, 'Unrecognized assessable type'
     end

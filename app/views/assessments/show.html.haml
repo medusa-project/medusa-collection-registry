@@ -4,7 +4,7 @@
 
 .page-header
   %h1 Assessment: #{@assessment.date}
-  %p.lead Collection: #{link_to @assessable.title, @assessable}
+  %p.lead #{@assessable.class.name}: #{link_to @assessable.assessable_label, @assessable}
 
 .row
   .span8
