@@ -9,14 +9,16 @@ Feature: Assessment description
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has assessments with fields:
-      | date       | preservation_risks                           | notes                                      |
-      | 2012-01-09 | Old formats. http://preservation.example.com | Pictures of dogs. https://dogs.example.com |
+      | date       | preservation_risks                           | notes                                      | name      | assessment_type | preservation_risk_level |
+      | 2012-01-09 | Old formats. http://preservation.example.com | Pictures of dogs. https://dogs.example.com | Once over | external_files  | medium                  |
 
   Scenario: View an assessment
     When I view the assessment with date '2012-01-09' for the collection titled 'Dogs'
     Then I should see '2012-01-09'
     And I should see 'Old formats'
     And I should see 'Pictures of dogs'
+    And I should see all of:
+      | Once over | external_files | medium |
 
   Scenario: Edit an assessment
     When I edit the assessment with date '2012-01-09' for the collection titled 'Dogs'
@@ -47,9 +49,12 @@ Feature: Assessment description
     When I view the collection titled 'Dogs'
     And I click on 'Add Assessment'
     And I fill in fields:
-      | Preservation risks | There are corrupt files too |
-      | Notes              | I like dogs                 |
-      | Date               | 2012-02-10                  |
+      | Preservation risks      | There are corrupt files too |
+      | Notes                   | I like dogs                 |
+      | Date                    | 2012-02-10                  |
+      | Name                    | Initial assessment          |
+    And I select 'external_files' from 'Assessment type'
+    And I select 'low' from 'Preservation risk level'
     And I press 'Create Assessment'
     Then I should be on the view page for the assessment with date '2012-02-10' for the collection titled 'Dogs'
     And I should see 'I like dogs'
@@ -72,3 +77,10 @@ Feature: Assessment description
     When I view the assessment with date '2012-01-09' for the collection titled 'Dogs'
     Then I should see a link to 'http://preservation.example.com'
     And I should see a link to 'https://dogs.example.com'
+
+  Scenario: Name is required field
+    When I edit the assessment with date '2012-01-09' for the collection titled 'Dogs'
+    And I fill in fields:
+      | Name |  |
+    And I press 'Update Assessment'
+    Then I should see 'can't be blank'

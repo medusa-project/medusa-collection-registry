@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130211181738) do
+ActiveRecord::Schema.define(:version => 20130211222200) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -40,6 +40,9 @@ ActiveRecord::Schema.define(:version => 20130211181738) do
     t.text     "notes_html"
     t.text     "preservation_risks_html"
     t.string   "assessable_type"
+    t.string   "name"
+    t.string   "assessment_type"
+    t.string   "preservation_risk_level"
   end
 
   add_index "assessments", ["assessable_id"], :name => "index_assessments_on_collection_id"

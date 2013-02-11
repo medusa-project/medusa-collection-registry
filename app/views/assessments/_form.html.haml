@@ -8,7 +8,10 @@
       .span4
         = f.input :author_net_id, :label => 'Author Net ID'
         = f.input :date, :as => :string, :use_month_numbers => true, :input_html => {'data-datepicker' => 'datepicker'}, :order => [:day, :month, :year]
+        = f.input :assessment_type, :as => :select, :collection => Assessment::ASSESSMENT_TYPES, :include_blank => false
+        = f.input :preservation_risk_level, :as => :select, :collection => Assessment::RISK_LEVELS, :include_blank => false
       .span8
+        = f.input :name
         = f.input :preservation_risks, :input_html => {:class => "span6", :rows => 3}
         = f.input :notes, :input_html => {:class => "span6", :rows => 3}
         = f.input :assessable_id, :as => :hidden, :input_html => {:value => @assessable.id}
