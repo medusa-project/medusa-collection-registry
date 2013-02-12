@@ -10,6 +10,8 @@
 
 .row
   .span4
+    = show_field @file_group, :name
+    = show_field @file_group, :storage_level
     = show_value((link_to(@file_group.producer.title, @file_group.producer) if @file_group.producer), 'Production Unit')
     = show_field @file_group, :file_type_name, 'File type'
     = show_field @file_group, :file_location

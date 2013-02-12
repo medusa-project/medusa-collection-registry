@@ -1,6 +1,6 @@
 Feature: File Group description
   In order to track information about file groups
-  As a libraadmirian
+  As a librarian
   I want to edit file group information
 
   Background:
@@ -9,14 +9,14 @@ Feature: File Group description
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | file_location | file_format | total_file_size | total_files | last_access_date | summary          | provenance_note     |
-      | Main Library  | image/jpeg  | 100             | 1200        | 2012-05-15       | main summary     | main provenance     |
-      | Grainger      | text/xml    | 4               | 2400        | 2012-06-16       | grainger summary | grainger provenance |
+      | file_location | file_format | total_file_size | total_files | last_access_date | summary          | provenance_note     | name   | storage_level |
+      | Main Library  | image/jpeg  | 100             | 1200        | 2012-05-15       | main summary     | main provenance     | images | external      |
+      | Grainger      | text/xml    | 4               | 2400        | 2012-06-16       | grainger summary | grainger provenance | texts  | external      |
 
   Scenario: View a file group
     When I view the file group with location 'Main Library' for the collection titled 'Dogs'
     Then I should see all of:
-      | image/jpeg | 2012-05-15 | 1200 | main summary | main provenance |
+      | image/jpeg | 2012-05-15 | 1200 | main summary | main provenance | images | external |
 
   Scenario: Edit a file group
     When I edit the file group with location 'Main Library' for the collection titled 'Dogs'
@@ -24,13 +24,14 @@ Feature: File Group description
       | Total files     | 1300               |
       | Summary         | Changed summary    |
       | Provenance Note | Changed provenance |
+      | Name            | pictures           |
+    And I select 'bit-level store' from 'Storage level'
     And I press 'Update File group'
     Then I should be on the view page for the file group with location 'Main Library' for the collection titled 'Dogs'
     And I should see all of:
-      | 1300 | Changed summary | Changed provenance |
+      | 1300 | Changed summary | Changed provenance | pictures | bit-level store |
     And I should see none of:
-      | 1200 | main summary | main provenance |
-
+      | 1200 | main summary | main provenance | images | external |
 
   Scenario: Edit a file group and see owning repository and collection
     When I edit the file group with location 'Main Library' for the collection titled 'Dogs'
@@ -57,11 +58,12 @@ Feature: File Group description
     When I view the collection titled 'Dogs'
     And I click on 'Add File Group'
     And I fill in fields:
-      | File location    | Undergrad  |
-      | File format      | image/tiff |
-      | Total file size  | 22         |
-      | Total files      | 333        |
-      | Last access date | 2012-07-17 |
+      | File location    | Undergrad     |
+      | File format      | image/tiff    |
+      | Total file size  | 22            |
+      | Total files      | 333           |
+      | Last access date | 2012-07-17    |
+      | Name             | My file group |
     And I press 'Create File group'
     Then I should be on the view page for the file group with location 'Undergrad' for the collection titled 'Dogs'
     And I should see 'Undergrad'

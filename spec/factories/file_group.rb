@@ -1,5 +1,7 @@
 FactoryGirl.define do
   factory :file_group do
+    sequence(:name) {|n| "File Group #{n}"}
+    storage_level 'external'
     file_location 'Location'
     file_format 'image/jpeg'
     total_file_size 10

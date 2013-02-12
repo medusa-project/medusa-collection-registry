@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130211222200) do
+ActiveRecord::Schema.define(:version => 20130212212413) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -144,6 +144,8 @@ ActiveRecord::Schema.define(:version => 20130211222200) do
     t.text     "directory_structure"
     t.text     "directory_structure_html"
     t.integer  "root_directory_id"
+    t.string   "name"
+    t.string   "storage_level"
   end
 
   add_index "file_groups", ["file_type_id"], :name => "index_file_groups_on_file_type_id"

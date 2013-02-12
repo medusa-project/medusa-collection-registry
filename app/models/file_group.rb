@@ -1,7 +1,8 @@
 class FileGroup < ActiveRecord::Base
   attr_accessible :collection_id, :file_format, :file_location, :total_file_size, :total_files,
                   :last_access_date, :producer_id, :storage_medium_id, :file_type_id, :summary, :provenance_note,
-                  :collection_attributes, :naming_conventions, :directory_structure, :rights_declaration_attributes
+                  :collection_attributes, :naming_conventions, :directory_structure, :rights_declaration_attributes,
+                  :name, :storage_level
   belongs_to :collection
   belongs_to :producer
   belongs_to :storage_medium
@@ -13,7 +14,11 @@ class FileGroup < ActiveRecord::Base
 
   before_validation :ensure_rights_declaration
 
+  STORAGE_LEVELS = ['external', 'bit-level store','object-level store']
+
   validates_uniqueness_of :root_directory_id, :allow_nil => true
+  validates_presence_of :name
+  validates_inclusion_of :storage_level, :in => STORAGE_LEVELS
 
   [:naming_conventions, :directory_structure].each do |field|
     auto_html_for field do
