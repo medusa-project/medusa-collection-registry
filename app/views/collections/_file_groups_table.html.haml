@@ -10,7 +10,7 @@
         %th Name
         %th Producer
         %th File type
-        %th File location
+        %th External file location
         %th File format
         %th Storage Medium
         %th Total file size (GB)
@@ -24,7 +24,7 @@
           %td #{file_group.name}
           %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
           %td #{file_group.file_type_name}
-          %td #{file_group.file_location}
+          %td #{file_group.external_file_location}
           %td #{file_group.file_format}
           %td #{file_group.storage_medium_name}
           %td #{file_group.total_file_size}

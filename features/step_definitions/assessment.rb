@@ -6,7 +6,7 @@ And /^the collection titled '(.*)' has assessments with fields:$/ do |title, tab
 end
 
 And /^the file group with location '(.*)' has assessments with fields:$/ do |location, table|
-  file_group = FileGroup.find_by_file_location(location) || FactoryGirl.create(:file_group, :location => location)
+  file_group = FileGroup.find_by_external_file_location(location) || FactoryGirl.create(:file_group, :location => location)
   table.hashes.each do |hash|
     FactoryGirl.create(:assessment, hash.merge({:assessable => file_group}))
   end
@@ -56,6 +56,6 @@ def find_assessment(date, collection_title)
 end
 
 def find_file_group_assessment(date, location)
-  file_group = FileGroup.find_by_file_location(location)
+  file_group = FileGroup.find_by_external_file_location(location)
   file_group.assessments.where(:date => Date.parse(date)).first
 end

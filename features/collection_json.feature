@@ -5,7 +5,7 @@ Feature: JSON data about collection
 
   Background:
     Given the collection titled 'Dogs' has file groups with fields:
-      | file_location |
+      | external_file_location |
       | Grainger      |
       | Main Library  |
 

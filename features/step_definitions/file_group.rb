@@ -10,7 +10,7 @@ And /^the collection titled '(.*)' should have (\d+) file group$/ do |title, cou
 end
 
 Then /^I should see the file group id for the file group with location '(.*)' in the file group collection table$/ do |location|
-  id = FileGroup.find_by_file_location(location).id
+  id = FileGroup.find_by_external_file_location(location).id
   within_table('file_groups') do
     step "I should see '#{id}'"
   end
@@ -38,11 +38,11 @@ Given /^I am editing a file group$/ do
 end
 
 And /^The collection titled '(.*)' should not have a file group with location '(.*)'$/ do |title, location|
-  Collection.find_by_title(title).file_groups.where(:file_location => location).should be_empty
+  Collection.find_by_title(title).file_groups.where(:external_file_location => location).should be_empty
 end
 
 And /^The collection titled '(.*)' should have a file group with location '(.*)'$/ do |title, location|
-  Collection.find_by_title(title).file_groups.where(:file_location => location).should_not be_empty
+  Collection.find_by_title(title).file_groups.where(:external_file_location => location).should_not be_empty
 end
 
 And /^I fill in file group form date '(\d+)\-(\d+)\-(\d+)'$/ do |year, month, day|
@@ -60,18 +60,18 @@ Given /^The file group with location '(.*)' for the collection titled '(.*)' has
 end
 
 Given /^The file group with location '(.*)' has file type '(.*)'$/ do |location, file_type|
-  file_group = FileGroup.find_by_file_location(location)
+  file_group = FileGroup.find_by_external_file_location(location)
   file_group.file_type = FileType.find_by_name(file_type)
   file_group.save
 end
 
 Given /^The file group with location '(.*)' has a root directory$/ do |location|
-  file_group = FileGroup.find_by_file_location(location)
+  file_group = FileGroup.find_by_external_file_location(location)
   file_group.collection.make_file_group_root("file_group_#{file_group.id}", file_group)
 end
 
 Then /^I should be on the view page for the root directory for the file group with location '(.*)'$/ do |location|
-  file_group = FileGroup.find_by_file_location(location)
+  file_group = FileGroup.find_by_external_file_location(location)
   current_path.should == directory_path(file_group.root_directory)
 end
 
@@ -79,5 +79,5 @@ private
 
 def find_file_group(collection_title, location)
   collection = Collection.find_by_title(collection_title)
-  collection.file_groups.where(:file_location => location).first
+  collection.file_groups.where(:external_file_location => location).first
 end

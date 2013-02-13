@@ -1,5 +1,5 @@
 class FileGroup < ActiveRecord::Base
-  attr_accessible :collection_id, :file_format, :file_location, :total_file_size, :total_files,
+  attr_accessible :collection_id, :file_format, :external_file_location, :total_file_size, :total_files,
                   :last_access_date, :producer_id, :storage_medium_id, :file_type_id, :summary, :provenance_note,
                   :collection_attributes, :naming_conventions, :directory_structure, :rights_declaration_attributes,
                   :name, :storage_level

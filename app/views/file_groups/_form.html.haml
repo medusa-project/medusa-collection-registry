@@ -5,7 +5,7 @@
       = f.input :storage_level, :as => :select, :include_blank => false, :collection => FileGroup::STORAGE_LEVELS
       = f.input :producer_id, :collection => producers_select_collection
       = f.input :file_type_id, :collection => file_types_select_collection
-      = f.input :file_location
+      = f.input :external_file_location
       = f.input :file_format
       = f.input :naming_conventions
       = f.input :storage_medium_id, :collection => storage_media_select_collection

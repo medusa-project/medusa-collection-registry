@@ -9,7 +9,7 @@ Feature: Package summary
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | file_location | naming_conventions | directory_structure  |
+      | external_file_location | naming_conventions | directory_structure  |
       | Grainger      | File naming notes  | Hierarchy notes |
 
   Scenario: View file group to see package summary

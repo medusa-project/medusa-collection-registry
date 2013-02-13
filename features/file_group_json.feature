@@ -5,7 +5,7 @@ Feature: JSON data about file group
 
   Background:
     Given the collection titled 'Dogs' has file groups with fields:
-      | file_location |
+      | external_file_location |
       | Grainger      |
 
   Scenario: Fetch JSON for a collection
@@ -14,5 +14,5 @@ Feature: JSON data about file group
     Then the JSON should have "id"
     And the JSON should have "root_directory_id"
     And the JSON should have "collection_id"
-    And the JSON at "location" should be "Grainger"
+    And the JSON at "external_file_location" should be "Grainger"
     And the JSON at "type" should be "Master Metadata"

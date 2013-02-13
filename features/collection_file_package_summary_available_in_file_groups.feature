@@ -9,7 +9,7 @@ Feature: Collection File Package Summary in File Groups
       | title | file_package_summary          |
       | Dogs  | Original file package summary |
     And the collection titled 'Dogs' has file groups with fields:
-      | file_location | file_format | total_file_size | total_files | last_access_date |
+      | external_file_location | file_format | total_file_size | total_files | last_access_date |
       | Main Library  | image/jpeg  | 100             | 1200        | 2012-05-15       |
 
   Scenario: See file package summary when viewing file group

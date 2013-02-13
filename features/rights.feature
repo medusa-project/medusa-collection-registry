@@ -9,7 +9,7 @@ Feature: Record structured rights data for collections and file groups
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | file_location |
+      | external_file_location |
       | Grainger      |
 
   Scenario: Every collection should have rights attached

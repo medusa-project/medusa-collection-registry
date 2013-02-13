@@ -10,7 +10,7 @@ Feature: producers for File Groups
       | Scanning |
       | Scraping |
     And the collection titled 'Dogs' has file groups with fields:
-      | file_location |
+      | external_file_location |
       | Grainger |
     And The file group with location 'Grainger' for the collection titled 'Dogs' has producer titled 'Scanning'
 

@@ -9,7 +9,7 @@ Feature: File Group description
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | file_location | file_format | total_file_size | total_files | last_access_date | summary          | provenance_note     | name   | storage_level |
+      | external_file_location | file_format | total_file_size | total_files | last_access_date | summary          | provenance_note     | name   | storage_level |
       | Main Library  | image/jpeg  | 100             | 1200        | 2012-05-15       | main summary     | main provenance     | images | external      |
       | Grainger      | text/xml    | 4               | 2400        | 2012-06-16       | grainger summary | grainger provenance | texts  | external      |
 
@@ -58,7 +58,7 @@ Feature: File Group description
     When I view the collection titled 'Dogs'
     And I click on 'Add File Group'
     And I fill in fields:
-      | File location    | Undergrad     |
+      | External file location    | Undergrad     |
       | File format      | image/tiff    |
       | Total file size  | 22            |
       | Total files      | 333           |
