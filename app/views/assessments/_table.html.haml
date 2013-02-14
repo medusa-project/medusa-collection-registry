@@ -7,12 +7,14 @@
     %thead
       %tr
         %th Name
+        %th Date
         %th Author
         %th
     %tbody
       - @assessable.assessments.each do |assessment|
         %tr
           %td #{link_to assessment.name, assessment}
+          %td #{assessment.date}
           %td #{assessment.author_net_id}
           %td
             = link_to 'View', assessment, :class => 'btn btn-mini'
