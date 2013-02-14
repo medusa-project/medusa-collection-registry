@@ -9,8 +9,8 @@ Feature: Assessment Management
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has assessments with fields:
-      | date       | preservation_risks | notes            |
-      | 2012-01-09 | Old formats        | Pictures of dogs |
+      | date       | preservation_risks | notes            | name|
+      | 2012-01-09 | Old formats        | Pictures of dogs |  Assessing   |
 
   Scenario: View assessments of a collection
     When I view the collection titled 'Dogs'
@@ -24,5 +24,5 @@ Feature: Assessment Management
 
   Scenario: Navigate to assessment
     When I view the collection titled 'Dogs'
-    And I click on '2012-01-09'
+    And I click on 'Assessing'
     Then I should be on the view page for the assessment with date '2012-01-09' for the collection titled 'Dogs'

@@ -6,13 +6,13 @@
   %table#assessments.table.table-striped
     %thead
       %tr
-        %th Date
+        %th Name
         %th Author
         %th
     %tbody
       - @assessable.assessments.each do |assessment|
         %tr
-          %td #{link_to assessment.date.to_s, assessment}
+          %td #{link_to assessment.name, assessment}
           %td #{assessment.author_net_id}
           %td
             = link_to 'View', assessment, :class => 'btn btn-mini'

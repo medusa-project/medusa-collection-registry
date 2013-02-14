@@ -12,8 +12,8 @@ Feature: File Group Assessment Management
       | external_file_location | file_format | total_file_size | total_files |  summary      | provenance_note |
       | Main Library           | image/jpeg  | 100             | 1200        |  main summary | main provenance |
     And the file group with location 'Main Library' has assessments with fields:
-      | date       | preservation_risks | notes                 |
-      | 2013-02-11 | On CD              | Pictures of cute dogs |
+      | date       | preservation_risks | notes                 | name|
+      | 2013-02-11 | On CD              | Pictures of cute dogs |Assessing|
 
   Scenario: View assessments of a file group
     When I view the file group with location 'Main Library' for the collection titled 'Dogs'
@@ -27,7 +27,7 @@ Feature: File Group Assessment Management
 
   Scenario: Navigate to an assessment
     When I view the file group with location 'Main Library' for the collection titled 'Dogs'
-    And I click on '2013-02-11'
+    And I click on 'Assessing'
     Then I should be on the view page for the assessment with date '2013-02-11' for the file group with location 'Main Library'
 
   Scenario: Create a new assessment
