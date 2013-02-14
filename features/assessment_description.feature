@@ -49,15 +49,23 @@ Feature: Assessment description
     When I view the collection titled 'Dogs'
     And I click on 'Add Assessment'
     And I fill in fields:
-      | Preservation risks      | There are corrupt files too |
-      | Notes                   | I like dogs                 |
-      | Date                    | 2012-02-10                  |
-      | Name                    | Initial assessment          |
+      | Preservation risks  | There are corrupt files too |
+      | Notes               | I like dogs                 |
+      | Date                | 2012-02-10                  |
+      | Name                | Initial assessment          |
+      | Naming conventions  | Random                      |
+      | Directory structure | Unstructured                |
+      | Last access date    | 2013-02-14                  |
+      | File format         | Heterogeneous               |
+      | Total file size     | 100                         |
+      | Total files         | 50                          |
     And I select 'external_files' from 'Assessment type'
     And I select 'low' from 'Preservation risk level'
+    And I select 'paper tape' from 'Storage medium'
     And I press 'Create Assessment'
     Then I should be on the view page for the assessment with date '2012-02-10' for the collection titled 'Dogs'
-    And I should see 'I like dogs'
+    And I should see all of:
+      | I like dogs | Random | Unstructured | 2013-02-14 | Heterogeneous | 100 | 50 |
     And The collection titled 'Dogs' should have an assessment with date '2012-02-10'
 
   Scenario: Autofill user id for new assessment
