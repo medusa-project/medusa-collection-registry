@@ -2,10 +2,10 @@ class FileGroup < ActiveRecord::Base
   attr_accessible :collection_id, :external_file_location,
                   :producer_id, :file_type_id, :summary, :provenance_note,
                   :collection_attributes, :rights_declaration_attributes,
-                  :name, :storage_level, :staged_file_location
+                  :name, :storage_level, :staged_file_location, :total_file_size,
+                  :file_format, :total_files
   belongs_to :collection
   belongs_to :producer
-  belongs_to :storage_medium
   belongs_to :file_type
   belongs_to :root_directory, :class_name => 'Directory'
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable

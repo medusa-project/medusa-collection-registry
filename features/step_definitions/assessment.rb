@@ -48,6 +48,10 @@ Then /^I should see an assessment table$/ do
   page.should have_selector('table#assessments')
 end
 
+Given /^I am editing an assessment$/ do
+  visit edit_assessment_path(FactoryGirl.create(:assessment))
+end
+
 private
 
 def find_assessment(date, collection_title)

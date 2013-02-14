@@ -9,15 +9,15 @@ Feature: File Group Management
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | last_access_date | name   |
-      | Main Library  | image/jpeg  | 100             | 1200        | 2012-05-15       | images |
-      | Grainger      | text/xml    | 4               | 2400        | 2012-06-16       | texts  |
+      | external_file_location | file_format | total_file_size | total_files | name   |
+      | Main Library           | image/jpeg  | 100             | 1200        | images |
+      | Grainger               | text/xml    | 4               | 2400        | texts  |
 
   Scenario: View file groups of a collection
     When I view the collection titled 'Dogs'
     Then I should see the file group collection table
     And I should see all of:
-      | images | texts | Main Library| Grainger| 1200| 2400|
+      | images | texts | Main Library | Grainger | 1200 | 2400 |
 
   Scenario: Delete file group from collection
     When I view the collection titled 'Dogs'

@@ -9,23 +9,23 @@ Feature: Package summary
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | external_file_location | naming_conventions | directory_structure  |
-      | Grainger      | File naming notes  | Hierarchy notes |
+      | external_file_location | summary | provenance_note  |
+      | Grainger      | Summation of package  | Provenance information |
 
   Scenario: View file group to see package summary
     When I view the file group with location 'Grainger' for the collection titled 'Dogs'
     Then I should see all of:
-      | File naming notes | Hierarchy notes |
+      | Summation of package | Provenance information|
     And I should see all of:
-      | Naming Conventions | Directory Structure |
+      | Summary | Provenance Note |
 
   Scenario: Update file group package summary fields
     When I edit the file group with location 'Grainger' for the collection titled 'Dogs'
     And I fill in fields:
-      | Naming conventions | New naming    |
-      | Directory structure     | New hierarchy |
+      | Summary | New summary    |
+      | Provenance Note   | New provenance |
     And I click on 'Update File group'
     Then I should see all of:
-      | New naming | New hierarchy |
+      | New summary | New provenance |
 
 

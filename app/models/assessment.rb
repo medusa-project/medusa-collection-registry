@@ -6,6 +6,7 @@ class Assessment < ActiveRecord::Base
                   :preservation_risk_level, :assessment_type, :naming_conventions, :storage_medium_id,
                   :directory_structure, :last_access_date, :file_format, :total_file_size, :total_files
   belongs_to :assessable, :polymorphic => true
+  belongs_to :storage_medium
 
   validates_inclusion_of :assessable_type, :in => ['Collection', 'FileGroup']
   validates_presence_of :name

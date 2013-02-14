@@ -9,14 +9,14 @@ Feature: File Group description
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | last_access_date | summary          | provenance_note     | name   | storage_level | staged_file_location |
-      | Main Library           | image/jpeg  | 100             | 1200        | 2012-05-15       | main summary     | main provenance     | images | external      | staging_dir/images   |
-      | Grainger               | text/xml    | 4               | 2400        | 2012-06-16       | grainger summary | grainger provenance | texts  | external      | staging_dir/texts    |
+      | external_file_location | file_format | total_file_size | total_files | summary          | provenance_note     | name   | storage_level | staged_file_location |
+      | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | external      | staging_dir/images   |
+      | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | external      | staging_dir/texts    |
 
   Scenario: View a file group
     When I view the file group with location 'Main Library' for the collection titled 'Dogs'
     Then I should see all of:
-      | image/jpeg | 2012-05-15 | 1200 | main summary | main provenance | images | external | staging_dir/images |
+      | image/jpeg | 1200 | main summary | main provenance | images | external | staging_dir/images |
 
   Scenario: Edit a file group
     When I edit the file group with location 'Main Library' for the collection titled 'Dogs'
@@ -63,7 +63,6 @@ Feature: File Group description
       | File format            | image/tiff    |
       | Total file size        | 22            |
       | Total files            | 333           |
-      | Last access date       | 2012-07-17    |
       | Name                   | My file group |
     And I press 'Create File group'
     Then I should be on the view page for the file group with location 'Undergrad' for the collection titled 'Dogs'

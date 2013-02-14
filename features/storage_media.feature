@@ -10,8 +10,8 @@ Feature: Storage media
     Then There should be standard default storage media
 
   Scenario: Select storage medium while editing file group and view results
-    Given I am editing a file group
+    Given I am editing an assessment
     When I select 'file server' from 'Storage medium'
-    And I press 'Update File group'
+    And I press 'Update Assessment'
     Then I should see 'file server'
     And I should see 'Storage Medium'

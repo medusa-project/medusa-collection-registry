@@ -12,10 +12,8 @@
         %th File type
         %th External file location
         %th File format
-        %th Storage Medium
         %th Total file size (GB)
         %th Total files
-        %th Last access date
         %th
     %tbody
       - @collection.file_groups.each do |file_group|
@@ -26,10 +24,8 @@
           %td #{file_group.file_type_name}
           %td #{file_group.external_file_location}
           %td #{file_group.file_format}
-          %td #{file_group.storage_medium_name}
           %td #{file_group.total_file_size}
           %td #{file_group.total_files}
-          %td #{file_group.last_access_date}
           %td
             = link_to 'View', file_group, :class => 'btn btn-mini'
             = link_to 'Edit', edit_file_group_path(file_group), :class => 'btn btn-mini'

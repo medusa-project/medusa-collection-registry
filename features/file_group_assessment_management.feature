@@ -9,8 +9,8 @@ Feature: File Group Assessment Management
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | last_access_date | summary      | provenance_note |
-      | Main Library  | image/jpeg  | 100             | 1200        | 2012-05-15       | main summary | main provenance |
+      | external_file_location | file_format | total_file_size | total_files |  summary      | provenance_note |
+      | Main Library           | image/jpeg  | 100             | 1200        |  main summary | main provenance |
     And the file group with location 'Main Library' has assessments with fields:
       | date       | preservation_risks | notes                 |
       | 2013-02-11 | On CD              | Pictures of cute dogs |
