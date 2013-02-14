@@ -17,12 +17,8 @@
     = show_field @file_group, :external_file_location
     = show_field @file_group, :staged_file_location
     = show_field @file_group, :file_format
-    = show_field @file_group, :naming_conventions_html, 'Naming Conventions'
-    = show_field @file_group, :storage_medium_name
-    = show_field @file_group, :directory_structure_html, 'Directory Structure'
     = show_value "#{@file_group.total_file_size} GB", 'Total file size:'
     = show_field @file_group, :total_files
-    = show_field @file_group, :last_access_date
     = show_field @file_group, :summary
     = show_field @file_group, :provenance_note
     %h3 Rights Declaration

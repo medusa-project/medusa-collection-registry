@@ -1,7 +1,7 @@
 class FileGroup < ActiveRecord::Base
-  attr_accessible :collection_id, :file_format, :external_file_location, :total_file_size, :total_files,
-                  :last_access_date, :producer_id, :storage_medium_id, :file_type_id, :summary, :provenance_note,
-                  :collection_attributes, :naming_conventions, :directory_structure, :rights_declaration_attributes,
+  attr_accessible :collection_id, :external_file_location,
+                  :producer_id, :file_type_id, :summary, :provenance_note,
+                  :collection_attributes, :rights_declaration_attributes,
                   :name, :storage_level, :staged_file_location
   belongs_to :collection
   belongs_to :producer
@@ -20,14 +20,6 @@ class FileGroup < ActiveRecord::Base
   validates_presence_of :name
   validates_inclusion_of :storage_level, :in => STORAGE_LEVELS
 
-  [:naming_conventions, :directory_structure].each do |field|
-    auto_html_for field do
-      html_escape
-      link :target => "_blank"
-      simple_format
-    end
-  end
-
   #note that this depends on our convention that the files are staged as /collection_id/file_group_id.
   def root_directory_id
     self.collection.root_directory.children.where(:name => self.id.to_s).first.id rescue nil
@@ -35,10 +27,6 @@ class FileGroup < ActiveRecord::Base
 
   def file_type_name
     self.file_type.try(:name)
-  end
-
-  def storage_medium_name
-    self.storage_medium.try(:name)
   end
 
   def ensure_rights_declaration

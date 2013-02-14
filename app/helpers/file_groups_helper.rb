@@ -6,12 +6,6 @@ module FileGroupsHelper
     end
   end
 
-  def storage_media_select_collection
-    StorageMedium.all.collect do |medium|
-      [medium.name, medium.id]
-    end
-  end
-
   def file_types_select_collection
     FileType.order(:name).all.collect do |type|
       [type.name, type.id]

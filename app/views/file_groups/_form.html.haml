@@ -8,12 +8,8 @@
       = f.input :external_file_location
       = f.input :staged_file_location
       = f.input :file_format
-      = f.input :naming_conventions
-      = f.input :storage_medium_id, :collection => storage_media_select_collection
-      = f.input :directory_structure
       = f.input :total_file_size, :label => 'Total file size (GB)'
       = f.input :total_files
-      = f.input :last_access_date, :as => :string, :input_html => {'data-datepicker' => 'datepicker'}, :order => [:day, :month, :year], :use_month_numbers => true
       = f.input :summary
       = f.input :provenance_note, :label => 'Provenance Note'
       = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
