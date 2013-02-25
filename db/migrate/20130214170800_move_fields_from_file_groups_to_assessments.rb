@@ -4,8 +4,8 @@ class MoveFieldsFromFileGroupsToAssessments < ActiveRecord::Migration
     add_column :assessments, :naming_conventions, :text
     add_column :assessments, :naming_conventions_html, :text
     add_column :assessments, :storage_medium_id, :integer, :index => true
-    add_column :assessments, :directory_structure, :string
-    add_column :assessments, :directory_structure_html, :string
+    add_column :assessments, :directory_structure, :text
+    add_column :assessments, :directory_structure_html, :text
     add_column :assessments, :last_access_date, :date
     add_column :assessments, :file_format, :string
     add_column :assessments, :total_file_size, :decimal
@@ -37,8 +37,8 @@ class MoveFieldsFromFileGroupsToAssessments < ActiveRecord::Migration
     add_column :file_groups, :naming_conventions, :text
     add_column :file_groups, :naming_conventions_html, :text
     add_column :file_groups, :storage_medium_id, :integer, :index => true
-    add_column :file_groups, :directory_structure, :string
-    add_column :file_groups, :directory_structure_html, :string
+    add_column :file_groups, :directory_structure, :text
+    add_column :file_groups, :directory_structure_html, :text
     add_column :file_groups, :last_access_date, :date
     remove_column :assessments, :naming_conventions, :naming_conventions_html, :storage_medium_id,
                       :directory_structure, :directory_structure_html, :last_access_date,
