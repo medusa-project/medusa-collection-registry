@@ -1,8 +1,8 @@
 class MoveFieldsFromFileGroupsToAssessments < ActiveRecord::Migration
   def up
     #add assessment fields
-    add_column :assessments, :naming_conventions, :string
-    add_column :assessments, :naming_conventions_html, :string
+    add_column :assessments, :naming_conventions, :text
+    add_column :assessments, :naming_conventions_html, :text
     add_column :assessments, :storage_medium_id, :integer, :index => true
     add_column :assessments, :directory_structure, :string
     add_column :assessments, :directory_structure_html, :string
@@ -34,8 +34,8 @@ class MoveFieldsFromFileGroupsToAssessments < ActiveRecord::Migration
 
   #there's no way to completely reverse this, but we can do the db structure
   def down
-    add_column :file_groups, :naming_conventions, :string
-    add_column :file_groups, :naming_conventions_html, :string
+    add_column :file_groups, :naming_conventions, :text
+    add_column :file_groups, :naming_conventions_html, :text
     add_column :file_groups, :storage_medium_id, :integer, :index => true
     add_column :file_groups, :directory_structure, :string
     add_column :file_groups, :directory_structure_html, :string
