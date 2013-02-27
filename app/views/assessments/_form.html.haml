@@ -1,25 +1,48 @@
 = simple_form_for @assessment, :html => {:class => 'form-horizontal'} do |f|
   .row
     = render :partial => 'sidebar', :locals => {:f => f}
-    
+
     .span9
-      .row
-        .span4
+      .tabbable
+      %ul.nav.nav-tabs#edit-tabs
+        %li.active
+          %a{:href => '#assessment-metadata', 'data-toggle' => 'tab'}
+            Assessment Metadata
+        %li
+          %a{:href => '#base', 'data-toggle' => 'tab'}
+            Base
+        %li
+          %a{:href => '#directory-structure', 'data-toggle' => 'tab'}
+            Directory Structure
+        %li
+          %a{:href => '#preservation-risks', 'data-toggle' => 'tab'}
+            Preservation Risks
+        %li
+          %a{:href => '#naming-conventions', 'data-toggle' => 'tab'}
+            Naming Conventions
+        %li
+          %a{:href => '#notes', 'data-toggle' => 'tab'}
+            Notes
+      .tab-content
+        #assessment-metadata.tab-pane.active
+          = f.input :name
           = f.input :author_net_id, :label => 'Author Net ID'
+          = f.input :assessable_id, :as => :hidden, :input_html => {:value => @assessable.id}
+          = f.input :assessable_type, :as => :hidden, :input_html => {:value => @assessable.class.name}
           = f.input :date, :as => :string, :use_month_numbers => true, :input_html => {'data-datepicker' => 'datepicker'}, :order => [:day, :month, :year]
+          = f.input :assessment_type, :as => :select, :collection => Assessment::ASSESSMENT_TYPES, :include_blank => false
+        #base.tab-pane
           = f.input :last_access_date, :as => :string, :input_html => {'data-datepicker' => 'datepicker'}, :order => [:day, :month, :year], :use_month_numbers => true
           = f.input :storage_medium_id, :collection => storage_media_select_collection
-          = f.input :assessment_type, :as => :select, :collection => Assessment::ASSESSMENT_TYPES, :include_blank => false
           = f.input :preservation_risk_level, :as => :select, :collection => Assessment::RISK_LEVELS, :include_blank => false
           = f.input :file_format
           = f.input :total_file_size, :label => 'Total file size (GB)'
           = f.input :total_files
-
-        .span8
-          = f.input :name
-          = f.input :directory_structure
-          = f.input :preservation_risks, :input_html => {:class => "span6", :rows => 3}
-          = f.input :naming_conventions
-          = f.input :notes, :input_html => {:class => "span6", :rows => 3}
-          = f.input :assessable_id, :as => :hidden, :input_html => {:value => @assessable.id}
-          = f.input :assessable_type, :as => :hidden, :input_html => {:value => @assessable.class.name}
+        #directory-structure.tab-pane
+          = f.input :directory_structure, :input_html => {:class => 'span6'}
+        #preservation-risks.tab-pane
+          = f.input :preservation_risks, :input_html => {:class => 'span6'}
+        #naming-conventions.tab-pane
+          = f.input :naming_conventions, :input_html => {:class => 'span6'}
+        #notes.tab-pane
+          = f.input :notes, :input_html => {:class => 'span6'}
