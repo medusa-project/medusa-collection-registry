@@ -16,15 +16,15 @@
             = f.input :access_url, :as => :string, :label => 'Access URL'
             = f.association :preservation_priority, :include_blank => false, :selected => (@collection.preservation_priority.id rescue PreservationPriority.default.id)
           #descriptions.tab-pane
-            = f.input :description, :input_html => {:class => 'span6'}
-            = f.input :private_description, :input_html => {:class => 'span6'}
+            = f.input :description
+            = f.input :private_description
           #content.tab-pane
-            = f.input :file_package_summary, :input_html => {:class => 'span6'}
+            = f.input :file_package_summary
             = f.association :resource_types, :as => :check_boxes, :wrapper_html => {:id => 'collection_resource_types'}
           #rights.tab-pane
             = render :partial => 'rights_declarations/nested_form', :locals => {:containing_form => f, :rights_declaration => @collection.rights_declaration}
           #notes.tab-pane
-            = f.input :notes, :input_html => {:class => 'span6'}
+            = f.input :notes
 
 - if @collection.ingest_status
   = render 'ingest_status_subform'

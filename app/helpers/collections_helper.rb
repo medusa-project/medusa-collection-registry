@@ -17,7 +17,7 @@ module CollectionsHelper
     ['about', 'About this Collection'],
     'descriptions',
     ['content', 'About the Content'],
-    ['rights', 'Rights Declaraion'],
+    ['rights', 'Rights Declaration'],
     'notes']
   end
 

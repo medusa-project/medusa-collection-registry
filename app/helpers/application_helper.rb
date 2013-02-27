@@ -49,4 +49,5 @@ module ApplicationHelper
   def wiki_link(label)
     link_to label, 'https://wiki.cites.uiuc.edu/wiki/display/LibraryDigitalPreservation/Home', :target => '_blank'
   end
+
 end
