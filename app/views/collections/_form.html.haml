@@ -9,21 +9,22 @@
             = f.input :title, :input_html => {:class => "span4" }
             = f.association :repository, :collection => repository_select_collection, :include_blank => false, :selected => @repository.id
           #about.tab-pane
-            = f.input :description, :input_html => { :rows => 2 }
-            = f.input :private_description, :input_html => {:rows => 2}
             = f.input :start_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true, :prepend => "$"
             = f.input :end_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true
             = f.input :contact_net_id, :label => 'Contact Person Net ID'
             = f.association :access_systems, :collection => access_system_select_collection, :html => {:multiple => true}, :as => :check_boxes
             = f.input :access_url, :as => :string, :label => 'Access URL'
             = f.association :preservation_priority, :include_blank => false, :selected => (@collection.preservation_priority.id rescue PreservationPriority.default.id)
+          #descriptions.tab-pane
+            = f.input :description, :input_html => {:class => 'span6'}
+            = f.input :private_description, :input_html => {:class => 'span6'}
           #content.tab-pane
-            = f.input :file_package_summary, :input_html => { :rows => 2 }
+            = f.input :file_package_summary, :input_html => {:class => 'span6'}
             = f.association :resource_types, :as => :check_boxes, :wrapper_html => {:id => 'collection_resource_types'}
           #rights.tab-pane
             = render :partial => 'rights_declarations/nested_form', :locals => {:containing_form => f, :rights_declaration => @collection.rights_declaration}
           #notes.tab-pane
-            = f.input :notes, :input_html => { :rows => 3 }
+            = f.input :notes, :input_html => {:class => 'span6'}
 
 - if @collection.ingest_status
   = render 'ingest_status_subform'

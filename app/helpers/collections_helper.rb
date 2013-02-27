@@ -15,6 +15,7 @@ module CollectionsHelper
   def collection_form_tab_list
     [['required', 'Required Information'],
     ['about', 'About this Collection'],
+    'descriptions',
     ['content', 'About the Content'],
     ['rights', 'Rights Declaraion'],
     'notes']
