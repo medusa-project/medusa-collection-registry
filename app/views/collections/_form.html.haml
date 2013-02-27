@@ -6,39 +6,24 @@
         = render :partial => 'shared/tab_header', :locals => {:id => 'edit-tabs', :tabs => collection_form_tab_list}
         .tab-content
           #required.tab-pane.active
-            %section
-              .page-header
-                %h1 Required Information
-              = f.input :title, :input_html => {:class => "span4" }
-              = f.association :repository, :collection => repository_select_collection, :include_blank => false, :selected => @repository.id
+            = f.input :title, :input_html => {:class => "span4" }
+            = f.association :repository, :collection => repository_select_collection, :include_blank => false, :selected => @repository.id
           #about.tab-pane
-            %section
-              .page-header
-                %h1 About this Collection
-              = f.input :description, :input_html => { :rows => 2 }
-              = f.input :private_description, :input_html => {:rows => 2}
-              = f.input :start_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true, :prepend => "$"
-              = f.input :end_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true
-              = f.input :contact_net_id, :label => 'Contact Person Net ID'
-              = f.association :access_systems, :collection => access_system_select_collection, :html => {:multiple => true}, :as => :check_boxes
-              = f.input :access_url, :as => :string, :label => 'Access URL'
-              = f.association :preservation_priority, :include_blank => false, :selected => (@collection.preservation_priority.id rescue PreservationPriority.default.id)
+            = f.input :description, :input_html => { :rows => 2 }
+            = f.input :private_description, :input_html => {:rows => 2}
+            = f.input :start_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true, :prepend => "$"
+            = f.input :end_date, :as => :string, :input_html => { 'data-datepicker' => 'datepicker' }, :order => [:day, :month, :year], :use_month_numbers => true
+            = f.input :contact_net_id, :label => 'Contact Person Net ID'
+            = f.association :access_systems, :collection => access_system_select_collection, :html => {:multiple => true}, :as => :check_boxes
+            = f.input :access_url, :as => :string, :label => 'Access URL'
+            = f.association :preservation_priority, :include_blank => false, :selected => (@collection.preservation_priority.id rescue PreservationPriority.default.id)
           #content.tab-pane
-            %section
-              .page-header
-                %h1 About the Content
-              = f.input :file_package_summary, :input_html => { :rows => 2 }
-              = f.association :resource_types, :as => :check_boxes, :wrapper_html => {:id => 'collection_resource_types'}
+            = f.input :file_package_summary, :input_html => { :rows => 2 }
+            = f.association :resource_types, :as => :check_boxes, :wrapper_html => {:id => 'collection_resource_types'}
           #rights.tab-pane
-            %section
-              .page-header
-                %h1 Rights declaration
-              = render :partial => 'rights_declarations/nested_form', :locals => {:containing_form => f, :rights_declaration => @collection.rights_declaration}
+            = render :partial => 'rights_declarations/nested_form', :locals => {:containing_form => f, :rights_declaration => @collection.rights_declaration}
           #notes.tab-pane
-            %section
-              .page-header
-                %h1 Notes
-              = f.input :notes, :input_html => { :rows => 3 }
+            = f.input :notes, :input_html => { :rows => 3 }
 
 - if @collection.ingest_status
   = render 'ingest_status_subform'
