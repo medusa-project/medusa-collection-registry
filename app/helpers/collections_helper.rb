@@ -11,4 +11,13 @@ module CollectionsHelper
   def collection_confirm_message
     'This is irreversible. Associated assessments and file groups will also be deleted.'
   end
+
+  def collection_form_tab_list
+    [['required', 'Required Information'],
+    ['about', 'About this Collection'],
+    ['content', 'About the Content'],
+    ['rights', 'Rights Declaraion'],
+    'notes']
+  end
+
 end

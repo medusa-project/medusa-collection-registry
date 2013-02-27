@@ -1,0 +1,10 @@
+-# Must pass in locals:
+-#  id = id for the tab header list
+-#  tabs = list of lists (or strings) for tabs. Each list is an id and optional label (default id.underscore.titlecase).
+-#         we Array.wrap entries beforehand to make generating the lists easier with default labels
+%ul.nav.nav-tabs{:id => id}
+  - tabs.collect {|tab| Array.wrap(tab)}.each_with_index do |tab, index|
+    - tab_id = tab.first
+    - tab_label = tab.second || tab_id.underscore.titlecase
+    %li{:class => (index == 0 ? 'active' : '')}
+      %a{:href => "##{tab_id}", 'data-toggle' => 'tab'}= tab_label

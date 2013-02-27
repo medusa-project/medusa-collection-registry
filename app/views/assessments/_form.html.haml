@@ -4,25 +4,7 @@
 
     .span9
       .tabbable
-      %ul.nav.nav-tabs#edit-tabs
-        %li.active
-          %a{:href => '#assessment-metadata', 'data-toggle' => 'tab'}
-            Assessment Metadata
-        %li
-          %a{:href => '#base', 'data-toggle' => 'tab'}
-            Base
-        %li
-          %a{:href => '#directory-structure', 'data-toggle' => 'tab'}
-            Directory Structure
-        %li
-          %a{:href => '#preservation-risks', 'data-toggle' => 'tab'}
-            Preservation Risks
-        %li
-          %a{:href => '#naming-conventions', 'data-toggle' => 'tab'}
-            Naming Conventions
-        %li
-          %a{:href => '#notes', 'data-toggle' => 'tab'}
-            Notes
+      = render :partial => 'shared/tab_header', :locals => {:id => 'edit-tabs', :tabs => assessment_form_tab_list}
       .tab-content
         #assessment-metadata.tab-pane.active
           = f.input :name

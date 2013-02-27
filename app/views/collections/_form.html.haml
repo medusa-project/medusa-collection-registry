@@ -3,22 +3,7 @@
     = render :partial => 'sidebar', :locals => {:form => f}
     .span9
       .tabbable
-        %ul.nav.nav-tabs#edit-tabs
-          %li.active
-            %a{:href => '#required', 'data-toggle' => 'tab'}
-              Required Information
-          %li
-            %a{:href => '#about', 'data-toggle' => 'tab'}
-              About this Collection
-          %li
-            %a{:href => '#content', 'data-toggle' => 'tab'}
-              About the Content
-          %li
-            %a{:href => '#rights', 'data-toggle' => 'tab'}
-              Rights Declaration
-          %li
-            %a{:href => '#notes', 'data-toggle' => 'tab'}
-              Notes
+        = render :partial => 'shared/tab_header', :locals => {:id => 'edit-tabs', :tabs => collection_form_tab_list}
         .tab-content
           #required.tab-pane.active
             %section
