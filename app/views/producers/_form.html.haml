@@ -1,20 +1,23 @@
 = simple_form_for @producer, :html => {:class => 'form-horizontal'} do |f|
-  = f.input :title
-  = f.input :administrator_net_id, :label => 'Adminstrator Net ID'
-  = f.input :address_1
-  = f.input :address_2
-  = f.input :city
-  = f.input :state
-  = f.input :zip
-  = f.input :phone_number, :label => 'Phone Number'
-  = f.input :email
-  = f.input :url, :label => 'URL'
-  = f.input :active_start_date, date_picker_options(:label => 'Active Start Date')
-  = f.input :active_end_date, date_picker_options(:label => 'Active End Date')
-  = f.input :notes
-  .form-actions
-    = f.button :submit, :class => 'btn-primary'
-    - if @producer.new_record?
-      = link_to('Index', producers_path, :class => 'btn')
-    - else
-      = link_to(t('.cancel', :default => t('helpers.links.cancel')), @producer, :class => 'btn')
+  .row
+    = render :partial => 'sidebar', :locals => {:f => f}
+
+    .span9
+      .tabbable
+        = render :partial => 'shared/tab_header', :locals => {:id => 'edit-tabs', :tabs => producer_form_tab_list}
+        .tab-content
+          #base.tab-pane.active
+            = f.input :title
+            = f.input :administrator_net_id, :label => 'Adminstrator Net ID'
+            = f.input :address_1
+            = f.input :address_2
+            = f.input :city
+            = f.input :state
+            = f.input :zip
+            = f.input :phone_number, :label => 'Phone Number'
+            = f.input :email
+            = f.input :url, :label => 'URL'
+            = f.input :active_start_date, date_picker_options(:label => 'Active Start Date')
+            = f.input :active_end_date, date_picker_options(:label => 'Active End Date')
+          #notes.tab-pane
+            = f.input :notes

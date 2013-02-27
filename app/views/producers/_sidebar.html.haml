@@ -1,0 +1,11 @@
+.span3
+  %div
+    %p= f.button :submit, :class => 'btn-primary'
+  %div
+    %p
+      - if @producer.new_record?
+        = link_to('Index', producers_path, :class => 'btn')
+      - else
+        = link_to(t('.cancel', :default => t('helpers.links.cancel')), @producer, :class => 'btn')
+  %hr
+  = render 'shared/definitions/producer'
