@@ -1,0 +1,9 @@
+.span3
+  %div
+    %p= f.button :submit, :class => 'btn-primary'
+  %div
+    %p
+      - if @assessment.new_record?
+        = link_to("Back to #{@assessable.class.name}", @assessable, :class => 'btn')
+      - else
+        = link_to(t('.cancel', :default => t('helpers.links.cancel')), @assessment, :class => 'btn')
