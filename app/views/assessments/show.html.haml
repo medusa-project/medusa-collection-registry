@@ -8,16 +8,17 @@
 
 .row
   .span8
-    = show_value net_id_search_link(@assessment.author_net_id), 'Author Net ID'
-    = show_field @assessment, :name
-    = show_field @assessment, :assessment_type, 'Type'
-    = show_field @assessment, :last_access_date
-    = show_field @assessment, :storage_medium_name
-    = show_field @assessment, :file_format
-    = show_value "#{@assessment.total_file_size} GB", 'Total file size'
-    = show_field @assessment, :total_files
-    = show_field @assessment, :directory_structure_html, 'Directory Structure'
-    = show_field @assessment, :preservation_risk_level, 'Risk Level'
-    = show_field @assessment, :preservation_risks_html, 'Preservation Risks'
-    = show_field @assessment, :naming_conventions_html, 'Naming Conventions'
-    = show_field @assessment, :notes_html, 'Notes'
+    .well
+      = show_value net_id_search_link(@assessment.author_net_id), 'Author Net ID'
+      = show_field @assessment, :name
+      = show_field @assessment, :assessment_type, 'Type'
+      = show_field @assessment, :last_access_date
+      = show_field @assessment, :storage_medium_name
+      = show_field @assessment, :file_format
+      = show_value "#{@assessment.total_file_size} GB", 'Total file size'
+      = show_field @assessment, :total_files
+      = show_field @assessment, :directory_structure_html, 'Directory Structure'
+      = show_field @assessment, :preservation_risk_level, 'Risk Level'
+      = show_field @assessment, :preservation_risks_html, 'Preservation Risks'
+      = show_field @assessment, :naming_conventions_html, 'Naming Conventions'
+      = show_field @assessment, :notes_html, 'Notes'

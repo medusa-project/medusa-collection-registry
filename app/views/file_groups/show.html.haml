@@ -10,19 +10,20 @@
 
 .row
   .span4
-    = show_field @file_group, :name
-    = show_field @file_group, :storage_level
-    = show_value((link_to(@file_group.producer.title, @file_group.producer) if @file_group.producer), 'Production Unit')
-    = show_field @file_group, :file_type_name, 'File type'
-    = show_field @file_group, :external_file_location
-    = show_field @file_group, :staged_file_location
-    = show_field @file_group, :file_format
-    = show_value "#{@file_group.total_file_size} GB", 'Total file size:'
-    = show_field @file_group, :total_files
-    = show_field @file_group, :summary
-    = show_field @file_group, :provenance_note
-    %h3 Rights Declaration
-    = render :partial => 'rights_declarations/show', :locals => {:rights_declaration => @file_group.rights_declaration}
+    .well
+      = show_field @file_group, :name
+      = show_field @file_group, :storage_level
+      = show_value((link_to(@file_group.producer.title, @file_group.producer) if @file_group.producer), 'Production Unit')
+      = show_field @file_group, :file_type_name, 'File type'
+      = show_field @file_group, :external_file_location
+      = show_field @file_group, :staged_file_location
+      = show_field @file_group, :file_format
+      = show_value "#{@file_group.total_file_size} GB", 'Total file size:'
+      = show_field @file_group, :total_files
+      = show_field @file_group, :summary
+      = show_field @file_group, :provenance_note
+      %h3 Rights Declaration
+      = render :partial => 'rights_declarations/show', :locals => {:rights_declaration => @file_group.rights_declaration}
 
   .span8
 
