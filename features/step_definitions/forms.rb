@@ -41,7 +41,13 @@ And /^I select '(.*)' from '(.*)'$/ do |value, label|
   select(value, :from => label)
 end
 
+And /^I check '(.*)'$/ do |string|
+  check(string)
+end
 
+And /^I uncheck '(.*)'$/ do |string|
+  uncheck(string)
+end
 
 
 

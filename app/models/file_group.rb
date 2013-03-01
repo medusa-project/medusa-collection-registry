@@ -3,18 +3,20 @@ class FileGroup < ActiveRecord::Base
                   :producer_id, :file_type_id, :summary, :provenance_note,
                   :collection_attributes, :rights_declaration_attributes,
                   :name, :storage_level, :staged_file_location, :total_file_size,
-                  :file_format, :total_files
+                  :file_format, :total_files, :related_file_group_ids
   belongs_to :collection
   belongs_to :producer
   belongs_to :file_type
   belongs_to :root_directory, :class_name => 'Directory'
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
   has_many :assessments, :as => :assessable, :dependent => :destroy
+  has_many :related_file_group_joins, :dependent => :destroy
+  has_many :related_file_groups, :through => :related_file_group_joins, :order => 'name'
   accepts_nested_attributes_for :collection, :rights_declaration
 
   before_validation :ensure_rights_declaration
 
-  STORAGE_LEVELS = ['external', 'bit-level store','object-level store']
+  STORAGE_LEVELS = ['external', 'bit-level store', 'object-level store']
 
   validates_uniqueness_of :root_directory_id, :allow_nil => true
   validates_presence_of :name
@@ -27,6 +29,19 @@ class FileGroup < ActiveRecord::Base
 
   def file_type_name
     self.file_type.try(:name)
+  end
+
+  #set the file group ids, making sure any removed ids have their joins and the
+  #symmetric joins both destroyed
+  def symmetric_related_file_group_ids=(ids)
+    current_related_file_groups = self.related_file_groups
+    new_related_file_groups = self.class.find(ids)
+    (current_related_file_groups - new_related_file_groups).each do |deleted_file_group|
+      join = RelatedFileGroupJoin.where(:file_group_id => self.id,
+                                        :related_file_group_id => deleted_file_group.id).first
+      join.destroy if join
+    end
+    self.related_file_group_ids = ids
   end
 
   def ensure_rights_declaration
@@ -73,6 +88,10 @@ class FileGroup < ActiveRecord::Base
 
   def assessable_label
     "File Group #{self.id}"
+  end
+
+  def sibling_file_groups
+    self.collection.file_groups.order(:name).all - [self]
   end
 
 end

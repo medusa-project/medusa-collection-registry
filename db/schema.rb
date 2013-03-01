@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130214170800) do
+ActiveRecord::Schema.define(:version => 20130301165908) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -206,6 +206,17 @@ ActiveRecord::Schema.define(:version => 20130214170800) do
   end
 
   add_index "producers", ["administrator_id"], :name => "index_production_units_on_administrator_id"
+
+  create_table "related_file_group_joins", :force => true do |t|
+    t.integer  "file_group_id"
+    t.integer  "related_file_group_id"
+    t.string   "note"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "related_file_group_joins", ["file_group_id"], :name => "index_related_file_group_joins_on_file_group_id"
+  add_index "related_file_group_joins", ["related_file_group_id"], :name => "index_related_file_group_joins_on_related_file_group_id"
 
   create_table "repositories", :force => true do |t|
     t.string   "title"

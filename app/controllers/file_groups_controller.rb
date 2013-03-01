@@ -21,10 +21,12 @@ class FileGroupsController < ApplicationController
   end
 
   def update
-    if @file_group.update_attributes(params[:file_group])
-      redirect_to file_group_path(@file_group)
-    else
-      render 'edit'
+    handling_related_file_groups(params) do
+      if @file_group.update_attributes(params[:file_group])
+        redirect_to file_group_path(@file_group)
+      else
+        render 'edit'
+      end
     end
   end
 
@@ -35,12 +37,14 @@ class FileGroupsController < ApplicationController
   end
 
   def create
-    @collection = Collection.find(params[:file_group][:collection_id])
-    @file_group = FileGroup.new(params[:file_group])
-    if @file_group.save
-      redirect_to file_group_path(@file_group)
-    else
-      render 'new'
+    handling_related_file_groups(params) do
+      @collection = Collection.find(params[:file_group][:collection_id])
+      @file_group = FileGroup.new(params[:file_group])
+      if @file_group.save
+        redirect_to file_group_path(@file_group)
+      else
+        render 'new'
+      end
     end
   end
 
@@ -49,6 +53,12 @@ class FileGroupsController < ApplicationController
   def find_file_group_and_collection
     @file_group = FileGroup.find(params[:id])
     @collection = @file_group.collection
+  end
+
+  def handling_related_file_groups(params)
+    related_file_group_ids = params[:file_group].delete(:related_file_group_ids).reject {|id| id.blank?}
+    yield
+    @file_group.symmetric_related_file_group_ids = related_file_group_ids
   end
 
 end

@@ -16,6 +16,12 @@ Then /^I should see the file group id for the file group with location '(.*)' in
   end
 end
 
+And /^I should not see '(.*)' in the related file groups section$/ do |string|
+  within('#related-file-groups') do
+    step "I should not see '#{string}'"
+  end
+end
+
 Then /^I should be on the view page for the file group with location '(.*)' for the collection titled '(.*)'$/ do |location, title|
   current_path.should == file_group_path(find_file_group(title, location))
 end
@@ -24,6 +30,9 @@ Then /^I should be on the edit page for the file group with location '(.*)' for 
   current_path.should == edit_file_group_path(find_file_group(title, location))
 end
 
+When /^I edit the file group named '(.*)'$/ do |name|
+  visit edit_file_group_path(FileGroup.find_by_name(name))
+end
 
 When /^I view the file group with location '(.*)' for the collection titled '(.*)'$/ do |location, title|
   visit file_group_path(find_file_group(title, location))
@@ -74,6 +83,27 @@ Then /^I should be on the view page for the root directory for the file group wi
   file_group = FileGroup.find_by_external_file_location(location)
   current_path.should == directory_path(file_group.root_directory)
 end
+
+And /^the file groups named '(.*)' and '(.*)' are related$/ do |name_1, name_2|
+  file_group_1 = FileGroup.find_by_name(name_1)
+  file_group_2 = FileGroup.find_by_name(name_2)
+  file_group_1.related_file_groups << file_group_2
+end
+
+And /^the file groups named '(.*)' and '(.*)' should be related$/ do |name_1, name_2|
+  file_group_1 = FileGroup.find_by_name(name_1)
+  file_group_2 = FileGroup.find_by_name(name_2)
+  file_group_1.related_file_groups.include?(file_group_2).should be_true
+  file_group_2.related_file_groups.include?(file_group_1).should be_true
+end
+
+And /^the file groups named '(.*)' and '(.*)' should not be related$/ do |name_1, name_2|
+  file_group_1 = FileGroup.find_by_name(name_1)
+  file_group_2 = FileGroup.find_by_name(name_2)
+  file_group_1.related_file_groups.include?(file_group_2).should be_false
+  file_group_2.related_file_groups.include?(file_group_1).should be_false
+end
+
 
 private
 

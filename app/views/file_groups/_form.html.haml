@@ -25,6 +25,9 @@
           #collection-file-package-summary.tab-pane
             = f.simple_fields_for :collection, @collection do |c|
               = c.input :file_package_summary, :label => "Collection File Package Summary"
+          #related-file-groups.tab-pane
+            = f.association :related_file_groups, :collection => potential_related_file_group_collection(@file_group), :as => :check_boxes
+
 
 
 
