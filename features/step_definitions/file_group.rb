@@ -104,6 +104,10 @@ And /^the file groups named '(.*)' and '(.*)' should not be related$/ do |name_1
   file_group_2.related_file_groups.include?(file_group_1).should be_false
 end
 
+And /^the file groups named '(.*)' and '(.*)' should have relation note '(.*)'$/ do |name_1, name_2, note|
+  FileGroup.find_by_name(name_1).relation_note(FileGroup.find_by_name(name_2)).should == note
+  FileGroup.find_by_name(name_2).relation_note(FileGroup.find_by_name(name_1)).should == note
+end
 
 private
 

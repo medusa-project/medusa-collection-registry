@@ -42,4 +42,11 @@ Feature: File Group related file groups
     And the file groups named 'texts' and 'access_images' should not be related
 
   Scenario: We can attach a comment to a related file group
-    When PENDING
+    When I edit the file group named 'texts'
+    And I check 'access_images'
+    And I fill in fields:
+      |Note|How these are related|
+    And I click on 'Update File group'
+    Then I should see 'How these are related'
+    And the file groups named 'texts' and 'access_images' should have relation note 'How these are related'
+
