@@ -56,9 +56,11 @@ class FileGroupsController < ApplicationController
   end
 
   def handling_related_file_groups(params)
-    related_file_group_ids = params[:file_group].delete(:related_file_group_ids).reject {|id| id.blank?}
+    related_file_group_ids = params[:file_group].delete(:related_file_group_ids)
+    related_file_group_notes = params[:file_group].delete(:related_file_group_notes)
     yield
-    @file_group.symmetric_related_file_group_ids = related_file_group_ids
+    @file_group.symmetric_update_related_file_groups(related_file_group_ids.reject {|id| id.blank?}, related_file_group_notes)
+    #@file_group.symmetric_related_file_group_ids = related_file_group_ids.reject { |id| id.blank? }
   end
 
 end

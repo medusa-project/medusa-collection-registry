@@ -33,15 +33,25 @@ class FileGroup < ActiveRecord::Base
 
   #set the file group ids, making sure any removed ids have their joins and the
   #symmetric joins both destroyed
-  def symmetric_related_file_group_ids=(ids)
+  def symmetric_update_related_file_groups(related_ids, notes)
     current_related_file_groups = self.related_file_groups
-    new_related_file_groups = self.class.find(ids)
+    new_related_file_groups = self.class.find(related_ids)
     (current_related_file_groups - new_related_file_groups).each do |deleted_file_group|
       join = RelatedFileGroupJoin.where(:file_group_id => self.id,
                                         :related_file_group_id => deleted_file_group.id).first
       join.destroy if join
     end
-    self.related_file_group_ids = ids
+    self.related_file_group_ids = related_ids
+    related_ids.each do |id|
+      if notes[id]
+        join = RelatedFileGroupJoin.where(:file_group_id => self.id,
+                                          :related_file_group_id => id).first
+        if join
+          join.note = notes[id]
+          join.save!
+        end
+      end
+    end
   end
 
   def ensure_rights_declaration
@@ -92,6 +102,11 @@ class FileGroup < ActiveRecord::Base
 
   def sibling_file_groups
     self.collection.file_groups.order(:name).all - [self]
+  end
+
+  def relation_note(related_file_group)
+    join = RelatedFileGroupJoin.where(:file_group_id => self.id, :related_file_group_id => related_file_group.id).first
+    join ? join.note : ''
   end
 
 end
