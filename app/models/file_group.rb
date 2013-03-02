@@ -37,21 +37,28 @@ class FileGroup < ActiveRecord::Base
     current_related_file_groups = self.related_file_groups
     new_related_file_groups = self.class.find(related_ids)
     (current_related_file_groups - new_related_file_groups).each do |deleted_file_group|
-      join = RelatedFileGroupJoin.where(:file_group_id => self.id,
-                                        :related_file_group_id => deleted_file_group.id).first
+      join = related_file_group_join(deleted_file_group)
       join.destroy if join
     end
     self.related_file_group_ids = related_ids
     related_ids.each do |id|
       if notes[id]
-        join = RelatedFileGroupJoin.where(:file_group_id => self.id,
-                                          :related_file_group_id => id).first
+        join = related_file_group_join(id)
         if join
           join.note = notes[id]
           join.save!
         end
       end
     end
+  end
+
+  def related_file_group_join(related_file_group_or_id)
+    id = related_file_group_or_id.is_a?(FileGroup) ? related_file_group_or_id.id : related_file_group_or_id
+    RelatedFileGroupJoin.where(:file_group_id => self.id, :related_file_group_id => id).first
+  end
+
+  def related_to?(file_group)
+    self.related_file_groups.include?(file_group)
   end
 
   def ensure_rights_declaration
@@ -105,7 +112,7 @@ class FileGroup < ActiveRecord::Base
   end
 
   def relation_note(related_file_group)
-    join = RelatedFileGroupJoin.where(:file_group_id => self.id, :related_file_group_id => related_file_group.id).first
+    join = self.related_file_group_join(related_file_group)
     join ? join.note : ''
   end
 
