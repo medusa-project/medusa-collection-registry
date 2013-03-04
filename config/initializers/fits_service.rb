@@ -1,1 +1,1 @@
-FitsService.instance.configure(File.join(Rails.root, 'config', 'fits_service.yml'))
+FitsService.instance.configure(File.join(Rails.root, 'config', 'fits_service.yml')) unless Rails.env == 'test'

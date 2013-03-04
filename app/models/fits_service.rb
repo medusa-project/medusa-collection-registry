@@ -4,15 +4,16 @@ require 'net/http'
 class FitsService < Object
   include Singleton
 
-  attr_accessor :service_url
+  attr_accessor :service_url, :configured
 
-  def initialize(config_file)
-    self.configure(config_file)
+  def initialize(args = {})
+    self.configured = false
   end
 
   def configure(config_file)
     config = YAML.load_file(config_file)[Rails.env]
     self.service_url = config['service_url']
+    self.configured = true
   end
 
   def get_fits_for(url, user = nil, password = nil)
@@ -30,6 +31,7 @@ class FitsService < Object
   protected
 
   def make_request(path, request_params, user = nil, password = nil)
+    raise RuntimeError, "FitsService not configured. Please call FitsService.instance.configure(config_file)." unless self.configured
     uri = URI.parse(self.service_url)
     uri.path = uri.path + path
     uri.query = request_params.collect {|k, v| "#{k}=#{URI.encode(v)}"}.join('&')
