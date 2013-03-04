@@ -3,6 +3,7 @@ class FileGroupsController < ApplicationController
   before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update]
   skip_before_filter :require_logged_in, :only => [:show, :index]
   skip_before_filter :authorize, :only => [:show, :index]
+  around_filter :handle_related_file_groups, :only => [:update, :create]
 
   def show
     respond_to do |format|
@@ -21,12 +22,10 @@ class FileGroupsController < ApplicationController
   end
 
   def update
-    handling_related_file_groups(params) do
-      if @file_group.update_attributes(params[:file_group])
-        redirect_to file_group_path(@file_group)
-      else
-        render 'edit'
-      end
+    if @file_group.update_attributes(params[:file_group])
+      redirect_to file_group_path(@file_group)
+    else
+      render 'edit'
     end
   end
 
@@ -37,14 +36,12 @@ class FileGroupsController < ApplicationController
   end
 
   def create
-    handling_related_file_groups(params) do
-      @collection = Collection.find(params[:file_group][:collection_id])
-      @file_group = FileGroup.new(params[:file_group])
-      if @file_group.save
-        redirect_to file_group_path(@file_group)
-      else
-        render 'new'
-      end
+    @collection = Collection.find(params[:file_group][:collection_id])
+    @file_group = FileGroup.new(params[:file_group])
+    if @file_group.save
+      redirect_to file_group_path(@file_group)
+    else
+      render 'new'
     end
   end
 
@@ -56,11 +53,11 @@ class FileGroupsController < ApplicationController
   end
 
   #remove the related file group parameters, yield to the block, and after it completes upgrade the related file group stuff correctly
-  def handling_related_file_groups(params)
+  def handle_related_file_groups
     related_file_group_ids = params[:file_group].delete(:related_file_group_ids)
     related_file_group_notes = params[:file_group].delete(:related_file_group_notes)
     yield
-    @file_group.symmetric_update_related_file_groups(related_file_group_ids.reject {|id| id.blank?}, related_file_group_notes)
+    @file_group.symmetric_update_related_file_groups(related_file_group_ids.reject { |id| id.blank? }, related_file_group_notes)
   end
 
 end
