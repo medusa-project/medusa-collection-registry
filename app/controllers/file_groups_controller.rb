@@ -55,12 +55,12 @@ class FileGroupsController < ApplicationController
     @collection = @file_group.collection
   end
 
+  #remove the related file group parameters, yield to the block, and after it completes upgrade the related file group stuff correctly
   def handling_related_file_groups(params)
     related_file_group_ids = params[:file_group].delete(:related_file_group_ids)
     related_file_group_notes = params[:file_group].delete(:related_file_group_notes)
     yield
     @file_group.symmetric_update_related_file_groups(related_file_group_ids.reject {|id| id.blank?}, related_file_group_notes)
-    #@file_group.symmetric_related_file_group_ids = related_file_group_ids.reject { |id| id.blank? }
   end
 
 end
