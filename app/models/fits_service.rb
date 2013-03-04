@@ -39,7 +39,7 @@ class FitsService < Object
     agent = Mechanize.new do |a|
       a.verify_mode = OpenSSL::SSL::VERIFY_NONE
       if user and password
-        a.add_auth(uri, user, password)
+        a.basic_auth(user, password)
       end
     end
     page = agent.get(uri.to_s)
