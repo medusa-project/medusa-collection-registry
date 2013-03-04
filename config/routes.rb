@@ -15,6 +15,8 @@ MedusaRails3::Application.routes.draw do
   resources :files, :only => :show, :controller => "bit_files" do
     member do
       get 'contents'
+      get 'view_fits_xml'
+      get 'create_fits_xml'
     end
   end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130301165908) do
+ActiveRecord::Schema.define(:version => 20130304190239) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20130301165908) do
     t.integer  "size"
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
+    t.text     "fits_xml"
   end
 
   add_index "bit_files", ["content_type"], :name => "index_bit_files_on_content_type"

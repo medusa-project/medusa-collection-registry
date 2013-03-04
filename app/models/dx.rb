@@ -3,7 +3,8 @@ require 'fileutils'
 
 class Dx < Object
   include Singleton
-  attr_accessor :client, :domain, :entry_host, :bucket, :use_test_headers, :object_auth_realm
+  attr_accessor :client, :domain, :entry_host, :bucket, :use_test_headers, :object_auth_realm,
+                :user, :password
 
   def initialize(args = {})
     self.configure
@@ -69,13 +70,27 @@ class Dx < Object
     "http://#{self.entry_host}/#{self.bucket}/#{bit_file.dx_name}"
   end
 
+  def file_url_with_domain(bit_file)
+    if self.domain
+      "#{file_url(bit_file)}?domain=#{self.domain}"
+    else
+      file_url(bit_file)
+    end
+  end
+
+  def get_fits_for(bit_file)
+    FitsService.instance.get_fits_for(file_url_with_domain(bit_file), user, password)
+  end
+
   protected
 
   def configure
     config = YAML.load_file(File.join(Rails.root, 'config', 'dx.yml'))[Rails.env]
+    self.user = config['user']
+    self.password = config['password']
     self.client = Mechanize.new.tap do |agent|
       config['hosts'].each do |host|
-        agent.add_auth("http://#{host}", config['user'], config['password'])
+        agent.add_auth("http://#{host}", user, password)
       end
       logfile = File.join(Rails.root, 'log', 'mech.log')
       FileUtils.touch(logfile)

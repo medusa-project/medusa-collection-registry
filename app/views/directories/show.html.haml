@@ -21,6 +21,7 @@
       %th MD5
       %th UUID
       %th Ingested
+      %th FITS
   %tbody
     - @directory.bit_files.each do |file|
       %tr
@@ -30,6 +31,7 @@
         %td= file.md5sum
         %td= file.dx_name
         %td= file.dx_ingested
+        %td= file.fits_xml.present? ? link_to('View XML', view_fits_xml_file_path(file, :format => 'xml')) : link_to('Create XML', create_fits_xml_file_path(file))
 %hr
 %h2 Cumulative File Sizes
 %table#cumulative_file_sizes.table.table-striped

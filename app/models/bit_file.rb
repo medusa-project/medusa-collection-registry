@@ -37,4 +37,20 @@ class BitFile < ActiveRecord::Base
     self.directory.file_group
   end
 
+  def ensure_fits_xml
+    self.update_fits_xml unless self.fits_xml.present?
+  end
+
+  if Rails.env == 'test'
+    def update_fits_xml
+      self.fits_xml = File.read(File.join('features', 'fixtures', 'fits.xml'))
+      self.save!
+    end
+  else
+    def update_fits_xml
+      self.fits_xml = Dx.instance.get_fits_for(self)
+      self.save!
+    end
+  end
+
 end

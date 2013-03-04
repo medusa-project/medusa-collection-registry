@@ -20,6 +20,17 @@ class BitFilesController < ApplicationController
     send_file file.path, :type => @bit_file.content_type, :filename => @bit_file.name, :disposition => 'inline'
   end
 
+  def view_fits_xml
+    respond_to do |format|
+      format.xml {render :xml => @bit_file.fits_xml}
+    end
+  end
+
+  def create_fits_xml
+    @bit_file.ensure_fits_xml
+    redirect_to view_fits_xml_file_path(@bit_file, :format => 'xml')
+  end
+
   protected
 
   def get_bit_file

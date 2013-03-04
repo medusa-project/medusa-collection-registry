@@ -1,0 +1,4 @@
+development:
+  service_url: https://quest.grainger.illinois.edu/medusa/fits
+production:
+  service_url: https://quest.grainger.illinois.edu/medusa/fits

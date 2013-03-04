@@ -40,7 +40,8 @@ set :local_root, File.expand_path('..', File.dirname(__FILE__))
 namespace :deploy do
   desc "link shared configuration"
   task :link_config do
-    ['database.yml', 'fedora.yml', 'solr.yml', 'shibboleth.yml', 'handle_client.yml', 'dx.yml'].each do |file|
+    ['database.yml', 'fedora.yml', 'solr.yml', 'shibboleth.yml', 'handle_client.yml',
+     'dx.yml', 'fits_service.yml'].each do |file|
       run "ln -nfs #{shared_config}/#{file} #{current_path}/config/#{file}"
     end
   end

@@ -1,0 +1,1 @@
+FitsService.instance.configure(File.join(Rails.root, 'config', 'fits_service.yml'))
