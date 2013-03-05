@@ -1,5 +1,6 @@
 require 'singleton'
 require 'fileutils'
+require 'fits'
 
 class Dx < Object
   include Singleton
@@ -79,7 +80,7 @@ class Dx < Object
   end
 
   def get_fits_for(bit_file)
-    FitsService.instance.get_fits_for(file_url_with_domain(bit_file), user, password)
+    Fits::Service.instance.get_fits_for(file_url_with_domain(bit_file), user, password)
   end
 
   protected

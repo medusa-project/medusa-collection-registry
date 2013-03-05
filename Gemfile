@@ -31,6 +31,9 @@ gem 'ruby-filemagic', :require => 'filemagic'
 
 gem 'json_builder'
 
+#custom gem that uses a web service to generate fits
+gem 'fits', '~> 1.0.1', :git => 'git://github.com/medusa-project/fits.git'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -54,15 +57,6 @@ gem 'omniauth-shibboleth', :git => 'git://github.com/medusa-project/omniauth-shi
 gem 'cancan', '~> 1.6.0'
 
 gem 'handle-server', '~> 1.0.1', :git => 'git://github.com/medusa-project/handle-server.git'
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the web server
-# gem 'unicorn'
 
 # Deploy with Capistrano
 gem 'capistrano'
