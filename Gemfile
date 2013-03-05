@@ -32,7 +32,7 @@ gem 'ruby-filemagic', :require => 'filemagic'
 gem 'json_builder'
 
 #custom gem that uses a web service to generate fits
-gem 'fits', '~> 1.0.1', :git => 'git://github.com/medusa-project/fits.git'
+gem 'fits', '~> 1.0.2', :git => 'git://github.com/medusa-project/fits.git'
 
 # Gems used only for assets and not required
 # in production environments by default.

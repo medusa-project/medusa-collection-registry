@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/medusa-project/fits.git
-  revision: 605945b4d194b4d5318d81ab2dc862ca0a41094a
+  revision: 24300c1df2aa95c11af34dc2016d5b1b3eb56d67
   specs:
-    fits (1.0.1)
+    fits (1.0.2)
       typhoeus (>= 0.6.2)
 
 GIT
@@ -397,7 +397,7 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   factory_girl
-  fits (~> 1.0.1)!
+  fits (~> 1.0.2)!
   haml
   haml-rails
   handle-server (~> 1.0.1)!
