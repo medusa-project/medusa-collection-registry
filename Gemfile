@@ -31,8 +31,11 @@ gem 'ruby-filemagic', :require => 'filemagic'
 
 gem 'json_builder'
 
-#custom gem that uses a web service to generate fits
-gem 'fits', '~> 1.0.2', :git => 'git://github.com/medusa-project/fits.git'
+#custom gem that uses a web service to generate fits. The ethon dependency will be
+#removable after ethon 0.5.11 is released
+gem 'fits', '~> 1.0.6', :git => 'git://github.com/medusa-project/fits.git'
+puts "Using master version of ethon - remove after new release of ethon"
+gem 'ethon', :git => "git://github.com/typhoeus/ethon.git", :branch => 'master'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -43,7 +46,7 @@ group :assets do
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer'
 
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier', '>= 1.0.4'
 
   gem 'twitter-bootstrap-rails'
 end
