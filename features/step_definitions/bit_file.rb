@@ -26,3 +26,9 @@ end
 And /^the bit file named '(.*)' should have FITS XML attached$/ do |name|
   BitFile.find_by_name(name).fits_xml.should_not be_nil
 end
+
+Given /^the bit file named '(.*)' has been DX ingested$/ do |name|
+  bf = BitFile.find_by_name(name)
+  bf.dx_ingested = true
+  bf.save!
+end
