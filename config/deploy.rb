@@ -122,6 +122,16 @@ namespace :medusa do
     find_and_execute_task('medusa:start_tomcat')
   end
 
+  desc "start delayed_job"
+  task :start_delayed_job do
+    run "cd #{current_path}; bundle exec rake medusa:delayed_job:start RAILS_ENV=#{rails_env}"
+  end
+
+  desc "stop delayed_job"
+  task :stop_delayed_job do
+    run "cd #{current_path}; bundle exec rake medusa:delayed_job:stop RAILS_ENV=#{rails_env}"
+  end
+
 end
 
 before 'deploy:create_symlink', 'deploy:stop'
