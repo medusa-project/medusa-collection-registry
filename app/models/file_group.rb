@@ -22,11 +22,6 @@ class FileGroup < ActiveRecord::Base
   validates_presence_of :name
   validates_inclusion_of :storage_level, :in => STORAGE_LEVELS
 
-  #note that this depends on our convention that the files are staged as /collection_id/file_group_id.
-  def root_directory_id
-    self.collection.root_directory.children.where(:name => self.id.to_s).first.id rescue nil
-  end
-
   def file_type_name
     self.file_type.try(:name)
   end
