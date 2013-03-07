@@ -52,7 +52,7 @@ namespace :deploy do
   end
   desc "Stop rails"
   task :stop do
-    run "cd #{home}/bin ; ./stop-rails || echo 'Passenger not currently runningPro'"
+    run "cd #{home}/bin ; ./stop-rails || echo 'Passenger not currently running'"
   end
   desc "Restart rails"
   task :restart, :roles => :app, :except => {:no_release => true} do
