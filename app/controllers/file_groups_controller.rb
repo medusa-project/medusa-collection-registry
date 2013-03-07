@@ -1,6 +1,6 @@
 class FileGroupsController < ApplicationController
 
-  before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update]
+  before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update, :create_all_fits]
   skip_before_filter :require_logged_in, :only => [:show, :index]
   skip_before_filter :authorize, :only => [:show, :index]
   around_filter :handle_related_file_groups, :only => [:update, :create]
@@ -43,6 +43,12 @@ class FileGroupsController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  def create_all_fits
+    @file_group.delay.ensure_fits_xml_for_owned_bit_files
+    flash[:notice] = 'Scheduled creation of FITS XML'
+    redirect_to file_group_path(@file_group)
   end
 
   protected

@@ -29,8 +29,19 @@ Feature: Bit file FITS XML
       | Create XML | View XML |
 
   Scenario: Pressing a button to create FITS XML for all files does so
-    Given the bit file named 'grass.jpg' has been DX ingested
-    When I view the directory named 'dog-files'
-    And I press 'Create FITS XML for All Files'
-    Then I should be on the view page for the directory named 'dog-files'
-    And the bit file named 'grass.jpg' should have FITS XML attached
+    Given the repository titled 'Animals' has collections with fields:
+      | title |
+      | Dogs  |
+    And the collection titled 'Dogs' has file groups with fields:
+      | external_file_location | name   |
+      | Grainger               | texts  |
+    And the file group named 'texts' has a root directory named 'dog-texts'
+    And the directory named 'dog-texts' has bit files with fields:
+      |name|dx_ingested|
+      |dog-text.txt|true|
+    When I view the file group with location 'Grainger' for the collection titled 'Dogs'
+    And I click on 'Create All FITS XML'
+    Then I should be on the view page for the file group with location 'Grainger' for the collection titled 'Dogs'
+    And I should see 'Scheduled creation of FITS XML'
+    And the bit file named 'dog-text.txt' should have FITS XML attached
+

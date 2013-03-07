@@ -7,7 +7,11 @@ MedusaRails3::Application.routes.draw do
   resources :collections
   resources :repositories
   resources :assessments
-  resources :file_groups
+  resources :file_groups do
+    member do
+      post 'create_all_fits'
+    end
+  end
   resources :producers
   resources :access_systems
   resources :ingest_statuses

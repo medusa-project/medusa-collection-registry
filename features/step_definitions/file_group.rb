@@ -79,6 +79,11 @@ Given /^The file group with location '(.*)' has a root directory$/ do |location|
   file_group.collection.make_file_group_root("file_group_#{file_group.id}", file_group)
 end
 
+And /^the file group named '(.*)' has a root directory named '(.*)'$/ do |file_group_name, directory_name|
+  file_group = FileGroup.find_by_name(file_group_name)
+  file_group.collection.make_file_group_root(directory_name, file_group)
+end
+
 Then /^I should be on the view page for the root directory for the file group with location '(.*)'$/ do |location|
   file_group = FileGroup.find_by_external_file_location(location)
   current_path.should == directory_path(file_group.root_directory)
@@ -108,6 +113,8 @@ And /^the file groups named '(.*)' and '(.*)' should have relation note '(.*)'$/
   FileGroup.find_by_name(name_1).relation_note(FileGroup.find_by_name(name_2)).should == note
   FileGroup.find_by_name(name_2).relation_note(FileGroup.find_by_name(name_1)).should == note
 end
+
+
 
 private
 

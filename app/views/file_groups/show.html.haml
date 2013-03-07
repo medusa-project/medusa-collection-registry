@@ -1,4 +1,5 @@
 .pull-right
+  = link_to 'Create All FITS XML', create_all_fits_file_group_path(@file_group), :method => 'post', :class => 'btn'
   = link_to 'Edit', edit_file_group_path(@file_group), :class => 'btn'
   = link_to 'Delete', @file_group, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
 
