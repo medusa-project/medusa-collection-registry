@@ -113,7 +113,7 @@ class FileGroup < ActiveRecord::Base
 
   def ensure_fits_xml_for_owned_bit_files
     self.each_bit_file do |bit_file|
-      bit_file.delay.ensure_fits_xml
+      bit_file.delay.ensure_fits_xml if bit_file.dx_ingested and bit_file.fits_xml.blank?
     end
   end
 

@@ -38,7 +38,7 @@ class BitFile < ActiveRecord::Base
   end
 
   def ensure_fits_xml
-    self.update_fits_xml unless self.fits_xml.present?
+    self.update_fits_xml if self.fits_xml.blank? and self.dx_ingested
   end
 
   if Rails.env == 'test'
@@ -48,8 +48,10 @@ class BitFile < ActiveRecord::Base
     end
   else
     def update_fits_xml
-      self.fits_xml = Dx.instance.get_fits_for(self)
-      self.save!
+      if self.dx_ingested
+        self.fits_xml = Dx.instance.get_fits_for(self)
+        self.save!
+      end
     end
   end
 
