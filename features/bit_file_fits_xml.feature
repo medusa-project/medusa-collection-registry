@@ -27,3 +27,10 @@ Feature: Bit file FITS XML
     When I view the directory named 'dog-files'
     Then I should see none of:
       | Create XML | View XML |
+
+  Scenario: Pressing a button to create FITS XML for all files does so
+    Given the bit file named 'grass.jpg' has been DX ingested
+    When I view the directory named 'dog-files'
+    And I press 'Create FITS XML for All Files'
+    Then I should be on the view page for the directory named 'dog-files'
+    And the bit file named 'grass.jpg' should have FITS XML attached
