@@ -38,6 +38,7 @@ puts "Using master version of ethon - remove after new release of ethon"
 gem 'ethon', :git => "git://github.com/typhoeus/ethon.git", :branch => 'master'
 
 gem 'delayed_job_active_record'
+gem 'daemons'
 
 # Gems used only for assets and not required
 # in production environments by default.
