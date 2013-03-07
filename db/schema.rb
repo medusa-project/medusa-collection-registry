@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130304190239) do
+ActiveRecord::Schema.define(:version => 20130307181108) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -123,6 +123,22 @@ ActiveRecord::Schema.define(:version => 20130304190239) do
   add_index "collections", ["contact_id"], :name => "index_collections_on_contact_id"
   add_index "collections", ["repository_id"], :name => "index_collections_on_repository_id"
   add_index "collections", ["uuid"], :name => "index_collections_on_uuid"
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "directories", :force => true do |t|
     t.string   "name"

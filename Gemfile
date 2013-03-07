@@ -37,6 +37,8 @@ gem 'fits', '~> 1.0.6', :git => 'git://github.com/medusa-project/fits.git'
 puts "Using master version of ethon - remove after new release of ethon"
 gem 'ethon', :git => "git://github.com/typhoeus/ethon.git", :branch => 'master'
 
+gem 'delayed_job_active_record'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
