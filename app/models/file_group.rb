@@ -13,6 +13,7 @@ class FileGroup < ActiveRecord::Base
   has_many :related_file_group_joins, :dependent => :destroy
   has_many :related_file_groups, :through => :related_file_group_joins, :order => 'name'
   accepts_nested_attributes_for :collection, :rights_declaration
+  has_many :events, :as => :eventable, :dependent => :destroy, :order => 'created_at DESC'
 
   before_validation :ensure_rights_declaration
 
@@ -24,6 +25,10 @@ class FileGroup < ActiveRecord::Base
 
   def file_type_name
     self.file_type.try(:name)
+  end
+
+  def label
+    self.name
   end
 
   #set the file group ids, making sure any removed ids have their joins and the

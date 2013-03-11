@@ -1,5 +1,7 @@
 MedusaRails3::Application.routes.draw do
 
+  get "events/index"
+
   get "ingest_statuses/update"
 
   root :to => 'static#page', :page => 'landing'
@@ -10,6 +12,7 @@ MedusaRails3::Application.routes.draw do
   resources :file_groups do
     member do
       post 'create_all_fits'
+      get 'events'
     end
   end
   resources :producers
@@ -23,7 +26,6 @@ MedusaRails3::Application.routes.draw do
       get 'create_fits_xml'
     end
   end
-
 
   match '/auth/:provider/callback', to: 'sessions#create'
   match '/login', to: 'sessions#new', as: :login

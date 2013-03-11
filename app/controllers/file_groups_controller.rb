@@ -51,6 +51,11 @@ class FileGroupsController < ApplicationController
     redirect_to file_group_path(@file_group)
   end
 
+  def events
+    @eventable = FileGroup.find(params[:id])
+    render 'events/index'
+  end
+
   protected
 
   def find_file_group_and_collection

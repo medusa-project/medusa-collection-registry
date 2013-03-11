@@ -38,6 +38,10 @@ When /^I view the file group with location '(.*)' for the collection titled '(.*
   visit file_group_path(find_file_group(title, location))
 end
 
+When /^I view the file group named '(.*)'$/ do |name|
+  visit file_group_path(FileGroup.find_by_name(name))
+end
+
 When /^I edit the file group with location '(.*)' for the collection titled '(.*)'$/ do |location, title|
   visit edit_file_group_path(find_file_group(title, location))
 end
