@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130307181108) do
+ActiveRecord::Schema.define(:version => 20130311162054) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -150,6 +150,19 @@ ActiveRecord::Schema.define(:version => 20130307181108) do
 
   add_index "directories", ["collection_id"], :name => "index_directories_on_collection_id"
   add_index "directories", ["parent_id"], :name => "index_directories_on_parent_id"
+
+  create_table "events", :force => true do |t|
+    t.string   "message"
+    t.text     "note"
+    t.integer  "eventable_id"
+    t.string   "eventable_type"
+    t.integer  "user_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "events", ["eventable_id"], :name => "index_events_on_eventable_id"
+  add_index "events", ["user_id"], :name => "index_events_on_user_id"
 
   create_table "file_groups", :force => true do |t|
     t.string   "external_file_location"
