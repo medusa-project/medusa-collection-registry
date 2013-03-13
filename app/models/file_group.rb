@@ -1,4 +1,6 @@
 class FileGroup < ActiveRecord::Base
+  include Eventable
+
   attr_accessible :collection_id, :external_file_location,
                   :producer_id, :file_type_id, :summary, :provenance_note,
                   :collection_attributes, :rights_declaration_attributes,
@@ -130,6 +132,12 @@ class FileGroup < ActiveRecord::Base
     BitFile.where(:directory_id => owned_directories_ids).find_each do |bit_file|
       yield bit_file
     end
+  end
+
+  EVENT_HASH = {'fits_performed' => 'FITS analysis performed'}
+
+  def supported_event_hash
+    return EVENT_HASH
   end
 
 end

@@ -46,8 +46,8 @@ class ApplicationController < ActionController::Base
     redirect_to unauthorized_path
   end
 
-  def record_event(eventable, message, user = current_user)
-    eventable.events.create(:user_id => user.id, :message => message)
+  def record_event(eventable, key, user = current_user)
+    eventable.events.create(:user_id => user.id, :key => key)
   end
 
 

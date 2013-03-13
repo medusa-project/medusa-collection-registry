@@ -1,7 +1,7 @@
 class CreateEvents < ActiveRecord::Migration
   def change
     create_table :events do |t|
-      t.string :message
+      t.string :key
       t.text :note
       t.references :eventable, :polymorphic => true
       t.references :user

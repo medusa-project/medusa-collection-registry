@@ -152,7 +152,7 @@ ActiveRecord::Schema.define(:version => 20130311162054) do
   add_index "directories", ["parent_id"], :name => "index_directories_on_parent_id"
 
   create_table "events", :force => true do |t|
-    t.string   "message"
+    t.string   "key"
     t.text     "note"
     t.integer  "eventable_id"
     t.string   "eventable_type"
