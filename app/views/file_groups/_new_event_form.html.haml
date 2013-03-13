@@ -1,0 +1,12 @@
+.modal.hide.fade#addEventModal
+  = simple_form_for Event.new, :url => new_event_file_group_path(@file_group),:html => {:class => 'form-search', :id => 'event-form'} do |f|
+    .modal-header
+      %button{:type => "button", :class => "close", 'data-dismiss' => 'modal', 'aria-hidden' => 'true'}
+        ×
+      %h3#modalLabel New Event
+    .modal-body
+      = f.input :key, :as => :select, :include_blank => false, :collection => @file_group.supported_event_hash.invert, :label => 'Event'
+      = f.input :note, :input_html => {:class => 'span5'}
+    .modal-footer
+      %button{:class => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Cancel
+      = f.button :submit, :class => 'btn-primary'

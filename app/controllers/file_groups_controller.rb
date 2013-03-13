@@ -1,6 +1,6 @@
 class FileGroupsController < ApplicationController
 
-  before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update, :create_all_fits]
+  before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update, :create_all_fits, :new_event]
   skip_before_filter :require_logged_in, :only => [:show, :index]
   skip_before_filter :authorize, :only => [:show, :index]
   around_filter :handle_related_file_groups, :only => [:update, :create]
@@ -55,6 +55,11 @@ class FileGroupsController < ApplicationController
   def events
     @eventable = FileGroup.find(params[:id])
     render 'events/index'
+  end
+
+  def new_event
+    @file_group.events.create(params[:event].merge(:user_id => current_user.id))
+    redirect_to file_group_path(@file_group)
   end
 
   protected

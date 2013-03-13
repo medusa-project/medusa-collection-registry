@@ -4,6 +4,11 @@ And /^the file group named '(.*)' has an event with key '(.*)' performed by '(.*
   file_group.events.create(:key => key, :user_id => user.id)
 end
 
+Then /^the file group named '(.*)' should have an event with key '(.*)' performed by '(.*)'$/ do |name, key, uid|
+  file_group = FileGroup.find_by_name(name)
+  file_group.events.where(:key => key, :user_id => User.find_by_uid(uid).id).first.should be_true
+end
+
 Then /^I should be on the events page for the file group named '(.*)'$/ do |name|
   current_path.should == events_file_group_path(FileGroup.find_by_name(name))
 end

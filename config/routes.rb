@@ -13,6 +13,7 @@ MedusaRails3::Application.routes.draw do
     member do
       post 'create_all_fits'
       get 'events'
+      post 'new_event'
     end
   end
   resources :producers
