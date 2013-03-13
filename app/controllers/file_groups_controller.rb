@@ -47,6 +47,7 @@ class FileGroupsController < ApplicationController
 
   def create_all_fits
     @file_group.delay.ensure_fits_xml_for_owned_bit_files
+    record_event(@file_group, 'FITS analysis performed')
     flash[:notice] = 'Scheduled creation of FITS XML'
     redirect_to file_group_path(@file_group)
   end

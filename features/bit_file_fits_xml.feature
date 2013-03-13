@@ -44,4 +44,5 @@ Feature: Bit file FITS XML
     Then I should be on the view page for the file group with location 'Grainger' for the collection titled 'Dogs'
     And I should see 'Scheduled creation of FITS XML'
     And the bit file named 'dog-text.txt' should have FITS XML attached
+    And the file group named 'texts' should have 1 event
 

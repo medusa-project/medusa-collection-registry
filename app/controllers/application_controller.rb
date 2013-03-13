@@ -32,10 +32,10 @@ class ApplicationController < ActionController::Base
   end
 
   def require_logged_in
-     unless logged_in?
-       session[:login_return_uri] = request.env['REQUEST_URI']
-       redirect_to(login_path)
-     end
+    unless logged_in?
+      session[:login_return_uri] = request.env['REQUEST_URI']
+      redirect_to(login_path)
+    end
   end
 
   def authorize
@@ -44,6 +44,10 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to unauthorized_path
+  end
+
+  def record_event(eventable, message, user = current_user)
+    eventable.events.create(:user_id => user.id, :message => message)
   end
 
 

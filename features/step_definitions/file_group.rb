@@ -118,7 +118,9 @@ And /^the file groups named '(.*)' and '(.*)' should have relation note '(.*)'$/
   FileGroup.find_by_name(name_2).relation_note(FileGroup.find_by_name(name_1)).should == note
 end
 
-
+And /^the file group named '(.*)' should have (\d+) events?$/ do |name, number|
+  FileGroup.find_by_name(name).events.length.should == number.to_i
+end
 
 private
 
