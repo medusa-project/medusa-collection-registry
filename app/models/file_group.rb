@@ -134,10 +134,8 @@ class FileGroup < ActiveRecord::Base
     end
   end
 
-  EVENT_HASH = {'external_staged' => 'External File Group Staged', 'fits_performed' => 'FITS analysis performed'}
-
   def supported_event_hash
-    return EVENT_HASH
+    @@supported_event_hash ||= read_event_hash(:file_group)
   end
 
 end
