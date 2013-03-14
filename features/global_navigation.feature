@@ -26,4 +26,8 @@ Feature: Global navigation
     When I click on 'Collections' in the global navigation bar
     Then I should be on the collection index page
 
+  Scenario: Go to dashboard
+    When I click on 'Dashboard' in the global navigation bar
+    Then I should be on the dashboard page
+
 
