@@ -11,7 +11,7 @@ gem 'solrizer-fedora'
 gem 'rb-readline'
 
 #deployment webserver
-gem 'passenger'
+gem 'passenger', '3.0.15'
 
 gem 'haml'
 gem 'haml-rails'
