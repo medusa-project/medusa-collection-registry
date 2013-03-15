@@ -187,11 +187,11 @@ GEM
     json_spec (1.1.0)
       multi_json (~> 1.0)
       rspec (~> 2.0)
-    less (2.3.1)
+    less (2.2.2)
       commonjs (~> 0.2.6)
-    less-rails (2.3.2)
+    less-rails (2.2.3)
       actionpack (>= 3.1)
-      less (~> 2.3.1)
+      less (~> 2.2.0)
     libv8 (3.11.8.13)
     logger (1.2.8)
     macaddr (1.6.1)
@@ -405,7 +405,7 @@ DEPENDENCIES
   jquery-rails
   json_builder
   json_spec
-  less-rails
+  less-rails (~> 2.2.3)
   logger
   mechanize!
   net-http-digest_auth!
