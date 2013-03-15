@@ -11,6 +11,8 @@ gem 'solrizer-fedora'
 gem 'rb-readline'
 
 #deployment webserver
+#TODO - Was having problems with deploying with 3.0.19, so look into that sometime. For now pin. The problem was
+#somewhere in passenger compiling/deploying itself on the production server.
 gem 'passenger', '3.0.15'
 
 gem 'haml'
