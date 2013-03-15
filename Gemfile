@@ -72,7 +72,7 @@ gem 'uuid'
 
 group :development, :test do
   # To use debugger
-  gem 'ruby-debug19'
+  #gem 'ruby-debug19'
   gem 'rspec-rails'
   gem 'factory_girl'
   gem 'shoulda-matchers'
@@ -84,4 +84,6 @@ group :test do
   gem 'database_cleaner'
   gem 'simplecov'
   gem 'json_spec'
+  #see note in cucumber env - when 2.0.3 or 2.1 becomes available, with Capybara.match configuration then we can unpin and fix cucumber env
+  gem 'capybara', "~> 1.1.4"
 end
