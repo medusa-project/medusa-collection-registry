@@ -2,7 +2,7 @@ default_rights_basis: copyright
 rights_bases:
   - copyright
   - statute
-  - licenses
+  - license
   - other
 
 default_copyright_jurisdiction: us
