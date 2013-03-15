@@ -405,7 +405,7 @@ DEPENDENCIES
   jquery-rails
   json_builder
   json_spec
-  less-rails (~> 2.2.3)
+  less-rails
   logger
   mechanize!
   net-http-digest_auth!
