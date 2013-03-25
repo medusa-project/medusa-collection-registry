@@ -1,0 +1,9 @@
+development:
+  #'cfs' staging file config. Note that this doesn't strictly need to be a dx/cfs file system,
+  #but we use that name in order to distinguish from our internal bit file stuff for now.
+  cfs:
+    root: /home/hading/repos/medusa-rails3/tmp/cfs-root-dev
+test:
+  cfs:
+    root: /home/hading/repos/medusa-rails3/tmp/cfs-root-test
+production:
