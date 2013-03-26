@@ -29,7 +29,8 @@ MedusaRails3::Application.routes.draw do
   end
 
   #cfs (i.e. server local filesystem)
-  get '/cfs/show/*path' => 'cfs#show_not_found', :format => false, :as => :cfs_show
+  get '/cfs/show/*path' => 'cfs#show', :format => false, :as => :cfs_show
+  get '/cfs/show' => 'cfs#show', :format => false
 
   match '/auth/:provider/callback', to: 'sessions#create'
   match '/login', to: 'sessions#new', as: :login

@@ -33,6 +33,6 @@ Feature: CFS integration
 
   Scenario: Try to view non-existent directory
     When I view the cfs path 'dogs/chihuahuas'
-    Then the response code should be 404
+    Then I should see '/dogs/chihuahuas was not found.'
 
 
