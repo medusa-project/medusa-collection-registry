@@ -28,12 +28,17 @@ MedusaRails3::Application.routes.draw do
     end
   end
 
+  #cfs (i.e. server local filesystem)
+  get '/cfs/show/*path' => 'cfs#show_not_found', :format => false, :as => :cfs_show
+
   match '/auth/:provider/callback', to: 'sessions#create'
   match '/login', to: 'sessions#new', as: :login
   match '/logout', to: 'sessions#destroy', as: :logout
   match '/unauthorized', to: 'sessions#unauthorized', as: :unauthorized
   match '/static/:page', to: 'static#page', as: :static
-  match '/dashboard', to: 'dashboard#show', as: :dashboard
+  match '/dashboard', to: 'dashboard#show_not_found', as: :dashboard
+
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
