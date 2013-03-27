@@ -37,7 +37,7 @@ MedusaRails3::Application.routes.draw do
   match '/logout', to: 'sessions#destroy', as: :logout
   match '/unauthorized', to: 'sessions#unauthorized', as: :unauthorized
   match '/static/:page', to: 'static#page', as: :static
-  match '/dashboard', to: 'dashboard#show_not_found', as: :dashboard
+  match '/dashboard', to: 'dashboard#show', as: :dashboard
 
 
 
