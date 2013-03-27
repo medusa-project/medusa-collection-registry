@@ -30,6 +30,7 @@ Feature: CFS integration
     When I view the cfs path 'dogs'
     And I click on 'intro.txt'
     Then I should be viewing the cfs file 'dogs/intro.txt'
+    And I should see 'intro.txt'
 
   Scenario: Try to view non-existent directory
     When I view the cfs path 'dogs/chihuahuas'

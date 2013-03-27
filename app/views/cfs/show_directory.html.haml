@@ -1,1 +1,29 @@
 = render 'show_breadcrumbs'
+
+%h3 Directory: #{File.basename(@path)}
+
+%h4 Subdirectories
+%table#subdirectories.table.table-striped
+  %thead
+    %tr
+      %th Name
+  %tbody
+    - @subdirectories.each do |subdirectory|
+      %tr
+        %td= link_to subdirectory[:name], cfs_show_path(:path => subdirectory[:path])
+
+%hr
+
+%h4 Files
+%table#files.table.table-striped
+  %thead
+    %tr
+      %th Name
+      %th Size
+      %th Last Modified
+  %tbody
+    - @files.each do |file|
+      %tr
+        %td= link_to file[:name], cfs_show_path(:path => file[:path])
+        %td= file[:stat].size
+        %td= file[:stat].mtime
