@@ -5,6 +5,7 @@ Feature: CFS integration
 
   Background:
     Given I am logged in as an admin
+    And I clear the cfs root directory
     And there is a cfs directory 'dogs/pugs'
     And the cfs directory 'dogs' has files:
       | intro.txt |

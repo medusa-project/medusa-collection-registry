@@ -39,8 +39,6 @@ MedusaRails3::Application.routes.draw do
   match '/static/:page', to: 'static#page', as: :static
   match '/dashboard', to: 'dashboard#show', as: :dashboard
 
-
-
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

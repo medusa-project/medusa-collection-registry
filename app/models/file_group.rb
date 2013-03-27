@@ -22,6 +22,7 @@ class FileGroup < ActiveRecord::Base
   STORAGE_LEVELS = ['external', 'bit-level store', 'object-level store']
 
   validates_uniqueness_of :root_directory_id, :allow_nil => true
+  validates_uniqueness_of :cfs_root, :allow_blank => true
   validates_presence_of :name
   validates_inclusion_of :storage_level, :in => STORAGE_LEVELS
 
@@ -136,6 +137,17 @@ class FileGroup < ActiveRecord::Base
 
   def supported_event_hash
     @@supported_event_hash ||= read_event_hash(:file_group)
+  end
+
+  #If there is a file group that has cfs_path over path then return it,
+  #otherwise return nil
+  def self.for_cfs_path(path)
+    return nil if path.blank?
+    file_group = self.find_by_cfs_root(path)
+    return file_group if file_group
+    components = path.split('/')
+    components.pop
+    return self.for_cfs_path(components.join('/'))
   end
 
 end

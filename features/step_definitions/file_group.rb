@@ -26,7 +26,7 @@ Then /^I should be on the view page for the file group with location '(.*)' for 
   current_path.should == file_group_path(find_file_group(title, location))
 end
 
-And /^I should be on the view page for the file group named '(.*)$/ do |name|
+And /^I should be on the view page for the file group named '(.*)'$/ do |name|
   current_path.should == file_group_path(FileGroup.find_by_name(name))
 end
 

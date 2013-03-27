@@ -22,10 +22,12 @@ class CfsController < ApplicationController
 
   def setup_file(path)
     setup_breadcrumbs(@path)
+    setup_file_group(@path)
   end
 
   def setup_directory(path)
     setup_breadcrumbs(@path)
+    setup_file_group(@path)
     @subdirectories = []
     @files = []
     (Dir[File.join(path, '*')] + Dir[File.join(path, '.*')]).each do |entry|
@@ -53,4 +55,11 @@ class CfsController < ApplicationController
   def path_join(prefix, suffix)
     prefix.blank? ? suffix : "#{prefix}/#{suffix}"
   end
+
+  #I don't know an efficient way to do this, as the paths we have here will generally
+  #be longer than the cfs_roots of file groups.
+  def setup_file_group(path)
+    @file_group = FileGroup.for_cfs_path(path)
+  end
+
 end
