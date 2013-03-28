@@ -33,6 +33,10 @@ Given(/^the file group named '(.*)' has cfs root '(.*)'$/) do |name, directory|
   file_group.save!
 end
 
+Then(/^the file group named '(.*)' should have cfs root '(.*)'$/) do |name, path|
+  FileGroup.find_by_name(name).cfs_root.should == path
+end
+
 def cfs_local_path(*args)
   File.join(MedusaRails3::Application.cfs_root, *args)
 end

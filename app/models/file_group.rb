@@ -5,7 +5,7 @@ class FileGroup < ActiveRecord::Base
                   :producer_id, :file_type_id, :summary, :provenance_note,
                   :collection_attributes, :rights_declaration_attributes,
                   :name, :storage_level, :staged_file_location, :total_file_size,
-                  :file_format, :total_files, :related_file_group_ids
+                  :file_format, :total_files, :related_file_group_ids, :cfs_root
   belongs_to :collection
   belongs_to :producer
   belongs_to :file_type

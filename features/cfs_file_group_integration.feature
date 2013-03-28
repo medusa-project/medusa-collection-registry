@@ -22,10 +22,11 @@ Feature: CFS file group integration
     Then I should be viewing the cfs directory 'dogs/toy-dogs'
 
   Scenario: Set file group's cfs root from file group edit view
-    When PENDING
-
-  Scenario: Set file group's cfs root from cfs directory edit view
-    When PENDING
+    Given there is a cfs directory 'englishmen/yorkies'
+    When I edit the file group named 'Toys'
+    And I select 'englishmen/yorkies' from 'Cfs root'
+    And I click on 'Update File group'
+    Then the file group named 'Toys' should have cfs root 'englishmen/yorkies'
 
   Scenario: See that a cfs directory belongs to a file group when viewing it
     When I view the cfs path 'dogs/toy-dogs/yorkies'
