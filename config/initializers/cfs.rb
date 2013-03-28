@@ -1,1 +1,0 @@
-Cfs.instance.initialize

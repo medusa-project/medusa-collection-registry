@@ -15,22 +15,23 @@ class CfsController < ApplicationController
   end
 
   def fits_info
-    raise RuntimeError
+    info = CfsFileInfo.find_by_path(params[:path])
+    render :xml => info.fits_xml
   end
 
   def create_fits_info
     ensure_fits_xml(params[:path])
-    redirect_to cfs_show_path(remove_path_level(path))
+    redirect_to cfs_show_path(remove_path_level(params[:path]))
   end
 
   protected
 
   def ensure_fits_xml(path)
-    Cfs.ensure_fits_for(path)
+    Cfs.instance.ensure_fits_for(path)
   end
 
   def cfs_file_path(url_path)
-    File.join(Cfs.instance.root, url_path)
+    Cfs.instance.file_path_for(url_path)
   end
 
   def setup_file(path)

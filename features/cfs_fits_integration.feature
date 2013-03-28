@@ -26,7 +26,6 @@ Feature: CFS FITS integration
     And I click on 'View XML'
     Then I should be on the fits info page for the cfs file 'dogs/toy-dogs/text.txt'
 
-
   Scenario: Run fits on a whole directory tree
     When PENDING
 
