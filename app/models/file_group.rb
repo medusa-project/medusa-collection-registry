@@ -139,15 +139,11 @@ class FileGroup < ActiveRecord::Base
     @@supported_event_hash ||= read_event_hash(:file_group)
   end
 
-  #If there is a file group that has cfs_path over path then return it,
-  #otherwise return nil
+  #It's possible that the string concatenation here is a postgresism, though I think
+  #it is SQL99 standard
   def self.for_cfs_path(path)
     return nil if path.blank?
-    file_group = self.find_by_cfs_root(path)
-    return file_group if file_group
-    components = path.split('/')
-    components.pop
-    return self.for_cfs_path(components.join('/'))
+    return self.where("? LIKE cfs_root || '%'", path).first
   end
 
 end
