@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130327212251) do
+ActiveRecord::Schema.define(:version => 20130328185811) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -86,6 +86,15 @@ ActiveRecord::Schema.define(:version => 20130327212251) do
 
   add_index "cache_ldap_groups", ["created_at"], :name => "index_cache_ldap_groups_on_created_at"
   add_index "cache_ldap_groups", ["user_id"], :name => "index_cache_ldap_groups_on_user_id"
+
+  create_table "cfs_file_infos", :force => true do |t|
+    t.string   "path"
+    t.text     "fits_xml"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "cfs_file_infos", ["path"], :name => "index_cfs_file_infos_on_path"
 
   create_table "collection_resource_type_joins", :force => true do |t|
     t.integer  "collection_id"

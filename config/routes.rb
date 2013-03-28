@@ -29,8 +29,10 @@ MedusaRails3::Application.routes.draw do
   end
 
   #cfs (i.e. server local filesystem)
-  get '/cfs/show/*path' => 'cfs#show', :format => false, :as => :cfs_show
-  get '/cfs/show' => 'cfs#show', :format => false
+  get '/cfs/show/*path' => 'cfs#show', format: false, as: :cfs_show
+  get '/cfs/show' => 'cfs#show', format: false
+  get '/cfs/fits_info/*path' => 'cfs#fits_info', format: false, as: :cfs_fits_info
+  match '/cfs/create_fits_info/*path' => 'cfs#create_fits_info', format: false, as: :cfs_create_fits_info
 
   match '/auth/:provider/callback', to: 'sessions#create'
   match '/login', to: 'sessions#new', as: :login

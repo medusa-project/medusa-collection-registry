@@ -14,10 +14,23 @@ class CfsController < ApplicationController
     end
   end
 
+  def fits_info
+    raise RuntimeError
+  end
+
+  def create_fits_info
+    ensure_fits_xml(params[:path])
+    redirect_to cfs_show_path(remove_path_level(path))
+  end
+
   protected
 
+  def ensure_fits_xml(path)
+    Cfs.ensure_fits_for(path)
+  end
+
   def cfs_file_path(url_path)
-    File.join(MedusaRails3::Application.cfs_root, url_path)
+    File.join(Cfs.instance.root, url_path)
   end
 
   def setup_file(path)
@@ -60,6 +73,13 @@ class CfsController < ApplicationController
   #be longer than the cfs_roots of file groups.
   def setup_file_group(path)
     @file_group = FileGroup.for_cfs_path(path)
+  end
+
+  def remove_path_level(path)
+    return path if path.blank?
+    components = path.split('/')
+    components.pop
+    return components.join('/')
   end
 
 end

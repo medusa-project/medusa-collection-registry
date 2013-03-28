@@ -14,7 +14,6 @@ module MedusaRails3
     attr_accessor :shibboleth_host
     attr_accessor :handle_client, :medusa_host
     attr_accessor :bit_file_tmp_dir
-    attr_accessor :cfs_root
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
