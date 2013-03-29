@@ -34,6 +34,7 @@ MedusaRails3::Application.routes.draw do
   get '/cfs/fits_info/*path' => 'cfs#fits_info', format: false, as: :cfs_fits_info
   match '/cfs/create_fits_info/*path' => 'cfs#create_fits_info', format: false, as: :cfs_create_fits_info
   match '/cfs/create_fits_for_tree/*path' => 'cfs#create_fits_for_tree', format: false, as: :cfs_create_fits_for_tree
+  match '/cfs/create_fits_for_tree' => 'cfs#create_fits_for_tree', format: false
 
   match '/auth/:provider/callback', to: 'sessions#create'
   match '/login', to: 'sessions#new', as: :login

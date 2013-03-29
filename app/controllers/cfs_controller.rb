@@ -25,6 +25,7 @@ class CfsController < ApplicationController
   end
 
   def create_fits_for_tree
+    params[:path] ||= ''
     Cfs.delay.ensure_fits_for_tree(params[:path])
     flash[:notice] = "Scheduling FITS creation for /#{params[:path]}"
     redirect_to cfs_show_path(params[:path])
