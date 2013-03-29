@@ -45,7 +45,9 @@ rake jetty:install, in both the development and test environments
 
 #Start associated processes
 
-rake jetty:start and rake medusa:delayed_job:start in both environments
+rake jetty:start and rake medusa:delayed_job:start in both environments.
+
+cd into submodules/ruby-fits-server and ./start.sh
 
 #Test
 
