@@ -27,7 +27,12 @@ Feature: CFS FITS integration
     Then I should be on the fits info page for the cfs file 'dogs/toy-dogs/text.txt'
 
   Scenario: Run fits on a whole directory tree
-    When PENDING
+    Given the cfs directory 'dogs' has files:
+      |picture.jpg|
+    When I view the cfs path 'dogs'
+    And I click on 'Create FITS for tree'
+    Then the cfs file 'dogs/picture.jpg' should have FITS xml attached
+    And the cfs file 'dogs/toy-dogs/text.txt' should have FITS xml attached
 
   Scenario: Run fits on a file group
     When PENDING

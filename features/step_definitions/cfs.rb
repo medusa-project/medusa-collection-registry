@@ -4,7 +4,7 @@ And(/^there is a cfs directory '(.*)'$/) do |path|
 end
 
 And(/^I clear the cfs root directory$/) do
-  Dir[File.join(MedusaRails3::Application.cfs_root, "*")].each do |entry|
+  Dir[File.join(Cfs.instance.root, "*")].each do |entry|
     FileUtils.rm_rf(entry)
   end
 end
@@ -50,5 +50,5 @@ Then(/^I should be on the fits info page for the cfs file '(.*)'$/) do |path|
 end
 
 def cfs_local_path(*args)
-  File.join(MedusaRails3::Application.cfs_root, *args)
+  File.join(Cfs.instance.root, *args)
 end

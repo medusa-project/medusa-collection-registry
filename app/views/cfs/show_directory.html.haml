@@ -1,5 +1,8 @@
 = render 'show_breadcrumbs'
 
+.pull-right
+  = link_to 'Create FITS for tree', cfs_create_fits_for_tree_path(:path => @path), :method => 'post', :class => 'btn'
+
 %h3 Directory: #{File.basename(@path)}
 - if @file_group
   %h4 File Group: #{link_to @file_group.name, file_group_path(@file_group)}
