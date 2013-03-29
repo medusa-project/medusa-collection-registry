@@ -28,8 +28,16 @@ Use rake db:create, db:migrate, and db:seed in both the development and test env
 
 #Get submodules
 
-git submodule init and git submodule update. For develoment don't worry if there is an issue with the akubra-caringo
-submodule - it may be removed anyway. You need for the hydra-jetty submodule to clone correctly, however.
+git submodule init and git submodule update.
+
+The hydra-jetty submodule is used to provide a real solr/fedora for development and testing.
+
+The ruby-fits-server submodule is used to provide a local FITS generating service. The same instance
+can be used for all environments. To use it you'll need to install FITS locally and set FITS_HOME
+to the installation directory. Also note that this uses its own ruby and gemset, so you'll need
+to cd into submodules/ruby-fits-server and do a bundle install (and install the ruby if necessary).
+Any system start/stop scripts should also cd into the directory to make sure they pick up the
+correct rvm information.
 
 #Install Jetty
 
