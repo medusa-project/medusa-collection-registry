@@ -6,6 +6,6 @@ class CreateCfsFileInfos < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :cfs_file_infos, :path
+    add_index :cfs_file_infos, :path, :unique => true
   end
 end

@@ -4,6 +4,7 @@ file_group:
   staged_deleted: Staged files deleted
   external_deleted: External file group deleted
   fits_performed: FITS analysis performed
+  cfs_fits_performed: FITS analysis performed on CFS root
   bit_exported: Bit-level file group exported
   bit_deleted: Bit-level file group deleted
 

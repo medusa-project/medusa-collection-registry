@@ -1,6 +1,7 @@
 class FileGroupsController < ApplicationController
 
-  before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update, :create_all_fits, :new_event]
+  before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update, :create_all_fits,
+                                                           :new_event, :create_cfs_fits]
   skip_before_filter :require_logged_in, :only => [:show, :index]
   skip_before_filter :authorize, :only => [:show, :index]
   around_filter :handle_related_file_groups, :only => [:update, :create]
@@ -50,6 +51,15 @@ class FileGroupsController < ApplicationController
     record_event(@file_group, 'fits_performed')
     flash[:notice] = 'Scheduled creation of FITS XML'
     redirect_to file_group_path(@file_group)
+  end
+
+  def create_cfs_fits
+    if @file_group.cfs_root.present?
+      Cfs.delay.ensure_fits_for_tree(@file_group.cfs_root)
+      record_event(@file_group, 'cfs_fits_performed')
+      flash[:notice] = "Scheduling FITS creation for /#{@file_group.cfs_root}"
+      redirect_to file_group_path(@file_group)
+    end
   end
 
   def events

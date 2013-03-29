@@ -12,6 +12,7 @@ MedusaRails3::Application.routes.draw do
   resources :file_groups do
     member do
       post 'create_all_fits'
+      post 'create_cfs_fits'
       get 'events'
       post 'new_event'
     end

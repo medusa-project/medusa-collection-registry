@@ -28,11 +28,20 @@ Feature: CFS FITS integration
 
   Scenario: Run fits on a whole directory tree
     Given the cfs directory 'dogs' has files:
-      |picture.jpg|
+      | picture.jpg |
     When I view the cfs path 'dogs'
     And I click on 'Create FITS for tree'
     Then the cfs file 'dogs/picture.jpg' should have FITS xml attached
     And the cfs file 'dogs/toy-dogs/text.txt' should have FITS xml attached
+    And I should see 'Scheduling FITS creation for /dogs'
 
   Scenario: Run fits on a file group
-    When PENDING
+    Given the file group named 'Toys' has cfs root 'dogs'
+    And the cfs directory 'dogs' has files:
+      | picture.jpg |
+    When I view the file group named 'Toys'
+    And I click on 'Create FITS for CFS tree'
+    Then the cfs file 'dogs/picture.jpg' should have FITS xml attached
+    And the cfs file 'dogs/toy-dogs/text.txt' should have FITS xml attached
+    And I should see 'Scheduling FITS creation for /dogs'
+    And the file group named 'Toys' should have an event with key 'cfs_fits_performed' performed by 'admin'

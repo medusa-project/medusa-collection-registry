@@ -38,6 +38,7 @@ Given(/^the cfs file '(.*)' has FITS xml attached$/) do |path|
 end
 
 And(/^the cfs file '(.*)' should have FITS xml attached$/) do |path|
+  all = CfsFileInfo.all
   CfsFileInfo.find_by_path(path).should_not be_false
 end
 

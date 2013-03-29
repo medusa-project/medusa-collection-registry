@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(:version => 20130328185811) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "cfs_file_infos", ["path"], :name => "index_cfs_file_infos_on_path"
+  add_index "cfs_file_infos", ["path"], :name => "index_cfs_file_infos_on_path", :unique => true
 
   create_table "collection_resource_type_joins", :force => true do |t|
     t.integer  "collection_id"
