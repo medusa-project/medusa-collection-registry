@@ -1,0 +1,63 @@
+%h3
+  - now = Time.now.strftime('%m/%d/%Y, %I:%M:%S%P %Z')
+  File Statistics (as of #{now})
+%div
+  %table.table.table-bordered#file_stats
+    %tr
+      %td
+        %table.table.table-striped#file_stats_bits
+          %thead
+            %tr
+              %th{:colspan => 3}
+                Bits
+              %tr
+                %th File Format
+                %th Number of Files
+                %th Size (GB)
+          %tbody
+          - list_of_bit_file_formats.each do |tf|
+            %tr
+              %td= tf
+              %td= number_with_delimiter(file_count_bits_type_format(tf))
+              %td= number_with_delimiter(size_bits_type_format(tf))
+      %td.file_stats_separator
+
+      %td
+        %table.table.table-striped#file_stats_objects
+          %thead
+            %tr
+              %th{:colspan => 3}
+                Objects
+              %tr
+                %th File Format
+                %th Number of Files
+                %th Size (GB)
+          %tbody
+          - list_of_object_file_formats.each do |tf|
+            %tr
+              %td= tf
+              %td= number_with_delimiter(file_count_objects_type_format(tf))
+              %td= number_with_delimiter(size_objects_type_format(tf))
+    %tr
+
+    %tr
+      %table.table#file_stats_summary
+        %tr
+          %th{:colspan => 2}
+            Total Bit Preservation Files:
+          %td= number_with_delimiter(file_count_bits_total)
+          %td
+
+          %th{:colspan => 2}
+            Total Object Preservation Files:
+          %td= number_with_delimiter(file_count_objects_total)
+
+        %tr
+          %th{:colspan => 2}
+            Total Bit Preservation GB:
+          %td= number_with_delimiter(size_bits_total)
+          %td
+
+          %th{:colspan => 2}
+            Total Object Preservation GB:
+          %td= number_with_delimiter(size_objects_total)

@@ -3,5 +3,7 @@
   .tab-content
     #storage-overview.tab-pane.active
     #running-processes.tab-pane
+      <p> you're in running process tab right now </p>
     #file-statistics.tab-pane
+      = render 'file_stats_table'
     #red-flags.tab-pane
