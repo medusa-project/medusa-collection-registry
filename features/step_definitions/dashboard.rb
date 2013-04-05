@@ -22,3 +22,23 @@ end
 When /^I go to the dashboard$/ do
   visit dashboard_path
 end
+
+Then /^I should see the bit & object preservation content_type statistics$/ do
+  page.should have_selector('table#file_stats')
+end
+
+And /^I should see the bit & object preservation summary file statistics$/ do
+  page.should have_selector('table#file_stats_summary')
+end
+
+Then /^I should see a bit preservation content_type table$/ do
+  page.should have_selector('table#file_stats_bits')
+end
+
+Then /^I should see an object preservation content_type table$/ do
+  page.should have_selector('table#file_stats_objects')
+end
+
+Then /^show me the page$/ do
+  save_and_open_page
+end

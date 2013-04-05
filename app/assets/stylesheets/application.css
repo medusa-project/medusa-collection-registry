@@ -15,3 +15,16 @@
 .dataTables_wrapper {
   padding: 5px 0px;
 }
+
+#file_stats_summary td {
+  border-top: none;
+}
+
+#file_stats_summary th {
+  text-align: right;
+  border-top: none;
+}
+
+.file_stats_separator {
+  background-color: #0088CC;
+}
