@@ -18,6 +18,7 @@ class FileGroup < ActiveRecord::Base
   has_many :events, :as => :eventable, :dependent => :destroy, :order => 'created_at DESC'
 
   before_validation :ensure_rights_declaration
+  after_save :schedule_create_cfs_file_infos
 
   STORAGE_LEVELS = ['external', 'bit-level store', 'object-level store']
 
@@ -144,6 +145,15 @@ class FileGroup < ActiveRecord::Base
   def self.for_cfs_path(path)
     return nil if path.blank?
     return self.where("? LIKE cfs_root || '%'", path).first
+  end
+
+  def schedule_create_cfs_file_infos
+    return unless self.cfs_root_changed?
+    self.delay.create_cfs_file_infos
+  end
+
+  def create_cfs_file_infos
+    Cfs.ensure_basic_assessment_for_tree(self.cfs_root)
   end
 
 end

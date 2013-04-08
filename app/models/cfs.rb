@@ -19,7 +19,8 @@ module Cfs
 
   def ensure_fits_for(url_path)
     file_path = file_path_for(url_path)
-    return if CfsFileInfo.find_by_path(url_path)
+    file_info = CfsFileInfo.find_by_path(url_path)
+    return if file_info and file_info.fits_xml
     return unless File.file?(file_path)
     create_fits_for(url_path, file_path)
   end
@@ -27,12 +28,27 @@ module Cfs
   def ensure_fits_for_tree(url_path)
     file_path = file_path_for(url_path)
     #find all files under the path and run fits on those that need it
-    Rails.logger.error("Ensuring FITS for tree")
     (Dir[File.join(file_path, '**', '*')] + Dir[File.join(file_path, '**', '.*')]).each do |entry|
       next unless File.file?(entry)
       path = url_path_for(entry)
-      Rails.logger.error "Scheduling FITS url:#{path} file: #{entry}"
       Cfs.delay.ensure_fits_for(path)
+    end
+  end
+
+  def ensure_basic_assessment_for(url_path)
+    file_path = file_path_for(url_path)
+    file_info = CfsFileInfo.find_by_path(url_path)
+    return if file_info and file_info.size and file_info.content_type and file_info.md5_sum
+    return unless File.file?(file_path)
+    create_basic_assessment_for(url_path, file_path)
+  end
+
+  def ensure_basic_assessment_for_tree(url_path)
+    file_path = file_path_for(url_path)
+    (Dir[File.join(file_path, '**', '*')] + Dir[File.join(file_path, '**', '.*')]).each do |entry|
+      next unless File.file?(entry)
+      path = url_path_for(entry)
+      Cfs.delay.ensure_basic_assessment_for(path)
     end
   end
 
@@ -50,7 +66,16 @@ module Cfs
   end
 
   def create_fits_for(url_path, file_path)
-    CfsFileInfo.create(:path => url_path, :fits_xml => fits_xml(file_path))
+    file_info = CfsFileInfo.find_or_create_by_path(url_path)
+    file_info.update_attributes!(:fits_xml => fits_xml(file_path))
+  end
+
+  def create_basic_assessment_for(url_path, file_path)
+    file_info = CfsFileInfo.find_or_create_by_path(url_path)
+    file_info.size = File.size(file_path)
+    file_info.content_type = FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(file_path) rescue 'application/octet-stream'
+    file_info.md5_sum = Digest::MD5.file(file_path).to_s
+    file_info.save!
   end
 
 end

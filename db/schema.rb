@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130328185811) do
+ActiveRecord::Schema.define(:version => 20130408151257) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -90,10 +90,14 @@ ActiveRecord::Schema.define(:version => 20130328185811) do
   create_table "cfs_file_infos", :force => true do |t|
     t.string   "path"
     t.text     "fits_xml"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.integer  "size"
+    t.string   "md5_sum"
+    t.string   "content_type"
   end
 
+  add_index "cfs_file_infos", ["content_type"], :name => "index_cfs_file_infos_on_content_type"
   add_index "cfs_file_infos", ["path"], :name => "index_cfs_file_infos_on_path", :unique => true
 
   create_table "collection_resource_type_joins", :force => true do |t|

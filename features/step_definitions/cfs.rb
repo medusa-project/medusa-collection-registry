@@ -15,6 +15,12 @@ And(/^the cfs directory '(.*)' has files:$/) do |path, table|
   end
 end
 
+And(/^the cfs directory '(.*)' has a file '(.*)' with contents '(.*)'$/) do |directory, file, contents|
+  File.open(cfs_local_path(directory, file), 'w') do |f|
+    f.write contents
+  end
+end
+
 When(/^I view the cfs path '(.*)'$/) do |path|
   visit cfs_show_path(:path => path)
 end
@@ -33,6 +39,12 @@ Given(/^the file group named '(.*)' has cfs root '(.*)'$/) do |name, directory|
   file_group.save!
 end
 
+When(/^I set the cfs root of the file group named '(.*)' to '(.*)'$/) do |name, directory|
+  file_group = FileGroup.find_by_name(name)
+  file_group.cfs_root = directory
+  file_group.save
+end
+
 Given(/^the cfs file '(.*)' has FITS xml attached$/) do |path|
   FactoryGirl.create(:cfs_file_info, :path => path, :fits_xml => '<fits/>')
 end
@@ -44,6 +56,18 @@ end
 
 Then(/^the file group named '(.*)' should have cfs root '(.*)'$/) do |name, path|
   FileGroup.find_by_name(name).cfs_root.should == path
+end
+
+Then(/^the cfs file '(.*)' should have size '(\d+)'$/) do |path, size|
+  CfsFileInfo.find_by_path(path).size.to_s.should == size
+end
+
+And(/^the cfs file '(.*)' should have content type '(.*)'$/) do |path, content_type|
+  CfsFileInfo.find_by_path(path).content_type.should == content_type
+end
+
+And(/^the cfs file '(.*)' should have md5 sum '(.*)'$/) do |path, md5_sum|
+  CfsFileInfo.find_by_path(path).md5_sum.should == md5_sum
 end
 
 Then(/^I should be on the fits info page for the cfs file '(.*)'$/) do |path|
