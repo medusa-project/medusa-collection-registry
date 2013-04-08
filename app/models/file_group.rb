@@ -156,4 +156,8 @@ class FileGroup < ActiveRecord::Base
     Cfs.ensure_basic_assessment_for_tree(self.cfs_root)
   end
 
+  def remove_cfs_file_info_orphans
+    CfsFileInfo.remove_orphans(self.cfs_root)
+  end
+
 end

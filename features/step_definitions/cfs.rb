@@ -21,6 +21,10 @@ And(/^the cfs directory '(.*)' has a file '(.*)' with contents '(.*)'$/) do |dir
   end
 end
 
+And(/^I remove the cfs path '(.*)'$/) do |path|
+  FileUtils.rm_rf(cfs_local_path(path))
+end
+
 When(/^I view the cfs path '(.*)'$/) do |path|
   visit cfs_show_path(:path => path)
 end
