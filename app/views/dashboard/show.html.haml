@@ -2,8 +2,81 @@
   = render :partial => 'shared/tab_header', :locals => {:id => 'tab-headers', :tabs => dashboard_tab_list}
   .tab-content
     #storage-overview.tab-pane.active
+      %table{:width=>'100%'}
+        %tr
+          %th{:width=>'25%', :align=>'center'}
+            %h4 DX-Storage
+          %th{:width=>'25%', :align=>'center'}
+            &nbsp;
+          %th{:width=>'25%', :align=>'center'}
+            %h4 Other Storage Target
+          %th{:width=>'25%', :align=>'center'}
+            &nbsp;
+        %tr
+          %td{:width=>'25%', :align=>'center'}
+            %table{:border=>1}
+              %tbody
+                %tr
+                  %th
+                    state
+                  %th
+                    size(GB)
+                %tr
+                  %td
+                    Bit level store(ingested)
+                  %td{:align => 'right'}
+                    = @storage["bit_level_ingested"]
+                %tr
+                  %td
+                    Bit level store(total)
+                  %td{:align => 'right'}
+                    = @storage["bit_level_total"]
+                %tr
+                  %td
+                    Object level store
+                  %td{:align => 'right'}
+                    = @storage["object_level_total"]
+                %tr
+                  %td
+                    Free space
+                  %td{:align => 'right'}
+                    = @storage["free"]
+          %td{:width=>'25%'}
+            .div{:id=>'chart_container1', :class=>'chart_container', :style=>'min-width: 200px; height: 200px; margin: 0 auto'}
+          %td{:width=>'25%', :align=>'center'}
+            %table{:border=>1}
+              %tbody
+                %tr
+                  %th
+                    state
+                  %th
+                    size(GB)
+                %tr
+                  %td
+                    Bit level store(ingested)
+                  %td{:align => 'right'}
+                    TBD
+                %tr
+                  %td
+                    Bit level store(total)
+                  %td{:align => 'right'}
+                    TBD
+                %tr
+                  %td
+                    Object level store
+                  %td{:align => 'right'}
+                    TBD
+                %tr
+                  %td
+                    Free space
+                  %td{:align => 'right'}
+                    TBD
+          %td{:width=>'25%'}
+            .div{:id=>'chart_container2', :class=>'chart_container', :style=>'min-width: 200px; height: 200px; margin: 0 auto'}
     #running-processes.tab-pane
       <p> you're in running process tab right now </p>
     #file-statistics.tab-pane
       = render 'file_stats_table'
     #red-flags.tab-pane
+:javascript
+    $(document).ready(initializeChart($.parseJSON('#{@storage.to_json}')));

@@ -5,6 +5,9 @@
     %title= content_for?(:title) ? yield(:title) : "Medusa"
     = csrf_meta_tags
 
+    = javascript_include_tag "application"
+    = yield :more_javascript
+    
     / Le styles
     = stylesheet_link_tag "application", :media => "all"
     = yield :more_css
@@ -46,5 +49,3 @@
       Le javascript
       \==================================================
     / Placed at the end of the document so the pages load faster
-    = javascript_include_tag "application"
-    = yield :more_javascript
