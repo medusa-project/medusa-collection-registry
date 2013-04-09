@@ -25,6 +25,12 @@ module Cfs
     create_fits_for(url_path, file_path)
   end
 
+  def update_fits_for(url_path)
+    file_path = file_path_for(url_path)
+    return unless File.file?(file_path)
+    create_fits_for(url_path, file_path)
+  end
+
   def ensure_fits_for_tree(url_path)
     file_path = file_path_for(url_path)
     #find all files under the path and run fits on those that need it

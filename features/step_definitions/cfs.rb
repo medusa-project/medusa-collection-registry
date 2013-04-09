@@ -57,6 +57,11 @@ When(/^I create FITS for the cfs path '(.*)'$/) do |path|
   Cfs.ensure_fits_for(path)
 end
 
+When(/^I update FITS for the cfs path '(.*)'$/) do |path|
+  Cfs.update_fits_for(path)
+end
+
+
 And(/^the cfs file '(.*)' should have FITS xml attached$/) do |path|
   all = CfsFileInfo.all
   CfsFileInfo.find_by_path(path).should_not be_false

@@ -42,5 +42,5 @@ Feature: Red flags
     Given the cfs file info for the path 'dogs/grass.jpg' has fields:
       | fits_xml | content_type | size | md5_sum                          |
       | <fits/>  | text/plain   | 100  | 36dc5ffa0b229e9311cf0c4485b21a54 |
-    When I create FITS for the cfs path 'dogs/grass.jpg'
+    When I update FITS for the cfs path 'dogs/grass.jpg'
     Then the cfs file 'dogs/grass.jpg' should have 3 red flags
