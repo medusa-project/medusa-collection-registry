@@ -45,3 +45,4 @@ Feature: CFS FITS integration
     And the cfs file 'dogs/toy-dogs/text.txt' should have FITS xml attached
     And I should see 'Scheduling FITS creation for /dogs'
     And the file group named 'Toys' should have an event with key 'cfs_fits_performed' performed by 'admin'
+

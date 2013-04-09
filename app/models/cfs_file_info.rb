@@ -1,7 +1,9 @@
 class CfsFileInfo < ActiveRecord::Base
-  attr_accessible :fits_xml, :path
+  attr_accessible :fits_xml, :path, :size, :md5_sum, :content_type
 
   validates_uniqueness_of :path, :allow_blank => false
+
+  has_many :red_flags, :as => :red_flaggable, :dependent => :destroy
 
   #check each instance to see if the given path is still valid - if not then
   #remove it

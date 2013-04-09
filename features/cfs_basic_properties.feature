@@ -23,5 +23,5 @@ Feature: CFS basic properties
     And I remove the cfs path 'dogs/toy-dogs/stuff.txt'
     And I remove cfs orphan files under 'dogs/toy-dogs'
     Then there should not be cfs file info for 'dogs/toy-dogs/stuff.txt'
-    
+
 

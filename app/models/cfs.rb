@@ -60,14 +60,51 @@ module Cfs
     Pathname.new(file_path).relative_path_from(Pathname.new(root)).to_s
   end
 
-  def fits_xml(file_path)
+  def get_fits_xml(file_path)
     file_path = file_path.gsub(/^\/+/, '')
     RestClient.get("http://localhost:4567/fits/file/#{file_path}")
   end
 
   def create_fits_for(url_path, file_path)
     file_info = CfsFileInfo.find_or_create_by_path(url_path)
-    file_info.update_attributes!(:fits_xml => fits_xml(file_path))
+    fits_xml = get_fits_xml(file_path)
+    extracted_properties = extract_fits_properties(fits_xml)
+    check_red_flags(file_info, fits_xml, extracted_properties)
+    file_info.update_attributes!(extracted_properties.merge(:fits_xml => fits_xml))
+  end
+
+  def extract_fits_properties(fits_xml)
+    doc = Nokogiri::XML::Document.parse(fits_xml)
+    Hash.new.tap do |h|
+      h[:size] = doc.at_css('fits fileinfo size').text.to_i
+      h[:md5_sum] = doc.at_css('fits fileinfo md5checksum').text
+      h[:content_type] = doc.at_css('fits identification identity')['mimetype']
+    end
+  end
+
+  def check_red_flags(file_info, fits_xml, extracted_properties)
+    check_content_type_red_flag(file_info, extracted_properties) if file_info.fits_xml
+    check_size_red_flag(file_info, extracted_properties)
+    check_md5_sum_red_flag(file_info, extracted_properties)
+    x = file_info.red_flags(true)
+  end
+
+  def check_content_type_red_flag(file_info, extracted_properties)
+    unless file_info.content_type == extracted_properties[:content_type]
+      file_info.red_flags.create(:message => "Content Type changed. Old: #{file_info.content_type} New: #{extracted_properties[:content_type]}")
+    end
+  end
+
+  def check_size_red_flag(file_info, extracted_properties)
+    unless file_info.size == extracted_properties[:size]
+      file_info.red_flags.create(:message => "Size changed. Old: #{file_info.size} New: #{extracted_properties[:size]}")
+    end
+  end
+
+  def check_md5_sum_red_flag(file_info, extracted_properties)
+    unless file_info.md5_sum == extracted_properties[:md5_sum]
+      file_info.red_flags.create(:message => "Md5 Sum changed. Old: #{file_info.md5_sum} New: #{extracted_properties[:md5_sum]}")
+    end
   end
 
   def create_basic_assessment_for(url_path, file_path)

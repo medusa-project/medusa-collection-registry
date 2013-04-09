@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130408151257) do
+ActiveRecord::Schema.define(:version => 20130408223729) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -251,6 +251,17 @@ ActiveRecord::Schema.define(:version => 20130408151257) do
   end
 
   add_index "producers", ["administrator_id"], :name => "index_production_units_on_administrator_id"
+
+  create_table "red_flags", :force => true do |t|
+    t.integer  "red_flaggable_id"
+    t.string   "red_flaggable_type"
+    t.string   "message"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "red_flags", ["red_flaggable_id"], :name => "index_red_flags_on_red_flaggable_id"
+  add_index "red_flags", ["red_flaggable_type"], :name => "index_red_flags_on_red_flaggable_type"
 
   create_table "related_file_group_joins", :force => true do |t|
     t.integer  "file_group_id"

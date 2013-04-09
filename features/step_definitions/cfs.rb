@@ -29,7 +29,7 @@ When(/^I view the cfs path '(.*)'$/) do |path|
   visit cfs_show_path(:path => path)
 end
 
-Then(/^I should be viewing the cfs directory '(.*)'$/) do  |path|
+Then(/^I should be viewing the cfs directory '(.*)'$/) do |path|
   current_path.should == cfs_show_path(:path => path)
 end
 
@@ -51,6 +51,10 @@ end
 
 Given(/^the cfs file '(.*)' has FITS xml attached$/) do |path|
   FactoryGirl.create(:cfs_file_info, :path => path, :fits_xml => '<fits/>')
+end
+
+When(/^I create FITS for the cfs path '(.*)'$/) do |path|
+  Cfs.ensure_fits_for(path)
 end
 
 And(/^the cfs file '(.*)' should have FITS xml attached$/) do |path|
@@ -76,6 +80,11 @@ end
 
 Then(/^I should be on the fits info page for the cfs file '(.*)'$/) do |path|
   current_path.should == cfs_fits_info_path(:path => path)
+end
+
+And(/^the cfs directory '(.*)' contains cfs fixture file '(.*)'$/) do |path, fixture|
+  FileUtils.copy_file(File.join(Rails.root, 'features', 'fixtures', fixture),
+                      cfs_local_path(path, fixture))
 end
 
 def cfs_local_path(*args)
