@@ -33,11 +33,8 @@ gem 'ruby-filemagic', :require => 'filemagic'
 
 gem 'json_builder'
 
-#custom gem that uses a web service to generate fits. The ethon dependency will be
-#removable after ethon 0.5.11 is released
+#custom gem that uses a web service to generate fits.
 gem 'fits', '~> 1.0.6', :git => 'git://github.com/medusa-project/fits.git'
-puts "Using master version of ethon - remove after new release of ethon"
-gem 'ethon', :git => "git://github.com/typhoeus/ethon.git", :branch => 'master'
 
 gem 'delayed_job_active_record'
 gem 'daemons'
