@@ -4,31 +4,21 @@
       %caption DX-Storage
       %thead
         %tr
-          %th
-            state
-          %th
-            size(GB)
+          %th state
+          %th size(GB)
       %tbody
         %tr
-          %td
-            Bit level store(ingested)
-          %td.value
-            = @storage["bit_level_ingested"]
+          %td Bit level store(ingested)
+          %td.value= @storage["bit_level_ingested"]
         %tr
-          %td
-            Bit level store(total)
-          %td.value
-            = @storage["bit_level_total"]
+          %td Bit level store(total)
+          %td.value= @storage["bit_level_total"]
         %tr
-          %td
-            Object level store
-          %td.value
-            = @storage["object_level_total"]
+          %td Object level store
+          %td.value= @storage["object_level_total"]
         %tr
-          %td
-            Free space
-          %td.value
-            = @storage["free"]
+          %td Free space
+          %td.value= @storage["free"]
   .span3
     %div#chart_container1.chart_container
   .span3
@@ -36,30 +26,20 @@
       %caption Other Storage Target
       %thead
         %tr
-          %th
-            state
-          %th
-            size(GB)
+          %th state
+          %th size(GB)
       %tbody
         %tr
-          %td
-            Bit level store(ingested)
-          %td.value
-            TBD
+          %td Bit level store(ingested)
+          %td.value TBD
         %tr
-          %td
-            Bit level store(total)
-          %td.value
-            TBD
+          %td Bit level store(total)
+          %td.value TBD
         %tr
-          %td
-            Object level store
-          %td.value
-            TBD
+          %td Object level store
+          %td.value TBD
         %tr
-          %td
-            Free space
-          %td.value
-            TBD
+          %td Free space
+          %td.value TBD
   .span3
     %div#chart_container2.chart_container
