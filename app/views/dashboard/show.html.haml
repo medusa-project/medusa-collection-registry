@@ -9,5 +9,3 @@
       = render 'file_stats_table'
     #red-flags.tab-pane
       = render 'red_flags'
-:javascript
-    $(document).ready(initializeChart($.parseJSON('#{@storage.to_json}')));
