@@ -14,7 +14,8 @@ gem 'rb-readline'
 
 #deployment webserver
 #TODO - Was having problems with deploying with 3.0.19, so look into that sometime. For now pin. The problem was
-#somewhere in passenger compiling/deploying itself on the production server.
+#somewhere in passenger compiling/deploying itself on the production server. 3.0.19 appears to be the last before
+#4.0.0, so maybe wait for that.
 gem 'passenger', '3.0.15'
 
 gem 'haml'
