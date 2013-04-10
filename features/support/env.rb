@@ -13,11 +13,8 @@ require 'json_spec/cucumber'
 # steps to use the XPath syntax.
 Capybara.default_selector = :css
 
-#allow multiple matches in tests - for Capybara 1.1 compatibility
-#TODO - when match is available in capybara (2.0.3?) uncomment the below
-#TODO - then set this to :smart and Capybara.exact to true and then fix the tests that get broken, or
-#otherwise improve them to work with capybara 2.x.y
-#Capybara.match = :prefer_exact
+#This preserves compatibility with Capybara 1.x, under which we started developing
+Capybara.match = :prefer_exact
 
 # By default, any exception happening in your Rails application will bubble up
 # to Cucumber so that your scenario will fail. This is a different from how
