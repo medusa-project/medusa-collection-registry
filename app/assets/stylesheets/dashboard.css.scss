@@ -1,16 +1,23 @@
 #storage-overview {
-  table td {
-    border: 1px solid black;
-  }
-  table th {
-    border: 1px solid black;
-  }
-  td.value {
-    text-align:  right;
+  table {
+    caption {
+      font-size:  150%;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+    td {
+      border: 1px solid black;
+    }
+    th {
+      border: 1px solid black;
+    }
+    .value {
+      text-align: right;
+    }
   }
   .chart_container {
     min-width: 200px;
     height: 200px;
-    margin:  0 auto;
+    margin: 0 auto;
   }
 }
