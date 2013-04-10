@@ -1,9 +1,9 @@
 require 'utils/luhn'
+require 'active_fedora/associations'
 
 module Medusa
 
   class Object < ActiveFedora::Base
-    include ActiveFedora::Relationships
 
     def recursive_delete
       pid = self.pid
