@@ -32,12 +32,8 @@ module Cfs
   end
 
   def ensure_fits_for_tree(url_path)
-    file_path = file_path_for(url_path)
-    #find all files under the path and run fits on those that need it
-    (Dir[File.join(file_path, '**', '*')] + Dir[File.join(file_path, '**', '.*')]).each do |entry|
-      next unless File.file?(entry)
-      path = url_path_for(entry)
-      Cfs.delay.ensure_fits_for(path)
+    self.each_file_path_in_tree(url_path) do |file_path|
+      Cfs.delay.ensure_fits_for(file_path)
     end
   end
 
@@ -50,11 +46,18 @@ module Cfs
   end
 
   def ensure_basic_assessment_for_tree(url_path)
+    self.each_file_path_in_tree(url_path) do |file_path|
+      Cfs.delay.ensure_basic_assessment_for(file_path)
+    end
+  end
+
+  #find the file path for each file under url_path and yield to block
+  def each_file_path_in_tree(url_path)
     file_path = file_path_for(url_path)
     (Dir[File.join(file_path, '**', '*')] + Dir[File.join(file_path, '**', '.*')]).each do |entry|
       next unless File.file?(entry)
-      path = url_path_for(entry)
-      Cfs.delay.ensure_basic_assessment_for(path)
+      file_path = url_path_for(entry)
+      yield(file_path)
     end
   end
 

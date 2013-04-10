@@ -1,5 +1,7 @@
 require 'net_id_person_associator'
 class Producer < ActiveRecord::Base
+  include ActiveDateChecker
+
   net_id_person_association(:administrator)
 
   attr_accessible :address_1, :address_2, :city, :email, :notes,
@@ -22,12 +24,7 @@ class Producer < ActiveRecord::Base
     self.file_groups.count == 0
   end
 
-  def check_active_dates
-    if self.active_end_date.present? and self.active_start_date.present? and (self.active_end_date < self.active_start_date)
-      errors.add(:active_start_date, 'Start date must not be later than end date.')
-      errors.add(:active_end_date, 'Start date must not be later than end date.')
-    end
-  end
+
 
   def collections
     self.file_groups.includes(:collection).collect {|group| group.collection}.uniq
