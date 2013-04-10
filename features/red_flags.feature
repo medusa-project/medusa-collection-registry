@@ -44,3 +44,12 @@ Feature: Red flags
       | <fits/>  | text/plain   | 100  | 36dc5ffa0b229e9311cf0c4485b21a54 |
     When I update FITS for the cfs path 'dogs/grass.jpg'
     Then the cfs file 'dogs/grass.jpg' should have 3 red flags
+
+  Scenario: A list of red flags is available in the dashboard
+    Given the cfs file info for the path 'dogs/grass.jpg' has red flags with fields:
+      | message       |
+      | Size red flag |
+      | Md5 red flag  |
+    When I go to the dashboard
+    Then I should see all of:
+      | Size red flag | Md5 red flag |

@@ -17,4 +17,12 @@ class CfsFileInfo < ActiveRecord::Base
     end
   end
 
+  def self.cfs_type
+    'CFS File'
+  end
+
+  def cfs_label
+    self.path
+  end
+
 end
