@@ -1,13 +1,13 @@
 module Medusa
   class Parent < Medusa::Object
-    has_relationship "member_of", :is_member_of
-    has_relationship "parts", :is_part_of, :inbound => true
-    has_relationship "children", :is_child_of, :inbound => true
-    has_relationship "child_of", :is_child_of
-    has_relationship "first_child", :is_first_child_of, :inbound => true
-    has_relationship "first_child_of", :is_first_child_of
-    has_relationship "next_sibling", :has_previous_sibling, :inbound => true
-    has_relationship "previous_sibling", :has_previous_sibling
+    belongs_to :member_of, :property => :is_member_of, :class_name => 'Medusa::Set'
+    has_many :parts, :property => :is_part_of, :class_name => 'Medusa::Asset'
+    has_many :children, :property => :is_child_of, :class_name => 'Medusa::Parent'
+    belongs_to :child_of, :property => :is_child_of, :class_name => 'Medusa::Parent'
+    has_many :first_child, :property => :is_first_child_of, :class_name => 'Medusa::Parent'
+    belongs_to :first_child_of, :property => :is_first_child_of, :class_name => 'Medusa::Parent'
+    has_many :next_sibling, :property => :has_previous_sibling, :class_name => 'Medusa::Parent'
+    belongs_to :previous_sibling, :property => :has_previous_sibling, :class_name => 'Medusa::Parent'
 
     def recursive_delete
       self.all_children.reverse.each { |child| child.recursive_delete }

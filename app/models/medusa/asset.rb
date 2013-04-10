@@ -1,6 +1,6 @@
 module Medusa
   class Asset < Medusa::Object
-    has_relationship "part_of", :is_part_of
+    belongs_to :part_of, :property => :is_part_of, :class_name => 'Medusa::Parent'
 
     def recursive_delete
       super

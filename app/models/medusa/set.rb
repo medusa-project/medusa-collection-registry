@@ -1,9 +1,8 @@
 module Medusa
   class Set < Medusa::Object
-    has_relationship "members", :is_member_of, :inbound => true
-    has_relationship "subset_of", :is_subset_of
-    has_relationship "subsets", :is_subset_of, :inbound => true
-    has_relationship "parts", :is_part_of, :inbound => true
+    has_many :members, :property => :is_member_of, :class_name => 'Medusa::Parent'
+    belongs_to :subset_of, :property => :is_subset_of, :class_name => 'Medusa::Set'
+    has_many :subsets, :property => :is_subset_of, :class_name => 'Medusa::Set'
 
     def recursive_delete
       self.all_subsets.each { |subset| subset.recursive_delete }
