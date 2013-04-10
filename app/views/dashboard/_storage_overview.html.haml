@@ -1,7 +1,7 @@
 .row
   .span3
-    %h4 DX-Storage
-    %table
+    %h4.text-center DX-Storage
+    %table.container
       %thead
         %tr
           %th
@@ -12,28 +12,28 @@
         %tr
           %td
             Bit level store(ingested)
-          %td{:align => 'right'}
+          %td.value
             = @storage["bit_level_ingested"]
         %tr
           %td
             Bit level store(total)
-          %td{:align => 'right'}
+          %td.value
             = @storage["bit_level_total"]
         %tr
           %td
             Object level store
-          %td{:align => 'right'}
+          %td.value
             = @storage["object_level_total"]
         %tr
           %td
             Free space
-          %td{:align => 'right'}
+          %td.value
             = @storage["free"]
   .span3
-    %div{:id=>'chart_container1', :class=>'chart_container', :style=>'min-width: 200px; height: 200px; margin: 0 auto'}
+    %div#chart_container1.chart_container
   .span3
-    %h4 Other Storage Target
-    %table
+    %h4.text-center Other Storage Target
+    %table.container
       %thead
         %tr
           %th
@@ -44,22 +44,22 @@
         %tr
           %td
             Bit level store(ingested)
-          %td{:align => 'right'}
+          %td.value
             TBD
         %tr
           %td
             Bit level store(total)
-          %td{:align => 'right'}
+          %td.value
             TBD
         %tr
           %td
             Object level store
-          %td{:align => 'right'}
+          %td.value
             TBD
         %tr
           %td
             Free space
-          %td{:align => 'right'}
+          %td.value
             TBD
   .span3
-    %div{:id=>'chart_container2', :class=>'chart_container', :style=>'min-width: 200px; height: 200px; margin: 0 auto'}
+    %div#chart_container2.chart_container

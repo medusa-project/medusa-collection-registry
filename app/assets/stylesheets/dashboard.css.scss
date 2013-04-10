@@ -1,11 +1,16 @@
 #storage-overview {
-  h4 {
-    text-align: center;
-  }
   table td {
     border: 1px solid black;
   }
   table th {
     border: 1px solid black;
+  }
+  td.value {
+    text-align:  right;
+  }
+  .chart_container {
+    min-width: 200px;
+    height: 200px;
+    margin:  0 auto;
   }
 }
