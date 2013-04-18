@@ -19,6 +19,7 @@ class FileGroup < ActiveRecord::Base
 
   before_validation :ensure_rights_declaration
   after_save :schedule_create_cfs_file_infos
+  before_save :nullify_blank_cfs_root
 
   STORAGE_LEVELS = ['external', 'bit-level store', 'object-level store']
 
@@ -158,6 +159,10 @@ class FileGroup < ActiveRecord::Base
 
   def remove_cfs_file_info_orphans
     CfsFileInfo.remove_orphans(self.cfs_root)
+  end
+
+  def nullify_blank_cfs_root
+    self.cfs_root = nil if self.cfs_root.blank?
   end
 
 end

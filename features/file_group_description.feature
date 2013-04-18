@@ -69,6 +69,7 @@ Feature: File Group description
     And I should see 'Undergrad'
     And I should see 'image/tiff'
     And The collection titled 'Dogs' should have a file group with location 'Undergrad'
+    And the cfs root for the file group named 'My file group' should be nil
 
   Scenario: Navigate to root directory of file group if present
     Given The file group with location 'Main Library' has a root directory

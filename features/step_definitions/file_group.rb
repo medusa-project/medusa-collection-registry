@@ -126,6 +126,10 @@ And /^the file group named '(.*)' should have (\d+) events?$/ do |name, number|
   FileGroup.find_by_name(name).events.length.should == number.to_i
 end
 
+And(/^the cfs root for the file group named '(.*)' should be nil$/) do |name|
+  FileGroup.find_by_name(name).cfs_root.should be_nil
+end
+
 private
 
 def find_file_group(collection_title, location)
