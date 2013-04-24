@@ -72,7 +72,7 @@ Then(/^the file group named '(.*)' should have cfs root '(.*)'$/) do |name, path
 end
 
 Then(/^the cfs file '(.*)' should have size '(\d+)'$/) do |path, size|
-  CfsFileInfo.find_by_path(path).size.to_s.should == size
+  CfsFileInfo.find_by_path(path).size.to_i.should == size.to_i
 end
 
 And(/^the cfs file '(.*)' should have content type '(.*)'$/) do |path, content_type|

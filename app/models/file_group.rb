@@ -165,4 +165,15 @@ class FileGroup < ActiveRecord::Base
     self.cfs_root = nil if self.cfs_root.blank?
   end
 
+  def cfs_update_file_characteristics
+    return unless self.cfs_root
+    self.total_files = self.cfs_file_infos.count
+    self.total_file_size = self.cfs_file_infos.sum(:size) / 1.gigabyte
+    self.save!
+  end
+
+  def cfs_file_infos
+    CfsFileInfo.all_for_path(self.cfs_root) if self.cfs_root
+  end
+
 end

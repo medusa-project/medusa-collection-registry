@@ -19,7 +19,7 @@
         %tr
           %td #{file_group.id}
           %td #{link_to file_group.name, file_group}
-          %td
+          %td #{file_group.storage_level}
           %td #{file_group.file_type_name}
           %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
           %td #{file_group.total_files}

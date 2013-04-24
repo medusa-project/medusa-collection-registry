@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130408223729) do
+ActiveRecord::Schema.define(:version => 20130424222640) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(:version => 20130408223729) do
     t.text     "fits_xml"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
-    t.integer  "size"
+    t.decimal  "size"
     t.string   "md5_sum"
     t.string   "content_type"
   end
