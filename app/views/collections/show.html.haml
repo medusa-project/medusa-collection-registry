@@ -6,50 +6,43 @@
     = @collection.title
     %small Collection
 
-.span3#sidebar
-  .well
-    = show_field @collection, :uuid, 'UUID'
-    = show_field @collection, :start_date
-    = show_field @collection, :end_date
-    = show_value net_id_search_link(@collection.contact_net_id), 'Contact Person NetID'
-    %p
-      %strong Access Systems:
-      %br
-      - if access_systems = @collection.access_systems
-        %ul#access_systems
-          - access_systems.each do |access_system|
-            %li #{link_to access_system.name, access_system}
-    = show_field @collection, :resource_type_names, 'Type of Resource'
-    = show_field @collection, :preservation_priority_name, 'Preservation Priority'
-    = show_field @collection, :total_size, 'Total Size (GB)'
-    = show_field @collection, :description_html, 'Description'
-    = show_field(@collection, :private_description_html, 'Private Description') if logged_in?
-    = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
-    = show_field(@collection, :notes_html, 'Notes') if logged_in?
-    .btn-group
-      = link_to "Back", repository_path(@collection.repository), :class => 'btn'
-      = link_to "Edit", edit_collection_path(@collection), :class => 'btn'
-      = link_to "Delete Collection", collection_path(@collection), :method => "delete", :data => { :confirm => collection_confirm_message}, :class => 'btn btn-danger'
-  %hr
-  .well
-    = render 'show_rights_declaration'
-  %hr
-  .well
-    = render 'show_ingest_status'
+.tabbable
+  = render :partial => 'shared/tab_header', :locals => {:id => 'tab-headers', :tabs => ['about', 'file-manager', 'assessments']}
+  .tab-content
+    #about.tab-pane.active
+      .well
+        = show_field @collection, :uuid, 'UUID'
+        = show_field @collection, :start_date
+        = show_field @collection, :end_date
+        = show_value net_id_search_link(@collection.contact_net_id), 'Contact Person NetID'
+        %p
+          %strong Access Systems:
+          %br
+          - if access_systems = @collection.access_systems
+            %ul#access_systems
+              - access_systems.each do |access_system|
+                %li #{link_to access_system.name, access_system}
+        = show_field @collection, :resource_type_names, 'Type of Resource'
+        = show_field @collection, :preservation_priority_name, 'Preservation Priority'
+        = show_field @collection, :total_size, 'Total Size (GB)'
+        = show_field @collection, :description_html, 'Description'
+        = show_field(@collection, :private_description_html, 'Private Description') if logged_in?
+        = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
+        = show_field(@collection, :notes_html, 'Notes') if logged_in?
+        .btn-group
+          = link_to "Back", repository_path(@collection.repository), :class => 'btn'
+          = link_to "Edit", edit_collection_path(@collection), :class => 'btn'
+          = link_to "Delete Collection", collection_path(@collection), :method => "delete", :data => { :confirm => collection_confirm_message}, :class => 'btn btn-danger'
+      %hr
+      .well
+        = render 'show_rights_declaration'
+      %hr
+      .well
+        = render 'show_ingest_status'
 
-.span9#content
-  %a.toggles{:href=>"#", :rel => "tooltip", :title => "Hide or show the sidebar" }
-    %i.icon-arrow-left
-
-  = render 'assessments_table'
-
-  %hr/
-
-  %h1 File Manager
-
-  %p #{@collection.file_package_summary_html}
-
-  %p #{link_to "Bit root directory", directory_path(@collection.root_directory)}
-
-  = render 'file_groups_table'
-
+    #file-manager.tab-pane
+      %p #{@collection.file_package_summary_html}
+      %p #{link_to "Bit root directory", directory_path(@collection.root_directory)}
+      = render 'file_groups_table'
+    #assessments.tab-pane
+      = render 'assessments_table'
