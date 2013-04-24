@@ -11,8 +11,9 @@ Feature: MODS for collection
     And the collection titled 'Dogs' has resource types named:
       | text | cartographic |
 
-  Scenario: A valid MODS document is fetched for the collection
-    When I view MODS for the collection titled 'Dogs'
+  Scenario: Link from collection show view to MODS
+    When I view the collection titled 'Dogs'
+    And I click on 'Mods'
     Then I should see a valid MODS document
 
   Scenario: The MODS document contains all required fields
