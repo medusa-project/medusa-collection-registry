@@ -1,12 +1,12 @@
 - model_class = Collection
 
-.page-header
-  %p.lead Repository: #{link_to @collection.repository.title, @collection.repository}
-  %h1
-    = @collection.title
-    %small Collection
-
+%div #{link_to @collection.repository.title, @collection.repository} > #{@collection.title}
+%br
+%h1.text-center= @collection.title
 .tabbable
+  .btn-group.pull-right
+    = link_to "Edit", edit_collection_path(@collection), :class => 'btn'
+    = link_to "Delete Collection", collection_path(@collection), :method => "delete", :data => { :confirm => collection_confirm_message}, :class => 'btn btn-danger'
   = render :partial => 'shared/tab_header', :locals => {:id => 'tab-headers', :tabs => ['about', 'file-manager', 'assessments']}
   .tab-content
     #about.tab-pane.active
@@ -29,10 +29,6 @@
         = show_field(@collection, :private_description_html, 'Private Description') if logged_in?
         = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
         = show_field(@collection, :notes_html, 'Notes') if logged_in?
-        .btn-group
-          = link_to "Back", repository_path(@collection.repository), :class => 'btn'
-          = link_to "Edit", edit_collection_path(@collection), :class => 'btn'
-          = link_to "Delete Collection", collection_path(@collection), :method => "delete", :data => { :confirm => collection_confirm_message}, :class => 'btn btn-danger'
       %hr
       .well
         = render 'show_rights_declaration'
