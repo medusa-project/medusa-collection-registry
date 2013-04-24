@@ -17,7 +17,7 @@ Feature: File Group Management
     When I view the collection titled 'Dogs'
     Then I should see the file group collection table
     And I should see all of:
-      | images | texts | Main Library | Grainger | 1200 | 2400 |
+      | images | texts | 1200 | 2400 |
 
   Scenario: Delete file group from collection
     When I view the collection titled 'Dogs'
