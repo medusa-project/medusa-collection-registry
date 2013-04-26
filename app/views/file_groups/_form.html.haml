@@ -1,4 +1,5 @@
-= simple_form_for @file_group, :html => {:class => 'form-horizontal'} do |f|
+- url, method = @file_group.new_record? ? [file_groups_path(@file_group), :post] : [file_group_path(@file_group), :put]
+= simple_form_for :file_group, :url => url, :method => method, :html => {:class => 'form-horizontal'} do |f|
   .row
     = render :partial => 'sidebar', :locals => {:f => f}
     .span9
@@ -8,7 +9,10 @@
           #base.tab-pane.active
             = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
             = f.input :name
-            = f.input :storage_level, :as => :select, :include_blank => false, :collection => FileGroup::STORAGE_LEVELS
+            - if @file_group.new_record?
+              = f.input :storage_level, :as => :select, :include_blank => false, :collection => FileGroup::STORAGE_LEVELS
+            - else
+              = f.input :storage_level, :disabled => true
             = f.input :producer_id, :collection => producers_select_collection
             = f.input :file_type_id, :collection => file_types_select_collection
             = f.input :external_file_location

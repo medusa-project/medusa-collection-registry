@@ -1,10 +1,11 @@
+- submit_label = @file_group.new_record? ? 'Create File group' : 'Update File group'
 -#Must pass form variable f
 .span3
   %div
-    %p= f.button :submit, :class => 'btn-primary'
+    %p= f.button :submit, :class => 'btn-primary', :value => submit_label
   %div
     %p
       - if @file_group.new_record?
         = link_to("Back to #{@collection.title}", @collection, :class => 'btn')
       - else
-        = link_to(t('.cancel', :default => t('helpers.links.cancel')), @file_group, :class => 'btn')
+        = link_to(t('.cancel', :default => t('helpers.links.cancel')), file_group_path(@file_group), :class => 'btn')

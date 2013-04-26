@@ -3,9 +3,9 @@ class FileGroup < ActiveRecord::Base
 
   attr_accessible :collection_id, :external_file_location,
                   :producer_id, :file_type_id, :summary, :provenance_note,
-                  :collection_attributes, :rights_declaration_attributes,
-                  :name, :storage_level, :staged_file_location, :total_file_size,
+                  :name, :staged_file_location, :total_file_size,
                   :file_format, :total_files, :related_file_group_ids, :cfs_root
+
   belongs_to :collection
   belongs_to :producer
   belongs_to :file_type
@@ -14,19 +14,20 @@ class FileGroup < ActiveRecord::Base
   has_many :assessments, :as => :assessable, :dependent => :destroy
   has_many :related_file_group_joins, :dependent => :destroy
   has_many :related_file_groups, :through => :related_file_group_joins, :order => 'name'
-  accepts_nested_attributes_for :collection, :rights_declaration
   has_many :events, :as => :eventable, :dependent => :destroy, :order => 'created_at DESC'
 
   before_validation :ensure_rights_declaration
   after_save :schedule_create_cfs_file_infos
   before_save :nullify_blank_cfs_root
 
-  STORAGE_LEVELS = ['external', 'bit-level store', 'object-level store']
-
   validates_uniqueness_of :root_directory_id, :allow_nil => true
   validates_uniqueness_of :cfs_root, :allow_blank => true
   validates_presence_of :name
-  validates_inclusion_of :storage_level, :in => STORAGE_LEVELS
+
+  STORAGE_LEVEL_HASH = {'ExternalFileGroup' => 'external',
+                        'BitLevelFileGroup' => 'bit-level store',
+                        'ObjectLevelFileGroup' => 'object-level store'}
+  STORAGE_LEVELS = STORAGE_LEVEL_HASH.values
 
   def file_type_name
     self.file_type.try(:name)
@@ -34,6 +35,11 @@ class FileGroup < ActiveRecord::Base
 
   def label
     self.name
+  end
+
+  #subclasses should override appropriately - this is blank here to facilitate the form
+  def storage_level
+    ''
   end
 
   #set the file group ids, making sure any removed ids have their joins and the

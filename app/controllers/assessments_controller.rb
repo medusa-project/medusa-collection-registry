@@ -1,10 +1,11 @@
 class AssessmentsController < ApplicationController
 
   before_filter :find_assessment_and_assessable, :only => [:destroy, :show, :edit, :update]
+  helper :assessments
 
   def destroy
     @assessment.destroy
-    redirect_to @assessable
+    redirect_to_assessable(@assessable)
   end
 
   def show
@@ -55,10 +56,19 @@ class AssessmentsController < ApplicationController
     case assessable_type_name
       when 'Collection'
         Collection
-      when 'FileGroup'
+      when 'FileGroup', 'ExternalFileGroup', 'BitLevelFileGroup', 'ObjectLevelFileGroup'
         FileGroup
       else
         raise RuntimeError, 'Unrecognized assessable type'
+    end
+  end
+
+  def redirect_to_assessable(assessable)
+    case assessable
+      when FileGroup
+        redirect_to file_group_path(assessable)
+      else
+        redirect_to assessable
     end
   end
 

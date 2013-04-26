@@ -23,10 +23,12 @@ class FileGroupsController < ApplicationController
   end
 
   def update
-    if @file_group.update_attributes(params[:file_group])
-      redirect_to file_group_path(@file_group)
-    else
-      render 'edit'
+    handling_nested_collection_and_rights_declaration(params[:file_group]) do
+      if @file_group.update_attributes(params[:file_group])
+        redirect_to file_group_path(@file_group)
+      else
+        render 'edit'
+      end
     end
   end
 
@@ -38,11 +40,14 @@ class FileGroupsController < ApplicationController
 
   def create
     @collection = Collection.find(params[:file_group][:collection_id])
-    @file_group = FileGroup.new(params[:file_group])
-    if @file_group.save
-      redirect_to file_group_path(@file_group)
-    else
-      render 'new'
+    klass = determine_creation_class(params[:file_group])
+    handling_nested_collection_and_rights_declaration(params[:file_group]) do
+      @file_group = klass.new(params[:file_group])
+      if @file_group.save
+        redirect_to file_group_path(@file_group)
+      else
+        render 'new'
+      end
     end
   end
 
@@ -85,6 +90,24 @@ class FileGroupsController < ApplicationController
     related_file_group_notes = params[:file_group].delete(:related_file_group_notes)
     yield
     @file_group.symmetric_update_related_file_groups(related_file_group_ids.reject { |id| id.blank? }, related_file_group_notes)
+  end
+
+  #Ideally we'd handle this with nested attributes, but I can't seem to get the combination of STI on the file group
+  #and nested attributes to work correctly, so here we are. It's not too bad since the file group will already exist
+  #and is guaranteed to have both a collection and rights declaration, making both of those just updates.
+  def handling_nested_collection_and_rights_declaration(params)
+    collection_params = params.delete(:collection)
+    rights_params = params.delete(:rights_declaration)
+    FileGroup.transaction do
+      yield
+      @file_group.collection.update_attributes!(collection_params)
+      @file_group.rights_declaration.update_attributes!(rights_params)
+    end
+  end
+
+  def determine_creation_class(params)
+    storage_level = params.delete(:storage_level)
+    Kernel.const_get(FileGroup::STORAGE_LEVEL_HASH.detect { |k, v| v == storage_level }.first)
   end
 
 end

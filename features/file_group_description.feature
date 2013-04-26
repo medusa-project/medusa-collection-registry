@@ -9,9 +9,9 @@ Feature: File Group description
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | summary          | provenance_note     | name   | storage_level | staged_file_location |
-      | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | external      | staging_dir/images   |
-      | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | external      | staging_dir/texts    |
+      | external_file_location | file_format | total_file_size | total_files | summary          | provenance_note     | name   | staged_file_location |
+      | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   |
+      | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | staging_dir/texts    |
 
   Scenario: View a file group
     When I view the file group with location 'Main Library' for the collection titled 'Dogs'
@@ -26,13 +26,12 @@ Feature: File Group description
       | Provenance Note      | Changed provenance |
       | Name                 | pictures           |
       | Staged file location | staging_dir/pics   |
-    And I select 'bit-level store' from 'Storage level'
     And I press 'Update File group'
     Then I should be on the view page for the file group with location 'Main Library' for the collection titled 'Dogs'
     And I should see all of:
-      | 1300 | Changed summary | Changed provenance | pictures | bit-level store | staging_dir/pics |
+      | 1300 | Changed summary | Changed provenance | pictures | staging_dir/pics |
     And I should see none of:
-      | 1200 | main summary | main provenance | images | external | staging_dir/pictures |
+      | 1200 | main summary | main provenance | images | staging_dir/pictures |
 
   Scenario: Edit a file group and see owning repository and collection
     When I edit the file group with location 'Main Library' for the collection titled 'Dogs'

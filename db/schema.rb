@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130424222640) do
+ActiveRecord::Schema.define(:version => 20130426151142) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -191,14 +191,15 @@ ActiveRecord::Schema.define(:version => 20130424222640) do
     t.text     "provenance_note"
     t.integer  "root_directory_id"
     t.string   "name"
-    t.string   "storage_level"
     t.string   "staged_file_location"
     t.string   "cfs_root"
+    t.string   "type"
   end
 
   add_index "file_groups", ["cfs_root"], :name => "index_file_groups_on_cfs_root", :unique => true
   add_index "file_groups", ["file_type_id"], :name => "index_file_groups_on_file_type_id"
   add_index "file_groups", ["root_directory_id"], :name => "index_file_groups_on_root_directory_id", :unique => true
+  add_index "file_groups", ["type"], :name => "index_file_groups_on_type"
 
   create_table "file_types", :force => true do |t|
     t.string   "name"
