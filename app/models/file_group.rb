@@ -17,7 +17,6 @@ class FileGroup < ActiveRecord::Base
   has_many :events, :as => :eventable, :dependent => :destroy, :order => 'created_at DESC'
 
   before_validation :ensure_rights_declaration
-  after_save :schedule_create_cfs_file_infos
   before_save :nullify_blank_cfs_root
 
   validates_uniqueness_of :root_directory_id, :allow_nil => true
@@ -77,9 +76,7 @@ class FileGroup < ActiveRecord::Base
   end
 
   def clone_collection_rights_declaration
-    collection_rights = self.collection.rights_declaration
-    self.build_rights_declaration(:rights_basis => collection_rights.rights_basis, :copyright_jurisdiction => collection_rights.copyright_jurisdiction,
-                                  :copyright_statement => collection_rights.copyright_statement, :access_restrictions => collection_rights.access_restrictions)
+    self.build_rights_declaration(self.collection.rights_declaration.attributes.slice(:rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions))
   end
 
   def self.aggregate_size

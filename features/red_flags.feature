@@ -9,8 +9,8 @@ Feature: Red flags
     And there is a cfs directory 'dogs'
     And the cfs directory 'dogs' contains cfs fixture file 'grass.jpg'
     And the collection titled 'Dogs' has file groups with fields:
-      | name     |
-      | pictures |
+      | name     | type              |
+      | pictures | BitLevelFileGroup |
     And I set the cfs root of the file group named 'pictures' to 'dogs'
 
   Scenario: A file with basic properties but no FITS replaces the content-type without red flags

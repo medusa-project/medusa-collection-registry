@@ -8,8 +8,8 @@ Feature: CFS basic properties
     And I clear the cfs root directory
     And there is a cfs directory 'dogs/toy-dogs'
     And the collection titled 'Dogs' has file groups with fields:
-      | name |
-      | Toys |
+      | name | type              |
+      | Toys | BitLevelFileGroup |
     And the cfs directory 'dogs/toy-dogs' has a file 'stuff.txt' with contents 'Toy dog stuff'
 
   Scenario: Setting CFS directory for a file group runs basic file properties on owned files
