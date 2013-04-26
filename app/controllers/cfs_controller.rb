@@ -80,7 +80,7 @@ class CfsController < ApplicationController
   #I don't know an efficient way to do this, as the paths we have here will generally
   #be longer than the cfs_roots of file groups.
   def setup_file_group(path)
-    @file_group = FileGroup.for_cfs_path(path)
+    @file_group = BitLevelFileGroup.for_cfs_path(path)
   end
 
   def remove_path_level(path)

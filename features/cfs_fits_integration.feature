@@ -8,8 +8,8 @@ Feature: CFS FITS integration
     And I clear the cfs root directory
     And there is a cfs directory 'dogs/toy-dogs'
     And the collection titled 'Dogs' has file groups with fields:
-      | name |
-      | Toys |
+      | name | type              |
+      | Toys | BitLevelFileGroup |
     And the file group named 'Toys' has cfs root 'dogs/toy-dogs'
     And the cfs directory 'dogs/toy-dogs' has files:
       | text.txt |

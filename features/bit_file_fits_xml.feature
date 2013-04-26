@@ -33,12 +33,12 @@ Feature: Bit file FITS XML
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | external_file_location | name   |
-      | Grainger               | texts  |
+      | external_file_location | name  | type              |
+      | Grainger               | texts | BitLevelFileGroup |
     And the file group named 'texts' has a root directory named 'dog-texts'
     And the directory named 'dog-texts' has bit files with fields:
-      |name|dx_ingested|
-      |dog-text.txt|true|
+      | name         | dx_ingested |
+      | dog-text.txt | true        |
     When I view the file group with location 'Grainger' for the collection titled 'Dogs'
     And I click on 'Create All FITS XML'
     Then I should be on the view page for the file group with location 'Grainger' for the collection titled 'Dogs'
