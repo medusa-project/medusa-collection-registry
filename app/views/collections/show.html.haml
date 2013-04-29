@@ -8,9 +8,9 @@
     = link_to "Mods", collection_path(@collection, :format => :xml), :class => 'btn'
     = link_to "Edit", edit_collection_path(@collection), :class => 'btn'
     = link_to "Delete Collection", collection_path(@collection), :method => "delete", :data => { :confirm => collection_confirm_message}, :class => 'btn btn-danger'
-  = render :partial => 'shared/tab_header', :locals => {:id => 'tab-headers', :tabs => ['about', 'file-manager', 'assessments']}
+  = render :partial => 'shared/tab_header', :locals => {:id => 'tab-headers', :tabs => ['about', 'file-manager', 'assessments'], :active_index => 1}
   .tab-content
-    #about.tab-pane.active
+    #about.tab-pane
       .well
         = show_field @collection, :uuid, 'UUID'
         = show_field @collection, :start_date
@@ -37,7 +37,7 @@
       .well
         = render 'show_ingest_status'
 
-    #file-manager.tab-pane
+    #file-manager.tab-pane.active
       %p #{@collection.file_package_summary_html}
       %p #{link_to "Bit root directory", directory_path(@collection.root_directory)}
       = render 'file_groups_table'
