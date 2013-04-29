@@ -55,3 +55,12 @@ Feature: File Group Management
       | Name | text |
     And I click on 'Create File group'
     Then the file groups named 'images' and 'text' should be related
+
+  Scenario: See and navigate to a related file group
+    Given the collection titled 'Dogs' has file groups with fields:
+      | name |
+      | text |
+    And the file groups named 'images' and 'text' are related with note 'text created from images'
+    When I view the collection titled 'Dogs'
+    And I click on 'text created from images'
+    Then I should be on the view page for the file group named 'text'

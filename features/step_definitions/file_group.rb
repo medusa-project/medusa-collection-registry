@@ -103,6 +103,15 @@ And /^the file groups named '(.*)' and '(.*)' are related$/ do |name_1, name_2|
   file_group_1.related_file_groups << file_group_2
 end
 
+And /^the file groups named '(.*)' and '(.*)' are related with note '(.*)'$/ do |name_1, name_2, note|
+  file_group_1 = FileGroup.find_by_name(name_1)
+  file_group_2 = FileGroup.find_by_name(name_2)
+  file_group_1.related_file_groups << file_group_2
+  relation = RelatedFileGroupJoin.where(:file_group_id => file_group_1.id, :related_file_group_id => file_group_2.id).first
+  relation.note = note
+  relation.save!
+end
+
 And /^the file groups named '(.*)' and '(.*)' should be related$/ do |name_1, name_2|
   file_group_1 = FileGroup.find_by_name(name_1)
   file_group_2 = FileGroup.find_by_name(name_2)
