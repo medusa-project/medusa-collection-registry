@@ -45,7 +45,7 @@ class FileGroup < ActiveRecord::Base
   #symmetric joins both destroyed
   def symmetric_update_related_file_groups(related_ids, notes)
     current_related_file_groups = self.related_file_groups
-    new_related_file_groups = self.class.find(related_ids)
+    new_related_file_groups = FileGroup.find(related_ids)
     (current_related_file_groups - new_related_file_groups).each do |deleted_file_group|
       join = related_file_group_join(deleted_file_group)
       join.destroy if join

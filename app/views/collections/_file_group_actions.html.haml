@@ -1,0 +1,19 @@
+.event-actions
+  %strong Events:
+  = link_to 'View All', events_file_group_path(file_group)
+  |
+  = link_to 'Add New', "#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', :role => 'button'
+  = render 'add_event_to_file_group_form', :file_group => file_group
+.assessment-actions
+  %strong Assessments:
+  = link_to 'View All', file_group_path(file_group)
+  |
+  = link_to 'Add New', new_assessment_path(:assessable_id => file_group.id, :assessable_type => file_group.class.name)
+.related-file-group-actions
+  %strong Related File groups:
+  = link_to 'Add New', new_file_group_path(:collection_id => @collection.id, :related_file_group_id => file_group.id)
+- case file_group
+  - when BitLevelFileGroup
+    .fits-actions
+      %strong FITS
+      = link_to 'Run', create_all_fits_file_group_path(file_group), :method => 'post', :remote => 'true'
