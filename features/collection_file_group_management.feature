@@ -64,3 +64,12 @@ Feature: File Group Management
     When I view the collection titled 'Dogs'
     And I click on 'text created from images'
     Then I should be on the view page for the file group named 'text'
+
+  Scenario: Navigate to files of a bit level file group
+    Given the collection titled 'Dogs' has file groups with fields:
+      | name | type              |
+      | bit  | BitLevelFileGroup |
+    And the file group named 'bit' has cfs root 'bit/path'
+    When I view the collection titled 'Dogs'
+    And I click on 'View files'
+    Then I should be viewing the cfs directory 'bit/path'
