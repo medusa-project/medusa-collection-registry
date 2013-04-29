@@ -40,6 +40,12 @@ And /^I click on '(.*)' in the file groups table$/ do |button|
   end
 end
 
+When(/^I click on '(.*)' in the event actions$/) do |link|
+  within('.event-actions') do
+    click_on(link)
+  end
+end
+
 When /^I start a new collection for the repository titled '(.*)'$/ do |title|
   steps %Q( When I view the repository titled '#{title}'
             And I click on 'Add Collection')

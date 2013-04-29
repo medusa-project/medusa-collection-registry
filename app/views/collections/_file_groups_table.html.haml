@@ -25,5 +25,10 @@
           %td #{file_group.total_files}
           %td #{file_group.total_file_size}
           %td
+            .event-actions
+              %strong Events:
+              = link_to 'View All', events_file_group_path(file_group)
+              |
+              = link_to 'Add New', 'ack'
 
 

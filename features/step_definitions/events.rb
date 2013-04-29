@@ -16,3 +16,7 @@ end
 And /^I should see the events table$/ do
   page.should have_selector('table#events')
 end
+
+Then(/^I should be creating an event for the file group named '(.*)'$/) do |name|
+  pending # express the regexp above with the code you wish you had
+end

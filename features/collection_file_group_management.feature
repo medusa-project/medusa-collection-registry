@@ -11,13 +11,12 @@ Feature: File Group Management
     And the collection titled 'Dogs' has file groups with fields:
       | external_file_location | file_format | total_file_size | total_files | name   |
       | Main Library           | image/jpeg  | 100             | 1200        | images |
-      | Grainger               | text/xml    | 4               | 2400        | texts  |
 
   Scenario: View file groups of a collection
     When I view the collection titled 'Dogs'
     Then I should see the file group collection table
     And I should see all of:
-      | images | texts | 1200 | 2400 |
+      | images | 1200 |
 
   Scenario: Navigate to file group
     When I view the collection titled 'Dogs'
@@ -27,3 +26,15 @@ Feature: File Group Management
   Scenario: See id of file group in table
     When I view the collection titled 'Dogs'
     Then I should see the file group id for the file group with location 'Main Library' in the file group collection table
+
+  Scenario: View file group events
+    When I view the collection titled 'Dogs'
+    And I click on 'View All' in the event actions
+    Then I should be on the events page for the file group named 'images'
+
+  Scenario: Add file group event
+    When I view the collection titled 'Dogs'
+    And I click on 'Add New' in the event actions
+    Then I should be creating an event for the file group named 'images'
+
+
