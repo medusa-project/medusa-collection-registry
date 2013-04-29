@@ -1,7 +1,7 @@
 Feature: File Group Management
   In order to manage File Groups connected with a collection
   As a librarian
-  I want to create and delete File Groups for a collection
+  I want to operate on file groups from the collection view
 
   Background:
     Given I am logged in as an admin
