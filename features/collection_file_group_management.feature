@@ -47,3 +47,11 @@ Feature: File Group Management
     When I view the collection titled 'Dogs'
     And I click on 'Add New' in the assessment actions
     Then I should be on the new assessment page
+
+  Scenario: Create related file group
+    When I view the collection titled 'Dogs'
+    And I click on 'Add New' in the related-file-group actions
+    And I fill in fields:
+      | Name | text |
+    And I click on 'Create File group'
+    Then the file groups named 'images' and 'text' should be related

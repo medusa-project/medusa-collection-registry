@@ -36,3 +36,6 @@
               = link_to 'View All', file_group_path(file_group)
               |
               = link_to 'Add New', new_assessment_path(:assessable_id => file_group.id, :assessable_type => file_group.class.name)
+            .related-file-group-actions
+              %strong Related File groups:
+              = link_to 'Add New', new_file_group_path(:collection_id => @collection.id, :related_file_group_id => file_group.id)

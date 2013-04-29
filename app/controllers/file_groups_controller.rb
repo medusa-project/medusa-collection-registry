@@ -36,6 +36,7 @@ class FileGroupsController < ApplicationController
     @collection = Collection.find(params[:collection_id])
     @file_group = FileGroup.new(:collection_id => @collection.id)
     @file_group.rights_declaration = @file_group.clone_collection_rights_declaration
+    @related_file_group_id = params[:related_file_group_id]
   end
 
   def create

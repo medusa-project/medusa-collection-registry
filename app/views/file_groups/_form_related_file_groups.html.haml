@@ -15,7 +15,7 @@
               %input.check_boxes.optional{:id => "file_group_related_file_group_ids_#{related_file_group.id}",
                                           :value => related_file_group.id, :type => 'checkbox',
                                           :name => "file_group[related_file_group_ids][]",
-                                          :checked => @file_group.related_to?(related_file_group)}
+                                          :checked => (@file_group.related_to?(related_file_group) or related_file_group.id.to_s == @related_file_group_id)}
               #{related_file_group.name}
           .span4
             %label.text
