@@ -29,6 +29,8 @@
               %strong Events:
               = link_to 'View All', events_file_group_path(file_group)
               |
-              = link_to 'Add New', 'ack'
+              = link_to 'Add Event', "#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', :role => 'button'
+  - @collection.file_groups.each do |file_group|
+    = render 'add_event_to_file_group_form', :file_group => file_group
 
 
