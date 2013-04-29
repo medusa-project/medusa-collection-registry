@@ -13,7 +13,7 @@
         %th Producer
         %th Total files
         %th Total file size (GB)
-        %th
+        %th Actions
     %tbody
       - @collection.file_groups.each do |file_group|
         %tr
@@ -25,7 +25,5 @@
           %td #{file_group.total_files}
           %td #{file_group.total_file_size}
           %td
-            = link_to 'View', file_group_path(file_group), :class => 'btn btn-mini'
-            = link_to 'Edit', edit_file_group_path(file_group), :class => 'btn btn-mini'
-            = link_to 'Delete', file_group_path(file_group), :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-mini btn-danger'
+
 

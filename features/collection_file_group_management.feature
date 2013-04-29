@@ -19,21 +19,10 @@ Feature: File Group Management
     And I should see all of:
       | images | texts | 1200 | 2400 |
 
-  Scenario: Delete file group from collection
-    When I view the collection titled 'Dogs'
-    And I click on 'Delete' in the file groups table
-    Then I should be on the view page for the collection titled 'Dogs'
-    And the collection titled 'Dogs' should have 1 file group
-
   Scenario: Navigate to file group
     When I view the collection titled 'Dogs'
-    And I click on 'View' in the file groups table
+    And I click on 'images' in the file groups table
     Then I should be on the view page for the file group with location 'Main Library' for the collection titled 'Dogs'
-
-  Scenario: Edit file group from collection
-    When I view the collection titled 'Dogs'
-    And I click on 'Edit' in the file groups table
-    Then I should be on the edit page for the file group with location 'Main Library' for the collection titled 'Dogs'
 
   Scenario: See id of file group in table
     When I view the collection titled 'Dogs'
