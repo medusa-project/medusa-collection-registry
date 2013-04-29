@@ -35,6 +35,15 @@ Feature: File Group Management
   Scenario: Add file group event
     When I view the collection titled 'Dogs'
     And I click on 'Add New' in the event actions
-    Then I should be creating an event for the file group named 'images'
+    And I submit the new event form on the collection view page
+    Then the file group named 'images' should have 1 events
 
+  Scenario: View file group assessments
+    When I view the collection titled 'Dogs'
+    And I click on 'View All' in the assessment actions
+    Then I should be on the view page for the file group named 'images'
 
+  Scenario: Create new assessment
+    When I view the collection titled 'Dogs'
+    And I click on 'Add New' in the assessment actions
+    Then I should be on the new assessment page

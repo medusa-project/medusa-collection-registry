@@ -73,8 +73,13 @@ class FileGroupsController < ApplicationController
   end
 
   def new_event
+    no_redirect = params[:event].delete(:no_redirect)
     @file_group.events.create(params[:event].merge(:user_id => current_user.id))
-    redirect_to file_group_path(@file_group)
+    if no_redirect
+      redirect_to :back
+    else
+      redirect_to file_group_path(@file_group)
+    end
   end
 
   protected

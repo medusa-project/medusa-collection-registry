@@ -40,8 +40,8 @@ And /^I click on '(.*)' in the file groups table$/ do |button|
   end
 end
 
-When(/^I click on '(.*)' in the event actions$/) do |link|
-  within('.event-actions') do
+When(/^I click on '(.*)' in the (.*) actions$/) do |link, section|
+  within(".#{section}-actions") do
     click_on(link)
   end
 end
@@ -130,6 +130,12 @@ end
 
 Then /^The collection titled '(.*)' should have a valid UUID$/ do |title|
   Utils::Luhn.verify(Collection.find_by_title(title).uuid).should be_true
+end
+
+And(/^I submit the new event form on the collection view page$/) do
+  within('.event-actions') do
+    click_on 'Create Event'
+  end
 end
 
 private
