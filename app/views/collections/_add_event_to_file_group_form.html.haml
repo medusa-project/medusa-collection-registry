@@ -1,6 +1,6 @@
 -# Must pass in file_group
 .modal.hide.fade{:id => "add-event-file-group-#{file_group.id}"}
-  = simple_form_for Event.new, :url => new_event_file_group_path(file_group),:html => {:class => 'form-search', :id => 'event-form'} do |f|
+  = simple_form_for Event.new, :url => new_event_file_group_path(file_group),:html => {:class => 'form-search', :id => 'event-form'}, :remote => true do |f|
     .modal-header
       %button{:type => "button", :class => "close", 'data-dismiss' => 'modal', 'aria-hidden' => 'true'}
         ×
@@ -8,7 +8,6 @@
     .modal-body
       = f.input :key, :as => :select, :include_blank => false, :collection => file_group.supported_event_hash.invert, :label => 'Event'
       = f.input :note, :input_html => {:class => 'span5'}
-      = f.hidden_field :no_redirect, :value => 'no-redirect'
     .modal-footer
       %button{:class => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Cancel
       = f.button :submit, :class => 'btn-primary', 'data-hide' => 'modal'
