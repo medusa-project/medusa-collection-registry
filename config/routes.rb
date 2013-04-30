@@ -29,6 +29,8 @@ MedusaRails3::Application.routes.draw do
       get 'create_fits_xml'
     end
   end
+  resources :virus_scans
+
 
   #cfs (i.e. server local filesystem)
   get '/cfs/show/*path' => 'cfs#show', format: false, as: :cfs_show

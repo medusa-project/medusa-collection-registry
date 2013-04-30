@@ -19,4 +19,7 @@
       = link_to 'Run', create_all_fits_file_group_path(file_group), :method => 'post', :remote => 'true'
     .virus-scan-actions
       %strong Virus Scan
+      - if file_group.virus_scans.present?
+        = link_to 'View Latest', virus_scan_path(file_group.virus_scans.order('created_at desc').first)
+        |
       = link_to 'Run', create_virus_scan_file_group_path(file_group), :method => 'post', :remote => 'true'

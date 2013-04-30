@@ -1,0 +1,11 @@
+%div
+  File Group: #{link_to @virus_scan.file_group.name, file_group_path(@virus_scan.file_group)}
+
+- other_scans = @virus_scan.file_group.virus_scans.order('created_at desc').all - [@virus_scan]
+- if other_scans.present?
+  %div
+    Other scans:
+    = other_scans.collect {|scan| link_to scan.created_at.to_date.to_s, virus_scan_path(scan)}.join(' | ')
+
+%pre
+  = @virus_scan.scan_result

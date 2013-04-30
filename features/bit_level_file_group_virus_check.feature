@@ -21,3 +21,12 @@ Feature: Bit Level File Group virus check
     And I click on 'Run' in the virus-scan actions
     Then the file group named 'images' should have 1 virus scan attached
     And the cfs file 'dogs/images/clam.exe' should have 1 red flags
+
+  Scenario: View results of a virus check
+    When I view the collection titled 'Dogs'
+    And I click on 'Run' in the virus-scan actions
+    And I view the collection titled 'Dogs'
+    And I click on 'View Latest' in the virus-scan actions
+    Then I should see 'images'
+    And I should see all of:
+      | Infected files: 1 | Scanned files: 2 | dogs/images/clam.exe: ClamAV-Test-File FOUND |
