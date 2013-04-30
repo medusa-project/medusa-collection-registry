@@ -88,6 +88,7 @@ Then(/^I should be on the fits info page for the cfs file '(.*)'$/) do |path|
 end
 
 And(/^the cfs directory '(.*)' contains cfs fixture file '(.*)'$/) do |path, fixture|
+  FileUtils.mkdir_p(Cfs.file_path_for(path))
   FileUtils.copy_file(File.join(Rails.root, 'features', 'fixtures', fixture),
                       cfs_local_path(path, fixture))
 end

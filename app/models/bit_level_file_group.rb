@@ -1,5 +1,6 @@
 class BitLevelFileGroup < FileGroup
   after_save :schedule_create_cfs_file_infos
+  has_many :virus_scans, :dependent => :destroy, :foreign_key => :file_group_id
 
   def storage_level
     'bit-level store'

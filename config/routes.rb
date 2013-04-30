@@ -15,6 +15,7 @@ MedusaRails3::Application.routes.draw do
       post 'create_cfs_fits'
       get 'events'
       post 'new_event'
+      post 'create_virus_scan'
     end
   end
   resources :producers

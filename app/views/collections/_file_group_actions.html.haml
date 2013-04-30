@@ -17,3 +17,6 @@
     .fits-actions
       %strong FITS
       = link_to 'Run', create_all_fits_file_group_path(file_group), :method => 'post', :remote => 'true'
+    .virus-scan-actions
+      %strong Virus Scan
+      = link_to 'Run', create_virus_scan_file_group_path(file_group), :method => 'post', :remote => 'true'

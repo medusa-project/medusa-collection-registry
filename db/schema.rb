@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130426151142) do
+ActiveRecord::Schema.define(:version => 20130430184832) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -338,5 +338,14 @@ ActiveRecord::Schema.define(:version => 20130426151142) do
   end
 
   add_index "users", ["uid"], :name => "index_users_on_uid"
+
+  create_table "virus_scans", :force => true do |t|
+    t.integer  "file_group_id"
+    t.text     "scan_result"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "virus_scans", ["file_group_id"], :name => "index_virus_scans_on_file_group_id"
 
 end

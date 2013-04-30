@@ -1,7 +1,7 @@
 class FileGroupsController < ApplicationController
 
   before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update, :create_all_fits,
-                                                           :new_event, :create_cfs_fits]
+                                                           :new_event, :create_cfs_fits, :create_virus_scan]
   skip_before_filter :require_logged_in, :only => [:show, :index]
   skip_before_filter :authorize, :only => [:show, :index]
   around_filter :handle_related_file_groups, :only => [:update, :create]
@@ -70,6 +70,16 @@ class FileGroupsController < ApplicationController
       flash[:notice] = "Scheduling FITS creation for /#{@file_group.cfs_root}"
       redirect_to file_group_path(@file_group)
     end
+  end
+
+  def create_virus_scan
+    if @file_group.cfs_root.present?
+      @alert = "Running virus scan on cfs directory #{@file_group.cfs_root}."
+      VirusScan.check_file_group(@file_group)
+    else
+      @alert = 'Selected File Group does not have a cfs root directory'
+    end
+    respond_to {|format| format.js}
   end
 
   def events
