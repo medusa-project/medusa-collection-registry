@@ -16,7 +16,12 @@ class CfsController < ApplicationController
 
   def fits_info
     info = CfsFileInfo.find_by_path(params[:path])
-    render :xml => info.fits_xml
+    if info.fits_xml.present?
+      render :xml => info.fits_xml
+    else
+      render :text => "Fits XML not present for cfs file #{info.path}"
+    end
+
   end
 
   def create_fits_info

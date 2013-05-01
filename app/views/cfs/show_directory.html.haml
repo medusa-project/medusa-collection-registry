@@ -34,7 +34,7 @@
         %td= file[:stat].size
         %td= file[:stat].mtime
         %td
-          - if cfs_file_info = CfsFileInfo.find_by_path(file[:path])
+          - if cfs_file_info = CfsFileInfo.find_by_path(file[:path]) and cfs_file_info.fits_xml
             = link_to 'View XML', cfs_fits_info_path(:path => file[:path])
           - else
             = link_to 'Create XML', cfs_create_fits_info_path(:path => file[:path], method: 'post')
