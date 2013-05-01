@@ -75,7 +75,7 @@ class FileGroupsController < ApplicationController
   def create_virus_scan
     if @file_group.cfs_root.present?
       @alert = "Running virus scan on cfs directory #{@file_group.cfs_root}."
-      VirusScan.check_file_group(@file_group)
+      VirusScan.delay.check_file_group(@file_group)
     else
       @alert = 'Selected File Group does not have a cfs root directory'
     end
