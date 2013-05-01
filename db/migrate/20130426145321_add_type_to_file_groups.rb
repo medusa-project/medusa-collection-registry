@@ -3,7 +3,7 @@ class AddTypeToFileGroups < ActiveRecord::Migration
     add_column :file_groups, :type, :string
     add_index :file_groups, :type
     FileGroup.all.each do |fg|
-      type = case fg.storage_level
+      type = case fg.attributes['storage_level']
         when 'external'
           'ExternalFileGroup'
         when 'bit-level store'
