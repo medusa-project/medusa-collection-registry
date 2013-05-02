@@ -19,6 +19,10 @@ Then /^The dashboard should have a storage overview section$/ do
   page.should have_selector('#storage-overview')
 end
 
+Then(/^The dashboard should have an external storage table$/) do
+  page.should have_selector('#external-storage-overview')
+end
+
 When /^I go to the dashboard$/ do
   visit dashboard_path
 end

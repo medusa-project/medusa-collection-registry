@@ -13,6 +13,33 @@ Feature: Collection Registry Dashboard
     And The dashboard should have a file statistics section
     And The dashboard should have a red flags section
 
+  Scenario: External storage summary table
+    When I go to the dashboard
+    Then The dashboard should have an external storage table
+
+  Scenario: External storage summary
+    Given the repository titled 'Animals' has collections with fields:
+      | title |
+      | Dogs  |
+      | Cats  |
+    And the collection titled 'Dogs' has file groups with fields:
+      | name   | total_files | total_file_size | type              |
+      | Hounds | 1000        | 10              | ExternalFileGroup |
+      | Toys   | 2000        | 20              | ExternalFileGroup |
+    And the collection titled 'Cats' has file groups with fields:
+      | name     | total_files | total_file_size | type              |
+      | Wild     | 10000       | 100             | ExternalFileGroup |
+      | Domestic | 20000       | 200             | ExternalFileGroup |
+      | Musical  | 40000       | 400             | BitLevelFileGroup |
+    Given the repository titled 'Computers' has collections with fields:
+      | title   |
+      | Laptops |
+    And the collection titled 'Laptops' has file groups with fields:
+      | name  | total_files | total_file_size | type              |
+      | Dells | 500         | 50              | ExternalFileGroup |
+    When I go to the dashboard
+    Then I should see all of:
+      | 33000 | 330.0 | Animals | 500 | 50.0 | Computers | 33500 | 380.0 |
 
 
 

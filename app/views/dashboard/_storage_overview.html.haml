@@ -45,3 +45,23 @@
     %div#chart_container2.chart_container
 :javascript
   var storage_overview = #{@storage.to_json};
+.row
+  .span12
+    %table#external-storage-overview.table.table-striped
+      %caption External Storage Summary
+      %thead
+        %tr
+          %th Repository
+          %th Total Files
+          %th Size (GB)
+      %tbody
+        - @external_storage_summary.each do |summary|
+          %tr
+            %td= link_to summary[:repository].title, summary[:repository]
+            %td= summary[:file_count]
+            %td= number_with_precision(summary[:size], precision: 1)
+        %tr
+          %td
+            %strong Totals:
+          %td= @external_storage_summary.collect{|summary| summary[:file_count]}.sum
+          %td= number_with_precision(@external_storage_summary.collect{|summary| summary[:size]}.sum, precision: 1)
