@@ -78,6 +78,7 @@ class BitLevelFileGroup < FileGroup
 
   #do block to each bit file owned by this file group
   def each_bit_file
+    return unless self.root_directory
     #find all directories
     owned_directories_ids = self.root_directory.descendant_directory_ids << self.root_directory.id
     #find all bit files and yield block to them. Use find_each because this could be a large set
