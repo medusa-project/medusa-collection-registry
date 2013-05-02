@@ -26,6 +26,6 @@ class DashboardController < ApplicationController
         h[:size] = file_groups.collect {|fg| fg.total_file_size || 0}.sum
       end
     end
-    @external_storage_summary.sort_by!(&:size)
+    @external_storage_summary.sort! {|a, b| b[:size] <=> a[:size]}
   end
 end
