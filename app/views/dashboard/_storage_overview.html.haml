@@ -1,6 +1,6 @@
 .row
-  .span3
-    %table.container
+  .span12
+    %table.container.span3
       %caption DX-Storage
       %thead
         %tr
@@ -19,8 +19,8 @@
         %tr
           %td Free space
           %td.value= @storage["free"]
-  .span3
-    %div#chart_container1.chart_container
+    .span3
+      %div#chart_container1.chart_container
 
 :javascript
   var storage_overview = #{@storage.to_json};
