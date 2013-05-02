@@ -21,28 +21,7 @@
           %td.value= @storage["free"]
   .span3
     %div#chart_container1.chart_container
-  .span3
-    %table.container
-      %caption Other Storage Target
-      %thead
-        %tr
-          %th state
-          %th size(GB)
-      %tbody
-        %tr
-          %td Bit level store(ingested)
-          %td.value TBD
-        %tr
-          %td Bit level store(total)
-          %td.value TBD
-        %tr
-          %td Object level store
-          %td.value TBD
-        %tr
-          %td Free space
-          %td.value TBD
-  .span3
-    %div#chart_container2.chart_container
+
 :javascript
   var storage_overview = #{@storage.to_json};
 .row
