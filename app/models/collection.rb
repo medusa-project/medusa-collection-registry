@@ -34,9 +34,9 @@ class Collection < ActiveRecord::Base
   end
 
   after_create :ensure_ingest_status
-  after_create :ensure_handle
+  after_create :delayed_ensure_handle
   after_create :ensure_root_directory
-  after_save :ensure_fedora_collection
+  after_save :delayed_ensure_fedora_collection
   before_destroy :remove_handle
   before_destroy :delete_fedora_collection
   before_validation :ensure_uuid
@@ -114,7 +114,6 @@ class Collection < ActiveRecord::Base
 
   #make sure there is a corresponding collection object in fedora and that its mods is up to date
   def ensure_fedora_collection
-
     unless self.fedora_class.exists?(self.medusa_pid)
       self.fedora_class.new(:pid => self.medusa_pid).save
     end
@@ -130,6 +129,10 @@ class Collection < ActiveRecord::Base
       mods_stream.content = current_mods
     end
     collection.save
+  end
+
+  def delayed_ensure_fedora_collection
+    self.delay.ensure_fedora_collection
   end
 
   def delete_fedora_collection

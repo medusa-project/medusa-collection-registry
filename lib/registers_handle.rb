@@ -12,6 +12,10 @@ module RegistersHandle
     end
   end
 
+  def delayed_ensure_handle
+    self.delay.ensure_handle
+  end
+
   def remove_handle
     with_handle_setup do |client|
       if self.handle_exists?
