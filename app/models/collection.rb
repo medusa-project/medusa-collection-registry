@@ -132,7 +132,7 @@ class Collection < ActiveRecord::Base
   end
 
   def delayed_ensure_fedora_collection
-    self.delay.ensure_fedora_collection
+    self.delay(:priority => 10).ensure_fedora_collection
   end
 
   def delete_fedora_collection

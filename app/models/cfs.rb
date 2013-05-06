@@ -33,7 +33,7 @@ module Cfs
 
   def ensure_fits_for_tree(url_path)
     self.each_file_path_in_tree(url_path) do |file_path|
-      Cfs.delay.ensure_fits_for(file_path)
+      Cfs.delay(:priority => 60).ensure_fits_for(file_path)
     end
   end
 
@@ -47,7 +47,7 @@ module Cfs
 
   def ensure_basic_assessment_for_tree(url_path)
     self.each_file_path_in_tree(url_path) do |file_path|
-      Cfs.delay.ensure_basic_assessment_for(file_path)
+      Cfs.delay(:priority => 40).ensure_basic_assessment_for(file_path)
     end
   end
 

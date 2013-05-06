@@ -13,7 +13,7 @@ module RegistersHandle
   end
 
   def delayed_ensure_handle
-    self.delay.ensure_handle
+    self.delay(:priority => 10).ensure_handle
   end
 
   def remove_handle
