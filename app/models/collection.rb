@@ -172,7 +172,7 @@ class Collection < ActiveRecord::Base
     self.root_directory.bit_export(target_directory, opts)
   end
 
-  def bit_recursive_delete()
+  def bit_recursive_delete
     self.file_groups.each do |file_group|
       file_group.bit_recursive_delete
     end
