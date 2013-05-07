@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130430184832) do
+ActiveRecord::Schema.define(:version => 20130501022611) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -56,6 +56,18 @@ ActiveRecord::Schema.define(:version => 20130430184832) do
 
   add_index "assessments", ["assessable_id"], :name => "index_assessments_on_collection_id"
   add_index "assessments", ["author_id"], :name => "index_assessments_on_author_id"
+
+  create_table "attachments", :force => true do |t|
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.integer  "author_id"
+    t.text     "description"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
 
   create_table "bit_files", :force => true do |t|
     t.integer  "directory_id"
