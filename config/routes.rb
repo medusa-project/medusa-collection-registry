@@ -9,6 +9,12 @@ MedusaRails3::Application.routes.draw do
   resources :collections
   resources :repositories
   resources :assessments
+  resources :attachments do
+    member do
+      get 'download'
+    end
+  end
+
   resources :file_groups do
     member do
       post 'create_all_fits'

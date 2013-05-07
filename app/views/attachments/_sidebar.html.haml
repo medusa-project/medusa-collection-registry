@@ -1,0 +1,9 @@
+.span3
+  %div
+    %p= f.button :submit, :class => 'btn-primary'
+  %div
+    %p
+      - if @attachment.new_record?
+        = link_to("Back to #{@attachable.class.name}", @attachable, :class => 'btn')
+      - else
+        = link_to(t('.cancel', :default => t('helpers.links.cancel')), @attachable, :class => 'btn')

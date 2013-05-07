@@ -23,6 +23,7 @@ class Collection < ActiveRecord::Base
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
   has_many :directories
   has_one :root_directory, :class_name => Directory, :conditions => {:parent_id => nil}
+  has_many :attachments, :as => :attachable, :dependent => :destroy
 
   validates_presence_of :title
   validates_uniqueness_of :title, :scope => :repository_id

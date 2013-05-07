@@ -1,0 +1,24 @@
+%h2 Administrative Attachments
+
+= link_to 'Add Attachment', new_attachment_path(:attachable_id => @attachable.id, :attachable_type => @attachable.class.name), :class => 'btn btn-primary btn-mini'
+
+- if @attachable.attachments.present?
+  %table#attachments.table.table-striped
+    %thead
+      %tr
+        %th Filename
+        %th Description
+        %th Content Type
+        %th Author
+        %th
+    %tbody
+      - @attachable.attachments.each do |attachment|
+        %tr
+          %td #{link_to attachment.attachment_file_name, attachment}
+          %td #{attachment.description}
+          %td #{attachment.attachment_content_type}
+          %td #{attachment.author_net_id}
+          %td
+            = link_to 'Download', download_attachment_path(attachment), :class => 'btn btn-mini'
+            = link_to 'Edit', edit_attachment_path(attachment), :class => 'btn btn-mini'
+            = link_to 'Delete', attachment, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-mini btn-danger'
