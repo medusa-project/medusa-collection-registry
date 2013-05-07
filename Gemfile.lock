@@ -36,6 +36,17 @@ GIT
     omniauth-shibboleth (1.0.6)
       omniauth (>= 1.0.0)
 
+GIT
+  remote: git://github.com/thoughtbot/paperclip.git
+  revision: 7d807c6af3e89c56e2e846352074f2eac1620115
+  specs:
+    paperclip (3.4.1)
+      activemodel (>= 3.0.0)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      cocaine (~> 0.5.0)
+      mime-types
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -102,6 +113,10 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    climate_control (0.0.3)
+      activesupport (>= 3.0)
+    cocaine (0.5.1)
+      climate_control (>= 0.0.3, < 1.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -387,6 +402,7 @@ DEPENDENCIES
   nokogiri
   omniauth
   omniauth-shibboleth!
+  paperclip!
   passenger (= 3.0.15)
   pg
   rails (= 3.2.11)
