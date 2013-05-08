@@ -6,12 +6,6 @@ module FileGroupsHelper
     end
   end
 
-  def potential_related_file_group_collection(file_group)
-    file_group.sibling_file_groups.collect do |sibling|
-      [sibling.name, sibling.id]
-    end
-  end
-
   def file_types_select_collection
     FileType.order(:name).all.collect do |type|
       [type.name, type.id]
