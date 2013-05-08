@@ -64,12 +64,14 @@ namespace :jetty do
     check_environment
     puts "Preparing to delete all objects in the #{Rails.env} fedora."
     ActiveFedora.init
-    while objects = ActiveFedora::Base.find(:all, :rows => 100)
-      break if objects.empty?
-      objects.each do |object|
-        puts "Deleting #{object.pid}"
-        object.delete
-      end
+    objects = []
+    ActiveFedora::Base.find_each do |object|
+      objects << object
+    end
+    puts "Found #{objects.length} objects to delete"
+    objects.each_with_index do |object, i|
+      puts "Count: #{i}. Deleting #{object.pid}"
+      object.delete
     end
     puts "All objects in the #{Rails.env} fedora deleted."
   end
