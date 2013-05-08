@@ -49,7 +49,9 @@ And /^I uncheck '(.*)'$/ do |string|
   uncheck(string)
 end
 
-
+And(/^I attach fixture file '(.*)' to '(.*)'$/) do |file, field|
+  attach_file(field, File.join(Rails.root, 'features', 'fixtures', file))
+end
 
 
 

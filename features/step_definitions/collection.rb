@@ -40,6 +40,12 @@ And /^I click on '(.*)' in the file groups table$/ do |button|
   end
 end
 
+When(/^I click on '(.*)' in the attachments section$/) do |button|
+  within("#attachments") do
+    click_on(button)
+  end
+end
+
 When(/^I click on '(.*)' in the (.*) actions$/) do |link, section|
   within(".#{section}-actions") do
     click_on(link)
@@ -136,6 +142,14 @@ And(/^I submit the new event form on the collection view page$/) do
   within('.event-actions') do
     click_on 'Create Event'
   end
+end
+
+And(/^the collection titled '(.*)' should have (\d+) attachments?$/) do |title, count|
+  Collection.find_by_title(title).attachments.count.should == count.to_i
+end
+
+Then(/^I should be on the download page for the attachment '(.*)'$/) do |file_name|
+  current_path.should == download_attachment_path(Attachment.find_by_attachment_file_name(file_name))
 end
 
 private
