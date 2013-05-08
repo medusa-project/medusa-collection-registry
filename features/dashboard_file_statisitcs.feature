@@ -26,7 +26,6 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
 
   Scenario: View file statistics section of dashboard
     When I go to the dashboard
-    Then show me the page
     And I click on 'File Statistics'
     Then I should see the bit & object preservation content_type statistics
     And I should see the bit & object preservation summary file statistics
