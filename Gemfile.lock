@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/medusa-project/net-http-digest_auth.git
-  revision: 9060b6cbd4ad661048667d16ee8c26f10e2f2172
+  revision: 129b8b6885183e4e15a45e2466111dfb38b6e760
   specs:
     net-http-digest_auth (1.2.1)
 
@@ -159,7 +159,6 @@ GEM
     factory_girl (4.2.0)
       activesupport (>= 3.0.0)
     fastercsv (1.5.5)
-    fastthread (1.0.7)
     ffi (1.8.1)
     gherkin (2.12.0)
       multi_json (~> 1.3)
@@ -233,9 +232,8 @@ GEM
     omniauth (1.1.4)
       hashie (>= 1.2, < 3)
       rack
-    passenger (3.0.15)
-      daemon_controller (>= 1.0.0)
-      fastthread (>= 1.0.1)
+    passenger (4.0.2)
+      daemon_controller (>= 1.1.0)
       rack
       rake (>= 0.8.1)
     pg (0.15.1)
@@ -357,7 +355,7 @@ GEM
     typhoeus (0.6.3)
       ethon (~> 0.5.11)
     tzinfo (0.3.37)
-    uglifier (2.0.1)
+    uglifier (2.1.0)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
     unf (0.1.1)
@@ -404,7 +402,7 @@ DEPENDENCIES
   omniauth
   omniauth-shibboleth!
   paperclip!
-  passenger (= 3.0.15)
+  passenger
   pg
   rails (= 3.2.13)
   rb-readline
