@@ -13,10 +13,6 @@ module Cfs
     config['root']
   end
 
-  def fits_home
-    config['fits_home']
-  end
-
   def ensure_fits_for(url_path)
     file_path = file_path_for(url_path)
     file_info = CfsFileInfo.find_by_path(url_path)
