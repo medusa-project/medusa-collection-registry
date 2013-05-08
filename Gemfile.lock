@@ -63,18 +63,18 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
-    active-fedora (6.0.0)
+    active-fedora (6.1.1)
       activeresource (>= 3.0.0)
       activesupport (>= 3.0.0)
       builder (~> 3.0.0)
       deprecation
       mediashelf-loggable
       nom-xml (>= 0.5.1)
-      om (~> 2.0.0)
+      om (~> 2.1.0)
       rdf
       rdf-rdfxml (~> 1.0.0)
       rsolr
-      rubydora (~> 1.5)
+      rubydora (~> 1.6)
     activemodel (3.2.13)
       activesupport (= 3.2.13)
       builder (~> 3.0.0)
@@ -98,7 +98,6 @@ GEM
       rinku (~> 1.5.0)
     auto_strip_attributes (2.0.2)
       activerecord (>= 3.0)
-    backports (3.3.0)
     builder (3.0.4)
     cancan (1.6.9)
     capistrano (2.14.2)
@@ -224,13 +223,13 @@ GEM
       i18n
       nokogiri
     ntlm-http (0.1.1)
-    om (2.0.0)
+    om (2.1.2)
       activemodel
       activesupport
       deprecation
       mediashelf-loggable
       nokogiri (>= 1.4.2)
-      solrizer (~> 3.0.0)
+      solrizer (~> 3.1.0)
     omniauth (1.1.4)
       hashie (>= 1.2, < 3)
       rack
@@ -265,13 +264,12 @@ GEM
       thor (>= 0.14.6, < 2.0)
     rake (10.0.4)
     rb-readline (0.4.2)
-    rdf (1.0.4)
+    rdf (1.0.6)
       addressable (>= 2.2)
-    rdf-rdfxml (1.0.0)
+    rdf-rdfxml (1.0.1)
       rdf (>= 1.0)
       rdf-xsd (>= 1.0)
-    rdf-xsd (1.0.0)
-      backports
+    rdf-xsd (1.0.2.1)
       nokogiri (>= 1.5.0)
       rdf (>= 0.3.4)
     rdoc (3.12.2)
@@ -299,7 +297,7 @@ GEM
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
     ruby-filemagic (0.4.2)
-    rubydora (1.6.1)
+    rubydora (1.6.3)
       activemodel
       activesupport
       deprecation
@@ -326,7 +324,7 @@ GEM
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
     simplecov-html (0.7.1)
-    solrizer (3.0.0)
+    solrizer (3.1.0)
       activesupport
       daemons
       mediashelf-loggable (~> 0.4.7)
