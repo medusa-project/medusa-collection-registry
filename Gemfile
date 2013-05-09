@@ -7,7 +7,7 @@ gem 'rails', '3.2.13'
 gem 'pg'
 gem 'active-fedora'
 
-gem 'rb-readline'
+gem 'rb-readline', "~> 0.4.2"
 
 #deployment webserver
 #TODO - Was having problems with deploying with 3.0.19, so look into that sometime. For now pin. The problem was
