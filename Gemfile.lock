@@ -14,9 +14,9 @@ GIT
 
 GIT
   remote: git://github.com/medusa-project/mechanize.git
-  revision: 8918539934efd3c38a1b0657fd32c30121417c6c
+  revision: dad123406a289e9065ab4d8af2e7bc87a5e581ab
   specs:
-    mechanize (2.5.1)
+    mechanize (2.6.0)
       domain_name
       net-http-persistent
       nokogiri
