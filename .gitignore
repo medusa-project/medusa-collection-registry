@@ -21,3 +21,6 @@
 *~
 
 daemons.rb.pid
+
+#test coverage info
+coverage/
