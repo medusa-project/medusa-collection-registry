@@ -1,9 +1,14 @@
 - model_class = Repository
 
 .page-header
-  %h1
-    = @repository.title
-    %small Repository
+  .row
+    .span4
+      %h1
+        = @repository.title
+        %small Repository
+    .span8
+      .btn-group.pull-right
+        = link_to "Red Flags", red_flags_repository_path(@repository), :class => 'btn'
 
 .span3#sidebar
   .well

@@ -1,6 +1,10 @@
 class BitLevelFileGroup < FileGroup
+  include RedFlagAggregator
+
   after_save :schedule_create_cfs_file_infos
   has_many :virus_scans, :dependent => :destroy, :foreign_key => :file_group_id
+
+  aggregates_red_flags :self => :cfs_red_flags
 
   def storage_level
     'bit-level store'
@@ -85,6 +89,13 @@ class BitLevelFileGroup < FileGroup
     BitFile.where(:directory_id => owned_directories_ids).find_each do |bit_file|
       yield bit_file
     end
+  end
+
+  def cfs_red_flags
+    return [] unless self.cfs_root
+    RedFlag.where(:red_flaggable_type => 'CfsFileInfo').
+        joins("JOIN cfs_file_infos ON red_flags.red_flaggable_id = cfs_file_infos.id").
+        where('cfs_file_infos.path LIKE ?', self.cfs_root + "%").all
   end
 
 end

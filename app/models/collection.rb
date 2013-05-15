@@ -6,6 +6,7 @@ require 'utils/luhn'
 class Collection < ActiveRecord::Base
   include RegistersHandle
   include ModsHelper
+  include RedFlagAggregator
   net_id_person_association(:contact)
   attr_accessible :access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
                   :ongoing, :published, :repository_id, :start_date, :title, :access_system_ids,
@@ -54,6 +55,8 @@ class Collection < ActiveRecord::Base
       simple_format
     end
   end
+
+  aggregates_red_flags :collections => :file_groups
 
   def total_size
     self.file_groups.sum(:total_file_size)

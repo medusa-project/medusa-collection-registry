@@ -1,6 +1,6 @@
 class CollectionsController < ApplicationController
 
-  before_filter :find_collection_and_repository, :only => [:show, :destroy, :edit, :update]
+  before_filter :find_collection_and_repository, :only => [:show, :destroy, :edit, :update, :red_flags]
   skip_before_filter :require_logged_in, :only => [:show, :index]
   skip_before_filter :authorize, :only => [:show, :index]
 
@@ -47,6 +47,14 @@ class CollectionsController < ApplicationController
 
   def index
     @collections = Collection.order(:title).includes(:repository).all
+  end
+
+  def red_flags
+    @red_flags = @collection.all_red_flags
+    @aggregator = Hash.new
+    @aggregator[:label] = @collection.title
+    @aggregator[:path] = collection_path(@collection)
+    render 'shared/red_flags'
   end
 
   protected

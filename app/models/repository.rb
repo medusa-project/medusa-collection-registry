@@ -1,6 +1,7 @@
 require 'net_id_person_associator'
 class Repository < ActiveRecord::Base
   include ActiveDateChecker
+  include RedFlagAggregator
 
   net_id_person_association(:contact)
   attr_accessible :notes, :title, :url, :address_1, :address_2, :city, :state,
@@ -16,6 +17,8 @@ class Repository < ActiveRecord::Base
     link :target => "_blank"
     simple_format
   end
+
+  aggregates_red_flags :collections => :collections
 
   def total_size
     self.collections.collect {|c| c.total_size}.sum

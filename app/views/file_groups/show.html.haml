@@ -1,6 +1,7 @@
 .pull-right
   = link_to 'View events', events_file_group_path(@file_group), :class => 'btn'
   = link_to("Add Event", '#addEventModal', :role => 'button', 'data-toggle' => 'modal', :class => 'btn')
+  = link_to("Red Flags", red_flags_file_group_path(@file_group), :class => 'btn') if @file_group.respond_to?(:all_red_flags)
   = link_to 'Create All FITS XML', create_all_fits_file_group_path(@file_group), :method => 'post', :class => 'btn'
   = link_to 'Edit', edit_file_group_path(@file_group), :class => 'btn'
   = link_to 'Delete', file_group_path(@file_group), :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'

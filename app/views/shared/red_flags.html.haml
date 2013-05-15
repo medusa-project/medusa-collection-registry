@@ -1,0 +1,16 @@
+= link_to @aggregator[:label], @aggregator[:path]
+
+%table#red-flags.table.table-striped
+  %thead
+    %tr
+      %th Type
+      %th Label
+      %th Time
+      %th Message
+  %tbody
+    - @red_flags.each do |red_flag|
+      %tr
+        %td= red_flag.red_flaggable.class.cfs_type
+        %td= red_flag.red_flaggable.cfs_label
+        %td= red_flag.created_at
+        %td= red_flag.message

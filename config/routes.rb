@@ -6,8 +6,16 @@ MedusaRails3::Application.routes.draw do
 
   root :to => 'static#page', :page => 'landing'
 
-  resources :collections
-  resources :repositories
+  resources :collections do
+    member do
+      get 'red_flags'
+    end
+  end
+  resources :repositories do
+    member do
+      get 'red_flags'
+    end
+  end
   resources :assessments
   resources :attachments do
     member do
@@ -20,6 +28,7 @@ MedusaRails3::Application.routes.draw do
       post 'create_all_fits'
       post 'create_cfs_fits'
       get 'events'
+      get 'red_flags'
       post 'new_event'
       post 'create_virus_scan'
     end

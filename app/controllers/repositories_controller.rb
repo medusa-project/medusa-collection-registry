@@ -1,6 +1,6 @@
 class RepositoriesController < ApplicationController
 
-  before_filter :find_repository, :only => [:show, :edit, :update, :destroy]
+  before_filter :find_repository, :only => [:show, :edit, :update, :destroy, :red_flags]
   skip_before_filter :require_logged_in, :only => [:show, :index]
   skip_before_filter :authorize, :only => [:show, :index]
 
@@ -40,6 +40,14 @@ class RepositoriesController < ApplicationController
   def destroy
     @repository.destroy
     redirect_to repositories_path
+  end
+
+  def red_flags
+    @red_flags = @repository.all_red_flags
+    @aggregator = Hash.new
+    @aggregator[:label] = @repository.title
+    @aggregator[:path] = repository_path(@repository)
+    render 'shared/red_flags'
   end
 
   protected
