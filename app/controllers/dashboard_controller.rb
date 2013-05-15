@@ -2,9 +2,14 @@ class DashboardController < ApplicationController
   def show
     setup_storage
     setup_external_storage
+    setup_red_flags
   end
 
   protected
+
+  def setup_red_flags
+    @red_flags = RedFlag.order('created_at DESC').includes(:red_flaggable).all
+  end
 
   def setup_storage
     @storage = Hash.new

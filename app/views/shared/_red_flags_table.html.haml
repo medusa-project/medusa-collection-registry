@@ -1,4 +1,4 @@
-%table#red_flags_table.table.table-striped
+%table#red-flags-table.table.table-striped
   %thead
     %tr
       %th Type
@@ -6,7 +6,7 @@
       %th Time
       %th Message
   %tbody
-    - RedFlag.order('created_at DESC').includes(:red_flaggable).all.each do |red_flag|
+    - @red_flags.each do |red_flag|
       %tr
         %td= red_flag.red_flaggable.class.cfs_type
         %td= red_flag.red_flaggable.cfs_label
