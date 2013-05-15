@@ -16,9 +16,12 @@ class BitLevelFileGroup < FileGroup
 
   #It's possible that the string concatenation here is a postgresism, though I think
   #it is SQL99 standard
+  #We check both the case that there is a file group that has exactly this path and then
+  #look for one where cfs_root/ is a prefix of the provided path (we need to add the trailing slash
+  # in this case or else we could have multiple possibilities, e.g. root/1 and root/19 would both match root/1/subdir/file.ext)
   def self.for_cfs_path(path)
     return nil if path.blank?
-    return self.where("? LIKE cfs_root || '%'", path).first
+    return self.where(:cfs_root => path).first || self.where("? LIKE cfs_root || '/%'", path).first
   end
 
   def schedule_create_cfs_file_infos
@@ -95,7 +98,7 @@ class BitLevelFileGroup < FileGroup
     return [] unless self.cfs_root
     RedFlag.where(:red_flaggable_type => 'CfsFileInfo').
         joins("JOIN cfs_file_infos ON red_flags.red_flaggable_id = cfs_file_infos.id").
-        where('cfs_file_infos.path LIKE ?', self.cfs_root + "%").all
+        where('cfs_file_infos.path LIKE ?', self.cfs_root + "/%").all
   end
 
 end

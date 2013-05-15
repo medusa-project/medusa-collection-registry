@@ -18,7 +18,7 @@ class CfsFileInfo < ActiveRecord::Base
   end
 
   def self.all_for_path(url_path = '')
-    self.where("path LIKE ?", url_path + "%")
+    self.where("path LIKE ?", url_path + "/%")
   end
 
   def self.cfs_type
