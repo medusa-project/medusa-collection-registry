@@ -1,4 +1,5 @@
-= link_to @aggregator[:label], @aggregator[:path]
+%strong #{@aggregator.class.to_s.underscore.humanize}:
+= link_to @aggregator.red_flag_aggregator_label, self.send(@aggregator.red_flag_aggregator_path_method, @aggregator)
 
 %table#red-flags.table.table-striped
   %thead

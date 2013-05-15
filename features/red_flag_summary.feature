@@ -38,7 +38,7 @@ Feature: Red Flag Summary
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:
-      | Bad toy picture | Bad checksum | Bad toy text | Toys |
+      | Bad toy picture | Bad checksum | Bad toy text | Toys | Bit level file group |
     And I should see none of:
       | Bad hot picture | Bad cool text |
 
@@ -47,7 +47,7 @@ Feature: Red Flag Summary
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:
-      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Dogs |
+      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Dogs | Collection |
     And I should not see 'Bad cool text'
 
   Scenario: View red flags for repository
@@ -55,4 +55,4 @@ Feature: Red Flag Summary
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:
-      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals |
+      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals | Repository |

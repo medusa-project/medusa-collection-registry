@@ -98,9 +98,7 @@ class FileGroupsController < ApplicationController
 
   def red_flags
     @red_flags = @file_group.all_red_flags
-    @aggregator = Hash.new
-    @aggregator[:label] = @file_group.name
-    @aggregator[:path] = file_group_path(@file_group)
+    @aggregator = @file_group
     render 'shared/red_flags'
   end
 

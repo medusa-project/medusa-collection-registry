@@ -44,9 +44,7 @@ class RepositoriesController < ApplicationController
 
   def red_flags
     @red_flags = @repository.all_red_flags
-    @aggregator = Hash.new
-    @aggregator[:label] = @repository.title
-    @aggregator[:path] = repository_path(@repository)
+    @aggregator = @repository
     render 'shared/red_flags'
   end
 

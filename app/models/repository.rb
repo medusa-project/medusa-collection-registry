@@ -18,7 +18,7 @@ class Repository < ActiveRecord::Base
     simple_format
   end
 
-  aggregates_red_flags :collections => :collections
+  aggregates_red_flags :collections => :collections, :label_method => :title, :path_method => :repository_path
 
   def total_size
     self.collections.collect {|c| c.total_size}.sum

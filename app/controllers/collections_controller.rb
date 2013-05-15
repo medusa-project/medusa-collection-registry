@@ -51,9 +51,7 @@ class CollectionsController < ApplicationController
 
   def red_flags
     @red_flags = @collection.all_red_flags
-    @aggregator = Hash.new
-    @aggregator[:label] = @collection.title
-    @aggregator[:path] = collection_path(@collection)
+    @aggregator = @collection
     render 'shared/red_flags'
   end
 
