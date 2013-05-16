@@ -2,8 +2,6 @@ MedusaRails3::Application.routes.draw do
 
   get "events/index"
 
-  get "ingest_statuses/update"
-
   root :to => 'static#page', :page => 'landing'
 
   resources :collections do
@@ -35,7 +33,6 @@ MedusaRails3::Application.routes.draw do
   end
   resources :producers
   resources :access_systems
-  resources :ingest_statuses
   resources :directories, :only => :show
   resources :files, :only => :show, :controller => "bit_files" do
     member do

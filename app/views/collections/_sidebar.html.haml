@@ -3,6 +3,4 @@
   %div
     %p= form.button :submit, :class => 'btn-primary'
   %div
-    %p= link_to("Edit Ingest status", '#editIngestStatusModal', :role => 'button', 'data-toggle' => 'modal', :class => 'btn btn-primary') if @collection.ingest_status
-  %div
     %p= link_to t('.cancel', :default => t("helpers.links.cancel")), collections_path, :class => 'btn'

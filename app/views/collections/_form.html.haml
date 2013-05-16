@@ -25,6 +25,3 @@
             = render :partial => 'rights_declarations/nested_form', :locals => {:containing_form => f, :rights_declaration => @collection.rights_declaration}
           #notes.tab-pane
             = f.input :notes
-
-- if @collection.ingest_status
-  = render 'ingest_status_subform'

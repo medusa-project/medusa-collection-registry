@@ -19,7 +19,6 @@ class Collection < ActiveRecord::Base
   has_many :access_systems, :through => :access_system_collection_joins
   has_many :collection_resource_type_joins, :dependent => :destroy
   has_many :resource_types, :through => :collection_resource_type_joins
-  has_one :ingest_status, :dependent => :destroy
   belongs_to :preservation_priority
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
   has_many :directories
@@ -35,7 +34,6 @@ class Collection < ActiveRecord::Base
     record.errors.add attr, 'is not a valid uuid' unless Utils::Luhn.verify(value)
   end
 
-  after_create :ensure_ingest_status
   after_create :delayed_ensure_handle
   after_create :ensure_root_directory
   after_save :delayed_ensure_fedora_collection
@@ -60,10 +58,6 @@ class Collection < ActiveRecord::Base
 
   def total_size
     self.file_groups.sum(:total_file_size)
-  end
-
-  def ensure_ingest_status
-    self.ingest_status ||= IngestStatus.new(:state => :unstarted)
   end
 
   def ensure_uuid

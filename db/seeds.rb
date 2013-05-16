@@ -45,12 +45,10 @@ ActiveRecord::Base.transaction do
 
 #Make sure every Collection has
 # - a preservation priority
-# - an attached IngestStatus
 # - a uuid
 # - a registered handle
   Collection.all.each do |c|
     c.preservation_priority = PreservationPriority.default unless c.preservation_priority
-    c.ingest_status = IngestStatus.new(:state => :unstarted) unless c.ingest_status
     c.ensure_rights_declaration
     c.ensure_uuid
     c.save!
