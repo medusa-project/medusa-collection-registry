@@ -16,7 +16,7 @@ function initializeChart(storage) {
       plotShadow: false
     },
     title: {
-      text: 'size(KB)'
+      text: 'size(GB)'
     },
     tooltip: {
       pointFormat: '{series.name}: <b>{point.percentage}%</b>',
