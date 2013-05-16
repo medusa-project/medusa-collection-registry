@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130501022611) do
+ActiveRecord::Schema.define(:version => 20130516182122) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -217,16 +217,6 @@ ActiveRecord::Schema.define(:version => 20130501022611) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "ingest_statuses", :force => true do |t|
-    t.string   "state"
-    t.string   "staff"
-    t.date     "date"
-    t.text     "notes"
-    t.integer  "collection_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
   end
 
   create_table "people", :force => true do |t|
