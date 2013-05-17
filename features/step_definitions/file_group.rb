@@ -31,27 +31,27 @@ And /^I should be on the view page for the file group named '(.*)'$/ do |name|
 end
 
 Then /^I should be on the edit page for the file group with location '(.*)' for the collection titled '(.*)'$/ do |location, title|
-  current_path.should == edit_file_group_path(find_file_group(title, location))
+  current_path.should == edit_polymorphic_path(find_file_group(title, location))
 end
 
 When /^I edit the file group named '(.*)'$/ do |name|
-  visit edit_file_group_path(FileGroup.find_by_name(name))
+  visit edit_polymorphic_path(FileGroup.find_by_name(name))
 end
 
 When /^I view the file group with location '(.*)' for the collection titled '(.*)'$/ do |location, title|
-  visit file_group_path(find_file_group(title, location))
+  visit polymorphic_path(find_file_group(title, location))
 end
 
 When /^I view the file group named '(.*)'$/ do |name|
-  visit file_group_path(FileGroup.find_by_name(name))
+  visit polymorphic_path(FileGroup.find_by_name(name))
 end
 
 When /^I edit the file group with location '(.*)' for the collection titled '(.*)'$/ do |location, title|
-  visit edit_file_group_path(find_file_group(title, location))
+  visit edit_polymorphic_path(find_file_group(title, location))
 end
 
 Given /^I am editing a file group$/ do
-  visit edit_file_group_path(FactoryGirl.create(:file_group))
+  visit edit_polymorphic_path(FactoryGirl.create(:file_group))
 end
 
 And /^The collection titled '(.*)' should not have a file group with location '(.*)'$/ do |title, location|
