@@ -5,7 +5,7 @@
 
 %h3 Directory: #{File.basename(@path)}
 - if @file_group
-  %h4 File Group: #{link_to @file_group.name, file_group_path(@file_group)}
+  %h4 File Group: #{link_to @file_group.name, @file_group}
 
 %h4 Subdirectories
 %table#subdirectories.table.table-striped

@@ -21,16 +21,19 @@ MedusaRails3::Application.routes.draw do
     end
   end
 
-  resources :file_groups do
-    member do
-      post 'create_all_fits'
-      post 'create_cfs_fits'
-      get 'events'
-      get 'red_flags'
-      post 'new_event'
-      post 'create_virus_scan'
+  [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
+    resources file_group_type do
+      member do
+        post 'create_all_fits'
+        post 'create_cfs_fits'
+        get 'events'
+        get 'red_flags'
+        post 'new_event'
+        post 'create_virus_scan'
+      end
     end
   end
+
   resources :producers
   resources :access_systems
   resources :directories, :only => :show

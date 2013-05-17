@@ -5,7 +5,7 @@ class AssessmentsController < ApplicationController
 
   def destroy
     @assessment.destroy
-    redirect_to_assessable(@assessable)
+    redirect_to @assessable
   end
 
   def show
@@ -60,15 +60,6 @@ class AssessmentsController < ApplicationController
         FileGroup
       else
         raise RuntimeError, 'Unrecognized assessable type'
-    end
-  end
-
-  def redirect_to_assessable(assessable)
-    case assessable
-      when FileGroup
-        redirect_to file_group_path(assessable)
-      else
-        redirect_to assessable
     end
   end
 

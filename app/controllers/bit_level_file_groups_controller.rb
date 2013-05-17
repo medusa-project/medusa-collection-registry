@@ -1,0 +1,3 @@
+class BitLevelFileGroupsController < FileGroupsController
+  
+end

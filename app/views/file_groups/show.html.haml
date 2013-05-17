@@ -4,7 +4,7 @@
   = link_to("Red Flags", red_flags_file_group_path(@file_group), :class => 'btn') if @file_group.respond_to?(:all_red_flags)
   = link_to 'Create All FITS XML', create_all_fits_file_group_path(@file_group), :method => 'post', :class => 'btn'
   = link_to 'Edit', edit_file_group_path(@file_group), :class => 'btn'
-  = link_to 'Delete', file_group_path(@file_group), :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
+  = link_to 'Delete', @file_group, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
 
 .page_header
   %h1 File Group
@@ -36,7 +36,7 @@
         %ul
           - @file_group.related_file_groups.each do |related_file_group|
             %li
-              #{link_to(related_file_group.name, file_group_path(related_file_group))} - #{@file_group.relation_note(related_file_group)}
+              #{link_to(related_file_group.name, related_file_group)} - #{@file_group.relation_note(related_file_group)}
       %h3 Rights Declaration
       = render :partial => 'rights_declarations/show', :locals => {:rights_declaration => @file_group.rights_declaration}
 

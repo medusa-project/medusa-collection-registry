@@ -54,7 +54,7 @@ class Collection < ActiveRecord::Base
     end
   end
 
-  aggregates_red_flags :collections => :file_groups, :label_method => :title, :path_method => :collection_path
+  aggregates_red_flags :collections => :file_groups, :label_method => :title
 
   def total_size
     self.file_groups.sum(:total_file_size)

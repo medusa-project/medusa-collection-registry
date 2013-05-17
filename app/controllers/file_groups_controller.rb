@@ -25,7 +25,7 @@ class FileGroupsController < ApplicationController
   def update
     handling_nested_collection_and_rights_declaration(params[:file_group]) do
       if @file_group.update_attributes(params[:file_group])
-        redirect_to file_group_path(@file_group)
+        redirect_to @file_group
       else
         render 'edit'
       end
@@ -45,7 +45,7 @@ class FileGroupsController < ApplicationController
     handling_nested_collection_and_rights_declaration(params[:file_group]) do
       @file_group = klass.new(params[:file_group])
       if @file_group.save
-        redirect_to file_group_path(@file_group)
+        redirect_to @file_group
       else
         render 'new'
       end
@@ -59,7 +59,7 @@ class FileGroupsController < ApplicationController
       respond_to {|format| format.js}
     else
       flash[:notice] = 'Scheduled creation of FITS XML'
-      redirect_to file_group_path(@file_group)
+      redirect_to @file_group
     end
   end
 
@@ -68,7 +68,7 @@ class FileGroupsController < ApplicationController
       Cfs.delay.ensure_fits_for_tree(@file_group.cfs_root)
       record_event(@file_group, 'cfs_fits_performed')
       flash[:notice] = "Scheduling FITS creation for /#{@file_group.cfs_root}"
-      redirect_to file_group_path(@file_group)
+      redirect_to @file_group
     end
   end
 
@@ -92,7 +92,7 @@ class FileGroupsController < ApplicationController
     if request.xhr?
       respond_to {|format| format.js}
     else
-      redirect_to file_group_path(@file_group)
+      redirect_to @file_group
     end
   end
 

@@ -10,13 +10,4 @@ module AssessmentsHelper
     %w(assessment-metadata base directory-structure preservation-risks naming-conventions notes)
   end
 
-  def link_to_assessable(assessable)
-    case assessable
-      when FileGroup
-        link_to("Back to File group", file_group_path(@assessable), :class => 'btn')
-      else
-        link_to("Back to #{@assessable.class.name}", @assessable, :class => 'btn')
-    end
-  end
-
 end

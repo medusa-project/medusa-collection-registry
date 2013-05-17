@@ -1,0 +1,3 @@
+class ObjectLevelFileGroupsController < FileGroupsController
+  
+end
