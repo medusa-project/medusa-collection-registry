@@ -4,7 +4,7 @@
 
 .page-header
   %h1 Assessment: #{@assessment.date}
-  %p.lead #{@assessable.class.name}: #{link_to @assessable.assessable_label, @assessable rescue file_group_path(@assessable)}
+  %p.lead #{@assessable.class.name}: #{link_to(@assessable.assessable_label, @assessable) rescue link_to(@assessable.assessable_label, file_group_path(@assessable))}
 
 .row
   .span8
