@@ -85,7 +85,7 @@ class FileGroup < ActiveRecord::Base
   end
 
   def assessable_label
-    "File Group #{self.id}"
+    self.name
   end
 
   def sibling_file_groups

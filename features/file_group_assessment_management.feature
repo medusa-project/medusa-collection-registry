@@ -9,11 +9,11 @@ Feature: File Group Assessment Management
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files |  summary      | provenance_note |
-      | Main Library           | image/jpeg  | 100             | 1200        |  main summary | main provenance |
+      | external_file_location | file_format | total_file_size | total_files | summary      | provenance_note | name   |
+      | Main Library           | image/jpeg  | 100             | 1200        | main summary | main provenance | Images |
     And the file group with location 'Main Library' has assessments with fields:
-      | date       | preservation_risks | notes                 | name|
-      | 2013-02-11 | On CD              | Pictures of cute dogs |Assessing|
+      | date       | preservation_risks | notes                 | name      |
+      | 2013-02-11 | On CD              | Pictures of cute dogs | Assessing |
 
   Scenario: View assessments of a file group
     When I view the file group with location 'Main Library' for the collection titled 'Dogs'
@@ -34,3 +34,8 @@ Feature: File Group Assessment Management
     When I view the file group with location 'Main Library' for the collection titled 'Dogs'
     And I click on 'Add Assessment'
     Then I should be on the new assessment page
+
+  Scenario: Navigate from an assessment back to file group
+    When I view the assessment named 'Assessing'
+    And I click on 'Images'
+    Then I should be on the view page for the file group named 'Images'

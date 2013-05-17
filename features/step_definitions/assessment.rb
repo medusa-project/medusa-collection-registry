@@ -28,6 +28,10 @@ When /^I edit the assessment with date '(.*)' for the collection titled '(.*)'$/
     visit edit_assessment_path(find_assessment(date, title))
 end
 
+When(/^I view the assessment named '(.*)'$/) do |name|
+  visit assessment_path(Assessment.find_by_name(name))
+end
+
 Then /^I should be on the edit page for the assessment with date '(.*)' for the collection titled '(.*)'$/ do |date, title|
   current_path.should == edit_assessment_path(find_assessment(date, title))
 end
