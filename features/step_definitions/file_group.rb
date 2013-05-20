@@ -34,6 +34,10 @@ Then /^I should be on the edit page for the file group with location '(.*)' for 
   current_path.should == edit_polymorphic_path(find_file_group(title, location))
 end
 
+Then(/^I should be on the edit page for the file group named '(.*)'$/) do |name|
+  current_path.should == edit_polymorphic_path(FileGroup.find_by_name(name))
+end
+
 When /^I edit the file group named '(.*)'$/ do |name|
   visit edit_polymorphic_path(FileGroup.find_by_name(name))
 end

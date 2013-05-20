@@ -7,20 +7,7 @@
         = render :partial => 'shared/tab_header', :locals => {:id => 'edit-tabs', :tabs => file_group_form_tab_list}
         .tab-content
           #base.tab-pane.active
-            = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
-            = f.input :name
-            - if @file_group.new_record?
-              = f.input :storage_level, :as => :select, :include_blank => false, :collection => FileGroup::STORAGE_LEVELS
-            - else
-              = f.input :storage_level, :disabled => true
-            = f.input :producer_id, :collection => producers_select_collection
-            = f.input :file_type_id, :collection => file_types_select_collection
-            = f.input :external_file_location
-            = f.input :staged_file_location
-            = f.input :cfs_root, :as => :select, :include_blank => true, :collection => cfs_directory_select_collection
-            = f.input :file_format
-            = f.input :total_file_size, :label => 'Total file size (GB)'
-            = f.input :total_files
+            = render 'form_base_fields', :f => f
           #summary.tab-pane
             = f.input :summary
           #provenance-note.tab-pane
@@ -30,12 +17,5 @@
           #collection-file-package-summary.tab-pane
             = f.simple_fields_for :collection, @collection do |c|
               = c.input :file_package_summary, :label => "Collection File Package Summary"
-          = render :partial => 'form_related_file_groups'
-
-
-
-
-
-
-
-
+          #related-file-groups.tab-pane
+            = render :partial => 'form_related_file_groups'

@@ -51,10 +51,7 @@ Feature: File Group Management
   Scenario: Create related file group
     When I view the collection titled 'Dogs'
     And I click on 'Add New' in the related-file-group actions
-    And I fill in fields:
-      | Name | text |
-    And I click on 'Create File group'
-    Then the file groups named 'images' and 'text' should be related
+    Then I should be on the edit page for the file group named 'images'
 
   Scenario: See and navigate to a related file group
     Given the collection titled 'Dogs' has file groups with fields:

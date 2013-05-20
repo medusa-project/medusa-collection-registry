@@ -19,7 +19,7 @@ class FileGroupsController < ApplicationController
   end
 
   def edit
-
+    @active_tabs = params[:active_tab]
   end
 
   def update
