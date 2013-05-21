@@ -93,6 +93,15 @@ And /^I have some repositories with files totalling '(\d+)' GB$/ do |size|
   end
 end
 
+And(/^the repository titled '(.*)' has an assessment named '(.*)'$/) do |title, name|
+  repository = Repository.find_by_title(title)
+  FactoryGirl.create(:assessment, :name => name, :assessable_id => repository.id, :assessable_type => 'Repository')
+end
+
+And(/^the repository titled '(.*)' should have (\d+) assessments$/) do |title, count|
+  Repository.find_by_title(title).assessments.count.to_s.should == count
+end
+
 #break down number into summands of powers of two - just a convenient way to
 #get some different sizes from a single number for the above step
 def decompose_size(size, current = 1, acc = [])

@@ -20,6 +20,10 @@ Then /^I should be on the view page for the assessment with date '(.*)' for the 
   current_path.should == assessment_path(find_file_group_assessment(date, location))
 end
 
+Then(/^I should be on the view page for the assessment named '(.*)'$/) do |name|
+  current_path.should == assessment_path(Assessment.find_by_name(name))
+end
+
 When /^I view the assessment with date '(.*)' for the collection titled '(.*)'$/ do |date, title|
   visit assessment_path(find_assessment(date, title))
 end
