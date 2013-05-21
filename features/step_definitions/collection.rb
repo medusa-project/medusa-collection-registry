@@ -148,6 +148,11 @@ Then(/^I should be on the download page for the attachment '(.*)'$/) do |file_na
   current_path.should == download_attachment_path(Attachment.find_by_attachment_file_name(file_name))
 end
 
+And(/^the collection titled '(.*)' has an assessment named '(.*)'$/) do |collection_title, assessment_name|
+  c = Collection.find_by_title(collection_title)
+  FactoryGirl.create(:assessment, :name => assessment_name, :assessable_id => c.id, :assessable_type => c.class.to_s)
+end
+
 private
 
 def ensure_collection(title)

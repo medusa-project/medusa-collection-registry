@@ -40,6 +40,6 @@
       %p #{link_to "Bit root directory", directory_path(@collection.root_directory)}
       = render 'file_groups_table'
     #assessments.tab-pane
-      = render 'assessments_table'
+      = render 'assessments/table'
     #attachments.tab-pane
       = render 'attachments_table' if logged_in?

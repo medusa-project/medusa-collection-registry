@@ -7,6 +7,8 @@ class FileGroupsController < ApplicationController
   around_filter :handle_related_file_groups, :only => [:update, :create]
 
   def show
+    @assessable = @file_group
+    @assessments = @assessable.assessments.order('date DESC')
     respond_to do |format|
       format.html
       format.json

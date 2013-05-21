@@ -180,5 +180,9 @@ class Collection < ActiveRecord::Base
     self.title
   end
 
+  def recursive_assessments
+    (self.assessments + self.file_groups.collect {|file_group| file_group.assessments}.flatten)
+  end
+
 end
 

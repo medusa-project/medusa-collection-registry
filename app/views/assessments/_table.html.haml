@@ -2,18 +2,22 @@
 
 = link_to 'Add Assessment', new_assessment_path(:assessable_id => @assessable.id, :assessable_type => @assessable.class.name), :class => 'btn btn-primary btn-mini'
 
-- if @assessable.assessments.present?
+- if @assessments.present?
   %table#assessments.table.table-striped
     %thead
       %tr
         %th Name
+        %th For
+        %th Type
         %th Date
         %th Author
         %th
     %tbody
-      - @assessable.assessments.each do |assessment|
+      - @assessments.each do |assessment|
         %tr
           %td #{link_to assessment.name, assessment}
+          %td #{link_to assessment.assessable.assessable_label, assessment.assessable}
+          %td #{assessment.assessable.class.to_s.underscore.humanize}
           %td #{assessment.date}
           %td #{assessment.author_net_id}
           %td

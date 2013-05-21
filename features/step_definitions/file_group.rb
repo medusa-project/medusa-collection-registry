@@ -143,6 +143,12 @@ And(/^the cfs root for the file group named '(.*)' should be nil$/) do |name|
   FileGroup.find_by_name(name).cfs_root.should be_nil
 end
 
+And(/^the file group named '(.*)' has an assessment named '(.*)'$/) do |file_group_name, assessment_name|
+  fg = FileGroup.find_by_name(file_group_name)
+  c = FactoryGirl.create(:assessment, :name => assessment_name, :assessable_id => fg.id, :assessable_type => 'FileGroup')
+  puts "File group has #{fg.assessments(true).count} assessments"
+end
+
 private
 
 def find_file_group(collection_title, location)

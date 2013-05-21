@@ -35,8 +35,7 @@ class AssessmentsController < ApplicationController
   def create
     klass = assessable_class(params[:assessment])
     @assessable = klass.find(params[:assessment].delete(:assessable_id))
-    @assessment = Assessment.new(params[:assessment])
-    @assessment.assessable = @assessable
+    @assessment = @assessable.build(params[:assessment])
     if @assessment.save
       redirect_to assessment_path(@assessment)
     else
