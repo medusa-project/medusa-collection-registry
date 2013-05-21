@@ -18,7 +18,8 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-
+    @assessable = @repository
+    @assessments = @assessable.recursive_assessments
   end
 
   def index

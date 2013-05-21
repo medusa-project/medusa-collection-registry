@@ -57,6 +57,8 @@ class AssessmentsController < ApplicationController
         Collection
       when 'FileGroup', 'ExternalFileGroup', 'BitLevelFileGroup', 'ObjectLevelFileGroup'
         FileGroup
+      when 'Repository'
+        Repository
       else
         raise RuntimeError, 'Unrecognized assessable type'
     end

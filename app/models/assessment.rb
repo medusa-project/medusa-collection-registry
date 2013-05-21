@@ -8,7 +8,7 @@ class Assessment < ActiveRecord::Base
   belongs_to :assessable, :polymorphic => true
   belongs_to :storage_medium
 
-  validates_inclusion_of :assessable_type, :in => ['Collection', 'FileGroup']
+  validates_inclusion_of :assessable_type, :in => ['Collection', 'FileGroup', 'Repository']
   validates_presence_of :name
 
   ASSESSMENT_TYPES = %w(external_files)

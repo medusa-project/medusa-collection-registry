@@ -7,6 +7,7 @@ class Repository < ActiveRecord::Base
   attr_accessible :notes, :title, :url, :address_1, :address_2, :city, :state,
                   :zip, :phone_number, :email, :active_start_date, :active_end_date
   has_many :collections, :dependent => :destroy
+  has_many :assessments, :as => :assessable, :dependent => :destroy
 
   validates_uniqueness_of :title
   validates_presence_of :title
@@ -26,6 +27,14 @@ class Repository < ActiveRecord::Base
 
   def self.aggregate_size
     FileGroup.aggregate_size
+  end
+
+  def recursive_assessments
+    self.assessments + self.collections.collect {|collection| collection.recursive_assessments}.flatten
+  end
+
+  def assessable_label
+    self.title
   end
 
 end
