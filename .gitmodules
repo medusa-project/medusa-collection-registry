@@ -4,3 +4,6 @@
 [submodule "submodules/ruby-fits-server"]
 	path = submodules/ruby-fits-server
 	url = git@github.com:medusa-project/ruby-fits-server.git
+[submodule "submodules/medusa-content-models"]
+	path = submodules/medusa-content-models
+	url = git@github.com:medusa-project/medusa-content-models.git
