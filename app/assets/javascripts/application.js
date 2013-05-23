@@ -12,7 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require twitter/bootstrap
 //= require data_tables_common
+//= require autocomplete-rails
 //= require common
 //= require_tree .
