@@ -90,7 +90,7 @@ class FileGroupsController < ApplicationController
   end
 
   def new_event
-    @file_group.events.create(params[:event].merge(:actor_netid => current_user.uid))
+    @file_group.events.create(params[:event])
     if request.xhr?
       respond_to {|format| format.js}
     else

@@ -12,8 +12,9 @@ Feature: Add events manually to a file group
   Scenario: I can add an event from the show view for a file group
     When I view the file group named 'dogs'
     And I fill in fields:
-      | Note | Dog discussion |
+      | Note  | Dog discussion |
+      | Actor | joebob         |
     And I select 'External file group staged' from 'Event'
     And I click on 'Create Event'
-    Then the file group named 'dogs' should have an event with key 'external_staged' performed by 'admin'
+    Then the file group named 'dogs' should have an event with key 'external_staged' performed by 'joebob'
     And I should be on the view page for the file group named 'dogs'
