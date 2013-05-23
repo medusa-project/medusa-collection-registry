@@ -20,6 +20,11 @@ MedusaRails3::Application.routes.draw do
       get 'download'
     end
   end
+  resources :events do
+    collection do
+      get :autocomplete_user_uid
+    end
+  end
 
   [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
     resources file_group_type do
