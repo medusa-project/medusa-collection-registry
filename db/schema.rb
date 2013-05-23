@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130516182122) do
+ActiveRecord::Schema.define(:version => 20130523204024) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -181,13 +181,13 @@ ActiveRecord::Schema.define(:version => 20130516182122) do
     t.text     "note"
     t.integer  "eventable_id"
     t.string   "eventable_type"
-    t.integer  "user_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.string   "actor_netid"
   end
 
+  add_index "events", ["actor_netid"], :name => "index_events_on_actor_netid"
   add_index "events", ["eventable_id"], :name => "index_events_on_eventable_id"
-  add_index "events", ["user_id"], :name => "index_events_on_user_id"
 
   create_table "file_groups", :force => true do |t|
     t.string   "external_file_location"

@@ -8,9 +8,9 @@
       %td Message
       %td Note
   %tbody
-    - @eventable.events.includes(:user).all.each do |event|
+    - @eventable.events.all.each do |event|
       %tr
         %td= event.created_at.strftime('%Y-%m-%d %H:%M:%S')
-        %td= event.user.uid
+        %td= event.actor_netid
         %td= event.message
         %td= event.note
