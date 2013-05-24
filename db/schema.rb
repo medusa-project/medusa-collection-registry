@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130523204024) do
+ActiveRecord::Schema.define(:version => 20130524143202) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -184,6 +184,7 @@ ActiveRecord::Schema.define(:version => 20130523204024) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
     t.string   "actor_netid"
+    t.date     "date"
   end
 
   add_index "events", ["actor_netid"], :name => "index_events_on_actor_netid"

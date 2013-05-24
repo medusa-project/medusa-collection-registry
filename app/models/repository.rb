@@ -33,7 +33,7 @@ class Repository < ActiveRecord::Base
     self.assessments + self.collections.collect {|collection| collection.recursive_assessments}.flatten
   end
 
-  def assessable_label
+  def label
     self.title
   end
 

@@ -14,7 +14,7 @@ class FileGroup < ActiveRecord::Base
   has_many :assessments, :as => :assessable, :dependent => :destroy
   has_many :related_file_group_joins, :dependent => :destroy
   has_many :related_file_groups, :through => :related_file_group_joins, :order => 'name'
-  has_many :events, :as => :eventable, :dependent => :destroy, :order => 'created_at DESC'
+  has_many :events, :as => :eventable, :dependent => :destroy, :order => 'date DESC'
 
   before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root
@@ -84,10 +84,6 @@ class FileGroup < ActiveRecord::Base
     self.sum('total_file_size')
   end
 
-  def assessable_label
-    self.name
-  end
-
   def sibling_file_groups
     self.collection.file_groups.order(:name).all - [self]
   end
@@ -108,6 +104,10 @@ class FileGroup < ActiveRecord::Base
   #override in subclasses that do
   def supports_cfs
     false
+  end
+
+  def all_events
+    self.events.all
   end
 
 end

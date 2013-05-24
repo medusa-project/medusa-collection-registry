@@ -13,8 +13,11 @@ Feature: Add events manually to a file group
     When I view the file group named 'dogs'
     And I fill in fields:
       | Note  | Dog discussion |
-      | Actor | joebob         |
+      | Actor | joe            |
+      | Date  | 2011-09-23     |
     And I select 'External file group staged' from 'Event'
     And I click on 'Create Event'
-    Then the file group named 'dogs' should have an event with key 'external_staged' performed by 'joebob'
+    Then the file group named 'dogs' should have an event with fields:
+      | key             | actor_netid | date       | note           |
+      | external_staged | joe         | 2011-09-23 | Dog discussion |
     And I should be on the view page for the file group named 'dogs'

@@ -21,7 +21,6 @@ gem 'simple_form'
 gem 'auto_html'
 gem 'simple_memoize'
 gem 'auto_strip_attributes'
-gem 'rails3-jquery-autocomplete'
 
 gem 'httpclient'
 gem 'mechanize', :git => 'git://github.com/medusa-project/mechanize.git'
@@ -57,6 +56,7 @@ end
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'rails3-jquery-autocomplete'
 
 gem 'nokogiri'
 

@@ -176,7 +176,7 @@ class Collection < ActiveRecord::Base
     end
   end
 
-  def assessable_label
+  def label
     self.title
   end
 

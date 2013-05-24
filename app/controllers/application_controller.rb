@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
   end
 
   def record_event(eventable, key, user = current_user)
-    eventable.events.create(:actor_netid => user.uid, :key => key)
+    eventable.events.create(:actor_netid => user.uid, :key => key, :date => Date.today)
   end
 
 

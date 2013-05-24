@@ -13,8 +13,8 @@
       = f.input :phone_number, :label => 'Phone Number'
       = f.input :email
       = f.input :url, :label => 'URL'
-      = f.input :active_start_date, date_picker_options(:label => 'Active Start Date')
-      = f.input :active_end_date, date_picker_options(:label => 'Active End Date')
+      = f.input :active_start_date, :as => :string, :input_html => {:class => 'datepicker'}, :label => 'Active Start Date'
+      = f.input :active_end_date, :as => :string, :input_html => {:class => 'datepicker'}, :label => 'Active End Date'
       = f.input :notes, :input_html => { :rows => 3, :class => 'span3' }
     .form-actions.span6
       = f.button :submit, :class => 'btn-primary'

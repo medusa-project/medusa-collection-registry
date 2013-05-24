@@ -7,6 +7,7 @@
     .modal-body
       = f.input :key, :as => :select, :include_blank => false, :collection => @file_group.supported_event_hash.invert, :label => 'Event'
       = f.input :actor_netid, :label => 'Actor', :input_html => {:value => current_user.uid}, :as => :autocomplete, :url => autocomplete_user_uid_events_path
+      = f.input :date, :as => :string, :input_html => {:class => 'datepicker', :value => Date.today.to_s}
       = f.input :note, :input_html => {:class => 'span5'}
     .modal-footer
       %button{:class => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Cancel

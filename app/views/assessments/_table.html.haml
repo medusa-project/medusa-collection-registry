@@ -16,7 +16,7 @@
       - @assessments.each do |assessment|
         %tr
           %td #{link_to assessment.name, assessment}
-          %td #{link_to assessment.assessable.assessable_label, assessment.assessable}
+          %td #{link_to assessment.assessable.label, assessment.assessable}
           %td #{assessment.assessable.class.to_s.underscore.humanize}
           %td #{assessment.date}
           %td #{assessment.author_net_id}
