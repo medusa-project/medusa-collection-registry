@@ -7,11 +7,13 @@ MedusaRails3::Application.routes.draw do
   resources :collections do
     member do
       get 'red_flags'
+      get 'events'
     end
   end
   resources :repositories do
     member do
       get 'red_flags'
+      get 'events'
     end
   end
   resources :assessments

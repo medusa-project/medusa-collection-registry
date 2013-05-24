@@ -57,6 +57,12 @@ class CollectionsController < ApplicationController
     render 'shared/red_flags'
   end
 
+  def events
+    @eventable = Collection.find(params[:id])
+    @events = @eventable.all_events.sort_by(&:date).reverse
+    render 'events/index'
+  end
+
   protected
 
   def find_collection_and_repository

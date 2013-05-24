@@ -49,6 +49,12 @@ class RepositoriesController < ApplicationController
     render 'shared/red_flags'
   end
 
+  def events
+    @eventable = Repository.find(params[:id])
+    @events = @eventable.all_events.sort_by(&:date).reverse
+    render 'events/index'
+  end
+
   protected
 
   def find_repository

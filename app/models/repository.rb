@@ -37,4 +37,8 @@ class Repository < ActiveRecord::Base
     self.title
   end
 
+  def all_events
+    self.collections.collect {|collection| collection.all_events}.flatten
+  end
+
 end

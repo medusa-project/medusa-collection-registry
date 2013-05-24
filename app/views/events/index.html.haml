@@ -4,6 +4,8 @@
   %thead
     %tr
       %td Time
+      %td Label
+      %td Type
       %td User
       %td Message
       %td Note
@@ -11,6 +13,8 @@
     - @events.each do |event|
       %tr
         %td= event.date
+        %td= event.eventable.label
+        %td= event.eventable.class.to_s.underscore.humanize
         %td= event.actor_netid
         %td= event.message
         %td= event.note

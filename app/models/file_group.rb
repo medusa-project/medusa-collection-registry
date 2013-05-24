@@ -106,8 +106,4 @@ class FileGroup < ActiveRecord::Base
     false
   end
 
-  def all_events
-    self.events.all
-  end
-
 end

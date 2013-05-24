@@ -184,5 +184,9 @@ class Collection < ActiveRecord::Base
     (self.assessments + self.file_groups.collect {|file_group| file_group.assessments}.flatten)
   end
 
+  def all_events
+    self.file_groups.collect {|file_group| file_group.events}.flatten
+  end
+
 end
 

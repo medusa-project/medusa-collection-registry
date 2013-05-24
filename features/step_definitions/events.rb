@@ -8,6 +8,13 @@ Then /^the file group named '(.*)' should have an event with key '(.*)' performe
   file_group.events.where(:key => key, :actor_netid => uid).first.should be_true
 end
 
+And(/^the file group named '(.*)' has events with fields:$/) do |name, table|
+  file_group = FileGroup.find_by_name(name)
+  table.hashes.each do |hash|
+    FactoryGirl.create(:event, hash.merge(:eventable => file_group))
+  end
+end
+
 Then(/^the file group named '(.*)' should have an event with fields:$/) do |name, table|
   file_group = FileGroup.find_by_name(name)
   table.hashes.each do |hash|
