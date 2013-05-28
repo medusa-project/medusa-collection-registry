@@ -10,6 +10,10 @@ class BitLevelFileGroup < FileGroup
     'bit-level store'
   end
 
+  def self.downstream_types
+    ['ObjectLevelFileGroup']
+  end
+
   def supports_cfs
     true
   end

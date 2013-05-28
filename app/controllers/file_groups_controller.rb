@@ -4,6 +4,7 @@ class FileGroupsController < ApplicationController
                                                            :new_event, :create_cfs_fits, :create_virus_scan, :red_flags]
   skip_before_filter :require_logged_in, :only => [:show, :index]
   skip_before_filter :authorize, :only => [:show, :index]
+  around_filter :handle_related_file_groups, :only => [:update, :create]
 
   def show
     @assessable = @file_group
@@ -127,6 +128,20 @@ class FileGroupsController < ApplicationController
   def determine_creation_class(params)
     storage_level = params.delete(:storage_level)
     Kernel.const_get(FileGroup::STORAGE_LEVEL_HASH.detect { |k, v| v == storage_level }.first)
+  end
+
+  #remove the related file group parameters, yield to the block, and after it completes upgrade the related file group stuff correctly
+  def handle_related_file_groups
+    target_file_group_ids = params[:file_group].delete(:target_file_group_ids) || []
+    target_file_group_notes = params[:file_group].delete(:target_file_group_notes) || []
+    yield
+    @file_group.target_file_group_ids = target_file_group_ids
+    target_file_group_notes.each do |id, note|
+      if join = RelatedFileGroupJoin.where(:source_file_group_id => @file_group.id, :target_file_group_id => id).first
+        join.note = note
+        join.save!
+      end
+    end
   end
 
 end

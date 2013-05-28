@@ -10,47 +10,48 @@ Feature: File Group related file groups
       | Dogs  |
       | Cats  |
     And the collection titled 'Dogs' has file groups with fields:
-      | name              |
-      | texts             |
-      | access_images     |
-      | production_images |
+      | name              | type                 |
+      | texts             | ExternalFileGroup    |
+      | access_images     | BitLevelFileGroup    |
+      | production_images | ObjectLevelFileGroup |
     And the collection titled 'Cats' has file groups with fields:
-      | name       |
-      | cat_images |
+      | name       | type                 |
+      | cat_images | ObjectLevelFileGroup |
 
-  Scenario: Editing a collection shows potential related file groups
-    Given PENDING
+  Scenario: Editing a file group shows potential related file groups
     When I edit the file group named 'texts'
     Then I should see all of:
       | access_images | production_images |
     And I should not see 'texts' in the related file groups section
     And I should not see 'cat_images' in the related file groups section
 
+  Scenario: Editing a file group does not show file groups lower on the ingest path
+    When I edit the file group named 'access_images'
+    Then I should see 'production_images'
+    And I should not see 'texts' in the related file groups section
+
   Scenario: Adding a related file group
-    Given PENDING
     When I edit the file group named 'texts'
     And I check 'access_images'
     And I click on 'Update File group'
     Then I should see 'access_images'
     And I should not see 'production_images'
-    And the file groups named 'texts' and 'access_images' should be related
+    And the file group named 'texts' should have a target file group named 'access_images'
 
   Scenario: Deleting a related file group
-    Given PENDING
-    And the file groups named 'texts' and 'access_images' are related
+    And the file group named 'texts' has a target file group named 'access_images'
     When I edit the file group named 'texts'
     And I uncheck 'access_images'
     And I click on 'Update File group'
     Then I should not see 'access_images'
-    And the file groups named 'texts' and 'access_images' should not be related
+    And the file group named 'texts' should not have a target file group named 'access_images'
 
   Scenario: We can attach a comment to a related file group
-    Given PENDING
     When I edit the file group named 'texts'
     And I check 'access_images'
     And I fill in fields:
-      |Note|How these are related|
+      | Note | How these are related |
     And I click on 'Update File group'
     Then I should see 'How these are related'
-    And the file groups named 'texts' and 'access_images' should have relation note 'How these are related'
+    And the file group named 'texts' should have relation note 'How these are related' for the target file group 'access_images'
 

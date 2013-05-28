@@ -29,5 +29,9 @@
           %td #{file_group.total_files}
           %td #{file_group.total_file_size}
           %td.related_file_groups
+            - file_group.source_file_groups.each do |source_file_group|
+              %div= link_to file_group.source_relation_note(source_file_group).if_blank(source_file_group.id.to_s), source_file_group
+            - file_group.target_file_groups.each do |target_file_group|
+              %div= link_to file_group.target_relation_note(target_file_group).if_blank(target_file_group.id.to_s), target_file_group
           %td
             = render 'file_group_actions', :file_group => file_group

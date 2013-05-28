@@ -9,8 +9,8 @@ Feature: File Group Management
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | name   |
-      | Main Library           | image/jpeg  | 100             | 1200        | images |
+      | external_file_location | file_format | total_file_size | total_files | name   | type              |
+      | Main Library           | image/jpeg  | 100             | 1200        | images | ExternalFileGroup |
 
   Scenario: View file groups of a collection
     When I view the collection titled 'Dogs'
@@ -54,11 +54,10 @@ Feature: File Group Management
     Then I should be on the edit page for the file group named 'images'
 
   Scenario: See and navigate to a related file group
-    Given PENDING
     Given the collection titled 'Dogs' has file groups with fields:
-      | name |
-      | text |
-    And the file groups named 'images' and 'text' are related with note 'text created from images'
+      | name | type              |
+      | text | BitLevelFileGroup |
+    And the file group named 'images' has relation note 'text created from images' for the target file group 'text'
     When I view the collection titled 'Dogs'
     And I click on 'text created from images'
     Then I should be on the view page for the file group named 'text'

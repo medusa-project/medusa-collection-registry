@@ -17,5 +17,9 @@
           #collection-file-package-summary.tab-pane
             = f.simple_fields_for :collection, @collection do |c|
               = c.input :file_package_summary, :label => "Collection File Package Summary"
-          #related-file-groups.tab-pane
-            = render :partial => 'form_related_file_groups'
+            #related-file-groups.tab-pane
+              - if @file_group.new_record?
+                %p
+                  Related file groups can only be defined for an already saved file group.
+              - else
+                = render :partial => 'form_related_file_groups'

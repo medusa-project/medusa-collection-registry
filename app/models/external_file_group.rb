@@ -4,4 +4,8 @@ class ExternalFileGroup < FileGroup
     'external'
   end
 
+  def self.downstream_types
+    ['BitLevelFileGroup', 'ObjectLevelFileGroup']
+  end
+
 end

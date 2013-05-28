@@ -116,6 +116,38 @@ And /^the file groups named '(.*)' and '(.*)' are related with note '(.*)'$/ do 
   relation.save!
 end
 
+And(/^the file group named '(.*)' should have a target file group named '(.*)'$/) do |source_name, target_name|
+  source_file_group = FileGroup.find_by_name(source_name)
+  target_file_group = FileGroup.find_by_name(target_name)
+  source_file_group.target_file_groups.include?(target_file_group).should be_true
+end
+
+And(/^the file group named '(.*)' should not have a target file group named '(.*)'$/) do |source_name, target_name|
+  source_file_group = FileGroup.find_by_name(source_name)
+  target_file_group = FileGroup.find_by_name(target_name)
+  source_file_group.target_file_groups.include?(target_file_group).should be_false
+end
+
+And(/^the file group named '(.*)' has a target file group named '(.*)'$/) do |source_name, target_name|
+  source_file_group = FileGroup.find_by_name(source_name)
+  target_file_group = FileGroup.find_by_name(target_name)
+  source_file_group.target_file_groups << target_file_group
+end
+
+And(/^the file group named '(.*)' should have relation note '(.*)' for the target file group '(.*)'$/) do |source_name, note, target_name|
+  source_file_group = FileGroup.find_by_name(source_name)
+  target_file_group = FileGroup.find_by_name(target_name)
+  source_file_group.target_relation_note(target_file_group).should == note
+end
+
+And(/^the file group named '(.*)' has relation note '(.*)' for the target file group '(.*)'$/) do |source_name, note, target_name|
+  source_file_group = FileGroup.find_by_name(source_name)
+  target_file_group = FileGroup.find_by_name(target_name)
+  join = RelatedFileGroupJoin.find_or_create_by_source_file_group_id_and_target_file_group_id(source_file_group.id, target_file_group.id)
+  join.note = note
+  join.save!
+end
+
 And /^the file groups named '(.*)' and '(.*)' should be related$/ do |name_1, name_2|
   file_group_1 = FileGroup.find_by_name(name_1)
   file_group_2 = FileGroup.find_by_name(name_2)

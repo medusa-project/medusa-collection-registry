@@ -73,4 +73,25 @@ class FileGroup < ActiveRecord::Base
     false
   end
 
+  def potential_target_file_groups
+    self.collection.file_groups.where(:type => self.class.downstream_types)
+  end
+
+  #subclasses override this to give a list that contains the potential downstream classes for relating filegroups
+  def self.downstream_types
+    raise RuntimeError, 'SubclassResposibility'
+  end
+
+  def has_target?(file_group)
+    self.target_file_groups.include?(file_group)
+  end
+
+  def target_relation_note(file_group)
+    self.target_file_group_joins.where(:target_file_group_id => file_group.id).first.try(:note)
+  end
+
+  def source_relation_note(file_group)
+    self.source_file_group_joins.where(:source_file_group_id => file_group.id).first.try(:note)
+  end
+
 end
