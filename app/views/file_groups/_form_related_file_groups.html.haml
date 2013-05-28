@@ -15,7 +15,7 @@
               :value => target_file_group.id, :type => 'checkbox',
               :name => "file_group[target_file_group_ids][]",
               :checked => @file_group.has_target?(target_file_group)}
-            #{target_file_group.name}
+            #{target_file_group.name} (#{target_file_group.storage_level})
         .span4
           %label.text
             Note

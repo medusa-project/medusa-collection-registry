@@ -53,14 +53,14 @@ Feature: File Group Management
     And I click on 'Add New' in the related-file-group actions
     Then I should be on the edit page for the file group named 'images'
 
-  Scenario: See and navigate to a related file group
+  Scenario: See related file group
     Given the collection titled 'Dogs' has file groups with fields:
       | name | type              |
       | text | BitLevelFileGroup |
     And the file group named 'images' has relation note 'text created from images' for the target file group 'text'
     When I view the collection titled 'Dogs'
-    And I click on 'text created from images'
-    Then I should be on the view page for the file group named 'text'
+    Then I should see all of:
+      | Ingested from | Ingested to |
 
   Scenario: Navigate to files of a bit level file group
     Given the collection titled 'Dogs' has file groups with fields:
