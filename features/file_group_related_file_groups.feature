@@ -19,6 +19,7 @@ Feature: File Group related file groups
       | cat_images |
 
   Scenario: Editing a collection shows potential related file groups
+    Given PENDING
     When I edit the file group named 'texts'
     Then I should see all of:
       | access_images | production_images |
@@ -26,6 +27,7 @@ Feature: File Group related file groups
     And I should not see 'cat_images' in the related file groups section
 
   Scenario: Adding a related file group
+    Given PENDING
     When I edit the file group named 'texts'
     And I check 'access_images'
     And I click on 'Update File group'
@@ -34,6 +36,7 @@ Feature: File Group related file groups
     And the file groups named 'texts' and 'access_images' should be related
 
   Scenario: Deleting a related file group
+    Given PENDING
     And the file groups named 'texts' and 'access_images' are related
     When I edit the file group named 'texts'
     And I uncheck 'access_images'
@@ -42,6 +45,7 @@ Feature: File Group related file groups
     And the file groups named 'texts' and 'access_images' should not be related
 
   Scenario: We can attach a comment to a related file group
+    Given PENDING
     When I edit the file group named 'texts'
     And I check 'access_images'
     And I fill in fields:

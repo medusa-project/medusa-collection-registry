@@ -30,13 +30,6 @@
       = show_field @file_group, :total_files
       = show_field @file_group, :summary
       = show_field @file_group, :provenance_note
-      - if @file_group.related_file_groups.present?
-        %p
-          %strong Related File Groups
-        %ul
-          - @file_group.related_file_groups.each do |related_file_group|
-            %li
-              #{link_to(related_file_group.name, related_file_group)} - #{@file_group.relation_note(related_file_group)}
       %h3 Rights Declaration
       = render :partial => 'rights_declarations/show', :locals => {:rights_declaration => @file_group.rights_declaration}
 

@@ -4,7 +4,6 @@ class FileGroupsController < ApplicationController
                                                            :new_event, :create_cfs_fits, :create_virus_scan, :red_flags]
   skip_before_filter :require_logged_in, :only => [:show, :index]
   skip_before_filter :authorize, :only => [:show, :index]
-  around_filter :handle_related_file_groups, :only => [:update, :create]
 
   def show
     @assessable = @file_group
@@ -110,14 +109,6 @@ class FileGroupsController < ApplicationController
   def find_file_group_and_collection
     @file_group = FileGroup.find(params[:id])
     @collection = @file_group.collection
-  end
-
-  #remove the related file group parameters, yield to the block, and after it completes upgrade the related file group stuff correctly
-  def handle_related_file_groups
-    related_file_group_ids = params[:file_group].delete(:related_file_group_ids)
-    related_file_group_notes = params[:file_group].delete(:related_file_group_notes)
-    yield
-    @file_group.symmetric_update_related_file_groups(related_file_group_ids.reject { |id| id.blank? }, related_file_group_notes)
   end
 
   #Ideally we'd handle this with nested attributes, but I can't seem to get the combination of STI on the file group

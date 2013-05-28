@@ -12,8 +12,10 @@ class FileGroup < ActiveRecord::Base
   belongs_to :root_directory, :class_name => 'Directory'
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
   has_many :assessments, :as => :assessable, :dependent => :destroy
-  has_many :related_file_group_joins, :dependent => :destroy
-  has_many :related_file_groups, :through => :related_file_group_joins, :order => 'name'
+  has_many :target_file_group_joins, :dependent => :destroy, :class_name => 'RelatedFileGroupJoin', :foreign_key => :source_file_group_id
+  has_many :target_file_groups, :through => :target_file_group_joins
+  has_many :source_file_group_joins, :dependent => :destroy, :class_name => 'RelatedFileGroupJoin', :foreign_key => :target_file_group_id
+  has_many :source_file_groups, :through => :source_file_group_joins
   has_many :events, :as => :eventable, :dependent => :destroy, :order => 'date DESC'
 
   before_validation :ensure_rights_declaration
@@ -41,36 +43,6 @@ class FileGroup < ActiveRecord::Base
     ''
   end
 
-  #set the file group ids, making sure any removed ids have their joins and the
-  #symmetric joins both destroyed
-  def symmetric_update_related_file_groups(related_ids, notes)
-    current_related_file_groups = self.related_file_groups
-    new_related_file_groups = FileGroup.find(related_ids)
-    (current_related_file_groups - new_related_file_groups).each do |deleted_file_group|
-      join = related_file_group_join(deleted_file_group)
-      join.destroy if join
-    end
-    self.related_file_group_ids = related_ids
-    related_ids.each do |id|
-      if notes[id]
-        join = related_file_group_join(id)
-        if join
-          join.note = notes[id]
-          join.save!
-        end
-      end
-    end
-  end
-
-  def related_file_group_join(related_file_group_or_id)
-    id = related_file_group_or_id.is_a?(FileGroup) ? related_file_group_or_id.id : related_file_group_or_id
-    RelatedFileGroupJoin.where(:file_group_id => self.id, :related_file_group_id => id).first
-  end
-
-  def related_to?(file_group)
-    self.related_file_groups.include?(file_group)
-  end
-
   def ensure_rights_declaration
     self.rights_declaration ||= self.clone_collection_rights_declaration
   end
@@ -86,11 +58,6 @@ class FileGroup < ActiveRecord::Base
 
   def sibling_file_groups
     self.collection.file_groups.order(:name).all - [self]
-  end
-
-  def relation_note(related_file_group)
-    join = self.related_file_group_join(related_file_group)
-    join ? join.note : ''
   end
 
   def supported_event_hash

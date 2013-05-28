@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130524143202) do
+ActiveRecord::Schema.define(:version => 20130528152210) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -268,15 +268,15 @@ ActiveRecord::Schema.define(:version => 20130524143202) do
   add_index "red_flags", ["red_flaggable_type"], :name => "index_red_flags_on_red_flaggable_type"
 
   create_table "related_file_group_joins", :force => true do |t|
-    t.integer  "file_group_id"
-    t.integer  "related_file_group_id"
+    t.integer  "source_file_group_id"
+    t.integer  "target_file_group_id"
     t.string   "note"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
   end
 
-  add_index "related_file_group_joins", ["file_group_id"], :name => "index_related_file_group_joins_on_file_group_id"
-  add_index "related_file_group_joins", ["related_file_group_id"], :name => "index_related_file_group_joins_on_related_file_group_id"
+  add_index "related_file_group_joins", ["source_file_group_id"], :name => "index_related_file_group_joins_on_source_file_group_id"
+  add_index "related_file_group_joins", ["target_file_group_id"], :name => "index_related_file_group_joins_on_target_file_group_id"
 
   create_table "repositories", :force => true do |t|
     t.string   "title"

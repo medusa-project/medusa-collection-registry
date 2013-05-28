@@ -54,6 +54,7 @@ Feature: File Group Management
     Then I should be on the edit page for the file group named 'images'
 
   Scenario: See and navigate to a related file group
+    Given PENDING
     Given the collection titled 'Dogs' has file groups with fields:
       | name |
       | text |
