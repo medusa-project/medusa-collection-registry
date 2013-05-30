@@ -2,15 +2,7 @@
 
 %div
   = link_to 'Add File Group', new_file_group_path(:collection_id => @collection.id), :class => 'btn btn-primary btn-mini'
-%div
-  Show Storage Level:
-  = link_to_function('All', 'storage_level_filter.all()')
-  |
-  = link_to_function('External', 'storage_level_filter.external()')
-  |
-  = link_to_function('Bit Level', 'storage_level_filter.bit_level()')
-  |
-  = link_to_function('Object Level', 'storage_level_filter.object_level()')
+= render 'storage_level_filter'
 
 - if @collection.file_groups.present?
   %table#file_groups.table.table-striped
