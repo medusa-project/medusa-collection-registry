@@ -27,9 +27,11 @@ module Cfs
     create_fits_for(url_path, file_path)
   end
 
-  def ensure_fits_for_tree(url_path)
+  def ensure_fits_for_tree(url_path, parent_job = nil)
     self.each_file_path_in_tree(url_path) do |file_path|
-      Cfs.delay(:priority => 60).ensure_fits_for(file_path)
+      Delayed::Job.enqueue(Job::FitsFile.new(:path => file_path,
+                                             :fits_directory_tree_id => (parent_job.blank? ? nil : parent_job.id)),
+                           :priority => 60)
     end
   end
 

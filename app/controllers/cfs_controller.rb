@@ -31,7 +31,7 @@ class CfsController < ApplicationController
 
   def create_fits_for_tree
     params[:path] ||= ''
-    Cfs.delay(:priority => 50).ensure_fits_for_tree(params[:path])
+    Delayed::Job.enqueue(Job::FitsDirectoryTree.create(:path => params[:path]), :priority => 50)
     flash[:notice] = "Scheduling FITS creation for /#{params[:path]}"
     redirect_to cfs_show_path(params[:path])
   end

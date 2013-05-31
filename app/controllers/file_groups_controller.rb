@@ -67,7 +67,7 @@ class FileGroupsController < ApplicationController
 
   def create_cfs_fits
     if @file_group.cfs_root.present?
-      Cfs.delay.ensure_fits_for_tree(@file_group.cfs_root)
+      Delayed::Job.enqueue(Job::FitsDirectoryTree.create(:path => @file_group.cfs_root), :priority => 50)
       record_event(@file_group, 'cfs_fits_performed')
       flash[:notice] = "Scheduling FITS creation for /#{@file_group.cfs_root}"
       redirect_to @file_group
@@ -77,7 +77,7 @@ class FileGroupsController < ApplicationController
   def create_virus_scan
     if @file_group.cfs_root.present?
       @alert = "Running virus scan on cfs directory #{@file_group.cfs_root}."
-      VirusScan.delay.check_file_group(@file_group)
+      Delayed::Job.enqueue(Job::VirusScan.create(:file_group_id => @file_group.id), :priority => 20)
     else
       @alert = 'Selected File Group does not have a cfs root directory'
     end

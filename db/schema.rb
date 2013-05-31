@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130528152210) do
+ActiveRecord::Schema.define(:version => 20130531180926) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -218,6 +218,27 @@ ActiveRecord::Schema.define(:version => 20130528152210) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "job_fits_directory_trees", :force => true do |t|
+    t.string   "path"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "job_fits_files", :force => true do |t|
+    t.string   "path"
+    t.integer  "fits_directory_tree_id"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+  end
+
+  add_index "job_fits_files", ["fits_directory_tree_id"], :name => "index_job_fits_files_on_fits_directory_tree_id"
+
+  create_table "job_virus_scans", :force => true do |t|
+    t.integer  "file_group_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "people", :force => true do |t|
