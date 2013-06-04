@@ -1,0 +1,28 @@
+%h3 Virus Scans
+%table.table.table-striped#running_virus_scans
+  %thead
+    %tr
+      %th File Group
+      %th Created
+  %tbody
+    - Job::VirusScan.all.each do |virus_scan_job|
+      %tr
+        %td= link_to virus_scan_job.file_group.name, polymorphic_path(virus_scan_job.file_group)
+        %td= link_to virus_scan_job.created_at.to_date.to_s
+
+%h3 FITS Scans
+%table.table.table-striped#running_fits_scans
+  %thead
+    %tr
+      %th Path
+      %th File Group
+      %th Files remaining
+      %th Created
+  %tbody
+    - Job::FitsDirectoryTree.all.each do |fits_job|
+      - file_group = BitLevelFileGroup.find_by_cfs_root(fits_job.path)
+      %tr
+        %td= fits_job.path
+        %td= file_group ? link_to(file_group.name, polymorphic_path(file_group)) : 'No associated file group'
+        %td= fits_job.fits_files.count
+        %td= fits_job.created_at.to_date.to_s

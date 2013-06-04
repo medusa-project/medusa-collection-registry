@@ -43,6 +43,15 @@ Then /^I should see an object preservation content_type table$/ do
   page.should have_selector('table#file_stats_objects')
 end
 
+Then(/^I should see a table of running virus scans$/) do
+  page.should have_selector('table#running_virus_scans')
+end
+
+Then(/^I should see a table of running fits scans$/) do
+  page.should have_selector('table#running_fits_scans')
+end
+
+
 Then /^show me the page$/ do
   save_and_open_page
 end
