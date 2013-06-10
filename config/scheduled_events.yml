@@ -1,4 +1,10 @@
 file_group:
-  external_delete: Delete external file group
-  external_to_bit: Ingest external file group to bit-level store
-  external_to_object: Ingest external file group to object-level store
+  external_delete:
+    message: Delete external file group
+    normal_event_key: external_deleted
+  external_to_bit:
+    message: Ingest external file group to bit-level store
+    normal_event_key: staged_to_bit
+  external_to_object:
+    message: Ingest external file group to object-level store
+    normal_event_key: staged_to_object

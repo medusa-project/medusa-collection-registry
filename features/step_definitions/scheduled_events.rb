@@ -15,3 +15,9 @@ end
 Then(/^I should see the scheduled events table$/) do
   page.should have_selector('table#scheduled-events')
 end
+
+And(/^I click on '(.*)' in the scheduled events table$/) do |link|
+  within('table#scheduled-events') do
+    click_on(link)
+  end
+end

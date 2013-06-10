@@ -8,6 +8,15 @@ Feature: Schedule events for a file group
     And the collection titled 'Animals' has file groups with fields:
       | name |
       | Dogs |
+    Given the file group named 'Dogs' has scheduled events with fields:
+      | key             | actor_netid | action_date | state     |
+      | external_to_bit | pete        | 2011-09-08  | scheduled |
+
+  Scenario: View scheduled events for a file group
+    When I view events for the file group named 'Dogs'
+    Then I should see the scheduled events table
+    And I should see all of:
+      | Ingest external file group to bit-level store | pete | 2011-09-08 | scheduled |
 
   Scenario: I can schedule an event from the show view for a file group
     When I view the file group named 'Dogs'
@@ -23,11 +32,21 @@ Feature: Schedule events for a file group
     And I should be on the view page for the file group named 'Dogs'
     And 'joe@illinois.edu' should receive an email with subject 'Medusa scheduled event reminder'
 
-  Scenario: View scheduled events for a file group
-    Given the file group named 'Dogs' has scheduled events with fields:
-      | key             | actor_netid | action_date | state     |
-      | external_delete | pete        | 2011-09-08  | scheduled |
+  Scenario: Cancel a scheduled event for a file group
     When I view events for the file group named 'Dogs'
-    Then I should see the scheduled events table
-    And I should see all of:
-      | Delete external file group | pete | 2011-09-08 | scheduled |
+    And I click on 'cancel' in the scheduled events table
+    Then the file group named 'Dogs' should have a scheduled event with fields:
+      | key             | state     |
+      | external_to_bit | cancelled |
+    And I should be viewing events for the file group named 'Dogs'
+    And I should see 'cancelled'
+
+  Scenario: Complete a scheduled event for a file group
+    When I view events for the file group named 'Dogs'
+    And I click on 'complete' in the scheduled events table
+    Then the file group named 'Dogs' should have a scheduled event with fields:
+      | key             | state     |
+      | external_to_bit | completed |
+    And the file group named 'Dogs' should have an event with key 'staged_to_bit' performed by 'pete'
+    And I should be viewing events for the file group named 'Dogs'
+    And I should see 'completed'

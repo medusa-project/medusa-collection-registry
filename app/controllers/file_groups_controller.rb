@@ -103,7 +103,7 @@ class FileGroupsController < ApplicationController
 
   def new_scheduled_event
     event = @file_group.scheduled_events.create(params[:scheduled_event])
-    event.enqueue
+    event.enqueue_initial
     if request.xhr?
       respond_to {|format| format.js}
     else

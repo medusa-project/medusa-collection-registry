@@ -8,11 +8,21 @@ module ScheduledEventable
   end
 
   def scheduled_event_message(key)
-    self.supported_scheduled_event_hash[key]
+    self.supported_scheduled_event_hash[key]['message']
   end
 
   def read_scheduled_event_hash(group_key)
     YAML.load_file(File.join(Rails.root, 'config', 'scheduled_events.yml'))[group_key.to_s]
+  end
+
+  def normal_event_key(key)
+    self.supported_scheduled_event_hash[key]['normal_event_key']
+  end
+
+  def scheduled_event_select_options
+    self.supported_scheduled_event_hash.collect do |k,v|
+      [v['message'], k]
+    end
   end
 
 end

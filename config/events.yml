@@ -1,6 +1,7 @@
 file_group:
   external_staged: External file group staged
   staged_to_bit: Staged files ingest to bit-level store
+  staged_to_object: Staged files ingest to object-level store
   staged_deleted: Staged files deleted
   external_deleted: External file group deleted
   fits_performed: FITS analysis performed

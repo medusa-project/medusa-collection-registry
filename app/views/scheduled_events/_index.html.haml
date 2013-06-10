@@ -9,6 +9,7 @@
       %td Type
       %td User
       %td Message
+      %td Actions
   %tbody
     - @scheduled_events.each do |event|
       %tr
@@ -18,3 +19,8 @@
         %td= event.scheduled_eventable.class.to_s.underscore.humanize
         %td= event.actor_netid
         %td= event.message
+        %td
+          - if event.scheduled?
+            = link_to 'complete', complete_scheduled_event_path(event, :return_to => events_file_group_path(@scheduled_eventable)), :method => :post
+            |
+            = link_to 'cancel', cancel_scheduled_event_path(event, :return_to => events_file_group_path(@scheduled_eventable)), :method => :post

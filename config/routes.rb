@@ -53,7 +53,12 @@ MedusaRails3::Application.routes.draw do
     end
   end
   resources :virus_scans
-
+  resources :scheduled_events do
+    member do
+      post 'complete'
+      post 'cancel'
+    end
+  end
 
   #cfs (i.e. server local filesystem)
   get '/cfs/show/*path' => 'cfs#show', format: false, as: :cfs_show

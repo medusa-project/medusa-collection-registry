@@ -19,7 +19,7 @@ class ScheduledEvent < ActiveRecord::Base
     self.state ||= 'scheduled'
   end
 
-  def enqueue
+  def enqueue_initial
     Delayed::Job.enqueue(self, :run_at => self.action_date)
   end
 
@@ -42,6 +42,28 @@ class ScheduledEvent < ActiveRecord::Base
 
   def perform_cancelled
     self.destroy
+  end
+
+  def scheduled?
+    self.state == 'scheduled'
+  end
+
+  def be_complete
+    self.transaction do
+      self.state = 'completed'
+      self.create_completion_event
+      self.save!
+    end
+  end
+
+  def be_cancelled
+    self.state = 'cancelled'
+    self.save!
+  end
+
+  def create_completion_event
+    e = self.scheduled_eventable.events.build(:actor_netid => self.actor_netid, :key => self.scheduled_eventable.normal_event_key(self.key), :date => Date.today)
+    e.save!
   end
 
 end
