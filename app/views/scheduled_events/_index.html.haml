@@ -1,0 +1,20 @@
+%h1 Scheduled events for #{@scheduled_eventable.class.to_s.underscore.humanize}: #{@scheduled_eventable.label}
+
+%table#scheduled-events.table.table-striped
+  %thead
+    %t
+      %td Action Date
+      %td Status
+      %td Label
+      %td Type
+      %td User
+      %td Message
+  %tbody
+    - @scheduled_events.each do |event|
+      %tr
+        %td= event.action_date
+        %td= event.state
+        %td= event.scheduled_eventable.label
+        %td= event.scheduled_eventable.class.to_s.underscore.humanize
+        %td= event.actor_netid
+        %td= event.message

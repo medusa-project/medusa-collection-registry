@@ -5,3 +5,13 @@ Then(/^the file group named '(.*)' should have a scheduled event with fields:$/)
   end
 end
 
+Given(/^the file group named '(.*)' has scheduled events with fields:$/) do |name, table|
+  file_group = FileGroup.find_by_name(name)
+  table.hashes.each do |hash|
+    file_group.scheduled_events.create(hash)
+  end
+end
+
+Then(/^I should see the scheduled events table$/) do
+  page.should have_selector('table#scheduled-events')
+end

@@ -22,3 +22,12 @@ Feature: Schedule events for a file group
       | external_delete | joe         | 2010-01-02  | Dog deletion | scheduled |
     And I should be on the view page for the file group named 'Dogs'
     And 'joe@illinois.edu' should receive an email with subject 'Medusa scheduled event reminder'
+
+  Scenario: View scheduled events for a file group
+    Given the file group named 'Dogs' has scheduled events with fields:
+      | key             | actor_netid | action_date | state     |
+      | external_delete | pete        | 2011-09-08  | scheduled |
+    When I view events for the file group named 'Dogs'
+    Then I should see the scheduled events table
+    And I should see all of:
+      | Delete external file group | pete | 2011-09-08 | scheduled |
