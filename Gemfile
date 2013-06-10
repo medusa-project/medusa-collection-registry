@@ -88,5 +88,6 @@ group :test do
   gem 'simplecov'
   gem 'json_spec'
   gem 'capybara'
+  gem 'capybara-email'
   gem 'launchy'
 end

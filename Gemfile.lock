@@ -113,6 +113,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-email (2.1.2)
+      capybara (~> 2.1.0)
+      mail
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.1)
@@ -386,6 +389,7 @@ DEPENDENCIES
   cancan (~> 1.6.0)
   capistrano
   capybara
+  capybara-email
   coffee-rails (~> 3.2.1)
   cucumber-rails
   daemons
