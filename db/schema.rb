@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130531180926) do
+ActiveRecord::Schema.define(:version => 20130610171240) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -338,6 +338,23 @@ ActiveRecord::Schema.define(:version => 20130531180926) do
   end
 
   add_index "rights_declarations", ["rights_declarable_id"], :name => "index_rights_declarations_on_rights_declarable_id"
+
+  create_table "scheduled_events", :force => true do |t|
+    t.string   "key"
+    t.string   "state"
+    t.date     "action_date"
+    t.string   "actor_netid"
+    t.integer  "scheduled_eventable_id"
+    t.string   "scheduled_eventable_type"
+    t.text     "note"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
+
+  add_index "scheduled_events", ["actor_netid"], :name => "index_scheduled_events_on_actor_netid"
+  add_index "scheduled_events", ["key"], :name => "index_scheduled_events_on_key"
+  add_index "scheduled_events", ["scheduled_eventable_id"], :name => "index_scheduled_events_on_scheduled_eventable_id"
+  add_index "scheduled_events", ["scheduled_eventable_type"], :name => "index_scheduled_events_on_scheduled_eventable_type"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
