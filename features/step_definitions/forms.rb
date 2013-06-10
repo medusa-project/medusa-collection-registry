@@ -1,6 +1,10 @@
 When /^I fill in fields:$/ do |table|
-  table.raw.each do |row|
-    fill_in(row.first, :with => row.last)
+  complete_form_from_table(table)
+end
+
+And(/^I fill in fields for a scheduled event:$/) do |table|
+  within('#scheduled-event-form') do
+    complete_form_from_table(table)
   end
 end
 
@@ -53,5 +57,10 @@ And(/^I attach fixture file '(.*)' to '(.*)'$/) do |file, field|
   attach_file(field, File.join(Rails.root, 'features', 'fixtures', file))
 end
 
+def complete_form_from_table(table)
+  table.raw.each do |row|
+    fill_in(row.first, :with => row.last)
+  end
+end
 
 

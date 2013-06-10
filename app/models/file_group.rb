@@ -1,5 +1,6 @@
 class FileGroup < ActiveRecord::Base
   include Eventable
+  include ScheduledEventable
 
   attr_accessible :collection_id, :external_file_location,
                   :producer_id, :file_type_id, :summary, :provenance_note,
@@ -17,6 +18,7 @@ class FileGroup < ActiveRecord::Base
   has_many :source_file_group_joins, :dependent => :destroy, :class_name => 'RelatedFileGroupJoin', :foreign_key => :target_file_group_id
   has_many :source_file_groups, :through => :source_file_group_joins
   has_many :events, :as => :eventable, :dependent => :destroy, :order => 'date DESC'
+  has_many :scheduled_events, :as => :scheduled_eventable, :dependent => :destroy, :order => 'action_date DESC'
 
   before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root
@@ -62,6 +64,10 @@ class FileGroup < ActiveRecord::Base
 
   def supported_event_hash
     @@supported_event_hash ||= read_event_hash(:file_group)
+  end
+
+  def supported_scheduled_event_hash
+    @@supported_scheduled_event_hash ||= read_scheduled_event_hash(:file_group)
   end
 
   def canonicalize_cfs_root

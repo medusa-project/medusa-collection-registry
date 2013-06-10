@@ -1,7 +1,8 @@
 class FileGroupsController < ApplicationController
 
   before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update, :create_all_fits,
-                                                           :new_event, :create_cfs_fits, :create_virus_scan, :red_flags]
+                                                           :new_event, :new_scheduled_event,
+                                                           :create_cfs_fits, :create_virus_scan, :red_flags]
   skip_before_filter :require_logged_in, :only => [:show, :index]
   skip_before_filter :authorize, :only => [:show, :index]
   around_filter :handle_related_file_groups, :only => [:update, :create]
@@ -92,6 +93,16 @@ class FileGroupsController < ApplicationController
 
   def new_event
     @file_group.events.create(params[:event])
+    if request.xhr?
+      respond_to {|format| format.js}
+    else
+      redirect_to @file_group
+    end
+  end
+
+  def new_scheduled_event
+    event = @file_group.scheduled_events.create(params[:scheduled_event])
+    event.enqueue
     if request.xhr?
       respond_to {|format| format.js}
     else

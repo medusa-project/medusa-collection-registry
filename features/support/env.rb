@@ -79,3 +79,6 @@ puts 'Test Fedora ready'
 def last_json
   page.source
 end
+
+require 'capybara/email'
+World(Capybara::Email::DSL)
