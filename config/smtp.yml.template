@@ -1,0 +1,8 @@
+development:
+  smtp_settings:
+    address: express-smtp.cites.uiuc.edu
+  #used by mailer to construct urls
+  web_host: "localhost:3000"
+production:
+  smtp_settings:
+    address: express-smtp.cites.uiuc.edu
