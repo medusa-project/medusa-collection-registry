@@ -6,7 +6,7 @@
       %h3#modalLabel New Event
     .modal-body
       = f.input :key, :as => :select, :include_blank => false, :collection => @file_group.scheduled_event_select_options, :label => 'Scheduled event'
-      = f.input :actor_netid, :label => 'Actor', :input_html => {:value => current_user.uid}, :as => :autocomplete, :url => autocomplete_user_uid_events_path
+      = f.input :actor_netid, :label => 'Actor', :input_html => {:value => current_user.try(:uid)}, :as => :autocomplete, :url => autocomplete_user_uid_events_path
       = f.input :action_date, :as => :string, :input_html => {:class => 'datepicker', :value => Date.today.to_s}
       = f.input :note, :input_html => {:class => 'span5'}
     .modal-footer
