@@ -112,6 +112,7 @@ class Collection < ActiveRecord::Base
 
   #make sure there is a corresponding collection object in fedora and that its mods is up to date
   def ensure_fedora_collection
+    return #TODO - reinstate when DX is back
     unless self.fedora_class.exists?(self.medusa_pid)
       self.fedora_class.new(:pid => self.medusa_pid).save
     end
@@ -134,6 +135,7 @@ class Collection < ActiveRecord::Base
   end
 
   def delete_fedora_collection
+    return #TODO - reinstate when DX is back
     collection = self.fedora_collection
     collection.delete if collection.present?
   end
