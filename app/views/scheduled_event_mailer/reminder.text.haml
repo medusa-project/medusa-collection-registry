@@ -4,6 +4,10 @@ The Medusa system would like to remind you that the event:
 
 #{@event.message}
 
-is scheduled for the #{@event.scheduled_eventable.class.to_s.underscore.humanize} #{@event.scheduled_eventable.label}
+is scheduled for the #{@eventable.class.to_s.underscore.humanize} #{@eventable.label}
 
-on #{@event.action_date.to_s}
+on #{@event.action_date.to_s}.
+
+You can view the event at:
+
+#{url_for(:only_path => false, :action => 'events', :controller => @eventable.class.to_s.pluralize.underscore, :id => @eventable.id)}

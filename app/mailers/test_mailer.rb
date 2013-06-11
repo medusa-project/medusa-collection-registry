@@ -4,5 +4,5 @@ class TestMailer < ActionMailer::Base
   def test(address)
     mail(:to => address, :subject => 'test email subject')
   end
-  
+
 end
