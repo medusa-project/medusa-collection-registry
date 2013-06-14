@@ -1,15 +1,1 @@
--# Must pass in file_group
-.modal.hide.fade{:id => "add-event-file-group-#{file_group.id}"}
-  = simple_form_for Event.new, :url => new_event_file_group_path(file_group),:html => {:class => 'form-search', :id => 'event-form'}, :remote => true do |f|
-    .modal-header
-      %button{:type => "button", :class => "close", 'data-dismiss' => 'modal', 'aria-hidden' => 'true'}
-        ×
-      %h3#modalLabel New Event
-    .modal-body
-      = f.input :key, :as => :select, :include_blank => false, :collection => file_group.supported_event_hash.invert, :label => 'Event'
-      = f.input :actor_netid, :label => 'Actor', :input_html => {:value => current_user.try(:uid)}, :as => :autocomplete, :url => autocomplete_user_uid_events_path
-      = f.input :date, :as => :string, :input_html => {:class => 'datepicker', :value => Date.today.to_s}
-      = f.input :note, :input_html => {:class => 'span5'}
-    .modal-footer
-      %button{:class => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Cancel
-      = f.button :submit, :class => 'btn-primary', 'data-hide' => 'modal'
+= render :partial => 'events/form', :locals => {:file_group => file_group, :remote => true, :dialog_id => "add-event-file-group-#{file_group.id}"}
