@@ -1,13 +1,13 @@
 initialize_data_table("table#collections");
 initialize_data_table("table#assessments");
 initialize_data_table("table#attachments");
-$(document).ready(function () {
+$(function () {
   $("table#file_groups").dataTable({
     "aaSorting":[
       [0, "desc"]
     ]
   })
-})
+});
 
 var storage_level_filter = {
   all: function () {
