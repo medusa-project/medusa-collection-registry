@@ -1,4 +1,4 @@
--# Must pass in file_group, dialog_id, remote
+-# Must pass in file_group (to which event will apply), remote (is this a remote form), dialog_id (used by bootstrap to handle dialog display)
 .modal.hide.fade{:id => dialog_id}
   = simple_form_for Event.new, :url => new_event_file_group_path(file_group),:html => {:class => 'form-search'}, :remote => remote do |f|
     .modal-header
