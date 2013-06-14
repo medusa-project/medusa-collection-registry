@@ -4,6 +4,9 @@
   |
   = link_to 'Add New', "#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', :role => 'button'
   = render 'add_event_to_file_group_form', :file_group => file_group
+  |
+  = link_to 'Schedule', "#add-scheduled-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', :role => 'button'
+  = render 'add_scheduled_event_to_file_group_form', :file_group => file_group
 .assessment-actions
   %strong Assessments:
   = link_to 'View All', file_group

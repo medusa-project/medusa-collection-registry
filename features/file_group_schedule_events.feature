@@ -32,6 +32,22 @@ Feature: Schedule events for a file group
     And I should be on the view page for the file group named 'Dogs'
     And 'joe@illinois.edu' should receive an email with subject 'Medusa scheduled event reminder'
 
+  Scenario: I can schedule an event from the file manager (show view) for the corresponding collection
+    When I view the collection titled 'Animals'
+    And I click on 'Schedule'
+    And I fill in fields for a scheduled event:
+      | Note        | Dog deletion |
+      | Actor       | joe          |
+      | Action date | 2010-01-02   |
+    And I select 'Delete external file group' from 'Scheduled event'
+    And I click on 'Create Scheduled event'
+    Then the file group named 'Dogs' should have a scheduled event with fields:
+      | key             | actor_netid | action_date | note         | state     |
+      | external_delete | joe         | 2010-01-02  | Dog deletion | scheduled |
+    And I should be on the view page for the file group named 'Dogs'
+    And 'joe@illinois.edu' should receive an email with subject 'Medusa scheduled event reminder'
+
+
   Scenario: Cancel a scheduled event for a file group
     When I view events for the file group named 'Dogs'
     And I click on 'cancel' in the scheduled events table

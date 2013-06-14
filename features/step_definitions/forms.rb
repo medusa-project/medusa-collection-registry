@@ -3,7 +3,7 @@ When /^I fill in fields:$/ do |table|
 end
 
 And(/^I fill in fields for a scheduled event:$/) do |table|
-  within('#scheduled-event-form') do
+  within('.scheduled-event-form') do
     complete_form_from_table(table)
   end
 end
