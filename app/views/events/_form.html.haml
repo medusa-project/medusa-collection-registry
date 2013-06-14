@@ -1,12 +1,12 @@
--# Must pass in file_group (to which event will apply), remote (is this a remote form), dialog_id (used by bootstrap to handle dialog display)
+-# Must pass in eventable (to which event will apply), remote (is this a remote form), dialog_id (used by bootstrap to handle dialog display)
 .modal.hide.fade{:id => dialog_id}
-  = simple_form_for Event.new, :url => new_event_file_group_path(file_group),:html => {:class => 'form-search'}, :remote => remote do |f|
+  = simple_form_for Event.new, :url => events_path(:eventable_id => eventable, :eventable_type => eventable.class.to_s),:html => {:class => 'form-search'}, :remote => remote do |f|
     .modal-header
       %button{:type => "button", :class => "close", 'data-dismiss' => 'modal', 'aria-hidden' => 'true'}
         ×
       %h3#modalLabel New Event
     .modal-body
-      = f.input :key, :as => :select, :include_blank => false, :collection => file_group.supported_event_hash.invert, :label => 'Event'
+      = f.input :key, :as => :select, :include_blank => false, :collection => eventable.event_select_options, :label => 'Event'
       = f.input :actor_netid, :label => 'Actor', :input_html => {:value => current_user.try(:uid)}, :as => :autocomplete, :url => autocomplete_user_uid_events_path
       = f.input :date, :as => :string, :input_html => {:class => 'datepicker', :value => Date.today.to_s}
       = f.input :note, :input_html => {:class => 'span5'}

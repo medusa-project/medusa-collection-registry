@@ -15,4 +15,8 @@ module Eventable
     YAML.load_file(File.join(Rails.root, 'config', 'events.yml'))[group_key.to_s]
   end
 
+  def event_select_options
+    self.supported_event_hash.invert
+  end
+
 end

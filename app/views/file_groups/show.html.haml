@@ -57,5 +57,5 @@
 
     = render 'assessments/table'
 
-= render :partial => 'events/form', :locals => {:file_group => @file_group, :remote => false, :dialog_id => :addEventModal}
-= render :partial => 'scheduled_events/form', :locals => {:file_group => @file_group, :remote => false, :dialog_id => :addScheduledEventModal}
+= render :partial => 'events/form', :locals => {:eventable => @file_group, :remote => false, :dialog_id => :addEventModal}
+= render :partial => 'scheduled_events/form', :locals => {:eventable => @file_group, :remote => false, :dialog_id => :addScheduledEventModal}

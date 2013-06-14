@@ -3,10 +3,10 @@
   = link_to 'View All', events_file_group_path(file_group)
   |
   = link_to 'Add New', "#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', :role => 'button'
-  = render :partial => 'events/form', :locals => {:file_group => file_group, :remote => true, :dialog_id => "add-event-file-group-#{file_group.id}"}
+  = render :partial => 'events/form', :locals => {:eventable => file_group, :remote => true, :dialog_id => "add-event-file-group-#{file_group.id}"}
   |
   = link_to 'Schedule', "#add-scheduled-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', :role => 'button'
-  = render :partial => 'scheduled_events/form', :locals => {:file_group => file_group, :remote => true, :dialog_id => "add-scheduled-event-file-group-#{file_group.id}" }
+  = render :partial => 'scheduled_events/form', :locals => {:eventable => file_group, :remote => true, :dialog_id => "add-scheduled-event-file-group-#{file_group.id}" }
 
 .assessment-actions
   %strong Assessments:

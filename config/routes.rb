@@ -35,8 +35,6 @@ MedusaRails3::Application.routes.draw do
         post 'create_cfs_fits'
         get 'events'
         get 'red_flags'
-        post 'new_event'
-        post 'new_scheduled_event'
         post 'create_virus_scan'
       end
     end
