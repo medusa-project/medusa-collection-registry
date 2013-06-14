@@ -6,7 +6,8 @@
   = render :partial => 'events/form', :locals => {:file_group => file_group, :remote => true, :dialog_id => "add-event-file-group-#{file_group.id}"}
   |
   = link_to 'Schedule', "#add-scheduled-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', :role => 'button'
-  = render 'add_scheduled_event_to_file_group_form', :file_group => file_group
+  = render :partial => 'scheduled_events/form', :locals => {:file_group => file_group, :remote => true, :dialog_id => "add-scheduled-event-file-group-#{file_group.id}" }
+
 .assessment-actions
   %strong Assessments:
   = link_to 'View All', file_group
