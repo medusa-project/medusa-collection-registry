@@ -31,9 +31,13 @@
           %td #{file_group.total_files}
           %td #{file_group.total_file_size}
           %td.related_file_groups
-            - file_group.source_file_groups.each do |source_file_group|
-              %div= link_to "Ingested from file group #{source_file_group.id}", source_file_group
-            - file_group.target_file_groups.each do |target_file_group|
-              %div= link_to "Ingested to file group #{target_file_group.id}", target_file_group
+            - if file_group.source_file_groups.present?
+              %div
+                Ingested from: #{'File group'.pluralize(file_group.source_file_groups.count)}
+                #{file_group.source_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}
+            - if file_group.target_file_groups.present?
+              %div
+                Ingested to: #{'File group'.pluralize(file_group.target_file_groups.count)}
+                #{file_group.target_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}
           %td
             = render 'file_group_actions', :file_group => file_group
