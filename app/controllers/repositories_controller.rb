@@ -50,9 +50,9 @@ class RepositoriesController < ApplicationController
   end
 
   def events
-    @eventable = Repository.find(params[:id])
+    @scheduled_eventable = @eventable = Repository.find(params[:id])
     @events = @eventable.all_events.sort_by(&:date).reverse
-    render 'events/index'
+    @scheduled_events = @scheduled_eventable.all_scheduled_events.sort_by(&:action_date).reverse
   end
 
   protected

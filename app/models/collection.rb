@@ -190,5 +190,9 @@ class Collection < ActiveRecord::Base
     self.file_groups.collect {|file_group| file_group.events}.flatten
   end
 
+  def all_scheduled_events
+    self.file_groups.collect {|file_group| file_group.scheduled_events}.flatten
+  end
+
 end
 

@@ -22,7 +22,7 @@ class Repository < ActiveRecord::Base
   aggregates_red_flags :collections => :collections, :label_method => :title
 
   def total_size
-    self.collections.collect {|c| c.total_size}.sum
+    self.collections.collect { |c| c.total_size }.sum
   end
 
   def self.aggregate_size
@@ -30,7 +30,7 @@ class Repository < ActiveRecord::Base
   end
 
   def recursive_assessments
-    self.assessments + self.collections.collect {|collection| collection.recursive_assessments}.flatten
+    self.assessments + self.collections.collect { |collection| collection.recursive_assessments }.flatten
   end
 
   def label
@@ -38,7 +38,11 @@ class Repository < ActiveRecord::Base
   end
 
   def all_events
-    self.collections.collect {|collection| collection.all_events}.flatten
+    self.collections.collect { |collection| collection.all_events }.flatten
+  end
+
+  def all_scheduled_events
+    self.collections.collect { |collection| collection.all_scheduled_events }.flatten
   end
 
 end
