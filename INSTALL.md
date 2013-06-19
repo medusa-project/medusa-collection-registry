@@ -51,7 +51,7 @@ rake jetty:install, in both the development and test environments
 rake jetty:start and rake medusa:delayed_job:start in both environments.
 
 cd into submodules/ruby-fits-server and ./start.sh. This uses its own gemset which you'll
-need to install.
+need to install before starting.
 
 #Test
 
