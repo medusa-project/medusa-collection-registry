@@ -39,6 +39,9 @@ to cd into submodules/ruby-fits-server and do a bundle install (and install the 
 Any system start/stop scripts should also cd into the directory to make sure they pick up the
 correct rvm information.
 
+medusa-content-models contains content models for fedora. There are rake tasks to ingest
+these.
+
 #Install Jetty
 
 rake jetty:install, in both the development and test environments
