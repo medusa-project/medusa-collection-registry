@@ -52,7 +52,7 @@ Feature: Red flags
       | Md5 red flag  |
     When I go to the dashboard
     Then I should see all of:
-      | Size red flag | Md5 red flag |
+      | Size red flag | Md5 red flag | medium | flagged |
 
   Scenario: View a red flag
     Given the cfs file info for the path 'dogs/grass.jpg' has red flags with fields:
@@ -60,4 +60,50 @@ Feature: Red flags
       | Size red flag | The size is off |
     When I view the first red flag for the cfs file info for the path 'dogs/grass.jpg'
     Then I should see all of:
+      | Size red flag | The size is off | medium | flagged |
+
+  Scenario: Navigate from red flag to owning object
+    Given the cfs file info for the path 'dogs/grass.jpg' has red flags with fields:
+      | message       | notes           |
       | Size red flag | The size is off |
+    When I view the first red flag for the cfs file info for the path 'dogs/grass.jpg'
+    And I click on 'dogs/grass.jpg'
+    Then I should be viewing the cfs file 'dogs/grass.jpg'
+
+  Scenario: Edit red flag from its show view
+    Given the cfs file info for the path 'dogs/grass.jpg' has red flags with fields:
+      | message       | notes           |
+      | Size red flag | The size is off |
+    When I view the first red flag for the cfs file info for the path 'dogs/grass.jpg'
+    And I click on 'Edit'
+    And I fill in fields:
+      | Notes | The size is really off |
+    And I click on 'Update Red flag'
+    Then I should see 'The size is really off'
+    And I should not see 'The size is off'
+
+  Scenario: Navigate from index to red flag view
+    Given the cfs file info for the path 'dogs/grass.jpg' has red flags with fields:
+      | message       | notes           |
+      | Size red flag | The size is off |
+    When I go to the dashboard
+    And I click on 'View' in the red flags table
+    Then I should be viewing the first red flag for the cfs file info for the path 'dogs/grass.jpg'
+
+  Scenario: Navigate from index to red flag edit
+    Given the cfs file info for the path 'dogs/grass.jpg' has red flags with fields:
+      | message       | notes           |
+      | Size red flag | The size is off |
+    When I go to the dashboard
+    And I click on 'Edit' in the red flags table
+    Then I should be editing the first red flag for the cfs file info for the path 'dogs/grass.jpg'
+
+  Scenario: Mark red flag as unflagged from index view
+    Given the cfs file info for the path 'dogs/grass.jpg' has red flags with fields:
+      | message       | notes           |
+      | Size red flag | The size is off |
+    When I go to the dashboard
+    And I click on 'Unflag' in the red flags table
+    Then I should be on the dashboard page
+    And I should see 'unflagged'
+    And I should not see 'Unflag'

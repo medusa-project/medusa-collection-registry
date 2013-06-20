@@ -7,4 +7,9 @@ module CfsHelper
       end.sort
     end
   end
+
+  def cfs_file_info_path(cfs_file_info)
+    cfs_show_path(:path => cfs_file_info.path)
+  end
+
 end

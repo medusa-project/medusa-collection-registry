@@ -29,3 +29,13 @@ When(/^I view the first red flag for the cfs file info for the path '(.*)'$/) do
   file_info = CfsFileInfo.find_by_path(path)
   visit red_flag_path(file_info.red_flags.first)
 end
+
+Then(/^I should be viewing the first red flag for the cfs file info for the path '(.*)'$/) do |path|
+  cfs_file_info = CfsFileInfo.find_by_path(path)
+  current_path.should == red_flag_path(cfs_file_info.red_flags.first)
+end
+
+Then(/^I should be editing the first red flag for the cfs file info for the path '(.*)'$/) do |path|
+  cfs_file_info = CfsFileInfo.find_by_path(path)
+  current_path.should == edit_red_flag_path(cfs_file_info.red_flags.first)
+end
