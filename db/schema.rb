@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130610171240) do
+ActiveRecord::Schema.define(:version => 20130620162758) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -283,10 +283,15 @@ ActiveRecord::Schema.define(:version => 20130610171240) do
     t.string   "message"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.text     "notes"
+    t.string   "priority"
+    t.string   "status"
   end
 
+  add_index "red_flags", ["priority"], :name => "index_red_flags_on_priority"
   add_index "red_flags", ["red_flaggable_id"], :name => "index_red_flags_on_red_flaggable_id"
   add_index "red_flags", ["red_flaggable_type"], :name => "index_red_flags_on_red_flaggable_type"
+  add_index "red_flags", ["status"], :name => "index_red_flags_on_status"
 
   create_table "related_file_group_joins", :force => true do |t|
     t.integer  "source_file_group_id"

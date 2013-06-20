@@ -1,0 +1,2 @@
+module RedFlagsHelper
+end

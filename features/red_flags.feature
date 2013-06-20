@@ -53,3 +53,11 @@ Feature: Red flags
     When I go to the dashboard
     Then I should see all of:
       | Size red flag | Md5 red flag |
+
+  Scenario: View a red flag
+    Given the cfs file info for the path 'dogs/grass.jpg' has red flags with fields:
+      | message       | notes           |
+      | Size red flag | The size is off |
+    When I view the first red flag for the cfs file info for the path 'dogs/grass.jpg'
+    Then I should see all of:
+      | Size red flag | The size is off |

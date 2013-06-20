@@ -29,4 +29,8 @@ class CfsFileInfo < ActiveRecord::Base
     self.path
   end
 
+  def label
+    self.path
+  end
+
 end

@@ -40,6 +40,7 @@ MedusaRails3::Application.routes.draw do
     end
   end
 
+  resources :red_flags
   resources :producers
   resources :access_systems
   resources :directories, :only => :show
