@@ -1,15 +1,31 @@
+$.extend($.fn.dataTableExt.oSort, {
+  "priority-pre": function(a) {
+    var priorities = {"high": 2, "medium": 1, "low": 0};
+    return priorities[a];
+  },
+  "priority-asc": function(a,b) {
+    return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+  },
+  "priority-desc": function(a,b) {
+    return -(this["priority-asc"](a,b));
+  }
+});
+
 $(function () {
   $("table#red-flags-table").dataTable({
-    "aaSorting":[[4, "desc"]]
+    "aaSorting": [
+      [4, "desc"]
+    ],
+    "aoColumns": [null, null, {"sType": 'priority'}, null, null, null, null]
   });
 });
 
 var red_flag_filter = {
-  all: function() {
+  all: function () {
     this.filter('');
   },
 
-  unflagged: function() {
+  unflagged: function () {
     this.filter('^unflagged');
   },
 
@@ -17,8 +33,23 @@ var red_flag_filter = {
     this.filter('^flagged');
   },
 
-  filter: function(filter_string) {
+  filter: function (filter_string) {
     $('#red-flags-table').dataTable().fnFilter(filter_string, 3, true);
+  }
+}
+
+var red_flag_sorter = {
+  recent: function () {
+    $('#red-flags-table').dataTable().fnSort([
+      [4, "desc"]
+    ]);
+  },
+
+  priority: function () {
+    $('#red-flags-table').dataTable().fnSort([
+      [3, "asc"],
+      [2, "desc"]
+    ]);
   }
 }
 

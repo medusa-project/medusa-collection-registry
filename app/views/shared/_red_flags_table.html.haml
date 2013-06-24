@@ -7,9 +7,9 @@
   = link_to_function('Unflagged', 'red_flag_filter.unflagged()')
   &nbsp;
   Sort:
-  Most Recent
+  = link_to_function('Most Recent', 'red_flag_sorter.recent()')
   |
-  Relevance
+  = link_to_function('Most Important', 'red_flag_sorter.priority()')
 %table#red-flags-table.table.table-striped
   %thead
     %tr
