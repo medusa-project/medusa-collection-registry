@@ -106,4 +106,3 @@ Feature: Red flags
     And I click on 'Unflag' in the red flags table
     Then I should be on the dashboard page
     And I should see 'unflagged'
-    And I should not see 'Unflag'

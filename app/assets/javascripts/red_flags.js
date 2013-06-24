@@ -13,10 +13,8 @@ $.extend($.fn.dataTableExt.oSort, {
 
 $(function () {
   $("table#red-flags-table").dataTable({
-    "aaSorting": [
-      [4, "desc"]
-    ],
-    "aoColumns": [null, null, {"sType": 'priority'}, null, null, null, null]
+    "aoColumns": [null, null, {"sType": 'priority'}, null, null, null, null],
+    "aaSorting": [[3, "asc"], [2, "desc"]]
   });
 });
 
