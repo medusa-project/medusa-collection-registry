@@ -1,3 +1,15 @@
+%div
+  Filter:
+  = link_to_function('All', 'red_flag_filter.all()')
+  |
+  = link_to_function('Flagged', 'red_flag_filter.flagged()')
+  |
+  = link_to_function('Unflagged', 'red_flag_filter.unflagged()')
+  &nbsp;
+  Sort:
+  Most Recent
+  |
+  Relevance
 %table#red-flags-table.table.table-striped
   %thead
     %tr
