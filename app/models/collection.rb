@@ -36,9 +36,7 @@ class Collection < ActiveRecord::Base
 
   after_create :delayed_ensure_handle
   after_create :ensure_root_directory
-  after_save :delayed_ensure_fedora_collection
   before_destroy :remove_handle
-  before_destroy :delete_fedora_collection
   before_validation :ensure_uuid
   before_validation :ensure_rights_declaration
 
@@ -70,10 +68,6 @@ class Collection < ActiveRecord::Base
 
   def medusa_url
     Rails.application.routes.url_helpers.collection_url(self, :host => MedusaRails3::Application.medusa_host, :protocol => 'https')
-  end
-
-  def medusa_pid
-    "MEDUSA:#{self.uuid}"
   end
 
   def resource_type_names
@@ -108,51 +102,6 @@ class Collection < ActiveRecord::Base
         xml.dateOther(self.end_date, :point => 'end')
       end
     end
-  end
-
-  #make sure there is a corresponding collection object in fedora and that its mods is up to date
-  def ensure_fedora_collection
-    return if Rails.env.production? #TODO - reinstate when DX is back
-    unless self.fedora_class.exists?(self.medusa_pid)
-      self.fedora_class.new(:pid => self.medusa_pid).save
-    end
-    collection = self.fedora_collection
-    mods_stream = collection.datastreams['MODS']
-    unless mods_stream
-      mods_stream = collection.create_datastream(ActiveFedora::Datastream, 'MODS', :controlGroup => 'M',
-                                                 :dsLabel => 'MODS', :contentType => 'text/xml', :checksumType => 'SHA-1')
-      collection.add_datastream(mods_stream)
-    end
-    current_mods = self.to_mods
-    unless mods_stream.content == current_mods
-      mods_stream.content = current_mods
-    end
-    collection.save
-  end
-
-  def delayed_ensure_fedora_collection
-    self.delay(:priority => 10).ensure_fedora_collection
-  end
-
-  def delete_fedora_collection
-    return if Rails.env.production? #TODO - reinstate when DX is back
-    collection = self.fedora_collection
-    collection.delete if collection.present?
-  end
-
-  #Note - you have to be careful with this since it fetches the collection anew.
-  #If you already have the collection then you probably want to operate on
-  #its datastreams directly!
-  def fedora_mods_datastream
-    self.fedora_collection.datastreams['MODS']
-  end
-
-  def fedora_collection
-    self.fedora_class.find(self.medusa_pid) rescue nil
-  end
-
-  def fedora_class
-    Medusa::Collection
   end
 
   def ensure_root_directory
