@@ -55,17 +55,6 @@ class FileGroupsController < ApplicationController
     end
   end
 
-  def create_all_fits
-    @file_group.delay.ensure_fits_xml_for_owned_bit_files
-    record_event(@file_group, 'fits_performed')
-    if request.xhr?
-      respond_to { |format| format.js }
-    else
-      flash[:notice] = 'Scheduled creation of FITS XML'
-      redirect_to @file_group
-    end
-  end
-
   def create_cfs_fits
     if @file_group.cfs_root.present?
       Delayed::Job.enqueue(Job::FitsDirectoryTree.create(:path => @file_group.cfs_root), :priority => 50)

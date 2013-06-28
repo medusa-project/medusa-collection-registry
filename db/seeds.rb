@@ -53,7 +53,6 @@ ActiveRecord::Base.transaction do
     c.ensure_uuid
     c.save!
     c.ensure_handle
-    c.ensure_root_directory
   end
 
   FileGroup.all.each do |fg|

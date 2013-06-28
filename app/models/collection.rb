@@ -19,7 +19,6 @@ class Collection < ActiveRecord::Base
   belongs_to :preservation_priority
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
   has_many :directories
-  has_one :root_directory, ->{where parent_id: nil}, :class_name => Directory
   has_many :attachments, :as => :attachable, :dependent => :destroy
 
   validates_presence_of :title
@@ -32,7 +31,6 @@ class Collection < ActiveRecord::Base
   end
 
   after_create :delayed_ensure_handle
-  after_create :ensure_root_directory
   before_destroy :remove_handle
   before_validation :ensure_uuid
   before_validation :ensure_rights_declaration
@@ -99,29 +97,6 @@ class Collection < ActiveRecord::Base
         xml.dateOther(self.start_date, :point => 'start')
         xml.dateOther(self.end_date, :point => 'end')
       end
-    end
-  end
-
-  def ensure_root_directory
-    unless self.root_directory
-      self.create_root_directory!(:name => "root-#{self.id}")
-    end
-  end
-
-  def make_file_group_root(name, file_group)
-    self.root_directory.children.create!(:name => name).tap do |dir|
-      file_group.root_directory = dir
-      file_group.save!
-    end
-  end
-
-  def bit_export(target_directory, opts = {})
-    self.root_directory.bit_export(target_directory, opts)
-  end
-
-  def bit_recursive_delete
-    self.file_groups.each do |file_group|
-      file_group.bit_recursive_delete
     end
   end
 
