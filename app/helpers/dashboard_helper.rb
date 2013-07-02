@@ -31,7 +31,6 @@ module DashboardHelper
     BitFile.where(:dx_ingested => true).count
   end
 
-
   # File stats for objects preservation
 
   def list_of_object_file_formats
@@ -59,42 +58,4 @@ module DashboardHelper
     return 0
   end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  def z_total_size
-    # BitFile.collections.collect {|c| c.total_size}.sum
-  end
 end
