@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '~> 4.0.0'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -8,9 +8,6 @@ gem 'pg'
 gem 'active-fedora'
 
 #deployment webserver
-#TODO - Was having problems with deploying with 3.0.19, so look into that sometime. For now pin. The problem was
-#somewhere in passenger compiling/deploying itself on the production server. 3.0.19 appears to be the last before
-#4.0.0, so maybe wait for that.
 gem 'passenger'
 gem 'haml'
 gem 'haml-rails'
@@ -33,14 +30,14 @@ gem 'json_builder'
 #custom gem that uses a web service to generate fits.
 gem 'fits', '~> 1.0.6', :git => 'git://github.com/medusa-project/fits.git'
 
-gem 'delayed_job_active_record', '~> 0.3.3'
+gem 'delayed_job_active_record'
 gem 'daemons'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails'
+  gem 'coffee-rails'
   gem 'less-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -53,7 +50,8 @@ end
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'rails3-jquery-autocomplete'
+#use fork for rails 4 support
+gem 'rails3-jquery-autocomplete', git: 'https://github.com/francisd/rails3-jquery-autocomplete'
 
 gem 'nokogiri'
 
