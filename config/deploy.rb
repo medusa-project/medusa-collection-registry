@@ -3,8 +3,8 @@ set :rvm_ruby_string, "1.9.3-p194@medusa-rails3"
 require 'rvm/capistrano'
 require 'auto_html/capistrano'
 
-set :production_server, "stribog.grainger.illinois.edu"
-set :staging_server, "dagda.grainger.uiuc.edu"
+set :production_server, "medusa.library.illinois.edu"
+set :staging_server, "medusatest.library.illinois.edu"
 default_run_options[:shell] = '/bin/bash -l'
 
 task :production do
