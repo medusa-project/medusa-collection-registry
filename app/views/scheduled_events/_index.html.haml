@@ -1,3 +1,4 @@
+- return_path = (@scheduled_eventable ? events_file_group_path(@scheduled_eventable) : dashboard_path)
 %table#scheduled-events.table.table-striped
   %thead
     %t
@@ -19,6 +20,6 @@
         %td= event.message
         %td
           - if event.scheduled?
-            = link_to 'complete', complete_scheduled_event_path(event, :return_to => events_file_group_path(@scheduled_eventable)), :method => :post
+            = link_to 'complete', complete_scheduled_event_path(event, :return_to => return_path), :method => :post
             |
-            = link_to 'cancel', cancel_scheduled_event_path(event, :return_to => events_file_group_path(@scheduled_eventable)), :method => :post
+            = link_to 'cancel', cancel_scheduled_event_path(event, :return_to => return_path), :method => :post

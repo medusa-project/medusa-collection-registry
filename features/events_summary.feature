@@ -46,7 +46,7 @@ Feature: Events Summary
       | corn note 1 |
     And the file group named 'Corn' has scheduled events with fields:
       | key             | actor_netid | action_date | state     |
-      | external_to_bit | Del Monte   | 2010-10-11  | scheduled |
+      | external_to_bit | delmonte   | 2010-10-11  | scheduled |
 
   Scenario: View collection events
     When I view the collection titled 'Dogs'
@@ -55,7 +55,7 @@ Feature: Events Summary
     And I should see all of:
       | toy note 1 | toy note 2 | hot note 1 | Buster | Oscar |
     And I should see none of:
-      | cool note 1 | corn note 1 | Coltrane | Del Monte |
+      | cool note 1 | corn note 1 | Coltrane | delmonte |
 
   Scenario: View repository events
     When I view the repository titled 'Animals'
@@ -64,4 +64,10 @@ Feature: Events Summary
     And I should see all of:
       | toy note 1 | toy note 2 | hot note 1 | cool note 1 | Buster | Oscar | Coltrane |
     And I should see none of:
-      | corn note 1 | Del Monte |
+      | corn note 1 | delmonte |
+
+  Scenario: View all events
+    When I go to the dashboard
+    Then I should see the events table
+    And I should see all of:
+      | toy note 1 | toy note 2 | hot note 1 | cool note 1 | Buster | Oscar | Coltrane | corn note 1 | delmonte |

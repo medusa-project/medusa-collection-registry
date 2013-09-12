@@ -3,6 +3,7 @@ class DashboardController < ApplicationController
     setup_storage
     setup_external_storage
     setup_red_flags
+    setup_events
   end
 
   protected
@@ -32,5 +33,12 @@ class DashboardController < ApplicationController
       end
     end
     @external_storage_summary.sort! { |a, b| b[:size] <=> a[:size] }
+  end
+
+  def setup_events
+    @events = Event.order('created_at DESC').all
+    @scheduled_events = ScheduledEvent.order('created_at DESC').all
+    x = ScheduledEvent.all
+    y = 1
   end
 end
