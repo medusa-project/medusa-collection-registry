@@ -54,6 +54,7 @@ class CollectionsController < ApplicationController
   def for_access_system
     access_system = AccessSystem.find(params[:access_system_id])
     @collections = access_system.collections.order(:title).includes(:repository)
+    @subheader = "For Access system: #{access_system.name}"
     render 'index'
   end
 

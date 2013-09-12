@@ -64,5 +64,5 @@ Feature: Access Systems
     And I click on 'ContentDM'
     Then I should be on the collection index page for collections with access system 'ContentDM'
     And I should see all of:
-      | Dogs | Cats |
+      | Dogs | Cats | For Access system: ContentDM |
     And I should not see 'Bats'
