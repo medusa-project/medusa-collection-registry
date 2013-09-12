@@ -54,3 +54,15 @@ Feature: Access Systems
     When I view the access system named 'ContentDM'
     And I click on 'Edit'
     Then I should be on the edit page for the access system named 'ContentDM'
+
+  Scenario: View collections associated with an access system
+    Given the collection titled 'Dogs' has an access system named 'ContentDM'
+    And the collection titled 'Cats' has an access system named 'Dspace'
+    And the collection titled 'Cats' has an access system named 'ContentDM'
+    And the collection titled 'Bats' has an access system named 'Dspace'
+    When I go to the access system index page
+    And I click on 'ContentDM'
+    Then I should be on the collection index page for collections with access system 'ContentDM'
+    And I should see all of:
+      | Dogs | Cats |
+    And I should not see 'Bats'

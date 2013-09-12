@@ -51,6 +51,12 @@ class CollectionsController < ApplicationController
     @collections = Collection.order(:title).includes(:repository).all
   end
 
+  def for_access_system
+    access_system = AccessSystem.find(params[:access_system_id])
+    @collections = access_system.collections.order(:title).includes(:repository)
+    render 'index'
+  end
+
   def red_flags
     @red_flags = @collection.all_red_flags
     @aggregator = @collection

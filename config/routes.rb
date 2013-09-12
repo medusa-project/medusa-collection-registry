@@ -5,6 +5,9 @@ MedusaRails3::Application.routes.draw do
   root :to => 'static#page', :page => 'landing'
 
   resources :collections do
+    collection do
+      get 'for_access_system'
+    end
     member do
       get 'red_flags'
       get 'events'

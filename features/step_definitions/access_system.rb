@@ -40,3 +40,13 @@ Then /^I should be on the access system creation page$/ do
   current_path.should == new_access_system_path
 end
 
+Given(/^the collection titled '(.*)' has an access system named '(.*)'$/) do |title, name|
+  collection = Collection.find_by_title(title) || FactoryGirl.create(:collection, :title => title)
+  access_system = AccessSystem.find_by_name(name) || FactoryGirl.create(:access_system, :name => name)
+  collection.access_systems << access_system
+end
+
+Then(/^I should be on the collection index page for collections with access system '(.*)'$/) do |name|
+  access_system = AccessSystem.find_by_name(name)
+  current_path.should == for_access_system_collections_path
+end
