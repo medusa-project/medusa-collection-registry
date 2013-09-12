@@ -23,6 +23,11 @@
             %ul#access_systems
               - access_systems.each do |access_system|
                 %li #{link_to access_system.name, access_system}
+        %p
+          %strong Package Profile:
+          - if package_profile = @collection.package_profile
+            = link_to package_profile.name, package_profile_path(package_profile)
+            (#{link_to package_profile.url, package_profile.url})
         = show_field @collection, :resource_type_names, 'Type of Resource'
         = show_field @collection, :preservation_priority_name, 'Preservation Priority'
         = show_field @collection, :total_size, 'Total Size (GB)'

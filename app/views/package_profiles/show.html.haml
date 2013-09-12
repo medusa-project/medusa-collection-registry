@@ -1,0 +1,13 @@
+.pull-right
+  = link_to 'Index', package_profiles_path, :class => 'btn'
+  = link_to 'Edit', edit_package_profile_path(@package_profile), :class => 'btn'
+  = link_to 'Delete', @package_profile, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
+
+.page_header
+  %h1 Package Profile: #{@package_profile.name}
+
+.row
+  .span8
+    = show_field @package_profile, :name
+    = show_field @package_profile, :url
+    = show_field @package_profile, :notes

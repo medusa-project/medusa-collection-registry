@@ -15,7 +15,7 @@ Feature: Global navigation
     Then I should be on the repository index page
 
   Scenario: Go to the access system index
-    When I click on 'Access Systems' in the global navigation bar
+    When I click on 'Access' in the global navigation bar
     Then I should be on the access system index page
 
   Scenario: Go to producers

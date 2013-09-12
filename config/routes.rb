@@ -7,6 +7,7 @@ MedusaRails3::Application.routes.draw do
   resources :collections do
     collection do
       get 'for_access_system'
+      get 'for_package_profile'
     end
     member do
       get 'red_flags'
@@ -51,6 +52,7 @@ MedusaRails3::Application.routes.draw do
 
   resources :producers
   resources :access_systems
+  resources :package_profiles
   resources :directories, :only => :show
   resources :files, :only => :show, :controller => "bit_files" do
     member do

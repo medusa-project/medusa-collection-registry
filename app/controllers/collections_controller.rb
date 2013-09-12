@@ -58,6 +58,13 @@ class CollectionsController < ApplicationController
     render 'index'
   end
 
+  def for_package_profile
+    package_profile = PackageProfile.find(params[:package_profile_id])
+    @collections = package_profile.collections.order(:title).includes(:repository)
+    @subheader = "For Package Profile: #{package_profile.name}"
+    render 'index'
+  end
+
   def red_flags
     @red_flags = @collection.all_red_flags
     @aggregator = @collection

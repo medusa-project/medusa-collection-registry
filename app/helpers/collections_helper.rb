@@ -4,6 +4,10 @@ module CollectionsHelper
     AccessSystem.all.collect {|system| [system.name, system.id]}
   end
 
+  def package_profile_select_collection
+    PackageProfile.order('name ASC').all.collect {|profile| [profile.name, profile.id]}
+  end
+
   def repository_select_collection
     Repository.order(:title).collect {|repository| [repository.title, repository.id]}
   end

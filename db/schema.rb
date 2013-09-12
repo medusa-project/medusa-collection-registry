@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130620162758) do
+ActiveRecord::Schema.define(:version => 20130912190139) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -143,9 +143,11 @@ ActiveRecord::Schema.define(:version => 20130620162758) do
     t.text     "private_description_html"
     t.string   "uuid"
     t.text     "file_package_summary_html"
+    t.integer  "package_profile_id"
   end
 
   add_index "collections", ["contact_id"], :name => "index_collections_on_contact_id"
+  add_index "collections", ["package_profile_id"], :name => "index_collections_on_package_profile_id"
   add_index "collections", ["repository_id"], :name => "index_collections_on_repository_id"
   add_index "collections", ["uuid"], :name => "index_collections_on_uuid"
 
@@ -239,6 +241,14 @@ ActiveRecord::Schema.define(:version => 20130620162758) do
     t.integer  "file_group_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+  end
+
+  create_table "package_profiles", :force => true do |t|
+    t.string   "name"
+    t.string   "url"
+    t.text     "notes"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "people", :force => true do |t|
