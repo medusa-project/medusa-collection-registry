@@ -271,7 +271,6 @@ GEM
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
     rake (10.0.4)
-    rb-readline (0.4.2)
     rdf (1.0.6)
       addressable (>= 2.2)
     rdf-rdfxml (1.0.1)
@@ -418,7 +417,6 @@ DEPENDENCIES
   pg
   rails (= 3.2.13)
   rails3-jquery-autocomplete
-  rb-readline (~> 0.4.2)
   rspec-rails
   ruby-filemagic
   rvm-capistrano
