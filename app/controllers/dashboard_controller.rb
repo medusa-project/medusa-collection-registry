@@ -36,8 +36,8 @@ class DashboardController < ApplicationController
   end
 
   def setup_events
-    @events = Event.order('created_at DESC').all
-    @scheduled_events = ScheduledEvent.order('created_at DESC').all
+    @events = Event.order('date DESC').all
+    @scheduled_events = ScheduledEvent.order('action_date DESC').all
     x = ScheduledEvent.all
     y = 1
   end
