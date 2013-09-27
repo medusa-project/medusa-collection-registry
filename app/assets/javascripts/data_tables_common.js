@@ -6,7 +6,8 @@ function initialize_data_table(tableSelector) {
       "aaSorting":[
         [0, "asc"]
       ],
-      "iDisplayLength": 25
+      "iDisplayLength": 25,
+      "bStateSave": "true"
     })
   })
 };
