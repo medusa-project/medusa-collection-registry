@@ -5,7 +5,8 @@ function initialize_data_table(tableSelector) {
     $(tableSelector).dataTable({
       "aaSorting":[
         [0, "asc"]
-      ]
+      ],
+      "iDisplayLength": 25
     })
   })
 };
