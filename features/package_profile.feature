@@ -89,9 +89,10 @@ Feature: Package Profiles
     Then I should be on the package profile index page
 
   Scenario: Navigate from index to collections for given package profile
-    When the collection titled 'Dogs' has package profile named 'book'
-    And the collection titled 'Cats' has package profile named 'book'
-    And the collection titled 'Bats' has package profile named 'image'
+    When the collection titled 'Dogs' has a file group with package profile named 'book'
+    And the collection titled 'Cats' has a file group with package profile named 'book'
+    And the collection titled 'Cats' has a file group with package profile named 'image'
+    And the collection titled 'Bats' has a file group with package profile named 'image'
     When I go to the package profile index page
     And I click on 'book'
     Then I should be on the collection index page for collections with package profile 'book'

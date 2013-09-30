@@ -17,4 +17,8 @@ module FileGroupsHelper
      'collection-file-package-summary', 'related-file-groups']
   end
 
+  def package_profile_select_collection
+    PackageProfile.order('name ASC').all.collect {|profile| [profile.name, profile.id]}
+  end
+
 end

@@ -89,29 +89,3 @@ Feature: Collection description
     Then I should see a link to 'http://private.example.com'
     Then I should see a link to 'http://description.example.com'
     Then I should see a link to 'https://notes.example.com'
-
-  Scenario: See package profile name and url in collection view
-    Given I have package profiles with fields:
-      | name          | url                              |
-      | image_profile | http://image_profile.example.com |
-    And the collection titled 'dogs' has package profile named 'image_profile'
-    When I view the collection titled 'dogs'
-    Then I should see all of:
-      | image_profile | http://image_profile.example.com |
-
-  Scenario: Navigate from collection view to corresponding package profile
-    Given the collection titled 'dogs' has package profile named 'image_profile'
-    When I view the collection titled 'dogs'
-    And I click on 'image_profile'
-    Then I should be on the view page for the package profile named 'image_profile'
-
-  Scenario: Change package profile when editing collection
-    Given I have package profiles with fields:
-      | name          |
-      | image_profile |
-      | book_profile  |
-    And the collection titled 'dogs' has package profile named 'image_profile'
-    When I edit the collection titled 'dogs'
-    And I select 'book_profile' from 'Package profile'
-    And I click on 'Update Collection'
-    Then the collection titled 'dogs' should have package profile named 'book_profile'

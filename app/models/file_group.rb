@@ -5,7 +5,8 @@ class FileGroup < ActiveRecord::Base
   attr_accessible :collection_id, :external_file_location,
                   :producer_id, :file_type_id, :summary, :provenance_note,
                   :name, :staged_file_location, :total_file_size,
-                  :file_format, :total_files, :related_file_group_ids, :cfs_root
+                  :file_format, :total_files, :related_file_group_ids, :cfs_root,
+                  :package_profile_id
 
   belongs_to :collection
   belongs_to :producer
@@ -19,6 +20,7 @@ class FileGroup < ActiveRecord::Base
   has_many :source_file_groups, :through => :source_file_group_joins
   has_many :events, :as => :eventable, :dependent => :destroy, :order => 'date DESC'
   has_many :scheduled_events, :as => :scheduled_eventable, :dependent => :destroy, :order => 'action_date DESC'
+  belongs_to :package_profile
 
   before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root

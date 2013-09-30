@@ -60,7 +60,10 @@ class CollectionsController < ApplicationController
 
   def for_package_profile
     package_profile = PackageProfile.find(params[:package_profile_id])
-    @collections = package_profile.collections.order(:title).includes(:repository)
+    file_groups = package_profile.file_groups.includes(:collection => :repository)
+    @collections = file_groups.collect do |file_group|
+      file_group.collection
+    end.uniq.sort_by(&:title)
     @subheader = "For Package Profile: #{package_profile.name}"
     render 'index'
   end

@@ -12,6 +12,7 @@
         %th Name
         %th Storage Level
         %th Type
+        %th Profile
         %th Producer
         %th Total files
         %th Total file size (GB)
@@ -27,6 +28,7 @@
               %div= link_to 'View files', cfs_show_path(:path => file_group.cfs_root)
           %td #{file_group.storage_level}
           %td #{file_group.file_type_name}
+          %td #{link_to(file_group.package_profile.name, file_group.package_profile) if file_group.package_profile.present?}
           %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
           %td #{file_group.total_files}
           %td #{file_group.total_file_size}

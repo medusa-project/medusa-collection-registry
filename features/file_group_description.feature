@@ -80,3 +80,28 @@ Feature: File Group description
     When I view the file group with location 'Main Library' for the collection titled 'Dogs'
     Then I should not see 'Bit root directory'
 
+  Scenario: See package profile name and url in collection view
+    Given I have package profiles with fields:
+      | name          | url                              |
+      | image_profile | http://image_profile.example.com |
+    And the file group named 'images' has package profile named 'image_profile'
+    When I view the file group named 'images'
+    Then I should see all of:
+      | image_profile | http://image_profile.example.com |
+
+  Scenario: Navigate from file group view to corresponding package profile
+    Given the file group named 'images' has package profile named 'image_profile'
+    When I view the file group named 'images'
+    And I click on 'image_profile'
+    Then I should be on the view page for the package profile named 'image_profile'
+
+  Scenario: Change package profile when editing file group
+    Given I have package profiles with fields:
+      | name          |
+      | image_profile |
+      | book_profile  |
+    And the file group named 'images' has package profile named 'image_profile'
+    When I edit the file group named 'images'
+    And I select 'book_profile' from 'Package profile'
+    And I click on 'Update File group'
+    Then the file group named 'images' should have package profile named 'book_profile'

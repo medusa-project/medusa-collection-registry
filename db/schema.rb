@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130912190139) do
+ActiveRecord::Schema.define(:version => 20130930173250) do
 
   create_table "access_system_collection_joins", :force => true do |t|
     t.integer  "access_system_id"
@@ -143,11 +143,9 @@ ActiveRecord::Schema.define(:version => 20130912190139) do
     t.text     "private_description_html"
     t.string   "uuid"
     t.text     "file_package_summary_html"
-    t.integer  "package_profile_id"
   end
 
   add_index "collections", ["contact_id"], :name => "index_collections_on_contact_id"
-  add_index "collections", ["package_profile_id"], :name => "index_collections_on_package_profile_id"
   add_index "collections", ["repository_id"], :name => "index_collections_on_repository_id"
   add_index "collections", ["uuid"], :name => "index_collections_on_uuid"
 
@@ -209,10 +207,12 @@ ActiveRecord::Schema.define(:version => 20130912190139) do
     t.string   "staged_file_location"
     t.string   "cfs_root"
     t.string   "type"
+    t.integer  "package_profile_id"
   end
 
   add_index "file_groups", ["cfs_root"], :name => "index_file_groups_on_cfs_root", :unique => true
   add_index "file_groups", ["file_type_id"], :name => "index_file_groups_on_file_type_id"
+  add_index "file_groups", ["package_profile_id"], :name => "index_file_groups_on_package_profile_id"
   add_index "file_groups", ["root_directory_id"], :name => "index_file_groups_on_root_directory_id", :unique => true
   add_index "file_groups", ["type"], :name => "index_file_groups_on_type"
 

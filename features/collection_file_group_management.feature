@@ -70,3 +70,15 @@ Feature: File Group Management
     When I view the collection titled 'Dogs'
     And I click on 'View files'
     Then I should be viewing the cfs directory 'bit/path'
+
+  Scenario: See the package profile of a file group in the file groups table
+    Given the file group named 'images' has package profile named 'image_package'
+    When I view the collection titled 'Dogs'
+    Then I should see 'image_package'
+    
+  Scenario: Navigate to package profile of owned file group
+    Given the file group named 'images' has package profile named 'image_package'
+    When I view the collection titled 'Dogs'
+    And I click on 'image_package'
+    Then I should be on the view page for the package profile named 'image_package'
+    
