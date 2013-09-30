@@ -3,11 +3,17 @@
 function initialize_data_table(tableSelector) {
   $(function () {
     $(tableSelector).dataTable({
-      "aaSorting":[
+      "aaSorting": [
         [0, "asc"]
       ],
       "iDisplayLength": 25,
-      "bStateSave": "true"
+      "bStateSave": "true",
+      "fnStateSave": function (oSettings, oData) {
+        localStorage.setItem('DataTables_' + window.location.pathname, JSON.stringify(oData));
+      },
+      "fnStateLoad": function (oSettings) {
+        return JSON.parse(localStorage.getItem('DataTables_' + window.location.pathname));
+      }
     })
   })
 };
