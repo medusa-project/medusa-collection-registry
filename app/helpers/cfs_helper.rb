@@ -6,6 +6,10 @@ module CfsHelper
         File.directory?(entry)
       end.sort
     end
+  rescue
+    #TODO - possibly send an email when this happens
+    Rails.logger.error "CFS directory not found"
+    []
   end
 
   def cfs_file_info_path(cfs_file_info)
