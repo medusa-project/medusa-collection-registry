@@ -17,7 +17,7 @@ class AssessmentsController < ApplicationController
   end
 
   def update
-    if @assessment.update_attributes(params[:assessment])
+    if @assessment.update_attributes(allowed_params)
       redirect_to assessment_path(@assessment)
     else
       render 'edit'
@@ -28,14 +28,14 @@ class AssessmentsController < ApplicationController
     klass = assessable_class(params)
     @assessable = klass.find(params[:assessable_id])
     @assessment = Assessment.new
-    @assessment.author = Person.find_or_create_by_net_id(current_user.uid)
+    @assessment.author = Person.find_or_create_by(net_id: current_user.uid)
     @assessment.assessable = @assessable
   end
 
   def create
     klass = assessable_class(params[:assessment])
     @assessable = klass.find(params[:assessment].delete(:assessable_id))
-    @assessment = @assessable.assessments.build(params[:assessment])
+    @assessment = @assessable.assessments.build(allowed_params)
     if @assessment.save
       redirect_to assessment_path(@assessment)
     else
@@ -62,6 +62,12 @@ class AssessmentsController < ApplicationController
       else
         raise RuntimeError, 'Unrecognized assessable type'
     end
+  end
+
+  def allowed_params
+    params[:assessment].permit(:assessable_id, :date, :notes, :preservation_risks, :assessable_type, :name,
+                               :preservation_risk_level, :assessment_type, :naming_conventions, :storage_medium_id,
+                               :directory_structure, :last_access_date, :file_format, :total_file_size, :total_files, :author_net_id)
   end
 
 end

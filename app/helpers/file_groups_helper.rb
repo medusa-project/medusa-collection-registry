@@ -1,13 +1,13 @@
 module FileGroupsHelper
 
   def producers_select_collection
-    Producer.order(:title).all.collect do |producer|
+    Producer.order(:title).load.collect do |producer|
       [producer.title, producer.id]
     end
   end
 
   def file_types_select_collection
-    FileType.order(:name).all.collect do |type|
+    FileType.order(:name).load.collect do |type|
       [type.name, type.id]
     end
   end
@@ -18,7 +18,7 @@ module FileGroupsHelper
   end
 
   def package_profile_select_collection
-    PackageProfile.order('name ASC').all.collect {|profile| [profile.name, profile.id]}
+    PackageProfile.order('name ASC').load.collect {|profile| [profile.name, profile.id]}
   end
 
 end

@@ -1,15 +1,15 @@
 %div
   Filter:
-  = link_to_function('All', 'red_flag_filter.all()')
+  = link_to 'All', '#', onclick: 'red_flag_filter.all(); return false;'
   |
-  = link_to_function('Flagged', 'red_flag_filter.flagged()')
+  = link_to 'Flagged', '#', onclick: 'red_flag_filter.flagged(); return false;'
   |
-  = link_to_function('Unflagged', 'red_flag_filter.unflagged()')
+  = link_to 'Unflagged', '#', onclick: 'red_flag_filter.unflagged(); return false;'
   &nbsp;
   Sort:
-  = link_to_function('Most Recent', 'red_flag_sorter.recent()')
+  = link_to 'Most Recent', '#', onclick: 'red_flag_sorter.recent(); return false;'
   |
-  = link_to_function('Most Important', 'red_flag_sorter.priority()')
+  = link_to 'Most Important', '#', onclick: 'red_flag_sorter.priority(); return false;'
 %table#red-flags-table.table.table-striped
   %thead
     %tr

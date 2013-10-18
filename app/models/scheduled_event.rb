@@ -6,7 +6,7 @@ class ScheduledEvent < ActiveRecord::Base
   STATES = ['scheduled', 'completed', 'cancelled']
 
   validates_inclusion_of :key, :in => lambda { |event| event.scheduled_eventable.supported_scheduled_event_keys }
-  validates_format_of :actor_netid, :with => /^[A-Za-z0-9]+$/
+  validates_format_of :actor_netid, :with => /\A[A-Za-z0-9]+\z/
   validates_presence_of :action_date
   validates_inclusion_of :state, :in => STATES
   before_validation :ensure_state

@@ -4,7 +4,7 @@ class ScheduledEventsController < ApplicationController
   def create
     klass = Kernel.const_get(params[:scheduled_eventable_type])
     eventable = klass.find(params[:scheduled_eventable_id])
-    event = eventable.scheduled_events.create(params[:scheduled_event])
+    event = eventable.scheduled_events.create(allowed_params)
     event.enqueue_initial
     if request.xhr?
       respond_to {|format| format.js}
@@ -46,5 +46,9 @@ class ScheduledEventsController < ApplicationController
 
   def find_scheduled_event
     @scheduled_event = ScheduledEvent.find(params[:id])
+  end
+
+  def allowed_params
+    params[:scheduled_event].permit(:action_date, :actor_netid, :key, :note, :scheduled_eventable_id, :scheduled_eventable_type, :state)
   end
 end

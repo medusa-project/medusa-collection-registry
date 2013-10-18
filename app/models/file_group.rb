@@ -18,8 +18,8 @@ class FileGroup < ActiveRecord::Base
   has_many :target_file_groups, :through => :target_file_group_joins
   has_many :source_file_group_joins, :dependent => :destroy, :class_name => 'RelatedFileGroupJoin', :foreign_key => :target_file_group_id
   has_many :source_file_groups, :through => :source_file_group_joins
-  has_many :events, :as => :eventable, :dependent => :destroy, :order => 'date DESC'
-  has_many :scheduled_events, :as => :scheduled_eventable, :dependent => :destroy, :order => 'action_date ASC'
+  has_many :events, -> {order 'date DESC'}, :as => :eventable, :dependent => :destroy
+  has_many :scheduled_events, -> {order 'action_date ASC'}, :as => :scheduled_eventable, :dependent => :destroy
   belongs_to :package_profile
 
   before_validation :ensure_rights_declaration

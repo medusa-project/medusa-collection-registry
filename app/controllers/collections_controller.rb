@@ -9,7 +9,7 @@ class CollectionsController < ApplicationController
     @assessments = @assessable.recursive_assessments
     respond_to do |format|
       format.html
-      format.xml {render :xml => @collection.to_mods}
+      format.xml { render :xml => @collection.to_mods }
       format.json
     end
   end
@@ -24,7 +24,7 @@ class CollectionsController < ApplicationController
   end
 
   def update
-    if @collection.update_attributes(params[:collection])
+    if @collection.update_attributes(allowed_params)
       redirect_to collection_path(@collection)
     else
       render "edit"
@@ -33,12 +33,12 @@ class CollectionsController < ApplicationController
 
   def new
     @collection = Collection.new
-    @collection.rights_declaration = @collection.build_rights_declaration
+    @collection.rights_declaration = RightsDeclaration.new(:rights_declarable_type => "Collection")
     @repository = Repository.find(params[:repository_id]) rescue Repository.order(:title).first
   end
 
   def create
-    @collection = Collection.new(params[:collection])
+    @collection = Collection.new(allowed_params)
     @repository = Repository.find(params[:collection][:repository_id]) rescue Repository.order(:title).first
     if @collection.save
       redirect_to collection_path(@collection)
@@ -86,6 +86,14 @@ class CollectionsController < ApplicationController
     @collection = Collection.find(params[:id])
     @collection.build_contact unless @collection.contact
     @repository = @collection.repository
+  end
+
+  def allowed_params
+    params[:collection].permit(:access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
+                               :ongoing, :published, :repository_id, :start_date, :title, :access_system_ids,
+                               :preservation_priority_id, :resource_type_ids, :package_profile_id, :contact_net_id,
+                               :rights_declaration_attributes => [:rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions]
+    )
   end
 
 end

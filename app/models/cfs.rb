@@ -75,7 +75,7 @@ module Cfs
   end
 
   def create_fits_for(url_path, file_path)
-    file_info = CfsFileInfo.find_or_create_by_path(url_path)
+    file_info = CfsFileInfo.find_or_create_by(path: url_path)
     fits_xml = get_fits_xml(file_path)
     extracted_properties = extract_fits_properties(fits_xml)
     check_red_flags(file_info, fits_xml, extracted_properties)
@@ -117,7 +117,7 @@ module Cfs
   end
 
   def create_basic_assessment_for(url_path, file_path)
-    file_info = CfsFileInfo.find_or_create_by_path(url_path)
+    file_info = CfsFileInfo.find_or_create_by(path: url_path)
     file_info.size = File.size(file_path)
     file_info.content_type = FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(file_path) rescue 'application/octet-stream'
     file_info.md5_sum = Digest::MD5.file(file_path).to_s

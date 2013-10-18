@@ -5,6 +5,7 @@ class FileGroupsController < ApplicationController
   skip_before_filter :require_logged_in, :only => [:show]
   skip_before_filter :authorize, :only => [:show]
   around_filter :handle_related_file_groups, :only => [:update, :create]
+  respond_to :html, :js, :json
 
   def show
     @assessable = @file_group
@@ -26,7 +27,7 @@ class FileGroupsController < ApplicationController
 
   def update
     handling_nested_collection_and_rights_declaration(params[:file_group]) do
-      if @file_group.update_attributes(params[:file_group])
+      if @file_group.update_attributes(allowed_params)
         redirect_to @file_group
       else
         render 'edit'
@@ -44,8 +45,8 @@ class FileGroupsController < ApplicationController
   def create
     @collection = Collection.find(params[:file_group][:collection_id])
     klass = determine_creation_class(params[:file_group])
-    handling_nested_collection_and_rights_declaration(params[:file_group]) do
-      @file_group = klass.new(params[:file_group])
+    handling_nested_collection_and_rights_declaration(allowed_params) do
+      @file_group = klass.new(allowed_params)
       if @file_group.save
         redirect_to @file_group
       else
@@ -58,7 +59,7 @@ class FileGroupsController < ApplicationController
     @file_group.delay.ensure_fits_xml_for_owned_bit_files
     record_event(@file_group, 'fits_performed')
     if request.xhr?
-      respond_to {|format| format.js}
+      respond_to { |format| format.js }
     else
       flash[:notice] = 'Scheduled creation of FITS XML'
       redirect_to @file_group
@@ -81,7 +82,9 @@ class FileGroupsController < ApplicationController
     else
       @alert = 'Selected File Group does not have a cfs root directory'
     end
-    respond_to {|format| format.js}
+    respond_to do |format|
+      format.js
+    end
   end
 
   def events
@@ -134,6 +137,14 @@ class FileGroupsController < ApplicationController
         join.save!
       end
     end
+  end
+
+  def allowed_params
+    params[:file_group].permit(:collection_id, :external_file_location,
+                               :producer_id, :file_type_id, :summary, :provenance_note,
+                               :name, :staged_file_location, :total_file_size,
+                               :file_format, :total_files, :related_file_group_ids, :cfs_root,
+                               :package_profile_id)
   end
 
 end

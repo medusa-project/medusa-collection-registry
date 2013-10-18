@@ -46,4 +46,8 @@ class PackageProfilesController < ApplicationController
   def find_package_profile
     @package_profile = PackageProfile.find(params[:id])
   end
+
+  def allowed_params
+    params[:package_profile].permit(:name, :notes, :url)
+  end
 end

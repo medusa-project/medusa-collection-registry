@@ -1,9 +1,9 @@
 %div
   Show Storage Level:
-  = link_to_function('All', 'storage_level_filter.all()')
+  = link_to 'All', '#', onclick: 'storage_level_filter.all(); return false;'
   |
-  = link_to_function('External', 'storage_level_filter.external()')
+  = link_to 'External', '#', onclick: 'storage_level_filter.external(); return false;'
   |
-  = link_to_function('Bit Level', 'storage_level_filter.bit_level()')
+  = link_to 'Bit Level', '#', onclick: 'storage_level_filter.bit_level(); return false;'
   |
-  = link_to_function('Object Level', 'storage_level_filter.object_level()')
+  = link_to 'Object Level', '#', onclick: 'storage_level_filter.object_level()'

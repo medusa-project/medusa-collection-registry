@@ -16,7 +16,7 @@ class ProducersController < ApplicationController
     if @producer.destroy
       redirect_to producers_path
     else
-      redirect_to :back, :alert=> 'Producers with associated file groups cannot be deleted.'
+      redirect_to :back, :alert => 'Producers with associated file groups cannot be deleted.'
     end
   end
 
@@ -25,7 +25,7 @@ class ProducersController < ApplicationController
   end
 
   def create
-    @producer = Producer.new(params[:producer])
+    @producer = Producer.new(allowed_params)
     if @producer.save
       redirect_to producer_path(@producer)
     else
@@ -38,7 +38,7 @@ class ProducersController < ApplicationController
   end
 
   def update
-    if @producer.update_attributes(params[:producer])
+    if @producer.update_attributes(allowed_params)
       redirect_to producer_path(@producer)
     else
       render 'edit'
@@ -50,5 +50,10 @@ class ProducersController < ApplicationController
 
   def find_producer
     @producer = Producer.find(params[:id])
+  end
+
+  def allowed_params
+    params[:producer].permit(:address_1, :address_2, :city, :email, :notes,
+                             :phone_number, :state, :title, :url, :zip, :active_start_date, :active_end_date)
   end
 end

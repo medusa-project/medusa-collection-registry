@@ -16,7 +16,7 @@ class ActiveRecord::Base
       if net_id.blank?
         self.send(setter, nil)
       else
-        self.send(setter, Person.find_or_create_by_net_id(net_id))
+        self.send(setter, Person.find_or_create_by(net_id: net_id))
       end
     end
   end

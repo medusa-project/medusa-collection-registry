@@ -9,7 +9,7 @@ class RedFlagsController < ApplicationController
   end
 
   def update
-    if @red_flag.update_attributes(params[:red_flag])
+    if @red_flag.update_attributes(allowed_params)
       redirect_to red_flag_path(@red_flag)
     else
       render 'edit'
@@ -30,6 +30,10 @@ class RedFlagsController < ApplicationController
 
   def find_red_flag
     @red_flag = RedFlag.find(params[:id])
+  end
+
+  def allowed_params
+    params[:red_flag].permit(:message, :red_flaggable_id, :red_flaggable_type, :notes, :priority, :status)
   end
 
 end

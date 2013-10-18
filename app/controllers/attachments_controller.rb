@@ -19,7 +19,7 @@ class AttachmentsController < ApplicationController
     #we should not need to set description sepratately. There is some issue with mass assignment, that is why this hack
     desc = params[:attachment].delete(:description)
     @attachment.description = desc
-    if @attachment.update_attributes(params[:attachment])
+    if @attachment.update_attributes(allowed_params)
       redirect_to collection_path(@attachment.attachable_id)
     else
       render 'edit'
@@ -30,12 +30,12 @@ class AttachmentsController < ApplicationController
     @attachment = Attachment.find(params[:id])
     send_file(@attachment.attachment.path, :disposition => 'inline')
   end
-  
+
   def new
     klass = attachable_class(params)
     @attachable = klass.find(params[:attachable_id])
     @attachment = Attachment.new
-    @attachment.author = Person.find_or_create_by_net_id(current_user.uid)
+    @attachment.author = Person.find_or_create_by(net_id: current_user.uid)
     @attachment.attachable = @attachable
   end
 
@@ -44,7 +44,7 @@ class AttachmentsController < ApplicationController
     @attachable = klass.find(params[:attachment].delete(:attachable_id))
     #we should not need to set description sepratately. There is some issue with mass assignment, that is why this hack
     desc = params[:attachment].delete(:description)
-    @attachment = Attachment.new(params[:attachment])
+    @attachment = Attachment.new(allowed_params)
     @attachment.description = desc
     @attachment.attachable = @attachable
     if @attachment.save
@@ -69,6 +69,11 @@ class AttachmentsController < ApplicationController
       else
         raise RuntimeError, 'Unrecognized attachable type'
     end
+  end
+
+  def allowed_params
+    params[:attachment].permit(:attachable_id, :attachable_type, :attachment_content_type,
+                               :attachment_file_name, :attachment_file_size, :attachment)
   end
 
 end

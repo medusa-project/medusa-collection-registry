@@ -9,7 +9,7 @@ class RepositoriesController < ApplicationController
   end
 
   def create
-    @repository = Repository.new(params[:repository])
+    @repository = Repository.new(allowed_params)
     if @repository.save
       redirect_to repository_path(@repository), notice: 'Repository was successfully created.'
     else
@@ -31,7 +31,7 @@ class RepositoriesController < ApplicationController
   end
 
   def update
-    if @repository.update_attributes(params[:repository])
+    if @repository.update_attributes(allowed_params)
       redirect_to repository_path(@repository), notice: 'Repository was successfully updated.'
     else
       render 'edit'
@@ -59,6 +59,12 @@ class RepositoriesController < ApplicationController
 
   def find_repository
     @repository = Repository.find(params[:id])
+  end
+
+  def allowed_params
+    params[:repository].permit(:notes, :title, :url, :address_1, :address_2, :city, :state,
+                               :zip, :phone_number, :email, :active_start_date,
+                               :active_end_date, :contact_net_id)
   end
 
 end

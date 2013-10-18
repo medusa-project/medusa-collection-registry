@@ -151,7 +151,7 @@ end
 And(/^the file group named '(.*)' has relation note '(.*)' for the target file group '(.*)'$/) do |source_name, note, target_name|
   source_file_group = FileGroup.find_by_name(source_name)
   target_file_group = FileGroup.find_by_name(target_name)
-  join = RelatedFileGroupJoin.find_or_create_by_source_file_group_id_and_target_file_group_id(source_file_group.id, target_file_group.id)
+  join = RelatedFileGroupJoin.find_or_create_by(source_file_group_id: source_file_group.id, target_file_group_id: target_file_group.id)
   join.note = note
   join.save!
 end

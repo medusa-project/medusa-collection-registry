@@ -10,7 +10,7 @@ class VirusScan < ActiveRecord::Base
     self.transaction do
       file_group.virus_scans.create(:scan_result => scan_result[:raw_result])
       scan_result[:hits].each do |hit|
-        file_info = CfsFileInfo.find_or_create_by_path(hit[:path])
+        file_info = CfsFileInfo.find_or_create_by(path: hit[:path])
         file_info.red_flags.create(:message => "Virus Detected: #{hit[:message]}")
       end
     end

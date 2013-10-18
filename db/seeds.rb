@@ -16,20 +16,20 @@ ActiveRecord::Base.transaction do
    'computer tape reel', 'computer tape cartridge', 'computer tape cassette',
    'flash drive', 'memory card (e.g SD card, CompactFlash',
    'computer card (e.g. punchboard)', 'paper tape'].each do |media_name|
-    StorageMedium.find_or_create_by_name(media_name)
+    StorageMedium.find_or_create_by(name: media_name)
   end
 
 #File types
   ['Derivative Content', 'Master Content', 'Derivative Metadata', 'Master Metadata', 'Other',
    'Mixed Content', 'Master Mixed Content', 'Derivative Mixed Content'].each do |name|
-    FileType.find_or_create_by_name(name)
+    FileType.find_or_create_by(name: name)
   end
 
 #Resource types
   ['text', 'cartographic', 'notated music', 'sound recording', 'sound recording-musical',
    'sound recording-nonmusical', 'still image', 'moving image',
    'three dimensional object', 'software, multimedia', 'mixed material'].each do |name|
-    ResourceType.find_or_create_by_name(name)
+    ResourceType.find_or_create_by(name: name)
     if bad_type = ResourceType.find_by_name('software, multimedia, mixed material')
       bad_type.destroy
     end
@@ -40,7 +40,7 @@ ActiveRecord::Base.transaction do
 
 #PreservationPriorities
   {0.0 => 'migrated', 1.0 => 'low', 2.0 => 'medium', 3.0 => 'high', 4.0 => 'urgent'}.each do |priority, name|
-    PreservationPriority.find_or_create_by_name(:name => name, :priority => priority)
+    PreservationPriority.find_or_create_by(:name => name, :priority => priority)
   end
 
 #Make sure every Collection has
