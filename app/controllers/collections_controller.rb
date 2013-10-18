@@ -48,7 +48,7 @@ class CollectionsController < ApplicationController
   end
 
   def index
-    @collections = Collection.order(:title).includes(:repository).all
+    @collections = Collection.order(:title).includes(:repository).load
   end
 
   def for_access_system

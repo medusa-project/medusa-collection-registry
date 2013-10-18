@@ -7,7 +7,7 @@ Then(/^there should not be cfs file info for '(.*)'$/) do |path|
 end
 
 Given(/^the cfs file info for the path '(.*)' has fields:$/) do |path, table|
-  file_info = CfsFileInfo.find_or_create_by_path(path)
+  file_info = CfsFileInfo.find_or_create_by(path: path)
   table.hashes.each do |h|
     file_info.update_attributes!(h)
   end

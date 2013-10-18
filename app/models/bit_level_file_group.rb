@@ -102,7 +102,7 @@ class BitLevelFileGroup < FileGroup
     return [] unless self.cfs_root
     RedFlag.where(:red_flaggable_type => 'CfsFileInfo').
         joins("JOIN cfs_file_infos ON red_flags.red_flaggable_id = cfs_file_infos.id").
-        where('cfs_file_infos.path LIKE ?', self.cfs_root + "/%").all
+        where('cfs_file_infos.path LIKE ?', self.cfs_root + "/%").load
   end
 
 end

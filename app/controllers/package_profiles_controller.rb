@@ -8,7 +8,7 @@ class PackageProfilesController < ApplicationController
   end
 
   def index
-    @package_profiles = PackageProfile.order('name ASC').all
+    @package_profiles = PackageProfile.order('name ASC').load
   end
 
   def edit
@@ -16,7 +16,7 @@ class PackageProfilesController < ApplicationController
   end
 
   def update
-    if @package_profile.update_attributes(params[:package_profile])
+    if @package_profile.update_attributes(allowed_params)
       redirect_to @package_profile
     else
       render 'edit'
@@ -28,7 +28,7 @@ class PackageProfilesController < ApplicationController
   end
 
   def create
-    @package_profile = PackageProfile.new(params[:package_profile])
+    @package_profile = PackageProfile.new(allowed_params)
     if @package_profile.save
       redirect_to @package_profile
     else
