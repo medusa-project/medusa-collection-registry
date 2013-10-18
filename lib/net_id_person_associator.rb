@@ -5,7 +5,6 @@ class ActiveRecord::Base
   #that do the right things. You still need to make a #{attr_name}_id field via a migration
   #and a reverse association if desired
   def self.net_id_person_association(attr_name)
-#    attr_accessible :"#{attr_name}_net_id"
     belongs_to attr_name, :class_name => Person
     define_method :"#{attr_name}_net_id" do
       self.send(attr_name).try(:net_id)

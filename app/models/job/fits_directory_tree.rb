@@ -1,5 +1,4 @@
 class Job::FitsDirectoryTree < ActiveRecord::Base
-  #attr_accessible :path
   has_many :fits_files
 
   def perform

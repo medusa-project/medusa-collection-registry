@@ -1,6 +1,4 @@
 class ScheduledEvent < ActiveRecord::Base
-  #attr_accessible :action_date, :actor_netid, :key, :note, :scheduled_eventable_id, :scheduled_eventable_type, :state
-
   belongs_to :scheduled_eventable, :polymorphic => true
 
   STATES = ['scheduled', 'completed', 'cancelled']

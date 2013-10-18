@@ -4,8 +4,6 @@ class Repository < ActiveRecord::Base
   include RedFlagAggregator
 
   net_id_person_association(:contact)
-  #attr_accessible :notes, :title, :url, :address_1, :address_2, :city, :state,
-  #                :zip, :phone_number, :email, :active_start_date, :active_end_date
   has_many :collections, :dependent => :destroy
   has_many :assessments, :as => :assessable, :dependent => :destroy
 

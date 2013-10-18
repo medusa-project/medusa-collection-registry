@@ -1,7 +1,6 @@
 require 'set'
 require 'fileutils'
 class Directory < ActiveRecord::Base
-  #attr_accessible :name, :collection_id
   has_many :bit_files, -> {order 'name'}, :dependent => :restrict_with_exception
   belongs_to :collection
 

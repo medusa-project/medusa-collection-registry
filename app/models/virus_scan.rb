@@ -1,7 +1,6 @@
 require 'open3'
 
 class VirusScan < ActiveRecord::Base
-  #attr_accessible :file_group_id, :scan_result
   belongs_to :file_group
 
   def self.check_file_group(file_group)
