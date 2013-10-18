@@ -12,7 +12,7 @@ class FileGroupsController < ApplicationController
     @assessments = @assessable.assessments.order('date DESC')
     respond_to do |format|
       format.html
-      format.json
+      format.json {render :json => show_json}
     end
   end
 
@@ -145,6 +145,16 @@ class FileGroupsController < ApplicationController
                                :name, :staged_file_location, :total_file_size,
                                :file_format, :total_files, :related_file_group_ids, :cfs_root,
                                :package_profile_id)
+  end
+
+  def show_json
+    Jbuilder.encode do |json|
+      json.id @file_group.id
+      json.root_directory_id @file_group.root_directory_id
+      json.collection_id @collection.id
+      json.external_file_location @file_group.external_file_location
+      json.type @file_group.file_type_name
+    end
   end
 
 end

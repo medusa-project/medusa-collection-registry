@@ -1,8 +1,0 @@
-id @bit_file.id
-directory_id @bit_file.directory_id
-md5sum @bit_file.md5sum
-name @bit_file.name
-content_type @bit_file.content_type
-ingested @bit_file.dx_ingested
-size @bit_file.size
-url @bit_file.dx_url

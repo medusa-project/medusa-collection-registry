@@ -1,5 +1,0 @@
-id @collection.id
-uuid @collection.uuid
-title @collection.title
-root_directory_id @collection.root_directory.id
-file_group_ids @collection.file_group_ids

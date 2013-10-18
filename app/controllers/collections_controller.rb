@@ -10,7 +10,7 @@ class CollectionsController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @collection.to_mods }
-      format.json
+      format.json { render :json => show_json}
     end
   end
 
@@ -94,6 +94,16 @@ class CollectionsController < ApplicationController
                                :preservation_priority_id, :resource_type_ids, :package_profile_id, :contact_net_id,
                                :rights_declaration_attributes => [:rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions]
     )
+  end
+
+  def show_json
+    Jbuilder.encode do |json|
+      json.id @collection.id
+      json.uuid @collection.uuid
+      json.title @collection.title
+      json.root_directory_id @collection.root_directory.id
+      json.file_group_ids @collection.file_group_ids
+    end
   end
 
 end

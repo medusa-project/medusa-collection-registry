@@ -26,7 +26,7 @@ gem 'net-http-digest_auth', :git => 'git://github.com/medusa-project/net-http-di
 gem 'acts_as_tree'
 gem 'ruby-filemagic', :require => 'filemagic'
 
-gem 'json_builder'
+gem 'jbuilder'
 
 #custom gem that uses a web service to generate fits.
 gem 'fits', '~> 1.0.6', :git => 'git://github.com/medusa-project/fits.git'

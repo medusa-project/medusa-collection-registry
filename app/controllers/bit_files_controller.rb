@@ -8,7 +8,7 @@ class BitFilesController < ApplicationController
 
   def show
     respond_to do |format|
-      format.json
+      format.json {render json: show_json(@bit_file)}
     end
   end
 
@@ -35,6 +35,19 @@ class BitFilesController < ApplicationController
 
   def get_bit_file
     @bit_file = BitFile.find(params[:id])
+  end
+
+  def show_json(bit_file)
+    Jbuilder.encode do |json|
+      json.id bit_file.id
+      json.directory_id bit_file.directory_id
+      json.md5sum bit_file.md5sum
+      json.name bit_file.name
+      json.content_type bit_file.content_type
+      json.ingested bit_file.dx_ingested
+      json.size bit_file.size
+      json.url bit_file.dx_url
+    end
   end
 
 end
