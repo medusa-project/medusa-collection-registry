@@ -56,8 +56,11 @@ class FileGroup < ActiveRecord::Base
   end
 
   def clone_collection_rights_declaration
-    self.build_rights_declaration(self.collection.rights_declaration.attributes.slice(
-                                      :rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions))
+    RightsDeclaration.new(self.collection.rights_declaration.attributes.slice(
+                              :rights_basis, :copyright_jurisdiction,
+                              :copyright_statement, :access_restrictions).merge(
+                              :rights_declarable_id => self.id,
+                              :rights_declarable_type => self.class.to_s))
   end
 
   def self.aggregate_size

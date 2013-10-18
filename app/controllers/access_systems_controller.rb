@@ -16,7 +16,7 @@ class AccessSystemsController < ApplicationController
   end
 
   def update
-    if @access_system.update_attributes(params[:access_system])
+    if @access_system.update_attributes(allowed_params)
       redirect_to @access_system
     else
       render 'edit'
@@ -28,7 +28,7 @@ class AccessSystemsController < ApplicationController
   end
 
   def create
-    @access_system = AccessSystem.new(params[:access_system])
+    @access_system = AccessSystem.new(allowed_params)
     if @access_system.save
       redirect_to @access_system
     else
@@ -45,5 +45,9 @@ class AccessSystemsController < ApplicationController
 
   def find_access_system
     @access_system = AccessSystem.find(params[:id])
+  end
+
+  def allowed_params
+    params[:access_system].permit(:name)
   end
 end

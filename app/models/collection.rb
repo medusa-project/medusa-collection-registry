@@ -80,7 +80,8 @@ class Collection < ActiveRecord::Base
   end
 
   def ensure_rights_declaration
-    self.rights_declaration ||= self.build_rights_declaration
+    self.rights_declaration ||= RightsDeclaration.new(:rights_declarable_id => self.id,
+                                                      :rights_declarable_type => "Collection")
   end
 
   def to_mods
@@ -133,15 +134,15 @@ class Collection < ActiveRecord::Base
   end
 
   def recursive_assessments
-    (self.assessments + self.file_groups.collect {|file_group| file_group.assessments}.flatten)
+    (self.assessments + self.file_groups.collect { |file_group| file_group.assessments }.flatten)
   end
 
   def all_events
-    self.file_groups.collect {|file_group| file_group.events}.flatten
+    self.file_groups.collect { |file_group| file_group.events }.flatten
   end
 
   def all_scheduled_events
-    self.file_groups.collect {|file_group| file_group.scheduled_events}.flatten
+    self.file_groups.collect { |file_group| file_group.scheduled_events }.flatten
   end
 
 end
