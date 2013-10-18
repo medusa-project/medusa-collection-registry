@@ -2,9 +2,9 @@ require 'net_id_person_associator'
 class Assessment < ActiveRecord::Base
   net_id_person_association(:author)
 
-  attr_accessible :assessable_id, :date, :notes, :preservation_risks, :assessable_type, :name,
-                  :preservation_risk_level, :assessment_type, :naming_conventions, :storage_medium_id,
-                  :directory_structure, :last_access_date, :file_format, :total_file_size, :total_files
+  #attr_accessible :assessable_id, :date, :notes, :preservation_risks, :assessable_type, :name,
+  #                :preservation_risk_level, :assessment_type, :naming_conventions, :storage_medium_id,
+  #                :directory_structure, :last_access_date, :file_format, :total_file_size, :total_files
   belongs_to :assessable, :polymorphic => true
   belongs_to :storage_medium
 

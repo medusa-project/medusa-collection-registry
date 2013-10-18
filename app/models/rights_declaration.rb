@@ -1,6 +1,6 @@
 class RightsDeclaration < ActiveRecord::Base
   belongs_to :rights_attachable, :polymorphic => true
-  attr_accessible :rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions
+  #attr_accessible :rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions
   before_validation :set_defaults
   cattr_accessor :rights_bases, :default_rights_basis, :copyright_jurisdictions, :default_copyright_jurisdiction,
                  :copyright_statements, :default_copyright_statement, :access_restrictions,

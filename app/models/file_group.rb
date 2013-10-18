@@ -2,11 +2,11 @@ class FileGroup < ActiveRecord::Base
   include Eventable
   include ScheduledEventable
 
-  attr_accessible :collection_id, :external_file_location,
-                  :producer_id, :file_type_id, :summary, :provenance_note,
-                  :name, :staged_file_location, :total_file_size,
-                  :file_format, :total_files, :related_file_group_ids, :cfs_root,
-                  :package_profile_id
+  #attr_accessible :collection_id, :external_file_location,
+  #                :producer_id, :file_type_id, :summary, :provenance_note,
+  #                :name, :staged_file_location, :total_file_size,
+  #                :file_format, :total_files, :related_file_group_ids, :cfs_root,
+  #                :package_profile_id
 
   belongs_to :collection
   belongs_to :producer

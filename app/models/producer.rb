@@ -4,8 +4,8 @@ class Producer < ActiveRecord::Base
 
   net_id_person_association(:administrator)
 
-  attr_accessible :address_1, :address_2, :city, :email, :notes,
-                  :phone_number, :state, :title, :url, :zip, :active_start_date, :active_end_date
+  #attr_accessible :address_1, :address_2, :city, :email, :notes,
+  #                :phone_number, :state, :title, :url, :zip, :active_start_date, :active_end_date
 
   validates_presence_of :title
   validates_uniqueness_of :title

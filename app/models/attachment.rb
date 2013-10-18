@@ -2,7 +2,7 @@ require 'net_id_person_associator'
 class Attachment < ActiveRecord::Base
 	net_id_person_association(:author)
 
-	attr_accessible :attachable_id, :attachable_type, :attachment_content_type, :attachment_file_name, :attachment_file_size, :attachment
+	#attr_accessible :attachable_id, :attachable_type, :attachment_content_type, :attachment_file_name, :attachment_file_size, :attachment
 
 	belongs_to :attachable, :polymorphic => true
 	validates_inclusion_of :attachable_type, :in => ['Collection']

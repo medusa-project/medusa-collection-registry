@@ -8,10 +8,10 @@ class Collection < ActiveRecord::Base
   include ModsHelper
   include RedFlagAggregator
   net_id_person_association(:contact)
-  attr_accessible :access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
-                  :ongoing, :published, :repository_id, :start_date, :title, :access_system_ids,
-                  :preservation_priority_id, :resource_type_ids, :rights_declaration_attributes,
-                  :package_profile_id
+  #attr_accessible :access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
+  #                :ongoing, :published, :repository_id, :start_date, :title, :access_system_ids,
+  #                :preservation_priority_id, :resource_type_ids, :rights_declaration_attributes,
+  #                :package_profile_id
 
   belongs_to :repository
   has_many :assessments, :dependent => :destroy, :as => :assessable

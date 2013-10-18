@@ -1,7 +1,7 @@
 require 'utils/luhn'
 
 class BitFile < ActiveRecord::Base
-  attr_accessible :content_type, :directory_id, :dx_ingested, :dx_name, :md5sum, :name, :size
+  #attr_accessible :content_type, :directory_id, :dx_ingested, :dx_name, :md5sum, :name, :size
   belongs_to :directory
   before_create :assign_uuid
   before_destroy :not_dx_ingested

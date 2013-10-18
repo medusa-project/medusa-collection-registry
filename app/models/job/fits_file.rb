@@ -1,5 +1,5 @@
 class Job::FitsFile < ActiveRecord::Base
-  attr_accessible :fits_directory_tree_id, :path
+  #attr_accessible :fits_directory_tree_id, :path
   belongs_to :fits_directory_tree
 
   def perform
