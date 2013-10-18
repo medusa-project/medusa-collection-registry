@@ -54,6 +54,7 @@ class ProducersController < ApplicationController
 
   def allowed_params
     params[:producer].permit(:address_1, :address_2, :city, :email, :notes,
-                             :phone_number, :state, :title, :url, :zip, :active_start_date, :active_end_date)
+                             :phone_number, :state, :title, :url, :zip,
+                             :active_start_date, :active_end_date, :administrator_net_id)
   end
 end

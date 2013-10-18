@@ -24,8 +24,6 @@ class Producer < ActiveRecord::Base
     self.file_groups.count == 0
   end
 
-
-
   def collections
     self.file_groups.includes(:collection).collect {|group| group.collection}.uniq
   end
