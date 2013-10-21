@@ -16,6 +16,7 @@ gem 'simple_form'
 gem 'auto_html'
 gem 'simple_memoize'
 gem 'auto_strip_attributes'
+gem 'dalli'
 
 gem 'httpclient'
 gem 'mechanize', :git => 'git://github.com/medusa-project/mechanize.git'
