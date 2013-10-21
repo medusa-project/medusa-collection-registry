@@ -85,10 +85,6 @@ GEM
       activesupport (= 4.0.1.rc1)
       arel (~> 4.0.0)
     activerecord-deprecated_finders (1.0.3)
-    activerecord-session_store (0.0.1)
-      actionpack (>= 4.0.0.beta, < 5)
-      activerecord (>= 4.0.0.beta, < 5)
-      railties (>= 4.0.0.beta, < 5)
     activesupport (4.0.1.rc1)
       i18n (~> 0.6, >= 0.6.4)
       minitest (~> 4.2)
@@ -388,7 +384,6 @@ PLATFORMS
 
 DEPENDENCIES
   active-fedora
-  activerecord-session_store
   acts_as_tree
   auto_html
   auto_strip_attributes
@@ -423,7 +418,7 @@ DEPENDENCIES
   paperclip!
   passenger
   pg
-  rails (~> 4.0.1.rc1)
+  rails (~> 4.0.0)
   rails3-jquery-autocomplete!
   rspec-rails
   ruby-filemagic
