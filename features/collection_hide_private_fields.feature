@@ -6,10 +6,15 @@ Feature: Collection hide private fields
   Background:
     Given I am not logged in
     And the repository titled 'Animals' has collections with fields:
-      | title | private_description | notes         |
-      | dogs  | Private information | Private notes |
+      | title | private_description | notes         | description        |
+      | dogs  | Private information | Private notes | Public description |
 
   Scenario: I view the dogs collection
     When I view the collection titled 'dogs'
     Then I should see none of:
       | Private information | Private notes |
+    And I should see none of:
+      | File Manager | Assessments | Attachments |
+    And I should see all of:
+      | About | UUID | Public description |
+
