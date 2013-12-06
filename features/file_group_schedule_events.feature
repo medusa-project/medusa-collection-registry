@@ -16,7 +16,7 @@ Feature: Schedule events for a file group
     When I view events for the file group named 'Dogs'
     Then I should see the scheduled events table
     And I should see all of:
-      | Ingest external file group to bit-level store | pete | 2011-09-08 | scheduled |
+      | Ingest staged file group to bit-level store | pete | 2011-09-08 | scheduled |
 
   Scenario: I can schedule an event from the show view for a file group
     When I view the file group named 'Dogs'
