@@ -21,7 +21,9 @@
         %td= event.actor_netid
         %td= event.message
         %td
+          - links = [link_to('edit', edit_scheduled_event_path(event, :return_to => return_path)),
+                     link_to('delete', scheduled_event_path(event, :return_to => return_path), :method => :delete, :data => {:confirm => 'This cannot be undone.'})]
           - if event.scheduled?
-            = link_to 'complete', complete_scheduled_event_path(event, :return_to => return_path), :method => :post
-            |
-            = link_to 'cancel', cancel_scheduled_event_path(event, :return_to => return_path), :method => :post
+            - links = [link_to('complete', complete_scheduled_event_path(event, :return_to => return_path), :method => :post),
+              link_to('cancel', cancel_scheduled_event_path(event, :return_to => return_path), :method => :post)] + links
+          = links.join(" | ").html_safe

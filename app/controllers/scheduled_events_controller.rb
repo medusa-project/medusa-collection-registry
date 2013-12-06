@@ -1,5 +1,5 @@
 class ScheduledEventsController < ApplicationController
-  before_filter :find_scheduled_event, :only => [:cancel, :complete]
+  before_filter :find_scheduled_event, :only => [:cancel, :complete, :edit, :update, :destroy]
 
   def create
     klass = Kernel.const_get(params[:scheduled_eventable_type])
@@ -20,6 +20,25 @@ class ScheduledEventsController < ApplicationController
 
   def complete
     @scheduled_event.be_complete
+    redirect_to params[:return_to]
+  end
+
+  def edit
+    @return_to = params[:return_to]
+    x = 1
+  end
+
+  def update
+    return_to = params[:scheduled_event].delete(:return_to)
+    if @scheduled_event.update_attributes(params[:scheduled_event])
+      redirect_to return_to
+    else
+      render 'edit'
+    end
+  end
+
+  def destroy
+    @scheduled_event.destroy
     redirect_to params[:return_to]
   end
 

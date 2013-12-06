@@ -21,3 +21,16 @@ And(/^I click on '(.*)' in the scheduled events table$/) do |link|
     click_on(link)
   end
 end
+
+Then(/^I should on the edit page for the scheduled event with key '(.*)' and action date '(.*)'$/) do |key, date|
+  current_path.should == edit_scheduled_event_path(ScheduledEvent.where(:key => key, :action_date => date).first)
+end
+
+When(/^I edit the scheduled event with key '(.*)' and action date '(.*)'$/) do |key, date|
+  visit edit_scheduled_event_path(ScheduledEvent.where(:key => key, :action_date => date).first)
+end
+
+Then(/^there should be no scheduled event with key '(.*)' and action date '(.*)'$/) do |key, date|
+  ScheduledEvent.where(:key => key, :action_date => date).first.should == nil
+end
+

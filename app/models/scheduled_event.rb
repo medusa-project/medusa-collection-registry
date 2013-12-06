@@ -66,4 +66,8 @@ class ScheduledEvent < ActiveRecord::Base
     e.save!
   end
 
+  def select_options
+    self.scheduled_eventable.scheduled_event_select_options
+  end
+
 end
