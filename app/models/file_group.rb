@@ -42,6 +42,10 @@ class FileGroup < ActiveRecord::Base
     self.name
   end
 
+  def parent
+    self.collection
+  end
+
   #subclasses should override appropriately - this is blank here to facilitate the form
   def storage_level
     ''

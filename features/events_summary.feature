@@ -70,4 +70,4 @@ Feature: Events Summary
     When I go to the dashboard
     Then I should see the events table
     And I should see all of:
-      | toy note 1 | toy note 2 | hot note 1 | cool note 1 | Buster | Oscar | Coltrane | corn note 1 | delmonte |
+      | toy note 1 | toy note 2 | hot note 1 | cool note 1 | Buster | Oscar | Coltrane | corn note 1 | delmonte | Dogs| Cats|

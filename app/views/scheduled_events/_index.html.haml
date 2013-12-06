@@ -6,6 +6,7 @@
       %td Status
       %td Label
       %td Type
+      %td Parent
       %td User
       %td Message
       %td Actions
@@ -16,6 +17,7 @@
         %td= event.state
         %td= event.scheduled_eventable.label
         %td= event.scheduled_eventable.class.to_s.underscore.humanize
+        %td= link_to(event.scheduled_eventable.parent.label, event.scheduled_eventable.parent)
         %td= event.actor_netid
         %td= event.message
         %td
