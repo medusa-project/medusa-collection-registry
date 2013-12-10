@@ -2,8 +2,8 @@ class FileGroupsController < ApplicationController
 
   before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update, :create_all_fits,
                                                            :create_cfs_fits, :create_virus_scan, :red_flags]
-  skip_before_filter :require_logged_in, :only => [:show, :index]
-  skip_before_filter :authorize, :only => [:show, :index]
+  skip_before_filter :require_logged_in, :only => [:show]
+  skip_before_filter :authorize, :only => [:show]
   around_filter :handle_related_file_groups, :only => [:update, :create]
 
   def show

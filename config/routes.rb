@@ -20,8 +20,8 @@ MedusaRails3::Application.routes.draw do
       get 'events'
     end
   end
-  resources :assessments
-  resources :attachments do
+  resources :assessments, only: [:show, :edit, :update, :new, :create, :destroy]
+  resources :attachments, only: [:show, :edit, :update, :new, :create, :destroy] do
     member do
       get 'download'
     end
@@ -33,7 +33,7 @@ MedusaRails3::Application.routes.draw do
   end
 
   [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
-    resources file_group_type do
+    resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy] do
       member do
         post 'create_all_fits'
         post 'create_cfs_fits'
