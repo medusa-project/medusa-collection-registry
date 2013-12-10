@@ -36,7 +36,7 @@ gem 'daemons'
 
 # Gems used only for assets and not required
 # in production environments by default.
-group :assets do
+#group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
   gem 'less-rails'
@@ -47,7 +47,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.4'
 
   gem 'twitter-bootstrap-rails'
-end
+#end
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
