@@ -44,7 +44,7 @@ MedusaRails3::Application.routes.draw do
     end
   end
 
-  resources :red_flags do
+  resources :red_flags, only: [:show, :edit, :update] do
     member do
       post 'unflag'
     end
@@ -61,8 +61,8 @@ MedusaRails3::Application.routes.draw do
       get 'create_fits_xml'
     end
   end
-  resources :virus_scans
-  resources :scheduled_events do
+  resources :virus_scans, :only => :show
+  resources :scheduled_events, only: [:edit, :update, :create, :destroy] do
     member do
       post 'complete'
       post 'cancel'

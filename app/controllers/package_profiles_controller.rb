@@ -41,6 +41,8 @@ class PackageProfilesController < ApplicationController
     redirect_to package_profiles_path
   end
 
+  protected
+
   def find_package_profile
     @package_profile = PackageProfile.find(params[:id])
   end
