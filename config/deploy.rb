@@ -1,5 +1,5 @@
 require 'bundler/capistrano'
-set :rvm_ruby_string, "1.9.3-p194@medusa-rails3"
+set :rvm_ruby_string, "2.0.0-p195@medusa-rails3"
 require 'rvm/capistrano'
 require 'auto_html/capistrano'
 
