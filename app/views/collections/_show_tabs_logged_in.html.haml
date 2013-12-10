@@ -4,7 +4,6 @@
     = render 'show_about_tab'
   #file-manager.tab-pane.active
     %p #{@collection.file_package_summary_html}
-    %p #{link_to "Bit root directory", directory_path(@collection.root_directory)}
     = render 'file_groups_table'
   #assessments.tab-pane
     = render 'assessments/table'

@@ -70,16 +70,6 @@ Feature: File Group description
     And The collection titled 'Dogs' should have a file group with location 'Undergrad'
     And the cfs root for the file group named 'My file group' should be nil
 
-  Scenario: Navigate to root directory of file group if present
-    Given The file group with location 'Main Library' has a root directory
-    When I view the file group with location 'Main Library' for the collection titled 'Dogs'
-    And I click on 'Bit root directory'
-    Then I should be on the view page for the root directory for the file group with location 'Main Library'
-
-  Scenario: No link to root directory
-    When I view the file group with location 'Main Library' for the collection titled 'Dogs'
-    Then I should not see 'Bit root directory'
-
   Scenario: See package profile name and url in collection view
     Given I have package profiles with fields:
       | name          | url                              |

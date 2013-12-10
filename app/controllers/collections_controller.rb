@@ -102,7 +102,6 @@ class CollectionsController < ApplicationController
       json.id @collection.id
       json.uuid @collection.uuid
       json.title @collection.title
-      json.root_directory_id @collection.root_directory.id
       json.file_group_ids @collection.file_group_ids
     end
   end
