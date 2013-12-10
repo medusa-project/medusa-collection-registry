@@ -30,7 +30,7 @@ class ScheduledEventsController < ApplicationController
 
   def update
     return_to = params[:scheduled_event].delete(:return_to)
-    if @scheduled_event.update_attributes(params[:scheduled_event])
+    if @scheduled_event.update_attributes(params[:scheduled_event].permit(:actor_netid, :action_date, :state, :key))
       redirect_to return_to
     else
       render 'edit'
