@@ -15,7 +15,7 @@ end
 
 And(/^there are cfs file infos with fields:$/) do |table|
   table.hashes.each do |h|
-    file_info = CfsFileInfo.find_or_create_by_path(h[:path])
+    file_info = CfsFileInfo.find_or_create_by(path: h[:path])
     file_info.update_attributes!(h)
   end
 end
