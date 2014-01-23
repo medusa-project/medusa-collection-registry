@@ -1,4 +1,4 @@
 - if @success
-  $('#edit_repository_#{@repository.id}').effect('highlight');
+  $("#ldap_admin_#{@repository.id} a").effect('highlight', {color: 'green'}, 1000);
 - else
   alert('Update failed!');

@@ -1,17 +1,14 @@
-%table
-  %thead
-    %tr
-      %th Repository
-      %th LDAP domain
-      %th LDAP group
-      %th
-  %tbody
-    - Repository.order(:title).each do |repository|
-      = simple_form_for repository, :url => update_ldap_admin_repository_path(repository), :remote => true, :html => {:method => :put} do |f|
-        %tr{:id => "ldap_admin_#{repository.id}"}
-          %td= link_to(repository.title, repository)
-          %td= f.input_field :ldap_admin_domain, :collection => Repository::LDAP_DOMAINS, :include_blank => false,:default => 'uofi'
-          %td= f.input_field :ldap_admin_group
-          %td= f.submit 'Update', :class => 'btn-primary'
+%div.row
+  %div.span3 Repository
+  %div.span3 LDAP domain
+  %div.span3 LDAP group
+  %div.span3
+- Repository.order(:title).each do |repository|
+  %div.row{:id => "ldap_admin_#{repository.id}"}
+    = simple_form_for repository, :url => update_ldap_admin_repository_path(repository), :remote => true, :html => {:method => :put} do |f|
+      %div.span3= link_to(repository.title, repository)
+      %div.span3= f.input_field :ldap_admin_domain, :collection => Repository::LDAP_DOMAINS, :include_blank => false,:default => 'uofi'
+      %div.span3= f.input_field :ldap_admin_group
+      %div.span3= f.submit 'Update', :class => 'btn-primary'
 
 
