@@ -26,6 +26,7 @@ Then /^I should not see '(.*)'$/ do |text|
 end
 
 And /^I should see all of:$/ do |table|
+  x = Repository.all.load
   table.headers.each do |header|
     step "I should see '#{header}'"
   end

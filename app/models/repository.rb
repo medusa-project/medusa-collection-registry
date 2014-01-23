@@ -7,9 +7,12 @@ class Repository < ActiveRecord::Base
   has_many :collections, :dependent => :destroy
   has_many :assessments, :as => :assessable, :dependent => :destroy
 
+  LDAP_DOMAINS = ['uofi', 'uiuc']
+
   validates_uniqueness_of :title
   validates_presence_of :title
   validate :check_active_dates
+  validates_inclusion_of :ldap_admin_domain, in: LDAP_DOMAINS, allow_blank: true
 
   auto_html_for :notes do
     html_escape

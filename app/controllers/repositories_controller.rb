@@ -1,6 +1,6 @@
 class RepositoriesController < ApplicationController
 
-  before_filter :find_repository, :only => [:show, :edit, :update, :destroy, :red_flags]
+  before_filter :find_repository, :only => [:show, :edit, :update, :destroy, :red_flags, :update_ldap_admin]
   skip_before_filter :require_logged_in, :only => [:show, :index]
   skip_before_filter :authorize, :only => [:show, :index]
 
@@ -53,6 +53,20 @@ class RepositoriesController < ApplicationController
     @scheduled_eventable = @eventable = Repository.find(params[:id])
     @events = @eventable.all_events.sort_by(&:date).reverse
     @scheduled_events = @scheduled_eventable.all_scheduled_events.sort_by(&:action_date)
+  end
+
+  def edit_ldap_admins
+
+  end
+
+  def update_ldap_admin
+    @success = @repository.update_attributes(params[:repository].permit(:ldap_admin_domain, :ldap_admin_group))
+    if request.xhr?
+      respond_to { |format| format.js }
+    else
+      flash[:notice] = @success ? 'Update succeeded' : 'Update failed'
+        redirect_to edit_ldap_admins_repositories_path
+    end
   end
 
   protected

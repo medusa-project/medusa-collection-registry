@@ -15,9 +15,13 @@ MedusaRails3::Application.routes.draw do
     end
   end
   resources :repositories do
+    collection do
+      get 'edit_ldap_admins'
+    end
     member do
       get 'red_flags'
       get 'events'
+      put 'update_ldap_admin'
     end
   end
   resources :assessments, only: [:show, :edit, :update, :new, :create, :destroy]
