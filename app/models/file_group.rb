@@ -5,7 +5,6 @@ class FileGroup < ActiveRecord::Base
   belongs_to :collection
   belongs_to :producer
   belongs_to :file_type
-  belongs_to :root_directory, :class_name => 'Directory'
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
   has_many :assessments, :as => :assessable, :dependent => :destroy
   has_many :target_file_group_joins, :dependent => :destroy, :class_name => 'RelatedFileGroupJoin', :foreign_key => :source_file_group_id
@@ -19,7 +18,6 @@ class FileGroup < ActiveRecord::Base
   before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root
 
-  validates_uniqueness_of :root_directory_id, :allow_nil => true
   validates_uniqueness_of :cfs_root, :allow_blank => true
   validates_presence_of :name
 

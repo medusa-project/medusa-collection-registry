@@ -139,7 +139,6 @@ class FileGroupsController < ApplicationController
   def show_json
     Jbuilder.encode do |json|
       json.id @file_group.id
-      json.root_directory_id @file_group.root_directory_id
       json.collection_id @collection.id
       json.external_file_location @file_group.external_file_location
       json.type @file_group.file_type_name

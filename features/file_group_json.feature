@@ -12,7 +12,6 @@ Feature: JSON data about file group
     Given The file group with location 'Grainger' has file type 'Master Metadata'
     When I request JSON for the file group with location 'Grainger'
     Then the JSON should have "id"
-    And the JSON should have "root_directory_id"
     And the JSON should have "collection_id"
     And the JSON at "external_file_location" should be "Grainger"
     And the JSON at "type" should be "Master Metadata"

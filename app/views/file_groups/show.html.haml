@@ -10,8 +10,6 @@
 .page_header
   %h1 File Group
   %p.lead Collection: #{link_to @collection.title, @collection}
-  - if @file_group.root_directory
-    %p= link_to 'Bit root directory', directory_path(@file_group.root_directory)
   - if @file_group.cfs_root
     %p
       CFS Root: #{link_to @file_group.cfs_root, cfs_show_path(@file_group.cfs_root)}
