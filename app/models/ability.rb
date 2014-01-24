@@ -6,8 +6,8 @@ class Ability
     can :manage, AccessSystem if medusa_admin?(user)
     #Assessments - must be done for each assessable, where the real check occurs
     [Collection, FileGroup, ExternalFileGroup, BitLevelFileGroup, ObjectLevelFileGroup, Repository].each do |klass|
-      can :delete_assessment, klass if medusa_admin?(user)
-      can :edit_assessment, klass do |collection|
+      can :destroy_assessment, klass if medusa_admin?(user)
+      can [:create_assessment, :update_assessment], klass do |collection|
         medusa_admin?(user) ||
             (collection.is_a?(klass) and repository_manager?(user, collection))
       end
