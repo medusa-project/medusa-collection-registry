@@ -47,6 +47,10 @@ def perform_action(action, user_type, resource = nil)
       [:get, self.send("new_#{base_path_method_name}")]
     when :create
       [:post, self.send("#{resource.class.to_s.underscore}s_path")]
+    when :view
+      [:get, self.send(base_path_method_name, resource)]
+    when :download
+      [:get, self.send("#{action}_#{base_path_method_name}", resource)]
     else
       raise "Unexpected action"
   end

@@ -1,8 +1,10 @@
 class AttachmentsController < ApplicationController
 
+  before_filter :require_logged_in
   before_filter :find_attachment_and_attachable, :only => [:destroy, :show, :edit, :update,:download]
 
   def destroy
+    authorize! :destroy_attachment, @attachable
     @attachment.destroy
     redirect_to @attachable
   end
@@ -12,10 +14,11 @@ class AttachmentsController < ApplicationController
   end
 
   def edit
-
+    authorize! :update_attachment, @attachable
   end
 
   def update
+    authorize! :update_attachment, @attachable
     #we should not need to set description sepratately. There is some issue with mass assignment, that is why this hack
     desc = params[:attachment].delete(:description)
     @attachment.description = desc
@@ -34,6 +37,7 @@ class AttachmentsController < ApplicationController
   def new
     klass = attachable_class(params)
     @attachable = klass.find(params[:attachable_id])
+    authorize! :create_attachment, @attachable
     @attachment = Attachment.new
     @attachment.author = Person.find_or_create_by(net_id: current_user.uid)
     @attachment.attachable = @attachable
@@ -42,6 +46,7 @@ class AttachmentsController < ApplicationController
   def create
     klass = attachable_class(params[:attachment])
     @attachable = klass.find(params[:attachment].delete(:attachable_id))
+    authorize! :create_attachment, @attachable
     #we should not need to set description sepratately. There is some issue with mass assignment, that is why this hack
     desc = params[:attachment].delete(:description)
     @attachment = Attachment.new(allowed_params)
@@ -67,7 +72,7 @@ class AttachmentsController < ApplicationController
       when 'Collection'
         Collection
       else
-        raise RuntimeError, 'Unrecognized attachable type'
+        raise RuntimeError, "Unrecognized attachable type #{attachable_type_name}"
     end
   end
 
