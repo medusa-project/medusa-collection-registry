@@ -1,7 +1,8 @@
 class AccessSystemsController < ApplicationController
+
+  before_filter :require_logged_in, :except => [:index, :show]
   before_filter :find_access_system, :only => [:show, :edit, :update, :destroy]
-  skip_before_filter :require_logged_in, :only => [:show, :index]
-  skip_before_filter :authorize, :only => [:show, :index]
+  before_filter :authorize, :only => [:edit, :update, :new, :create, :destroy]
 
   def index
     @access_systems = AccessSystem.all
@@ -50,4 +51,9 @@ class AccessSystemsController < ApplicationController
   def allowed_params
     params[:access_system].permit(:name)
   end
+
+  def authorize
+    authorize! :manage, (@access_system || AccessSystem)
+  end
+
 end

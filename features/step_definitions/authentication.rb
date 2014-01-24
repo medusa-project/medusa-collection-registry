@@ -6,6 +6,10 @@ end
 #  login_user
 #end
 
+Given(/^I am logged in as a medusa admin$/) do
+  login_user(:uid => 'admin')
+end
+
 Given /^I am logged in as a visitor$/ do
   login_user(:uid => 'visitor')
 end

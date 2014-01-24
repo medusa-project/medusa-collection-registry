@@ -1,8 +1,6 @@
 require 'uiuc_ldap'
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :require_logged_in
-  before_filter :authorize
   helper_method :current_user, :logged_in?
 
   protected
@@ -36,10 +34,6 @@ class ApplicationController < ActionController::Base
       session[:login_return_uri] = request.env['REQUEST_URI']
       redirect_to(login_path)
     end
-  end
-
-  def authorize
-    authorize! :manage, MedusaRails3::Application
   end
 
   rescue_from CanCan::AccessDenied do |exception|
