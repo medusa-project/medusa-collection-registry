@@ -1,0 +1,4 @@
+The tests here should reflect cases where authorization is expected to FAIL.
+
+When authorization is expected to succeed, it should be tested as part of the actual operation being
+performed in the main body of tests.

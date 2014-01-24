@@ -51,15 +51,9 @@ class ApplicationController < ActionController::Base
   #- things are still not really set up well if the call to the service fails. UiucLdap will
   #  raise an error, but then what?
   #- possibly more that I haven't thought of
-  def self.is_member_of?(group, user, domain = 'uofi')
-    permission = find_cached_permission(group, user, domain)
-    if permission
-      return permission.member
-    else
-      membership = UiucLdap.is_member_of?(group, user.uid, domain)
-      self.cache_permission(user, group, domain, membership)
-      return membership
-    end
+  def self.is_member_of?(group, user, domain = nil)
+    domain = 'uofi' if domain.blank?
+    return UiucLdap.is_member_of?(group, user.uid, domain)
   end
 
   #see if there is a cached permission that hasn't timed out. If so, return. If there is one that needs timing out

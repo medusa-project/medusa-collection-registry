@@ -46,4 +46,12 @@ class Repository < ActiveRecord::Base
     self.collections.collect { |collection| collection.all_scheduled_events }.flatten
   end
 
+  def manager?(user)
+    ApplicationController.is_member_of?(self.ldap_admin_group, user, self.ldap_admin_domain)
+  end
+
+  def repository
+    self
+  end
+
 end

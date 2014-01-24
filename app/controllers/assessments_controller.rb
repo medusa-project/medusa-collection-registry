@@ -1,9 +1,11 @@
 class AssessmentsController < ApplicationController
 
+  before_filter :require_logged_in
   before_filter :find_assessment_and_assessable, :only => [:destroy, :show, :edit, :update]
   helper :assessments
 
   def destroy
+    authorize! :delete_assessment, @assessable
     @assessment.destroy
     redirect_to @assessable
   end
@@ -13,10 +15,11 @@ class AssessmentsController < ApplicationController
   end
 
   def edit
-
+    authorize! :edit_assessment, @assessable
   end
 
   def update
+    authorize! :edit_assessment, @assessable
     if @assessment.update_attributes(allowed_params)
       redirect_to assessment_path(@assessment)
     else
@@ -27,6 +30,7 @@ class AssessmentsController < ApplicationController
   def new
     klass = assessable_class(params)
     @assessable = klass.find(params[:assessable_id])
+    authorize! :edit_assessment, @assessable
     @assessment = Assessment.new
     @assessment.author = Person.find_or_create_by(net_id: current_user.uid)
     @assessment.assessable = @assessable
@@ -35,6 +39,7 @@ class AssessmentsController < ApplicationController
   def create
     klass = assessable_class(params[:assessment])
     @assessable = klass.find(params[:assessment].delete(:assessable_id))
+    authorize! :edit_assessment, @assessable
     @assessment = @assessable.assessments.build(allowed_params)
     if @assessment.save
       redirect_to assessment_path(@assessment)
@@ -60,7 +65,7 @@ class AssessmentsController < ApplicationController
       when 'Repository'
         Repository
       else
-        raise RuntimeError, 'Unrecognized assessable type'
+        raise RuntimeError, "Unrecognized assessable type #{assessable_type_name}"
     end
   end
 

@@ -33,6 +33,7 @@ module UiucLdap
 
   if Rails.env == 'production'
     def is_member_of?(group, net_id, domain=nil)
+      return false if group.blank?
       is_member_of_ldap_group?(group, net_id, domain)
     end
   else
@@ -42,7 +43,8 @@ module UiucLdap
     #otherwise member iff the part of the net_id preceding '@' (recall Omniauth dev mode uses email as uid)
     #includes the group when both are downcased and any spaces in the group converted to '-'
     def is_member_of?(group, net_id, domain=nil)
-      return true if net_id.match(/admin/)
+      return false if group.blank?
+      return true if net_id.match(/admin/) and group == 'Library Medusa Admins'
       return false if net_id.match(/visitor/)
       return net_id.split('@').first.downcase.match(group.downcase.gsub(' ', '-'))
     end

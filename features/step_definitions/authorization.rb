@@ -32,6 +32,7 @@ Then /^trying to do (.*) with the (.*) collection as (.*) should (.*)$/ do |acti
   check_result(result)
 end
 
+
 def perform_action(action, user_type, resource = nil)
   rack_login(user_type)
   base_path_method_name = "#{resource.class.to_s.underscore}_path"
@@ -59,6 +60,8 @@ def rack_login(user_type)
       #do nothing, not logged in
     when 'a visitor'
       post '/auth/developer/callback', {name: 'visitor', email: 'visitor'}
+    when 'a manager'
+      post '/auth/developer/callback', {name: 'manager', email: 'manager'}
     when /ldap user (.*)/
       post '/auth/developer/callback', {name: $1, email: $1}
     else
@@ -73,7 +76,6 @@ def check_result(expected_result)
       assert last_response.location.match(/#{login_path}$/)
     when 'redirect to unauthorized'
       assert last_response.redirect?
-      x = last_response
       assert last_response.location.match(/#{unauthorized_path}$/)
     when 'succeed'
       assert last_response.ok?

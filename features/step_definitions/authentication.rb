@@ -18,6 +18,10 @@ Given /^I am logged in as an admin$/ do
   login_user(:uid => 'admin')
 end
 
+Given /^I am logged in as a manager$/ do
+  login_user(:uid => 'manager')
+end
+
 Given /^I am not logged in$/ do
   #nothing - this is the default state
 end

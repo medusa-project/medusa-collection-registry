@@ -101,4 +101,8 @@ class FileGroup < ActiveRecord::Base
     self.source_file_group_joins.where(:source_file_group_id => file_group.id).first.try(:note)
   end
 
+  def repository
+    self.collection.repository
+  end
+
 end
