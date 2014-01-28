@@ -35,6 +35,9 @@ class Ability
     can :update, RedFlag do |red_flag|
       repository_manager?(user, red_flag)
     end
+    can :update, Repository do |repository|
+      repository_manager?(user, repository)
+    end
   end
 
 

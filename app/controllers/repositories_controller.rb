@@ -1,14 +1,15 @@
 class RepositoriesController < ApplicationController
 
+  before_filter :require_logged_in
   before_filter :find_repository, :only => [:show, :edit, :update, :destroy, :red_flags, :update_ldap_admin]
-  skip_before_filter :require_logged_in, :only => [:show, :index]
-  skip_before_filter :authorize, :only => [:show, :index]
 
   def new
+    authorize! :create, Repository
     @repository = Repository.new
   end
 
   def create
+    authorize! :create, Repository
     @repository = Repository.new(allowed_params)
     if @repository.save
       redirect_to repository_path(@repository), notice: 'Repository was successfully created.'
@@ -27,10 +28,11 @@ class RepositoriesController < ApplicationController
   end
 
   def edit
-
+    authorize! :update, @repository
   end
 
   def update
+    authorize! :update, @repository
     if @repository.update_attributes(allowed_params)
       redirect_to repository_path(@repository), notice: 'Repository was successfully updated.'
     else
@@ -39,6 +41,7 @@ class RepositoriesController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, @repository
     @repository.destroy
     redirect_to repositories_path
   end

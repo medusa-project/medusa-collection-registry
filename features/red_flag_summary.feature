@@ -88,3 +88,19 @@ Feature: Red Flag Summary
     Then I should see a table of red flags
     And I should see all of:
       | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals | Repository |
+
+  Scenario: View red flags for repository as a manager
+    Given I am logged in as a manager
+    When I view the repository titled 'Animals'
+    And I click on 'Red Flags'
+    Then I should see a table of red flags
+    And I should see all of:
+      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals | Repository |
+
+  Scenario: View red flags for repository as a visitor
+    Given I am logged in as a visitor
+    When I view the repository titled 'Animals'
+    And I click on 'Red Flags'
+    Then I should see a table of red flags
+    And I should see all of:
+      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals | Repository |
