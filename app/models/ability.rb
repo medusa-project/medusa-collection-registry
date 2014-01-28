@@ -32,6 +32,9 @@ class Ability
         repository_manager?(user, file_group)
       end
     end
+    can :update, RedFlag do |red_flag|
+      repository_manager?(user, red_flag)
+    end
   end
 
 

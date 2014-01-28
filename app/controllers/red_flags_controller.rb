@@ -1,14 +1,17 @@
 class RedFlagsController < ApplicationController
 
+  before_filter :require_logged_in
   before_filter :find_red_flag, :only => [:show, :edit, :update, :unflag]
 
   def show
   end
 
   def edit
+    authorize! :update, @red_flag
   end
 
   def update
+    authorize! :update, @red_flag
     if @red_flag.update_attributes(allowed_params)
       redirect_to red_flag_path(@red_flag)
     else
@@ -17,6 +20,7 @@ class RedFlagsController < ApplicationController
   end
 
   def unflag
+    authorize! :update, @red_flag
     @red_flag.unflag!
     if request.xhr?
       respond_to {|format| format.js}

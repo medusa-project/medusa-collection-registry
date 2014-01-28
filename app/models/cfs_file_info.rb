@@ -31,4 +31,12 @@ class CfsFileInfo < ActiveRecord::Base
     self.path
   end
 
+  def file_group
+    FileGroup.where('cfs_root IS NOT NULL').where("? LIKE cfs_root || ?", self.path, "/%").first
+  end
+
+  def repository
+    self.file_group.repository
+  end
+
 end

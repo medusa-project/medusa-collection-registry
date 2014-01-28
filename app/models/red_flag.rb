@@ -26,4 +26,8 @@ class RedFlag < ActiveRecord::Base
     self.save!
   end
 
+  def repository
+    self.red_flaggable.repository
+  end
+
 end
