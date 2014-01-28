@@ -18,7 +18,7 @@ Feature: Virus scans authorization
     And I view the collection titled 'Dogs'
     And I click on 'Run' in the virus-scan actions
 
-  Scenario:
+  Scenario: Enforce permissions
     Given I am not logged in
     When I view the most recent virus scan
     Then I should be on the login page
