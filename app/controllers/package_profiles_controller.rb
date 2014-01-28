@@ -1,7 +1,7 @@
 class PackageProfilesController < ApplicationController
+
   before_filter :find_package_profile, :only => [:show, :edit, :update, :destroy]
-  skip_before_filter :require_logged_in, :only => [:show, :index]
-  skip_before_filter :authorize, :only => [:show, :index]
+  before_filter :require_logged_in, :except => [:index]
 
   def show
 
@@ -12,10 +12,11 @@ class PackageProfilesController < ApplicationController
   end
 
   def edit
-
+    authorize! :update, @package_profile
   end
 
   def update
+    authorize! :update, @package_profile
     if @package_profile.update_attributes(allowed_params)
       redirect_to @package_profile
     else
@@ -24,10 +25,12 @@ class PackageProfilesController < ApplicationController
   end
 
   def new
+    authorize! :create, PackageProfile
     @package_profile = PackageProfile.new
   end
 
   def create
+    authorize! :create, PackageProfile
     @package_profile = PackageProfile.new(allowed_params)
     if @package_profile.save
       redirect_to @package_profile
@@ -37,6 +40,7 @@ class PackageProfilesController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, @package_profile
     @package_profile.destroy
     redirect_to package_profiles_path
   end
