@@ -32,6 +32,26 @@ Then /^trying to do (.*) with the (.*) collection as (.*) should (.*)$/ do |acti
   check_result(result)
 end
 
+Then(/^deny object permission on the (.*) with (.*) '(.*)' to users for action with redirection:$/) do |resource_type, unique_field, field_value, table|
+  table.raw.each do |user_types, actions, redirection_type|
+    user_types.split(',').each do |user_type|
+      actions.split(',').each do |action|
+        step "trying to #{action.strip} the #{resource_type} with #{unique_field} '#{field_value}' as a #{user_type.strip} should redirect to #{redirection_type}"
+      end
+    end
+  end
+end
+
+And(/^deny permission on the (.*) collection to users for action with redirection:$/) do |resource_type, table|
+  table.raw.each do |user_types, actions, redirection_type|
+    user_types.split(',').each do |user_type|
+      actions.split(',').each do |action|
+        step "trying to do #{action.strip} with the #{resource_type} collection as a #{user_type.strip} should redirect to #{redirection_type}"
+      end
+    end
+  end
+end
+
 
 def perform_action(action, user_type, resource = nil)
   rack_login(user_type)
@@ -49,6 +69,8 @@ def perform_action(action, user_type, resource = nil)
       [:post, self.send("#{resource.class.to_s.underscore}s_path")]
     when :view
       [:get, self.send(base_path_method_name, resource)]
+    when :view_index
+      [:get, self.send("#{resource.class.to_s.underscore}s_path")]
     else
       method, act = parse_action(action)
       if resource.new_record?
@@ -72,7 +94,7 @@ end
 def rack_login(user_type)
   case user_type
     when 'a public user'
-      #do nothing, not logged in
+      post '/logout'
     when 'a visitor'
       post '/auth/developer/callback', {name: 'visitor', email: 'visitor'}
     when 'a manager'
@@ -88,9 +110,12 @@ def check_result(expected_result)
   case expected_result
     when 'redirect to authentication'
       assert last_response.redirect?
+      x = last_response.location
+      y = login_path
       assert last_response.location.match(/#{login_path}$/)
     when 'redirect to unauthorized'
       assert last_response.redirect?
+      x = last_response.location
       assert last_response.location.match(/#{unauthorized_path}$/)
     when 'succeed'
       assert last_response.ok?

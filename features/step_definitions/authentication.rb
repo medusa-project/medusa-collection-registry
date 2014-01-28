@@ -28,7 +28,7 @@ Given /^I relogin as (.*)$/ do |login_type|
 end
 
 Given /^I am not logged in$/ do
-  #nothing - this is the default state
+  visit '/logout'
 end
 
 Then /^I should be on the login page$/ do
