@@ -1,8 +1,7 @@
 class ProducersController < ApplicationController
 
   before_filter :find_producer, :only => [:show, :destroy, :edit, :update]
-  skip_before_filter :require_logged_in, :only => [:show, :index]
-  skip_before_filter :authorize, :only => [:show, :index]
+  before_filter :require_logged_in
 
   def index
     @producers = Producer.all
@@ -13,6 +12,7 @@ class ProducersController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, @producer
     if @producer.destroy
       redirect_to producers_path
     else
@@ -21,10 +21,12 @@ class ProducersController < ApplicationController
   end
 
   def new
+    authorize! :create, Producer
     @producer = Producer.new
   end
 
   def create
+    authorize! :create, Producer
     @producer = Producer.new(allowed_params)
     if @producer.save
       redirect_to producer_path(@producer)
@@ -34,10 +36,11 @@ class ProducersController < ApplicationController
   end
 
   def edit
-
+    authorize! :update, Producer
   end
 
   def update
+    authorize! :update, Producer
     if @producer.update_attributes(allowed_params)
       redirect_to producer_path(@producer)
     else

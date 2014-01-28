@@ -39,7 +39,7 @@ def perform_action(action, user_type, resource = nil)
   verb, url = case action.to_sym
     when :update
       [:put, self.send(base_path_method_name, resource)]
-    when :delete
+    when :delete, :destroy
       [:delete, self.send(base_path_method_name, resource)]
     when :edit
       [:get, self.send("edit_#{base_path_method_name}", resource)]
