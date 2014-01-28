@@ -8,11 +8,11 @@ Feature: Events authorization
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | summary          | provenance_note     | name   | staged_file_location |
-      | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   |
+      | name   |
+      | images |
 
   Scenario: Public user tries to create event for file group
-    Then PENDING
+    Then a public user is unauthorized to create an event for the file group named 'images'
 
   Scenario: Visitor tries to create event for file group
-    Then PENDING
+    Then a visitor is unauthorized to create an event for the file group named 'images'

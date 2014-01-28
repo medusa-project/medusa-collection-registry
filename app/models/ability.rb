@@ -20,6 +20,12 @@ class Ability
     can [:update, :create], Collection do |collection|
       repository_manager?(user, collection)
     end
+    #Events - must be done for each eventable, where the real check occurs
+    [FileGroup, BitLevelFileGroup, ObjectLevelFileGroup, ExternalFileGroup].each do |klass|
+      can :create_event, klass do |eventable|
+        repository_manager?(user, eventable)
+      end
+    end
   end
 
   def medusa_admin?(user)

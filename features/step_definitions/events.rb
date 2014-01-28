@@ -30,3 +30,14 @@ And /^I should see the events table$/ do
   page.should have_selector('table#events')
 end
 
+Then /^a (.*) is unauthorized to create an event for the file group named '(.*)'$/ do |user_type, name|
+  if user_type == 'visitor'
+      rack_login('a visitor')
+      expected_path = unauthorized_path
+    else
+      expected_path = login_path
+  end
+  post events_path(:eventable_type => 'FileGroup', :eventable_id => FileGroup.find_by(:name => name))
+  assert last_response.redirect?
+  assert last_response.location.match(/#{expected_path}$/)
+end
