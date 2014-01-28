@@ -33,12 +33,8 @@ Then /^trying to do (.*) with the (.*) collection as (.*) should (.*)$/ do |acti
 end
 
 Then(/^deny object permission on the (.*) with (.*) '(.*)' to users for action with redirection:$/) do |resource_type, unique_field, field_value, table|
-  table.raw.each do |user_types, actions, redirection_type|
-    user_types.split(',').each do |user_type|
-      actions.split(',').each do |action|
-        step "trying to #{action.strip} the #{resource_type} with #{unique_field} '#{field_value}' as a #{user_type.strip} should redirect to #{redirection_type}"
-      end
-    end
+  with_user_action_result_table(table) do |user_type, action, redirection_type|
+    step "trying to #{action.strip} the #{resource_type} with #{unique_field} '#{field_value}' as a #{user_type.strip} should redirect to #{redirection_type}"
   end
 end
 
@@ -52,6 +48,20 @@ And(/^deny permission on the (.*) collection to users for action with redirectio
   end
 end
 
+def with_user_action_result_table(table)
+  table.raw.each do |user_types, actions, redirection_type|
+    user_types.split(',').each do |user_type|
+      actions.split(',').each do |raw_action|
+        action = if raw_action.match(/(.*)\((.*)\)/)
+          "#{$1} via #{$2}"
+        else
+          raw_action
+        end
+        yield user_type, action, redirection_type
+      end
+    end
+  end
+end
 
 def perform_action(action, user_type, resource = nil)
   rack_login(user_type)

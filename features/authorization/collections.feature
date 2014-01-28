@@ -8,45 +8,14 @@ Feature: Collection authorization
       | title | start_date | end_date   | published | ongoing | description |
       | dogs  | 2010-01-01 | 2012-02-02 | true      | true    | Dog stuff   |
 
-  Scenario: View collection as a public user
-    Then trying to view the collection with title 'dogs' as a public user should redirect to authentication
-
-  Scenario: View collection index as a public user
-    When I go to the collection index page
-    Then I should be on the login page
-
-  Scenario: Edit collection as a public user
-    Then trying to edit the collection with title 'dogs' as a public user should redirect to authentication
-
-  Scenario: Update collection as a public user
-    Then trying to update the collection with title 'dogs' as a public user should redirect to authentication
-
-  Scenario: Edit collection as a visitor
-    Then trying to edit the collection with title 'dogs' as a visitor should redirect to unauthorized
-
-  Scenario: Update collection as a visitor
-    Then trying to update the collection with title 'dogs' as a visitor should redirect to unauthorized
-
-  Scenario: Start new collection as public user
-    Then trying to do new with the collection collection as a public user should redirect to authentication
-
-  Scenario: Create new collection as public user
-    Then trying to do create with the collection collection as a public user should redirect to authentication
-
-  Scenario: Start new collection as visitor
-    Then trying to do new with the collection collection as a visitor should redirect to unauthorized
-
-  Scenario: Create new collection as visitor
-    Then trying to do create with the collection collection as a visitor should redirect to unauthorized
-
-  Scenario: Delete collection as a public user
-    Then trying to delete the collection with title 'dogs' as a public user should redirect to authentication
-
-  Scenario: Delete collection as a visitor
-    Then trying to delete the collection with title 'dogs' as a visitor should redirect to unauthorized
-
-  Scenario: Delete collection as a manager
-    Then trying to delete the collection with title 'dogs' as a manager should redirect to unauthorized
+  Scenario: Enforce permissions
+    Then deny object permission on the collection with title 'dogs' to users for action with redirection:
+      | public user | view, edit, update, delete, events, red_flags | authentication |
+      | visitor     | edit, update, delete        | unauthorized   |
+      | manager     | delete        | unauthorized   |
+    And deny permission on the collection collection to users for action with redirection:
+      | public user | view_index, new, create | authentication |
+      |visitor      |new, create              |unauthorized    |
 
   Scenario: View access system index for a collection as a public user
     Given The access system named 'DSpace' exists
@@ -59,9 +28,3 @@ Feature: Collection authorization
     When I go to the package profile index page
     And I click on 'Profile'
     Then I should be on the login page
-
-  Scenario: View red flags as a public user
-    Then trying to events the collection with title 'dogs' as a public user should redirect to authentication
-
-  Scenario: View events as a public user
-    Then trying to red_flags the collection with title 'dogs' as a public user should redirect to authentication
