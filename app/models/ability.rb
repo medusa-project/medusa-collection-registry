@@ -26,7 +26,14 @@ class Ability
         repository_manager?(user, eventable)
       end
     end
+    #File groups - do for all subclasses, though I'm not sure this is strictly necessary
+    [FileGroup, BitLevelFileGroup, ObjectLevelFileGroup, ExternalFileGroup].each do |klass|
+      can [:update, :create, :create_cfs_fits, :create_virus_scan], klass do |file_group|
+        repository_manager?(user, file_group)
+      end
+    end
   end
+
 
   def medusa_admin?(user)
     ApplicationController.is_member_of?('Library Medusa Admins', user, 'uofi')

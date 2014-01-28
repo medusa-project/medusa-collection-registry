@@ -50,14 +50,23 @@ def perform_action(action, user_type, resource = nil)
     when :view
       [:get, self.send(base_path_method_name, resource)]
     else
+      method, act = parse_action(action)
       if resource.new_record?
-        [:get, self.send("#{action}_#{resource.class.to_s.underscore}s_path")]
+        [method, self.send("#{act}_#{resource.class.to_s.underscore}s_path")]
       else
-        [:get, self.send("#{action}_#{base_path_method_name}", resource)]
+        [method, self.send("#{act}_#{base_path_method_name}", resource)]
       end
   end
   self.send(verb, url)
 
+end
+
+def parse_action(action)
+  if action.match(/^(.*) via (.*)$/)
+    return $2, $1
+  else
+    return :get, action
+  end
 end
 
 def rack_login(user_type)

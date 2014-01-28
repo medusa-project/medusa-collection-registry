@@ -22,6 +22,13 @@ Feature: Bit Level File Group virus check
     Then the file group named 'images' should have 1 virus scan attached
     And the cfs file 'dogs/images/clam.exe' should have 1 red flags
 
+  Scenario: Run a virus check as a manager
+    Given I relogin as a manager
+    When I view the collection titled 'Dogs'
+    And I click on 'Run' in the virus-scan actions
+    Then the file group named 'images' should have 1 virus scan attached
+    And the cfs file 'dogs/images/clam.exe' should have 1 red flags
+
   Scenario: View results of a virus check
     When I view the collection titled 'Dogs'
     And I click on 'Run' in the virus-scan actions

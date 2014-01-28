@@ -4,8 +4,7 @@ Feature: Red Flag Summary
   I want to be able to view red flags at a variety of levels
 
   Background:
-    Given I am logged in as an admin
-    And the repository titled 'Animals' has collections with fields:
+    Given the repository titled 'Animals' has collections with fields:
       | title |
       | Dogs  |
       | Cats  |
@@ -34,6 +33,7 @@ Feature: Red Flag Summary
       | Bad cool text |
 
   Scenario: View red flags for file group
+    Given I am logged in as an admin
     When I view the file group named 'Toys'
     And I click on 'Red Flags'
     Then I should see a table of red flags
@@ -42,7 +42,20 @@ Feature: Red Flag Summary
     And I should see none of:
       | Bad hot picture | Bad cool text |
 
+  Scenario: View red flags for file group as a manager
+    Given I am logged in as a manager
+    When I view the file group named 'Toys'
+    And I click on 'Red Flags'
+    Then I should see a table of red flags
+
+  Scenario: View red flags for file group as a visitor
+    Given I am logged in as a visitor
+    When I view the file group named 'Toys'
+    And I click on 'Red Flags'
+    Then I should see a table of red flags
+
   Scenario: View red flags for collection
+    Given I am logged in as an admin
     When I view the collection titled 'Dogs'
     And I click on 'Red Flags'
     Then I should see a table of red flags
@@ -51,24 +64,25 @@ Feature: Red Flag Summary
     And I should not see 'Bad cool text'
 
   Scenario: View red flags for collection as a manager
-    Given I relogin as a manager
+    Given I am logged in as a manager
     When I view the collection titled 'Dogs'
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:
       | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Dogs | Collection |
     And I should not see 'Bad cool text'
-    
+
   Scenario: View red flags for collection as a visitor
-    Given I relogin as a visitor
+    Given I am logged in as a visitor
     When I view the collection titled 'Dogs'
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:
       | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Dogs | Collection |
     And I should not see 'Bad cool text'
-    
+
   Scenario: View red flags for repository
+    Given I am logged in as an admin
     When I view the repository titled 'Animals'
     And I click on 'Red Flags'
     Then I should see a table of red flags

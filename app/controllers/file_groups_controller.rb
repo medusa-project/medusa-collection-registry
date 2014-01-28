@@ -2,9 +2,7 @@ class FileGroupsController < ApplicationController
 
   before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update, :create_all_fits,
                                                            :create_cfs_fits, :create_virus_scan, :red_flags]
-  skip_before_filter :require_logged_in, :only => [:show]
-  skip_before_filter :authorize, :only => [:show]
-  around_filter :handle_related_file_groups, :only => [:update, :create]
+  before_filter :require_logged_in
   respond_to :html, :js, :json
 
   def show
@@ -12,25 +10,30 @@ class FileGroupsController < ApplicationController
     @assessments = @assessable.assessments.order('date DESC')
     respond_to do |format|
       format.html
-      format.json {render :json => show_json}
+      format.json { render :json => show_json }
     end
   end
 
   def destroy
+    authorize! :destroy, @file_group
     @file_group.destroy
     redirect_to collection_path(@collection)
   end
 
   def edit
+    authorize! :update, @file_group
     @active_tabs = params[:active_tab]
   end
 
   def update
-    handling_nested_collection_and_rights_declaration(params[:file_group]) do
-      if @file_group.update_attributes(allowed_params)
-        redirect_to @file_group
-      else
-        render 'edit'
+    authorize! :update, @file_group
+    handle_related_file_groups do
+      handling_nested_collection_and_rights_declaration(params[:file_group]) do
+        if @file_group.update_attributes(allowed_params)
+          redirect_to @file_group
+        else
+          render 'edit'
+        end
       end
     end
   end
@@ -38,24 +41,30 @@ class FileGroupsController < ApplicationController
   def new
     @collection = Collection.find(params[:collection_id])
     @file_group = FileGroup.new(:collection_id => @collection.id)
+    authorize! :create, @file_group
     @file_group.rights_declaration = @file_group.clone_collection_rights_declaration
     @related_file_group_id = params[:related_file_group_id]
   end
 
   def create
-    @collection = Collection.find(params[:file_group][:collection_id])
-    klass = determine_creation_class(params[:file_group])
-    handling_nested_collection_and_rights_declaration(allowed_params) do
-      @file_group = klass.new(allowed_params)
-      if @file_group.save
-        redirect_to @file_group
-      else
-        render 'new'
+    handle_related_file_groups do
+      @collection = Collection.find(params[:file_group][:collection_id])
+      klass = determine_creation_class(params[:file_group])
+      handling_nested_collection_and_rights_declaration(allowed_params) do
+        @file_group = klass.new(:collection => @collection)
+        authorize! :create, @file_group
+        @file_group.update_attributes(allowed_params)
+        if @file_group.save
+          redirect_to @file_group
+        else
+          render 'new'
+        end
       end
     end
   end
 
   def create_cfs_fits
+    authorize! :create_cfs_fits, @file_group
     if @file_group.cfs_root.present?
       Delayed::Job.enqueue(Job::FitsDirectoryTree.create(:path => @file_group.cfs_root), :priority => 50)
       record_event(@file_group, 'cfs_fits_performed')
@@ -65,6 +74,7 @@ class FileGroupsController < ApplicationController
   end
 
   def create_virus_scan
+    authorize! :create_virus_scan, @file_group
     if @file_group.cfs_root.present?
       @alert = "Running virus scan on cfs directory #{@file_group.cfs_root}."
       Delayed::Job.enqueue(Job::VirusScan.create(:file_group_id => @file_group.id), :priority => 20)

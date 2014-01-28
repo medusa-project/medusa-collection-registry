@@ -131,6 +131,21 @@ And(/^the file group named '(.*)' has an assessment named '(.*)'$/) do |file_gro
   FactoryGirl.create(:assessment, :name => assessment_name, :assessable_id => file_group.id, :assessable_type => 'FileGroup')
 end
 
+Then(/^a visitor is unauthorized to start a file group for the collection titled '(.*)'$/) do |title|
+  rack_login('a visitor')
+  get new_file_group_path(:collection_id => Collection.find_by(:title => title).id)
+  assert last_response.redirect?
+  assert last_response.location.match(/#{unauthorized_path}$/)
+end
+
+Then(/^a visitor is unauthorized to create a file group for the collection titled '(.*)'$/) do |title|
+  rack_login('a visitor')
+  post file_groups_path(:file_group => {:collection_id => Collection.find_by(:title => title).id,
+                                        :storage_level => 'bit-level store'})
+  assert last_response.redirect?
+  assert last_response.location.match(/#{unauthorized_path}$/)
+end
+
 private
 
 def find_file_group(collection_title, location)
