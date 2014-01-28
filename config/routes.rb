@@ -85,6 +85,7 @@ MedusaRails3::Application.routes.draw do
   match '/login', to: 'sessions#new', as: :login, :via => [:get, :post]
   match '/logout', to: 'sessions#destroy', as: :logout, :via => [:get, :post]
   match '/unauthorized', to: 'sessions#unauthorized', as: :unauthorized, :via => [:get, :post]
+  match '/unauthorized_net_id', to: 'sessions#unauthorized_net_id', as: :unauthorized_net_id, :via => [:get, :post]
   match '/static/:page', to: 'static#page', as: :static, :via => [:get, :post]
   match '/dashboard', to: 'dashboard#show', as: :dashboard, :via => [:get, :post]
 

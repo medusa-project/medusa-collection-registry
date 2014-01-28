@@ -4,6 +4,10 @@ And(/^I have package profiles with fields:$/) do |table|
   end
 end
 
+Given(/^the package profile named '(.*)' exists$/) do |name|
+  FactoryGirl.create(:package_profile, :name => name)
+end
+
 When(/^I view the package profile named '(.*)'$/) do |name|
   visit package_profile_path(PackageProfile.find_by_name(name))
 end

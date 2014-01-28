@@ -66,3 +66,29 @@ Feature: Access Systems
     And I should see all of:
       | Dogs | Cats | For Access system: ContentDM |
     And I should not see 'Bats'
+
+  Scenario: View collections associated with an access system as a manager
+    Given I relogin as a manager
+    And the collection titled 'Dogs' has an access system named 'ContentDM'
+    And the collection titled 'Cats' has an access system named 'Dspace'
+    And the collection titled 'Cats' has an access system named 'ContentDM'
+    And the collection titled 'Bats' has an access system named 'Dspace'
+    When I go to the access system index page
+    And I click on 'ContentDM'
+    Then I should be on the collection index page for collections with access system 'ContentDM'
+    And I should see all of:
+      | Dogs | Cats | For Access system: ContentDM |
+    And I should not see 'Bats'
+
+  Scenario: View collections associated with an access system as a visitor
+    Given I relogin as a visitor
+    And the collection titled 'Dogs' has an access system named 'ContentDM'
+    And the collection titled 'Cats' has an access system named 'Dspace'
+    And the collection titled 'Cats' has an access system named 'ContentDM'
+    And the collection titled 'Bats' has an access system named 'Dspace'
+    When I go to the access system index page
+    And I click on 'ContentDM'
+    Then I should be on the collection index page for collections with access system 'ContentDM'
+    And I should see all of:
+      | Dogs | Cats | For Access system: ContentDM |
+    And I should not see 'Bats'

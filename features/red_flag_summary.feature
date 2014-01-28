@@ -50,6 +50,24 @@ Feature: Red Flag Summary
       | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Dogs | Collection |
     And I should not see 'Bad cool text'
 
+  Scenario: View red flags for collection as a manager
+    Given I relogin as a manager
+    When I view the collection titled 'Dogs'
+    And I click on 'Red Flags'
+    Then I should see a table of red flags
+    And I should see all of:
+      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Dogs | Collection |
+    And I should not see 'Bad cool text'
+    
+  Scenario: View red flags for collection as a visitor
+    Given I relogin as a visitor
+    When I view the collection titled 'Dogs'
+    And I click on 'Red Flags'
+    Then I should see a table of red flags
+    And I should see all of:
+      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Dogs | Collection |
+    And I should not see 'Bad cool text'
+    
   Scenario: View red flags for repository
     When I view the repository titled 'Animals'
     And I click on 'Red Flags'

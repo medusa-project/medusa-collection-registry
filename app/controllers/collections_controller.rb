@@ -1,8 +1,7 @@
 class CollectionsController < ApplicationController
 
   before_filter :find_collection_and_repository, :only => [:show, :destroy, :edit, :update, :red_flags]
-  skip_before_filter :require_logged_in, :only => [:show, :index]
-  skip_before_filter :authorize, :only => [:show, :index]
+  before_filter :require_logged_in
 
   def show
     @assessable = @collection
@@ -15,15 +14,17 @@ class CollectionsController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, @collection
     @collection.destroy
     redirect_to repository_path(@repository)
   end
 
   def edit
-
+    authorize! :update, @collection
   end
 
   def update
+    authorize! :update, @collection
     if @collection.update_attributes(allowed_params)
       redirect_to collection_path(@collection)
     else
@@ -35,11 +36,17 @@ class CollectionsController < ApplicationController
     @collection = Collection.new
     @collection.rights_declaration = RightsDeclaration.new(:rights_declarable_type => "Collection")
     @repository = Repository.find(params[:repository_id]) rescue Repository.order(:title).first
+    @collection.repository = @repository
+    authorize! :create, @collection
   end
 
   def create
-    @collection = Collection.new(allowed_params)
+    #this is a tiny bit unintuitive, but we have to do enough at the start to perform authorization
     @repository = Repository.find(params[:collection][:repository_id]) rescue Repository.order(:title).first
+    @collection = Collection.new
+    @collection.repository = @repository
+    authorize! :create, @collection
+    @collection.update_attributes(allowed_params)
     if @collection.save
       redirect_to collection_path(@collection)
     else

@@ -26,8 +26,30 @@ Feature: Collection description
     And I should see all of:
       | Stuff about dogs | File Manager | Dog files, not so orderly |
 
+  Scenario: View a collection as a manager
+    Given I relogin as a manager
+    When I view the collection titled 'dogs'
+    Then I should be on the view page for the collection titled 'dogs'
+
+  Scenario: View a collection as a visitor
+    Given I relogin as a visitor
+    When I view the collection titled 'dogs'
+    Then I should be on the view page for the collection titled 'dogs'
+
   Scenario: Edit a collection
     When I edit the collection titled 'dogs'
+    And I fill in fields:
+      | Description         | Puppy stuff          |
+      | Private description | Internal puppy stuff |
+    And I press 'Update Collection'
+    Then I should be on the view page for the collection titled 'dogs'
+    And I should see 'Puppy stuff'
+    And I should see 'Internal puppy stuff'
+    And I should not see 'Dog stuff'
+
+  Scenario: Edit a collection as a manager
+    When I relogin as a manager
+    And I edit the collection titled 'dogs'
     And I fill in fields:
       | Description         | Puppy stuff          |
       | Private description | Internal puppy stuff |
@@ -61,10 +83,34 @@ Feature: Collection description
     And The collection titled 'reptiles' should have a valid UUID
     And the repository titled 'Sample Repo' should have a collection titled 'reptiles'
 
+  Scenario: Create a new collection as a manager
+    And I relogin as a manager
+    When I start a new collection for the repository titled 'Sample Repo'
+    And I fill in fields:
+      | Title               | reptiles      |
+      | Description         | Reptile stuff |
+      | Private description | Snake farm    |
+    And I press 'Create Collection'
+    Then I should be on the view page for the collection titled 'reptiles'
+    And I should see 'Reptile stuff'
+    And I should see 'Snake farm'
+    And The collection titled 'reptiles' should have a valid UUID
+    And the repository titled 'Sample Repo' should have a collection titled 'reptiles'
+
   Scenario: Index of all collections
     When I go to the collection index page
     Then I should be on the collection index page
     And I should see a list of all collections
+
+  Scenario: Index of all collections as a manager
+    Given I relogin as a manager
+    When I go to the collection index page
+    Then I should be on the collection index page
+
+  Scenario: Index of all collections as a visitor
+    Given I relogin as a visitor
+    When I go to the collection index page
+    Then I should be on the collection index page
 
   Scenario: Navigate index to collection
     When I go to the collection index page

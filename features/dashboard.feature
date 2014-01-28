@@ -3,21 +3,26 @@ Feature: Collection Registry Dashboard
   As a librarian
   I want to have a dashboard view that shows it
 
-  Background:
-    Given I am logged in as an admin
-
   Scenario: Dashboard sections are present
+    Given I am logged in as an admin
     When I go to the dashboard
     Then The dashboard should have a storage overview section
     And The dashboard should have a running processes section
     And The dashboard should have a file statistics section
     And The dashboard should have a red flags section
 
+  Scenario: View the dashboard as a visitor
+    Given I am logged in as a visitor
+    When I go to the dashboard
+    Then I should be on the dashboard page
+
   Scenario: External storage summary table
+    Given I am logged in as an admin
     When I go to the dashboard
     Then The dashboard should have an external storage table
 
   Scenario: External storage summary
+    Given I am logged in as an admin
     Given the repository titled 'Animals' has collections with fields:
       | title |
       | Dogs  |

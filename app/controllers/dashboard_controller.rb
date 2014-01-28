@@ -1,4 +1,7 @@
 class DashboardController < ApplicationController
+
+  before_filter :require_logged_in
+
   def show
     setup_storage
     setup_external_storage

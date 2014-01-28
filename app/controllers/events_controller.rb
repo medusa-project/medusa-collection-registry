@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+
   autocomplete :user, :uid
 
   def create

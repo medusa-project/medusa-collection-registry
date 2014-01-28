@@ -1,5 +1,7 @@
 class CfsController < ApplicationController
 
+  before_filter :require_logged_in
+
   def show
     @path = params[:path] || ''
     file_system_path = cfs_file_path(@path)
