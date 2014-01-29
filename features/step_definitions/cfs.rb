@@ -61,10 +61,12 @@ When(/^I update FITS for the cfs path '(.*)'$/) do |path|
   Cfs.update_fits_for(path)
 end
 
-
 And(/^the cfs file '(.*)' should have FITS xml attached$/) do |path|
-  all = CfsFileInfo.all
   CfsFileInfo.find_by_path(path).should_not be_false
+end
+
+When(/^I view fits for the cfs file '(.*)'$/) do |path|
+  visit cfs_fits_info_path(:path => path)
 end
 
 Then(/^the file group named '(.*)' should have cfs root '(.*)'$/) do |name, path|

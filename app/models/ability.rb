@@ -17,6 +17,11 @@ class Ability
         (attachable.is_a?(klass) and repository_manager?(user, attachable))
       end
     end
+    #Cfs controller - need to see if requested path belongs to a file group managed by user
+    #The FitsRequest object is a helper for this
+    can :create_fits, FitsRequest do |request|
+      repository_manager?(user, request)
+    end
     can [:update, :create], Collection do |collection|
       repository_manager?(user, collection)
     end
@@ -46,7 +51,8 @@ class Ability
   end
 
   def repository_manager?(user, object)
-    object.repository.manager?(user)
+    repository = object.repository
+    repository and repository.manager?(user)
   end
 
 end
