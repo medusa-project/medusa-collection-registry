@@ -39,6 +39,10 @@ Given /^I logout$/ do
   visit '/logout'
 end
 
+Given(/^I provide basic authentication$/) do
+  page.driver.browser.authorize 'machine_user', 'machine_password'
+end
+
 private
 
 def login_user(opts = {})

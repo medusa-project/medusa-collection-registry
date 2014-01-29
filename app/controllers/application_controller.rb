@@ -34,6 +34,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def require_logged_in_or_basic_auth
+    unless logged_in? or basic_auth?
+      session[:login_return_uri] = request.env['REQUEST_URI']
+      redirect_to(login_path)
+    end
+  end
+
+  def basic_auth?
+    ActionController::HttpAuthentication::Basic.decode_credentials(request) == MedusaRails3::Application.medusa_config['basic_auth']
+  rescue
+    false
+  end
+
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to unauthorized_path
   end

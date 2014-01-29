@@ -8,8 +8,9 @@ Feature: JSON data about file group
       | external_file_location |
       | Grainger      |
 
-  Scenario: Fetch JSON for a collection
-    Given The file group with location 'Grainger' has file type 'Master Metadata'
+  Scenario: Fetch JSON for a collection for basic auth user
+    Given I provide basic authentication
+    And The file group with location 'Grainger' has file type 'Master Metadata'
     When I request JSON for the file group with location 'Grainger'
     Then the JSON should have "id"
     And the JSON should have "collection_id"

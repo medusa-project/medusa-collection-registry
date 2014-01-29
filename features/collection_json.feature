@@ -9,7 +9,8 @@ Feature: JSON data about collection
       | Grainger      |
       | Main Library  |
 
-  Scenario: Fetch JSON for a collection
+  Scenario: Fetch JSON for a collection for basic auth user
+    Given I provide basic authentication
     When I request JSON for the collection titled 'Dogs'
     Then the JSON should have "id"
     And the JSON should have "uuid"

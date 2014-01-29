@@ -1,6 +1,7 @@
 class CollectionsController < ApplicationController
 
-  before_filter :require_logged_in
+  before_filter :require_logged_in, :except => [:show]
+  before_filter :require_logged_in_or_basic_auth, :only => [:show]
   before_filter :find_collection_and_repository, :only => [:show, :destroy, :edit, :update, :red_flags]
 
   def show

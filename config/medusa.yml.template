@@ -3,7 +3,11 @@ development:
   #but we use that name in order to distinguish from our internal bit file stuff for now.
   cfs:
     root: /home/hading/repos/medusa-rails3/tmp/cfs-root-dev
+  #This opens a few actions to basic auth so that machine clients can use them
+  basic_auth: machine_user:machine_password
 test:
   cfs:
     root: /home/hading/repos/medusa-rails3/tmp/cfs-root-test
+  #This opens a few actions to basic auth so that machine clients can use them - the tests assume machine_user:machine_password
+  basic_auth: machine_user:machine_password
 production:
