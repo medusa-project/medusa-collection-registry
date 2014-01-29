@@ -59,10 +59,11 @@ class RepositoriesController < ApplicationController
   end
 
   def edit_ldap_admins
-
+    authorize! :update_ldap_admins, Repository
   end
 
   def update_ldap_admin
+    authorize! :update_ldap_admins, Repository
     @success = @repository.update_attributes(params[:repository].permit(:ldap_admin_domain, :ldap_admin_group))
     if request.xhr?
       respond_to { |format| format.js }
