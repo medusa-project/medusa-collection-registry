@@ -51,8 +51,30 @@ class ApplicationController < ActionController::Base
     cached_value = self.cached_ldap_value(user, group, domain)
     return cached_value unless cached_value.nil?
     #if not in cache then lookup, cache, and return
-    UiucLdap.is_member_of?(group, user.uid, domain).tap do |permitted|
+    self.internal_is_member_of?(group, user.uid, domain).tap do |permitted|
       self.cache_ldap_value(user, group, domain, permitted)
+    end
+  end
+
+  #We define this differently for production and development/test for convenience
+  if Rails.env.production?
+    def self.internal_is_member_of?(group, net_id, domain)
+      UiucLdap.is_member_of?(group, net_id, domain)
+    end
+  else
+    #To make development/test easier
+    #any net_id that matches admin is member
+    #any net_id that matches visitor is a member only of 'Library Medusa Users'
+    #any net_id that matches outsider is a member of no AD groups
+    #otherwise member iff the part of the net_id preceding '@' (recall Omniauth dev mode uses email as uid)
+    #includes the group when both are downcased and any spaces in the group converted to '-'
+    def self.internal_is_member_of?(group, net_id, domain=nil)
+      return false if group.blank?
+      return true if net_id.match(/admin/) and (group == 'Library Medusa Admins' or group == 'Library Medusa Users')
+      return true if net_id.match(/manager/) and (group == 'Library Medusa Users' or group.match(/manager/))
+      return true if net_id.match(/visitor/) and group == 'Library Medusa Users'
+      return false if net_id.match(/visitor/) or net_id.match(/outsider/)
+      return net_id.split('@').first.downcase.match(group.downcase.gsub(' ', '-'))
     end
   end
 

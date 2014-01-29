@@ -1,5 +1,6 @@
 module UiucLdap
-  class LDAPError < RuntimeError ; end ;
+  class LDAPError < RuntimeError;
+  end;
 
   module_function
 
@@ -33,27 +34,10 @@ module UiucLdap
 
 
   #Prefer not to use this directly, but through ApplicationController.is_member_of?
-  #which performs caching
-  if Rails.env == 'production'
-    def is_member_of?(group, net_id, domain=nil)
-      return false if group.blank?
-      is_member_of_ldap_group?(group, net_id, domain)
-    end
-  else
-    #To make development/test easier
-    #any net_id that matches admin is member
-    #any net_id that matches visitor is a member only of 'Library Medusa Users'
-    #any net_id that matches outsider is a member of no AD groups
-    #otherwise member iff the part of the net_id preceding '@' (recall Omniauth dev mode uses email as uid)
-    #includes the group when both are downcased and any spaces in the group converted to '-'
-    def is_member_of?(group, net_id, domain=nil)
-      return false if group.blank?
-      return true if net_id.match(/admin/) and (group == 'Library Medusa Admins' or group == 'Library Medusa Users')
-      return true if net_id.match(/manager/) and (group == 'Library Medusa Users' or group.match(/manager/))
-      return true if net_id.match(/visitor/) and group == 'Library Medusa Users'
-      return false if net_id.match(/visitor/) or net_id.match(/outsider/)
-      return net_id.split('@').first.downcase.match(group.downcase.gsub(' ', '-'))
-    end
+  #which performs caching and has provision for testing, etc.
+  def is_member_of?(group, net_id, domain=nil)
+    return false if group.blank?
+    is_member_of_ldap_group?(group, net_id, domain)
   end
 
 end
