@@ -1,7 +1,7 @@
 class PackageProfilesController < ApplicationController
 
-  before_filter :find_package_profile, :only => [:show, :edit, :update, :destroy]
   before_filter :require_logged_in, :except => [:index]
+  before_filter :find_package_profile, :only => [:show, :edit, :update, :destroy]
 
   def show
 

@@ -1,7 +1,7 @@
 class CollectionsController < ApplicationController
 
-  before_filter :find_collection_and_repository, :only => [:show, :destroy, :edit, :update, :red_flags]
   before_filter :require_logged_in
+  before_filter :find_collection_and_repository, :only => [:show, :destroy, :edit, :update, :red_flags]
 
   def show
     @assessable = @collection

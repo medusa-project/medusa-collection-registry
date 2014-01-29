@@ -31,6 +31,9 @@ module UiucLdap
     Rack::Utils.escape(string).gsub('+', '%20')
   end
 
+
+  #Prefer not to use this directly, but through ApplicationController.is_member_of?
+  #which performs caching
   if Rails.env == 'production'
     def is_member_of?(group, net_id, domain=nil)
       return false if group.blank?

@@ -1,8 +1,8 @@
 class FileGroupsController < ApplicationController
 
+  before_filter :require_logged_in
   before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update, :create_all_fits,
                                                            :create_cfs_fits, :create_virus_scan, :red_flags]
-  before_filter :require_logged_in
   respond_to :html, :js, :json
 
   def show

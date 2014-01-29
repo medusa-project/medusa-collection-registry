@@ -1,7 +1,7 @@
 class ProducersController < ApplicationController
 
-  before_filter :find_producer, :only => [:show, :destroy, :edit, :update]
   before_filter :require_logged_in
+  before_filter :find_producer, :only => [:show, :destroy, :edit, :update]
 
   def index
     @producers = Producer.all

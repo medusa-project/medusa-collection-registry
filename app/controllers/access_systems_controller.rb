@@ -2,7 +2,6 @@ class AccessSystemsController < ApplicationController
 
   before_filter :require_logged_in, :except => [:index, :show]
   before_filter :find_access_system, :only => [:show, :edit, :update, :destroy]
-  before_filter :authorize, :only => [:edit, :update, :new, :create, :destroy]
 
   def index
     @access_systems = AccessSystem.all
@@ -13,10 +12,11 @@ class AccessSystemsController < ApplicationController
   end
 
   def edit
-
+    authorize! :update, @access_system
   end
 
   def update
+    authorize! :update, @access_system
     if @access_system.update_attributes(allowed_params)
       redirect_to @access_system
     else
@@ -25,10 +25,12 @@ class AccessSystemsController < ApplicationController
   end
 
   def new
+    authorize! :create, AccessSystem
     @access_system = AccessSystem.new
   end
 
   def create
+    authorize! :create, AccessSystem
     @access_system = AccessSystem.new(allowed_params)
     if @access_system.save
       redirect_to @access_system
@@ -38,6 +40,7 @@ class AccessSystemsController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, @access_system
     @access_system.destroy
     redirect_to access_systems_path
   end
@@ -50,10 +53,6 @@ class AccessSystemsController < ApplicationController
 
   def allowed_params
     params[:access_system].permit(:name)
-  end
-
-  def authorize
-    authorize! :manage, (@access_system || AccessSystem)
   end
 
 end

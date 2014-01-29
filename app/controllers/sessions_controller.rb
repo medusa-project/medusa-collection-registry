@@ -1,7 +1,6 @@
 class SessionsController < ApplicationController
 
   skip_before_filter :require_logged_in
-  skip_before_filter :authorize
   skip_before_filter :verify_authenticity_token
 
   def new
@@ -19,6 +18,7 @@ class SessionsController < ApplicationController
       return_url = clear_and_return_return_path
       user = User.find_or_create_by(uid: auth_hash[:uid])
       if ApplicationController.is_member_of?("Library Medusa Users", user, "uofi")
+        reset_ldap_cache(user)
         set_current_user(user)
         #We can access other information via auth_hash[:extra][:raw_info][key]
         #where key is a string from config/shibboleth.yml (and of course these
@@ -53,6 +53,7 @@ class SessionsController < ApplicationController
   def clear_and_return_return_path
     return_url = session[:login_return_uri] || session[:login_return_referer] || root_path
     session[:login_return_uri] = session[:login_return_referer] = nil
+    reset_ldap_cache(current_user)
     reset_session
     return_url
   end

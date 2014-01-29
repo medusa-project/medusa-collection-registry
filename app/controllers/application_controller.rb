@@ -43,15 +43,43 @@ class ApplicationController < ActionController::Base
   end
 
 
-  #TODO Possible problems:
-  #- changes in LDAP won't be picked up right away if user already has session
-  # (so must restart server or browser to ensure that they are or allow timeouts to take effect)
-  #- things are still not really set up well if the call to the service fails. UiucLdap will
-  #  raise an error, but then what?
-  #- possibly more that I haven't thought of
+  #We cache the results in sessions. Since these are stored server
+  #side I don't think there will be a problem.
   def self.is_member_of?(group, user, domain = nil)
     domain = 'uofi' if domain.blank?
-    return UiucLdap.is_member_of?(group, user.uid, domain)
+    #check cache
+    cached_value = self.cached_ldap_value(user, group, domain)
+    return cached_value unless cached_value.nil?
+    #if not in cache then lookup, cache, and return
+    UiucLdap.is_member_of?(group, user.uid, domain).tap do |permitted|
+      self.cache_ldap_value(user, group, domain, permitted)
+    end
+  end
+
+  def reset_ldap_cache(user)
+    user ||= current_user
+    if user
+      Rails.cache.write(ldap_cache_key(user), Hash.new)
+    end
+  end
+
+  def self.cached_ldap_value(user, group, domain)
+    hash = Rails.cache.read(ldap_cache_key(user)) || Hash.new
+    hash[[group, domain]]
+  end
+
+  def self.cache_ldap_value(user, group, domain, permitted)
+    hash = Rails.cache.read(ldap_cache_key(user)) || Hash.new
+    hash[[group, domain]] = permitted
+    Rails.cache.write(ldap_cache_key(user), hash, expires_in: 2.hours)
+  end
+
+  def self.ldap_cache_key(user)
+    "ldap_#{user.id}"
+  end
+
+  def ldap_cache_key(user)
+    self.class.ldap_cache_key(user)
   end
 
 end
