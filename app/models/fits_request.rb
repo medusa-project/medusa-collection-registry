@@ -1,3 +1,5 @@
+#This is just a helper to mediate authorization for the
+#CfsController
 class FitsRequest < Object
   attr_accessor :path
 
