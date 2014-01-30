@@ -47,7 +47,7 @@ class Ability
 
 
   def medusa_admin?(user)
-    ApplicationController.is_member_of?('Library Medusa Admins', user, 'uofi')
+    ApplicationController.is_ad_admin?(user)
   end
 
   def repository_manager?(user, object)

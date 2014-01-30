@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
     if auth_hash and auth_hash[:uid] then
       return_url = clear_and_return_return_path
       user = User.find_or_create_by(uid: auth_hash[:uid])
-      if ApplicationController.is_member_of?("Library Medusa Users", user, "uofi")
+      if ApplicationController.is_ad_user?(user)
         reset_ldap_cache(user)
         set_current_user(user)
         #We can access other information via auth_hash[:extra][:raw_info][key]
