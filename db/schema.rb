@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140123184422) do
+ActiveRecord::Schema.define(version: 20140130171207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,18 +71,6 @@ ActiveRecord::Schema.define(version: 20140123184422) do
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
-
-  create_table "cache_ldap_groups", force: true do |t|
-    t.integer  "user_id"
-    t.string   "group"
-    t.string   "domain"
-    t.boolean  "member"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "cache_ldap_groups", ["created_at"], name: "index_cache_ldap_groups_on_created_at", using: :btree
-  add_index "cache_ldap_groups", ["user_id"], name: "index_cache_ldap_groups_on_user_id", using: :btree
 
   create_table "cfs_file_infos", force: true do |t|
     t.string   "path"
