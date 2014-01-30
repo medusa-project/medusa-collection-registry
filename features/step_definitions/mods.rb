@@ -11,7 +11,6 @@ Then /^I should see MODS fields by css:$/ do |table|
     selector = row.first
     text = row.last
     nodes = doc.css("mods #{selector}", doc.namespaces)
-     puts "checking #{selector}"
      nodes.detect {|node| node.text == text}.should be_true
   end
 end
