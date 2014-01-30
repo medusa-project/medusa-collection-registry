@@ -102,6 +102,10 @@ And(/^the repository titled '(.*)' should have (\d+) assessments$/) do |title, c
   Repository.find_by_title(title).assessments.count.to_s.should == count
 end
 
+Then(/^I should be editing repository administration groups$/) do
+  expect(page.current_path).to eq(edit_ldap_admins_repositories_path)
+end
+
 #break down number into summands of powers of two - just a convenient way to
 #get some different sizes from a single number for the above step
 def decompose_size(size, current = 1, acc = [])

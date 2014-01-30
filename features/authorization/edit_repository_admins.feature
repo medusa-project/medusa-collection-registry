@@ -27,3 +27,9 @@ Feature: Edit repository admins
     When I edit repository administration groups
     Then I should be redirected to the unauthorized page
     And I should see 'You are not authorized to view the requested page.'
+
+  Scenario: Navigate from repository index to edit ldap groups as an admin
+    Given I am logged in as an admin
+    When I go to the repository index page
+    And I click on 'Edit Repository Admins'
+    Then I should be editing repository administration groups
