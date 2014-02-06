@@ -8,15 +8,15 @@ Feature: File Group description
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | summary          | provenance_note     | name   | staged_file_location |
-      | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   |
-      | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | staging_dir/texts    |
+      | external_file_location | file_format | total_file_size | total_files | summary          | provenance_note     | name   | staged_file_location | external_id              |
+      | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   | external-main-library-id |
+      | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | staging_dir/texts    |                          |
 
   Scenario: View a file group
     Given I am logged in as an admin
     When I view the file group with location 'Main Library' for the collection titled 'Dogs'
     Then I should see all of:
-      | image/jpeg | 1200 | main summary | main provenance | images | external | staging_dir/images |
+      | image/jpeg | 1200 | main summary | main provenance | images | external | staging_dir/images | external-main-library-id |
 
   Scenario: View a file group as a manager
     Given I am logged in as a manager
@@ -37,18 +37,19 @@ Feature: File Group description
       | Provenance Note      | Changed provenance |
       | Name                 | pictures           |
       | Staged file location | staging_dir/pics   |
+      | External ID          | external-dogs-id   |
     And I press 'Update File group'
     Then I should be on the view page for the file group with location 'Main Library' for the collection titled 'Dogs'
     And I should see all of:
-      | 1300 | Changed summary | Changed provenance | pictures | staging_dir/pics |
+      | 1300 | Changed summary | Changed provenance | pictures | staging_dir/pics | external-dogs-id |
     And I should see none of:
-      | 1200 | main summary | main provenance | images | staging_dir/pictures |
+      | 1200 | main summary | main provenance | images | staging_dir/pictures | external-main-library-id |
 
   Scenario: Edit a file group as a manager
     Given I am logged in as a manager
     When I edit the file group with location 'Main Library' for the collection titled 'Dogs'
     And I fill in fields:
-      | Total files          | 1300               |
+      | Total files | 1300 |
     And I press 'Update File group'
     Then I should be on the view page for the file group with location 'Main Library' for the collection titled 'Dogs'
     And I should see all of:

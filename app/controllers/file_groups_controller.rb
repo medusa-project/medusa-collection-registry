@@ -142,7 +142,7 @@ class FileGroupsController < ApplicationController
   def allowed_params
     params[:file_group].permit(:collection_id, :external_file_location,
                                :producer_id, :file_type_id, :summary, :provenance_note,
-                               :name, :staged_file_location, :total_file_size,
+                               :name, :external_id, :staged_file_location, :total_file_size,
                                :file_format, :total_files, :related_file_group_ids, :cfs_root,
                                :package_profile_id)
   end

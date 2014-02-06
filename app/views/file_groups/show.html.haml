@@ -19,6 +19,7 @@
   .span4
     .well
       = show_field @file_group, :name
+      = show_field @file_group, :external_id, 'External ID'
       = show_field @file_group, :id
       = show_field @file_group, :storage_level
       = show_value((link_to(@file_group.producer.title, @file_group.producer) if @file_group.producer), 'Production Unit')

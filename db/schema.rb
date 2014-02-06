@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140130171207) do
+ActiveRecord::Schema.define(version: 20140206195254) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,9 +116,11 @@ ActiveRecord::Schema.define(version: 20140130171207) do
     t.text     "private_description_html"
     t.string   "uuid"
     t.text     "file_package_summary_html"
+    t.string   "external_id"
   end
 
   add_index "collections", ["contact_id"], name: "index_collections_on_contact_id", using: :btree
+  add_index "collections", ["external_id"], name: "index_collections_on_external_id", using: :btree
   add_index "collections", ["repository_id"], name: "index_collections_on_repository_id", using: :btree
   add_index "collections", ["uuid"], name: "index_collections_on_uuid", using: :btree
 
@@ -169,9 +171,11 @@ ActiveRecord::Schema.define(version: 20140130171207) do
     t.string   "cfs_root"
     t.string   "type"
     t.integer  "package_profile_id"
+    t.string   "external_id"
   end
 
   add_index "file_groups", ["cfs_root"], name: "index_file_groups_on_cfs_root", unique: true, using: :btree
+  add_index "file_groups", ["external_id"], name: "index_file_groups_on_external_id", using: :btree
   add_index "file_groups", ["file_type_id"], name: "index_file_groups_on_file_type_id", using: :btree
   add_index "file_groups", ["package_profile_id"], name: "index_file_groups_on_package_profile_id", using: :btree
   add_index "file_groups", ["type"], name: "index_file_groups_on_type", using: :btree
