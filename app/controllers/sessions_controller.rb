@@ -16,8 +16,8 @@ class SessionsController < ApplicationController
     if auth_hash and auth_hash[:uid] then
       return_url = clear_and_return_return_path
       user = User.find_or_create_by(uid: auth_hash[:uid])
+      reset_ldap_cache(user)
       if ApplicationController.is_ad_user?(user)
-        reset_ldap_cache(user)
         set_current_user(user)
         #We can access other information via auth_hash[:extra][:raw_info][key]
         #where key is a string from config/shibboleth.yml (and of course these
