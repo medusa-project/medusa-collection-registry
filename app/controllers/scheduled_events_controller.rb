@@ -24,7 +24,7 @@ class ScheduledEventsController < ApplicationController
 
   def complete
     authorize! :update, @scheduled_event
-    @scheduled_event.be_complete
+    @scheduled_event.be_complete(current_user)
     redirect_to params[:return_to]
   end
 
