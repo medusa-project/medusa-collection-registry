@@ -39,7 +39,8 @@ ActiveRecord::Base.transaction do
   end
 
 #PreservationPriorities
-  {0.0 => 'migrated', 1.0 => 'low', 2.0 => 'medium', 3.0 => 'high', 4.0 => 'urgent'}.each do |priority, name|
+  PreservationPriority.where(:name => 'migrated').destroy_all
+  {0.0 => 'ingested', 1.0 => 'low', 2.0 => 'medium', 3.0 => 'high', 4.0 => 'urgent'}.each do |priority, name|
     PreservationPriority.find_or_create_by(:name => name, :priority => priority)
   end
 
