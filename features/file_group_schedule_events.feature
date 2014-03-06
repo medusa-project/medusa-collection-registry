@@ -44,7 +44,7 @@ Feature: Schedule events for a file group
     Then the file group named 'Dogs' should have a scheduled event with fields:
       | key             | actor_netid | action_date | note         | state     |
       | external_delete | joe         | 2010-01-02  | Dog deletion | scheduled |
-    And I should be on the view page for the file group named 'Dogs'
+    And I should be on the view page for the collection titled 'Animals'
     And 'joe@illinois.edu' should receive an email with subject 'Medusa scheduled event reminder'
 
 

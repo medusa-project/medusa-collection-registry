@@ -11,7 +11,7 @@ class EventsController < ApplicationController
     if request.xhr?
       respond_to {|format| format.js}
     else
-      redirect_to eventable
+      redirect_to :back
     end
   end
 
