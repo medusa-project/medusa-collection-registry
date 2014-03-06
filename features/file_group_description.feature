@@ -11,6 +11,9 @@ Feature: File Group description
       | external_file_location | file_format | total_file_size | total_files | summary          | provenance_note     | name   | staged_file_location | external_id              |
       | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   | external-main-library-id |
       | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | staging_dir/texts    |                          |
+    And I have producers with fields:
+      | title    |
+      | Scanning |
 
   Scenario: View a file group
     Given I am logged in as an admin
@@ -92,6 +95,7 @@ Feature: File Group description
       | Total file size        | 22            |
       | Total files            | 333           |
       | Name                   | My file group |
+    And I select 'Scanning' from 'Producer'
     And I press 'Create File group'
     Then I should be on the view page for the file group with location 'Undergrad' for the collection titled 'Dogs'
     And I should see 'Undergrad'
@@ -109,6 +113,7 @@ Feature: File Group description
       | Total file size        | 22            |
       | Total files            | 333           |
       | Name                   | My file group |
+    And I select 'Scanning' from 'Producer'
     And I press 'Create File group'
     Then I should be on the view page for the file group with location 'Undergrad' for the collection titled 'Dogs'
     And I should see 'Undergrad'

@@ -20,6 +20,8 @@ class FileGroup < ActiveRecord::Base
 
   validates_uniqueness_of :cfs_root, :allow_blank => true
   validates_presence_of :name
+  validates_presence_of :external_file_location
+  validates_presence_of :producer_id
 
   STORAGE_LEVEL_HASH = {'ExternalFileGroup' => 'external',
                         'BitLevelFileGroup' => 'bit-level store',

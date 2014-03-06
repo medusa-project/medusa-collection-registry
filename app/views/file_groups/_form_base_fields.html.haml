@@ -1,12 +1,12 @@
 = f.input :collection_id, :as => :hidden, :input_html => {:value => @collection.id}
-= f.input :name
+= f.input :name, required: true
 = f.input :external_id, :label => 'External ID'
 - if @file_group.new_record?
-  = f.input :storage_level, :as => :select, :include_blank => false, :collection => FileGroup::STORAGE_LEVELS
+  = f.input :storage_level, :as => :select, :include_blank => false, :collection => FileGroup::STORAGE_LEVELS, :required => true
 - else
   = f.input :storage_level, :disabled => true
-= f.input :producer_id, :collection => producers_select_collection
-= f.input :external_file_location
+= f.input :producer_id, :collection => producers_select_collection, :required => :true
+= f.input :external_file_location, :required => true
 = f.input :staged_file_location
 = f.input :package_profile_id, :as => :select, :include_blank => true, :collection => package_profile_select_collection
 = f.input :file_type_id, :collection => file_types_select_collection

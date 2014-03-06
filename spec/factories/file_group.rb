@@ -5,5 +5,6 @@ FactoryGirl.define do
     external_file_location 'External File Location'
     file_type FileType.find_by_name('Other')
     collection
+    producer
   end
 end
