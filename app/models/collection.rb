@@ -94,8 +94,6 @@ class Collection < ActiveRecord::Base
       end
       xml.originInfo do
         xml.publisher(self.repository.title)
-        xml.dateOther(self.start_date, :point => 'start')
-        xml.dateOther(self.end_date, :point => 'end')
       end
     end
   end

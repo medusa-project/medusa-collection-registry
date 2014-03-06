@@ -5,8 +5,8 @@ Feature: MODS for collection
 
   Background:
     Given the repository titled 'Animals' has collections with fields:
-      | title | description        | access_url              | start_date | end_date   | uuid                                   |
-      | Dogs  | Collection of dogs | http://dogs.example.com | 2012-01-20 | 2012-09-18 | 3da0fae0-e3fa-012f-ac10-005056b22849-8 |
+      | title | description        | access_url              |  uuid                                   |
+      | Dogs  | Collection of dogs | http://dogs.example.com |  3da0fae0-e3fa-012f-ac10-005056b22849-8 |
     And the collection titled 'Dogs' has resource types named:
       | text | cartographic |
 
@@ -26,8 +26,6 @@ Feature: MODS for collection
       | location url[usage="primary"][access="object in context"] | http://dogs.example.com                             |
       | abstract                                                  | Collection of dogs                                  |
       | originInfo publisher                                      | Animals                                             |
-      | originInfo dateOther[point="start"]                       | 2012-01-20                                          |
-      | originInfo dateOther[point="end"]                         | 2012-09-18                                          |
       | identifier[type="uuid"]                                   | 3da0fae0-e3fa-012f-ac10-005056b22849-8              |
       | identifier[type="handle"]                                 | 10111/MEDUSA:3da0fae0-e3fa-012f-ac10-005056b22849-8 |
 

@@ -6,9 +6,9 @@ Feature: Collection description
   Background:
     Given I am logged in as an admin
     And the repository titled 'Sample Repo' has collections with fields:
-      | title | start_date | end_date   | published | ongoing | description                               | private_description                          | access_url              | file_package_summary      | notes                                       | external_id      |
-      | dogs  | 2010-01-01 | 2012-02-02 | true      | true    | Dog stuff                                 | private dog info                             | http://dogs.example.com | Dog files, not so orderly | Stuff about dogs                            | external-dogs-id |
-      | cats  | 2011-10-10 |            | false     | true    | Cat stuff. http://description.example.com | private cat info. http://private.example.com | http://cats.example.com | Cat files, very orderly   | Stuff about cats. https://notes.example.com |                  |
+      | title | published | ongoing | description                               | private_description                          | access_url              | file_package_summary      | notes                                       | external_id      |
+      | dogs  | true      | true    | Dog stuff                                 | private dog info                             | http://dogs.example.com | Dog files, not so orderly | Stuff about dogs                            | external-dogs-id |
+      | cats  | false     | true    | Cat stuff. http://description.example.com | private cat info. http://private.example.com | http://cats.example.com | Cat files, very orderly   | Stuff about cats. https://notes.example.com |                  |
 
   Scenario: Change repository of a collection
     Given the repository titled 'Plays' has collections with fields:
@@ -22,7 +22,7 @@ Feature: Collection description
   Scenario: View a collection
     When I view the collection titled 'dogs'
     Then I should see all of:
-      | 2010-01-01 | 2012-02-02 | Dog stuff | private dog info | http://dogs.example.com |
+      | Dog stuff | private dog info | http://dogs.example.com |
     And I should see all of:
       | Stuff about dogs | File Manager | Dog files, not so orderly | external-dogs-id |
 

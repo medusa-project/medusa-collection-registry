@@ -1,8 +1,6 @@
 .well
   = show_field @collection, :uuid, 'UUID'
   = show_field @collection, :external_id, 'External ID'
-  = show_field @collection, :start_date
-  = show_field @collection, :end_date
   = show_value net_id_search_link(@collection.contact_net_id), 'Contact Person NetID'
   %p
     %strong Access Systems:

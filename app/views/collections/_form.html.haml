@@ -12,8 +12,6 @@
             = f.input :description
             = f.input :private_description
           #about.tab-pane
-            = f.input :start_date, :as => :string, :input_html => {:class => 'datepicker'}
-            = f.input :end_date, :as => :string, :input_html => {:class => 'datepicker'}
             = f.input :contact_net_id, :label => 'Contact Person Net ID'
             = f.association :access_systems, :collection => access_system_select_collection, :html => {:multiple => true}, :as => :check_boxes
             = f.input :access_url, :as => :string, :label => 'Access URL'
