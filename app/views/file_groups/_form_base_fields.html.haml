@@ -5,7 +5,7 @@
   = f.input :storage_level, :as => :select, :include_blank => false, :collection => FileGroup::STORAGE_LEVELS, :required => true
 - else
   = f.input :storage_level, :disabled => true
-= f.input :producer_id, :collection => producers_select_collection, :required => :true
+= f.input :producer_id, :collection => producers_select_collection, :required => :true, :include_blank => false
 %hr
 = f.input :external_file_location
 = f.input :staged_file_location
