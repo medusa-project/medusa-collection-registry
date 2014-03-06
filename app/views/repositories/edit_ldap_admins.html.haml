@@ -1,7 +1,7 @@
 %div.row
   %div.span3 Repository
-  %div.span3 LDAP domain
-  %div.span3 LDAP group
+  %div.span3 AD domain
+  %div.span3 AD group
   %div.span3
 - Repository.order(:title).each do |repository|
   %div.row{:id => "ldap_admin_#{repository.id}"}
