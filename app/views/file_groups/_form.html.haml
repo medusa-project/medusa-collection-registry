@@ -6,7 +6,7 @@
       .tabbable
         = render :partial => 'shared/tab_header', :locals => {:id => 'edit-tabs', :tabs => file_group_form_tab_list}
         .tab-content
-          #base.tab-pane.active
+          #essential-information.tab-pane.active
             = render 'form_base_fields', :f => f
           #summary.tab-pane
             = f.input :summary
