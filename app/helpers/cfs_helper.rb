@@ -8,7 +8,7 @@ module CfsHelper
     end
   rescue
     #TODO - possibly send an email when this happens
-    Rails.logger.error "CFS directory not found"
+    Rails.logger.error 'CFS directory not found'
     []
   end
 

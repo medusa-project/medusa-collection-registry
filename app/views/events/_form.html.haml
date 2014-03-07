@@ -2,7 +2,7 @@
 .modal.hide.fade{:id => dialog_id}
   = simple_form_for Event.new, :url => events_path(:eventable_id => eventable, :eventable_type => eventable.class.to_s),:html => {:class => 'form-search'}, :remote => remote do |f|
     .modal-header
-      %button{:type => "button", :class => "close", 'data-dismiss' => 'modal', 'aria-hidden' => 'true'}
+      %button{:type => 'button', :class => 'close', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'}
         ×
       %h3#modalLabel New Event
     .modal-body

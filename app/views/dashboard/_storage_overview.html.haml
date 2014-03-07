@@ -9,16 +9,16 @@
       %tbody
         %tr
           %td Bit level store(ingested)
-          %td.value= number_with_precision(@storage["bit_level_ingested"], :precision => 2)
+          %td.value= number_with_precision(@storage['bit_level_ingested'], :precision => 2)
         %tr
           %td Bit level store(total)
-          %td.value= number_with_precision(@storage["bit_level_total"], :precision => 2)
+          %td.value= number_with_precision(@storage['bit_level_total'], :precision => 2)
         %tr
           %td Object level store
-          %td.value= number_with_precision(@storage["object_level_total"], :precision => 2)
+          %td.value= number_with_precision(@storage['object_level_total'], :precision => 2)
         %tr
           %td Free space
-          %td.value= number_with_precision(@storage["free"], :precision => 2)
+          %td.value= number_with_precision(@storage['free'], :precision => 2)
     .span3
       %div#chart_container1.chart_container
 

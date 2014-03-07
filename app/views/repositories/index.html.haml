@@ -29,6 +29,6 @@
 
 %br
 
-= link_to "New Repository", new_repository_path, :class => 'btn btn-primary'
+= link_to 'New Repository', new_repository_path, :class => 'btn btn-primary'
 - if can? :update_ldap_admins, Repository
-  = link_to "Edit Repository Admins", edit_ldap_admins_repositories_path, :class => 'btn btn-primary'
+  = link_to 'Edit Repository Admins', edit_ldap_admins_repositories_path, :class => 'btn btn-primary'

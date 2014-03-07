@@ -41,7 +41,7 @@ class Collection < ActiveRecord::Base
   [:description, :private_description, :notes, :file_package_summary].each do |field|
     auto_html_for field do
       html_escape
-      link :target => "_blank"
+      link :target => '_blank'
       simple_format
     end
   end
@@ -74,7 +74,7 @@ class Collection < ActiveRecord::Base
 
   def ensure_rights_declaration
     self.rights_declaration ||= RightsDeclaration.new(:rights_declarable_id => self.id,
-                                                      :rights_declarable_type => "Collection")
+                                                      :rights_declarable_type => 'Collection')
   end
 
   def to_mods

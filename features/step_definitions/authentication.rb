@@ -23,7 +23,7 @@ Given /^I am logged in as a manager$/ do
 end
 
 Given /^I relogin as (.*)$/ do |login_type|
-  step "I logout"
+  step 'I logout'
   step "I am logged in as #{login_type}"
 end
 

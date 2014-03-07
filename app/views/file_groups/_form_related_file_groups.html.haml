@@ -13,7 +13,7 @@
           %label.checkbox
             %input.check_boxes.optional{:id => "file_group_related_file_group_ids_#{target_file_group.id}",
               :value => target_file_group.id, :type => 'checkbox',
-              :name => "file_group[target_file_group_ids][]",
+              :name => 'file_group[target_file_group_ids][]',
               :checked => @file_group.has_target?(target_file_group)}
             #{target_file_group.name} (#{target_file_group.storage_level})
         .span4
@@ -22,4 +22,4 @@
             %input.string.optional{:size => 50, :type => 'text', :value => @file_group.target_relation_note(target_file_group),
               :name => "file_group[target_file_group_notes][#{target_file_group.id}]",
               :id => "file_group_target_file_group_notes_#{target_file_group.id}"}
-    %input{:name => "file_group[target_file_group_ids][]", :type => 'hidden', :value => ''}
+    %input{:name => 'file_group[target_file_group_ids][]', :type => 'hidden', :value => ''}

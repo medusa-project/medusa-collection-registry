@@ -16,7 +16,7 @@ class CfsFileInfo < ActiveRecord::Base
   end
 
   def self.all_for_path(url_path = '')
-    self.where("path LIKE ?", url_path + "/%")
+    self.where('path LIKE ?', url_path + '/%')
   end
 
   def self.for_path(path)
@@ -36,7 +36,7 @@ class CfsFileInfo < ActiveRecord::Base
   end
 
   def file_group
-    FileGroup.where('cfs_root IS NOT NULL').where("? LIKE cfs_root || ?", self.path, "/%").first
+    FileGroup.where('cfs_root IS NOT NULL').where('? LIKE cfs_root || ?', self.path, '/%').first
   end
 
   def repository

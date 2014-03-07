@@ -4,7 +4,7 @@ And(/^there is a cfs directory '(.*)'$/) do |path|
 end
 
 And(/^I clear the cfs root directory$/) do
-  Dir[File.join(Cfs.root, "*")].each do |entry|
+  Dir[File.join(Cfs.root, '*')].each do |entry|
     FileUtils.rm_rf(entry)
   end
 end

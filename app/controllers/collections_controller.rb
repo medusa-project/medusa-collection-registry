@@ -29,13 +29,13 @@ class CollectionsController < ApplicationController
     if @collection.update_attributes(allowed_params)
       redirect_to collection_path(@collection)
     else
-      render "edit"
+      render 'edit'
     end
   end
 
   def new
     @collection = Collection.new
-    @collection.rights_declaration = RightsDeclaration.new(:rights_declarable_type => "Collection")
+    @collection.rights_declaration = RightsDeclaration.new(:rights_declarable_type => 'Collection')
     @repository = Repository.find(params[:repository_id]) rescue Repository.order(:title).first
     @collection.repository = @repository
     authorize! :create, @collection
@@ -50,7 +50,7 @@ class CollectionsController < ApplicationController
     if @collection.update_attributes(allowed_params)
       redirect_to collection_path(@collection)
     else
-      render "new"
+      render 'new'
     end
   end
 

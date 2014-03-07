@@ -17,11 +17,11 @@ class DashboardController < ApplicationController
 
   def setup_storage
     @storage = Hash.new
-    @storage["bit_level_ingested"] = CfsFileInfo.sum(:size)/(10 ** 9).to_f
-    @storage["bit_level_total"] = CfsFileInfo.sum(:size)/(10 ** 9).to_f
-    @storage["object_level_total"] = 0
-    @storage["total"] = 4000
-    @storage["free"] = @storage["total"] - @storage["bit_level_total"] - @storage["object_level_total"]
+    @storage['bit_level_ingested'] = CfsFileInfo.sum(:size)/(10 ** 9).to_f
+    @storage['bit_level_total'] = CfsFileInfo.sum(:size)/(10 ** 9).to_f
+    @storage['object_level_total'] = 0
+    @storage['total'] = 4000
+    @storage['free'] = @storage['total'] - @storage['bit_level_total'] - @storage['object_level_total']
   end
 
   #TODO - I bet we can do this more efficiently - it'd be easy with SQL, but we can probably do it with arel as well.

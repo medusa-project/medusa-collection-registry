@@ -17,7 +17,7 @@ class Assessment < ActiveRecord::Base
   [:naming_conventions, :directory_structure, :notes, :preservation_risks].each do |field|
     auto_html_for field do
       html_escape
-      link :target => "_blank"
+      link :target => '_blank'
       simple_format
     end
   end

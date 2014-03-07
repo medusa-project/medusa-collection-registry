@@ -6,7 +6,7 @@
         = render :partial => 'shared/tab_header', :locals => {:id => 'edit-tabs', :tabs => collection_form_tab_list}
         .tab-content
           #essential.tab-pane.active
-            = f.input :title, :input_html => {:class => "span4" }
+            = f.input :title, :input_html => {:class => 'span4' }
             = f.association :repository, :collection => repository_select_collection, :include_blank => false, :selected => @repository.id
             = f.input :external_id, :label => 'External ID'
             = f.input :description

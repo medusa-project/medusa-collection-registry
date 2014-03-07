@@ -41,7 +41,7 @@ And /^I click on '(.*)' in the file groups table$/ do |button|
 end
 
 When(/^I click on '(.*)' in the attachments section$/) do |button|
-  within("#attachments") do
+  within('#attachments') do
     click_on(button)
   end
 end

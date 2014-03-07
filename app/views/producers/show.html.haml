@@ -21,6 +21,6 @@
     = link_to 'Delete Producer', @producer, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
 
 .span9#content
-  %a.toggles{:href=>"#", :rel => "tooltip", :title => "Hide or show the sidebar" }
+  %a.toggles{:href=>'#', :rel => 'tooltip', :title => 'Hide or show the sidebar' }
     %i.icon-arrow-left
   = render 'collections_table'

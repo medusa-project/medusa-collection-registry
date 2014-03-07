@@ -3,7 +3,7 @@ Then /^I should be redirected to the unauthorized page$/ do
 end
 
 Then /^I should be unauthorized$/ do
-  step ("I should be redirected to the unauthorized page")
+  step ('I should be redirected to the unauthorized page')
   step ("I should see 'You are not authorized to view the requested page.'")
 end
 
@@ -112,7 +112,7 @@ def rack_login(user_type)
     when /ldap user (.*)/
       post '/auth/developer/callback', {name: $1, email: $1}
     else
-      raise "Unexpected user type"
+      raise 'Unexpected user type'
   end
 end
 
@@ -130,6 +130,6 @@ def check_result(expected_result)
     when 'succeed'
       assert last_response.ok?
     else
-      raise "Unexpected result type"
+      raise 'Unexpected result type'
   end
 end

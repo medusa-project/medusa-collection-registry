@@ -13,7 +13,7 @@ class FitsRequest < Object
   end
 
   def file_group
-    FileGroup.where('cfs_root IS NOT NULL').where("? LIKE cfs_root || ?", self.path, "%").first
+    FileGroup.where('cfs_root IS NOT NULL').where('? LIKE cfs_root || ?', self.path, '%').first
   end
 
 end

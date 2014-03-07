@@ -17,7 +17,7 @@ class Dx < Object
   rescue Exception => e
     Rails.logger.error "#{error_message}: #{e}"
     if opts[:retries] == 0
-      Rails.logger.error "Aborting."
+      Rails.logger.error 'Aborting.'
       raise e
     else
       Rails.logger.error "Retrying. #{opts[:retries]} remaining."
@@ -141,9 +141,9 @@ class Dx < Object
     if self.use_test_headers
       #set lifepoint to assure that content gets deleted after 2 weeks even if we don't clean it up manually
       headers['Lifepoint'] = ["[#{(Time.now + 2.weeks).httpdate}] reps=2, deletable=yes",
-                              "[] delete"]
+                              '[] delete']
     else
-      headers['Lifepoint'] = "[] reps=3, deletable=yes"
+      headers['Lifepoint'] = '[] reps=3, deletable=yes'
     end
   end
 

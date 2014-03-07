@@ -13,7 +13,7 @@ class Producer < ActiveRecord::Base
 
   auto_html_for :notes do
     html_escape
-    link :target => "_blank"
+    link :target => '_blank'
     simple_format
   end
 
