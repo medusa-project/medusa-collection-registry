@@ -19,10 +19,12 @@ class AttachmentsController < ApplicationController
 
   def update
     authorize! :update_attachment, @attachable
-    #we should not need to set description sepratately. There is some issue with mass assignment, that is why this hack
+    #we should not need to set description separately. There is some issue with mass assignment, that is why this hack
     desc = params[:attachment].delete(:description)
     @attachment.description = desc
-    if @attachment.update_attributes(allowed_params)
+    @attachment.attachment = params[:attachment][:attachment] if params[:attachment][:attachment]
+    if @attachment.save
+      x = polymorphic_path(@attachable)
       redirect_to polymorphic_path(@attachable)
     else
       render 'edit'
@@ -52,7 +54,8 @@ class AttachmentsController < ApplicationController
     @attachment = Attachment.new(allowed_params)
     @attachment.description = desc
     @attachment.attachable = @attachable
-    if @attachment.save
+    @attachment.author_id = current_user.id
+    if params[:attachment].present? and @attachment.save
       redirect_to polymorphic_path(@attachable)
     else
       render 'new'
@@ -71,6 +74,8 @@ class AttachmentsController < ApplicationController
     case attachable_type_name
       when 'Collection'
         Collection
+      when 'FileGroup', 'ExternalFileGroup', 'ObjectLevelFileGroup', 'BitLevelFileGroup'
+        FileGroup
       else
         raise RuntimeError, "Unrecognized attachable type #{attachable_type_name}"
     end

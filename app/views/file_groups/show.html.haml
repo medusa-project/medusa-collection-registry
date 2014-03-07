@@ -20,7 +20,7 @@
       #assessments-tab.tab-pane
         = render 'assessments/table'
       #attachments-tab.tab-pane
-        =# render 'attachments_table' if logged_in?
+        = render 'attachments_table' if logged_in?
 
 = render :partial => 'events/form', :locals => {:eventable => @file_group, :remote => false, :dialog_id => :addEventModal}
 = render :partial => 'scheduled_events/form', :locals => {:eventable => @file_group, :remote => false, :dialog_id => :addScheduledEventModal}

@@ -12,7 +12,7 @@ class Ability
       end
     end
     #Attachments - must be done for each attachable, where the real check occurs
-    [Collection].each do |klass|
+    [Collection, FileGroup, BitLevelFileGroup, ObjectLevelFileGroup, ExternalFileGroup].each do |klass|
       can [:create_attachment, :update_attachment], klass do |attachable|
         (attachable.is_a?(klass) and repository_manager?(user, attachable))
       end
