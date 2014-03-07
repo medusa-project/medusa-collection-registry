@@ -47,7 +47,7 @@ class AttachmentsController < ApplicationController
     klass = attachable_class(params[:attachment])
     @attachable = klass.find(params[:attachment].delete(:attachable_id))
     authorize! :create_attachment, @attachable
-    #we should not need to set description sepratately. There is some issue with mass assignment, that is why this hack
+    #we should not need to set description separately. There is some issue with mass assignment, that is why this hack
     desc = params[:attachment].delete(:description)
     @attachment = Attachment.new(allowed_params)
     @attachment.description = desc
