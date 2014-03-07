@@ -40,9 +40,8 @@ class AttachmentsController < ApplicationController
     klass = attachable_class(params)
     @attachable = klass.find(params[:attachable_id])
     authorize! :create_attachment, @attachable
-    @attachment = Attachment.new
-    @attachment.author = Person.find_or_create_by(net_id: current_user.uid)
-    @attachment.attachable = @attachable
+    @attachment = Attachment.new(author: Person.find_or_create_by(net_id: current_user.uid),
+                                 attachable: @attachable)
   end
 
   def create
