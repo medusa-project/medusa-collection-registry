@@ -23,7 +23,7 @@ class AttachmentsController < ApplicationController
     desc = params[:attachment].delete(:description)
     @attachment.description = desc
     if @attachment.update_attributes(allowed_params)
-      redirect_to collection_path(@attachment.attachable_id)
+      redirect_to polymorphic_path(@attachable)
     else
       render 'edit'
     end
@@ -53,7 +53,7 @@ class AttachmentsController < ApplicationController
     @attachment.description = desc
     @attachment.attachable = @attachable
     if @attachment.save
-      redirect_to collection_path(@attachment.attachable_id)
+      redirect_to polymorphic_path(@attachable)
     else
       render 'new'
     end
