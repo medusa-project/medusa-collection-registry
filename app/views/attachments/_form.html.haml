@@ -3,12 +3,8 @@
     = render :partial => 'sidebar', :locals => {:f => f}
 
     .span9
-      .tabbable
-      = render :partial => 'shared/tab_header', :locals => {:id => 'edit-tabs', :tabs => attachment_form_tab_list}
-      .tab-content
-        #attachment-details.tab-pane.active
-          = f.input :attachable_id, :as => :hidden, :input_html => {:value => @attachable.id}
-          = f.input :attachable_type, :as => :hidden, :input_html => {:value => @attachable.class.name}
-          = f.label :attachment
-          = f.file_field :attachment
-          = f.input :description, :label => 'Description'
+      #attachment-details
+        = f.input :attachable_id, :as => :hidden, :input_html => {:value => @attachable.id}
+        = f.input :attachable_type, :as => :hidden, :input_html => {:value => @attachable.class.name}
+        = f.input :attachment, :as => :file
+        = f.input :description, :label => 'Description'
