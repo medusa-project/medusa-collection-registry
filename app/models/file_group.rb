@@ -23,12 +23,12 @@ class FileGroup < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :producer_id
 
-  STORAGE_LEVEL_HASH = {'external' => ExternalFileGroup,
-                        'bit-level store' => BitLevelFileGroup,
-                        'object-level store' => ObjectLevelFileGroup}
+  STORAGE_LEVEL_HASH = {'external' => 'ExternalFileGroup',
+                        'bit-level store' => 'BitLevelFileGroup',
+                        'object-level store' => 'ObjectLevelFileGroup'}
 
   def self.class_for_storage_level(storage_level)
-    STORAGE_LEVEL_HASH[storage_level]
+    kernel.const_get(STORAGE_LEVEL_HASH[storage_level])
   end
 
   def self.storage_levels
