@@ -28,7 +28,7 @@ class FileGroup < ActiveRecord::Base
                         'object-level store' => 'ObjectLevelFileGroup'}
 
   def self.class_for_storage_level(storage_level)
-    kernel.const_get(STORAGE_LEVEL_HASH[storage_level])
+    Kernel.const_get(STORAGE_LEVEL_HASH[storage_level])
   end
 
   def self.storage_levels
