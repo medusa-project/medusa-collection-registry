@@ -120,12 +120,9 @@ def check_result(expected_result)
   case expected_result
     when 'redirect to authentication'
       assert last_response.redirect?
-      x = last_response.location
-      y = login_path
       assert last_response.location.match(/#{login_path}$/)
     when 'redirect to unauthorized'
       assert last_response.redirect?
-      x = last_response.location
       assert last_response.location.match(/#{unauthorized_path}$/)
     when 'succeed'
       assert last_response.ok?

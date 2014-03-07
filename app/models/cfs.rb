@@ -95,7 +95,6 @@ module Cfs
     check_content_type_red_flag(file_info, extracted_properties) if file_info.fits_xml
     check_size_red_flag(file_info, extracted_properties)
     check_md5_sum_red_flag(file_info, extracted_properties)
-    x = file_info.red_flags(true)
   end
 
   def check_content_type_red_flag(file_info, extracted_properties)

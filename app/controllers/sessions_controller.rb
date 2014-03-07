@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
 
   def create
     auth_hash = request.env['omniauth.auth']
-    if auth_hash and auth_hash[:uid] then
+    if auth_hash and auth_hash[:uid]
       return_url = clear_and_return_return_path
       user = User.find_or_create_by(uid: auth_hash[:uid])
       reset_ldap_cache(user)

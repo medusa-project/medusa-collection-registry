@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
     false
   end
 
-  rescue_from CanCan::AccessDenied do |exception|
+  rescue_from CanCan::AccessDenied do
     redirect_to unauthorized_path
   end
 

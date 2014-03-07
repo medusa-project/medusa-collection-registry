@@ -31,7 +31,6 @@ class ScheduledEventsController < ApplicationController
   def edit
     authorize! :update, @scheduled_event
     @return_to = params[:return_to]
-    x = 1
   end
 
   def update

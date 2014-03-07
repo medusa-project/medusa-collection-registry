@@ -23,9 +23,9 @@ class FileGroup < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :producer_id
 
-  STORAGE_LEVEL_HASH = {'ExternalFileGroup' => 'external',
-                        'BitLevelFileGroup' => 'bit-level store',
-                        'ObjectLevelFileGroup' => 'object-level store'}
+  STORAGE_LEVEL_HASH = {:ExternalFileGroup => 'external',
+                        :BitLevelFileGroup => 'bit-level store',
+                        :ObjectLevelFileGroup => 'object-level store'}
   STORAGE_LEVELS = STORAGE_LEVEL_HASH.values
 
   def file_type_name

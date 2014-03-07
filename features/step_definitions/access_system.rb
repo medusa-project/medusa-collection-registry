@@ -47,7 +47,6 @@ Given(/^the collection titled '(.*)' has an access system named '(.*)'$/) do |ti
 end
 
 Then(/^I should be on the collection index page for collections with access system '(.*)'$/) do |name|
-  access_system = AccessSystem.find_by_name(name)
   current_path.should == for_access_system_collections_path
 end
 
