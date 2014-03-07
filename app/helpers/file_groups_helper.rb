@@ -17,6 +17,10 @@ module FileGroupsHelper
      'collection-file-package-summary', 'related-file-groups']
   end
 
+  def file_group_show_tab_list
+    ['description', 'rights', 'assessments', 'attachments'].collect {|x| ["#{x}-tab", x.capitalize]}
+  end
+
   def package_profile_select_collection
     PackageProfile.order('name ASC').load.collect {|profile| [profile.name, profile.id]}
   end

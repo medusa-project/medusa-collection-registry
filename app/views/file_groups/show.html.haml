@@ -1,65 +1,26 @@
 .pull-right
-  = link_to 'View events', events_file_group_path(@file_group), :class => 'btn'
-  = link_to  'Schedule Event', '#addScheduledEventModal', :role => 'button', 'data-toggle' => 'modal', :class => 'btn'
-  = link_to("Add Event", '#addEventModal', :role => 'button', 'data-toggle' => 'modal', :class => 'btn')
-  = link_to("Red Flags", red_flags_file_group_path(@file_group), :class => 'btn') if @file_group.respond_to?(:all_red_flags)
-  = link_to 'Create All FITS XML', create_all_fits_file_group_path(@file_group), :method => 'post', :class => 'btn'
-  = link_to 'Edit', edit_polymorphic_path(@file_group), :class => 'btn'
-  = link_to 'Delete', @file_group, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
+  = render 'show_actions'
 
 .page_header
-  %h1 File Group
-  %p.lead Collection: #{link_to @collection.title, @collection}
-  - if @file_group.cfs_root
-    %p
-      CFS Root: #{link_to @file_group.cfs_root, cfs_show_path(@file_group.cfs_root)}
-      = link_to 'Create FITS for CFS tree', create_cfs_fits_file_group_path(@file_group), :method => 'post', :class => 'btn'
+  .row
+    .span4
+      = render 'show_header'
+    .span8
+      %p.lead Collection file package summary
+      %p= @file_group.collection.file_package_summary_html
 
 .row
-  .span4
-    .well
-      = show_field @file_group, :name
-      = show_field @file_group, :external_id, 'External ID'
-      = show_field @file_group, :id
-      = show_field @file_group, :storage_level
-      = show_value((link_to(@file_group.producer.title, @file_group.producer) if @file_group.producer), 'Production Unit')
-      = show_field @file_group, :file_type_name, 'File type'
-      %p
-        %strong Package Profile:
-        - if package_profile = @file_group.package_profile
-          = link_to package_profile.name, package_profile_path(package_profile)
-          (#{link_to package_profile.url, package_profile.url})
-      = show_field @file_group, :external_file_location
-      = show_field @file_group, :staged_file_location
-      = show_field @file_group, :file_format
-      = show_value "#{@file_group.total_file_size} GB", 'Total file size:'
-      = show_field @file_group, :total_files
-      = show_field @file_group, :summary
-      = show_field @file_group, :provenance_note
-      - if @file_group.source_file_groups.present?
-        %p
-          %strong Source File Groups
-        %ul
-          - @file_group.source_file_groups.each do |source_file_group|
-            %li
-              #{link_to(source_file_group.name, source_file_group)} - #{@file_group.source_relation_note(source_file_group)}
-      - if @file_group.target_file_groups.present?
-        %p
-          %strong Target File Groups
-        %ul
-          - @file_group.target_file_groups.each do |target_file_group|
-            %li
-              #{link_to(target_file_group.name, target_file_group)} - #{@file_group.target_relation_note(target_file_group)}
-
-      %h3 Rights Declaration
-      = render :partial => 'rights_declarations/show', :locals => {:rights_declaration => @file_group.rights_declaration}
-
-  .span8
-
-    %p.lead Collection file package summary
-    %p= @file_group.collection.file_package_summary_html
-
-    = render 'assessments/table'
+  .tabbable
+    = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: file_group_show_tab_list}
+    .tab-content
+      #description-tab.tab-pane.active
+        = render 'show_description'
+      #rights-tab.tab-pane
+        = render :partial => 'rights_declarations/show', :locals => {:rights_declaration => @file_group.rights_declaration}
+      #assessments-tab.tab-pane
+        = render 'assessments/table'
+      #attachments-tab.tab-pane
+        =# render 'attachments_table' if logged_in?
 
 = render :partial => 'events/form', :locals => {:eventable => @file_group, :remote => false, :dialog_id => :addEventModal}
 = render :partial => 'scheduled_events/form', :locals => {:eventable => @file_group, :remote => false, :dialog_id => :addScheduledEventModal}
