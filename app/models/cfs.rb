@@ -71,7 +71,7 @@ module Cfs
     file_path = file_path.gsub(/^\/+/, '')
     resource =  RestClient::Resource.new("http://localhost:4567/fits/file/#{file_path}", :timeout => -1)
     response = resource.get
-    return response.body
+    response.body
   end
 
   def create_fits_for(url_path, file_path)

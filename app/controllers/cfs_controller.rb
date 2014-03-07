@@ -96,7 +96,7 @@ class CfsController < ApplicationController
     return path if path.blank?
     components = path.split('/')
     components.pop
-    return components.join('/')
+    components.join('/')
   end
 
 end

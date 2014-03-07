@@ -40,27 +40,27 @@ module DashboardHelper
 
   def list_of_object_file_formats
     # return list of unique content types
-    return []
+    []
   end
 
   def size_objects_type_format (ct)
      # only active records of certain format that have been ingested
-     return number_with_precision(0.0, :precision => 4)
+     number_with_precision(0.0, :precision => 4)
   end
 
   def file_count_objects_type_format (ct)
      # only active records of certain format that have been ingested
-     return 0
+     0
   end
 
   def size_objects_total
     # only active records that have been ingested
-    return number_with_precision(0.0, :precision => 4)
+    number_with_precision(0.0, :precision => 4)
   end
 
   def file_count_objects_total
     # only active records that have been ingested
-    return 0
+    0
   end
 
 end
