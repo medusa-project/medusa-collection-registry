@@ -6,9 +6,7 @@ class Attachment < ActiveRecord::Base
 	validates_inclusion_of :attachable_type, :in => ['Collection', 'FileGroup', 'ExternalFileGroup', 'BitLevelFileGroup', 'ObjectLevelFileGroup']
 
 	# Paperclip
-	has_attached_file :attachment,
-	:styles => {
-	}
+	has_attached_file :attachment, :styles => {}
 
-	validates_attachment_size :attachment, :less_than => 5.megabytes
+  validates_attachment :attachment, :presence => true, :size => {:less_than => 5.megabytes}
 end
