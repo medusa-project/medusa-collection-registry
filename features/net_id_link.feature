@@ -1,5 +1,5 @@
 Feature: Net ID links
-  In order to manage preservatin
+  In order to manage preservation
   As a librarian
   I want to be able to get information about UIUC actors on the collections
 

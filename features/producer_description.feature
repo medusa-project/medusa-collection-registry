@@ -133,7 +133,7 @@ Feature: Producer description
     Given I am logged in as an admin
     When I edit the producer titled 'Scanning'
     And I fill in fields:
-      | Adminstrator Net ID | hding2 |
+      | Administrator Net ID | hding2 |
     And I press 'Update Producer'
     Then I should see 'hding2'
     And There should be a person with net ID 'hding2'
