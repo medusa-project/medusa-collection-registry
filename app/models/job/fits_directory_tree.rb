@@ -7,7 +7,7 @@ class Job::FitsDirectoryTree < ActiveRecord::Base
 
   #if this corresponds to a file group then return it, else nil
   def file_group
-    FileGroup.find_by_cfs_path(self.path)
+    FileGroup.find_by_cfs_root(self.path)
   end
 
 end

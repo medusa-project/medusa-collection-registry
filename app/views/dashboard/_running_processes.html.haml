@@ -20,7 +20,7 @@
       %th Created
   %tbody
     - Job::FitsDirectoryTree.all.each do |fits_job|
-      - file_group = BitLevelFileGroup.find_by_cfs_root(fits_job.path)
+      - file_group = fits_job.file_group
       %tr
         %td= fits_job.path
         %td= file_group ? link_to(file_group.name, polymorphic_path(file_group)) : 'No associated file group'
