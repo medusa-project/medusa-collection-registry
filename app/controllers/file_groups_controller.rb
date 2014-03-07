@@ -121,8 +121,7 @@ class FileGroupsController < ApplicationController
   end
 
   def determine_creation_class(params)
-    storage_level = params.delete(:storage_level)
-    Kernel.const_get(FileGroup::STORAGE_LEVEL_HASH.detect { |k, v| v == storage_level }.first)
+    FileGroup.class_for_storage_level(params.delete(:storage_level))
   end
 
   #remove the related file group parameters, yield to the block, and after it completes upgrade the related file group stuff correctly

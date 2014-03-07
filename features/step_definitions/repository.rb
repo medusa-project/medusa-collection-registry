@@ -10,7 +10,7 @@ end
 
 And /^the repository titled '(.*)' is managed by '(.*)'$/ do |title, net_id|
   person = FactoryGirl.create(:person, :net_id => net_id,)
-  FactoryGirl.create(:repository, :contact => person,  :title => title)
+  FactoryGirl.create(:repository, :contact => person, :title => title)
 end
 
 Then /^I should be on the repository index page$/ do
@@ -80,7 +80,7 @@ end
 And /^I have some repositories with files totalling '(\d+)' GB$/ do |size|
   size = size.to_i
   raise(RuntimeError, 'Please use an integral value for this test') unless size.integer?
-  repositories = 3.times.collect {|r| FactoryGirl.create(:repository)}
+  repositories = 3.times.collect { FactoryGirl.create(:repository) }
   repositories.each do |r|
     3.times do
       FactoryGirl.create(:collection, :repository => r)

@@ -2,7 +2,7 @@
 = f.input :name, required: true
 = f.input :external_id, :label => 'External ID'
 - if @file_group.new_record?
-  = f.input :storage_level, :as => :select, :include_blank => false, :collection => FileGroup::STORAGE_LEVELS, :required => true
+  = f.input :storage_level, :as => :select, :include_blank => false, :collection => FileGroup.storage_levels, :required => true
 - else
   = f.input :storage_level, :disabled => true
 = f.input :producer_id, :collection => producers_select_collection, :required => :true, :include_blank => false

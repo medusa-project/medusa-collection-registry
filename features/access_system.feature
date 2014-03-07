@@ -62,8 +62,7 @@ Feature: Access Systems
     And the collection titled 'Bats' has an access system named 'Dspace'
     When I go to the access system index page
     And I click on 'ContentDM'
-    Then I should be on the collection index page for collections with access system 'ContentDM'
-    And I should see all of:
+    Then I should see all of:
       | Dogs | Cats | For Access system: ContentDM |
     And I should not see 'Bats'
 
@@ -75,8 +74,7 @@ Feature: Access Systems
     And the collection titled 'Bats' has an access system named 'Dspace'
     When I go to the access system index page
     And I click on 'ContentDM'
-    Then I should be on the collection index page for collections with access system 'ContentDM'
-    And I should see all of:
+    Then I should see all of:
       | Dogs | Cats | For Access system: ContentDM |
     And I should not see 'Bats'
 
@@ -88,7 +86,6 @@ Feature: Access Systems
     And the collection titled 'Bats' has an access system named 'Dspace'
     When I go to the access system index page
     And I click on 'ContentDM'
-    Then I should be on the collection index page for collections with access system 'ContentDM'
-    And I should see all of:
+    Then I should see all of:
       | Dogs | Cats | For Access system: ContentDM |
     And I should not see 'Bats'

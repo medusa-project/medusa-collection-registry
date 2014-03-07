@@ -46,10 +46,6 @@ Given(/^the collection titled '(.*)' has an access system named '(.*)'$/) do |ti
   collection.access_systems << access_system
 end
 
-Then(/^I should be on the collection index page for collections with access system '(.*)'$/) do |name|
-  current_path.should == for_access_system_collections_path
-end
-
 When(/^I create a new access system$/) do
   page.driver.post access_systems_path
   #visit access_systems_path(:method => :post)

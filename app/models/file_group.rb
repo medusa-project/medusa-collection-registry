@@ -11,8 +11,8 @@ class FileGroup < ActiveRecord::Base
   has_many :target_file_groups, :through => :target_file_group_joins
   has_many :source_file_group_joins, :dependent => :destroy, :class_name => 'RelatedFileGroupJoin', :foreign_key => :target_file_group_id
   has_many :source_file_groups, :through => :source_file_group_joins
-  has_many :events, -> {order 'date DESC'}, :as => :eventable, :dependent => :destroy
-  has_many :scheduled_events, -> {order 'action_date ASC'}, :as => :scheduled_eventable, :dependent => :destroy
+  has_many :events, -> { order 'date DESC' }, :as => :eventable, :dependent => :destroy
+  has_many :scheduled_events, -> { order 'action_date ASC' }, :as => :scheduled_eventable, :dependent => :destroy
   belongs_to :package_profile
   has_many :attachments, :as => :attachable, :dependent => :destroy
 
@@ -23,10 +23,17 @@ class FileGroup < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :producer_id
 
-  STORAGE_LEVEL_HASH = {:ExternalFileGroup => 'external',
-                        :BitLevelFileGroup => 'bit-level store',
-                        :ObjectLevelFileGroup => 'object-level store'}
-  STORAGE_LEVELS = STORAGE_LEVEL_HASH.values
+  STORAGE_LEVEL_HASH = {'external' => ExternalFileGroup,
+                        'bit-level store' => BitLevelFileGroup,
+                        'object-level store' => ObjectLevelFileGroup}
+
+  def self.class_for_storage_level(storage_level)
+    STORAGE_LEVEL_HASH[storage_level]
+  end
+
+  def self.storage_levels
+    STORAGE_LEVEL_HASH.keys
+  end
 
   def file_type_name
     self.file_type.try(:name)
