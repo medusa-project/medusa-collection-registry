@@ -18,7 +18,6 @@ class Collection < ActiveRecord::Base
   has_many :resource_types, :through => :collection_resource_type_joins
   belongs_to :preservation_priority
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
-  has_many :directories
   has_many :attachments, :as => :attachable, :dependent => :destroy
 
   validates_presence_of :title

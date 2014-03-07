@@ -47,8 +47,7 @@ class CollectionsController < ApplicationController
     @collection = Collection.new
     @collection.repository = @repository
     authorize! :create, @collection
-    @collection.update_attributes(allowed_params)
-    if @collection.save
+    if @collection.update_attributes(allowed_params)
       redirect_to collection_path(@collection)
     else
       render "new"
