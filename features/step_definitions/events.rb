@@ -23,7 +23,11 @@ Then(/^the file group named '(.*)' should have an event with fields:$/) do |name
 end
 
 Then /^I should be on the events page for the file group named '(.*)'$/ do |name|
-  current_path.should == events_file_group_path(FileGroup.find_by_name(name))
+  current_path.should == events_file_group_path(FileGroup.find_by(name: name))
+end
+
+And(/^I should be viewing events for the collection titled '(.*)'$/) do |title|
+  current_path.should == events_collection_path(Collection.find_by(title: title))
 end
 
 And /^I should see the events table$/ do

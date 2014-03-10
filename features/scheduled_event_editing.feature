@@ -17,7 +17,7 @@ Feature:
     And I click on 'edit' in the scheduled events table
     Then I should on the edit page for the scheduled event with key 'external_to_bit' and action date '2012-02-02'
 
-  Scenario: Edit and update scheduled event
+  Scenario: Edit and update scheduled event from file group
     When I view events for the file group named 'Toys'
     And I click on 'edit' in the scheduled events table
     And I fill in fields:
@@ -26,6 +26,16 @@ Feature:
     Then I should see 'Ruthie'
     And I should not see 'Buster'
     And I should be viewing events for the file group named 'Toys'
+
+  Scenario: Edit and update scheduled event from collection
+    When I view events for the collection titled 'Dogs'
+    And I click on 'edit' in the scheduled events table
+    And I fill in fields:
+      | Actor | Ruthie |
+    And I click on 'Update Scheduled event'
+    Then I should see 'Ruthie'
+    And I should not see 'Buster'
+    And I should be viewing events for the collection titled 'Dogs'
 
   Scenario: Delete scheduled event from event list
     When I view events for the file group named 'Toys'

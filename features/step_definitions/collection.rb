@@ -140,7 +140,9 @@ And(/^I submit the new event form on the collection view page$/) do
   end
 end
 
-
+When(/^I view events for the collection titled '(.*)'$/) do |title|
+  visit events_collection_path(Collection.find_by(title: title))
+end
 
 And(/^the collection titled '(.*)' has an assessment named '(.*)'$/) do |collection_title, assessment_name|
   c = Collection.find_by_title(collection_title)
