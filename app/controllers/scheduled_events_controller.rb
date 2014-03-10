@@ -19,13 +19,13 @@ class ScheduledEventsController < ApplicationController
   def cancel
     authorize! :update, @scheduled_event
     @scheduled_event.be_cancelled
-    redirect_to params[:return_to]
+    redirect_to :back
   end
 
   def complete
     authorize! :update, @scheduled_event
     @scheduled_event.be_complete(current_user)
-    redirect_to params[:return_to]
+    redirect_to :back
   end
 
   def edit
@@ -46,7 +46,7 @@ class ScheduledEventsController < ApplicationController
   def destroy
     authorize! :destroy, @scheduled_event
     @scheduled_event.destroy
-    redirect_to params[:return_to]
+    redirect_to :back
   end
 
   protected
