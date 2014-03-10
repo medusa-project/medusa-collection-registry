@@ -1,4 +1,4 @@
-- return_path = (@scheduled_eventable ? events_file_group_path(@scheduled_eventable) : dashboard_path)
+- return_path = (@scheduled_eventable ? polymorphic_events_path(@scheduled_eventable) : dashboard_path)
 %table#scheduled-events.table.table-striped
   %thead
     %t

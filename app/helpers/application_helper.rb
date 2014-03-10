@@ -55,4 +55,17 @@ module ApplicationHelper
      :order => [:day, :month, :year], :use_month_numbers => true}.merge(extra_opts)
   end
 
+  def polymorphic_events_path(eventable)
+    case eventable
+      when FileGroup
+        events_file_group_path(eventable)
+      when Collection
+        events_collection_path(eventable)
+      when Repository
+        events_repository_path(eventable)
+      else
+        raise RuntimeError, 'Unrecognized eventable type'
+    end
+  end
+
 end
