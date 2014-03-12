@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140306220612) do
+ActiveRecord::Schema.define(version: 20140312143243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,16 @@ ActiveRecord::Schema.define(version: 20140306220612) do
     t.datetime "updated_at",              null: false
   end
 
+  create_table "cfs_directories", force: true do |t|
+    t.text    "path"
+    t.integer "parent_cfs_directory_id"
+    t.integer "root_cfs_directory_id"
+  end
+
+  add_index "cfs_directories", ["parent_cfs_directory_id"], name: "index_cfs_directories_on_parent_cfs_directory_id", using: :btree
+  add_index "cfs_directories", ["path"], name: "index_cfs_directories_on_path", using: :btree
+  add_index "cfs_directories", ["root_cfs_directory_id"], name: "index_cfs_directories_on_root_cfs_directory_id", using: :btree
+
   create_table "cfs_file_infos", force: true do |t|
     t.string   "path"
     t.text     "fits_xml"
@@ -84,6 +94,14 @@ ActiveRecord::Schema.define(version: 20140306220612) do
 
   add_index "cfs_file_infos", ["content_type"], name: "index_cfs_file_infos_on_content_type", using: :btree
   add_index "cfs_file_infos", ["path"], name: "index_cfs_file_infos_on_path", unique: true, using: :btree
+
+  create_table "cfs_files", force: true do |t|
+    t.integer "cfs_directory_id"
+    t.string  "name"
+  end
+
+  add_index "cfs_files", ["cfs_directory_id"], name: "index_cfs_files_on_cfs_directory_id", using: :btree
+  add_index "cfs_files", ["name"], name: "index_cfs_files_on_name", using: :btree
 
   create_table "collection_resource_type_joins", force: true do |t|
     t.integer  "collection_id"
@@ -170,8 +188,10 @@ ActiveRecord::Schema.define(version: 20140306220612) do
     t.string   "type"
     t.integer  "package_profile_id"
     t.string   "external_id"
+    t.integer  "cfs_directory_id"
   end
 
+  add_index "file_groups", ["cfs_directory_id"], name: "index_file_groups_on_cfs_directory_id", using: :btree
   add_index "file_groups", ["cfs_root"], name: "index_file_groups_on_cfs_root", unique: true, using: :btree
   add_index "file_groups", ["external_id"], name: "index_file_groups_on_external_id", using: :btree
   add_index "file_groups", ["file_type_id"], name: "index_file_groups_on_file_type_id", using: :btree

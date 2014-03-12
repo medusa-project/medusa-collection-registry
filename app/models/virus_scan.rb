@@ -4,13 +4,13 @@ class VirusScan < ActiveRecord::Base
   belongs_to :file_group
 
   def self.check_file_group(file_group)
-    return unless file_group.cfs_root.present?
-    scan_result = self.run_clam(Cfs.file_path_for(file_group.cfs_root))
+    return unless file_group.cfs_directory.present?
+    scan_result = self.run_clam(file_group.full_cfs_directory_path)
     self.transaction do
       file_group.virus_scans.create(:scan_result => scan_result[:raw_result])
       scan_result[:hits].each do |hit|
-        file_info = CfsFileInfo.find_or_create_by(path: hit[:path])
-        file_info.red_flags.create(:message => "Virus Detected: #{hit[:message]}")
+        file = file_group.ensure_file_at_absolute_path(hit[:path])
+        file.red_flags.create(:message => "Virus Detected: #{hit[:message]}")
       end
     end
   end
@@ -29,7 +29,7 @@ class VirusScan < ActiveRecord::Base
       full_path = fields.first
       message = fields.last.strip
       Hash.new.tap do |h|
-        h[:path] = Cfs.url_path_for(full_path)
+        h[:path] = full_path
         h[:message] = message
       end
     end

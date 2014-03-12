@@ -4,6 +4,7 @@ Feature: CFS FITS integration
   I want to be able to run FITS against files in the CFS directory
 
   Background:
+    Given PENDING
     Given I clear the cfs root directory
     And there is a cfs directory 'dogs/toy-dogs'
     And the collection titled 'Dogs' has file groups with fields:

@@ -4,6 +4,7 @@ Feature: Bit Level File Group virus check
   I want to be able to scan bit level file groups for viruses
 
   Background:
+    Given PENDING
     Given I clear the cfs root directory
     And the repository titled 'Animals' has collections with fields:
       | title |
@@ -16,6 +17,7 @@ Feature: Bit Level File Group virus check
     And the cfs directory 'dogs/images' contains cfs fixture file 'grass.jpg'
 
   Scenario: Run a virus check
+    Given PENDING
     Given I am logged in as an admin
     When I view the collection titled 'Dogs'
     And I click on 'Run' in the virus-scan actions
@@ -23,6 +25,7 @@ Feature: Bit Level File Group virus check
     And the cfs file 'dogs/images/clam.exe' should have 1 red flags
 
   Scenario: Run a virus check as a manager
+    Given PENDING
     Given I am logged in as a manager
     When I view the collection titled 'Dogs'
     And I click on 'Run' in the virus-scan actions

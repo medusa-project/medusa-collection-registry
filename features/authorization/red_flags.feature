@@ -11,7 +11,7 @@ Feature: Red flags authorization
       | name     | type              |
       | pictures | BitLevelFileGroup |
     And I set the cfs root of the file group named 'pictures' to 'dogs'
-    And the cfs file info for the path 'dogs/grass.jpg' has red flags with fields:
+    And the file group named 'pictures' has a cfs file for the path 'grass.jpg' with red flags with fields:
       | message       | notes           |
       | Size red flag | The size is off |
 

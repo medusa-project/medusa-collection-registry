@@ -76,8 +76,8 @@ class FileGroupsController < ApplicationController
 
   def create_virus_scan
     authorize! :create_virus_scan, @file_group
-    if @file_group.cfs_root.present?
-      @alert = "Running virus scan on cfs directory #{@file_group.cfs_root}."
+    if @file_group.cfs_directory.present?
+      @alert = "Running virus scan on cfs directory #{@file_group.cfs_directory.path}."
       Delayed::Job.enqueue(Job::VirusScan.create(:file_group_id => @file_group.id), :priority => 20)
     else
       @alert = 'Selected File Group does not have a cfs root directory'

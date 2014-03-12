@@ -4,6 +4,7 @@ Feature: CFS integration
   I want to be able to work with a CFS file share exposed as a local directory
 
   Background:
+    Given PENDING
     Given I clear the cfs root directory
     And there is a cfs directory 'dogs/pugs'
     And the cfs directory 'dogs' has files:

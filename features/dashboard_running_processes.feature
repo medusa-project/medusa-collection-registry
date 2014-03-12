@@ -21,6 +21,7 @@ Feature: Dashboard running processes display
     And I should not see 'Bats'
 
   Scenario: See running FITS characterizations
+    Given PENDING
     Given the file group named 'Dogs' has cfs root 'files/dogs'
     And the file group named 'Cats' has cfs root 'files/cats'
     And I am running a fits job for the file group named 'Dogs' with 12 files

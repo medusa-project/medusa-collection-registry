@@ -4,6 +4,7 @@ Feature: Red Flag Summary
   I want to be able to view red flags at a variety of levels
 
   Background:
+    Given PENDING
     Given the repository titled 'Animals' has collections with fields:
       | title |
       | Dogs  |

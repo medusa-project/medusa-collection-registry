@@ -4,7 +4,7 @@ And(/^there is a cfs directory '(.*)'$/) do |path|
 end
 
 And(/^I clear the cfs root directory$/) do
-  Dir[File.join(Cfs.root, '*')].each do |entry|
+  Dir[File.join(CfsRoot.instance.path, '*')].each do |entry|
     FileUtils.rm_rf(entry)
   end
 end
@@ -37,16 +37,18 @@ Then(/^I should be viewing the cfs file '(.*)'$/) do |path|
   current_path.should == cfs_show_path(:path => path)
 end
 
-Given(/^the file group named '(.*)' has cfs root '(.*)'$/) do |name, directory|
+Given(/^the file group named '(.*)' has cfs root '(.*)'$/) do |name, path|
   file_group = FileGroup.find_by_name(name)
-  file_group.cfs_root = directory
+  root_directory = FactoryGirl.create(:cfs_directory, :path => path)
+  file_group.cfs_directory = root_directory
   file_group.save!
 end
 
-When(/^I set the cfs root of the file group named '(.*)' to '(.*)'$/) do |name, directory|
+When(/^I set the cfs root of the file group named '(.*)' to '(.*)'$/) do |name, path|
   file_group = FileGroup.find_by_name(name)
-  file_group.cfs_root = directory
-  file_group.save
+  new_root = CfsDirectory.find_by(:path => path) || FactoryGirl.create(:cfs_directory, :path => path)
+  file_group.cfs_directory = new_root
+  file_group.save!
 end
 
 Given(/^the cfs file '(.*)' has FITS xml attached$/) do |path|
@@ -90,11 +92,15 @@ Then(/^I should be on the fits info page for the cfs file '(.*)'$/) do |path|
 end
 
 And(/^the cfs directory '(.*)' contains cfs fixture file '(.*)'$/) do |path, fixture|
-  FileUtils.mkdir_p(Cfs.file_path_for(path))
+  ensure_cfs_path(path)
   FileUtils.copy_file(File.join(Rails.root, 'features', 'fixtures', fixture),
                       cfs_local_path(path, fixture))
 end
 
+def ensure_cfs_path(path)
+  FileUtils.mkdir_p(File.join(CfsRoot.instance.path, path))
+end
+
 def cfs_local_path(*args)
-  File.join(Cfs.root, *args)
+  File.join(CfsRoot.instance.path, *args)
 end

@@ -49,6 +49,7 @@ Feature: Events Summary
       | external_to_bit | delmonte    | 2010-10-11  | scheduled |
 
   Scenario: View collection events
+    Given PENDING
     When I view the collection titled 'Dogs'
     And I click on 'View events'
     Then I should see the events table
@@ -58,6 +59,7 @@ Feature: Events Summary
       | cool note 1 | corn note 1 | Coltrane | delmonte |
 
   Scenario: View collection events as a manager
+    Given PENDING
     Given I relogin as a manager
     When I view the collection titled 'Dogs'
     And I click on 'View events'
@@ -68,6 +70,7 @@ Feature: Events Summary
       | cool note 1 | corn note 1 | Coltrane | delmonte |
 
   Scenario: View collection events as a visitor
+    Given PENDING
     Given I relogin as a visitor
     When I view the collection titled 'Dogs'
     And I click on 'View events'

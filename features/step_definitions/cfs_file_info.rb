@@ -32,7 +32,6 @@ Given(/^the cfs file info for the path '(.*)' has red flags with fields:$/) do |
   end
 end
 
-
 When(/^I view the first red flag for the cfs file info for the path '(.*)'$/) do |path|
   file_info = CfsFileInfo.find_by_path(path)
   visit red_flag_path(file_info.red_flags.first)

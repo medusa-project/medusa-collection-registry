@@ -54,6 +54,7 @@ Feature: File Group Management
     Then I should be on the edit page for the file group named 'images'
 
   Scenario: See related file group
+    Given PENDING
     Given the collection titled 'Dogs' has file groups with fields:
       | name | type              |
       | text | BitLevelFileGroup |
@@ -63,6 +64,7 @@ Feature: File Group Management
       | Ingested from | Ingested to |
 
   Scenario: Navigate to files of a bit level file group
+    Given PENDING
     Given the collection titled 'Dogs' has file groups with fields:
       | name | type              |
       | bit  | BitLevelFileGroup |
