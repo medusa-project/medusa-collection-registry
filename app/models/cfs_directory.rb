@@ -25,7 +25,7 @@ class CfsDirectory < ActiveRecord::Base
 
   #ensure there is a CfsFile object at the given path relative to this directory's path and return it
   def ensure_file_at_relative_path(path)
-    path_components = Pathname.new(path).split.collect { |component| component.to_s }
+    path_components = Pathname.new(path).split.collect(&:to_s)
     file_name = path_components.pop
     ensure_file_with_directory_components(file_name, path_components)
   end
@@ -46,7 +46,48 @@ class CfsDirectory < ActiveRecord::Base
     end
   end
 
+  def find_file_at_relative_path(path)
+    path_components = Pathname.new(path).split.collect(&:to_s)
+    file_name = path_components.pop
+    find_file_with_directory_components(file_name, path_components)
+  end
+
+  def relative_path
+    if self.parent_cfs_directory.blank?
+      self.path
+    else
+      File.join(self.parent_cfs_directory.relative_path, self.path)
+    end
+  end
+
+  #list of all directories above this and self
+  def ancestors_and_self
+    self.ancestors << self
+  end
+
+  #list of all directories above this, excluding self
+  def ancestors
+    self.file_group_root? ? [] : self.parent_cfs_directory.ancestors_and_self
+  end
+
+  def file_group_root?
+    self.parent_cfs_directory.blank?
+  end
+
   protected
+
+  def find_file_with_directory_components(file_name, path_components)
+    directory = self.subdirectory_with_directory_components(path_components)
+    directory.cfs_files.find_by(name: file_name) || (raise RuntimeError, 'File not found')
+  end
+
+  def subdirectory_with_directory_components(path_components)
+    return self if path_components.blank?
+    subdirectory_path = path_components.shift
+    return self if subdirectory_path == '.'
+    subdirectory = self.subdirectories.find_by(path: subdirectory_path) || (raise RuntimeError, 'Subdirectory not found')
+    subdirectory.subdirectory_with_directory_components(path_components)
+  end
 
   def ensure_file_with_directory_components(file_name, path_components)
     if path_components.blank?

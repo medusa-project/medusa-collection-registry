@@ -7,4 +7,29 @@ class CfsFile < ActiveRecord::Base
     self.cfs_directory.repository
   end
 
+  def label
+    self.relative_path
+  end
+
+  def cfs_label
+    self.relative_path
+  end
+
+  def relative_path
+    File.join(self.cfs_directory.relative_path, self.name)
+  end
+
+  def file_group
+    self.cfs_directory.file_group
+  end
+
+  def self.cfs_type
+    'CFS File'
+  end
+
+  #the directories leading up to the file
+  def ancestors
+    self.cfs_directory.ancestors_and_self
+  end
+
 end

@@ -4,7 +4,6 @@ Feature: View virus check
   I want to be able to view the results of a virus check
 
   Background:
-    Given PENDING
     Given I clear the cfs root directory
     And the repository titled 'Animals' has collections with fields:
       | title |
