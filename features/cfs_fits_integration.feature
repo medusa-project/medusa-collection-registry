@@ -18,14 +18,14 @@ Feature: CFS FITS integration
     Given I am logged in as an admin
     When I view the cfs path 'dogs/toy-dogs'
     And I click on 'Create XML'
-    Then I should be viewing the cfs directory 'dogs/toy-dogs'
+    Then I should be viewing the cfs root directory for the file group named 'Toys'
     And the cfs file 'dogs/toy-dogs/text.txt' should have FITS xml attached
 
   Scenario: Run fits on a file as a manager
     Given I am logged in as a manager
     When I view the cfs path 'dogs/toy-dogs'
     And I click on 'Create XML'
-    Then I should be viewing the cfs directory 'dogs/toy-dogs'
+    Then I should be viewing the cfs root directory for the file group named 'Toys'
     And the cfs file 'dogs/toy-dogs/text.txt' should have FITS xml attached
 
   Scenario: Run fits on a file as a visitor

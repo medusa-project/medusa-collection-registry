@@ -54,7 +54,6 @@ Feature: File Group Management
     Then I should be on the edit page for the file group named 'images'
 
   Scenario: See related file group
-    Given PENDING
     Given the collection titled 'Dogs' has file groups with fields:
       | name | type              |
       | text | BitLevelFileGroup |
@@ -64,14 +63,14 @@ Feature: File Group Management
       | Ingested from | Ingested to |
 
   Scenario: Navigate to files of a bit level file group
-    Given PENDING
     Given the collection titled 'Dogs' has file groups with fields:
       | name | type              |
       | bit  | BitLevelFileGroup |
     And the file group named 'bit' has cfs root 'bit/path'
     When I view the collection titled 'Dogs'
     And I click on 'View files'
-    Then I should be viewing the cfs directory 'bit/path'
+    Then I should be viewing the cfs root directory for the file group named 'bit'
+    #Then I should be viewing the cfs directory 'bit/path'
 
   Scenario: See the package profile of a file group in the file groups table
     Given the file group named 'images' has package profile named 'image_package'

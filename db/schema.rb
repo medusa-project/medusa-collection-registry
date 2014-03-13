@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140312143243) do
+ActiveRecord::Schema.define(version: 20140313224433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,12 +96,20 @@ ActiveRecord::Schema.define(version: 20140312143243) do
   add_index "cfs_file_infos", ["path"], name: "index_cfs_file_infos_on_path", unique: true, using: :btree
 
   create_table "cfs_files", force: true do |t|
-    t.integer "cfs_directory_id"
-    t.string  "name"
+    t.integer  "cfs_directory_id"
+    t.string   "name"
+    t.decimal  "size"
+    t.text     "fits_xml"
+    t.datetime "mtime"
+    t.string   "md5_sum"
+    t.string   "content_type"
   end
 
   add_index "cfs_files", ["cfs_directory_id"], name: "index_cfs_files_on_cfs_directory_id", using: :btree
+  add_index "cfs_files", ["content_type"], name: "index_cfs_files_on_content_type", using: :btree
+  add_index "cfs_files", ["mtime"], name: "index_cfs_files_on_mtime", using: :btree
   add_index "cfs_files", ["name"], name: "index_cfs_files_on_name", using: :btree
+  add_index "cfs_files", ["size"], name: "index_cfs_files_on_size", using: :btree
 
   create_table "collection_resource_type_joins", force: true do |t|
     t.integer  "collection_id"

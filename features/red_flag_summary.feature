@@ -4,7 +4,6 @@ Feature: Red Flag Summary
   I want to be able to view red flags at a variety of levels
 
   Background:
-    Given PENDING
     Given the repository titled 'Animals' has collections with fields:
       | title |
       | Dogs  |
@@ -19,17 +18,17 @@ Feature: Red Flag Summary
     And the file group named 'Toys' has cfs root 'dogs/toys'
     And the file group named 'Hot' has cfs root 'dogs/hot'
     And the file group named 'Cool' has cfs root 'cats/cool'
-    And the cfs file info for the path 'dogs/toys/pic.jpg' has red flags with fields:
+    And the file group named 'Toys' has a cfs file for the path 'pic.jpg' with red flags with fields:
       | message         |
       | Bad toy picture |
       | Bad checksum    |
-    And the cfs file info for the path 'dogs/toys/text.pdf' has red flags with fields:
+    And the file group named 'Toys' has a cfs file for the path 'text.pdf' with red flags with fields:
       | message      |
       | Bad toy text |
-    And the cfs file info for the path 'dogs/hot/pic.jpg' has red flags with fields:
+    And the file group named 'Hot' has a cfs file for the path 'pic.jpg' with red flags with fields:
       | message         |
       | Bad hot picture |
-    And the cfs file info for the path 'cats/cool/text.pdf' has red flags with fields:
+    And the file group named 'Cool' has a cfs file for the path 'text.pdf' with red flags with fields:
       | message       |
       | Bad cool text |
 

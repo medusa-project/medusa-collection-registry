@@ -29,9 +29,9 @@ When(/^I view the cfs path '(.*)'$/) do |path|
   visit cfs_show_path(:path => path)
 end
 
-Then(/^I should be viewing the cfs directory '(.*)'$/) do |path|
-  current_path.should == cfs_show_path(:path => path)
-end
+#Then(/^I should be viewing the cfs directory '(.*)'$/) do |path|
+#  current_path.should == cfs_show_path(:path => path)
+#end
 
 Then(/^I should be viewing the cfs file '(.*)'$/) do |path|
   current_path.should == cfs_show_path(:path => path)

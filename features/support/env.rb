@@ -67,14 +67,14 @@ Dir[Rails.root.join('spec/factories/**/*.rb')].each {|f| require f}
 require File.join(Rails.root, 'db', 'seeds')
 
 #make sure jetty is started and clean
-puts 'Preparing test Fedora'
-unless File.exists?(File.join(Rails.root, 'fedora', "hydra-jetty-#{Rails.env}", 'fedora.pid'))
-  puts "fedora.pid file not found. Make sure hydra-jetty is installed and the #{Rails.env} copy is installed and running"
-  exit 0
-end
-ActiveFedora.init
-system('bundle exec rake jetty:delete_objects')
-puts 'Test Fedora ready'
+#puts 'Preparing test Fedora'
+#unless File.exists?(File.join(Rails.root, 'fedora', "hydra-jetty-#{Rails.env}", 'fedora.pid'))
+#  puts "fedora.pid file not found. Make sure hydra-jetty is installed and the #{Rails.env} copy is installed and running"
+#  exit 0
+#end
+#ActiveFedora.init
+#system('bundle exec rake jetty:delete_objects')
+#puts 'Test Fedora ready'
 
 def last_json
   page.source

@@ -6,6 +6,11 @@ And(/^the file group named '(.*)' has a cfs file for the path '(.*)' with red fl
   end
 end
 
+And(/^the file group named '(.*)' has a cfs file for the path '(.*)'$/) do |name, path|
+  file_group = FileGroup.find_by(name: name)
+  file_group.cfs_directory.ensure_file_at_relative_path(path)
+end
+
 When(/^I view the first red flag for the file group named '(.*)' for the cfs file for the path '(.*)'$/) do |name, path|
   file_group = FileGroup.find_by(name: name)
   cfs_file = file_group.cfs_directory.find_file_at_relative_path(path)
@@ -28,4 +33,15 @@ Then(/^I should be viewing the cfs file for the file group named '(.*)' for the 
   file_group = FileGroup.find_by(name: name)
   cfs_file = file_group.cfs_directory.find_file_at_relative_path(path)
   expect(current_path).to eq(cfs_file_path(cfs_file))
+end
+
+And(/^the cfs file at path '(.*)' for the file group named '(.*)' should have (\d+) red flags?$/) do |path, name, count|
+  file_group = FileGroup.find_by(name: name)
+  cfs_file = file_group.cfs_directory.find_file_at_relative_path(path)
+  expect(cfs_file.red_flags.count).to eq(count.to_i)
+end
+
+When(/^I view the cfs file for the file group named '(.*)' for the path '(.*)'$/) do |name, path|
+  file_group = FileGroup.find_by(name: name)
+  visit cfs_file_path(file_group.cfs_file_at_path(path))
 end

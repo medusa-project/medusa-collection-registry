@@ -38,6 +38,10 @@ class CfsDirectory < ActiveRecord::Base
     self.root_cfs_directory
   end
 
+  def owning_file_group
+    self.root_cfs_directory.file_group
+  end
+
   #If the directory doesn't have a parent then it is a root, and this will set it if needed
   def ensure_root
     if self.parent_cfs_directory.blank? and self.root_cfs_directory.blank?
@@ -50,6 +54,11 @@ class CfsDirectory < ActiveRecord::Base
     path_components = Pathname.new(path).split.collect(&:to_s)
     file_name = path_components.pop
     find_file_with_directory_components(file_name, path_components)
+  end
+
+  def find_directory_at_relative_path(path)
+    path_components = Pathname.new(path).split.collect(&:to_s)
+    find_directory_with_directory_components(path_components)
   end
 
   def relative_path
@@ -74,11 +83,33 @@ class CfsDirectory < ActiveRecord::Base
     self.parent_cfs_directory.blank?
   end
 
+  #a list of all subdirectory ids in the tree under and including this directory
+  def recursive_subdirectory_ids
+    if self.file_group_root?
+      CfsDirectory.where(:root_cfs_directory_id => self.id).ids
+    else
+      #for the non root case we actually need to do some work, but we may not need this
+      raise RuntimeError, "Not yet implemented"
+    end
+  end
+
   protected
 
   def find_file_with_directory_components(file_name, path_components)
     directory = self.subdirectory_with_directory_components(path_components)
     directory.cfs_files.find_by(name: file_name) || (raise RuntimeError, 'File not found')
+  end
+
+  def find_directory_with_directory_components(path_components)
+    return self if path_components.blank?
+    current_component = path_components.pop
+    return self.find_directory_with_directory_components(path_components) if (current_component.blank? or (current_component == '.'))
+    subdirectory = self.subdirectories.find_by(path: current_component)
+    if subdirectory
+      return subdirectory.find_directory_with_directory_components(path_components)
+    else
+      raise RuntimeError, "Path component not found"
+    end
   end
 
   def subdirectory_with_directory_components(path_components)

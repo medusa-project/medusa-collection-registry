@@ -20,6 +20,8 @@ Feature: Dashboard running processes display
       | Dogs | Cats |
     And I should not see 'Bats'
 
+  #This may need a new test for the new cfs stuff. Not sure yet how the
+  #FITS will work with that.
   Scenario: See running FITS characterizations
     Given PENDING
     Given the file group named 'Dogs' has cfs root 'files/dogs'

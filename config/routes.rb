@@ -73,6 +73,18 @@ MedusaRails3::Application.routes.draw do
     end
   end
 
+  resources :cfs_files, :only => :show do
+    member do
+      post 'create_fits_xml'
+      get 'fits_xml'
+    end
+  end
+  resources :cfs_directories, :only => :show do
+    member do
+      post 'create_fits_for_tree'
+    end
+  end
+
   #cfs (i.e. server local filesystem)
   get '/cfs/show/*path' => 'cfs#show', format: false, as: :cfs_show
   get '/cfs/show' => 'cfs#show', format: false

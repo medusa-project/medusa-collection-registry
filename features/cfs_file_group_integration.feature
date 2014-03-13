@@ -14,15 +14,13 @@ Feature: CFS file group integration
     And the file group named 'Toys' has cfs root 'dogs/toy-dogs'
 
   Scenario: See file group's cfs root when viewing it
-    Given PENDING
     When I view the file group named 'Toys'
     Then I should see 'toy-dogs'
 
   Scenario: Navigate from file group to its cfs root
-    Given PENDING
     When I view the file group named 'Toys'
     And I click on 'toy-dogs'
-    Then I should be viewing the cfs directory 'dogs/toy-dogs'
+    Then I should be viewing the cfs root directory for the file group named 'Toys'
 
   Scenario: Set file group's cfs root from file group edit view
     Given PENDING

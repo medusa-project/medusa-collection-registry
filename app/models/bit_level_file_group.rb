@@ -4,7 +4,7 @@ class BitLevelFileGroup < FileGroup
   #after_save :schedule_create_cfs_file_infos
   has_many :virus_scans, :dependent => :destroy, :foreign_key => :file_group_id
 
-  #aggregates_red_flags :self => :cfs_red_flags, :label_method => :name
+  aggregates_red_flags :self => :cfs_red_flags, :label_method => :name
 
   belongs_to :cfs_directory
 
@@ -29,6 +29,19 @@ class BitLevelFileGroup < FileGroup
   def ensure_file_at_absolute_path(path)
     self.cfs_directory.ensure_file_at_absolute_path(path)
   end
+
+  #Find the cfs directory at the path relative to the cfs directory root path for this file group
+  #i.e. CfsRoot.path + self.cfs_directory.path
+  def cfs_directory_at_path(path)
+    self.cfs_directory.find_directory_at_relative_path(path)
+  end
+
+  #Find the cfs file at the path relative to the cfs directory root path for this file group
+  #i.e. CfsRoot.path + self.cfs_directory.path
+  def cfs_file_at_path(path)
+    self.cfs_directory.find_file_at_relative_path(path)
+  end
+
   #
   ##It's possible that the string concatenation here is a postgresism, though I think
   ##it is SQL99 standard
@@ -64,11 +77,19 @@ class BitLevelFileGroup < FileGroup
   #  CfsFileInfo.all_for_path(self.cfs_root) if self.cfs_root
   #end
   #
+
   #def cfs_red_flags
   #  return [] unless self.cfs_root
   #  RedFlag.where(:red_flaggable_type => 'CfsFileInfo').
   #      joins('JOIN cfs_file_infos ON red_flags.red_flaggable_id = cfs_file_infos.id').
   #      where('cfs_file_infos.path LIKE ?', self.cfs_root + '/%').load
   #end
+
+  def cfs_red_flags
+    return [] unless self.cfs_directory
+    RedFlag.where(:red_flaggable_type => 'CfsFile').
+        joins('JOIN cfs_files ON red_flags.red_flaggable_id = cfs_files.id').
+        where(:cfs_files => {:cfs_directory_id => self.cfs_directory.recursive_subdirectory_ids})
+  end
 
 end
