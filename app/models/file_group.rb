@@ -119,4 +119,8 @@ class FileGroup < ActiveRecord::Base
     self.collection.repository
   end
 
+  def nullify_cfs_directory
+    self.cfs_directory = nil
+  end
+
 end

@@ -1,5 +1,7 @@
 class ObjectLevelFileGroup < FileGroup
 
+  before_save :nullify_cfs_directory
+
   def storage_level
     'object-level store'
   end
