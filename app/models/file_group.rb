@@ -120,7 +120,7 @@ class FileGroup < ActiveRecord::Base
   end
 
   def nullify_cfs_directory
-    self.cfs_directory = nil
+    self.cfs_directory_id = nil
   end
 
 end
