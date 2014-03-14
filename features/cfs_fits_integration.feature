@@ -6,7 +6,7 @@ Feature: CFS FITS integration
   Background:
     Given PENDING
     Given I clear the cfs root directory
-    And there is a cfs directory 'dogs/toy-dogs'
+    And there is a physical cfs directory 'dogs/toy-dogs'
     And the collection titled 'Dogs' has file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |

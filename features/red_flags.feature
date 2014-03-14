@@ -5,7 +5,7 @@ Feature: Red flags
 
   Background:
     Given I clear the cfs root directory
-    And there is a cfs directory 'dogs'
+    And there is a physical cfs directory 'dogs'
     And the cfs directory 'dogs' contains cfs fixture file 'grass.jpg'
     And the collection titled 'Dogs' has file groups with fields:
       | name     | type              |

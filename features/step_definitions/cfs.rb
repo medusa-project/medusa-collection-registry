@@ -1,5 +1,5 @@
 require 'fileutils'
-And(/^there is a cfs directory '(.*)'$/) do |path|
+And(/^there is a physical cfs directory '(.*)'$/) do |path|
   FileUtils.mkdir_p(cfs_local_path(path))
 end
 

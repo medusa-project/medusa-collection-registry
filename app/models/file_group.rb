@@ -89,6 +89,11 @@ class FileGroup < ActiveRecord::Base
     false
   end
 
+  #override (e.g. by association) in subclasses that do support cfs
+  def cfs_directory
+    nil
+  end
+
   def potential_target_file_groups
     self.collection.file_groups.where(:type => self.class.downstream_types)
   end

@@ -7,7 +7,7 @@ Feature: CFS basic properties
     Given PENDING
     Given I am logged in as an admin
     And I clear the cfs root directory
-    And there is a cfs directory 'dogs/toy-dogs'
+    And there is a physical cfs directory 'dogs/toy-dogs'
     And the collection titled 'Dogs' has file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |

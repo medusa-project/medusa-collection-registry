@@ -1,6 +1,6 @@
 %h1 File Group
 %p.lead Collection: #{link_to @collection.title, @collection}
-- if @file_group.cfs_root
+- if @file_group.cfs_directory
   %p
-    CFS Root: #{link_to @file_group.cfs_root, cfs_show_path(@file_group.cfs_root)}
+    CFS Root: #{link_to @file_group.cfs_directory.path, cfs_directory_path(@file_group.cfs_directory)}
     = link_to 'Create FITS for CFS tree', create_cfs_fits_file_group_path(@file_group), :method => 'post', :class => 'btn'
