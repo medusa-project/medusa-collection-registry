@@ -8,6 +8,7 @@ class CfsDirectory < ActiveRecord::Base
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
 
   validates :path, presence: true
+  validates_uniqueness_of :path, scope: :parent_cfs_directory_id
 
   #two validations are needed because we can't set the root directory to self
   #until after we've saved once. The after_save callback sets this by default

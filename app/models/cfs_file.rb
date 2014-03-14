@@ -3,6 +3,8 @@ class CfsFile < ActiveRecord::Base
 
   has_many :red_flags, :as => :red_flaggable, :dependent => :destroy
 
+  validates_uniqueness_of :name, scope: :cfs_directory_id, allow_blank: false
+
   def repository
     self.cfs_directory.repository
   end

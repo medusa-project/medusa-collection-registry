@@ -27,4 +27,16 @@ Feature: CFS basic properties
     And I remove cfs orphan files under 'dogs/toy-dogs'
     Then there should not be cfs file info for 'dogs/toy-dogs/stuff.txt'
 
+  Scenario: When I create a bit level file group with a cfs directory I am emailed about the initial assessment
+    Given PENDING
+
+  Scenario: When I change the cfs directory of a bit level file group I am emailed about the initial assessment
+    Given PENDING
+
+  Scenario: When a bit level file group has no subdirs/files I can push a button to do an initial assessment
+    Given PENDING
+
+  Scenario: When I do an initial assessment on a bit level file group there should be file objects with file properties
+    Given PENDING
+
 
