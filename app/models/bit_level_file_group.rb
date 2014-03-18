@@ -8,6 +8,8 @@ class BitLevelFileGroup < FileGroup
 
   belongs_to :cfs_directory
 
+  after_save :maybe_schedule_initial_cfs_assessment
+
   def storage_level
     'bit-level store'
   end
@@ -40,6 +42,24 @@ class BitLevelFileGroup < FileGroup
   #i.e. CfsRoot.path + self.cfs_directory.path
   def cfs_file_at_path(path)
     self.cfs_directory.find_file_at_relative_path(path)
+  end
+
+  #If the file group has a new, present value for cfs_directory_id and
+  #an old, blank one then schedule the cfs_assessment.
+  def maybe_schedule_initial_cfs_assessment
+    if self.cfs_directory_id.present? and self.cfs_directory_id_changed? and
+        self.cfs_directory_id_was.blank?
+      self.schedule_initial_cfs_assessment
+    end
+  end
+
+  def schedule_initial_cfs_assessment
+    Job::CfsInitialFileGroupAssessment.create_for(self)
+  end
+
+  def run_initial_cfs_assessment
+    self.cfs_directory.make_initial_tree
+    self.cfs_directory.schedule_initial_assessments
   end
 
   #

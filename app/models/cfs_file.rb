@@ -21,6 +21,10 @@ class CfsFile < ActiveRecord::Base
     File.join(self.cfs_directory.relative_path, self.name)
   end
 
+  def absolute_path
+    File.join(CfsRoot.instance.path, self.relative_path)
+  end
+
   def file_group
     self.cfs_directory.owning_file_group
   end
@@ -32,6 +36,15 @@ class CfsFile < ActiveRecord::Base
   #the directories leading up to the file
   def ancestors
     self.cfs_directory.ancestors_and_self
+  end
+
+  def run_initial_assessment
+    file_info = File.stat(self.absolute_path)
+    self.size = file_info.size
+    self.mtime = file_info.mtime
+    self.content_type = (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream')
+    self.md5_sum = Digest::MD5.file(self.absolute_path).to_s
+    self.save!
   end
 
 end

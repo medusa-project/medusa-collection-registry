@@ -4,39 +4,25 @@ Feature: CFS basic properties
   I want to have basic file properties found and stored
 
   Background:
-    Given PENDING
     Given I am logged in as an admin
-    And I clear the cfs root directory
-    And there is a physical cfs directory 'dogs/toy-dogs'
     And the collection titled 'Dogs' has file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |
-    And the cfs directory 'dogs/toy-dogs' has a file 'stuff.txt' with contents 'Toy dog stuff'
-
-  Scenario: Setting CFS directory for a file group runs basic file properties on owned files
-    Given PENDING
-    When I set the cfs root of the file group named 'Toys' to 'dogs/toy-dogs'
-    Then the cfs file 'dogs/toy-dogs/stuff.txt' should have size '13'
-    And the cfs file 'dogs/toy-dogs/stuff.txt' should have content type 'text/plain'
-    And the cfs file 'dogs/toy-dogs/stuff.txt' should have md5 sum '36dc5ffa0b229e9311cf0c4485b21a54'
-
-  Scenario: When a file is removed from CFS we can remove its CfsFileInfo counterpart
-    Given PENDING
-    When I set the cfs root of the file group named 'Toys' to 'dogs/toy-dogs'
-    And I remove the cfs path 'dogs/toy-dogs/stuff.txt'
-    And I remove cfs orphan files under 'dogs/toy-dogs'
-    Then there should not be cfs file info for 'dogs/toy-dogs/stuff.txt'
-
-  Scenario: When I create a bit level file group with a cfs directory I am emailed about the initial assessment
-    Given PENDING
-
-  Scenario: When I change the cfs directory of a bit level file group I am emailed about the initial assessment
-    Given PENDING
-
-  Scenario: When a bit level file group has no subdirs/files I can push a button to do an initial assessment
-    Given PENDING
+    And I clear the cfs root directory
+    And the physical cfs directory 'dogs/toy-dogs' has a file 'stuff.txt' with contents 'Toy dog stuff'
+    And the physical cfs directory 'dogs/toy-dogs/chihuahuas' has a file 'freakdog.xml' with contents '<?xml version="1.0" encoding="utf-8"?><freak>dog</freak>'
+    And the file group named 'Toys' has cfs root 'dogs/toy-dogs'
 
   Scenario: When I do an initial assessment on a bit level file group there should be file objects with file properties
-    Given PENDING
-
+   # When I run an initial cfs file assessment on the file group named 'Toys'
+    Then the file group named 'Toys' has a cfs file for the path 'stuff.txt' with results:
+      | size         | 13.0                             |
+      | name         | stuff.txt                        |
+      | content_type | text/plain                       |
+      | md5_sum      | 36dc5ffa0b229e9311cf0c4485b21a54 |
+    And the file group named 'Toys' has a cfs file for the path 'chihuahuas/freakdog.xml' with results:
+      | size         | 56.0                             |
+      | name         | freakdog.xml                     |
+      | content_type | application/xml                  |
+      | md5_sum      | 9972d3c67a1155d5694c6647e1e2dafc |
 

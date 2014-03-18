@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140313224433) do
+ActiveRecord::Schema.define(version: 20140318193904) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -211,6 +211,21 @@ ActiveRecord::Schema.define(version: 20140313224433) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "job_cfs_initial_directory_assessments", force: true do |t|
+    t.integer "file_group_id"
+    t.integer "cfs_directory_id"
+    t.integer "file_count"
+  end
+
+  add_index "job_cfs_initial_directory_assessments", ["cfs_directory_id"], name: "index_job_cfs_initial_directory_assessments_on_cfs_directory_id", using: :btree
+  add_index "job_cfs_initial_directory_assessments", ["file_group_id"], name: "index_job_cfs_initial_directory_assessments_on_file_group_id", using: :btree
+
+  create_table "job_cfs_initial_file_group_assessments", force: true do |t|
+    t.integer "file_group_id"
+  end
+
+  add_index "job_cfs_initial_file_group_assessments", ["file_group_id"], name: "index_job_cfs_initial_file_group_assessments_on_file_group_id", using: :btree
 
   create_table "job_fits_directory_trees", force: true do |t|
     t.string   "path"

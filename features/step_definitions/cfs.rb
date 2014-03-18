@@ -15,7 +15,8 @@ And(/^the cfs directory '(.*)' has files:$/) do |path, table|
   end
 end
 
-And(/^the cfs directory '(.*)' has a file '(.*)' with contents '(.*)'$/) do |directory, file, contents|
+And(/^the physical cfs directory '(.*)' has a file '(.*)' with contents '(.*)'$/) do |directory, file, contents|
+  step "there is a physical cfs directory '#{directory}'"
   File.open(cfs_local_path(directory, file), 'w') do |f|
     f.write contents
   end

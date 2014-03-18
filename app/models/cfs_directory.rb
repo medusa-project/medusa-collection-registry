@@ -31,6 +31,11 @@ class CfsDirectory < ActiveRecord::Base
     ensure_file_with_directory_components(file_name, path_components)
   end
 
+  def ensure_directory_at_relative_path(path)
+    path_components = Pathname.new(path).split.collect(&:to_s)
+    ensure_directory_with_directory_components(path_components)
+  end
+
   def repository
     self.file_group_root.file_group.repository
   end
@@ -70,6 +75,10 @@ class CfsDirectory < ActiveRecord::Base
     end
   end
 
+  def absolute_path
+    File.join(CfsRoot.instance.path, self.relative_path)
+  end
+
   #list of all directories above this and self
   def ancestors_and_self
     self.ancestors << self
@@ -94,7 +103,53 @@ class CfsDirectory < ActiveRecord::Base
     end
   end
 
+  def make_initial_tree
+    Dir.chdir(self.absolute_path) do
+      #create the entire directory tree under this directory
+      entries = ((Dir['*'] + Dir['.*']) - ['.', '..']).reject { |entry| File.symlink?(entry) }
+      entries.select { |entry| File.file?(entry) }.each do |entry|
+        self.ensure_file_at_relative_path(entry)
+      end
+      entries.select { |entry| File.directory?(entry) }.each do |entry|
+        self.ensure_directory_at_relative_path(entry)
+      end
+    end
+    self.subdirectories(true).each do |directory|
+      directory.make_initial_tree
+    end
+  end
+
+  def schedule_initial_assessments
+    #walk the directory tree under and including this directory and schedule an
+    #initial assessment for each directory
+    self.each_directory_in_tree(true) do |directory|
+      Job::CfsInitialDirectoryAssessment.create_for(directory, self.owning_file_group)
+    end
+  end
+
+  def run_initial_assessment
+    self.cfs_files.each do |cfs_file|
+      cfs_file.run_initial_assessment
+    end
+  end
+
   protected
+
+  #yield each CfsDirectory in the tree to the block.
+  def each_directory_in_tree(include_self = true)
+    #for roots we can do this easily - for non roots we need to do it
+    #recursively
+    if self.file_group_root?
+      directories = CfsDirectory.where(root_cfs_directory_id: self.id)
+    else
+      raise RuntimeError, 'Not yet implemented'
+      #directories = ??
+    end
+    (directories = directories - [self]) unless include_self
+    directories.each do |directory|
+      yield directory
+    end
+  end
 
   def find_file_with_directory_components(file_name, path_components)
     directory = self.subdirectory_with_directory_components(path_components)
@@ -116,7 +171,7 @@ class CfsDirectory < ActiveRecord::Base
   def subdirectory_with_directory_components(path_components)
     return self if path_components.blank?
     subdirectory_path = path_components.shift
-    return self if subdirectory_path == '.'
+    return subdirectory_with_directory_components(path_components) if subdirectory_path == '.'
     subdirectory = self.subdirectories.find_by(path: subdirectory_path) || (raise RuntimeError, 'Subdirectory not found')
     subdirectory.subdirectory_with_directory_components(path_components)
   end
@@ -130,9 +185,22 @@ class CfsDirectory < ActiveRecord::Base
         self.ensure_file_with_directory_components(file_name, path_components)
       else
         subdirectory = self.subdirectories.find_or_create_by(:path => subdirectory_path,
-          :parent_cfs_directory => self, :root_cfs_directory => self.root_cfs_directory)
+                                                             :parent_cfs_directory => self, :root_cfs_directory => self.root_cfs_directory)
         subdirectory.ensure_file_with_directory_components(file_name, path_components)
       end
+    end
+  end
+
+  def ensure_directory_with_directory_components(path_components)
+    #do nothing if there are no path components
+    return if path_components.blank?
+    subdirectory_path = path_components.shift
+    if subdirectory_path == '.'
+      self.ensure_directory_with_directory_components(path_components)
+    else
+      subdirectory = self.subdirectories.find_or_create_by(:path => subdirectory_path,
+                                                           :parent_cfs_directory => self, :root_cfs_directory => self.root_cfs_directory)
+      subdirectory.ensure_directory_with_directory_components(path_components)
     end
   end
 
