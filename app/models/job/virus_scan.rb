@@ -5,8 +5,4 @@ class Job::VirusScan < ActiveRecord::Base
     VirusScan.check_file_group(FileGroup.find(self.file_group))
   end
 
-  def success(job)
-    self.destroy
-  end
-
 end

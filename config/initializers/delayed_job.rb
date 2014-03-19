@@ -11,3 +11,6 @@ Delayed::Worker.default_priority = 50
 if Rails.env.development?
   Delayed::Worker.sleep_delay = 60
 end
+
+#Keep failed jobs so we can diagnose
+Delayed::Worker.destroy_failed_jobs = false

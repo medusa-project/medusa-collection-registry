@@ -12,8 +12,4 @@ class Job::CfsInitialDirectoryAssessment < ActiveRecord::Base
     self.cfs_directory.run_initial_assessment
   end
 
-  def success(job)
-    self.destroy
-  end
-
 end
