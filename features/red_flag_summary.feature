@@ -15,6 +15,9 @@ Feature: Red Flag Summary
     And the collection titled 'Cats' has file groups with fields:
       | name | type              |
       | Cool | BitLevelFileGroup |
+    And there is a physical cfs directory 'dogs/toys'
+    And there is a physical cfs directory 'dogs/hot'
+    And there is a physical cfs directory 'cats/cool'
     And the file group named 'Toys' has cfs root 'dogs/toys'
     And the file group named 'Hot' has cfs root 'dogs/hot'
     And the file group named 'Cool' has cfs root 'cats/cool'

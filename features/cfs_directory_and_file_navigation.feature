@@ -5,13 +5,13 @@ Feature: CFS integration
 
   Background:
     Given I clear the cfs root directory
+    And the physical cfs directory 'dogs' has a file 'intro.txt' with contents 'anything'
+    And the physical cfs directory 'dogs/pugs' has a file 'picture.jpg' with contents 'anything'
+    And the physical cfs directory 'dogs/pugs' has a file 'description.txt' with contents 'anything'
     And the collection titled 'Animals' has file groups with fields:
       | name | type              |
       | Dogs | BitLevelFileGroup |
     And the file group named 'Dogs' has cfs root 'dogs'
-    And the file group named 'Dogs' has a cfs file for the path 'intro.txt'
-    And the file group named 'Dogs' has a cfs file for the path 'pugs/picture.jpg'
-    And the file group named 'Dogs' has a cfs file for the path 'pugs/description.txt'
 
   Scenario: View CFS directory as an admin
     Given I am logged in as an admin

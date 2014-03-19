@@ -66,6 +66,7 @@ Feature: File Group Management
     Given the collection titled 'Dogs' has file groups with fields:
       | name | type              |
       | bit  | BitLevelFileGroup |
+    And there is a physical cfs directory 'bit/path'
     And the file group named 'bit' has cfs root 'bit/path'
     When I view the collection titled 'Dogs'
     And I click on 'View files'
