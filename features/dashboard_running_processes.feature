@@ -33,3 +33,6 @@ Feature: Dashboard running processes display
     And I should see all of:
       | Dogs | Cats | files/dogs | files/cats | 12 | 13 |
     And I should not see 'Bats'
+
+  Scenario: Display failed job count
+    Given PENDING
