@@ -1,12 +1,13 @@
 class BitLevelFileGroup < FileGroup
   include RedFlagAggregator
 
-  #after_save :schedule_create_cfs_file_infos
   has_many :virus_scans, :dependent => :destroy, :foreign_key => :file_group_id
 
   aggregates_red_flags :self => :cfs_red_flags, :label_method => :name
 
   belongs_to :cfs_directory
+  has_many :job_fits_directories, :class_name => 'Job::FitsDirectory', foreign_key: :file_group_id
+  has_many :job_cfs_initial_directory_assessments, :class_name => 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
 
   after_save :maybe_schedule_initial_cfs_assessment
 
@@ -60,6 +61,14 @@ class BitLevelFileGroup < FileGroup
   def run_initial_cfs_assessment
     self.cfs_directory.make_initial_tree
     self.cfs_directory.schedule_initial_assessments
+  end
+
+  def running_fits_file_count
+    Job::FitsDirectory.where(file_group_id: self.id).sum(:file_count)
+  end
+
+  def running_initial_assessments_file_count
+    Job::CfsInitialDirectoryAssessment.where(file_group_id: self.id).sum(:file_count)
   end
 
   #

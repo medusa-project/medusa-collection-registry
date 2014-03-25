@@ -51,6 +51,9 @@ Then(/^I should see a table of running fits scans$/) do
   page.should have_selector('table#running_fits_scans')
 end
 
+Then(/^I should see a table of running initial assessment scans$/) do
+  page.should have_selector('table#running_initial_assessment_scans')
+end
 
 Then /^show me the page$/ do
   save_and_open_page

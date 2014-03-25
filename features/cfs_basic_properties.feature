@@ -14,7 +14,6 @@ Feature: CFS basic properties
     And the file group named 'Toys' has cfs root 'dogs/toy-dogs'
 
   Scenario: When I do an initial assessment on a bit level file group there should be file objects with file properties
-   # When I run an initial cfs file assessment on the file group named 'Toys'
     Then the file group named 'Toys' has a cfs file for the path 'stuff.txt' with results:
       | size         | 13.0                             |
       | name         | stuff.txt                        |

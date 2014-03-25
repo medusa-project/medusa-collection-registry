@@ -1,3 +1,5 @@
+require 'rest_client'
+
 class CfsFile < ActiveRecord::Base
   belongs_to :cfs_directory
 
@@ -45,6 +47,22 @@ class CfsFile < ActiveRecord::Base
     self.content_type = (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream')
     self.md5_sum = Digest::MD5.file(self.absolute_path).to_s
     self.save!
+  end
+
+  def ensure_fits_xml
+    if self.fits_xml.blank?
+      self.fits_xml = self.get_fits_xml
+      self.save!
+    end
+  end
+
+  protected
+
+  def get_fits_xml
+    file_path = self.absolute_path.gsub(/^\/+/, '')
+    resource = RestClient::Resource.new("http://localhost:4567/fits/file/#{file_path}")
+    response = resource.get
+    response.body
   end
 
 end

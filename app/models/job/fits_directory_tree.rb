@@ -1,13 +1,15 @@
 class Job::FitsDirectoryTree < ActiveRecord::Base
-  has_many :fits_files
 
-  def perform
-    Cfs.ensure_fits_for_tree(self.path, self)
+  belongs_to :file_group
+  belongs_to :cfs_directory
+
+  def self.create_for(cfs_directory)
+    Delayed::Job.enqueue(self.new(cfs_directory: cfs_directory, file_group: cfs_directory.owning_file_group),
+                         priority: 60)
   end
 
-  #if this corresponds to a file group then return it, else nil
-  def file_group
-    FileGroup.find_by_cfs_root(self.path)
+  def perform
+    self.cfs_directory.schedule_fits
   end
 
 end

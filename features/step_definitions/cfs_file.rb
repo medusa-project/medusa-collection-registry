@@ -58,3 +58,21 @@ Then(/^the file group named '(.*)' has a cfs file for the path '(.*)' with resul
     expect(cfs_file.send(field).to_s).to eq(value)
   end
 end
+
+And(/^the file group named '(.*)' should have a cfs file for the path '(.*)' with fits attached$/) do |name, path|
+  file_group = FileGroup.find_by(name: name)
+  cfs_file = file_group.cfs_file_at_path(path)
+  expect(cfs_file.fits_xml).not_to be_blank
+end
+
+Then(/^I should be on the fits info page for the cfs file at path '(.*)' for the file group named '(.*)'$/) do |path, name|
+  file_group = FileGroup.find_by(name: name)
+  cfs_file = file_group.cfs_file_at_path(path)
+  expect(current_path).to eql(fits_xml_cfs_file_path(cfs_file))
+end
+
+And(/^the cfs file at path '(.*)' for the file group named '(.*)' has fits attached$/) do |path, name|
+  file_group = FileGroup.find_by(name: name)
+  cfs_file = file_group.cfs_file_at_path(path)
+  cfs_file.ensure_fits_xml
+end

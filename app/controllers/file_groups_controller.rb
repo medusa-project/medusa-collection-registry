@@ -66,10 +66,10 @@ class FileGroupsController < ApplicationController
 
   def create_cfs_fits
     authorize! :create_cfs_fits, @file_group
-    if @file_group.cfs_root.present?
-      Delayed::Job.enqueue(Job::FitsDirectoryTree.create(:path => @file_group.cfs_root), :priority => 50)
+    if @file_group.cfs_directory.present?
+      Job::FitsDirectoryTree.create_for(@file_group.cfs_directory)
       record_event(@file_group, 'cfs_fits_performed')
-      flash[:notice] = "Scheduling FITS creation for /#{@file_group.cfs_root}"
+      flash[:notice] = "Scheduling FITS creation for /#{@file_group.cfs_directory.relative_path}"
       redirect_to @file_group
     end
   end
