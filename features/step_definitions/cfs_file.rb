@@ -11,6 +11,20 @@ And(/^the file group named '(.*)' has a cfs file for the path '(.*)'$/) do |name
   file_group.cfs_directory.ensure_file_at_relative_path(path)
 end
 
+And(/^the file group named '(.*)' has a cfs file for the path '(.*)' with fields:$/) do |name, path, table|
+  file_group = FileGroup.find_by(name: name)
+  file = file_group.cfs_directory.ensure_file_at_relative_path(path)
+  file.update_attributes!(table.hashes.first)
+end
+
+Then(/^the cfs file at path '(.*)' for the file group named '(.*)' should have fields:$/) do |path, name, table|
+  file_group = FileGroup.find_by(name: name)
+  file = file_group.cfs_directory.ensure_file_at_relative_path(path)
+  table.hashes.first.each do |k, v|
+    expect(file.send(k).to_s).to eq(v)
+  end
+end
+
 When(/^I view the first red flag for the file group named '(.*)' for the cfs file for the path '(.*)'$/) do |name, path|
   file_group = FileGroup.find_by(name: name)
   cfs_file = file_group.cfs_directory.find_file_at_relative_path(path)
@@ -75,4 +89,10 @@ And(/^the cfs file at path '(.*)' for the file group named '(.*)' has fits attac
   file_group = FileGroup.find_by(name: name)
   cfs_file = file_group.cfs_file_at_path(path)
   cfs_file.ensure_fits_xml
+end
+
+And(/^the cfs file at path '(.*)' for the file group named '(.*)' has fits rerun$/) do |path, name|
+  file_group = FileGroup.find_by(name: name)
+  cfs_file = file_group.cfs_file_at_path(path)
+  cfs_file.update_fits_xml
 end

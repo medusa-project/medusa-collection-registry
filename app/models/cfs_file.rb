@@ -51,8 +51,45 @@ class CfsFile < ActiveRecord::Base
 
   def ensure_fits_xml
     if self.fits_xml.blank?
-      self.fits_xml = self.get_fits_xml
-      self.save!
+      self.update_fits_xml
+    end
+  end
+
+  def update_fits_xml
+    self.fits_xml = self.get_fits_xml
+    self.update_fields_from_fits
+    self.save!
+  end
+
+  def update_fields_from_fits
+    doc = Nokogiri::XML::Document.parse(self.fits_xml)
+    update_size_from_fits(doc.at_css('fits fileinfo size').text.to_d)
+    update_md5_sum_from_fits(doc.at_css('fits fileinfo md5checksum').text)
+    update_content_type_from_fits(doc.at_css('fits identification identity')['mimetype'])
+  end
+
+  def update_size_from_fits(new_size)
+    if size != new_size
+      self.red_flags.create(:message => "Size changed. Old: #{self.size} New: #{new_size}") unless self.size.blank?
+      self.size = new_size
+    end
+  end
+
+  def update_md5_sum_from_fits(new_md5_sum)
+    if self.md5_sum != new_md5_sum
+      self.red_flags.create(:message => "Md5 Sum changed. Old: #{self}.md5_sum} New: #{new_md5_sum}}") unless self.md5_sum.blank?
+      self.md5_sum = new_md5_sum
+    end
+
+    def update_content_type_from_fits(new_content_type)
+      if self.content_type != new_content_type
+        #For this one we don't report a red flag if this is the first generation of
+        #the fits xml overwriting the content type found by the 'file' command
+        unless self.content_type.blank? or self.fits_xml_was.blank?
+          self.red_flags.create(:message => "Content Type changed. Old: #{self.content_type} New: #{new_content_type}")
+        end
+      end
+      self.content_type = new_content_type
     end
   end
 
