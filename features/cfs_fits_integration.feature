@@ -43,20 +43,22 @@ Feature: CFS FITS integration
 
   Scenario: View fits on a file as a manager
     Given I am logged in as a manager
-    Given the cfs file 'dogs/toy-dogs/text.txt' has FITS xml attached
-    When I view fits for the cfs file 'dogs/toy-dogs/text.txt'
-    Then I should be on the fits info page for the cfs file 'dogs/toy-dogs/text.txt'
+    And the cfs file at path 'text.txt' for the file group named 'Toys' has fits attached
+    When I view the cfs directory for the file group named 'Toys' for the path '.'
+    And I click on 'View XML'
+    Then I should be on the fits info page for the cfs file at path 'text.txt' for the file group named 'Toys'
 
   Scenario: View fits on a file as a visitor
     Given I am logged in as a visitor
-    Given the cfs file 'dogs/toy-dogs/text.txt' has FITS xml attached
-    When I view fits for the cfs file 'dogs/toy-dogs/text.txt'
-    Then I should be on the fits info page for the cfs file 'dogs/toy-dogs/text.txt'
+    And the cfs file at path 'text.txt' for the file group named 'Toys' has fits attached
+    When I view the cfs directory for the file group named 'Toys' for the path '.'
+    And I click on 'View XML'
+    Then I should be on the fits info page for the cfs file at path 'text.txt' for the file group named 'Toys'
 
   Scenario: View fits on a file as a public user
     Given I am not logged in
-    Given the cfs file 'dogs/toy-dogs/text.txt' has FITS xml attached
-    When I view fits for the cfs file 'dogs/toy-dogs/text.txt'
+    And the cfs file at path 'text.txt' for the file group named 'Toys' has fits attached
+    When I view the cfs directory for the file group named 'Toys' for the path '.'
     Then I should be on the login page
 
   Scenario: Run fits on a whole directory tree

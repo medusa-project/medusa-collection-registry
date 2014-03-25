@@ -30,10 +30,6 @@ When(/^I view the cfs path '(.*)'$/) do |path|
   visit cfs_show_path(:path => path)
 end
 
-#Then(/^I should be viewing the cfs directory '(.*)'$/) do |path|
-#  current_path.should == cfs_show_path(:path => path)
-#end
-
 Then(/^I should be viewing the cfs file '(.*)'$/) do |path|
   current_path.should == cfs_show_path(:path => path)
 end
@@ -52,44 +48,12 @@ When(/^I set the cfs root of the file group named '(.*)' to '(.*)'$/) do |name, 
   file_group.save!
 end
 
-Given(/^the cfs file '(.*)' has FITS xml attached$/) do |path|
-  FactoryGirl.create(:cfs_file_info, :path => path, :fits_xml => '<fits/>')
-end
-
-When(/^I create FITS for the cfs path '(.*)'$/) do |path|
-  Cfs.ensure_fits_for(path)
-end
-
-When(/^I update FITS for the cfs path '(.*)'$/) do |path|
-  Cfs.update_fits_for(path)
-end
-
-And(/^the cfs file '(.*)' should have FITS xml attached$/) do |path|
-  CfsFileInfo.find_by_path(path).should_not be_false
-end
-
 When(/^I view fits for the cfs file '(.*)'$/) do |path|
   visit cfs_fits_info_path(:path => path)
 end
 
 Then(/^the file group named '(.*)' should have cfs root '(.*)'$/) do |name, path|
   FileGroup.find_by_name(name).cfs_root.should == path
-end
-
-Then(/^the cfs file '(.*)' should have size '(\d+)'$/) do |path, size|
-  CfsFileInfo.find_by_path(path).size.to_i.should == size.to_i
-end
-
-And(/^the cfs file '(.*)' should have content type '(.*)'$/) do |path, content_type|
-  CfsFileInfo.find_by_path(path).content_type.should == content_type
-end
-
-And(/^the cfs file '(.*)' should have md5 sum '(.*)'$/) do |path, md5_sum|
-  CfsFileInfo.find_by_path(path).md5_sum.should == md5_sum
-end
-
-Then(/^I should be on the fits info page for the cfs file '(.*)'$/) do |path|
-  current_path.should == cfs_fits_info_path(:path => path)
 end
 
 And(/^the cfs directory '(.*)' contains cfs fixture file '(.*)'$/) do |path, fixture|

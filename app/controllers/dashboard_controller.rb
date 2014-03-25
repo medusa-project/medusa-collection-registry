@@ -17,8 +17,8 @@ class DashboardController < ApplicationController
 
   def setup_storage
     @storage = Hash.new
-    @storage['bit_level_ingested'] = CfsFileInfo.sum(:size)/(10 ** 9).to_f
-    @storage['bit_level_total'] = CfsFileInfo.sum(:size)/(10 ** 9).to_f
+    @storage['bit_level_ingested'] = 0
+    @storage['bit_level_total'] = 0
     @storage['object_level_total'] = 0
     @storage['total'] = 4000
     @storage['free'] = @storage['total'] - @storage['bit_level_total'] - @storage['object_level_total']

@@ -5,13 +5,14 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
 
   Background:
     Given I am logged in as an admin
-    And there are cfs file infos with fields:
-      | path                  | size    | content_type |
-      | root/big/big_file     | 1111111 |              |
-      | root/small/small_1    | 9208    | text/x-ruby  |
-      | root/small/small_2    | 370891  | image/tiff   |
-      | root/small/small_3    | 7000    | text/x-ruby  |
-      | root/small/tiny/micro | 34467   |              |
+    And PENDING
+#    And there are cfs file infos with fields:
+#      | path                  | size    | content_type |
+#      | root/big/big_file     | 1111111 |              |
+#      | root/small/small_1    | 9208    | text/x-ruby  |
+#      | root/small/small_2    | 370891  | image/tiff   |
+#      | root/small/small_3    | 7000    | text/x-ruby  |
+#      | root/small/tiny/micro | 34467   |              |
 
   Scenario: View file statistics section of dashboard
     When I go to the dashboard
