@@ -15,11 +15,11 @@
                 %th Number of Files
                 %th Size (GB)
           %tbody
-          - list_of_bit_file_formats.each do |tf|
+          - list_of_bit_file_formats.each do |content_type|
             %tr
-              %td= tf
-              %td= number_with_delimiter(file_count_bits_type_format(tf))
-              %td= number_with_delimiter(size_bits_type_format(tf))
+              %td= content_type
+              %td= file_count_bits_type_format(content_type).to_formatted_s(:delimited)
+              %td= size_bits_type_format(content_type).to_formatted_s(:human_size, precision: 3)
       %td.file_stats_separator
 
       %td
@@ -33,11 +33,11 @@
                 %th Number of Files
                 %th Size (GB)
           %tbody
-          - list_of_object_file_formats.each do |tf|
+          - list_of_object_file_formats.each do |content_type|
             %tr
-              %td= tf
-              %td= number_with_delimiter(file_count_objects_type_format(tf))
-              %td= number_with_delimiter(size_objects_type_format(tf))
+              %td= content_type
+              %td= file_count_objects_type_format(content_type).to_formatted_s(:delimited)
+              %td= size_objects_type_format(content_type).to_formatted_s(:delimited)
     %tr
 
     %tr
@@ -45,19 +45,19 @@
         %tr
           %th{:colspan => 2}
             Total Bit Preservation Files:
-          %td= number_with_delimiter(file_count_bits_total)
+          %td= file_count_bits_total.to_formatted_s(:delimited)
           %td
 
           %th{:colspan => 2}
             Total Object Preservation Files:
-          %td= number_with_delimiter(file_count_objects_total)
+          %td= file_count_objects_total.to_formatted_s(:delimited)
 
         %tr
           %th{:colspan => 2}
-            Total Bit Preservation GB:
-          %td= number_with_delimiter(size_bits_total)
+            Total Bit Preservation Size:
+          %td= size_bits_total.to_formatted_s(:human_size, precision: 3)
           %td
 
           %th{:colspan => 2}
-            Total Object Preservation GB:
-          %td= number_with_delimiter(size_objects_total)
+            Total Object Preservation Size:
+          %td= size_objects_total.to_formatted_s(:human_size, precision: 3)

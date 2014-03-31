@@ -13,22 +13,21 @@ module DashboardHelper
   #just use SQL directly for this.
   def list_of_bit_file_formats
     # return list of unique content types
-    CfsFile.pluck(:content_type).uniq
+    CfsFile.pluck(:content_type).uniq.sort
   end
 
-  def size_bits_type_format (ct)
+  def size_bits_type_format (content_type)
     # only active records of certain format that have been ingested
-    number_with_precision(CfsFile.where(:content_type => ct).sum(:size)/1000000.0, :precision => 4)
+    CfsFile.where(:content_type => content_type).sum(:size)
   end
 
-  def file_count_bits_type_format (ct)
+  def file_count_bits_type_format (content_type)
     # only active records of certain format that have been ingested
-    CfsFile.where(:content_type => ct).count
+    CfsFile.where(:content_type => content_type).count
   end
 
   def size_bits_total
-    # only active records that have been ingested
-    number_with_precision(CfsFile.sum(:size) / 1000000.0, :precision => 4)
+    CfsFile.sum(:size)
   end
 
   def file_count_bits_total
@@ -55,7 +54,7 @@ module DashboardHelper
 
   def size_objects_total
     # only active records that have been ingested
-    number_with_precision(0.0, :precision => 4)
+    0
   end
 
   def file_count_objects_total
