@@ -38,14 +38,6 @@ GIT
       omniauth (>= 1.0.0)
 
 GIT
-  remote: git://github.com/panter/delayed_job_active_record.git
-  revision: d4e53f3560de68928ab5be4d981a7643cdd88181
-  specs:
-    delayed_job_active_record (4.0.0)
-      activerecord (>= 3.0, < 4.1)
-      delayed_job (>= 3.0, < 4.1)
-
-GIT
   remote: git://github.com/thoughtbot/paperclip.git
   revision: 1d8982325fb43ee654b9476b34213a37429d7e22
   specs:
@@ -54,6 +46,14 @@ GIT
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.0)
       mime-types
+
+GIT
+  remote: git@github.com:panterch/delayed_job_active_record.git
+  revision: d4e53f3560de68928ab5be4d981a7643cdd88181
+  specs:
+    delayed_job_active_record (4.0.0)
+      activerecord (>= 3.0, < 4.1)
+      delayed_job (>= 3.0, < 4.1)
 
 GIT
   remote: https://github.com/francisd/rails3-jquery-autocomplete
