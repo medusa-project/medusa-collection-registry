@@ -11,6 +11,10 @@ class BitLevelFileGroup < FileGroup
 
   after_save :maybe_schedule_initial_cfs_assessment
 
+  def create_cfs_file_infos
+    #TODO nothing - exists to clear some delayed jobs, then delete this method
+  end
+
   def storage_level
     'bit-level store'
   end
