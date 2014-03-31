@@ -31,7 +31,8 @@ gem 'jbuilder'
 #custom gem that uses a web service to generate fits.
 gem 'fits', '~> 1.0.6', :git => 'git://github.com/medusa-project/fits.git'
 
-gem 'delayed_job_active_record'
+#fixes a problem caused by our old postgres version
+gem 'delayed_job_active_record', :git => 'git@github.com:panter/delayed_job_active_record.git'
 gem 'daemons'
 
 # Gems used only for assets and not required
