@@ -48,14 +48,6 @@ GIT
       mime-types
 
 GIT
-  remote: git@github.com:panterch/delayed_job_active_record.git
-  revision: d4e53f3560de68928ab5be4d981a7643cdd88181
-  specs:
-    delayed_job_active_record (4.0.0)
-      activerecord (>= 3.0, < 4.1)
-      delayed_job (>= 3.0, < 4.1)
-
-GIT
   remote: https://github.com/francisd/rails3-jquery-autocomplete
   revision: 9884a40f2bb1a8fa3ffab445e6d2c74c3ee99a0d
   specs:
@@ -155,6 +147,9 @@ GEM
     database_cleaner (1.2.0)
     delayed_job (4.0.0)
       activesupport (>= 3.0, < 4.1)
+    delayed_job_active_record (4.0.0)
+      activerecord (>= 3.0, < 4.1)
+      delayed_job (>= 3.0, < 4.1)
     deprecation (0.0.5)
       activesupport
     diff-lcs (1.2.4)
@@ -401,7 +396,7 @@ DEPENDENCIES
   daemons
   dalli
   database_cleaner
-  delayed_job_active_record!
+  delayed_job_active_record
   factory_girl
   fits (~> 1.0.6)!
   haml
