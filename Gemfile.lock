@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/medusa-project/delayed_job_active_record.git
+  revision: aba0580583849aa2a3a69f0d168086c043b9b95b
+  specs:
+    delayed_job_active_record (4.0.0)
+      activerecord (>= 3.0, < 4.1)
+      delayed_job (>= 3.0, < 4.1)
+
+GIT
   remote: git://github.com/medusa-project/fits.git
   revision: 1d8620943d7cb44b2690dc368a92f0e3ab6b01eb
   specs:
@@ -147,9 +155,6 @@ GEM
     database_cleaner (1.2.0)
     delayed_job (4.0.0)
       activesupport (>= 3.0, < 4.1)
-    delayed_job_active_record (4.0.0)
-      activerecord (>= 3.0, < 4.1)
-      delayed_job (>= 3.0, < 4.1)
     deprecation (0.0.5)
       activesupport
     diff-lcs (1.2.4)
@@ -396,7 +401,7 @@ DEPENDENCIES
   daemons
   dalli
   database_cleaner
-  delayed_job_active_record
+  delayed_job_active_record!
   factory_girl
   fits (~> 1.0.6)!
   haml
