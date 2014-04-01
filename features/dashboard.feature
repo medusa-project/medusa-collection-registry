@@ -16,12 +16,12 @@ Feature: Collection Registry Dashboard
     When I go to the dashboard
     Then I should be on the dashboard page
 
-  Scenario: External storage summary table
+  Scenario: Storage summary table
     Given I am logged in as an admin
     When I go to the dashboard
-    Then The dashboard should have an external storage table
+    Then The dashboard should have a storage table
 
-  Scenario: External storage summary
+  Scenario: Storage summary
     Given I am logged in as an admin
     Given the repository titled 'Animals' has collections with fields:
       | title |
