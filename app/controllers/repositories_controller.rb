@@ -55,7 +55,7 @@ class RepositoriesController < ApplicationController
   def events
     @scheduled_eventable = @eventable = Repository.find(params[:id])
     @events = @eventable.all_events.sort_by(&:date).reverse
-    @scheduled_events = @scheduled_eventable.all_scheduled_events.sort_by(&:action_date)
+    @scheduled_events = @scheduled_eventable.incomplete_scheduled_events.sort_by(&:action_date)
   end
 
   def edit_ldap_admins

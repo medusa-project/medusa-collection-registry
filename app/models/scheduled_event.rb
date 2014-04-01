@@ -9,6 +9,10 @@ class ScheduledEvent < ActiveRecord::Base
   validates_inclusion_of :state, :in => STATES
   before_validation :ensure_state
 
+  def self.incomplete
+    where("state != 'completed'")
+  end
+
   def message
     self.scheduled_eventable.scheduled_event_message(self.key)
   end

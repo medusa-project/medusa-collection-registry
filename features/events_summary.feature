@@ -23,6 +23,7 @@ Feature: Events Summary
     And the file group named 'Toys' has scheduled events with fields:
       | key             | actor_netid | action_date | state     |
       | external_to_bit | Buster      | 2012-02-02  | scheduled |
+      | external_to_bit | Ruthie      | 2014-02-02  | completed |
     And the file group named 'Hot' has events with fields:
       | note       |
       | hot note 1 |
@@ -55,7 +56,7 @@ Feature: Events Summary
     And I should see all of:
       | toy note 1 | toy note 2 | hot note 1 | Buster | Oscar |
     And I should see none of:
-      | cool note 1 | corn note 1 | Coltrane | delmonte |
+      | cool note 1 | corn note 1 | Coltrane | delmonte | Ruthie |
 
   Scenario: View collection events as a manager
     Given I relogin as a manager
@@ -65,7 +66,7 @@ Feature: Events Summary
     And I should see all of:
       | toy note 1 | toy note 2 | hot note 1 | Buster | Oscar |
     And I should see none of:
-      | cool note 1 | corn note 1 | Coltrane | delmonte |
+      | cool note 1 | corn note 1 | Coltrane | delmonte | Ruthie |
 
   Scenario: View collection events as a visitor
     Given I relogin as a visitor
@@ -85,10 +86,12 @@ Feature: Events Summary
     And I should see all of:
       | toy note 1 | toy note 2 | hot note 1 | cool note 1 | Buster | Oscar | Coltrane |
     And I should see none of:
-      | corn note 1 | delmonte |
+      | corn note 1 | delmonte | Ruthie |
 
   Scenario: View all events
     When I go to the dashboard
     Then I should see the events table
     And I should see all of:
       | toy note 1 | toy note 2 | hot note 1 | cool note 1 | Buster | Oscar | Coltrane | corn note 1 | delmonte | Dogs | Cats |
+    And I should see none of:
+      | Ruthie |

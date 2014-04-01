@@ -123,4 +123,8 @@ class FileGroup < ActiveRecord::Base
     self.cfs_directory_id = nil
   end
 
+  def incomplete_scheduled_events
+    self.scheduled_events.where("state != 'completed'")
+  end
+
 end

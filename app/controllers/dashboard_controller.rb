@@ -40,6 +40,6 @@ class DashboardController < ApplicationController
 
   def setup_events
     @events = Event.order('date DESC').load
-    @scheduled_events = ScheduledEvent.order('action_date ASC').load
+    @scheduled_events = ScheduledEvent.incomplete.order('action_date ASC').load
   end
 end
