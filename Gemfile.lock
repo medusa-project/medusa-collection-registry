@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/medusa-project/delayed_job_active_record.git
-  revision: aba0580583849aa2a3a69f0d168086c043b9b95b
+  revision: 218ca39ae592faa0d736ec6b4147c55cf75de706
   specs:
     delayed_job_active_record (4.0.0)
       activerecord (>= 3.0, < 4.1)
