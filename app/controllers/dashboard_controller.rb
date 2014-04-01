@@ -33,7 +33,7 @@ class DashboardController < ApplicationController
         h[:bit_level_file_size] = bit_level_file_groups.collect { |fg| fg.file_size }.sum
       end
     end
-    @storage_summary.sort! { |a, b| b[:size] <=> a[:size] }
+    @storage_summary.sort! { |a, b| b[:external_size] <=> a[:external_size] }
   end
 
   def setup_events

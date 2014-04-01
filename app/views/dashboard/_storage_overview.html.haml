@@ -18,7 +18,7 @@
           %td.value= @storage_summary.collect{|summary| summary[:uningested_file_count]}.sum
         %tr
           %td Bit Level
-          %td.value= (CfsFile.sum(:size) / 1.gigabyte)
+          %td.value= number_with_precision(CfsFile.sum(:size) / 1.gigabyte, precision: 3)
           %td.value= CfsFile.count
 
 .row
@@ -37,6 +37,6 @@
           %tr
             %td= link_to summary[:repository].title, summary[:repository]
             %td= summary[:external_file_count]
-            %td= number_with_precision(summary[:external_size], precision: 1)
+            %td= number_with_precision(summary[:external_size], precision: 3)
             %td= summary[:bit_level_file_count]
-            %td= number_with_precision(summary[:bit_level_file_size], precision: 1)
+            %td= number_with_precision(summary[:bit_level_file_size], precision: 3)
