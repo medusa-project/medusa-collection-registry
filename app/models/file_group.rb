@@ -129,7 +129,12 @@ class FileGroup < ActiveRecord::Base
 
   #override this as needed for subclasses. Size should be in GB.
   def file_size
-    self.total_file_size
+    self.total_file_size || 0
+  end
+
+  #override as needed for subclasses
+  def file_count
+    self.total_files || 0
   end
 
 end

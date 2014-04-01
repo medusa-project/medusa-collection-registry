@@ -3,8 +3,7 @@ class DashboardController < ApplicationController
   before_filter :require_logged_in
 
   def show
-    setup_storage
-    setup_external_storage
+    setup_storage_summary
     setup_red_flags
     setup_events
   end
@@ -15,31 +14,31 @@ class DashboardController < ApplicationController
     @red_flags = RedFlag.order('created_at DESC').includes(:red_flaggable).load
   end
 
-  def setup_storage
-    @storage = Hash.new
-    @storage['bit_level_ingested'] = 0
-    @storage['bit_level_total'] = 0
-    @storage['object_level_total'] = 0
-    @storage['total'] = 4000
-    @storage['free'] = @storage['total'] - @storage['bit_level_total'] - @storage['object_level_total']
-  end
-
   #TODO - I bet we can do this more efficiently - it'd be easy with SQL, but we can probably do it with arel as well.
-  def setup_external_storage
-    @external_storage_summary = []
+  def setup_storage_summary
+    @storage_summary = []
     Repository.includes(:collections => :file_groups).load.each do |repository|
-      file_groups = repository.collections.collect { |c| c.file_groups.select { |fg| fg.is_a?(ExternalFileGroup) } }.flatten
-      @external_storage_summary << Hash.new.tap do |h|
+      external_file_groups = repository.collections.collect { |c| c.file_groups.select { |fg| fg.is_a?(ExternalFileGroup) } }.flatten
+      uningested_external_file_groups = external_file_groups.reject do |fg|
+        fg.target_file_groups.detect { |target| target.is_a?(BitLevelFileGroup) }
+      end
+      bit_level_file_groups = repository.collections.collect { |c| c.file_groups.select { |fg| fg.is_a?(BitLevelFileGroup) } }.flatten
+      @storage_summary << Hash.new.tap do |h|
         h[:repository] = repository
-        h[:file_count] = file_groups.collect { |fg| fg.total_files || 0 }.sum
-        h[:size] = file_groups.collect { |fg| fg.total_file_size || 0 }.sum
+        h[:external_file_count] = external_file_groups.collect { |fg| fg.file_count }.sum
+        h[:external_size] = external_file_groups.collect { |fg| fg.file_size }.sum
+        h[:uningested_file_count] = uningested_external_file_groups.collect { |fg| fg.file_count }.sum
+        h[:uningested_size] = uningested_external_file_groups.collect { |fg| fg.file_size }.sum
+        h[:bit_level_file_count] = bit_level_file_groups.collect { |fg| fg.file_count }.sum
+        h[:bit_level_file_size] = bit_level_file_groups.collect { |fg| fg.file_size }.sum
       end
     end
-    @external_storage_summary.sort! { |a, b| b[:size] <=> a[:size] }
+    @storage_summary.sort! { |a, b| b[:size] <=> a[:size] }
   end
 
   def setup_events
     @events = Event.order('date DESC').load
     @scheduled_events = ScheduledEvent.incomplete.order('action_date ASC').load
   end
+
 end

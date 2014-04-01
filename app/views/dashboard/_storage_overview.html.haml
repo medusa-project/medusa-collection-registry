@@ -1,29 +1,26 @@
 .row
   .span12
     %table.container.span3
-      %caption DX-Storage
+      %caption Storage
       %thead
         %tr
           %th state
           %th size(GB)
+          %th files
       %tbody
         %tr
-          %td Bit level store(ingested)
-          %td.value= number_with_precision(@storage['bit_level_ingested'], :precision => 2)
+          %td External (total)
+          %td.value= number_with_precision(@storage_summary.collect{|summary| summary[:external_size]}.sum, precision: 1)
+          %td.value= @storage_summary.collect{|summary| summary[:external_file_count]}.sum
         %tr
-          %td Bit level store(total)
-          %td.value= number_with_precision(@storage['bit_level_total'], :precision => 2)
+          %td External (not ingested)
+          %td.value= number_with_precision(@storage_summary.collect{|summary| summary[:uningested_size]}.sum, precision: 1)
+          %td.value= @storage_summary.collect{|summary| summary[:uningested_file_count]}.sum
         %tr
-          %td Object level store
-          %td.value= number_with_precision(@storage['object_level_total'], :precision => 2)
-        %tr
-          %td Free space
-          %td.value= number_with_precision(@storage['free'], :precision => 2)
-    .span3
-      %div#chart_container1.chart_container
+          %td Bit Level
+          %td.value= (CfsFile.sum(:size) / 1.gigabyte)
+          %td.value= CfsFile.count
 
-:javascript
-  var storage_overview = #{@storage.to_json};
 .row
   .span12
     %table#external-storage-overview.table.table-striped
@@ -31,16 +28,15 @@
       %thead
         %tr
           %th Repository
-          %th Total Files
-          %th Size (GB)
+          %th External Files
+          %th External Size (GB)
+          %th Bit Level Files
+          %th Bit Level Size (GB)
       %tbody
-        - @external_storage_summary.each do |summary|
+        - @storage_summary.each do |summary|
           %tr
             %td= link_to summary[:repository].title, summary[:repository]
-            %td= summary[:file_count]
-            %td= number_with_precision(summary[:size], precision: 1)
-        %tr
-          %td
-            %strong Totals:
-          %td= @external_storage_summary.collect{|summary| summary[:file_count]}.sum
-          %td= number_with_precision(@external_storage_summary.collect{|summary| summary[:size]}.sum, precision: 1)
+            %td= summary[:external_file_count]
+            %td= number_with_precision(summary[:external_size], precision: 1)
+            %td= summary[:bit_level_file_count]
+            %td= number_with_precision(summary[:bit_level_file_size], precision: 1)
