@@ -23,7 +23,7 @@ class AttachmentsController < ApplicationController
     description = params[:attachment].delete(:description)
     @attachment.description = description
     @attachment.attachment = params[:attachment][:attachment] if params[:attachment][:attachment]
-    @attachment.author_id = current_user.id
+    @attachment.author = current_user.person
     if @attachment.save
       redirect_to polymorphic_path(@attachable)
     else
@@ -40,8 +40,7 @@ class AttachmentsController < ApplicationController
     klass = attachable_class(params)
     @attachable = klass.find(params[:attachable_id])
     authorize! :create_attachment, @attachable
-    @attachment = Attachment.new(author: Person.find_or_create_by(net_id: current_user.uid),
-                                 attachable: @attachable)
+    @attachment = Attachment.new(author: current_user.person, attachable: @attachable)
   end
 
   def create
@@ -50,7 +49,7 @@ class AttachmentsController < ApplicationController
     authorize! :create_attachment, @attachable
     @attachment = Attachment.new(allowed_params)
     @attachment.attachable = @attachable
-    @attachment.author_id ||= current_user.id
+    @attachment.author ||= current_user.person
     if @attachment.save
       redirect_to polymorphic_path(@attachable)
     else
