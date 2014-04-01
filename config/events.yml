@@ -1,7 +1,6 @@
 file_group:
   external_staged: External file group staged
-  staged_to_bit: Staged files ingest to bit-level store
-  staged_to_object: Staged files ingest to object-level store
+  staged_to_bit: Staged files ingested to bit-level store
   staged_deleted: Staged files deleted
   staged_modified: Staged file group modified
   external_deleted: External file group deleted
@@ -9,4 +8,4 @@ file_group:
   cfs_fits_performed: FITS analysis performed on CFS root
   bit_exported: Bit-level file group exported
   bit_deleted: Bit-level file group deleted
-
+  files_added: Accrual to existing file group
