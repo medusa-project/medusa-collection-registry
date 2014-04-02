@@ -25,6 +25,22 @@ Then(/^the cfs file at path '(.*)' for the file group named '(.*)' should have f
   end
 end
 
+Then(/^I should have downloaded the fixture file '(.*)'$/) do |name|
+  expect(page.response_headers['Content-Disposition']).to match('attachment')
+  expect(page.response_headers['Content-Disposition']).to match(name)
+  expect(page.source).to eq(fixture_file_content(name))
+end
+
+Then(/^I should have viewed the fixture file '(.*)'$/) do |name|
+  expect(page.response_headers['Content-Disposition']).to match('inline')
+  expect(page.response_headers['Content-Disposition']).to match(name)
+  expect(page.source).to eq(fixture_file_content(name))
+end
+
+def fixture_file_content(name)
+  File.binread(File.join(Rails.root,  'features', 'fixtures', name))
+end
+
 When(/^I view the first red flag for the file group named '(.*)' for the cfs file for the path '(.*)'$/) do |name, path|
   file_group = FileGroup.find_by(name: name)
   cfs_file = file_group.cfs_directory.find_file_at_relative_path(path)

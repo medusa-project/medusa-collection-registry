@@ -20,10 +20,12 @@ Feature: Viewing CFS file information and content
   Scenario: Download cfs file
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
     And I click on 'Download'
+    Then I should have downloaded the fixture file 'grass.jpg'
 
   Scenario: View cfs file
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
     And I click on 'View'
+    Then I should have viewed the fixture file 'grass.jpg'
 
   Scenario: Navigate to owning file group
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
