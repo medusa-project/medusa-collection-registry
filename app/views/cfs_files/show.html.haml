@@ -10,5 +10,5 @@
     = show_value 'bit-level', 'Storage level'
     = show_value @file.md5_sum, 'MD5'
     - if @file.size
-      = show_value @filegit .size.to_formatted_s(:human_size, precision: 3), 'File size'
+      = show_value @file.size.to_formatted_s(:human_size, precision: 3), 'File size'
     = show_value @file.content_type, 'Mimetype'
