@@ -96,7 +96,7 @@ class CfsFile < ActiveRecord::Base
   protected
 
   def get_fits_xml
-    file_path = self.absolute_path.gsub(/^\/+/, '')
+    file_path = URI.encode(self.absolute_path.gsub(/^\/+/, ''))
     resource = RestClient::Resource.new("http://localhost:4567/fits/file/#{file_path}")
     response = resource.get
     response.body
