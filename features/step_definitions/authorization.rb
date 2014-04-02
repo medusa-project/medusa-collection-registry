@@ -122,6 +122,7 @@ def check_result(expected_result)
       assert last_response.redirect?
       assert last_response.location.match(/#{login_path}$/)
     when 'redirect to unauthorized'
+      x = last_response
       assert last_response.redirect?
       assert last_response.location.match(/#{unauthorized_path}$/)
     when 'succeed'

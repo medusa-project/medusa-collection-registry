@@ -22,10 +22,38 @@ Feature: Viewing CFS file information and content
     And I click on 'Download'
     Then I should have downloaded the fixture file 'grass.jpg'
 
+  Scenario: Download cfs file as a manager
+    Given I relogin as a manager
+    When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
+    And I click on 'Download'
+    Then I should have downloaded the fixture file 'grass.jpg'
+
   Scenario: View cfs file
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
     And I click on 'View'
     Then I should have viewed the fixture file 'grass.jpg'
+
+  Scenario: View cfs file as a manager
+    Given I relogin as a manager
+    When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
+    And I click on 'View'
+    Then I should have viewed the fixture file 'grass.jpg'
+
+  Scenario: Deny view to visitors
+    Given I relogin as a visitor
+    When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
+    And I click on 'View'
+    Then I should be unauthorized
+
+  Scenario: Deny download to visitors
+    Given I relogin as a visitor
+    When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
+    And I click on 'Download'
+    Then I should be unauthorized
+
+  Scenario: Deny download and view permissions to public and visitors
+    Then deny object permission on the cfs file with name 'grass.jpg' to users for action with redirection:
+      | public user | view, download | authentication |
 
   Scenario: Navigate to owning file group
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
