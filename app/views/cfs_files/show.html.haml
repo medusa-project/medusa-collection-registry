@@ -6,7 +6,9 @@
     = show_value 'bit-level', 'Storage level'
     = show_value @file.md5_sum, 'MD5'
     - if @file_group
-      Belongs to: #{link_to @file_group.name, @file_group}
+      %p
+        %strong Belongs to:
+        #{link_to(@file_group.name, @file_group)}
     - if @file.size
       = show_value @file.size.to_formatted_s(:human_size, precision: 3), 'File size'
     = show_value @file.content_type, 'Mimetype'
