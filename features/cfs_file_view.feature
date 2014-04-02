@@ -26,3 +26,23 @@ Feature: Viewing CFS file information and content
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
     And I click on 'Dogs'
     Then I should be on the view page for the file group named 'Dogs'
+
+  Scenario: See red flags associated with file
+    Given the file group named 'Dogs' has a cfs file for the path 'grass.jpg' with red flags with fields:
+      | message                          |
+      | File format: incorrect extension |
+      | File size: has changed           |
+    When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
+    Then I should see all of:
+      | File format: incorrect extension | File size: has changed |
+
+  Scenario: Create FITS for file
+    When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
+    And I click on 'Create XML'
+    Then the file group named 'Dogs' should have a cfs file for the path 'grass.jpg' with fits attached
+
+  Scenario: View FITS for file
+    Given the cfs file at path 'grass.jpg' for the file group named 'Dogs' has fits attached
+    When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
+    And I click on 'View XML'
+    Then I should be on the fits info page for the cfs file at path 'grass.jpg' for the file group named 'Dogs'
