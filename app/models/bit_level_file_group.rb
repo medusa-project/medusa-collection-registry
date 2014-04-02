@@ -98,4 +98,10 @@ class BitLevelFileGroup < FileGroup
     CfsFile.where(cfs_directory_id: directory_ids).count
   end
 
+  def update_file_statistics
+    self.total_file_size = self.file_size
+    self.total_files = self.file_count
+    self.save!
+  end
+
 end
