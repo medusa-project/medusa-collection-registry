@@ -1,7 +1,7 @@
 class CfsFilesController < ApplicationController
 
   before_filter :require_logged_in
-  before_filter :find_file, :only => [:show, :create_fits_xml, :fits_xml]
+  before_filter :find_file, :only => [:show, :create_fits_xml, :fits_xml, :download, :view]
 
   def show
     @file_group = @file.file_group
@@ -10,7 +10,7 @@ class CfsFilesController < ApplicationController
   def create_fits_xml
     authorize! :create_cfs_fits, @file.file_group
     @file.ensure_fits_xml
-    redirect_to @file.cfs_directory
+    redirect_to :back
   end
 
   def fits_xml
@@ -19,6 +19,16 @@ class CfsFilesController < ApplicationController
     else
       render :text => "Fits XML not present for cfs file #{@file.relative_path}"
     end
+  end
+
+  def download
+    authorize! :download, @file.file_group
+    send_file @file.absolute_path, type: @file.content_type, disposition: 'attachment', filename: @file.name
+  end
+
+  def view
+    authorize! :download, @file.file_group
+    send_file @file.absolute_path, type: @file.content_type, disposition: 'inline', filename: @file.name
   end
 
   protected

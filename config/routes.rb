@@ -77,6 +77,8 @@ MedusaRails3::Application.routes.draw do
     member do
       get 'create_fits_xml'
       get 'fits_xml'
+      get 'download'
+      get 'view'
     end
   end
   resources :cfs_directories, :only => :show do

@@ -19,8 +19,11 @@ Feature: Viewing CFS file information and content
 
   Scenario: Download cfs file
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
-    And I click on 'download'
-    Then PENDING
+    And I click on 'Download'
+
+  Scenario: View cfs file
+    When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
+    And I click on 'View'
 
   Scenario: Navigate to owning file group
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
@@ -40,6 +43,7 @@ Feature: Viewing CFS file information and content
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
     And I click on 'Create XML'
     Then the file group named 'Dogs' should have a cfs file for the path 'grass.jpg' with fits attached
+    And I should be viewing the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
 
   Scenario: View FITS for file
     Given the cfs file at path 'grass.jpg' for the file group named 'Dogs' has fits attached
