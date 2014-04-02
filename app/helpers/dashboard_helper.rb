@@ -13,7 +13,7 @@ module DashboardHelper
   #just use SQL directly for this.
   def list_of_bit_file_formats
     # return list of unique content types
-    CfsFile.pluck(:content_type).uniq.sort
+    CfsFile.where('content_type IS NOT NULL').pluck(:content_type).uniq.sort
   end
 
   def size_bits_type_format (content_type)
