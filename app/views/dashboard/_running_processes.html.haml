@@ -38,7 +38,7 @@
       %th Files remaining
   %tbody
     - BitLevelFileGroup.all.each do |file_group|
-      - if file_group.job_cfs_initial_directory_assessments.count > 0
+      - if file_group.cfs_directory.present? and file_group.job_cfs_initial_directory_assessments.count > 0
         %tr
           %td= file_group.cfs_directory.relative_path
           %td= link_to(file_group.name, polymorphic_path(file_group))
