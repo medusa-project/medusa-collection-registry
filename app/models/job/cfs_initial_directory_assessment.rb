@@ -1,4 +1,4 @@
-class Job::CfsInitialDirectoryAssessment < ActiveRecord::Base
+class Job::CfsInitialDirectoryAssessment < Job::Base
   belongs_to :file_group
   belongs_to :cfs_directory
 

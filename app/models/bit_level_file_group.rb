@@ -9,7 +9,7 @@ class BitLevelFileGroup < FileGroup
   has_many :job_fits_directories, :class_name => 'Job::FitsDirectory', foreign_key: :file_group_id
   has_many :job_cfs_initial_directory_assessments, :class_name => 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
 
-  after_save :maybe_schedule_initial_cfs_assessment
+  after_save :handle_cfs_assessment
 
   def create_cfs_file_infos
     #TODO nothing - exists to clear some delayed jobs, then delete this method
@@ -49,11 +49,21 @@ class BitLevelFileGroup < FileGroup
     self.cfs_directory.find_file_at_relative_path(path)
   end
 
-  #If the file group has a new, present value for cfs_directory_id and
-  #an old, blank one then schedule the cfs_assessment.
-  def maybe_schedule_initial_cfs_assessment
-    if self.cfs_directory_id.present? and self.cfs_directory_id_changed? and
-        self.cfs_directory_id_was.blank?
+  def handle_cfs_assessment
+    #If the file group had a present value for cfs_directory_id before saving
+    #and it changed, then cancel the jobs in the old assessment. It is important
+    #to do it in this order.
+    if self.cfs_directory_id_was.present? and self.cfs_directory_id_changed?
+      Job::CfsInitialFileGroupAssessment.where(file_group_id: self.id).each do |assessment|
+        assessment.destroy_queued_jobs_and_self
+      end
+      Job::CfsInitialDirectoryAssessment.where(file_group_id: self.id, cfs_directory_id: self.cfs_directory_id_was).each do |assessment|
+        assessment.destroy_queued_jobs_and_self
+      end
+    end
+    #If the file group has a new, present value for cfs_directory_id
+    # then schedule the cfs_assessment.
+    if self.cfs_directory_id.present? and self.cfs_directory_id_changed?
       self.schedule_initial_cfs_assessment
     end
   end

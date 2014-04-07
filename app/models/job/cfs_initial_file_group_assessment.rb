@@ -1,4 +1,4 @@
-class Job::CfsInitialFileGroupAssessment < ActiveRecord::Base
+class Job::CfsInitialFileGroupAssessment < Job::Base
   belongs_to :file_group
 
   def self.create_for(file_group)
