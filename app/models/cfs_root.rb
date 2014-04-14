@@ -41,6 +41,7 @@ class CfsRoot
         if cfs_directory.cfs_files.blank? and cfs_directory.subdirectories.blank?
           cfs_directory.destroy!
           all_database_root_hash.delete(path)
+          available_database_root_set.delete(path)
         end
       end
       (available_physical_root_set - available_database_root_set).each do |path|
