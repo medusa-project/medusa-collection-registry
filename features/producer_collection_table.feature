@@ -9,10 +9,10 @@ Feature: Producer collection table
       | title    |
       | Scanning |
     And the repository titled 'Animals' has collections with fields:
-      | title |
-      | Dogs  |
-      | Cats  |
-      | Bears |
+      | title | external_id      |
+      | Dogs  | dog_external_id  |
+      | Cats  |                  |
+      | Bears | bear_external_id |
     And The collection titled 'Dogs' has 2 file groups produced by 'Scanning'
     And The collection titled 'Cats' has 1 file group produced by 'Scanning'
 
@@ -23,8 +23,9 @@ Feature: Producer collection table
   Scenario: Collection table should be correct
     When I view the producer titled 'Scanning'
     Then I should see all of:
-      | Dogs | Cats |
-    And I should not see 'Bears'
+      | Dogs | Cats | dog_external_id |
+    And I should see none of:
+      | Bears | bear_external_id |
     And The table of collections should have 2 rows
 
   Scenario: Collection table should link repository owning each collection

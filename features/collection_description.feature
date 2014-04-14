@@ -103,6 +103,7 @@ Feature: Collection description
     When I go to the collection index page
     Then I should be on the collection index page
     And I should see a list of all collections
+    And I should see 'external-dogs-id'
 
   Scenario: Index of all collections as a manager
     Given I relogin as a manager

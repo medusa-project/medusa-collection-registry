@@ -5,6 +5,7 @@
   %table.table.table-striped#collections
     %thead
       %tr
+        %th External ID
         %th Title
         %th Repository
         %th Contact
@@ -14,6 +15,7 @@
     %tbody
       - @producer.collections.each do |collection|
         %tr
+          %td #{collection.external_id}
           %td #{link_to collection.title, collection}
           %td #{link_to collection.repository.title, collection.repository}
           %td #{net_id_search_link(collection.contact_net_id)}

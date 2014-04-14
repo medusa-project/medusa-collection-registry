@@ -6,13 +6,14 @@ Feature: Collection Management
   Background:
     Given I am logged in as an admin
     And the repository titled 'Sample Repo' has collections with fields:
-      | title             |
-      | Sample Collection |
+      | title             | external_id |
+      | Sample Collection | external_id |
 
   Scenario: View collections of a repository
     When I view the repository titled 'Sample Repo'
     Then I should see the repository collection table
     And I should see 'Sample Collection'
+    And I should see 'external_id'
 
   Scenario: Delete collection from a repository
     When I view the repository titled 'Sample Repo'
