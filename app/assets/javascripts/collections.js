@@ -1,4 +1,3 @@
-initialize_data_table("table#collections");
 initialize_data_table("table#assessments");
 initialize_data_table("table#attachments");
 $(function () {
@@ -6,6 +5,21 @@ $(function () {
     "aaSorting":[
       [0, "desc"]
     ]
+  })
+});
+$(function () {
+  $('table#collections').dataTable({
+    "aaSorting": [
+      [1, "asc"]
+    ],
+    "iDisplayLength": 25,
+    "bStateSave": "true",
+    "fnStateSave": function (oSettings, oData) {
+      localStorage.setItem('DataTables_' + window.location.pathname, JSON.stringify(oData));
+    },
+    "fnStateLoad": function (oSettings) {
+      return JSON.parse(localStorage.getItem('DataTables_' + window.location.pathname));
+    }
   })
 });
 
