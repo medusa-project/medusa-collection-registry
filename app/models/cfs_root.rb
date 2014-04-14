@@ -37,9 +37,9 @@ class CfsRoot
       available_physical_root_set = physical_root_set - used_database_root_set
       (available_database_root_set - available_physical_root_set).each do |path|
         #remove from database if nothing is attached to it
-        file_group = all_database_root_hash[path]
-        if file_group.cfs_files.blank? and file_group.subdirectories.blank?
-          file_group.destroy
+        cfs_directory = all_database_root_hash[path]
+        if cfs_directory.cfs_files.blank? and cfs_directory.subdirectories.blank?
+          cfs_directory.destroy!
           all_database_root_hash.delete(path)
         end
       end
