@@ -9,7 +9,7 @@
     = link_to('View', view_cfs_file_path(@file))
 
 .row
-  .span12
+  .span4
     = show_value @file.name, 'File name'
     = show_value 'bit-level', 'Storage level'
     = show_value @file.md5_sum, 'MD5'
@@ -32,3 +32,5 @@
         %ul
           - @file.red_flags.each do |red_flag|
             %li= red_flag.message
+  .span8
+    = render 'preview_viewer'

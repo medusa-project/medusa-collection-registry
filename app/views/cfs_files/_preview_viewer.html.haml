@@ -1,0 +1,7 @@
+- case @preview_viewer_type
+- when :image
+  %img{src: preview_image_cfs_file_path(@file), alt: "Preview image for #{@file.name}"}
+- else
+  %p
+    No preview for mime type: #{@file.content_type}
+    or extension: #{File.extname(@file.name)}

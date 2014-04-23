@@ -79,6 +79,7 @@ MedusaRails3::Application.routes.draw do
       get 'fits_xml'
       get 'download'
       get 'view'
+      get 'preview_image'
     end
   end
   resources :cfs_directories, :only => :show do
