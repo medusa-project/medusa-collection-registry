@@ -51,13 +51,14 @@ class CfsFilesController < ApplicationController
 
   #return a symbol that will be used to select the right viewer
   def find_preview_viewer_type(cfs_file)
-    self.class.build_viewer_hashes if Rails.env.development?
+    self.class.ensure_viewer_hashes
     self.class.mime_type_viewers[cfs_file.content_type] ||
         self.class.extension_viewers[File.extname(cfs_file.name).sub(/^\./, '')] ||
         :none
   end
 
-  def self.build_viewer_hashes
+  def self.ensure_viewer_hashes
+    return if self.mime_type_viewers.present? and self.extension_viewers.present?
     viewer_hash = YAML.load_file(File.join(Rails.root, 'config', 'cfs_file_viewers.yaml'))
     self.mime_type_viewers = invert_hash_of_arrays(viewer_hash['mime_types'])
     self.extension_viewers = invert_hash_of_arrays(viewer_hash['extensions'])
