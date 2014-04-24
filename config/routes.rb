@@ -88,6 +88,12 @@ MedusaRails3::Application.routes.draw do
     end
   end
 
+  resources :searches, :only => :new do
+    collection do
+      post :filename
+    end
+  end
+
   match '/auth/:provider/callback', to: 'sessions#create', :via => [:get, :post]
   match '/login', to: 'sessions#new', as: :login, :via => [:get, :post]
   match '/logout', to: 'sessions#destroy', as: :logout, :via => [:get, :post]

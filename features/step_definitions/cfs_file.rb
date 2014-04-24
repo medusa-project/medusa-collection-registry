@@ -112,3 +112,9 @@ And(/^the cfs file at path '(.*)' for the file group named '(.*)' has fits rerun
   cfs_file = file_group.cfs_file_at_path(path)
   cfs_file.update_fits_xml
 end
+
+And(/^there are cfs files with fields:$/) do |table|
+  table.hashes.each do |hash|
+    FactoryGirl.create(:cfs_file, hash)
+  end
+end

@@ -38,6 +38,12 @@ Then(/^deny object permission on the (.*) with (.*) '(.*)' to users for action w
   end
 end
 
+Then /^trying to do (.*) with the path '(.*)' as (.*) should (.*)$/ do |action, path_function, user_type, result|
+  rack_login(user_type)
+  self.send(action, self.send(path_function))
+  check_result(result)
+end
+
 And(/^deny permission on the (.*) collection to users for action with redirection:$/) do |resource_type, table|
   table.raw.each do |user_types, actions, redirection_type|
     user_types.split(',').each do |user_type|
