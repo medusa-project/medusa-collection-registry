@@ -1,20 +1,27 @@
 $.extend($.fn.dataTableExt.oSort, {
-  "priority-pre": function(a) {
+  "priority-pre": function (a) {
     var priorities = {"high": 2, "medium": 1, "low": 0};
     return priorities[a];
   },
-  "priority-asc": function(a,b) {
+  "priority-asc": function (a, b) {
     return ((a < b) ? -1 : ((a > b) ? 1 : 0));
   },
-  "priority-desc": function(a,b) {
-    return -(this["priority-asc"](a,b));
+  "priority-desc": function (a, b) {
+    return -(this["priority-asc"](a, b));
   }
 });
 
 $(function () {
   $("table#red-flags-table").dataTable({
     "aoColumns": [null, null, {"sType": 'priority'}, null, null, null, null],
-    "aaSorting": [[3, "asc"], [2, "desc"]]
+    "aaSorting": [
+      [3, "asc"],
+      [2, "desc"]
+    ],
+    "aLengthMenu": [
+      [10, 25, 50, 100, -1],
+      [10, 25, 50, 100, "All"]
+    ]
   });
 });
 

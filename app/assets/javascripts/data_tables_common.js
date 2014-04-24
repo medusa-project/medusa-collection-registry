@@ -6,6 +6,10 @@ function initialize_data_table(tableSelector) {
       "aaSorting": [
         [0, "asc"]
       ],
+      "aLengthMenu": [
+        [10, 25, 50, 100, -1],
+        [10, 25, 50, 100, "All"]
+      ],
       "iDisplayLength": 25,
       "bStateSave": "true",
       "fnStateSave": function (oSettings, oData) {
