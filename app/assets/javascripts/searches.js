@@ -1,0 +1,1 @@
+initialize_data_table("table#search_results");
