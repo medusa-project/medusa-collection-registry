@@ -1,0 +1,13 @@
+mime_types:
+  image:
+    - image/jpeg
+    - image/tiff
+extensions:
+  image:
+    - tiff
+    - tif
+    - jpg
+    - jpeg
+    - png
+    - gif
+    - jp2

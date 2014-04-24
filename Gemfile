@@ -35,6 +35,9 @@ gem 'fits', '~> 1.0.6', :git => 'git://github.com/medusa-project/fits.git'
 gem 'delayed_job_active_record', :git => 'git://github.com/medusa-project/delayed_job_active_record.git'
 gem 'daemons'
 
+#image processing for file previews
+gem 'mini_magick'
+
 # Gems used only for assets and not required
 # in production environments by default.
 #group :assets do

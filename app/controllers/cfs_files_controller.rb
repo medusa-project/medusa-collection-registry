@@ -4,6 +4,8 @@ class CfsFilesController < ApplicationController
   before_filter :find_file, :only => [:show, :create_fits_xml, :fits_xml, :download, :view,
                                       :preview_image]
 
+  cattr_accessor :mime_type_viewers, :extension_viewers
+
   def show
     @file_group = @file.file_group
     @preview_viewer_type = find_preview_viewer_type(@file)
@@ -35,7 +37,10 @@ class CfsFilesController < ApplicationController
 
   def preview_image
     authorize! :download, @file.file_group
-    send_file @file.absolute_path, type: @file.content_type, disposition: 'inline', filename: @file.name
+    image = MiniMagick::Image.read(StringIO.new(File.open(@file.absolute_path, 'rb') {|f| f.read}))
+    image.format 'jpg'
+    image.resize '300x300>'
+    send_data image.to_blob, type: 'image/jpeg', disposition: 'inline'
   end
 
   protected
@@ -46,22 +51,23 @@ class CfsFilesController < ApplicationController
 
   #return a symbol that will be used to select the right viewer
   def find_preview_viewer_type(cfs_file)
-    find_previewer_viewer_type_from_mime_type(cfs_file) ||
-        find_previewer_viewer_type_from_extension(cfs_file)
+    self.class.build_viewer_hashes if Rails.env.development?
+    self.class.mime_type_viewers[cfs_file.content_type] ||
+        self.class.extension_viewers[File.extname(cfs_file.name).sub(/^\./, '')] ||
+        :none
   end
 
-  #ultimately do this in config
-  def find_previewer_viewer_type_from_mime_type(cfs_file)
-    nil
+  def self.build_viewer_hashes
+    viewer_hash = YAML.load_file(File.join(Rails.root, 'config', 'cfs_file_viewers.yaml'))
+    self.mime_type_viewers = invert_hash_of_arrays(viewer_hash['mime_types'])
+    self.extension_viewers = invert_hash_of_arrays(viewer_hash['extensions'])
   end
 
-  #ultimately do this in config
-  def find_previewer_viewer_type_from_extension(cfs_file)
-    case (File.extname(cfs_file.name).sub(/^\./, ''))
-      when 'tiff', 'jpg'
-        :image
-      else
-        nil
+  def self.invert_hash_of_arrays(hash_of_arrays)
+    Hash.new.tap do |h|
+      hash_of_arrays.each do |key, values|
+        values.each {|value| h[value] = key.to_sym}
+      end
     end
   end
 

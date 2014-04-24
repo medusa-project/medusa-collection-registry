@@ -33,4 +33,4 @@
           - @file.red_flags.each do |red_flag|
             %li= red_flag.message
   .span8
-    = render 'preview_viewer'
+    = render "preview_viewer_#{@preview_viewer_type}"
