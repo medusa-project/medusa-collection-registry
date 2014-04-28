@@ -12,9 +12,9 @@ $(function () {
   })
 });
 $(function () {
-  $('table#collections').dataTable({
+  var table = $('table#collections').dataTable({
     "aaSorting": [
-      [1, "asc"]
+      [3, "asc"]
     ],
     "iDisplayLength": 25,
     "aLengthMenu": [
@@ -28,8 +28,15 @@ $(function () {
     "fnStateLoad": function (oSettings) {
       return JSON.parse(localStorage.getItem('DataTables_' + window.location.pathname));
     }
-  })
+  });
+  table.fnSetColumnVis(1, false);
 });
+
+function toggle_uuid() {
+  var table = $('table#collections').dataTable();
+  var isVisible = table.fnSettings().aoColumns[1].bVisible;
+  table.fnSetColumnVis(1, !isVisible)
+}
 
 var storage_level_filter = {
   all: function () {
