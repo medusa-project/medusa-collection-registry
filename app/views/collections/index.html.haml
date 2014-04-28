@@ -10,6 +10,7 @@
   %thead
     %tr
       %th External ID
+      %th UUID
       %th Title
       %th Repository
       %th Contact
@@ -20,6 +21,7 @@
     - @collections.each do |collection|
       %tr
         %td #{collection.external_id}
+        %td #{collection.uuid}
         %td #{link_to collection.title, collection}
         %td #{link_to collection.repository.title, collection.repository}
         %td #{net_id_search_link(collection.contact_net_id)}
