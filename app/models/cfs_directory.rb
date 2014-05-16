@@ -145,6 +145,15 @@ class CfsDirectory < ActiveRecord::Base
     end
   end
 
+  #Return a hash that maps cfs_directory_id to size and count of owned files for all root cfs directories
+  def self.root_size_and_count_summary
+    Hash.new.tap do |h|
+      self.connection.select_all("select sum(F.size) as size, count(*) as count, D.root_cfs_directory_id from cfs_files F join cfs_directories D on F.cfs_directory_id = D.id group by D.root_cfs_directory_id").each do |directory|
+        h[directory['root_cfs_directory_id'].to_i] = {:size => directory['size'], :count => directory['count']}
+      end
+    end
+  end
+
   protected
 
   #yield each CfsDirectory in the tree to the block.

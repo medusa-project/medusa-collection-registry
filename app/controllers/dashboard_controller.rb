@@ -17,6 +17,7 @@ class DashboardController < ApplicationController
   #TODO - I bet we can do this more efficiently - it'd be easy with SQL, but we can probably do it with arel as well.
   def setup_storage_summary
     @storage_summary = []
+    cfs_summary_hash = CfsDirectory.root_size_and_count_summary
     Repository.includes(:collections => :file_groups).load.each do |repository|
       external_file_groups = repository.collections.collect { |c| c.file_groups.select { |fg| fg.is_a?(ExternalFileGroup) } }.flatten
       uningested_external_file_groups = external_file_groups.reject do |fg|
@@ -29,8 +30,8 @@ class DashboardController < ApplicationController
         h[:external_size] = external_file_groups.collect { |fg| fg.file_size }.sum
         h[:uningested_file_count] = uningested_external_file_groups.collect { |fg| fg.file_count }.sum
         h[:uningested_size] = uningested_external_file_groups.collect { |fg| fg.file_size }.sum
-        h[:bit_level_file_count] = bit_level_file_groups.collect { |fg| fg.file_count }.sum
-        h[:bit_level_file_size] = bit_level_file_groups.collect { |fg| fg.file_size }.sum
+        h[:bit_level_file_count] = bit_level_file_groups.collect { |fg| (cfs_summary_hash[fg.cfs_directory_id]['count'] rescue 0) }.sum
+        h[:bit_level_file_size] = bit_level_file_groups.collect { |fg| (cfs_summary_hash[fg.cfs_directory_id]['size'] rescue 0) }.sum
       end
     end
     @storage_summary.sort! { |a, b| b[:external_size] <=> a[:external_size] }
