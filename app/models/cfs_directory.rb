@@ -1,8 +1,8 @@
 require 'pathname'
 class CfsDirectory < ActiveRecord::Base
 
-  has_many :subdirectories, class_name: 'CfsDirectory', :foreign_key => :parent_cfs_directory_id
-  has_many :cfs_files
+  has_many :subdirectories, class_name: 'CfsDirectory', foreign_key: :parent_cfs_directory_id, dependent: :destroy
+  has_many :cfs_files, dependent: :destroy
   belongs_to :parent_cfs_directory, class_name: 'CfsDirectory'
   has_one :file_group
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
@@ -149,7 +149,7 @@ class CfsDirectory < ActiveRecord::Base
   def self.root_size_and_count_summary
     Hash.new.tap do |h|
       self.connection.select_all("select sum(F.size) as size, count(*) as count, D.root_cfs_directory_id from cfs_files F join cfs_directories D on F.cfs_directory_id = D.id group by D.root_cfs_directory_id").each do |directory|
-        h[directory['root_cfs_directory_id'].to_i] = {:size => directory['size'], :count => directory['count']}
+        h[directory['root_cfs_directory_id'].to_i] = {:size => (directory['size'] || 0).to_d, :count => (directory['count'] || 0).to_i}
       end
     end
   end

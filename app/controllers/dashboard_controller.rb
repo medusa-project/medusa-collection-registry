@@ -30,8 +30,8 @@ class DashboardController < ApplicationController
         h[:external_size] = external_file_groups.collect { |fg| fg.file_size }.sum
         h[:uningested_file_count] = uningested_external_file_groups.collect { |fg| fg.file_count }.sum
         h[:uningested_size] = uningested_external_file_groups.collect { |fg| fg.file_size }.sum
-        h[:bit_level_file_count] = bit_level_file_groups.collect { |fg| (cfs_summary_hash[fg.cfs_directory_id]['count'] rescue 0) }.sum
-        h[:bit_level_file_size] = bit_level_file_groups.collect { |fg| (cfs_summary_hash[fg.cfs_directory_id]['size'] rescue 0) }.sum
+        h[:bit_level_file_count] = bit_level_file_groups.collect { |fg| cfs_summary_hash[fg.cfs_directory_id][:count] rescue 0 }.sum
+        h[:bit_level_file_size] = bit_level_file_groups.collect { |fg| cfs_summary_hash[fg.cfs_directory_id][:size] rescue 0 }.sum / 1.gigabyte
       end
     end
     @storage_summary.sort! { |a, b| b[:external_size] <=> a[:external_size] }
