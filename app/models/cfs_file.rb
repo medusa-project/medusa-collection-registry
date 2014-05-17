@@ -40,13 +40,16 @@ class CfsFile < ActiveRecord::Base
     self.cfs_directory.ancestors_and_self
   end
 
+  #run an initial assessment on files that need it - skip if we've already done it and the mtime hasn't changed
   def run_initial_assessment
     file_info = File.stat(self.absolute_path)
-    self.size = file_info.size
-    self.mtime = file_info.mtime
-    self.content_type = (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream')
-    self.md5_sum = Digest::MD5.file(self.absolute_path).to_s
-    self.save!
+    if self.mtime.blank? or (file_info.mtime > self.mtime)
+      self.size = file_info.size
+      self.mtime = file_info.mtime
+      self.content_type = (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream')
+      self.md5_sum = Digest::MD5.file(self.absolute_path).to_s
+      self.save!
+    end
   end
 
   def ensure_fits_xml
