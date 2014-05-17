@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140424210638) do
+ActiveRecord::Schema.define(version: 20140517143007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20140424210638) do
     t.integer "root_cfs_directory_id"
   end
 
-  add_index "cfs_directories", ["parent_cfs_directory_id"], name: "index_cfs_directories_on_parent_cfs_directory_id", using: :btree
+  add_index "cfs_directories", ["parent_cfs_directory_id", "path"], name: "index_cfs_directories_on_parent_cfs_directory_id_and_path", unique: true, using: :btree
   add_index "cfs_directories", ["path"], name: "index_cfs_directories_on_path", using: :btree
   add_index "cfs_directories", ["root_cfs_directory_id"], name: "index_cfs_directories_on_root_cfs_directory_id", using: :btree
 
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 20140424210638) do
     t.string   "content_type"
   end
 
-  add_index "cfs_files", ["cfs_directory_id"], name: "index_cfs_files_on_cfs_directory_id", using: :btree
+  add_index "cfs_files", ["cfs_directory_id", "name"], name: "index_cfs_files_on_cfs_directory_id_and_name", unique: true, using: :btree
   add_index "cfs_files", ["content_type"], name: "index_cfs_files_on_content_type", using: :btree
   add_index "cfs_files", ["mtime"], name: "index_cfs_files_on_mtime", using: :btree
   add_index "cfs_files", ["name"], name: "index_cfs_files_on_name", using: :btree
