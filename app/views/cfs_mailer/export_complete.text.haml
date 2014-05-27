@@ -1,0 +1,15 @@
+:plain
+
+Your export of the directory:
+
+#{@job.cfs_directory.relative_path}
+
+has completed.
+
+It is available at:
+
+#{@job.pickup_path}
+
+- if CfsDirectory.export_autoclean
+  After one week it will be deleted from that location. Please copy it to
+  your own storage for continued use.

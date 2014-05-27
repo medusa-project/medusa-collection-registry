@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140527175510) do
+ActiveRecord::Schema.define(version: 20140527190504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -197,6 +197,10 @@ ActiveRecord::Schema.define(version: 20140527175510) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "job_cfs_directory_export_cleanups", force: true do |t|
+    t.string "directory"
   end
 
   create_table "job_cfs_directory_exports", force: true do |t|
