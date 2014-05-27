@@ -3,9 +3,7 @@
 .pull-right
   = link_to 'Create FITS for tree', create_fits_for_tree_cfs_directory_path(@directory), method: :post, class: 'btn'
   - if can? :export, @file_group
-    |
     = link_to 'Export directory', export_cfs_directory_path(@directory), method: :post, class: 'btn'
-    |
     = link_to 'Export directory tree', export_tree_cfs_directory_path(@directory), method: :post, class: 'btn'
 
 %h3 Directory: #{@directory.path}

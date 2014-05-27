@@ -32,4 +32,6 @@ Feature: Cfs directory export
     And 'manager' should receive an email with subject 'Medusa export completed'
 
   Scenario: Deny exports to public and visitors
-    Given PENDING
+    Then deny object permission on the cfs directory with path 'dogs' to users for action with redirection:
+      | public user | export(post), export_tree(post) | authentication |
+      | visitor     | export(post), export_tree(post) | unauthorized   |
