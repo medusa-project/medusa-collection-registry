@@ -85,6 +85,8 @@ MedusaRails3::Application.routes.draw do
   resources :cfs_directories, :only => :show do
     member do
       post 'create_fits_for_tree'
+      post 'export'
+      post 'export_tree'
     end
   end
 

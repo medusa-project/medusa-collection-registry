@@ -21,4 +21,16 @@ class CfsDirectoriesController < ApplicationController
   end
   #Delayed::Job.enqueue(Job::FitsDirectoryTree.create(:path => params[:path]), :priority => 50)
 
+  def export
+    @directory = CfsDirectory.find(params[:id])
+    authorize! :export, @directory.owning_file_group
+    Job::CfsDirectoryExport.create_for(@directory, current_user, false)
+  end
+
+  def export_tree
+    @directory = CfsDirectory.find(params[:id])
+    authorize! :export, @directory.owning_file_group
+    Job::CfsDirectoryExport.create_for(@directory, current_user, true)
+  end
+
 end

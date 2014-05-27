@@ -154,6 +154,14 @@ class CfsDirectory < ActiveRecord::Base
     end
   end
 
+  def self.export_root
+    MedusaRails3::Application.medusa_config['cfs']['export_root']
+  end
+
+  def self.export_autoclean
+    MedusaRails3::Application.medusa_config['cfs']['export_autoclean']
+  end
+
   protected
 
   #yield each CfsDirectory in the tree to the block.
