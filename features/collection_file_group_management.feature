@@ -16,7 +16,7 @@ Feature: File Group Management
     When I view the collection titled 'Dogs'
     Then I should see the file group collection table
     And I should see all of:
-      | images | 1200 |
+      | images | 1,200 |
 
   Scenario: Navigate to file group
     When I view the collection titled 'Dogs'

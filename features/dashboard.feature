@@ -44,7 +44,7 @@ Feature: Collection Registry Dashboard
       | Dells | 500         | 50              | ExternalFileGroup |
     When I go to the dashboard
     Then I should see all of:
-      | 33000 | 330.0 | Animals | 500 | 50.0 | Computers | 33500 | 380.0 |
+      | 33,000 | 330.0 | Animals | 500 | 50.0 | Computers | 33,500 | 380.0 |
 
 
 

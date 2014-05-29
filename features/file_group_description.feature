@@ -19,7 +19,7 @@ Feature: File Group description
     Given I am logged in as an admin
     When I view the file group with location 'Main Library' for the collection titled 'Dogs'
     Then I should see all of:
-      | image/jpeg | 1200 | main summary | main provenance | images | external | staging_dir/images | external-main-library-id |
+      | image/jpeg | 1,200 | main summary | main provenance | images | external | staging_dir/images | external-main-library-id |
 
   Scenario: View a file group as a manager
     Given I am logged in as a manager
@@ -44,9 +44,9 @@ Feature: File Group description
     And I press 'Update File group'
     Then I should be on the view page for the file group with location 'Main Library' for the collection titled 'Dogs'
     And I should see all of:
-      | 1300 | Changed summary | Changed provenance | pictures | staging_dir/pics | external-dogs-id |
+      | 1,300 | Changed summary | Changed provenance | pictures | staging_dir/pics | external-dogs-id |
     And I should see none of:
-      | 1200 | main summary | main provenance | images | staging_dir/pictures | external-main-library-id |
+      | 1,200 | main summary | main provenance | images | staging_dir/pictures | external-main-library-id |
 
   Scenario: Edit a file group as a manager
     Given I am logged in as a manager
@@ -56,9 +56,9 @@ Feature: File Group description
     And I press 'Update File group'
     Then I should be on the view page for the file group with location 'Main Library' for the collection titled 'Dogs'
     And I should see all of:
-      | 1300 |
+      | 1,300 |
     And I should see none of:
-      | 1200 |
+      | 1,200 |
 
   Scenario: Edit a file group and see owning repository and collection
     Given I am logged in as an admin

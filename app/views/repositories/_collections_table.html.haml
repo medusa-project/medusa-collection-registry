@@ -18,7 +18,7 @@
           %td #{collection.external_id}
           %td #{link_to collection.title, collection}
           %td #{net_id_search_link(collection.contact_net_id)}
-          %td #{collection.total_size.to_s(:rounded, precision: 2)}
+          %td #{collection.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
           %td #{collection.preservation_priority_name}
           %td
             = link_to 'Edit', edit_collection_path(collection), :class => 'btn btn-mini'

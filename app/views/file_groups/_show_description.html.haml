@@ -13,7 +13,7 @@
 = show_field @file_group, :staged_file_location
 = show_field @file_group, :file_format
 = show_value (@file_group.file_size * 1.gigabyte).to_formatted_s(:human_size, precision: 3), 'Total file size'
-= show_value @file_group.file_count, 'Total files'
+= show_value @file_group.file_count.to_s(:delimited), 'Total files'
 = show_field @file_group, :summary
 = show_field @file_group, :provenance_note
 - if @file_group.source_file_groups.present?

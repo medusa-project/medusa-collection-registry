@@ -10,16 +10,16 @@
       %tbody
         %tr
           %td External (total)
-          %td.value= number_with_precision(@storage_summary.collect{|summary| summary[:external_size]}.sum, precision: 1)
-          %td.value= @storage_summary.collect{|summary| summary[:external_file_count]}.sum
+          %td.value= number_with_precision(@storage_summary.collect{|summary| summary[:external_size]}.sum, precision: 2, delimiter: ',')
+          %td.value= @storage_summary.collect{|summary| summary[:external_file_count]}.sum.to_s(:delimited)
         %tr
           %td External (not ingested)
-          %td.value= number_with_precision(@storage_summary.collect{|summary| summary[:uningested_size]}.sum, precision: 1)
-          %td.value= @storage_summary.collect{|summary| summary[:uningested_file_count]}.sum
+          %td.value= number_with_precision(@storage_summary.collect{|summary| summary[:uningested_size]}.sum, precision: 2, delimiter: ',')
+          %td.value= @storage_summary.collect{|summary| summary[:uningested_file_count]}.sum.to_s(:delimited)
         %tr
           %td Bit Level
-          %td.value= number_with_precision(CfsFile.sum(:size) / 1.gigabyte, precision: 3)
-          %td.value= CfsFile.count
+          %td.value= number_with_precision(CfsFile.sum(:size) / 1.gigabyte, precision: 2, delimiter: ',')
+          %td.value= CfsFile.count.to_s(:delimited)
 
 .row
   .span12
@@ -36,7 +36,7 @@
         - @storage_summary.each do |summary|
           %tr
             %td= link_to summary[:repository].title, summary[:repository]
-            %td= summary[:external_file_count]
-            %td= number_with_precision(summary[:external_size], precision: 3)
-            %td= summary[:bit_level_file_count]
-            %td= number_with_precision(summary[:bit_level_file_size], precision: 3)
+            %td= summary[:external_file_count].to_s(:delimited)
+            %td= number_with_precision(summary[:external_size], precision: 2, delimiter: ',')
+            %td= summary[:bit_level_file_count].to_s(:delimited)
+            %td= number_with_precision(summary[:bit_level_file_size], precision: 2, delimiter: ',')
