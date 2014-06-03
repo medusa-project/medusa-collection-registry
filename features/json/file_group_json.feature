@@ -7,11 +7,11 @@ Feature: JSON data about file group
     Given the collection titled 'Dogs' has file groups with fields:
       | external_file_location | name        | id | type              | cfs_directory_id |
       | Grainger               | Engineering | 1  | BitLevelFileGroup | 20               |
-    And there is a cfs directory object with fields:
+    And there are cfs directory objects with fields:
       | id |path|
       | 20 | dir/path   |
 
-  Scenario: Fetch JSON for a collection for basic auth user
+  Scenario: Fetch JSON for a file group for basic auth user
     Given I provide basic authentication
     And The file group with location 'Grainger' has file type 'Master Metadata'
     When I request JSON for the file group with location 'Grainger'

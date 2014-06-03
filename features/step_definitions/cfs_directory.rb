@@ -19,6 +19,12 @@ Then(/^the file group named '(.*)' should have cfs directory with path '(.*)'$/)
 end
 
 #This is for when you just need a database object, not anything actually on the filesystem
-And(/^there is a cfs directory object with fields:$/) do |table|
-  FactoryGirl.create(:cfs_directory, table.hashes.first)
+And(/^there are cfs directory objects with fields:$/) do |table|
+  table.hashes.each do |hash|
+    FactoryGirl.create(:cfs_directory, hash)
+  end
+end
+
+When(/^I request JSON for the cfs directory with id '(\d+)'$/) do |id|
+  visit cfs_directory_path(CfsDirectory.find(id), format: :json)
 end

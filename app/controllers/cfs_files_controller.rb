@@ -1,6 +1,7 @@
 class CfsFilesController < ApplicationController
 
-  before_filter :require_logged_in
+  before_filter :require_logged_in, :except => [:show]
+  before_filter :require_logged_in_or_basic_auth, :only => [:show]
   before_filter :find_file, :only => [:show, :create_fits_xml, :fits_xml, :download, :view,
                                       :preview_image]
 
@@ -8,7 +9,12 @@ class CfsFilesController < ApplicationController
 
   def show
     @file_group = @file.file_group
+    @directory = @file.cfs_directory
     @preview_viewer_type = find_preview_viewer_type(@file)
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def create_fits_xml
@@ -37,7 +43,7 @@ class CfsFilesController < ApplicationController
 
   def preview_image
     authorize! :download, @file.file_group
-    image = MiniMagick::Image.read(StringIO.new(File.open(@file.absolute_path, 'rb') {|f| f.read}))
+    image = MiniMagick::Image.read(StringIO.new(File.open(@file.absolute_path, 'rb') { |f| f.read }))
     image.format 'jpg'
     image.resize '300x300>'
     send_data image.to_blob, type: 'image/jpeg', disposition: 'inline'
@@ -67,7 +73,7 @@ class CfsFilesController < ApplicationController
   def self.invert_hash_of_arrays(hash_of_arrays)
     Hash.new.tap do |h|
       hash_of_arrays.each do |key, values|
-        values.each {|value| h[value] = key.to_sym}
+        values.each { |value| h[value] = key.to_sym }
       end
     end
   end

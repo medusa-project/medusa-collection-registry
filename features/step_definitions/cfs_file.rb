@@ -118,3 +118,7 @@ And(/^there are cfs files with fields:$/) do |table|
     FactoryGirl.create(:cfs_file, hash)
   end
 end
+
+When(/^I request JSON for the cfs file with id '(\d+)'$/) do |id|
+  visit cfs_file_path(CfsFile.find(id), format: :json)
+end
