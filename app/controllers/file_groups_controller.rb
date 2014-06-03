@@ -11,7 +11,7 @@ class FileGroupsController < ApplicationController
     @assessments = @assessable.assessments.order('date DESC')
     respond_to do |format|
       format.html
-      format.json { render :json => show_json }
+      format.json
     end
   end
 
