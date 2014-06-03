@@ -1,7 +1,4 @@
-json.id @file.id
-json.name @file.name
-json.md5_sum @file.md5_sum
-json.content_type @file.content_type
+json.(@file, :id, :name, :md5_sum, :content_type)
 json.size @file.size.to_i
 json.mtime @file.mtime.iso8601
 json.directory do

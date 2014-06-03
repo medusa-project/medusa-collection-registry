@@ -1,6 +1,4 @@
-json.id @collection.id
-json.uuid @collection.uuid
-json.title @collection.title
+json.(@collection, :id, :uuid, :title)
 json.file_groups @collection.file_groups do |file_group|
   json.id file_group.id
   json.path file_group_path(file_group, format: :json)
