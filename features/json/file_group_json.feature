@@ -5,8 +5,11 @@ Feature: JSON data about file group
 
   Background:
     Given the collection titled 'Dogs' has file groups with fields:
-      | external_file_location |
-      | Grainger      |
+      | external_file_location | name        | id | type              | cfs_directory_id |
+      | Grainger               | Engineering | 1  | BitLevelFileGroup | 20               |
+    And there is a cfs directory object with fields:
+      | id |path|
+      | 20 | dir/path   |
 
   Scenario: Fetch JSON for a collection for basic auth user
     Given I provide basic authentication
@@ -15,4 +18,9 @@ Feature: JSON data about file group
     Then the JSON should have "id"
     And the JSON should have "collection_id"
     And the JSON at "external_file_location" should be "Grainger"
+    And the JSON at "name" should be "Engineering"
     And the JSON at "type" should be "Master Metadata"
+    And the JSON at "storage_level" should be "bit_level"
+    And the JSON at "cfs_directory/id" should be 20
+    And the JSON at "cfs_directory/path" should be "/cfs_directories/20.json"
+    And the JSON at "cfs_directory/name" should be "dir/path"

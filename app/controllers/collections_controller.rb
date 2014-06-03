@@ -109,7 +109,12 @@ class CollectionsController < ApplicationController
       json.id @collection.id
       json.uuid @collection.uuid
       json.title @collection.title
-      json.file_group_ids @collection.file_group_ids
+      json.file_groups @collection.file_groups do |file_group|
+        json.id file_group.id
+        json.path file_group_path(file_group, format: :json)
+        json.name file_group.name
+        json.storage_level file_group.json_storage_level
+      end
     end
   end
 

@@ -52,6 +52,10 @@ class FileGroup < ActiveRecord::Base
     ''
   end
 
+  def json_storage_level
+    self.class.to_s.underscore.sub('_file_group', '')
+  end
+
   def ensure_rights_declaration
     self.rights_declaration ||= self.clone_collection_rights_declaration
   end

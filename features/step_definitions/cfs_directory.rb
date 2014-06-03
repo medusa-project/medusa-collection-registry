@@ -17,3 +17,8 @@ Then(/^the file group named '(.*)' should have cfs directory with path '(.*)'$/)
   file_group = FileGroup.find_by(name: name)
   expect(file_group.cfs_directory.path).to eq(path)
 end
+
+#This is for when you just need a database object, not anything actually on the filesystem
+And(/^there is a cfs directory object with fields:$/) do |table|
+  FactoryGirl.create(:cfs_directory, table.hashes.first)
+end
