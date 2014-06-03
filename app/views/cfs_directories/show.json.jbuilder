@@ -1,11 +1,7 @@
 json.id @directory.id
 json.name @directory.path
-json.subdirectories @directory.subdirectories do |subdirectory|
-  json.partial! 'cfs_directories/show_related_directory', directory: subdirectory
-end
-json.files @directory.cfs_files do |file|
-  json.partial! 'cfs_files/show_related_file', file: file
-end
+json.subdirectories @directory.subdirectories, partial: 'cfs_directories/show_related_directory', as: :directory
+json.files @directory.cfs_files,partial: 'cfs_files/show_related_file', as: :file
 parent_directory = @directory.parent_cfs_directory
 if parent_directory
   json.parent_directory do
