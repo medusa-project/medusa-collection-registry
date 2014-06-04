@@ -1,6 +1,4 @@
-json.(@file, :id, :name, :md5_sum, :content_type)
-json.size @file.size.to_i
-json.mtime @file.mtime.iso8601
+json.partial! 'cfs_files/show_related_file_detailed', file: @file
 json.directory do
   json.partial! 'cfs_directories/show_related_directory', directory: @directory
 end
