@@ -40,6 +40,7 @@ gem 'mini_magick'
 
 #creation of bags for off-site archiving of files
 gem 'bagit'
+gem 'tree.rb', :require => 'tree_rb'
 
 # Gems used only for assets and not required
 # in production environments by default.

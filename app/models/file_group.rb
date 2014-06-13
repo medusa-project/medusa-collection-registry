@@ -15,6 +15,7 @@ class FileGroup < ActiveRecord::Base
   has_many :scheduled_events, -> { order 'action_date ASC' }, :as => :scheduled_eventable, :dependent => :destroy
   belongs_to :package_profile
   has_many :attachments, :as => :attachable, :dependent => :destroy
+  has_many :amazon_backups
 
   before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root
