@@ -109,6 +109,9 @@ GEM
       rinku (~> 1.5.0)
     auto_strip_attributes (2.0.4)
       activerecord (>= 3.0)
+    bagit (0.3.2)
+      docopt (~> 0.5.0)
+      validatable (~> 1.6)
     builder (3.1.4)
     cancan (1.6.10)
     capistrano (2.15.5)
@@ -158,6 +161,7 @@ GEM
     deprecation (0.0.5)
       activesupport
     diff-lcs (1.2.4)
+    docopt (0.5.0)
     domain_name (0.5.14)
       unf (>= 0.0.5, < 1.0.0)
     equivalent-xml (0.3.0)
@@ -382,6 +386,7 @@ GEM
     unf_ext (0.0.6)
     uuid (2.3.7)
       macaddr (~> 1.0)
+    validatable (1.6.7)
     webrobots (0.1.1)
     xml-simple (1.1.2)
     xpath (2.0.0)
@@ -395,6 +400,7 @@ DEPENDENCIES
   acts_as_tree
   auto_html
   auto_strip_attributes
+  bagit
   cancan (~> 1.6.0)
   capistrano
   capybara
