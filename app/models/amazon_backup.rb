@@ -20,6 +20,7 @@
 # - maximum size of bag (environment sensitive so as to enable testing)
 
 #Registry/bag naming format: fg<id>-<dt>-p<part>[.txt|.zip]
+require 'fileutils'
 class AmazonBackup < ActiveRecord::Base
 
   belongs_to :cfs_directory
@@ -79,16 +80,39 @@ class AmazonBackup < ActiveRecord::Base
 
   #given a list of list of files to backup create bags for each one
   def create_bags(file_lists)
-    #for each bag
-    #create directory
-    #add files
-    #create manifest
-    #copy manifest to manifest registry
+    file_lists.each_with_index do |file_list, index|
+      bag_dir = File.join(self.bag_directory, self.part_file_name(index + 1))
+      FileUtils.mkdir_p(bag_dir)
+      bag = BagIt::Bag.new(bag_dir)
+      file_list.each do |file|
+        bag.add_file(file)
+      end
+      bag.manifest!
+      FileUtils.copy(File.join(bag_dir, 'manifest-md5.txt'),
+                     File.join(self.manifest_directory, "#{self.part_file_name(index + 1)}.md5.txt"))
+    end
   end
 
   #TODO - read from configuration
   def maximum_bag_size
     10.gigabytes
+  end
+
+  #TODO - read from configuration
+  def storage_root
+    return File.join(Rails.root, 'tmp', "amazon-#{Rails.env}")
+  end
+
+  def bag_directory
+    File.join(self.storage_root, 'bags').tap do |dir|
+      FileUtils.mkdir_p(dir)
+    end
+  end
+
+  def manifest_directory
+    File.join(self.storage_root, 'manifests').tap do |dir|
+      FileUtils.mkdir_p(dir)
+    end
   end
 
   def content_directory
