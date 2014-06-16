@@ -6,6 +6,7 @@ class CfsDirectory < ActiveRecord::Base
   belongs_to :parent_cfs_directory, class_name: 'CfsDirectory'
   has_one :file_group
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
+  has_many :amazon_backups
 
   validates :path, presence: true
   validates_uniqueness_of :path, scope: :parent_cfs_directory_id

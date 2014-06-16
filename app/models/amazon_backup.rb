@@ -22,14 +22,14 @@
 #Registry/bag naming format: fg<id>-<dt>-p<part>[.txt|.zip]
 class AmazonBackup < ActiveRecord::Base
 
-  belongs_to :file_group
+  belongs_to :cfs_directory
 
   #Only allow one backup per day for a file group
-  validates_uniqueness_of :date, scope: :file_group_id
+  validates_uniqueness_of :date, scope: :cfs_directory_id
 
   #Return the previous backup for the file group, or nil
   def previous_backup
-    self.file_group.amazon_backups.where('date < ?', self.date).order('date desc').first
+    self.cfs_directory.amazon_backups.where('date < ?', self.date).order('date desc').first
   end
 
   #return list of files to back up with sizes, restricting to recently
@@ -78,8 +78,12 @@ class AmazonBackup < ActiveRecord::Base
   end
 
   #given a list of list of files to backup create bags for each one
-  def create_bags
-
+  def create_bags(file_lists)
+    #for each bag
+    #create directory
+    #add files
+    #create manifest
+    #copy manifest to manifest registry
   end
 
   #TODO - read from configuration
@@ -88,7 +92,7 @@ class AmazonBackup < ActiveRecord::Base
   end
 
   def content_directory
-    self.file_group.full_cfs_directory_path
+    self.cfs_directory.absolute_path
   end
 
   def base_file_name
