@@ -80,12 +80,13 @@ class AmazonBackup < ActiveRecord::Base
 
   #given a list of list of files to backup create bags for each one
   def create_bags(file_lists)
+    cfs_path = self.cfs_directory.absolute_path
     file_lists.each_with_index do |file_list, index|
       bag_dir = self.bag_directory(index + 1)
       FileUtils.mkdir_p(bag_dir)
       bag = BagIt::Bag.new(bag_dir)
       file_list.each do |file|
-        bag_data_path = file.sub(/^#{self.cfs_directory.absolute_path}\//, '')
+        bag_data_path = file.sub(/^#{cfs_path}\//, '')
         bag.add_file(bag_data_path, file)
       end
       bag.manifest!
