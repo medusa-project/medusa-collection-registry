@@ -10,6 +10,13 @@ development:
   #AD groups used to allow use and full administration of medusa
   medusa_users_group: Library Medusa Users
   medusa_admins_group: Library Medusa Admins
+  #Configuration for the amazon backup
+  amazon:
+    #threshold where we start a new bag, in megabytes
+    maximum_bag_size: 10240
+    #directory to be used for creating and zipping bags, storing manifests
+    bag_storage_root: /home/hading/medusa-rails3/tmp/amazon-development
+
 test:
   cfs:
     root: /home/hading/repos/medusa-rails3/tmp/cfs-root-test

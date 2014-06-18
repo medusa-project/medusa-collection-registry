@@ -106,14 +106,16 @@ class AmazonBackup < ActiveRecord::Base
     end
   end
 
-  #TODO - read from configuration
+  #This is a bit of a misnomer, as a bag may be allowed to have a single
+  #file larger than this. It's really the threshold where a new bag is
+  #created. In production we don't expect to see anything larger than this
+  #anyway; having a smaller size available will be useful for testing though.
   def maximum_bag_size
-    10.gigabytes
+    MedusaRails3::Application.medusa_config['amazon']['maximum_bag_size'].to_i.megabytes
   end
 
-  #TODO - read from configuration
   def storage_root
-    return File.join(Rails.root, 'tmp', "amazon-#{Rails.env}")
+    MedusaRails3::Application.medusa_config['amazon']['bag_storage_root']
   end
 
   def manifest_file(part)
