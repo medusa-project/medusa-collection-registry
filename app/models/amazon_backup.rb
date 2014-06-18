@@ -84,7 +84,6 @@ class AmazonBackup < ActiveRecord::Base
       bag_dir = self.bag_directory(index + 1)
       FileUtils.mkdir_p(bag_dir)
       bag = BagIt::Bag.new(bag_dir)
-      puts bag.bag_dir
       file_list.each do |file|
         bag_data_path = file.sub(/^#{self.cfs_directory.absolute_path}\//, '')
         bag.add_file(bag_data_path, file)
