@@ -45,7 +45,7 @@ class AmazonBackup < ActiveRecord::Base
       directory_walker = TreeRb::DirTreeWalker.new
       file_visitor = TreeRb::TreeNodeVisitor.new do
         on_leaf do |file|
-          if cutoff_date.present? and File.mtime(file) >= cutoff_date
+          if cutoff_date.blank? or File.mtime(file) >= cutoff_date
             file_list << [file, File.size(file)]
           end
         end
@@ -81,15 +81,28 @@ class AmazonBackup < ActiveRecord::Base
   #given a list of list of files to backup create bags for each one
   def create_bags(file_lists)
     file_lists.each_with_index do |file_list, index|
-      bag_dir = File.join(self.bag_directory, self.part_file_name(index + 1))
+      bag_dir = self.bag_directory(index + 1)
       FileUtils.mkdir_p(bag_dir)
       bag = BagIt::Bag.new(bag_dir)
+      puts bag.bag_dir
       file_list.each do |file|
-        bag.add_file(file)
+        bag_data_path = file.sub(/^#{self.cfs_directory.absolute_path}\//, '')
+        bag.add_file(bag_data_path, file)
       end
       bag.manifest!
       FileUtils.copy(File.join(bag_dir, 'manifest-md5.txt'),
-                     File.join(self.manifest_directory, "#{self.part_file_name(index + 1)}.md5.txt"))
+                     self.manifest_file(index + 1))
+    end
+  end
+
+  def make_backup_bags
+    self.create_bags(self.partition_file_list(self.backup_file_list))
+  end
+
+  def delete_backup_bags_and_manifests
+    (1..(self.part_count)).each do |part|
+      FileUtils.rm_rf(self.bag_directory(part))
+      FileUtils.rm(self.manifest_file(part))
     end
   end
 
@@ -103,7 +116,15 @@ class AmazonBackup < ActiveRecord::Base
     return File.join(Rails.root, 'tmp', "amazon-#{Rails.env}")
   end
 
-  def bag_directory
+  def manifest_file(part)
+    File.join(self.manifest_directory, "#{self.part_file_name(part)}.md5.txt")
+  end
+
+  def bag_directory(part)
+    File.join(self.global_bag_directory, self.part_file_name(part))
+  end
+
+  def global_bag_directory
     File.join(self.storage_root, 'bags').tap do |dir|
       FileUtils.mkdir_p(dir)
     end
@@ -120,7 +141,7 @@ class AmazonBackup < ActiveRecord::Base
   end
 
   def base_file_name
-    "fg#{self.file_group.id}-#{self.date.to_time.strftime('%Y%m%d')}"
+    "dir_#{self.cfs_directory.path.gsub('/', '_')}-#{self.date.to_time.strftime('%Y%m%d')}"
   end
 
   def part_file_name(part)
