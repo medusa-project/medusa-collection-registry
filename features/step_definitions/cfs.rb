@@ -62,10 +62,28 @@ And(/^the cfs directory '(.*)' contains cfs fixture file '(.*)'$/) do |path, fix
                       cfs_local_path(path, fixture))
 end
 
+Given(/^the physical cfs directory '(.*)' has the data of bag '(.*)'$/) do |path, bag_name|
+  cfs_directory = CfsDirectory.where(path: path).first
+  bag_data_directory = File.join(bag_path(bag_name), 'data')
+  Dir.chdir(bag_data_directory) do
+    Dir['**/*'].each do |file|
+      if File.file?(file)
+        target = File.join(cfs_directory.absolute_path, file)
+        FileUtils.mkdir_p(File.dirname(target))
+        FileUtils.copy(file, target)
+      end
+    end
+  end
+end
+
 def ensure_cfs_path(path)
   FileUtils.mkdir_p(File.join(CfsRoot.instance.path, path))
 end
 
 def cfs_local_path(*args)
   File.join(CfsRoot.instance.path, *args)
+end
+
+def bag_path(name)
+  File.join(Rails.root, 'features', 'fixtures', 'bags', name)
 end
