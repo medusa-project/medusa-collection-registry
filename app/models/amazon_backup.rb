@@ -58,7 +58,7 @@ class AmazonBackup < ActiveRecord::Base
   #respecting the size limit. Set the number of parts.
   #I'd rather do this recursively, but we can't count on tail call optimization
   def partition_file_list(files_and_sizes)
-    maximum_size = self.maximum_bag_size
+    maximum_size = self.class.maximum_bag_size
     current_size = 0
     current_list = Array.new
     completed_lists = Array.new
@@ -80,13 +80,13 @@ class AmazonBackup < ActiveRecord::Base
 
   #given a list of list of files to backup create bags for each one
   def create_bags(file_lists)
-    cfs_path = self.cfs_directory.absolute_path
+    content_path = self.content_directory
     file_lists.each_with_index do |file_list, index|
       bag_dir = self.bag_directory(index + 1)
       FileUtils.mkdir_p(bag_dir)
       bag = BagIt::Bag.new(bag_dir)
       file_list.each do |file|
-        bag_data_path = file.sub(/^#{cfs_path}\//, '')
+        bag_data_path = file.sub(/^#{content_path}\//, '')
         bag.add_file(bag_data_path, file)
       end
       bag.manifest!
@@ -110,29 +110,29 @@ class AmazonBackup < ActiveRecord::Base
   #file larger than this. It's really the threshold where a new bag is
   #created. In production we don't expect to see anything larger than this
   #anyway; having a smaller size available will be useful for testing though.
-  def maximum_bag_size
+  def self.maximum_bag_size
     MedusaRails3::Application.medusa_config['amazon']['maximum_bag_size'].to_i.megabytes
   end
 
-  def storage_root
+  def self.storage_root
     MedusaRails3::Application.medusa_config['amazon']['bag_storage_root']
   end
 
   def manifest_file(part)
-    File.join(self.manifest_directory, "#{self.part_file_name(part)}.md5.txt")
+    File.join(self.class.manifest_directory, "#{self.part_file_name(part)}.md5.txt")
   end
 
   def bag_directory(part)
-    File.join(self.global_bag_directory, self.part_file_name(part))
+    File.join(self.class.global_bag_directory, self.part_file_name(part))
   end
 
-  def global_bag_directory
+  def self.global_bag_directory
     File.join(self.storage_root, 'bags').tap do |dir|
       FileUtils.mkdir_p(dir)
     end
   end
 
-  def manifest_directory
+  def self.manifest_directory
     File.join(self.storage_root, 'manifests').tap do |dir|
       FileUtils.mkdir_p(dir)
     end
