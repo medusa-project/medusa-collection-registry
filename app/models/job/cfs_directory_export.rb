@@ -24,7 +24,7 @@ class Job::CfsDirectoryExport < Job::Base
     Rails.logger.error "#{self.export_directory} export succeeded"
     CfsMailer.export_complete(self).deliver
     if CfsDirectory.export_autoclean
-      CfsDirectoryExportCleanup.create_for(self.export_directory)
+      Job::CfsDirectoryExportCleanup.create_for(self.export_directory)
     end
     Rails.logger.error "Email sent"
     self.destroy!
