@@ -21,14 +21,11 @@ class Job::CfsDirectoryExport < Job::Base
   end
 
   def success(job)
-    Rails.logger.error "#{self.export_directory} export succeeded"
     CfsMailer.export_complete(self).deliver
     if CfsDirectory.export_autoclean
       Job::CfsDirectoryExportCleanup.create_for(self.export_directory)
     end
-    Rails.logger.error "Email sent"
     self.destroy!
-    Rails.logger.error "Job destroyed"
   end
 
   #TODO - make this more useful, but that needs to wait until we know better
