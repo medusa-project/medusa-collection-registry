@@ -35,7 +35,11 @@ class Job::CfsDirectoryExport < Job::Base
   end
 
   def export_directory
-    File.join(CfsDirectory.export_root, self.uuid)
+    File.join(CfsDirectory.export_root, self.group_directory, self.uuid)
+  end
+
+  def group_directory
+    self.cfs_directory.repository.ldap_admin_group || ApplicationController.admin_ad_group
   end
 
 end

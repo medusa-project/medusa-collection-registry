@@ -20,7 +20,7 @@ Feature: Cfs directory export
     Then I should see 'Your directory has been scheduled for export. You will be notified by email when the export is complete.'
     And there should be an exported directory with paths:
       | intro.txt |
-    And 'manager' should receive an email with subject 'Medusa export completed'
+    And 'manager@illinois.edu' should receive an email with subject 'Medusa export completed'
 
   Scenario: Request an export of a directory tree
     Given I am logged in as a manager
@@ -29,7 +29,7 @@ Feature: Cfs directory export
     Then I should see 'Your directory tree has been scheduled for export. You will be notified by email when the export is complete.'
     And there should be an exported directory with paths:
       | intro.txt | pugs/picture.jpg | pugs/description.txt |
-    And 'manager' should receive an email with subject 'Medusa export completed'
+    And 'manager@illinois.edu' should receive an email with subject 'Medusa export completed'
 
   Scenario: Deny exports to public and visitors
     Then deny object permission on the cfs directory with path 'dogs' to users for action with redirection:
