@@ -4,7 +4,7 @@ module UiucLdap
 
   module_function
 
-  LDAP_LOOKUP_BASE_URL = 'http://quest.grainger.uiuc.edu/directory'
+  LDAP_LOOKUP_BASE_URL = 'http://quest.library.illinois.edu/directory'
 
   def is_member_of_ldap_group?(group, net_id, domain = nil)
     url_string = request_url(group, net_id, domain)
