@@ -31,7 +31,7 @@ class Job::CfsDirectoryExport < Job::Base
   #TODO - make this more useful, but that needs to wait until we know better
   #how we're going to do the pickup
   def pickup_path()
-    self.uuid
+    "\\\\storage.library.illinois.edu\\MedusaExports\\#{self.group_directory}\\#{self.uuid}"
   end
 
   def export_directory
