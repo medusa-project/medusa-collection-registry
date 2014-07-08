@@ -23,10 +23,18 @@
 require 'fileutils'
 class AmazonBackup < ActiveRecord::Base
 
+  serialize :archive_ids
+  before_create :initialize_archive_ids
+
   belongs_to :cfs_directory
+  has_one :job_amazon_backup, :class_name => 'Job::AmazonBackup', :dependent => :destroy
 
   #Only allow one backup per day for a file group
   validates_uniqueness_of :date, scope: :cfs_directory_id
+
+  def initialize_archive_ids
+    self.archive_ids = Array.new
+  end
 
   #Return the previous backup for the file group, or nil
   def previous_backup
@@ -106,6 +114,50 @@ class AmazonBackup < ActiveRecord::Base
     end
   end
 
+  def request_backup
+    self.make_backup_bags
+    self.archive_ids = Array.new.tap do |ids|
+      self.part_count.times do
+        ids << nil
+      end
+    end
+    self.save!
+    (1..(self.part_count)).each do |part|
+      self.send_backup_request_message(part, self.bag_directory(part))
+    end
+  end
+
+  def send_backup_request_message(part, directory)
+    connection = Bunny.new
+    connection.start
+    channel = connection.create_channel
+    exchange = channel.default_exchange
+    request = {action: 'upload_directory',
+               parameters: {directory: directory, description: self.glacier_description(part)},
+               pass_through: {amazon_backup_id: self.id, part: part, directory: directory}}
+    exchange.publish(request.to_json, routing_key: self.class.outgoing_queue)
+  end
+
+  def glacier_description(part)
+    file_group = self.cfs_directory.file_group
+    %Q(Amazon Backup Id: #{self.id}
+Part: #{part}
+Date: #{self.date}
+Cfs Directory Id: #{self.cfs_directory.id}
+Cfs Directory: #{self.cfs_directory.absolute_path}
+File Group Id: #{file_group.id if file_group}
+Collection Id: #{file_group.collection.id if file_group}
+Repository Id: #{file_group.collection.repository.id if file_group}
+    )
+  end
+
+  def receive_backup_response_message(part, archive_id)
+    self.archive_ids[part.to_i - 1] = archive_id
+    self.save!
+    #TODO remove bag directory for this part
+    #TODO email that part is uploaded,with parts done and to do
+  end
+
   #This is a bit of a misnomer, as a bag may be allowed to have a single
   #file larger than this. It's really the threshold where a new bag is
   #created. In production we don't expect to see anything larger than this
@@ -116,6 +168,14 @@ class AmazonBackup < ActiveRecord::Base
 
   def self.storage_root
     MedusaRails3::Application.medusa_config['amazon']['bag_storage_root']
+  end
+
+  def self.incoming_queue
+    MedusaRails3::Application.medusa_config['amazon']['incoming_queue']
+  end
+
+  def self.outgoing_queue
+    MedusaRails3::Application.medusa_config['amazon']['outgoing_queue']
   end
 
   def manifest_file(part)

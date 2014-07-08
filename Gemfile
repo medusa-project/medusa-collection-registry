@@ -42,6 +42,9 @@ gem 'mini_magick'
 gem 'bagit'
 gem 'tree.rb', :require => 'tree_rb'
 
+#AMQP communication
+gem 'bunny'
+
 # Gems used only for assets and not required
 # in production environments by default.
 #group :assets do
