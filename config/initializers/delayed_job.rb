@@ -14,3 +14,5 @@ end
 
 #Keep failed jobs so we can diagnose
 Delayed::Worker.destroy_failed_jobs = false
+
+Delayed::Worker.default_queue_name = 'default'

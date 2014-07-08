@@ -19,7 +19,6 @@ class CfsDirectoriesController < ApplicationController
     flash[:notice] = "Scheduling FITS creation for /#{@directory.relative_path}"
     redirect_to @directory
   end
-  #Delayed::Job.enqueue(Job::FitsDirectoryTree.create(:path => params[:path]), :priority => 50)
 
   def export
     @directory = CfsDirectory.find(params[:id])

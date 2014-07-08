@@ -9,7 +9,7 @@ namespace :medusa do
         sleep(2)
       end
       ENV['RAILS_ENV'] = Rails.env
-      sh "script/delayed_job -p #{Rails.env} --pid-dir=#{delayed_job_pid_dir} -n 3 start"
+      sh "script/delayed_job -p #{Rails.env} --pid-dir=#{delayed_job_pid_dir} -n 3 --queue=default start"
     end
 
     desc 'Stop delayed_job'
