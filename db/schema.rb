@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140708223302) do
+ActiveRecord::Schema.define(version: 20140709153705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20140708223302) do
     t.integer "part_count"
     t.date    "date"
     t.text    "archive_ids"
+    t.integer "user_id"
   end
 
   add_index "amazon_backups", ["cfs_directory_id"], name: "index_amazon_backups_on_cfs_directory_id", using: :btree

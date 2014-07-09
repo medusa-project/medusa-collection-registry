@@ -28,6 +28,8 @@ class AmazonBackup < ActiveRecord::Base
 
   belongs_to :cfs_directory
   has_one :job_amazon_backup, :class_name => 'Job::AmazonBackup', :dependent => :destroy
+  #This is the user who requested the backup, needed so we can email progress reports
+  belongs_to :user
 
   #Only allow one backup per day for a file group
   validates_uniqueness_of :date, scope: :cfs_directory_id
@@ -140,22 +142,36 @@ class AmazonBackup < ActiveRecord::Base
 
   def glacier_description(part)
     file_group = self.cfs_directory.file_group
-    %Q(Amazon Backup Id: #{self.id}
-Part: #{part}
+    description = %Q(Amazon Backup Id: #{self.id}
+Part: #{part} of #{self.part_count}
 Date: #{self.date}
 Cfs Directory Id: #{self.cfs_directory.id}
 Cfs Directory: #{self.cfs_directory.absolute_path}
-File Group Id: #{file_group.id if file_group}
-Collection Id: #{file_group.collection.id if file_group}
-Repository Id: #{file_group.collection.repository.id if file_group}
     )
+    if file_group
+      description << %Q(File Group Id: #{file_group.id}
+File Group Name: #{file_group.name}
+Collection Id: #{file_group.collection.id}
+Collection Title: #{file_group.collection.title}
+Repository Id: #{file_group.repository.id}
+Repository Title: #{file_group.repository.title}
+      )
+    end
+    return description
   end
 
   def receive_backup_response_message(part, archive_id)
     self.archive_ids[part.to_i - 1] = archive_id
     self.save!
-    #TODO remove bag directory for this part
-    #TODO email that part is uploaded,with parts done and to do
+    #remove bag directory for this part
+    FileUtils.rm_rf(self.bag_directory(part)) if File.exists?(self.bag_directory(part))
+    if self.user
+      AmazonMailer.progress(self, part).deliver
+    end
+  end
+
+  def completed_part_count
+    self.archive_ids.count {|x| x.present?}
   end
 
   #This is a bit of a misnomer, as a bag may be allowed to have a single

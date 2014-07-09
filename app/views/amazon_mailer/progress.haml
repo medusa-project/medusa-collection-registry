@@ -1,0 +1,12 @@
+:plain
+
+Progress update for your Amazon Glacier backup.
+
+Completed parts: #{@amazon_backup.completed_part_count}
+Total parts: #{@amazon_backup.part_count}
+
+The following part has completed:
+
+#{@amazon_backup.glacier_description(@part)}
+
+
