@@ -34,6 +34,8 @@ class AmazonBackup < ActiveRecord::Base
   #Only allow one backup per day for a file group
   validates_uniqueness_of :date, scope: :cfs_directory_id
 
+  validates_presence_of :user_id
+
   def initialize_archive_ids
     self.archive_ids = Array.new
   end
@@ -165,9 +167,7 @@ Repository Title: #{file_group.repository.title}
     self.save!
     #remove bag directory for this part
     FileUtils.rm_rf(self.bag_directory(part)) if File.exists?(self.bag_directory(part))
-    if self.user
-      AmazonMailer.progress(self, part).deliver
-    end
+    AmazonMailer.progress(self, part).deliver
   end
 
   def completed_part_count
