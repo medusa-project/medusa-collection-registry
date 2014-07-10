@@ -24,7 +24,7 @@ require 'fileutils'
 class AmazonBackup < ActiveRecord::Base
 
   serialize :archive_ids
-  before_create :initialize_archive_ids
+  before_create :initialize_archive_ids_and_date
 
   belongs_to :cfs_directory
   has_one :job_amazon_backup, :class_name => 'Job::AmazonBackup', :dependent => :destroy
@@ -34,10 +34,11 @@ class AmazonBackup < ActiveRecord::Base
   #Only allow one backup per day for a file group
   validates_uniqueness_of :date, scope: :cfs_directory_id
 
-  validates_presence_of :user_id
+  validates_presence_of :user_id, :date
 
-  def initialize_archive_ids
+  def initialize_archive_ids_and_date
     self.archive_ids = Array.new
+    self.date = Date.today
   end
 
   #Return the previous backup for the file group, or nil
@@ -152,14 +153,13 @@ Cfs Directory: #{self.cfs_directory.absolute_path}
     )
     if file_group
       description << %Q(File Group Id: #{file_group.id}
-File Group Name: #{file_group.name}
 Collection Id: #{file_group.collection.id}
-Collection Title: #{file_group.collection.title}
 Repository Id: #{file_group.repository.id}
-Repository Title: #{file_group.repository.title}
       )
     end
-    return description
+    #Glacier will only take ASCII 0x20-0x7F
+    #The only place this should be a problem with the above is the new lines
+    return description.gsub("\n", ';')
   end
 
   def receive_backup_response_message(part, archive_id)
