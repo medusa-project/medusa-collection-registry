@@ -157,9 +157,7 @@ Collection Id: #{file_group.collection.id}
 Repository Id: #{file_group.repository.id}
       )
     end
-    #Glacier will only take ASCII 0x20-0x7F
-    #The only place this should be a problem with the above is the new lines
-    return description.gsub("\n", ';')
+    return description
   end
 
   def receive_backup_response_message(part, archive_id)
