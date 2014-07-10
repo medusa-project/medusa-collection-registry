@@ -1,15 +1,19 @@
-%table#amazon-backups-table.table.table-striped
-  %thead
-    %tr
-      %th Date
-      %th Completed
-      %th User
-  %tbody
-    - @file_group.amazon_backups.each do |amazon_backup|
+- if @file_group.amazon_backups.present?
+  %table#amazon-backups-table.table.table-striped
+    %thead
       %tr
-        %td= amazon_backup.date
-        %td= amazon_backup.completed? ? 'Yes' : 'No'
-        %td= amazon_backup.user.uid
+        %th Date
+        %th Completed
+        %th User
+    %tbody
+      - @file_group.amazon_backups.each do |amazon_backup|
+        %tr
+          %td= amazon_backup.date
+          %td= amazon_backup.completed? ? 'Yes' : 'No'
+          %td= amazon_backup.user.uid
+- else
+  %div
+    No Amazon Backups
 
 %div
   - unless @file_group.amazon_backups.detect {|backup| backup.date == Date.today}
