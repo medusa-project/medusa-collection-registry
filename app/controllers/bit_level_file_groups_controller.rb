@@ -6,7 +6,7 @@ class BitLevelFileGroupsController < FileGroupsController
     amazon_backup = AmazonBackup.create(user_id: current_user.id,
                                         cfs_directory_id: @file_group.cfs_directory.id,
                                         date: Date.today)
-    amazon_backup.request_backup
+    Job::AmazonBackup.create_for(amazon_backup)
     redirect_to @file_group
   end
 
