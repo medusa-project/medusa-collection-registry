@@ -171,7 +171,11 @@ Repository Title: #{file_group.repository.title}
   end
 
   def completed_part_count
-    self.archive_ids.count {|x| x.present?}
+    self.archive_ids.count { |x| x.present? }
+  end
+
+  def completed?
+    self.part_count.present? and self.archive_ids.present? and (self.completed_part_count == self.part_count)
   end
 
   #This is a bit of a misnomer, as a bag may be allowed to have a single
