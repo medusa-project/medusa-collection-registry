@@ -28,7 +28,11 @@ module FileGroupsHelper
   end
 
   def file_group_show_tab_list
-    ['description', 'rights', 'assessments', 'attachments'].collect {|x| ["#{x}-tab", x.capitalize]}
+    tabs = ['description', 'rights', 'assessments', 'attachments']
+    if @file_group.cfs_directory.present?
+      tabs << 'amazon'
+    end
+    tabs.collect {|x| ["#{x}-tab", x.capitalize]}
   end
 
   def package_profile_select_collection

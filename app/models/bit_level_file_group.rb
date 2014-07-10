@@ -114,4 +114,12 @@ class BitLevelFileGroup < FileGroup
     self.save!
   end
 
+  def amazon_backups
+    if self.cfs_directory.present?
+      self.cfs_directory.amazon_backups
+    else
+      []
+    end
+  end
+
 end

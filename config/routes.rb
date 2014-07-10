@@ -44,6 +44,7 @@ MedusaRails3::Application.routes.draw do
         get 'events'
         get 'red_flags'
         post 'create_virus_scan'
+        post 'create_amazon_backup'
       end
     end
   end

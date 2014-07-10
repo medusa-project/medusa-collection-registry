@@ -1,0 +1,16 @@
+%table#amazon-backups-table.table.table-striped
+  %thead
+    %tr
+      %th Date
+      %th Completed
+      %th User
+  %tbody
+    - @file_group.amazon_backups.each do |amazon_backup|
+      %tr
+        %td= amazon_backup.date
+        %td= amazon_backup.completed? ? 'Yes' : 'No'
+        %td= amazon_backup.user.uid
+
+%div
+  - unless @file_group.amazon_backups.detect {|backup| backup.date == Date.today}
+    = link_to 'Create backup', create_amazon_backup_bit_level_file_group_path(@file_group), :class => 'btn', method: :post

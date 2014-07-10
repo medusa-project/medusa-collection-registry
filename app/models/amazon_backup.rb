@@ -37,8 +37,8 @@ class AmazonBackup < ActiveRecord::Base
   validates_presence_of :user_id, :date
 
   def initialize_archive_ids_and_date
-    self.archive_ids = Array.new
-    self.date = Date.today
+    self.archive_ids ||= Array.new
+    self.date ||= Date.today
   end
 
   #Return the previous backup for the file group, or nil
