@@ -13,7 +13,8 @@ end
 
 When(/^I create Amazon bags for the cfs directory with path '(.*)'$/) do |path|
   cfs_directory = CfsDirectory.where(path: path).first
-  amazon_backup = AmazonBackup.new(cfs_directory: cfs_directory, date: Date.today)
+  user = FactoryGirl.create(:user)
+  amazon_backup = AmazonBackup.new(cfs_directory: cfs_directory, date: Date.today, user: user)
   amazon_backup.save!
   amazon_backup.make_backup_bags
 end

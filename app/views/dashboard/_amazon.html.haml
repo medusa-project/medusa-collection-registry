@@ -14,19 +14,21 @@
           %th Backup
       %tbody
         - BitLevelFileGroup.having_cfs_directory.includes(:collection => :repository).each do |file_group|
-        - last_backup = file_group.last_amazon_backup
-          %tr
-            %td= file_group.id
-            %td= link_to(file_group.name, file_group)
-            %td= link_to(file_group.collection.title, file_group.collection)
-            %td= link_to(file_group.repository.title, file_group.repository)
-            %td= (file_group.total_files || 0).to_formatted_s(:delimited)
-            %td= (file_group.total_file_size || 0).to_formatted_s(:rounded, precision: 3)
-            %td= last_backup ? last_backup.date : 'None'
-            %td= last_backup ? (last_backup.completed? ? 'Yes' : 'No') : 'N/A'
-            %td= check_box_tag("bit_level_file_groups[]", file_group.id)  unless last_backup
+          -# Protect against pathological case when id is present but the cfs directory doesn't actually exist
+          - if file_group.cfs_directory
+          - last_backup = file_group.last_amazon_backup
+            %tr
+              %td= file_group.id
+              %td= link_to(file_group.name, file_group)
+              %td= link_to(file_group.collection.title, file_group.collection)
+              %td= link_to(file_group.repository.title, file_group.repository)
+              %td= (file_group.total_files || 0).to_formatted_s(:delimited)
+              %td= (file_group.total_file_size || 0).to_formatted_s(:rounded, precision: 3)
+              %td= last_backup ? last_backup.date : 'None'
+              %td= last_backup ? (last_backup.completed? ? 'Yes' : 'No') : 'N/A'
+              %td= check_box_tag("bit_level_file_groups[]", file_group.id)  unless last_backup
 
   %br
-    
+
   %div
     = f.button :submit, value: 'Create Backups', :class => 'btn-primary pull-right'
