@@ -23,6 +23,10 @@ class BitLevelFileGroup < FileGroup
     ['ObjectLevelFileGroup']
   end
 
+  def self.having_cfs_directory
+    where('cfs_directory_id is not null')
+  end
+
   def supports_cfs
     true
   end
@@ -120,6 +124,10 @@ class BitLevelFileGroup < FileGroup
     else
       []
     end
+  end
+
+  def last_amazon_backup
+    self.amazon_backups.first
   end
 
 end

@@ -1,7 +1,7 @@
 module DashboardHelper
   include ActionView::Helpers::NumberHelper
   def dashboard_tab_list
-    ['storage-overview', 'running-processes', 'file-statistics', 'red-flags', ['combined-events-tab', 'Events']]
+    ['storage-overview', 'running-processes', 'file-statistics', 'red-flags', ['combined-events-tab', 'Events'], 'amazon']
   end
 
   # File Stats for bit preservation

@@ -46,6 +46,9 @@ MedusaRails3::Application.routes.draw do
         post 'create_virus_scan'
         post 'create_amazon_backup'
       end
+      collection do
+        post 'bulk_amazon_backup'
+      end
     end
   end
 
