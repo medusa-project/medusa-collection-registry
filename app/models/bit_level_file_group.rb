@@ -96,20 +96,22 @@ class BitLevelFileGroup < FileGroup
         where(:cfs_files => {:cfs_directory_id => self.cfs_directory.recursive_subdirectory_ids})
   end
 
-  #TODO this should be cacheable into the total_file_size field with some care
-  #e.g. compare the max updated time of an associated file to the updated time
-  #of the file group and recompute and store if needed, otherwise just return the field.
-  #But I'm not going to do that now.
   def file_size
     return 0 unless self.cfs_directory
     directory_ids = self.cfs_directory.recursive_subdirectory_ids
-    CfsFile.where(cfs_directory_id: directory_ids).sum(:size) / (1.gigabyte)
+    size = CfsFile.where(cfs_directory_id: directory_ids).sum(:size) / (1.gigabyte)
+    self.total_file_size = size
+    self.save!
+    return size
   end
 
   def file_count
     return 0 unless self.cfs_directory
     directory_ids = self.cfs_directory.recursive_subdirectory_ids
-    CfsFile.where(cfs_directory_id: directory_ids).count
+    count = CfsFile.where(cfs_directory_id: directory_ids).count
+    self.total_files = count
+    self.save!
+    return count
   end
 
   def update_file_statistics
