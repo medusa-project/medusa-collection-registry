@@ -1,7 +1,5 @@
 class Job::AmazonBackup < Job::Base
 
-  belongs_to :amazon_backup
-
   #We should only be able to have one of these at a time for a given backup
   validates_uniqueness_of :amazon_backup_id
 
@@ -11,6 +9,11 @@ class Job::AmazonBackup < Job::Base
 
   def perform
     self.amazon_backup.request_backup
+  end
+
+  #I had a problem doing this an a association - I don't know why
+  def amazon_backup
+    AmazonBackup.find(self.amazon_backup_id)
   end
 
 end
