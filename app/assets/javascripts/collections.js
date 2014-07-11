@@ -29,13 +29,17 @@ $(function () {
       return JSON.parse(localStorage.getItem('DataTables_' + window.location.pathname));
     }
   });
-  table.fnSetColumnVis(1, true);
+  if (table) {
+    //table.fnSetColumnVis(1, true);
+  }
 });
 
 function toggle_uuid() {
   var table = $('table#collections').dataTable();
-  var isVisible = table.fnSettings().aoColumns[1].bVisible;
-  table.fnSetColumnVis(1, true)
+  if (table) {
+    var isVisible = table.fnSettings().aoColumns[1].bVisible;
+    //table.fnSetColumnVis(1, true)
+  }
 }
 
 var storage_level_filter = {
