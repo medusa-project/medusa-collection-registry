@@ -25,5 +25,8 @@
             %td= last_backup ? last_backup.date : 'None'
             %td= last_backup ? (last_backup.completed? ? 'Yes' : 'No') : 'N/A'
             %td= check_box_tag("bit_level_file_groups[]", file_group.id)  unless last_backup
+
+  %br
+    
   %div
     = f.button :submit, value: 'Create Backups', :class => 'btn-primary pull-right'
