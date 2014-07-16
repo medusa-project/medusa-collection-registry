@@ -96,6 +96,7 @@ class AmazonBackup < ActiveRecord::Base
     content_path = self.content_directory
     file_lists.each_with_index do |file_list, index|
       bag_dir = self.bag_directory(index + 1)
+      FileUtils.rm_rf(bag_dir)
       FileUtils.mkdir_p(bag_dir)
       bag = BagIt::Bag.new(bag_dir)
       file_list.each do |file|
@@ -103,8 +104,10 @@ class AmazonBackup < ActiveRecord::Base
         bag.add_file(bag_data_path, file)
       end
       bag.manifest!
+      manifest = self.manifest_file(index + 1)
+      FileUtils.rm_rf(manifest)
       FileUtils.copy(File.join(bag_dir, 'manifest-md5.txt'),
-                     self.manifest_file(index + 1))
+                     manifest)
     end
   end
 
