@@ -15,11 +15,11 @@
                 %th Number of Files
                 %th Size
           %tbody
-          - list_of_bit_file_formats.each do |content_type|
+          - bit_file_info_summary.each do |content_type, data|
             %tr
               %td= content_type
-              %td= file_count_bits_type_format(content_type).to_formatted_s(:delimited)
-              %td= size_bits_type_format(content_type).to_formatted_s(:human_size, precision: 3)
+              %td= data[:count].to_formatted_s(:delimited)
+              %td= data[:size].to_formatted_s(:human_size, precision: 3)
       %td.file_stats_separator
 
       %td
