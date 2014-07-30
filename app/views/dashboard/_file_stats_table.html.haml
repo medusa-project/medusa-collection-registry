@@ -45,7 +45,7 @@
         %tr
           %th{:colspan => 2}
             Total Bit Preservation Files:
-          %td= file_count_bits_total.to_formatted_s(:delimited)
+          %td= @storage_summary.collect{|summary| summary[:bit_level_file_count]}.sum.to_s(:delimited)
           %td
 
           %th{:colspan => 2}
@@ -55,7 +55,7 @@
         %tr
           %th{:colspan => 2}
             Total Bit Preservation Size:
-          %td= size_bits_total.to_formatted_s(:human_size, precision: 3)
+          %td= number_with_precision(@storage_summary.collect{|summary| summary[:bit_level_file_size]}.sum, precision: 2, delimiter: ',')
           %td
 
           %th{:colspan => 2}

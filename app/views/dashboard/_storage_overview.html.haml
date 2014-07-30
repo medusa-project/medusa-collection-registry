@@ -18,8 +18,8 @@
           %td.value= @storage_summary.collect{|summary| summary[:uningested_file_count]}.sum.to_s(:delimited)
         %tr
           %td Bit Level
-          %td.value= number_with_precision(CfsFile.sum(:size) / 1.gigabyte, precision: 2, delimiter: ',')
-          %td.value= CfsFile.count.to_s(:delimited)
+          %td.value= number_with_precision(@storage_summary.collect{|summary| summary[:bit_level_file_size]}.sum, precision: 2, delimiter: ',')
+          %td.value= @storage_summary.collect{|summary| summary[:bit_level_file_count]}.sum.to_s(:delimited)
 
 .row
   .span12
