@@ -145,7 +145,7 @@ class CfsDirectory < ActiveRecord::Base
       cfs_file.ensure_fits_xml
     end
   end
-  
+
   def self.export_root
     MedusaRails3::Application.medusa_config['cfs']['export_root']
   end
