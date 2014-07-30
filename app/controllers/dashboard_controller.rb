@@ -18,7 +18,7 @@ class DashboardController < ApplicationController
   def setup_storage_summary
     @storage_summary = []
     cfs_summary_hash = CfsDirectory.root_size_and_count_summary
-    Repository.includes(:collections => :file_groups).load.each do |repository|
+    Repository.includes(:collections => {:file_groups => :target_file_groups}).load.each do |repository|
       external_file_groups = repository.collections.collect { |c| c.file_groups.select { |fg| fg.is_a?(ExternalFileGroup) } }.flatten
       uningested_external_file_groups = external_file_groups.reject do |fg|
         fg.target_file_groups.detect { |target| target.is_a?(BitLevelFileGroup) }
