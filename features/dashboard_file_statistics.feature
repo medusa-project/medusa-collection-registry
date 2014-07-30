@@ -36,6 +36,7 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
     Then I should see an object preservation content_type table
 
   Scenario: View bit & object preservation summary table
+    Given The bit level file group statistics cache is up to date
     When I go to the dashboard
     And I click on 'File Statistics'
     Then I should see the bit & object preservation summary file statistics

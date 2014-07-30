@@ -55,7 +55,7 @@
         %tr
           %th{:colspan => 2}
             Total Bit Preservation Size:
-          %td= number_with_precision(@storage_summary.collect{|summary| summary[:bit_level_file_size]}.sum, precision: 2, delimiter: ',')
+          %td= (@storage_summary.collect{|summary| summary[:bit_level_file_size]}.sum * 1.gigabyte).to_formatted_s(:human_size, precision: 3)
           %td
 
           %th{:colspan => 2}
