@@ -9,7 +9,7 @@
       %th File Group
       %th Created
   %tbody
-    - Job::VirusScan.all.each do |virus_scan_job|
+    - Job::VirusScan.includes(:file_group).each do |virus_scan_job|
       %tr
         %td= link_to virus_scan_job.file_group.name, polymorphic_path(virus_scan_job.file_group)
         %td= link_to virus_scan_job.created_at.to_date.to_s
@@ -22,8 +22,8 @@
       %th File Group
       %th Files remaining
   %tbody
-    - BitLevelFileGroup.all.each do |file_group|
-      - if file_group.cfs_directory.present? and file_group.job_fits_directories.count > 0
+    - BitLevelFileGroup.where(:id => Job::FitsDirectory.distinct.pluck(:file_group_id)).includes(:cfs_directory).each do |file_group|
+      - if file_group.cfs_directory.present?
         %tr
           %td= file_group.cfs_directory.relative_path
           %td= link_to(file_group.name, polymorphic_path(file_group))
@@ -37,8 +37,8 @@
       %th File Group
       %th Files remaining
   %tbody
-    - BitLevelFileGroup.all.each do |file_group|
-      - if file_group.cfs_directory.present? and file_group.job_cfs_initial_directory_assessments.count > 0
+    - BitLevelFileGroup.where(:id => Job::CfsInitialDirectoryAssessment.distinct.pluck(:file_group_id)).includes(:cfs_directory).each do |file_group|
+      - if file_group.cfs_directory.present?
         %tr
           %td= file_group.cfs_directory.relative_path
           %td= link_to(file_group.name, polymorphic_path(file_group))
