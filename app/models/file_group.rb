@@ -3,6 +3,8 @@ class FileGroup < ActiveRecord::Base
   include ScheduledEventable
 
   belongs_to :collection
+  #parent is a duplicate, but allows uniformity for events, i.e. we can do eventable.parent
+  belongs_to :parent, class_name: 'Collection', foreign_key: 'collection_id'
   belongs_to :producer
   belongs_to :file_type
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
@@ -18,6 +20,7 @@ class FileGroup < ActiveRecord::Base
 
   before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root
+  before_create :initialize_file_info
 
   validates_uniqueness_of :cfs_root, :allow_blank => true
   validates_presence_of :name
@@ -41,10 +44,6 @@ class FileGroup < ActiveRecord::Base
 
   def label
     self.name
-  end
-
-  def parent
-    self.collection
   end
 
   #subclasses should override appropriately - this is blank here to facilitate the form
@@ -139,6 +138,11 @@ class FileGroup < ActiveRecord::Base
   #override as needed for subclasses
   def file_count
     self.total_files || 0
+  end
+
+  def initialize_file_info
+    self.total_files ||= 0
+    self.total_file_size ||= 0
   end
 
 end
