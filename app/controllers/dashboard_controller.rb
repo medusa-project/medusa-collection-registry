@@ -17,6 +17,8 @@ class DashboardController < ApplicationController
   #TODO - I bet we can do this more efficiently - it'd be easy with SQL, but we can probably do it with arel as well.
   def setup_storage_summary
     @storage_summary = []
+    #TODO - we could use the total_files and total_file_size directly on the bit level file groups; these are not
+    #guaranteed up to date (cron updates them periodically) but would of course compute a lot faster
     cfs_summary_hash = CfsDirectory.root_size_and_count_summary
     Repository.includes(:collections => {:file_groups => :target_file_groups}).load.each do |repository|
       external_file_groups = repository.collections.collect { |c| c.file_groups.select { |fg| fg.is_a?(ExternalFileGroup) } }.flatten
