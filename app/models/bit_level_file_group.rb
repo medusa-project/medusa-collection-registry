@@ -132,4 +132,11 @@ class BitLevelFileGroup < FileGroup
     self.amazon_backups.first
   end
 
+  def self.update_cached_file_stats
+    self.all.each do |file_group|
+      file_group.file_count
+      file_group.file_size
+    end
+  end
+
 end
