@@ -5,4 +5,4 @@
 %h3 Files by filename
 = simple_form_for :search, :url => filename_searches_path, :html => {id: 'filename_search', class: 'form-horizontal'}, :method => :post do |f|
   = f.input :filename, :label => 'File name', required: false
-  = f.button :submit, :class => 'btn-primary', :value => 'Search filenames'
+  = f.button :submit, :class => 'btn btn-primary', :value => 'Search filenames'
