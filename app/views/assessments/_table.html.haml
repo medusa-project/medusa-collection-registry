@@ -21,6 +21,6 @@
           %td #{assessment.date}
           %td #{assessment.author_net_id}
           %td
-            = link_to 'View', assessment, :class => 'btn btn-xs'
-            = link_to 'Edit', edit_assessment_path(assessment), :class => 'btn btn-xs'
+            = link_to 'View', assessment, :class => 'btn btn-default btn-xs'
+            = link_to 'Edit', edit_assessment_path(assessment), :class => 'btn btn-default btn-xs'
             = link_to 'Delete', assessment, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-xs btn-danger'

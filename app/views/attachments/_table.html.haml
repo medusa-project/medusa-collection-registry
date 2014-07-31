@@ -19,6 +19,6 @@
           %td #{attachment.attachment_content_type}
           %td #{attachment.author_net_id}
           %td
-            = link_to 'Download', download_attachment_path(attachment), :class => 'btn btn-xs'
-            = link_to 'Update', edit_attachment_path(attachment), :class => 'btn btn-xs'
+            = link_to 'Download', download_attachment_path(attachment), :class => 'btn btn-default btn-xs'
+            = link_to 'Update', edit_attachment_path(attachment), :class => 'btn btn-default btn-xs'
             = link_to 'Delete', attachment, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-xs btn-danger'

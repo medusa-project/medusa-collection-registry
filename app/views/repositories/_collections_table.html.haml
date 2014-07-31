@@ -21,5 +21,5 @@
           %td #{collection.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
           %td #{collection.preservation_priority_name}
           %td
-            = link_to 'Edit', edit_collection_path(collection), :class => 'btn btn-xs'
+            = link_to 'Edit', edit_collection_path(collection), :class => 'btn btn-default btn-xs'
             = link_to 'Delete', collection, :method => :delete, :data => { :confirm => collection_confirm_message}, :class => 'btn btn-xs btn-danger'
