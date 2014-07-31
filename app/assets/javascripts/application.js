@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require twitter/bootstrap
+//= require jquery.dataTables
+//= require dataTables.bootstrap
 //= require data_tables_common
 //= require autocomplete-rails
 //= require common

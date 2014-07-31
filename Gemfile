@@ -57,7 +57,9 @@ gem 'bunny'
 
   gem 'uglifier', '>= 1.0.4'
 
-  gem 'twitter-bootstrap-rails'
+  # Use "bootstrap3" branch Twitter Bootstrap 3.x.x (Latest Bootstrap 3 completely supported)
+  gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails', branch: 'bootstrap3'
+
 #end
 
 gem 'jquery-rails'

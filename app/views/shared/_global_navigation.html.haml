@@ -1,26 +1,32 @@
-.navbar.navbar-fixed-top#global-navigation
-  .navbar-inner
-    .container
-      %a.btn.btn-navbar{'data-target' => '.nav-collapse', 'data-toggle' => 'collapse'}
+%nav.navbar.navbar-default{:role => 'navigation'}
+  .container
+    / Brand and toggle get grouped for better mobile display
+    .navbar-header
+      %button.navbar-toggle{'data-target' => '#bs-example-navbar-collapse-1', 'data-toggle' => 'collapse', :type => 'button'}
+        %span.sr-only Toggle navigation
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      %a.brand{:href => root_url}
-        %i.icon-eye-open
+      %a.navbar-brand{:href => root_url}
+        - if logged_in?
+          %span.glyphicon.glyphicon-eye-open
+        - else
+          %span.glyphicon.glyphicon-eye-close
         Medusa
-      .container.nav-collapse
-        %ul.nav
-          %li= link_to 'Dashboard', dashboard_path
-          %li= link_to 'Repositories', repositories_path
-          %li= link_to 'Collections', collections_path
-          %li= link_to 'Producers', producers_path
-          %li= link_to 'Access', access_systems_path
-          %li= link_to 'Packages', package_profiles_path
-          %li= link_to 'Search', new_search_path
-        %ul.nav.pull-right
-          - if logged_in?
-            %li= link_to('Logout', logout_path)
-          - else
-            %li= link_to('Login', login_path)
-          %li= wiki_link('Wiki')
-          %li= link_to 'Help', '#'
+    / Collect the nav links, forms, and other content for toggling
+    #bs-example-navbar-collapse-1.collapse.navbar-collapse
+      %ul.nav.navbar-nav
+        %li= link_to 'Dashboard', dashboard_path
+        %li= link_to 'Repositories', repositories_path
+        %li= link_to 'Collections', collections_path
+        %li= link_to 'Producers', producers_path
+        %li= link_to 'Access', access_systems_path
+        %li= link_to 'Packages', package_profiles_path
+        %li= link_to 'Search', new_search_path
+      %ul.nav.navbar-nav.navbar-right
+        - if logged_in?
+          %li= link_to('Logout', logout_path)
+        - else
+          %li= link_to('Login', login_path)
+        %li= wiki_link('Wiki')
+        %li= link_to 'Help', '#'
