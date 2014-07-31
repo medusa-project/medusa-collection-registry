@@ -37,8 +37,8 @@
         %td #{number_with_precision(collection.total_size, precision: 3)}
         %td #{collection.preservation_priority_name}
         %td
-          = link_to t('.edit', :default => t('helpers.links.edit')), edit_collection_path(collection), :class => 'btn btn-mini'
-          = link_to t('.destroy', :default => t('helpers.links.destroy')), collection_path(collection), :method => :delete, :data => {:confirm => collection_confirm_message}, :class => 'btn btn-mini btn-danger'
+          = link_to t('.edit', :default => t('helpers.links.edit')), edit_collection_path(collection), :class => 'btn btn-xs'
+          = link_to t('.destroy', :default => t('helpers.links.destroy')), collection_path(collection), :method => :delete, :data => {:confirm => collection_confirm_message}, :class => 'btn btn-xs btn-danger'
 
 %br
 
