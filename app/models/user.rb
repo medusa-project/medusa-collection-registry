@@ -1,8 +1,7 @@
 class User < ActiveRecord::Base
-  has_many :cache_ldap_groups, :dependent => :destroy
 
   validates_uniqueness_of :uid, allow_blank: false
-  validates_uniqueness_of :email, allow_blank: false
+  validates :email, allow_blank: false, uniqueness: true, email: true
 
   def netid
     self.uid.split('@').first

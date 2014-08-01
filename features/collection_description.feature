@@ -128,10 +128,10 @@ Feature: Collection description
   Scenario: Associate contact with collection
     When I edit the collection titled 'dogs'
     And I fill in fields:
-      | Contact Person Net ID | hding2 |
+      | Contact Person Net ID | hding2@example.com |
     And I press 'Update Collection'
-    Then I should see 'hding2'
-    And There should be a person with net ID 'hding2'
+    Then I should see 'hding2@example.com'
+    And There should be a person with net ID 'hding2@example.com'
 
   Scenario: Auto link links from description fields and notes
     When I view the collection titled 'cats'

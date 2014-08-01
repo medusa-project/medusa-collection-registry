@@ -132,10 +132,10 @@ Feature: Repository description
     Given I am logged in as an admin
     When I edit the repository titled 'Sample 1'
     And I fill in fields:
-      | Contact Person Net ID | hding2 |
+      | Contact Person Net ID | hding2@example.com |
     And I press 'Update Repository'
-    Then I should see 'hding2'
-    And There should be a person with net ID 'hding2'
+    Then I should see 'hding2@example.com'
+    And There should be a person with net ID 'hding2@example.com'
 
   Scenario: Automatically convert things that look like links in notes to links in show view
     Given I am logged in as an admin

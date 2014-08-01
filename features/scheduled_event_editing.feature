@@ -10,7 +10,7 @@ Feature:
       | Toys | BitLevelFileGroup |
     And the file group named 'Toys' has scheduled events with fields:
       | key             | actor_netid | action_date | state     |
-      | external_to_bit | Buster      | 2012-02-02  | scheduled |
+      | external_to_bit | Buster@example.com      | 2012-02-02  | scheduled |
 
   Scenario: Navigate from scheduled event list to edit event
     When I view events for the file group named 'Toys'
@@ -21,20 +21,20 @@ Feature:
     When I view events for the file group named 'Toys'
     And I click on 'edit' in the scheduled events table
     And I fill in fields:
-      | Actor | Ruthie |
+      | Actor | Ruthie@example.com |
     And I click on 'Update Scheduled event'
-    Then I should see 'Ruthie'
-    And I should not see 'Buster'
+    Then I should see 'Ruthie@example.com'
+    And I should not see 'Buster@example.com'
     And I should be viewing events for the file group named 'Toys'
 
   Scenario: Edit and update scheduled event from collection
     When I view events for the collection titled 'Dogs'
     And I click on 'edit' in the scheduled events table
     And I fill in fields:
-      | Actor | Ruthie |
+      | Actor | Ruthie@example.com |
     And I click on 'Update Scheduled event'
-    Then I should see 'Ruthie'
-    And I should not see 'Buster'
+    Then I should see 'Ruthie@example.com'
+    And I should not see 'Buster@example.com'
     And I should be viewing events for the collection titled 'Dogs'
 
   Scenario: Delete scheduled event from event list

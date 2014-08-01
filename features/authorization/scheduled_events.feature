@@ -9,7 +9,7 @@ Feature: Scheduled event authorization
       | Toys | BitLevelFileGroup |
     And the file group named 'Toys' has scheduled events with fields:
       | key             | actor_netid | action_date | state     |
-      | external_to_bit | Buster      | 2012-02-02  | scheduled |
+      | external_to_bit | buster@example.com      | 2012-02-02  | scheduled |
 
   Scenario: Enforce permissions
     Then deny object permission on the scheduled event with key 'external_to_bit' to users for action with redirection:

@@ -4,7 +4,7 @@ class ScheduledEvent < ActiveRecord::Base
   STATES = ['scheduled', 'completed', 'cancelled']
 
   validates_inclusion_of :key, :in => lambda { |event| event.scheduled_eventable.supported_scheduled_event_keys }
-  validates_format_of :actor_netid, :with => /\A[A-Za-z0-9@._-]+\z/
+  validates :actor_netid, email: true
   validates_presence_of :action_date
   validates_inclusion_of :state, :in => STATES
   before_validation :ensure_state
@@ -64,7 +64,7 @@ class ScheduledEvent < ActiveRecord::Base
   end
 
   def create_completion_event(completing_user)
-    e = self.scheduled_eventable.events.build(:actor_netid => completing_user.netid, :key => self.scheduled_eventable.normal_event_key(self.key), :date => Date.today)
+    e = self.scheduled_eventable.events.build(:actor_netid => completing_user.uid, :key => self.scheduled_eventable.normal_event_key(self.key), :date => Date.today)
     e.save!
   end
 

@@ -401,6 +401,9 @@ GEM
     unf_ext (0.0.6)
     uuid (2.3.7)
       macaddr (~> 1.0)
+    valid_email (0.0.5)
+      activemodel
+      mail
     validatable (1.6.7)
     webrobots (0.1.1)
     xml-simple (1.1.2)
@@ -465,3 +468,4 @@ DEPENDENCIES
   twitter-bootstrap-rails!
   uglifier (>= 1.0.4)
   uuid
+  valid_email

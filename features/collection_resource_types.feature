@@ -4,7 +4,7 @@ Feature: Collection Resource types
   I want to be able to track the types of resources in a collection
 
   Background:
-    Given I am logged in as 'admin'
+    Given I am logged in as an admin
     And there are resource types named:
       | notated music | mixed material | text | cartographic |
     And the collection titled 'Dogs' has resource types named:

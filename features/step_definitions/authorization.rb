@@ -112,9 +112,9 @@ def rack_login(user_type)
     when 'a public user'
       post '/logout'
     when 'a visitor'
-      post '/auth/developer/callback', {name: 'visitor', email: 'visitor'}
+      post '/auth/developer/callback', {name: 'visitor@example.com', email: 'visitor@example.com'}
     when 'a manager'
-      post '/auth/developer/callback', {name: 'manager', email: 'manager'}
+      post '/auth/developer/callback', {name: 'manager@example.com', email: 'manager@example.com'}
     when /ldap user (.*)/
       post '/auth/developer/callback', {name: $1, email: $1}
     else

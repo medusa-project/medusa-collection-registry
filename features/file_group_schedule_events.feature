@@ -10,13 +10,13 @@ Feature: Schedule events for a file group
       | Dogs |
     Given the file group named 'Dogs' has scheduled events with fields:
       | key             | actor_netid | action_date | state     |
-      | external_to_bit | pete        | 2011-09-08  | scheduled |
+      | external_to_bit | pete@example.com        | 2011-09-08  | scheduled |
 
   Scenario: View scheduled events for a file group
     When I view events for the file group named 'Dogs'
     Then I should see the scheduled events table
     And I should see all of:
-      | Ingest staged file group to bit-level store | pete | 2011-09-08 | scheduled |
+      | Ingest staged file group to bit-level store | pete@example.com | 2011-09-08 | scheduled |
 
   Scenario: I can schedule an event from the show view for a file group
     When I view the file group named 'Dogs'
@@ -63,6 +63,6 @@ Feature: Schedule events for a file group
     Then the file group named 'Dogs' should have a scheduled event with fields:
       | key             | state|
       | external_to_bit | completed|
-    And the file group named 'Dogs' should have an event with key 'staged_to_bit' performed by 'admin'
+    And the file group named 'Dogs' should have an event with key 'staged_to_bit' performed by 'admin@example.com'
     And I should be viewing events for the file group named 'Dogs'
     And I should see 'completed'

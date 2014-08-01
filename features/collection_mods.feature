@@ -11,13 +11,13 @@ Feature: MODS for collection
       | text | cartographic |
 
   Scenario: Link from collection show view to MODS
-    Given I am logged in as 'admin'
+    Given I am logged in as a medusa admin
     When I view the collection titled 'Dogs'
     And I click on 'Mods'
     Then I should see a valid MODS document
 
   Scenario: The MODS document contains all required fields
-    Given I am logged in as 'admin'
+    Given I am logged in as a medusa admin
     When I view MODS for the collection titled 'Dogs'
     Then I should see MODS fields by css:
       | titleInfo title                                           | Dogs                                                |
