@@ -18,8 +18,6 @@
           %td= content_type
           %td= data[:count].to_formatted_s(:delimited)
           %td= data[:size].to_formatted_s(:human_size, precision: 3)
-      %td.file_stats_separator
-
 
   .col-md-6
     %table.table.table-striped.table-bordered.table-condensed#file_stats_objects
@@ -41,22 +39,22 @@
 .row
   .col-md-12
     %table.table.table-condensed#file_stats_summary
-    %tr
-      %th{:colspan => 2}
-        Total Bit Preservation Files:
-      %td= @storage_summary.collect{|summary| summary[:bit_level_file_count]}.sum.to_s(:delimited)
-      %td
+      %tr
+        %th{:colspan => 2}
+          Total Bit Preservation Files:
+        %td= @storage_summary.collect{|summary| summary[:bit_level_file_count]}.sum.to_s(:delimited)
+        %td
 
-      %th{:colspan => 2}
-        Total Object Preservation Files:
-      %td= file_count_objects_total.to_formatted_s(:delimited)
+        %th{:colspan => 2}
+          Total Object Preservation Files:
+        %td= file_count_objects_total.to_formatted_s(:delimited)
 
-    %tr
-      %th{:colspan => 2}
-        Total Bit Preservation Size:
-      %td= (@storage_summary.collect{|summary| summary[:bit_level_file_size]}.sum * 1.gigabyte).to_formatted_s(:human_size, precision: 3)
-      %td
+      %tr
+        %th{:colspan => 2}
+          Total Bit Preservation Size:
+        %td= (@storage_summary.collect{|summary| summary[:bit_level_file_size]}.sum * 1.gigabyte).to_formatted_s(:human_size, precision: 3)
+        %td
 
-      %th{:colspan => 2}
-        Total Object Preservation Size:
-      %td= size_objects_total.to_formatted_s(:human_size, precision: 3)
+        %th{:colspan => 2}
+          Total Object Preservation Size:
+        %td= size_objects_total.to_formatted_s(:human_size, precision: 3)
