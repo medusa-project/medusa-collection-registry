@@ -64,7 +64,7 @@ class ScheduledEvent < ActiveRecord::Base
   end
 
   def create_completion_event(completing_user)
-    e = self.scheduled_eventable.events.build(:actor_netid => completing_user.uid, :key => self.scheduled_eventable.normal_event_key(self.key), :date => Date.today)
+    e = self.scheduled_eventable.events.build(:actor_netid => completing_user.email, :key => self.scheduled_eventable.normal_event_key(self.key), :date => Date.today)
     e.save!
   end
 
