@@ -1,6 +1,6 @@
-.pull-right
-  = link_to 'Index', access_systems_path, :class => 'btn'
-  = link_to 'Edit', edit_access_system_path(@access_system), :class => 'btn'
+.pull-right.btn-group
+  = link_to 'Index', access_systems_path, :class => 'btn btn-default'
+  = link_to 'Edit', edit_access_system_path(@access_system), :class => 'btn btn-default'
   = link_to 'Delete', @access_system, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
 
 .page_header

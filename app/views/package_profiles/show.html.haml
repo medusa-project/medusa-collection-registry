@@ -1,6 +1,6 @@
 .pull-right
-  = link_to 'Index', package_profiles_path, :class => 'btn'
-  = link_to 'Edit', edit_package_profile_path(@package_profile), :class => 'btn'
+  = link_to 'Index', package_profiles_path, :class => 'btn btn-default'
+  = link_to 'Edit', edit_package_profile_path(@package_profile), :class => 'btn btn-default'
   = link_to 'Delete', @package_profile, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
 
 .page_header

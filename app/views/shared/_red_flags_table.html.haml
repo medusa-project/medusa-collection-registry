@@ -1,3 +1,4 @@
+%h3 Red Flags
 %div
   Filter:
   = link_to 'All', '#', onclick: 'red_flag_filter.all(); return false;'
@@ -10,7 +11,7 @@
   = link_to 'Most Recent', '#', onclick: 'red_flag_sorter.recent(); return false;'
   |
   = link_to 'Most Important', '#', onclick: 'red_flag_sorter.priority(); return false;'
-%table#red-flags-table.table.table-striped
+%table#red-flags-table.table.table-striped.table-condensed
   %thead
     %tr
       %th Type
