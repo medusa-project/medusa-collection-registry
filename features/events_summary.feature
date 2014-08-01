@@ -21,20 +21,20 @@ Feature: Events Summary
       | toy note 1 |
       | toy note 2 |
     And the file group named 'Toys' has scheduled events with fields:
-      | key             | actor_netid | action_date | state     |
+      | key             | actor_email | action_date | state     |
       | external_to_bit | Buster@example.com      | 2012-02-02  | scheduled |
       | external_to_bit | Ruthie@example.com      | 2014-02-02  | completed |
     And the file group named 'Hot' has events with fields:
       | note       |
       | hot note 1 |
     And the file group named 'Hot' has scheduled events with fields:
-      | key             | actor_netid | action_date | state     |
+      | key             | actor_email | action_date | state     |
       | external_to_bit | Oscar@example.com       | 2011-07-08  | scheduled |
     And the file group named 'Cool' has events with fields:
       | note        |
       | cool note 1 |
     And the file group named 'Cool' has scheduled events with fields:
-      | key             | actor_netid | action_date | state     |
+      | key             | actor_email | action_date | state     |
       | external_to_bit | Coltrane@example.com    | 2011-09-10  | scheduled |
     And the repository titled 'Plants' has collections with fields:
       | title |
@@ -46,7 +46,7 @@ Feature: Events Summary
       | note        |
       | corn note 1 |
     And the file group named 'Corn' has scheduled events with fields:
-      | key             | actor_netid | action_date | state     |
+      | key             | actor_email | action_date | state     |
       | external_to_bit | delmonte@example.com    | 2010-10-11  | scheduled |
 
   Scenario: View collection events

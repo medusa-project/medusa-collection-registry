@@ -19,7 +19,7 @@
           %td #{link_to assessment.assessable.label, assessment.assessable}
           %td #{assessment.assessable.class.to_s.underscore.humanize}
           %td #{assessment.date}
-          %td #{assessment.author_net_id}
+          %td #{assessment.author_email}
           %td
             = link_to 'View', assessment, :class => 'btn btn-default btn-xs'
             = link_to 'Edit', edit_assessment_path(assessment), :class => 'btn btn-default btn-xs'

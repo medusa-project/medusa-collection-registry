@@ -3,7 +3,7 @@
 
 .col-sm-3#sidebar
   .well
-    = show_value net_id_search_link(@producer.administrator_net_id), 'Administrator Net ID'
+    = show_field @producer, :administrator_email
     = show_field @producer, :address_1
     = show_field @producer, :address_2
     = show_field @producer, :city

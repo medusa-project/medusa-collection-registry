@@ -32,7 +32,7 @@ class AssessmentsController < ApplicationController
     @assessable = klass.find(params[:assessable_id])
     authorize! :create_assessment, @assessable
     @assessment = Assessment.new
-    @assessment.author = Person.find_or_create_by(net_id: current_user.uid)
+    @assessment.author = Person.find_or_create_by(email: current_user.email)
     @assessment.assessable = @assessable
   end
 
@@ -72,7 +72,7 @@ class AssessmentsController < ApplicationController
   def allowed_params
     params[:assessment].permit(:assessable_id, :date, :notes, :preservation_risks, :assessable_type, :name,
                                :preservation_risk_level, :assessment_type, :naming_conventions, :storage_medium_id,
-                               :directory_structure, :last_access_date, :file_format, :total_file_size, :total_files, :author_net_id)
+                               :directory_structure, :last_access_date, :file_format, :total_file_size, :total_files, :author_email)
   end
 
 end

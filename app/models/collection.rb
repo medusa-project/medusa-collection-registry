@@ -1,4 +1,4 @@
-require 'net_id_person_associator'
+require 'email_person_associator'
 require 'registers_handle'
 require 'mods_helper'
 require 'utils/luhn'
@@ -7,7 +7,7 @@ class Collection < ActiveRecord::Base
   include RegistersHandle
   include ModsHelper
   include RedFlagAggregator
-  net_id_person_association(:contact)
+  email_person_association(:contact)
 
   belongs_to :repository
   has_many :assessments, :dependent => :destroy, :as => :assessable

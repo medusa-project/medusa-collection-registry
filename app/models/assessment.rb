@@ -1,6 +1,6 @@
-require 'net_id_person_associator'
+require 'email_person_associator'
 class Assessment < ActiveRecord::Base
-  net_id_person_association(:author)
+  email_person_association(:author)
 
   belongs_to :assessable, :polymorphic => true
   belongs_to :storage_medium

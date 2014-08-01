@@ -1,7 +1,7 @@
 .well
   = show_field @collection, :uuid, 'UUID'
   = show_field @collection, :external_id, 'External ID'
-  = show_value net_id_search_link(@collection.contact_net_id), 'Contact Person NetID'
+  = show_field @collection, :contact_email
   %p
     %strong Access Systems:
     %br

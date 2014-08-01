@@ -9,7 +9,7 @@
 .row
   .col-sm-8
     .well
-      = show_value net_id_search_link(@assessment.author_net_id), 'Author Net ID'
+      = show_field @assessment, :author_email
       = show_field @assessment, :name
       = show_field @assessment, :assessment_type, 'Type'
       = show_field @assessment, :last_access_date

@@ -36,7 +36,7 @@ class ScheduledEventsController < ApplicationController
   def update
     authorize! :update, @scheduled_event
     return_to = params[:scheduled_event].delete(:return_to)
-    if @scheduled_event.update_attributes(params[:scheduled_event].permit(:actor_netid, :action_date, :state, :key))
+    if @scheduled_event.update_attributes(params[:scheduled_event].permit(:actor_email, :action_date, :state, :key))
       redirect_to return_to
     else
       render 'edit'
@@ -56,6 +56,6 @@ class ScheduledEventsController < ApplicationController
   end
 
   def allowed_params
-    params[:scheduled_event].permit(:action_date, :actor_netid, :key, :note, :scheduled_eventable_id, :scheduled_eventable_type, :state)
+    params[:scheduled_event].permit(:action_date, :actor_email, :key, :note, :scheduled_eventable_id, :scheduled_eventable_type, :state)
   end
 end

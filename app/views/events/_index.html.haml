@@ -15,6 +15,6 @@
         %td= event.eventable.label
         %td= event.eventable.class.to_s.underscore.humanize
         %td= link_to(event.eventable.parent.label, event.eventable.parent)
-        %td= event.actor_netid
+        %td= event.actor_email
         %td= event.message
         %td= event.note

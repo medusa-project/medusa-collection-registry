@@ -82,7 +82,7 @@ class RepositoriesController < ApplicationController
   def allowed_params
     params[:repository].permit(:notes, :title, :url, :address_1, :address_2, :city, :state,
                                :zip, :phone_number, :email, :active_start_date,
-                               :active_end_date, :contact_net_id)
+                               :active_end_date, :contact_email)
   end
 
 end

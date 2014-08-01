@@ -15,7 +15,7 @@
     - @producers.each do |producer|
       %tr
         %td #{link_to producer.title, producer}
-        %td #{net_id_search_link(producer.administrator_net_id)}
+        %td #{producer.administrator_email}
         %td #{link_to_external producer.url, producer.url}
         %td
           = link_to 'Edit', edit_producer_path(producer), :class => 'btn btn-default btn-xs'

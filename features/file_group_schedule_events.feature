@@ -9,7 +9,7 @@ Feature: Schedule events for a file group
       | name |
       | Dogs |
     Given the file group named 'Dogs' has scheduled events with fields:
-      | key             | actor_netid | action_date | state     |
+      | key             | actor_email | action_date | state     |
       | external_to_bit | pete@example.com        | 2011-09-08  | scheduled |
 
   Scenario: View scheduled events for a file group
@@ -27,7 +27,7 @@ Feature: Schedule events for a file group
     And I select 'Delete external file group' from 'Scheduled event'
     And I click on 'Create Scheduled event'
     Then the file group named 'Dogs' should have a scheduled event with fields:
-      | key             | actor_netid | action_date | note         | state     |
+      | key             | actor_email | action_date | note         | state     |
       | external_delete | joe@example.com         | 2010-01-02  | Dog deletion | scheduled |
     And I should be on the view page for the file group named 'Dogs'
     And 'joe@example.com' should receive an email with subject 'Medusa scheduled event reminder'
@@ -42,7 +42,7 @@ Feature: Schedule events for a file group
     And I select 'Delete external file group' from 'Scheduled event'
     And I click on 'Create Scheduled event'
     Then the file group named 'Dogs' should have a scheduled event with fields:
-      | key             | actor_netid | action_date | note         | state     |
+      | key             | actor_email | action_date | note         | state     |
       | external_delete | joe@example.com         | 2010-01-02  | Dog deletion | scheduled |
     And I should be on the view page for the collection titled 'Animals'
     And 'joe@example.com' should receive an email with subject 'Medusa scheduled event reminder'

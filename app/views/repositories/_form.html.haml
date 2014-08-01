@@ -3,7 +3,7 @@
     .col-sm-12
       = f.input :title
     .col-sm-6
-      = f.input :contact_net_id, :label => 'Contact Person Net ID', :wrapper => :wide_horizontal_file_input
+      = f.input :contact_email, :label => 'Contact Person Email', :wrapper => :wide_horizontal_file_input, type: :email
       = f.input :address_1, :wrapper => :wide_horizontal_file_input
       = f.input :address_2, :wrapper => :wide_horizontal_file_input
       = f.input :city, :wrapper => :wide_horizontal_file_input

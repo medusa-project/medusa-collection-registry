@@ -133,10 +133,10 @@ Feature: Producer description
     Given I am logged in as an admin
     When I edit the producer titled 'Scanning'
     And I fill in fields:
-      | Administrator Net ID | hding2@example.com |
+      | Administrator Email | hding2@example.com |
     And I press 'Update Producer'
     Then I should see 'hding2@example.com'
-    And There should be a person with net ID 'hding2@example.com'
+    And There should be a person with email 'hding2@example.com'
 
   Scenario: Auto link from the notes text
     Given I am logged in as an admin

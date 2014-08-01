@@ -8,8 +8,8 @@ And /^I have repositories with fields:$/ do |table|
   end
 end
 
-And /^the repository titled '(.*)' is managed by '(.*)'$/ do |title, net_id|
-  person = FactoryGirl.create(:person, :net_id => net_id,)
+And /^the repository titled '(.*)' is managed by '(.*)'$/ do |title, email|
+  person = FactoryGirl.create(:person, :email => email,)
   FactoryGirl.create(:repository, :contact => person, :title => title)
 end
 

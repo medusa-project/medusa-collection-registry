@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-  autocomplete :user, :uid
+  autocomplete :user, :email
   before_filter :require_logged_in
 
   def create
@@ -18,7 +18,7 @@ class EventsController < ApplicationController
   protected
 
   def allowed_params
-    params[:event].permit(:eventable, :key, :note, :actor_netid, :date)
+    params[:event].permit(:eventable, :key, :note, :actor_email, :date)
   end
 
 end

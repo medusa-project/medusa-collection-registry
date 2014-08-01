@@ -121,16 +121,16 @@ Feature: Assessment description
     Given I am logged in as an admin
     When I view the collection titled 'Dogs'
     And I click on 'Add Assessment'
-    Then The field 'Author Net ID' should be filled in with 'admin@example.com'
+    Then The field 'Author Email' should be filled in with 'admin@example.com'
 
   Scenario: Associate author with assessment
     Given I am logged in as an admin
     When I edit the assessment with date '2012-01-09' for the collection titled 'Dogs'
     And I fill in fields:
-      | Author Net ID | wingram2@example.com |
+      | Author Email | wingram2@example.com |
     And I press 'Update Assessment'
     Then I should see 'wingram2@example.com'
-    And There should be a person with net ID 'wingram2@example.com'
+    And There should be a person with email 'wingram2@example.com'
 
   Scenario: Auto link links from notes and preservation risks
     Given I am logged in as an admin

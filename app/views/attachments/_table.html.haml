@@ -17,7 +17,7 @@
           %td #{link_to attachment.attachment_file_name, attachment}
           %td #{attachment.description}
           %td #{attachment.attachment_content_type}
-          %td #{attachment.author_net_id}
+          %td #{attachment.author_email}
           %td
             = link_to 'Download', download_attachment_path(attachment), :class => 'btn btn-default btn-xs'
             = link_to 'Update', edit_attachment_path(attachment), :class => 'btn btn-default btn-xs'

@@ -8,7 +8,7 @@ Feature: Scheduled event authorization
       | name | type              |
       | Toys | BitLevelFileGroup |
     And the file group named 'Toys' has scheduled events with fields:
-      | key             | actor_netid | action_date | state     |
+      | key             | actor_email | action_date | state     |
       | external_to_bit | buster@example.com      | 2012-02-02  | scheduled |
 
   Scenario: Enforce permissions

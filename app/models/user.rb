@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   end
 
   def person
-    Person.find_or_create_by(net_id: self.uid)
+    Person.find_or_create_by(email: self.email)
   end
 
 end

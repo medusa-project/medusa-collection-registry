@@ -17,7 +17,7 @@
         %td= event.scheduled_eventable.label
         %td= event.scheduled_eventable.class.to_s.underscore.humanize
         %td= link_to(event.scheduled_eventable.parent.label, event.scheduled_eventable.parent)
-        %td= event.actor_netid
+        %td= event.actor_email
         %td= event.message
         %td
           - links = [link_to('edit', edit_scheduled_event_path(event, :return_to => request.fullpath)),

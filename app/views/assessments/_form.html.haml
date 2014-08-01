@@ -8,7 +8,7 @@
       .tab-content
         #assessment-metadata.tab-pane.active
           = f.input :name
-          = f.input :author_net_id, :label => 'Author Net ID'
+          = f.input :author_email, :label => 'Author Email'
           = f.input :assessable_id, :as => :hidden, :input_html => {:value => @assessable.id}
           = f.input :assessable_type, :as => :hidden, :input_html => {:value => @assessable.class.name}
           = f.input :date, :as => :string, :input_html => {:class => 'datepicker', :value => (@assessment.date.if_blank(Date.today)).to_s}

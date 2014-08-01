@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140731213225) do
+ActiveRecord::Schema.define(version: 20140801204239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,13 +166,13 @@ ActiveRecord::Schema.define(version: 20140731213225) do
     t.text     "note"
     t.integer  "eventable_id"
     t.string   "eventable_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "actor_netid"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "actor_email"
     t.date     "date"
   end
 
-  add_index "events", ["actor_netid"], name: "index_events_on_actor_netid", using: :btree
+  add_index "events", ["actor_email"], name: "index_events_on_actor_email", using: :btree
   add_index "events", ["eventable_id"], name: "index_events_on_eventable_id", using: :btree
 
   create_table "file_groups", force: true do |t|
@@ -284,12 +284,12 @@ ActiveRecord::Schema.define(version: 20140731213225) do
   end
 
   create_table "people", force: true do |t|
-    t.string   "net_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_index "people", ["net_id"], name: "index_people_on_net_id", using: :btree
+  add_index "people", ["email"], name: "index_people_on_email", using: :btree
 
   create_table "preservation_priorities", force: true do |t|
     t.string   "name"
@@ -392,7 +392,7 @@ ActiveRecord::Schema.define(version: 20140731213225) do
     t.string   "key"
     t.string   "state"
     t.date     "action_date"
-    t.string   "actor_netid"
+    t.string   "actor_email"
     t.integer  "scheduled_eventable_id"
     t.string   "scheduled_eventable_type"
     t.text     "note"
@@ -400,7 +400,7 @@ ActiveRecord::Schema.define(version: 20140731213225) do
     t.datetime "updated_at"
   end
 
-  add_index "scheduled_events", ["actor_netid"], name: "index_scheduled_events_on_actor_netid", using: :btree
+  add_index "scheduled_events", ["actor_email"], name: "index_scheduled_events_on_actor_email", using: :btree
   add_index "scheduled_events", ["key"], name: "index_scheduled_events_on_key", using: :btree
   add_index "scheduled_events", ["scheduled_eventable_id"], name: "index_scheduled_events_on_scheduled_eventable_id", using: :btree
   add_index "scheduled_events", ["scheduled_eventable_type"], name: "index_scheduled_events_on_scheduled_eventable_type", using: :btree

@@ -1,9 +1,9 @@
-require 'net_id_person_associator'
+require 'email_person_associator'
 class Repository < ActiveRecord::Base
   include ActiveDateChecker
   include RedFlagAggregator
 
-  net_id_person_association(:contact)
+  email_person_association(:contact)
   has_many :collections, :dependent => :destroy
   has_many :assessments, :as => :assessable, :dependent => :destroy
 

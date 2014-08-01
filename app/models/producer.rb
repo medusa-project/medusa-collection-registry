@@ -1,8 +1,8 @@
-require 'net_id_person_associator'
+require 'email_person_associator'
 class Producer < ActiveRecord::Base
   include ActiveDateChecker
 
-  net_id_person_association(:administrator)
+  email_person_association(:administrator)
 
   validates_presence_of :title
   validates_uniqueness_of :title
