@@ -1,9 +1,13 @@
 - if Delayed::Job.where('failed_at IS NOT NULL').count > 0
-  %h3 #{Delayed::Job.where('failed_at IS NOT NULL').count} delayed jobs have failed
-  %p Please contact the development staff to diagnose
+  .alert.alert-danger
+    %p
+      %span.badge #{Delayed::Job.where('failed_at IS NOT NULL').count}
+      delayed jobs have failed! Please contact the development staff to diagnose
 
-%h3 Virus Scans
-%table.table.table-striped#running_virus_scans
+%h3 Running Processes
+
+%table.table.table-striped.table-bordered.table-condensed#running_virus_scans
+  %caption Virus Scans
   %thead
     %tr
       %th File Group
@@ -14,8 +18,9 @@
         %td= link_to virus_scan_job.file_group.name, polymorphic_path(virus_scan_job.file_group)
         %td= link_to virus_scan_job.created_at.to_date.to_s
 
-%h3 FITS Scans
-%table.table.table-striped#running_fits_scans
+
+%table.table.table-striped.table-bordered.table-condensed#running_fits_scans
+  %caption FITS Scans
   %thead
     %tr
       %th Path
@@ -29,8 +34,9 @@
           %td= link_to(file_group.name, polymorphic_path(file_group))
           %td= file_group.running_fits_file_count
 
-%h3 Initial Assessment Scans
-%table.table.table-striped#running_initial_assessment_scans
+
+%table.table.table-striped.table-bordered.table-condensed#running_initial_assessment_scans
+  %caption Initial Assessment Scans
   %thead
     %tr
       %th Path

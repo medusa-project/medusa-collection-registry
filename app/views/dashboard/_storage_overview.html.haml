@@ -1,42 +1,38 @@
-.row
-  .span12
-    %table.container.span3
-      %caption Storage
-      %thead
-        %tr
-          %th state
-          %th size(GB)
-          %th files
-      %tbody
-        %tr
-          %td External (total)
-          %td.value= number_with_precision(@storage_summary.collect{|summary| summary[:external_size]}.sum, precision: 2, delimiter: ',')
-          %td.value= @storage_summary.collect{|summary| summary[:external_file_count]}.sum.to_s(:delimited)
-        %tr
-          %td External (not ingested)
-          %td.value= number_with_precision(@storage_summary.collect{|summary| summary[:uningested_size]}.sum, precision: 2, delimiter: ',')
-          %td.value= @storage_summary.collect{|summary| summary[:uningested_file_count]}.sum.to_s(:delimited)
-        %tr
-          %td Bit Level
-          %td.value= number_with_precision(CfsFile.sum(:size) / 1.gigabyte, precision: 2, delimiter: ',')
-          %td.value= CfsFile.count.to_s(:delimited)
+%table.table.table-hover.table-bordered.table-condensed
+  %caption Storage
+  %thead
+    %tr
+      %th state
+      %th size(GB)
+      %th files
+  %tbody
+    %tr
+      %td External (total)
+      %td.value= number_with_precision(@storage_summary.collect{|summary| summary[:external_size]}.sum, precision: 2, delimiter: ',')
+      %td.value= @storage_summary.collect{|summary| summary[:external_file_count]}.sum.to_s(:delimited)
+    %tr
+      %td External (not ingested)
+      %td.value= number_with_precision(@storage_summary.collect{|summary| summary[:uningested_size]}.sum, precision: 2, delimiter: ',')
+      %td.value= @storage_summary.collect{|summary| summary[:uningested_file_count]}.sum.to_s(:delimited)
+    %tr
+      %td Bit Level
+      %td.value= number_with_precision(CfsFile.sum(:size) / 1.gigabyte, precision: 2, delimiter: ',')
+      %td.value= CfsFile.count.to_s(:delimited)
 
-.row
-  .span12
-    %table#storage-overview.table.table-striped
-      %caption Storage Summary
-      %thead
-        %tr
-          %th Repository
-          %th External Files
-          %th External Size (GB)
-          %th Bit Level Files
-          %th Bit Level Size (GB)
-      %tbody
-        - @storage_summary.each do |summary|
-          %tr
-            %td= link_to summary[:repository].title, summary[:repository]
-            %td= summary[:external_file_count].to_s(:delimited)
-            %td= number_with_precision(summary[:external_size], precision: 2, delimiter: ',')
-            %td= summary[:bit_level_file_count].to_s(:delimited)
-            %td= number_with_precision(summary[:bit_level_file_size], precision: 2, delimiter: ',')
+%table#storage-overview.table.table-striped.table-bordered.table-condensed
+  %caption Storage Summary
+  %thead
+    %tr
+      %th Repository
+      %th External Files
+      %th External Size (GB)
+      %th Bit Level Files
+      %th Bit Level Size (GB)
+  %tbody
+    - @storage_summary.each do |summary|
+      %tr
+        %td= link_to summary[:repository].title, summary[:repository]
+        %td= summary[:external_file_count].to_s(:delimited)
+        %td= number_with_precision(summary[:external_size], precision: 2, delimiter: ',')
+        %td= summary[:bit_level_file_count].to_s(:delimited)
+        %td= number_with_precision(summary[:bit_level_file_size], precision: 2, delimiter: ',')
