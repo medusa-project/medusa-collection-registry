@@ -25,12 +25,12 @@ class DashboardController < ApplicationController
       bit_level_file_groups = repository.collections.collect { |c| c.file_groups.select { |fg| fg.is_a?(BitLevelFileGroup) } }.flatten
       @storage_summary << Hash.new.tap do |h|
         h[:repository] = repository
-        h[:external_file_count] = external_file_groups.collect { |fg| fg.file_count }.sum
-        h[:external_size] = external_file_groups.collect { |fg| fg.file_size }.sum
-        h[:uningested_file_count] = uningested_external_file_groups.collect { |fg| fg.file_count }.sum
-        h[:uningested_size] = uningested_external_file_groups.collect { |fg| fg.file_size }.sum
-        h[:bit_level_file_count] = bit_level_file_groups.collect { |fg| fg.total_files }.sum
-        h[:bit_level_file_size] = bit_level_file_groups.collect { |fg| fg.total_file_size }.sum
+        h[:external_file_count] = external_file_groups.collect { |fg| fg.file_count || 0 }.sum
+        h[:external_size] = external_file_groups.collect { |fg| fg.file_size || 0 }.sum
+        h[:uningested_file_count] = uningested_external_file_groups.collect { |fg| fg.file_count || 0 }.sum
+        h[:uningested_size] = uningested_external_file_groups.collect { |fg| fg.file_size || 0 }.sum
+        h[:bit_level_file_count] = bit_level_file_groups.collect { |fg| fg.total_files || 0 }.sum
+        h[:bit_level_file_size] = bit_level_file_groups.collect { |fg| fg.total_file_size || 0 }.sum
       end
     end
     @storage_summary.sort! { |a, b| b[:external_size] <=> a[:external_size] }
