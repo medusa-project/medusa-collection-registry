@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
     cached_value = self.cached_ldap_value(user, group, domain)
     return cached_value unless cached_value.nil?
     #if not in cache then lookup, cache, and return
-    self.internal_is_member_of?(group, user.uid, domain).tap do |permitted|
+    self.internal_is_member_of?(group, user.net_id, domain).tap do |permitted|
       self.cache_ldap_value(user, group, domain, permitted)
     end
   end

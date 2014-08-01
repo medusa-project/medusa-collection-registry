@@ -4,13 +4,13 @@ class AmazonMailer < ActionMailer::Base
   def progress(amazon_backup, part)
     @amazon_backup = amazon_backup
     @part = part.to_i
-    mail(to: "#{amazon_backup.user.uid}@illinois.edu", subject: 'Amazon backup progress')
+    mail(to: amazon_backup.user.email, subject: 'Amazon backup progress')
   end
 
   def failure(amazon_backup, error_message)
     @amazon_backup = amazon_backup
     @error_message = error_message
-    mail(to: "#{amazon_backup.user.uid}@illinois.edu", subject: 'Amazon backup failure')
+    mail(to: amazon_backup.user.email, subject: 'Amazon backup failure')
   end
 
 end

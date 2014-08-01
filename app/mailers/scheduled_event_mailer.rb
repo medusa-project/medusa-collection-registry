@@ -4,6 +4,6 @@ class ScheduledEventMailer < ActionMailer::Base
   def reminder(event)
     @event = event
     @eventable = event.scheduled_eventable
-    mail(to: "#{event.actor_netid}@illinois.edu", subject: 'Medusa scheduled event reminder')
+    mail(to: event.actor_netid, subject: 'Medusa scheduled event reminder')
   end
 end

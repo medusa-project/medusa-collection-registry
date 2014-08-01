@@ -3,7 +3,7 @@ class CfsMailer < ActionMailer::Base
 
   def export_complete(job)
     @job = job
-    mail(to: "#{job.user.person.net_id}@illinois.edu", subject: 'Medusa export completed')
+    mail(to: job.user.email, subject: 'Medusa export completed')
   end
 
 end

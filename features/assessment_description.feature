@@ -121,7 +121,7 @@ Feature: Assessment description
     Given I am logged in as an admin
     When I view the collection titled 'Dogs'
     And I click on 'Add Assessment'
-    Then The field 'Author Net ID' should be filled in with 'admin'
+    Then The field 'Author Net ID' should be filled in with 'admin@example.com'
 
   Scenario: Associate author with assessment
     Given I am logged in as an admin

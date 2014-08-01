@@ -12,10 +12,12 @@ class SessionsController < ApplicationController
   end
 
   def create
+    #auth_hash[:uid] should have the uid (for shib as configured in shibboleth.yml)
+    #auth_hash[:info][:email] should have the email address
     auth_hash = request.env['omniauth.auth']
     if auth_hash and auth_hash[:uid]
       return_url = clear_and_return_return_path
-      user = User.find_or_create_by(uid: auth_hash[:uid])
+      user = User.find_or_create_by!(uid: auth_hash[:uid], email: auth_hash[:info][:email])
       reset_ldap_cache(user)
       if ApplicationController.is_ad_user?(user)
         set_current_user(user)
@@ -26,7 +28,7 @@ class SessionsController < ApplicationController
         #elsewhere.
         redirect_to return_url
       else
-        redirect_to unauthorized_net_id_url(:net_id => user.uid)
+        redirect_to unauthorized_net_id_url(:net_id => user.net_id)
       end
     else
       redirect_to login_url

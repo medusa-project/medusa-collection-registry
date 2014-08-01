@@ -7,19 +7,19 @@ end
 #end
 
 Given(/^I am logged in as a medusa admin$/) do
-  login_user(:uid => 'admin')
+  login_user(:uid => 'admin@example.com')
 end
 
 Given /^I am logged in as a visitor$/ do
-  login_user(:uid => 'visitor')
+  login_user(:uid => 'visitor@example.com')
 end
 
 Given /^I am logged in as an admin$/ do
-  login_user(:uid => 'admin')
+  login_user(:uid => 'admin@example.com')
 end
 
 Given /^I am logged in as a manager$/ do
-  login_user(:uid => 'manager')
+  login_user(:uid => 'manager@example.com')
 end
 
 Given /^I relogin as (.*)$/ do |login_type|
@@ -46,9 +46,11 @@ end
 private
 
 def login_user(opts = {})
+  opts[:email] ||= opts[:uid] if opts[:uid]
+  u = User.all.load
   user = User.find_by(:uid => opts[:uid]) || FactoryGirl.create(:user, opts)
   visit(login_path)
   fill_in('name', :with => user.uid)
-  fill_in('email', :with => user.uid) #this is to accommodate the developer strategy, which uses the email as the UIN
+  fill_in('email', :with => user.email) #this is to accommodate the developer strategy, which uses the email as the UIN
   click_button('Sign In')
 end

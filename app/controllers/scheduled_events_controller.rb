@@ -7,7 +7,7 @@ class ScheduledEventsController < ApplicationController
     authorize! :create, ScheduledEvent
     klass = Kernel.const_get(params[:scheduled_eventable_type])
     eventable = klass.find(params[:scheduled_eventable_id])
-    event = eventable.scheduled_events.create(allowed_params)
+    event = eventable.scheduled_events.create!(allowed_params)
     event.enqueue_initial
     if request.xhr?
       respond_to {|format| format.js}
