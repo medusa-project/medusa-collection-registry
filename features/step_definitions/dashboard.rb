@@ -28,7 +28,8 @@ When /^I go to the dashboard$/ do
 end
 
 Then /^I should see the bit & object preservation content_type statistics$/ do
-  page.should have_selector('table#file_stats')
+  page.should have_selector('table#file_stats_bits')
+  page.should have_selector('table#file_stats_objects')
 end
 
 And /^I should see the bit & object preservation summary file statistics$/ do
