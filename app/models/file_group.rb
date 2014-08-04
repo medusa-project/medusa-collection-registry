@@ -20,7 +20,7 @@ class FileGroup < ActiveRecord::Base
 
   before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root
-  before_create :initialize_file_info
+  before_validation :initialize_file_info
 
   validates_uniqueness_of :cfs_root, :allow_blank => true
   validates_presence_of :name, :total_files, :total_file_size
