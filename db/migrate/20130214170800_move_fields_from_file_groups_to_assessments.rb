@@ -28,8 +28,8 @@ class MoveFieldsFromFileGroupsToAssessments < ActiveRecord::Migration
       assessment.save!
     end
     #remove file group fields
-    remove_column :file_groups, :naming_conventions, :naming_conventions_html, :storage_medium_id,
-                  :directory_structure, :directory_structure_html, :last_access_date
+    remove_columns :file_groups, :naming_conventions, :naming_conventions_html, :storage_medium_id,
+                   :directory_structure, :directory_structure_html, :last_access_date
   end
 
   #there's no way to completely reverse this, but we can do the db structure
