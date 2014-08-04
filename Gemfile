@@ -11,7 +11,8 @@ gem 'active-fedora'
 gem 'passenger'
 gem 'haml'
 gem 'haml-rails'
-gem 'simple_form'
+#TODO: update to 3.1 once it's officially released
+gem 'simple_form', '~> 3.1.0.rc2', github: 'plataformatec/simple_form', branch: 'master'
 gem 'auto_html'
 gem 'simple_memoize'
 gem 'auto_strip_attributes'
@@ -57,7 +58,9 @@ gem 'bunny'
 
   gem 'uglifier', '>= 1.0.4'
 
-  gem 'twitter-bootstrap-rails'
+  # Use "bootstrap3" branch Twitter Bootstrap 3.x.x (Latest Bootstrap 3 completely supported)
+  gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails', branch: 'bootstrap3'
+
 #end
 
 gem 'jquery-rails'

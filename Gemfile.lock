@@ -46,6 +46,26 @@ GIT
       omniauth (>= 1.0.0)
 
 GIT
+  remote: git://github.com/plataformatec/simple_form.git
+  revision: ed3de1c2b566a962697529e824953f6b280e2867
+  branch: master
+  specs:
+    simple_form (3.1.0.rc2)
+      actionpack (~> 4.0)
+      activemodel (~> 4.0)
+
+GIT
+  remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
+  revision: 1d93c5a77049b3d21d17c847ad0531d7714fa229
+  branch: bootstrap3
+  specs:
+    twitter-bootstrap-rails (3.1.1)
+      actionpack (>= 3.1)
+      execjs
+      rails (>= 3.1)
+      railties (>= 3.1)
+
+GIT
   remote: git://github.com/thoughtbot/paperclip.git
   revision: 1d8982325fb43ee654b9476b34213a37429d7e22
   specs:
@@ -105,7 +125,6 @@ GEM
     amq-protocol (1.9.2)
     ansi (1.4.3)
     arel (4.0.2)
-    atomic (1.1.16)
     auto_html (1.6.0)
       redcarpet (~> 2.0)
       rinku (~> 1.5.0)
@@ -199,7 +218,7 @@ GEM
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     httpclient (2.3.4.1)
-    i18n (0.6.9)
+    i18n (0.6.11)
     jbuilder (1.5.2)
       activesupport (>= 3.0.0)
       multi_json (>= 1.2.0)
@@ -232,7 +251,7 @@ GEM
       subexec (~> 0.2.1)
     mini_portile (0.5.1)
     minitest (4.7.5)
-    multi_json (1.9.2)
+    multi_json (1.10.1)
     multi_test (0.0.2)
     multi_xml (0.5.5)
     net-http-persistent (2.9)
@@ -333,9 +352,6 @@ GEM
       sprockets-rails (~> 2.0.0)
     shoulda-matchers (2.4.0)
       activesupport (>= 3.0.0)
-    simple_form (3.0.0)
-      actionpack (>= 4.0.0, < 4.1)
-      activemodel (>= 4.0.0, < 4.1)
     simple_memoize (1.1.2)
     simplecov (0.7.1)
       multi_json (~> 1.0)
@@ -369,8 +385,7 @@ GEM
       eventmachine (>= 1.0.0)
       rack (>= 1.5.0)
     thor (0.18.1)
-    thread_safe (0.3.1)
-      atomic (>= 1.1.7, < 2)
+    thread_safe (0.3.4)
     tilt (1.4.1)
     tree.rb (0.3.12)
       ansi
@@ -380,14 +395,9 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    twitter-bootstrap-rails (2.2.8)
-      actionpack (>= 3.1)
-      execjs
-      rails (>= 3.1)
-      railties (>= 3.1)
     typhoeus (0.6.5)
       ethon (~> 0.6.1)
-    tzinfo (0.3.39)
+    tzinfo (0.3.40)
     uglifier (2.2.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
@@ -451,12 +461,12 @@ DEPENDENCIES
   rvm-capistrano
   sass-rails
   shoulda-matchers
-  simple_form
+  simple_form (~> 3.1.0.rc2)!
   simple_memoize
   simplecov
   therubyracer
   thin
   tree.rb
-  twitter-bootstrap-rails
+  twitter-bootstrap-rails!
   uglifier (>= 1.0.4)
   uuid

@@ -12,5 +12,5 @@
       = f.input :status, :as => :select, :include_blank => false, :collection => RedFlag::STATUSES
       = f.input :notes
     %div
-      = f.button :submit, :class => 'btn-primary'
-      = link_to 'Cancel', @red_flag, :class => 'btn'
+      = f.button :submit, :class => 'btn btn-primary'
+      = link_to 'Cancel', @red_flag, :class => 'btn btn-default'

@@ -17,5 +17,5 @@
       = f.input :active_end_date, :as => :string, :input_html => {:class => 'datepicker'}, :label => 'Active End Date'
       = f.input :notes, :input_html => { :rows => 3, :class => 'span3' }
     .form-actions.span6
-      = f.button :submit, :class => 'btn-primary'
-      = link_to t('.cancel', :default => t('helpers.links.cancel')), repositories_path, :class => 'btn'
+      = f.button :submit, :class => 'btn btn-primary'
+      = link_to t('.cancel', :default => t('helpers.links.cancel')), repositories_path, :class => 'btn btn-default'

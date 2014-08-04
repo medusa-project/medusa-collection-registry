@@ -1,8 +1,8 @@
 = simple_form_for @access_system, :html => {:class => 'form-horizontal'} do |f|
   = f.input :name
   .form-actions
-    = f.button :submit, :class => 'btn-primary'
+    = f.button :submit, :class => 'btn btn-primary'
     - if @access_system.new_record?
-      = link_to('Index', access_systems_path, :class => 'btn')
+      = link_to('Index', access_systems_path, :class => 'btn btn-default')
     - else
-      = link_to(t('.cancel', :default => t('helpers.links.cancel')), @access_system, :class => 'btn')
+      = link_to(t('.cancel', :default => t('helpers.links.cancel')), @access_system, :class => 'btn btn-default')

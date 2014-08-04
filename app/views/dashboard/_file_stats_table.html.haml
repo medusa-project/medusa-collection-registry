@@ -1,63 +1,60 @@
 %h3
   - now = Time.now.strftime('%m/%d/%Y, %I:%M:%S%P %Z')
   File Statistics (as of #{now})
-%div
-  %table.table.table-bordered#file_stats
-    %tr
-      %td
-        %table.table.table-striped#file_stats_bits
-          %thead
-            %tr
-              %th{:colspan => 3}
-                Bits
-              %tr
-                %th File Format
-                %th Number of Files
-                %th Size
-          %tbody
-          - bit_file_info_summary.each do |content_type, data|
-            %tr
-              %td= content_type
-              %td= data[:count].to_formatted_s(:delimited)
-              %td= data[:size].to_formatted_s(:human_size, precision: 3)
-      %td.file_stats_separator
-
-      %td
-        %table.table.table-striped#file_stats_objects
-          %thead
-            %tr
-              %th{:colspan => 3}
-                Objects
-              %tr
-                %th File Format
-                %th Number of Files
-                %th Size
-          %tbody
-          - list_of_object_file_formats.each do |content_type|
-            %tr
-              %td= content_type
-              %td= file_count_objects_type_format(content_type).to_formatted_s(:delimited)
-              %td= size_objects_type_format(content_type).to_formatted_s(:delimited)
-    %tr
-
-    %tr
-      %table.table#file_stats_summary
+.row
+  .col-md-6
+    %table.table.table-striped.table-bordered.table-condensed#file_stats_bits
+      %thead
         %tr
-          %th{:colspan => 2}
-            Total Bit Preservation Files:
-          %td= @storage_summary.collect{|summary| summary[:bit_level_file_count]}.sum.to_s(:delimited)
-          %td
-
-          %th{:colspan => 2}
-            Total Object Preservation Files:
-          %td= file_count_objects_total.to_formatted_s(:delimited)
-
+          %th{:colspan => 3}
+            Bits
+          %tr
+            %th File Format
+            %th Number of Files
+            %th Size
+      %tbody
+      - bit_file_info_summary.each do |content_type, data|
         %tr
-          %th{:colspan => 2}
-            Total Bit Preservation Size:
-          %td= (@storage_summary.collect{|summary| summary[:bit_level_file_size]}.sum * 1.gigabyte).to_formatted_s(:human_size, precision: 3)
-          %td
+          %td= content_type
+          %td= data[:count].to_formatted_s(:delimited)
+          %td= data[:size].to_formatted_s(:human_size, precision: 3)
 
-          %th{:colspan => 2}
-            Total Object Preservation Size:
-          %td= size_objects_total.to_formatted_s(:human_size, precision: 3)
+  .col-md-6
+    %table.table.table-striped.table-bordered.table-condensed#file_stats_objects
+      %thead
+        %tr
+          %th{:colspan => 3}
+            Objects
+          %tr
+            %th File Format
+            %th Number of Files
+            %th Size
+      %tbody
+      - list_of_object_file_formats.each do |content_type|
+        %tr
+          %td= content_type
+          %td= file_count_objects_type_format(content_type).to_formatted_s(:delimited)
+          %td= size_objects_type_format(content_type).to_formatted_s(:delimited)
+
+.row
+  .col-md-12
+    %table.table.table-condensed#file_stats_summary
+      %tr
+        %th{:colspan => 2}
+          Total Bit Preservation Files:
+        %td= @storage_summary.collect{|summary| summary[:bit_level_file_count]}.sum.to_s(:delimited)
+        %td
+
+        %th{:colspan => 2}
+          Total Object Preservation Files:
+        %td= file_count_objects_total.to_formatted_s(:delimited)
+
+      %tr
+        %th{:colspan => 2}
+          Total Bit Preservation Size:
+        %td= (@storage_summary.collect{|summary| summary[:bit_level_file_size]}.sum * 1.gigabyte).to_formatted_s(:human_size, precision: 3)
+        %td
+
+        %th{:colspan => 2}
+          Total Object Preservation Size:
+        %td= size_objects_total.to_formatted_s(:human_size, precision: 3)

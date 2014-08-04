@@ -3,8 +3,8 @@
   = f.input :url
   = f.input :notes
   .form-actions
-    = f.button :submit, :class => 'btn-primary'
+    = f.button :submit, :class => 'btn btn-primary'
     - if @package_profile.new_record?
-      = link_to 'Index', package_profiles_path, :class => 'btn'
+      = link_to 'Index', package_profiles_path, :class => 'btn btn-default'
     - else
-      = link_to t('.cancel', :default => t('helpers.links.cancel')), @package_profile, :class => 'btn'
+      = link_to t('.cancel', :default => t('helpers.links.cancel')), @package_profile, :class => 'btn btn-default'
