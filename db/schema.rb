@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
   create_table "access_system_collection_joins", force: true do |t|
     t.integer  "access_system_id"
     t.integer  "collection_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   add_index "access_system_collection_joins", ["access_system_id"], name: "index_access_system_collection_joins_on_access_system_id", using: :btree
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
 
   create_table "access_systems", force: true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "amazon_backups", force: true do |t|
@@ -47,8 +47,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
     t.text     "preservation_risks"
     t.text     "notes"
     t.integer  "assessable_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.integer  "author_id"
     t.text     "notes_html"
     t.text     "preservation_risks_html"
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20140801204239) do
     t.integer  "total_files"
   end
 
-  add_index "assessments", ["assessable_id"], name: "index_assessments_on_assessable_id", using: :btree
+  add_index "assessments", ["assessable_id"], name: "index_assessments_on_collection_id", using: :btree
   add_index "assessments", ["author_id"], name: "index_assessments_on_author_id", using: :btree
 
   create_table "attachments", force: true do |t|
@@ -78,8 +78,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
     t.integer  "attachment_file_size"
     t.integer  "author_id"
     t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "cfs_directories", force: true do |t|
@@ -111,8 +111,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
   create_table "collection_resource_type_joins", force: true do |t|
     t.integer  "collection_id"
     t.integer  "resource_type_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   add_index "collection_resource_type_joins", ["collection_id"], name: "index_collection_resource_type_joins_on_collection_id", using: :btree
@@ -127,8 +127,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
     t.string   "access_url"
     t.text     "file_package_summary"
     t.text     "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.integer  "contact_id"
     t.integer  "preservation_priority_id"
     t.text     "private_description"
@@ -155,8 +155,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
     t.datetime "failed_at"
     t.string   "locked_by"
     t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
@@ -181,8 +181,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
     t.decimal  "total_file_size"
     t.integer  "total_files"
     t.integer  "collection_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.integer  "producer_id"
     t.integer  "file_type_id"
     t.text     "summary"
@@ -205,8 +205,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
 
   create_table "file_types", force: true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "job_amazon_backups", force: true do |t|
@@ -251,8 +251,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
   add_index "job_fits_directories", ["file_group_id"], name: "index_job_fits_directories_on_file_group_id", using: :btree
 
   create_table "job_fits_directory_trees", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.integer  "cfs_directory_id"
     t.integer  "file_group_id"
   end
@@ -263,24 +263,24 @@ ActiveRecord::Schema.define(version: 20140801204239) do
   create_table "job_fits_files", force: true do |t|
     t.string   "path"
     t.integer  "fits_directory_tree_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "job_fits_files", ["fits_directory_tree_id"], name: "index_job_fits_files_on_fits_directory_tree_id", using: :btree
 
   create_table "job_virus_scans", force: true do |t|
     t.integer  "file_group_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "package_profiles", force: true do |t|
     t.string   "name"
     t.string   "url"
     t.text     "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "people", force: true do |t|
@@ -294,8 +294,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
   create_table "preservation_priorities", force: true do |t|
     t.string   "name"
     t.float    "priority"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "producers", force: true do |t|
@@ -309,22 +309,22 @@ ActiveRecord::Schema.define(version: 20140801204239) do
     t.string   "email"
     t.string   "url"
     t.text     "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.integer  "administrator_id"
     t.text     "notes_html"
     t.date     "active_start_date"
     t.date     "active_end_date"
   end
 
-  add_index "producers", ["administrator_id"], name: "index_producers_on_administrator_id", using: :btree
+  add_index "producers", ["administrator_id"], name: "index_production_units_on_administrator_id", using: :btree
 
   create_table "red_flags", force: true do |t|
     t.integer  "red_flaggable_id"
     t.string   "red_flaggable_type"
     t.string   "message"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.text     "notes"
     t.string   "priority"
     t.string   "status"
@@ -339,8 +339,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
     t.integer  "source_file_group_id"
     t.integer  "target_file_group_id"
     t.string   "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   add_index "related_file_group_joins", ["source_file_group_id"], name: "index_related_file_group_joins_on_source_file_group_id", using: :btree
@@ -350,8 +350,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
     t.string   "title"
     t.string   "url"
     t.text     "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.string   "address_1"
     t.string   "address_2"
     t.string   "city"
@@ -371,16 +371,16 @@ ActiveRecord::Schema.define(version: 20140801204239) do
 
   create_table "resource_types", force: true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "rights_declarations", force: true do |t|
     t.integer  "rights_declarable_id"
     t.string   "rights_declarable_type"
     t.string   "rights_basis"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.string   "copyright_jurisdiction"
     t.string   "copyright_statement"
     t.string   "access_restrictions"
@@ -396,8 +396,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
     t.integer  "scheduled_eventable_id"
     t.string   "scheduled_eventable_type"
     t.text     "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   add_index "scheduled_events", ["actor_email"], name: "index_scheduled_events_on_actor_email", using: :btree
@@ -408,8 +408,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
     t.text     "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", using: :btree
@@ -417,8 +417,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
 
   create_table "storage_media", force: true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: true do |t|
@@ -434,8 +434,8 @@ ActiveRecord::Schema.define(version: 20140801204239) do
   create_table "virus_scans", force: true do |t|
     t.integer  "file_group_id"
     t.text     "scan_result"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "virus_scans", ["file_group_id"], name: "index_virus_scans_on_file_group_id", using: :btree

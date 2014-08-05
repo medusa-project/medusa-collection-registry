@@ -7,12 +7,22 @@ class ScheduledEventsController < ApplicationController
     authorize! :create, ScheduledEvent
     klass = Kernel.const_get(params[:scheduled_eventable_type])
     eventable = klass.find(params[:scheduled_eventable_id])
-    event = eventable.scheduled_events.create!(allowed_params)
-    event.enqueue_initial
-    if request.xhr?
-      respond_to {|format| format.js}
+    event = eventable.scheduled_events.create(allowed_params)
+    if event.valid?
+      event.enqueue_initial
+      if request.xhr?
+        respond_to { |format| format.js }
+      else
+        redirect_to :back
+      end
     else
-      redirect_to :back
+      @errors = event.errors.full_messages.join('\n')
+      if request.xhr?
+        respond_to { |format| format.js }
+      else
+        flash[:notice] = 'Invalid event parameters: \n' + @errors
+        redirect_to :back
+      end
     end
   end
 

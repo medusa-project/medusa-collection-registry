@@ -7,11 +7,21 @@ class EventsController < ApplicationController
     klass = Kernel.const_get(params[:eventable_type])
     eventable = klass.find(params[:eventable_id])
     authorize! :create_event, eventable
-    eventable.events.create!(allowed_params)
-    if request.xhr?
-      respond_to {|format| format.js}
+    event = eventable.events.create(allowed_params)
+    if event.valid?
+      if request.xhr?
+        respond_to { |format| format.js }
+      else
+        redirect_to :back
+      end
     else
-      redirect_to :back
+      @errors = event.errors.full_messages.join('\n')
+      if request.xhr?
+        respond_to {|format| format.js}
+      else
+        flash[:notice] = 'Invalid event parameters: \n' + @errors
+        redirect_to :back
+      end
     end
   end
 
