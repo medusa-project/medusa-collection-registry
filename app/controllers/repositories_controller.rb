@@ -24,7 +24,7 @@ class RepositoriesController < ApplicationController
   end
 
   def index
-    @repositories = Repository.all
+    @repositories = Repository.all.includes(:collections => :file_groups).includes(:contact)
   end
 
   def edit
