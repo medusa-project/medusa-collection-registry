@@ -1,14 +1,15 @@
-%div.row
-  %div.span3 Repository
-  %div.span3 AD domain
-  %div.span3 AD group
-  %div.span3
+%div.row.form-group
+  %div.col-md-3 Repository
+  %div.col-md-3 AD domain
+  %div.col-md-3 AD group
+  %div.col-md-3
 - Repository.order(:title).each do |repository|
-  %div.row{:id => "ldap_admin_#{repository.id}"}
-    = simple_form_for repository, :url => update_ldap_admin_repository_path(repository), :remote => true, :html => {:method => :put} do |f|
-      %div.span3= link_to(repository.title, repository)
-      %div.span3= f.input_field :ldap_admin_domain, :collection => Repository::LDAP_DOMAINS, :include_blank => false,:default => 'uofi'
-      %div.span3= f.input_field :ldap_admin_group
-      %div.span3= f.submit 'Update', :class => 'btn btn-primary'
+  %div{:id => "ldap_admin_#{repository.id}"}
+    = simple_form_for repository, :url => update_ldap_admin_repository_path(repository), :remote => true, :html => {:method => :put, :class => 'form-horizontal'} do |f|
+      .form-group
+        %div.col-md-3= link_to(repository.title, repository)
+        %div.col-md-3= f.input_field :ldap_admin_domain, :collection => Repository::LDAP_DOMAINS, :include_blank => false,:default => 'uofi', :class => 'form-control'
+        %div.col-md-3= f.input_field :ldap_admin_group, :class => 'form-control'
+        %div.col-md-3= f.submit 'Update', :class => 'btn btn-primary'
 
 
