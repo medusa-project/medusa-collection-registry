@@ -3,7 +3,7 @@
 = simple_form_for :file_group, url: url, method: method, html: {class:'form-horizontal'}, defaults: {required: false} do |f|
   .row
     = render :partial => 'sidebar', :locals => {:f => f}
-    .span9
+    .col-sm-9
       .tabbable
         = render :partial => 'shared/tab_header', :locals => {:id => 'edit-tabs', :tabs => file_group_form_tab_list}
         .tab-content

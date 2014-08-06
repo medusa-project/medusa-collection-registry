@@ -3,13 +3,13 @@
 %h1 File information
 
 .row
-  .span12
+  .col-sm-12
     = link_to('Download', download_cfs_file_path(@file))
     |
     = link_to('View', view_cfs_file_path(@file))
 
 .row
-  .span4
+  .col-sm-4
     = show_value @file.name, 'File name'
     = show_value 'bit-level', 'Storage level'
     = show_value @file.md5_sum, 'MD5'
@@ -32,5 +32,5 @@
         %ul
           - @file.red_flags.each do |red_flag|
             %li= red_flag.message
-  .span8
+  .col-sm-8
     = render "preview_viewer_#{@preview_viewer_type}"

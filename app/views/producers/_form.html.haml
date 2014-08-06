@@ -2,7 +2,7 @@
   .row
     = render :partial => 'sidebar', :locals => {:f => f}
 
-    .span9
+    .col-sm-9
       .tabbable
         = render :partial => 'shared/tab_header', :locals => {:id => 'edit-tabs', :tabs => producer_form_tab_list}
         .tab-content

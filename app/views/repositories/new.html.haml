@@ -4,8 +4,8 @@
     %i.icon-pencil
     =t '.title', :default => t('helpers.titles.new', :model => model_class.model_name.human, :default => "New #{model_class.model_name.human}")
 
-.span3
+.col-sm-3
   = render 'shared/definitions/repository'
 
-.span9
+.col-sm-9
   = render 'form'

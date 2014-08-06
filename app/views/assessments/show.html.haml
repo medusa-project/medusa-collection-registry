@@ -7,7 +7,7 @@
   %p.lead #{@assessable.class.name}: #{link_to(@assessable.label, @assessable)}
 
 .row
-  .span8
+  .col-sm-8
     .well
       = show_value net_id_search_link(@assessment.author_net_id), 'Author Net ID'
       = show_field @assessment, :name

@@ -5,7 +5,7 @@
 
 = simple_form_for @red_flag, :html => {:class => 'form-horizontal'} do |f|
 
-  .span9
+  .col-sm-9
     %div
       = f.input :message, :disabled => true
       = f.input :priority, :as => :select, :include_blank => false, :collection => RedFlag::PRIORITIES

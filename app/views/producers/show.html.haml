@@ -1,7 +1,7 @@
 .page-header
   %h1 #{@producer.title}
 
-.span3#sidebar
+.col-sm-3#sidebar
   .well
     = show_value net_id_search_link(@producer.administrator_net_id), 'Administrator Net ID'
     = show_field @producer, :address_1
@@ -20,7 +20,7 @@
     = link_to 'Edit', edit_producer_path(@producer), :class => 'btn btn-default'
     = link_to 'Delete Producer', @producer, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
 
-.span9#content
+.col-sm-9#content
   %a.toggles{:href=>'#', :rel => 'tooltip', :title => 'Hide or show the sidebar' }
     %i.icon-arrow-left
   = render 'collections_table'

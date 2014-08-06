@@ -2,7 +2,7 @@
   .row
     = render :partial => 'sidebar', :locals => {:f => f}
 
-    .span9
+    .col-sm-9
       #attachment-details
         = f.input :attachable_id, :as => :hidden, :input_html => {:value => @attachable.id}
         = f.input :attachable_type, :as => :hidden, :input_html => {:value => @attachable.class.name}

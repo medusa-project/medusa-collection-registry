@@ -11,7 +11,7 @@
           = f.input :key, :as => :select, :include_blank => false, :collection => eventable.event_select_options, :label => 'Event'
           = f.input :actor_netid, :label => 'Actor', :input_html => {:value => current_user.try(:uid)}, :as => :autocomplete, :url => autocomplete_user_uid_events_path
           = f.input :date, :as => :string, :input_html => {:class => 'datepicker', :value => Date.today.to_s}
-          = f.input :note, :input_html => {:class => 'span5'}
+          = f.input :note, :input_html => {:class => 'col-sm-5'}
         .modal-footer
           %button{:class => 'btn btn-default', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Cancel
           = f.button :submit, :class => 'btn btn-primary', 'data-hide' => 'modal'

@@ -6,7 +6,7 @@
   %h1 Attachment: #{@attachment.attachment_file_name}
 
 .row
-  .span8
+  .col-sm-8
     .well
       = show_value net_id_search_link(@attachment.author_net_id), 'Author Net ID'
       = show_field @attachment, :attachment_file_name
