@@ -2,7 +2,7 @@
   - now = Time.now.strftime('%m/%d/%Y, %I:%M:%S%P %Z')
   File Statistics (as of #{now})
 .row
-  .col-md-6
+  .col-sm-6
     %table.table.table-striped.table-bordered.table-condensed#file_stats_bits
       %thead
         %tr
@@ -19,7 +19,7 @@
           %td= data[:count].to_formatted_s(:delimited)
           %td= data[:size].to_formatted_s(:human_size, precision: 3)
 
-  .col-md-6
+  .col-sm-6
     %table.table.table-striped.table-bordered.table-condensed#file_stats_objects
       %thead
         %tr
@@ -37,7 +37,7 @@
           %td= size_objects_type_format(content_type).to_formatted_s(:delimited)
 
 .row
-  .col-md-12
+  .col-sm-12
     %table.table.table-condensed#file_stats_summary
       %tr
         %th{:colspan => 2}
