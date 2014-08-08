@@ -1,4 +1,4 @@
-= simple_form_for @collection, :html => { :class => 'form-horizontal' } do |f|
+= simple_form_for @collection, :html => { :class => 'form-horizontal' }, :wrapper => :horizontal_form do |f|
   .row
     = render :partial => 'sidebar', :locals => {:form => f}
     .col-sm-9
@@ -6,19 +6,19 @@
         = render :partial => 'shared/tab_header', :locals => {:id => 'edit-tabs', :tabs => collection_form_tab_list}
         .tab-content
           #essential.tab-pane.active
-            = f.input :title, :input_html => {:class => 'col-sm-4' }
+            = f.input :title
             = f.association :repository, :collection => repository_select_collection, :include_blank => false, :selected => @repository.id
             = f.input :external_id, :label => 'External ID'
             = f.input :description
             = f.input :private_description
           #about.tab-pane
             = f.input :contact_net_id, :label => 'Contact Person Net ID'
-            = f.association :access_systems, :collection => access_system_select_collection, :html => {:multiple => true}, :as => :check_boxes
+            = f.association :access_systems, :collection => access_system_select_collection, :html => {:multiple => true}, :as => :check_boxes, :wrapper => :horizontal_radio_and_checkboxes
             = f.input :access_url, :as => :string, :label => 'Access URL'
             = f.association :preservation_priority, :include_blank => false, :selected => (@collection.preservation_priority.id rescue PreservationPriority.default.id)
           #content.tab-pane
             = f.input :file_package_summary
-            = f.association :resource_types, :as => :check_boxes, :wrapper_html => {:id => 'collection_resource_types'}
+            = f.association :resource_types, :as => :check_boxes, :wrapper_html => {:id => 'collection_resource_types'}, :wrapper => :horizontal_radio_and_checkboxes
           #rights.tab-pane
             = render :partial => 'rights_declarations/nested_form', :locals => {:containing_form => f, :rights_declaration => @collection.rights_declaration}
           #notes.tab-pane
