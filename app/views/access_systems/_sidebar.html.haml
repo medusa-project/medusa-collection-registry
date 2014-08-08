@@ -1,0 +1,11 @@
+.col-sm-3
+  %div
+    %p= f.button :submit, :class => 'btn btn-primary'
+  %div
+    %p
+      - if @access_system.new_record?
+        = link_to('Index', access_systems_path, :class => 'btn btn-default')
+      - else
+        = link_to(t('.cancel', :default => t('helpers.links.cancel')), @access_system, :class => 'btn btn-default')
+  %hr
+  -#= render 'shared/definitions/access_system'
