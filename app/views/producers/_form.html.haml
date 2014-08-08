@@ -1,4 +1,4 @@
-= simple_form_for @producer, :html => {:class => 'form-horizontal'} do |f|
+= simple_form_for @producer, :html => {:class => 'form-horizontal'}, :wrapper => :horizontal_form do |f|
   .row
     = render :partial => 'sidebar', :locals => {:f => f}
 
@@ -14,9 +14,9 @@
             = f.input :city
             = f.input :state
             = f.input :zip
-            = f.input :phone_number, :label => 'Phone Number'
-            = f.input :email
-            = f.input :url, :label => 'URL'
+            = f.input :phone_number, :label => 'Phone Number', :type => :tel
+            = f.input :email, :type => :email
+            = f.input :url, :label => 'URL', :type => :url
             = f.input :active_start_date, :as => :string, :input_html => {:class => 'datepicker'}, :label => 'Active Start Date'
             = f.input :active_end_date, :as => :string, :input_html => {:class => 'datepicker'}, :label => 'Active End Date'
           #notes.tab-pane
