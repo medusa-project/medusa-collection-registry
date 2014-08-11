@@ -43,3 +43,8 @@
                 #{file_group.target_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}
           %td
             = render 'file_group_actions', :file_group => file_group
+
+%div#event_forms
+  - @collection.file_groups.order('created_at').each do |file_group|
+    = render :partial => 'events/form', :locals => {:eventable => file_group, :remote => true, :dialog_id => "add-event-file-group-#{file_group.id}"}
+    = render :partial => 'scheduled_events/form', :locals => {:eventable => file_group, :remote => true, :dialog_id => "add-scheduled-event-file-group-#{file_group.id}" }

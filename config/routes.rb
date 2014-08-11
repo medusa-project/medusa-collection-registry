@@ -32,7 +32,7 @@ MedusaRails3::Application.routes.draw do
   end
   resources :events do
     collection do
-      get :autocomplete_user_uid
+      get :autocomplete_user_email
     end
   end
 

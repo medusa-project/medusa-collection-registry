@@ -135,7 +135,7 @@ Then /^The collection titled '(.*)' should have a valid UUID$/ do |title|
 end
 
 And(/^I submit the new event form on the collection view page$/) do
-  within('.event-actions') do
+  within('#event_forms') do
     click_on 'Create Event'
   end
 end
