@@ -2,7 +2,7 @@
   .row
     .col-sm-8
       = f.input :key, :as => :select, :include_blank => false, :collection => @scheduled_event.select_options, :label => 'Scheduled event'
-      = f.input :actor_netid, :label => 'Actor', :input_html => {:value => current_user.try(:uid)}, :as => :autocomplete, :url => autocomplete_user_uid_events_path
+      = f.input :actor_netid, :label => 'Actor', :input_html => {:value => current_user.try(:uid), :class => 'form-control'}, :as => :autocomplete, :url => autocomplete_user_uid_events_path
       = f.input :action_date, :as => :string, :input_html => {:class => 'datepicker', :value => Date.today.to_s}
       = f.input :note, :input_html => {:class => 'col-sm-5'}
       = f.hidden_field :return_to, :value => @return_to
