@@ -277,7 +277,7 @@ GEM
       rack
       rake (>= 0.8.1)
     pg (0.17.0)
-    polyglot (0.3.3)
+    polyglot (0.3.5)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -392,7 +392,7 @@ GEM
       polyglot (>= 0.3.1)
     typhoeus (0.6.5)
       ethon (~> 0.6.1)
-    tzinfo (0.3.40)
+    tzinfo (0.3.41)
     uglifier (2.2.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
@@ -401,7 +401,7 @@ GEM
     unf_ext (0.0.6)
     uuid (2.3.7)
       macaddr (~> 1.0)
-    valid_email (0.0.5)
+    valid_email (0.0.7)
       activemodel
       mail
     validatable (1.6.7)
