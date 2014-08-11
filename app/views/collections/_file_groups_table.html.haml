@@ -44,6 +44,8 @@
           %td
             = render 'file_group_actions', :file_group => file_group
 
+-# TODO Consider rendering one of each of these forms and adapting to the appropriate file group
+-# rather than rendering a form for each one, hidden though they may be.
 %div#event_forms
   - @collection.file_groups.order('created_at').each do |file_group|
     = render :partial => 'events/form', :locals => {:eventable => file_group, :remote => true, :dialog_id => "add-event-file-group-#{file_group.id}"}
