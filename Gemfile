@@ -53,7 +53,7 @@ gem 'bunny'
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer'
 
-  gem 'uglifier', '>= 1.0.4'
+  gem 'uglifier'
 
   # Use "bootstrap3" branch Twitter Bootstrap 3.x.x (Latest Bootstrap 3 completely supported)
   gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails', branch: 'bootstrap3'
@@ -64,7 +64,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 #TODO note that as of 1.0.14 at least this hits a deprecation of simple_form, using 'def input' instead of
 #'def input(wrapper_options)'.
-gem 'rails3-jquery-autocomplete', '>= 1.0.12'
+gem 'rails3-jquery-autocomplete'
 
 gem 'nokogiri'
 
