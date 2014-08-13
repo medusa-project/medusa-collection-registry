@@ -345,7 +345,7 @@ DEPENDENCIES
   auto_strip_attributes
   bagit
   bunny
-  cancan (~> 1.6.0)
+  cancan
   capistrano
   capybara
   capybara-email
