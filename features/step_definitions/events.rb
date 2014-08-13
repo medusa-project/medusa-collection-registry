@@ -5,7 +5,7 @@ end
 
 Then /^the file group named '(.*)' should have an event with key '(.*)' performed by '(.*)'$/ do |name, key, email|
   file_group = FileGroup.find_by_name(name)
-  file_group.events.where(:key => key, :actor_email => email).first.should be_true
+  file_group.events.where(:key => key, :actor_email => email).first.should be_truthy
 end
 
 And(/^the file group named '(.*)' has events with fields:$/) do |name, table|
@@ -18,7 +18,7 @@ end
 Then(/^the file group named '(.*)' should have an event with fields:$/) do |name, table|
   file_group = FileGroup.find_by_name(name)
   table.hashes.each do |hash|
-    file_group.events.where(hash).first.should be_true
+    file_group.events.where(hash).first.should be_truthy
   end
 end
 

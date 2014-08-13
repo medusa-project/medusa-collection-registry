@@ -62,9 +62,9 @@ When (/^I update the access system named '(.*)'$/) do |name|
 end
 
 Then(/^the access system named '(.*)' should exist$/) do |name|
-  expect(AccessSystem.where(name: name).first).to be_true
+  expect(AccessSystem.where(name: name).first).to be_truthy
 end
 
 Then(/^the access system named '(.*)' should not exist$/) do |name|
-  expect(AccessSystem.where(name: name).first).to be_false
+  expect(AccessSystem.where(name: name).first).to be_falsy
 end

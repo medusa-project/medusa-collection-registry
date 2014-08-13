@@ -131,7 +131,7 @@ And /^I should see the UUID of the collection titled '(.*)'$/ do |title|
 end
 
 Then /^The collection titled '(.*)' should have a valid UUID$/ do |title|
-  Utils::Luhn.verify(Collection.find_by_title(title).uuid).should be_true
+  Utils::Luhn.verify(Collection.find_by_title(title).uuid).should be_truthy
 end
 
 And(/^I submit the new event form on the collection view page$/) do

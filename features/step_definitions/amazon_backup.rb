@@ -30,7 +30,7 @@ And(/^all the data of bag '(.*)' should be in some Amazon backup bag$/) do |bag_
       containing_dir = bag_dirs.detect do |dir|
         File.exists?(File.join(dir, 'data', file))
       end
-      expect(containing_dir).to be_true
+      expect(containing_dir).to be_truthy
     end
   end
 end

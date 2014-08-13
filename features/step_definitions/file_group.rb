@@ -89,13 +89,13 @@ end
 And(/^the file group named '(.*)' should have a target file group named '(.*)'$/) do |source_name, target_name|
   source_file_group = FileGroup.find_by_name(source_name)
   target_file_group = FileGroup.find_by_name(target_name)
-  source_file_group.target_file_groups.include?(target_file_group).should be_true
+  source_file_group.target_file_groups.include?(target_file_group).should be_truthy
 end
 
 And(/^the file group named '(.*)' should not have a target file group named '(.*)'$/) do |source_name, target_name|
   source_file_group = FileGroup.find_by_name(source_name)
   target_file_group = FileGroup.find_by_name(target_name)
-  source_file_group.target_file_groups.include?(target_file_group).should be_false
+  source_file_group.target_file_groups.include?(target_file_group).should be_falsy
 end
 
 And(/^the file group named '(.*)' has a target file group named '(.*)'$/) do |source_name, target_name|

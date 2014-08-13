@@ -15,7 +15,6 @@ When /^I click on '(.*)' in the global navigation bar$/ do |name|
 end
 
 Then /^I should see a link to '(.*)'$/ do |url|
-  #page.has_link?(url, :href => url).should be_true
   page.should have_link(url)
 end
 
