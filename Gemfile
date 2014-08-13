@@ -5,7 +5,6 @@ gem 'rails', "~> 4.0.0"
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem 'pg'
-gem 'active-fedora'
 
 #deployment webserver
 gem 'passenger'
@@ -19,13 +18,10 @@ gem 'auto_strip_attributes'
 gem 'dalli'
 gem 'valid_email'
 
-gem 'httpclient'
-gem 'mechanize', :git => 'git://github.com/medusa-project/mechanize.git'
 gem 'logger'
 #need slightly patched version of this
 gem 'net-http-digest_auth', :git => 'git://github.com/medusa-project/net-http-digest_auth.git'
 
-gem 'acts_as_tree'
 gem 'ruby-filemagic', :require => 'filemagic'
 
 gem 'jbuilder'
@@ -77,6 +73,7 @@ gem 'omniauth-shibboleth', :git => 'git://github.com/medusa-project/omniauth-shi
 gem 'cancan', '~> 1.6.0'
 
 gem 'handle-server', '~> 1.0.1', :git => 'git://github.com/medusa-project/handle-server.git'
+gem 'rest-client'
 
 # Deploy with Capistrano
 gem 'capistrano'
