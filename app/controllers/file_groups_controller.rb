@@ -115,8 +115,8 @@ class FileGroupsController < ApplicationController
     rights_params = params.delete(:rights_declaration)
     FileGroup.transaction do
       yield
-      @file_group.collection.update_attributes!(collection_params)
-      @file_group.rights_declaration.update_attributes!(rights_params)
+      @file_group.collection.update_attributes!(collection_params) if collection_params.present?
+      @file_group.rights_declaration.update_attributes!(rights_params) if rights_params.present?
     end
   end
 

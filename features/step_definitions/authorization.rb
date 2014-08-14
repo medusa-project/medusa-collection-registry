@@ -125,14 +125,13 @@ end
 def check_result(expected_result)
   case expected_result
     when 'redirect to authentication'
-      assert last_response.redirect?
-      assert last_response.location.match(/#{login_path}$/)
+      expect(last_response.redirect?).to be_truthy
+      expect(last_response.location).to match(/#{login_path}$/)
     when 'redirect to unauthorized'
-      x = last_response
-      assert last_response.redirect?
-      assert last_response.location.match(/#{unauthorized_path}$/)
+      expect(last_response.redirect?).to be_truthy
+      expect(last_response.location).to match(/#{unauthorized_path}$/)
     when 'succeed'
-      assert last_response.ok?
+      expect(last_response.ok?).to be_truthy
     else
       raise 'Unexpected result type'
   end

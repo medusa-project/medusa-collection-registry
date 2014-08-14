@@ -42,6 +42,6 @@ Then /^a (.*) is unauthorized to create an event for the file group named '(.*)'
       expected_path = login_path
   end
   post events_path(:eventable_type => 'FileGroup', :eventable_id => FileGroup.find_by(:name => name))
-  assert last_response.redirect?
-  assert last_response.location.match(/#{expected_path}$/)
+  expect(last_response.redirect?).to be_truthy
+    expect(last_response.location).to match(/#{expected_path}$/)
 end
