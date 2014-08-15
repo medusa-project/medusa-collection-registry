@@ -34,3 +34,13 @@ And(/^all the data of bag '(.*)' should be in some Amazon backup bag$/) do |bag_
     end
   end
 end
+
+Then(/^there should be (\d+) amazon backup delayed jobs?$/) do |count|
+  expect(AmazonBackup.count).to eq(count.to_i)
+end
+
+And(/^I check all amazon backup checkboxes$/) do
+  all('.amazon-backup-checkbox').each do |checkbox|
+    checkbox.set(true)
+  end
+end
