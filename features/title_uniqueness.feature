@@ -16,14 +16,14 @@ Feature: Title uniqueness and presence
       | Scanning |
 
   Scenario: Prevent duplicate repository titles
-    When I go to the repository creation page
+    When I go to the new repository page
     And I fill in fields:
       | Title | Animals |
     And I press 'Create Repository'
     Then I should see 'has already been taken'
 
   Scenario: Prevent blank repository titles
-    When I go to the repository creation page
+    When I go to the new repository page
     And I press 'Create Repository'
     Then I should see 'can't be blank'
 

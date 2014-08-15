@@ -17,11 +17,11 @@ Feature: Producer collection table
     And The collection titled 'Cats' has 1 file group produced by 'Scanning'
 
   Scenario: Collection table should exist
-    When I view the producer titled 'Scanning'
+    When I view the producer with title 'Scanning'
     Then I should see a table of collections
 
   Scenario: Collection table should be correct
-    When I view the producer titled 'Scanning'
+    When I view the producer with title 'Scanning'
     Then I should see all of:
       | Dogs | Cats | dog_external_id |
     And I should see none of:
@@ -29,6 +29,6 @@ Feature: Producer collection table
     And The table of collections should have 2 rows
 
   Scenario: Collection table should link repository owning each collection
-    When I view the producer titled 'Scanning'
+    When I view the producer with title 'Scanning'
     And I click on 'Animals'
-    Then I should be on the view page for the repository titled 'Animals'
+    Then I should be on the view page for the repository with title 'Animals'

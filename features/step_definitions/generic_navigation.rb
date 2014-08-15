@@ -30,12 +30,17 @@ Then /^I should be on the new (.*) page$/ do |object_type|
   expect(current_path).to eq(self.send("new_#{object_type.gsub(' ', '_')}_path"))
 end
 
+When /^I go to the new (.*) page$/ do |object_type|
+  visit self.send("new_#{object_type.gsub(' ', '_')}_path")
+end
+
 Then /^I should be on the create (.*) page$/ do |object_type|
   expect(current_path).to eq(generic_collection_path(object_type))
 end
 
-def generic_collection_path(object_type)
-  self.send(:"#{object_type.gsub(' ', '_').pluralize}_path")
+def generic_collection_path(object_type, prefix = nil)
+  path_prefix = prefix ? "#{prefix}_" : ''
+  self.send(:"#{path_prefix}#{object_type.gsub(' ', '_').pluralize}_path")
 end
 
 def class_for_object_type(object_type)
@@ -45,5 +50,5 @@ end
 def generic_object_path(object_type, key, value, prefix = nil)
   klass = class_for_object_type(object_type)
   path_prefix = prefix ? "#{prefix}_" : ''
-  self.send(:"#{path_prefix}#{object_type.gsub(' ', '_')}_path", klass.find_by(key => value))
+  self.send(:"#{path_prefix}polymorphic_path", klass.find_by(key.gsub(' ', '_') => value))
 end

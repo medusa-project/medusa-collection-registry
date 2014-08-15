@@ -33,7 +33,7 @@ Feature: Schedule events for a file group
     And 'joe@example.com' should receive an email with subject 'Medusa scheduled event reminder'
 
   Scenario: I can schedule an event from the file manager (show view) for the corresponding collection
-    When I view the collection titled 'Animals'
+    When I view the collection with title 'Animals'
     And I click on 'Schedule'
     And I fill in fields for a scheduled event:
       | Note        | Dog deletion |
@@ -44,7 +44,7 @@ Feature: Schedule events for a file group
     Then the file group named 'Dogs' should have a scheduled event with fields:
       | key             | actor_email | action_date | note         | state     |
       | external_delete | joe@example.com         | 2010-01-02  | Dog deletion | scheduled |
-    And I should be on the view page for the collection titled 'Animals'
+    And I should be on the view page for the collection with title 'Animals'
     And 'joe@example.com' should receive an email with subject 'Medusa scheduled event reminder'
 
 

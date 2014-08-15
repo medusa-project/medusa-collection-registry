@@ -1,17 +1,5 @@
 require 'utils/luhn'
 
-Then /^I should be on the new collection page$/ do
-  current_path.should == new_collection_path
-end
-
-Then /^I should be on the view page for the collection titled '(.*)'$/ do |title|
-  current_path.should == collection_path(Collection.find_by_title(title))
-end
-
-Then /^I should be on the edit page for the collection titled '(.*)'$/ do |title|
-  current_path.should == edit_collection_path(Collection.find_by_title(title))
-end
-
 And /^the repository titled '(.*)' should have a collection titled '(.*)'$/ do |repository_title, collection_title|
   Repository.find_by_title(repository_title).collections.where(:title => collection_title).count.should == 1
 end
@@ -58,7 +46,7 @@ When(/^I click on '(.*)' in the (.*) actions and delayed jobs are run$/) do |lin
 end
 
 When /^I start a new collection for the repository titled '(.*)'$/ do |title|
-  steps %Q( When I view the repository titled '#{title}'
+  steps %Q( When I view the repository with title '#{title}'
             And I click on 'Add Collection')
 end
 
@@ -66,16 +54,9 @@ Given /^I am editing a collection$/ do
   visit edit_collection_path(FactoryGirl.create(:collection))
 end
 
-When /^I view the collection titled '(.*)'$/ do |title|
-  visit collection_path(Collection.find_by_title(title))
-end
 
 When /^I view MODS for the collection titled '(.*)'$/ do |title|
   visit collection_path(Collection.find_by_title(title), :format => 'xml')
-end
-
-When /^I edit the collection titled '(.*)'$/ do |title|
-  visit edit_collection_path(Collection.find_by_title(title))
 end
 
 And /^I check access system '(.*)'$/ do |name|
@@ -88,14 +69,6 @@ end
 
 And /^The collection titled '(.*)' should have access system named '(.*)'$/ do |title, name|
   Collection.find_by_title(title).access_systems.where(:name => name).count.should == 1
-end
-
-When /^I go to the collection index page$/ do
-  visit collections_path
-end
-
-Then /^I should be on the collection index page$/ do
-  current_path.should == collections_path
 end
 
 And /^I should see a list of all collections$/ do

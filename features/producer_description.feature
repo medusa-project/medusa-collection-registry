@@ -29,22 +29,22 @@ Feature: Producer description
 
   Scenario: View all producer fields as admin
     Given I am logged in as an admin
-    When I view the producer titled 'Scanning'
+    When I view the producer with title 'Scanning'
     Then I should see all producer fields
 
   Scenario: View all producer fields as manager
     Given I am logged in as a manager
-    When I view the producer titled 'Scanning'
+    When I view the producer with title 'Scanning'
     Then I should see all producer fields
 
   Scenario: View all producer fields as visitor
     Given I am logged in as a visitor
-    When I view the producer titled 'Scanning'
+    When I view the producer with title 'Scanning'
     Then I should see all producer fields
 
   Scenario: Edit all producer fields
     Given I am logged in as an admin
-    When I edit the producer titled 'Scanning'
+    When I edit the producer with title 'Scanning'
     Then I should see all producer fields
 
   Scenario: View index as admin
@@ -66,13 +66,13 @@ Feature: Producer description
 
   Scenario: View producer
     Given I am logged in as an admin
-    When I view the producer titled 'Scanning'
+    When I view the producer with title 'Scanning'
     Then I should see all of:
       | Scanning | 100 Elm Street | Suite 10 | Urbana | Illinois | 61801 | 555-2345 | scanning@example.com | http://scanning.example.com | They scan stuff here |
 
   Scenario: Edit producer
     Given I am logged in as an admin
-    When I edit the producer titled 'Scanning'
+    When I edit the producer with title 'Scanning'
     And I fill in fields:
       | Notes | New notes |
     And I press 'Update Producer'
@@ -81,12 +81,12 @@ Feature: Producer description
 
   Scenario: Edit producer shows definition
     Given I am logged in as an admin
-    When I edit the producer titled 'Scanning'
+    When I edit the producer with title 'Scanning'
     Then I should see the producer definition
 
   Scenario: Delete producer from view page
     Given I am logged in as an admin
-    When I view the producer titled 'Scanning'
+    When I view the producer with title 'Scanning'
     And I click on 'Delete Producer'
     Then I should be on the producer index page
     And I should not see 'Scanning'
@@ -95,13 +95,13 @@ Feature: Producer description
     Given I am logged in as an admin
     When I go to the producer index page
     And I click on 'Scanning' in the producers table
-    Then I should be on the view page for the producer titled 'Scanning'
+    Then I should be on the view page for the producer with title 'Scanning'
 
   Scenario: Navigate from index page to edit page
     Given I am logged in as an admin
     When I go to the producer index page
     And I click on 'Edit' in the producers table
-    Then I should be on the edit page for the producer titled 'Scanning'
+    Then I should be on the edit page for the producer with title 'Scanning'
 
   Scenario: Delete from index page
     Given I am logged in as an admin
@@ -119,19 +119,19 @@ Feature: Producer description
 
   Scenario: Navigate from view page to index page
     Given I am logged in as an admin
-    When I view the producer titled 'Scanning'
+    When I view the producer with title 'Scanning'
     And I click on 'Back'
     Then I should be on the producer index page
 
   Scenario: Navigate from view page to edit page
     Given I am logged in as an admin
-    When I view the producer titled 'Scanning'
+    When I view the producer with title 'Scanning'
     And I click on 'Edit'
-    Then I should be on the edit page for the producer titled 'Scanning'
+    Then I should be on the edit page for the producer with title 'Scanning'
 
   Scenario: Associate contact with collection
     Given I am logged in as an admin
-    When I edit the producer titled 'Scanning'
+    When I edit the producer with title 'Scanning'
     And I fill in fields:
       | Administrator Email | hding2@example.com |
     And I press 'Update Producer'
@@ -140,5 +140,5 @@ Feature: Producer description
 
   Scenario: Auto link from the notes text
     Given I am logged in as an admin
-    When I view the producer titled 'Scanning'
+    When I view the producer with title 'Scanning'
     Then I should see a link to 'http://notes.example.com'

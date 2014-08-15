@@ -4,18 +4,6 @@ And /^I have producers with fields:$/ do |table|
   end
 end
 
-When /^I go to the new producer page$/ do
-  visit new_producer_path
-end
-
-When /^I edit the producer titled '(.*)'$/ do |title|
-  visit edit_producer_path(Producer.find_by_title(title))
-end
-
-When /^I view the producer titled '(.*)'$/ do |title|
-  visit producer_path(Producer.find_by_title(title))
-end
-
 Then /^A producer with the title '(.*)' should exist$/ do |title|
   Producer.find_by_title(title).should_not be_nil
 end
@@ -34,19 +22,6 @@ And /^I click on '(.*)' in the producers table$/ do |action|
   within_table('producers') do
     click_on action
   end
-end
-
-Then /^I should be on the producer index page$/ do
-  current_path.should == producers_path
-end
-
-Then /^I should be on the view page for the producer titled '(.*)'$/ do |title|
-  current_path.should == producer_path(Producer.find_by_title(title))
-end
-
-
-Then /^I should be on the edit page for the producer titled '(.*)'$/ do |title|
-  current_path.should == edit_producer_path(Producer.find_by_title(title))
 end
 
 Then /^I should be on the producer creation page$/ do

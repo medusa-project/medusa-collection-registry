@@ -13,21 +13,6 @@ And /^the repository titled '(.*)' is managed by '(.*)'$/ do |title, email|
   FactoryGirl.create(:repository, :contact => person, :title => title)
 end
 
-Then /^I should be on the repository index page$/ do
-  current_path.should == repositories_path
-end
-
-Then /^I should be on the edit page for the repository titled '(.*)'$/ do |title|
-  current_path.should == edit_repository_path(Repository.find_by_title(title))
-end
-
-Then /^I should be on the view page for the repository titled '(.*)'$/ do |title|
-  current_path.should == repository_path(Repository.find_by_title(title))
-end
-
-Then /^I should be on the repository creation page$/ do
-  current_path.should == new_repository_path
-end
 
 And /^the repository titled '(.*)' has collections with fields:$/ do |repository_title, table|
   repository = Repository.find_by(title: repository_title) || FactoryGirl.create(:repository, title: repository_title)
@@ -56,21 +41,9 @@ Then /^I should see all repository fields$/ do
   end
 end
 
-When /^I go to the repository creation page$/ do
-  visit new_repository_path
-end
-
-When /^I view the repository titled '(.*)'$/ do |title|
-  visit repository_path(Repository.find_by_title(title))
-end
-
-When /^I view the repository with a collection titled '(.*)'$/ do |title|
+When /^I view the repository having a collection titled '(.*)'$/ do |title|
   collection = Collection.find_by_title(title)
   visit repository_path(collection.repository)
-end
-
-When /^I edit the repository titled '(.*)'$/ do |title|
-  visit edit_repository_path(Repository.find_by_title(title))
 end
 
 And /^I have some repositories with files totalling '(\d+)' GB$/ do |size|

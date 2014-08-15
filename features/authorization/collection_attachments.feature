@@ -6,7 +6,7 @@ Feature: Attachment authorization
   Background:
     Given I am logged in as an admin
     And There is a collection titled 'Dogs'
-    And I view the collection titled 'Dogs'
+    And I view the collection with title 'Dogs'
     And I click on 'Add Attachment'
     And I fill in fields:
       | Description | grass |

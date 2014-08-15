@@ -16,26 +16,26 @@ Feature: File Group Assessment Management
       | 2013-02-11 | On CD              | Pictures of cute dogs | Assessing |
 
   Scenario: View assessments of a file group
-    When I view the file group with location 'Main Library' for the collection titled 'Dogs'
+    When I view the file group with name 'Images'
     Then I should see an assessment table
 
   Scenario: Delete assessment from a file group
-    When I view the file group with location 'Main Library' for the collection titled 'Dogs'
+    When I view the file group with name 'Images'
     And I click on 'Delete' in the assessments table
-    Then I should be on the view page for the file group with location 'Main Library' for the collection titled 'Dogs'
+    Then I should be on the view page for the file group with name 'Images'
     And the collection titled 'Dogs' should have 0 assessments
 
   Scenario: Navigate to an assessment
-    When I view the file group with location 'Main Library' for the collection titled 'Dogs'
+    When I view the file group with name 'Images'
     And I click on 'Assessing'
-    Then I should be on the view page for the assessment with date '2013-02-11' for the file group with location 'Main Library'
+    Then I should be on the view page for the assessment with date '2013-02-11'
 
   Scenario: Create a new assessment
-    When I view the file group with location 'Main Library' for the collection titled 'Dogs'
+    When I view the file group with name 'Images'
     And I click on 'Add Assessment'
     Then I should be on the new assessment page
 
   Scenario: Navigate from an assessment back to file group
-    When I view the assessment named 'Assessing'
+    When I view the assessment with name 'Assessing'
     And I click on 'Images'
     Then I should be on the view page for the file group named 'Images'

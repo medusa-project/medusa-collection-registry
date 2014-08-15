@@ -11,13 +11,13 @@ Feature: Collection Resource types
       | text | cartographic |
 
   Scenario: View resource types
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     Then I should see all of:
       | text | cartographic |
     And I should not see 'notated music'
 
   Scenario: Edit resource types
-    When I edit the collection titled 'Dogs'
+    When I edit the collection with title 'Dogs'
     And I uncheck resource type 'text'
     And I check resource type 'notated music'
     And I click on 'Update Collection'

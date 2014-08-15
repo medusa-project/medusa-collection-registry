@@ -9,21 +9,21 @@ Feature: Package summary
       | title |
       | Dogs  |
     And the collection titled 'Dogs' has file groups with fields:
-      | external_file_location | summary | provenance_note  |
-      | Grainger      | Summation of package  | Provenance information |
+      | name     | external_file_location | summary              | provenance_note        |
+      | grainger | Grainger               | Summation of package | Provenance information |
 
   Scenario: View file group to see package summary
-    When I view the file group with location 'Grainger' for the collection titled 'Dogs'
+    When I view the file group with name 'grainger'
     Then I should see all of:
-      | Summation of package | Provenance information|
+      | Summation of package | Provenance information |
     And I should see all of:
       | Summary | Provenance Note |
 
   Scenario: Update file group package summary fields
-    When I edit the file group with location 'Grainger' for the collection titled 'Dogs'
+    When I edit the file group with name 'grainger'
     And I fill in fields:
-      | Summary | New summary    |
-      | Provenance Note   | New provenance |
+      | Summary         | New summary    |
+      | Provenance Note | New provenance |
     And I click on 'Update File group'
     Then I should see all of:
       | New summary | New provenance |

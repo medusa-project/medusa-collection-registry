@@ -50,7 +50,7 @@ Feature: Events Summary
       | external_to_bit | delmonte@example.com    | 2010-10-11  | scheduled |
 
   Scenario: View collection events
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     And I click on 'View events'
     Then I should see the events table
     And I should see all of:
@@ -60,7 +60,7 @@ Feature: Events Summary
 
   Scenario: View collection events as a manager
     Given I relogin as a manager
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     And I click on 'View events'
     Then I should see the events table
     And I should see all of:
@@ -70,7 +70,7 @@ Feature: Events Summary
 
   Scenario: View collection events as a visitor
     Given I relogin as a visitor
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     And I click on 'View events'
     Then I should see the events table
     And I should see all of:
@@ -80,7 +80,7 @@ Feature: Events Summary
 
 
   Scenario: View repository events
-    When I view the repository titled 'Animals'
+    When I view the repository with title 'Animals'
     And I click on 'View events'
     Then I should see the events table
     And I should see all of:

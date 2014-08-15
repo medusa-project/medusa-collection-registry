@@ -25,18 +25,18 @@ Feature: Collection File Size
     And I should see '500'
 
   Scenario: Collection view page should show file size
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     Then I should see 'Total Size (GB)'
     And I should see '56'
 
   Scenario: Repository view page should show file size of collections
-    When I view the repository titled 'Animals'
+    When I view the repository with title 'Animals'
     Then I should see 'Size (GB)'
     And I should see '56'
     And I should see '500'
 
   Scenario: Repository view page should show file size over all collections
-    When I view the repository titled 'Animals'
+    When I view the repository with title 'Animals'
     Then I should see 'Total Size (GB)'
     And I should see '556'
 

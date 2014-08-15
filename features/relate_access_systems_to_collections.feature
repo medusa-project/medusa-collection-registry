@@ -10,7 +10,7 @@ Feature: Relate access systems to collections
       | ContentDM | Dspace    | Olive     |
 
   Scenario: Set and view access systems for a collection
-    When I edit the collection titled 'Dogs'
+    When I edit the collection with title 'Dogs'
     And I check access system 'ContentDM'
     And I check access system 'Olive'
     And I press 'Update Collection'

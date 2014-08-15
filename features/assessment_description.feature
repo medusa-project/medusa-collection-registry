@@ -54,7 +54,7 @@ Feature: Assessment description
     Given I am logged in as an admin
     When I view the assessment with date '2012-01-09'
     And I click on 'Dogs'
-    Then I should be on the view page for the collection titled 'Dogs'
+    Then I should be on the view page for the collection with title 'Dogs'
 
   Scenario: Navigate from assessment view page to its edit page
     Given I am logged in as an admin
@@ -66,12 +66,12 @@ Feature: Assessment description
     Given I am logged in as an admin
     When I view the assessment with date '2012-01-09'
     And I click on 'Delete'
-    Then I should be on the view page for the collection titled 'Dogs'
+    Then I should be on the view page for the collection with title 'Dogs'
     And The collection titled 'Dogs' should not have an assessment with date '2012-01-09'
 
   Scenario: Create a new assessment
     Given I am logged in as an admin
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     And I click on 'Add Assessment'
     And I fill in fields:
       | Preservation risks  | There are corrupt files too |
@@ -95,7 +95,7 @@ Feature: Assessment description
 
   Scenario: Create a new assessment as a manager
     Given I am logged in as a manager
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     And I click on 'Add Assessment'
     And I fill in fields:
       | Preservation risks  | There are corrupt files too |
@@ -119,7 +119,7 @@ Feature: Assessment description
 
   Scenario: Autofill user id for new assessment
     Given I am logged in as an admin
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     And I click on 'Add Assessment'
     Then The field 'Author Email' should be filled in with 'admin@example.com'
 

@@ -12,7 +12,7 @@ Feature: MODS for collection
 
   Scenario: Link from collection show view to MODS
     Given I am logged in as a medusa admin
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     And I click on 'Mods'
     Then I should see a valid MODS document
 
