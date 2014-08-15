@@ -11,12 +11,12 @@ Feature: Cfs directory export
     And the collection titled 'Animals' has file groups with fields:
       | name | type              |
       | Dogs | BitLevelFileGroup |
-    And the file group named 'Dogs' has cfs root 'dogs'
+    And the file group named 'Dogs' has cfs root 'dogs' and delayed jobs are run
 
   Scenario: Request an export of a directory
     Given I am logged in as a manager
     When I view the cfs directory for the file group named 'Dogs' for the path '.'
-    And I click on 'Export directory'
+    And I click on 'Export directory' and delayed jobs are run
     Then I should see 'Your directory has been scheduled for export. You will be notified by email when the export is complete.'
     And there should be an exported directory with paths:
       | intro.txt |
@@ -25,7 +25,7 @@ Feature: Cfs directory export
   Scenario: Request an export of a directory tree
     Given I am logged in as a manager
     When I view the cfs directory for the file group named 'Dogs' for the path '.'
-    And I click on 'Export directory tree'
+    And I click on 'Export directory tree' and delayed jobs are run
     Then I should see 'Your directory tree has been scheduled for export. You will be notified by email when the export is complete.'
     And there should be an exported directory with paths:
       | intro.txt | pugs/picture.jpg | pugs/description.txt |

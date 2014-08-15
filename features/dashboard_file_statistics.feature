@@ -14,7 +14,7 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
       | Cats          | ExternalFileGroup |
       | Dogs-external | ExternalFileGroup |
       | Dogs          | BitLevelFileGroup |
-    And I set the cfs root of the file group named 'Dogs' to 'animals/dogs'
+    And I set the cfs root of the file group named 'Dogs' to 'animals/dogs' and delayed jobs are run
 
   Scenario: View file statistics section of dashboard
     When I go to the dashboard

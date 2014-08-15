@@ -11,7 +11,7 @@ Feature: CFS file group integration
     And the collection titled 'Dogs' has file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |
-    And the file group named 'Toys' has cfs root 'dogs/toy-dogs'
+    And the file group named 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
 
   Scenario: See file group's cfs root when viewing it
     When I view the file group named 'Toys'

@@ -11,7 +11,7 @@ Feature: CFS basic properties
     And I clear the cfs root directory
     And the physical cfs directory 'dogs/toy-dogs' has a file 'stuff.txt' with contents 'Toy dog stuff'
     And the physical cfs directory 'dogs/toy-dogs/chihuahuas' has a file 'freakdog.xml' with contents '<?xml version="1.0" encoding="utf-8"?><freak>dog</freak>'
-    And the file group named 'Toys' has cfs root 'dogs/toy-dogs'
+    And the file group named 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
 
   Scenario: When I do an initial assessment on a bit level file group there should be file objects with file properties
     Then the file group named 'Toys' has a cfs file for the path 'stuff.txt' with results:

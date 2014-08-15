@@ -25,7 +25,7 @@ Feature: Schedule events for a file group
       | Actor       | joe@example.com          |
       | Action date | 2010-01-02   |
     And I select 'Delete external file group' from 'Scheduled event'
-    And I click on 'Create Scheduled event'
+    And I click on 'Create Scheduled event' and delayed jobs are run
     Then the file group named 'Dogs' should have a scheduled event with fields:
       | key             | actor_email | action_date | note         | state     |
       | external_delete | joe@example.com         | 2010-01-02  | Dog deletion | scheduled |
@@ -40,7 +40,7 @@ Feature: Schedule events for a file group
       | Actor       | joe@example.com          |
       | Action date | 2010-01-02   |
     And I select 'Delete external file group' from 'Scheduled event'
-    And I click on 'Create Scheduled event'
+    And I click on 'Create Scheduled event' and delayed jobs are run
     Then the file group named 'Dogs' should have a scheduled event with fields:
       | key             | actor_email | action_date | note         | state     |
       | external_delete | joe@example.com         | 2010-01-02  | Dog deletion | scheduled |

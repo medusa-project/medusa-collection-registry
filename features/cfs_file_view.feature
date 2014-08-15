@@ -10,7 +10,7 @@ Feature: Viewing CFS file information and content
     And the collection titled 'Animals' has file groups with fields:
       | name | type              |
       | Dogs | BitLevelFileGroup |
-    And the file group named 'Dogs' has cfs root 'dogs/places'
+    And the file group named 'Dogs' has cfs root 'dogs/places' and delayed jobs are run
 
   Scenario: View cfs file
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
