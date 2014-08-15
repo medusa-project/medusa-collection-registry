@@ -8,10 +8,6 @@ When /^I go to the new producer page$/ do
   visit new_producer_path
 end
 
-When /^I go to the producer index page$/ do
-  visit producers_path
-end
-
 When /^I edit the producer titled '(.*)'$/ do |title|
   visit edit_producer_path(Producer.find_by_title(title))
 end

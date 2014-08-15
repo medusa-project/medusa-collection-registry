@@ -15,21 +15,29 @@ Feature: Access Systems
     And I should see 'Dspace'
 
   Scenario: View an access system
-    When I view the access system named 'ContentDM'
-    Then I should be on the view page for the access system named 'ContentDM'
+    When I view the access system with name 'ContentDM'
+    Then I should be on the view page for the access system with name 'ContentDM'
     And I should see 'Name'
     And I should see 'ContentDM'
 
   Scenario: Edit an access system
-    When I edit the access system named 'ContentDM'
+    When I edit the access system with name 'ContentDM'
     And I fill in fields:
       | Name | Blacklight |
     And I press 'Update Access system'
-    Then I should be on the view page for the access system named 'Blacklight'
-    And There should be no access system named 'ContentDB'
+    Then I should be on the view page for the access system with name 'Blacklight'
+    And There should be no access system with name 'ContentDB'
+
+  Scenario: Invalid edit of an access system
+    When I edit the access system with name 'ContentDM'
+    And I fill in fields:
+      | Name |  |
+    And I press 'Update Access system'
+    Then I should be on the update page for the access system with name 'ContentDM'
+    And I should see 'can't be blank'
 
   Scenario: Delete access system from view page
-    When I view the access system named 'ContentDM'
+    When I view the access system with name 'ContentDM'
     And I click on 'Delete'
     Then I should be on the access system index page
     And I should not see 'ContentDM'
@@ -43,17 +51,35 @@ Feature: Access Systems
   Scenario: Create from index page
     When I go to the access system index page
     And I click on 'New Access System'
-    Then I should be on the access system creation page
+    Then I should be on the new access system page
+
+  Scenario: Create an access system
+    When I go to the access system index page
+    And I click on 'New Access System'
+    And I fill in fields:
+      | Name | New System |
+    And I click on 'Create Access system'
+    Then I should be on the view page for the access system with name 'New System'
+    And I should see 'New System'
+
+  Scenario: Invalid create of an access system
+    When I go to the access system index page
+    And I click on 'New Access System'
+    And I fill in fields:
+      | Name | |
+    And I click on 'Create Access system'
+    Then I should be on the create access system page
+    And I should see 'can't be blank'
 
   Scenario: Navigate from view page to index page
-    When I view the access system named 'ContentDM'
+    When I view the access system with name 'ContentDM'
     And I click on 'Index'
     Then I should be on the access system index page
 
   Scenario: Navigate from view page to edit page
-    When I view the access system named 'ContentDM'
+    When I view the access system with name 'ContentDM'
     And I click on 'Edit'
-    Then I should be on the edit page for the access system named 'ContentDM'
+    Then I should be on the edit page for the access system with name 'ContentDM'
 
   Scenario: View collections associated with an access system
     Given the collection titled 'Dogs' has an access system named 'ContentDM'

@@ -16,10 +16,6 @@ Then(/^I should be on the view page for the package profile named '(.*)'$/) do |
   current_path.should == package_profile_path(PackageProfile.find_by_name(name))
 end
 
-When(/^I go to the package profile index page$/) do
-  visit package_profiles_path
-end
-
 Then(/^I should be on the package profile index page$/) do
   current_path.should == package_profiles_path
 end
