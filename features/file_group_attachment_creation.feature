@@ -1,4 +1,5 @@
-Feature: order to organize documents created outside of the system
+Feature: File group attachments
+  In order to organize documents created outside of the system
   As a librarian
   I want to attach files to file groups
 
@@ -7,28 +8,28 @@ Feature: order to organize documents created outside of the system
     And the collection titled 'Animals' has file groups with fields:
       | name |
       | Dogs |
-    And I view the file group named 'Dogs'
+    And I view the file group with name 'Dogs'
     And I click on 'Add Attachment'
     And I fill in fields:
       | Description | What the attachment is. |
     And I attach fixture file 'grass.jpg' to 'Attachment'
     And I click on 'Create Attachment'
-    When I view the file group named 'Dogs'
+    When I view the file group with name 'Dogs'
     Then I should see 'What the attachment is.'
-    And the file group named 'Dogs' should have 1 attachment
+    And the file group with name 'Dogs' should have 1 attachment
 
   Scenario: Attach file as manager
     Given I am logged in as a manager
     And the collection titled 'Animals' has file groups with fields:
       | name |
       | Dogs |
-    And I view the file group named 'Dogs'
+    And I view the file group with name 'Dogs'
     And I click on 'Add Attachment'
     And I fill in fields:
       | Description | What the attachment is. |
     And I attach fixture file 'grass.jpg' to 'Attachment'
     And I click on 'Create Attachment'
-    When I view the file group named 'Dogs'
+    When I view the file group with name 'Dogs'
     Then I should see 'What the attachment is.'
-    And the file group named 'Dogs' should have 1 attachment
+    And the file group with name 'Dogs' should have 1 attachment
 

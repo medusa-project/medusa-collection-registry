@@ -40,7 +40,7 @@ Feature:
   Scenario: Delete scheduled event from event list
     When I view events for the file group named 'Toys'
     And I click on 'delete' in the scheduled events table
-    Then there should be no scheduled event with key 'external_to_bit' and action date '2012-02-02'
+    Then there should be no scheduled event having key 'external_to_bit' and action date '2012-02-02'
     And I should be viewing events for the file group named 'Toys'
 
   Scenario: Edit from and return to dashboard - should remember where the editing process kicked off

@@ -37,7 +37,7 @@ Feature: Red Flag Summary
 
   Scenario: View red flags for file group
     Given I am logged in as an admin
-    When I view the file group named 'Toys'
+    When I view the file group with name 'Toys'
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:
@@ -47,13 +47,13 @@ Feature: Red Flag Summary
 
   Scenario: View red flags for file group as a manager
     Given I am logged in as a manager
-    When I view the file group named 'Toys'
+    When I view the file group with name 'Toys'
     And I click on 'Red Flags'
     Then I should see a table of red flags
 
   Scenario: View red flags for file group as a visitor
     Given I am logged in as a visitor
-    When I view the file group named 'Toys'
+    When I view the file group with name 'Toys'
     And I click on 'Red Flags'
     Then I should see a table of red flags
 

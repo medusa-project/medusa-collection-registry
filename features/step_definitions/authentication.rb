@@ -2,10 +2,6 @@ Given /^I am logged in as '(.*)'$/ do |uid|
   login_user(:uid => uid)
 end
 
-#Given /^I am logged in$/ do
-#  login_user
-#end
-
 Given(/^I am logged in as a medusa admin$/) do
   login_user(:uid => 'admin@example.com')
 end

@@ -4,10 +4,6 @@ And /^the repository titled '(.*)' should have a collection titled '(.*)'$/ do |
   Repository.find_by_title(repository_title).collections.where(:title => collection_title).count.should == 1
 end
 
-Given /^There is a collection titled '(.*)'$/ do |title|
-  ensure_collection(title)
-end
-
 And /^I click on 'Delete' in the assessments table$/ do
   within_table('assessments') do
     click_on 'Delete'
@@ -50,11 +46,6 @@ When /^I start a new collection for the repository titled '(.*)'$/ do |title|
             And I click on 'Add Collection')
 end
 
-Given /^I am editing a collection$/ do
-  visit edit_collection_path(FactoryGirl.create(:collection))
-end
-
-
 When /^I view MODS for the collection titled '(.*)'$/ do |title|
   visit collection_path(Collection.find_by_title(title), :format => 'xml')
 end
@@ -76,9 +67,11 @@ And /^I should see a list of all collections$/ do
 end
 
 And /^the collection titled '(.*)' has resource types named:$/ do |title, table|
-  collection = ensure_collection(title)
+  step "the collection with title '#{title}' exists"
+  collection = Collection.find_by(title: title)
   table.headers.each do |name|
-    collection.resource_types << ensure_resource_type(name)
+    step "the resource type with name '#{name}' exists"
+    collection.resource_types << ResourceType.find_by(name: name)
   end
 end
 
@@ -125,14 +118,4 @@ end
 And(/^the collection titled '(.*)' has an assessment named '(.*)'$/) do |collection_title, assessment_name|
   c = Collection.find_by_title(collection_title)
   FactoryGirl.create(:assessment, :name => assessment_name, :assessable_id => c.id, :assessable_type => c.class.to_s)
-end
-
-private
-
-def ensure_collection(title)
-  Collection.find_by_title(title) || FactoryGirl.create(:collection, :title => title)
-end
-
-def ensure_resource_type(name)
-  ResourceType.find_by_name(name) || FactoryGirl.create(:resource_type, :name => name)
 end

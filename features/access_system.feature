@@ -5,8 +5,8 @@ Feature: Access Systems
 
   Background:
     Given I am logged in as an admin
-    And The access system named 'ContentDM' exists
-    And The access system named 'Dspace' exists
+    And each access system with name exists:
+      | ContentDM | Dspace |
 
   Scenario: View index
     When I go to the access system index page
@@ -26,7 +26,7 @@ Feature: Access Systems
       | Name | Blacklight |
     And I press 'Update Access system'
     Then I should be on the view page for the access system with name 'Blacklight'
-    And There should be no access system with name 'ContentDB'
+    And there should be no access system with name 'ContentDB'
 
   Scenario: Invalid edit of an access system
     When I edit the access system with name 'ContentDM'
@@ -66,7 +66,7 @@ Feature: Access Systems
     When I go to the access system index page
     And I click on 'New Access System'
     And I fill in fields:
-      | Name | |
+      | Name |  |
     And I click on 'Create Access system'
     Then I should be on the create access system page
     And I should see 'can't be blank'

@@ -1,10 +1,11 @@
-Feature: order to organize documents created outside of the system
+Feature: Collection attachment maintenance
+  In order to organize documents created outside of the system
   As a librarian
   I want to maintain files attached to collections
 
   Background:
     Given I am logged in as an admin
-    And There is a collection titled 'Dogs'
+    And the collection with title 'Dogs' exists
     And I view the collection with title 'Dogs'
     And I click on 'Add Attachment'
     And I fill in fields:
@@ -33,7 +34,7 @@ Feature: order to organize documents created outside of the system
     When I view the collection with title 'Dogs'
     And I click on 'Delete' in the attachments section
     Then I should be on the view page for the collection with title 'Dogs'
-    And the collection titled 'Dogs' should have 0 attachments
+    And the collection with title 'Dogs' should have 0 attachments
 
   Scenario: Update attachment from collection
     When I view the collection with title 'Dogs'
@@ -44,7 +45,7 @@ Feature: order to organize documents created outside of the system
     And I click on 'Update Attachment'
     Then I should see 'New info for attachment'
     And I should not see 'What the attachment is.'
-    And the collection titled 'Dogs' should have 1 attachment
+    And the collection with title 'Dogs' should have 1 attachment
 
   Scenario: Update attachment from collection as a manager
     Given I relogin as a manager
@@ -56,7 +57,7 @@ Feature: order to organize documents created outside of the system
     And I click on 'Update Attachment'
     Then I should see 'New info for attachment'
     And I should not see 'What the attachment is.'
-    And the collection titled 'Dogs' should have 1 attachment
+    And the collection with title 'Dogs' should have 1 attachment
 
 
   Scenario: View attachment details

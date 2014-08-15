@@ -23,13 +23,13 @@ Feature: File Group description
 
   Scenario: View a file group as a manager
     Given I am logged in as a manager
-    When I view the file group named 'images'
-    Then I should be on the view page for the file group named 'images'
+    When I view the file group with name 'images'
+    Then I should be on the view page for the file group with name 'images'
 
   Scenario: View a file group as a visitor
     Given I am logged in as a visitor
-    When I view the file group named 'images'
-    Then I should be on the view page for the file group named 'images'
+    When I view the file group with name 'images'
+    Then I should be on the view page for the file group with name 'images'
 
   Scenario: Edit a file group
     Given I am logged in as an admin
@@ -127,14 +127,14 @@ Feature: File Group description
       | name          | url                              |
       | image_profile | http://image_profile.example.com |
     And the file group named 'images' has package profile named 'image_profile'
-    When I view the file group named 'images'
+    When I view the file group with name 'images'
     Then I should see all of:
       | image_profile | http://image_profile.example.com |
 
   Scenario: Navigate from file group view to corresponding package profile
     Given I am logged in as an admin
     Given the file group named 'images' has package profile named 'image_profile'
-    When I view the file group named 'images'
+    When I view the file group with name 'images'
     And I click on 'image_profile'
     Then I should be on the view page for the package profile with name 'image_profile'
 
@@ -145,7 +145,7 @@ Feature: File Group description
       | image_profile |
       | book_profile  |
     And the file group named 'images' has package profile named 'image_profile'
-    When I edit the file group named 'images'
+    When I edit the file group with name 'images'
     And I select 'book_profile' from 'Package profile'
     And I click on 'Update File group'
     Then the file group named 'images' should have package profile named 'book_profile'

@@ -38,4 +38,4 @@ Feature: File Group Assessment Management
   Scenario: Navigate from an assessment back to file group
     When I view the assessment with name 'Assessing'
     And I click on 'Images'
-    Then I should be on the view page for the file group named 'Images'
+    Then I should be on the view page for the file group with name 'Images'

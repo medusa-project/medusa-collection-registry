@@ -4,7 +4,7 @@ Feature: Authorization
   I want to be able to check user's authorizations
 
   Background:
-    Given There is a collection titled 'Dogs'
+    Given the collection with title 'Dogs' exists
 
   Scenario: A visitor should not be able to view a restricted page
     Given I am logged in as a visitor

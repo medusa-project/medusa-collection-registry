@@ -24,10 +24,6 @@ Then /^I should see an assessment table$/ do
   page.should have_selector('table#assessments')
 end
 
-Given /^I am editing an assessment$/ do
-  visit edit_assessment_path(FactoryGirl.create(:assessment))
-end
-
 Then /^a visitor is unauthorized to start an assessment for the collection titled '(.*)'$/ do |title|
   rack_login('a visitor')
   get new_assessment_path(:assessable_type => 'Collection',

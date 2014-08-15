@@ -41,7 +41,7 @@ Feature: File Group Management
   Scenario: View file group assessments
     When I view the collection with title 'Dogs'
     And I click on 'View All' in the assessment actions
-    Then I should be on the view page for the file group named 'images'
+    Then I should be on the view page for the file group with name 'images'
 
   Scenario: Create new assessment
     When I view the collection with title 'Dogs'
@@ -51,7 +51,7 @@ Feature: File Group Management
   Scenario: Create related file group
     When I view the collection with title 'Dogs'
     And I click on 'Add New' in the related-file-group actions
-    Then I should be on the edit page for the file group named 'images'
+    Then I should be on the edit page for the file group with name 'images'
 
   Scenario: See related file group
     Given the collection titled 'Dogs' has file groups with fields:

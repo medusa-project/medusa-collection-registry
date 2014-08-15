@@ -19,19 +19,19 @@ Feature: File Group related file groups
       | cat_images | ObjectLevelFileGroup |
 
   Scenario: Editing a file group shows potential related file groups
-    When I edit the file group named 'texts'
+    When I edit the file group with name 'texts'
     Then I should see all of:
       | access_images | production_images |
     And I should not see 'texts' in the related file groups section
     And I should not see 'cat_images' in the related file groups section
 
   Scenario: Editing a file group does not show file groups lower on the ingest path
-    When I edit the file group named 'access_images'
+    When I edit the file group with name 'access_images'
     Then I should see 'production_images'
     And I should not see 'texts' in the related file groups section
 
   Scenario: Adding a related file group
-    When I edit the file group named 'texts'
+    When I edit the file group with name 'texts'
     And I check 'access_images'
     And I click on 'Update File group'
     Then I should see 'access_images'
@@ -40,14 +40,14 @@ Feature: File Group related file groups
 
   Scenario: Deleting a related file group
     And the file group named 'texts' has a target file group named 'access_images'
-    When I edit the file group named 'texts'
+    When I edit the file group with name 'texts'
     And I uncheck 'access_images'
     And I click on 'Update File group'
     Then I should not see 'access_images'
     And the file group named 'texts' should not have a target file group named 'access_images'
 
   Scenario: We can attach a comment to a related file group
-    When I edit the file group named 'texts'
+    When I edit the file group with name 'texts'
     And I check 'access_images'
     And I fill in fields:
       | Note | How these are related |

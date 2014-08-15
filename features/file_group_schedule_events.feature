@@ -19,7 +19,7 @@ Feature: Schedule events for a file group
       | Ingest staged file group to bit-level store | pete@example.com | 2011-09-08 | scheduled |
 
   Scenario: I can schedule an event from the show view for a file group
-    When I view the file group named 'Dogs'
+    When I view the file group with name 'Dogs'
     And I fill in fields for a scheduled event:
       | Note        | Dog deletion |
       | Actor       | joe@example.com          |
@@ -29,7 +29,7 @@ Feature: Schedule events for a file group
     Then the file group named 'Dogs' should have a scheduled event with fields:
       | key             | actor_email | action_date | note         | state     |
       | external_delete | joe@example.com         | 2010-01-02  | Dog deletion | scheduled |
-    And I should be on the view page for the file group named 'Dogs'
+    And I should be on the view page for the file group with name 'Dogs'
     And 'joe@example.com' should receive an email with subject 'Medusa scheduled event reminder'
 
   Scenario: I can schedule an event from the file manager (show view) for the corresponding collection

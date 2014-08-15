@@ -4,10 +4,6 @@ And(/^I have package profiles with fields:$/) do |table|
   end
 end
 
-Given(/^the package profile named '(.*)' exists$/) do |name|
-  FactoryGirl.create(:package_profile, :name => name)
-end
-
 Then(/^I should be on the collection index page for collections with package profile 'book'$/) do
   current_path.should == for_package_profile_collections_path
 end

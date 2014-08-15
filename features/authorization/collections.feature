@@ -18,13 +18,13 @@ Feature: Collection authorization
       | visitor     | new, create             | unauthorized   |
 
   Scenario: View access system index for a collection as a public user
-    Given The access system named 'DSpace' exists
+    Given the access system with name 'DSpace' exists
     When I go to the access system index page
     And I click on 'DSpace'
     Then I should be on the login page
 
   Scenario: View public profile index for a collection as a public user
-    Given the package profile named 'Profile' exists
+    Given the package profile with name 'Profile' exists
     When I go to the package profile index page
     And I click on 'Profile'
     Then I should be on the login page

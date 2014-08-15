@@ -5,7 +5,7 @@ Feature: Collection UUID
 
   Background:
     Given I am logged in as an admin
-    And There is a collection titled 'Dogs'
+    And the collection with title 'Dogs' exists
 
   Scenario: Collection should have UUID
     Then The collection titled 'Dogs' should have a valid UUID

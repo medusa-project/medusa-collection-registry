@@ -5,8 +5,8 @@ Feature: Relate access systems to collections
 
   Background:
     Given I am logged in as an admin
-    And There is a collection titled 'Dogs'
-    And There are access systems named:
+    And the collection with title 'Dogs' exists
+    And each access system with name exists:
       | ContentDM | Dspace    | Olive     |
 
   Scenario: Set and view access systems for a collection

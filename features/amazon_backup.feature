@@ -32,7 +32,7 @@ Feature: Amazon backup
 
   Scenario: Schedule amazon backup of a bit level file group
     Given I am logged in as a medusa admin
-    When I view the file group named 'Dogs'
+    When I view the file group with name 'Dogs'
     And I click on 'Create backup'
     Then there should be 1 amazon backup delayed job
 

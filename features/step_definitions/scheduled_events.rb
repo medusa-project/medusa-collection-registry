@@ -30,7 +30,7 @@ When(/^I edit the scheduled event with key '(.*)' and action date '(.*)'$/) do |
   visit edit_scheduled_event_path(ScheduledEvent.where(:key => key, :action_date => date).first)
 end
 
-Then(/^there should be no scheduled event with key '(.*)' and action date '(.*)'$/) do |key, date|
+Then(/^there should be no scheduled event having key '(.*)' and action date '(.*)'$/) do |key, date|
   ScheduledEvent.where(:key => key, :action_date => date).first.should == nil
 end
 

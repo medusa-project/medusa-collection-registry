@@ -8,7 +8,7 @@ Feature: Attachment authorization
     And the collection titled 'Animals' has file groups with fields:
       | name |
       | Dogs |
-    And I view the file group named 'Dogs'
+    And I view the file group with name 'Dogs'
     And I click on 'Add Attachment'
     And I fill in fields:
       | Description | grass |

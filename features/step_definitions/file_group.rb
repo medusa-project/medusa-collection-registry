@@ -18,42 +18,6 @@ And /^I should not see '(.*)' in the related file groups section$/ do |string|
   end
 end
 
-Then /^I should be on the view page for the file group with location '(.*)' for the collection titled '(.*)'$/ do |location, title|
-  current_path.should == polymorphic_path(find_file_group(title, location))
-end
-
-And /^I should be on the view page for the file group named '(.*)'$/ do |name|
-  current_path.should == polymorphic_path(FileGroup.find_by_name(name))
-end
-
-Then /^I should be on the edit page for the file group with location '(.*)' for the collection titled '(.*)'$/ do |location, title|
-  current_path.should == edit_polymorphic_path(find_file_group(title, location))
-end
-
-Then(/^I should be on the edit page for the file group named '(.*)'$/) do |name|
-  current_path.should == edit_polymorphic_path(FileGroup.find_by_name(name))
-end
-
-When /^I edit the file group named '(.*)'$/ do |name|
-  visit edit_polymorphic_path(FileGroup.find_by_name(name))
-end
-
-When /^I view the file group with location '(.*)' for the collection titled '(.*)'$/ do |location, title|
-  visit polymorphic_path(find_file_group(title, location))
-end
-
-When /^I view the file group named '(.*)'$/ do |name|
-  visit polymorphic_path(FileGroup.find_by_name(name))
-end
-
-When /^I edit the file group with location '(.*)' for the collection titled '(.*)'$/ do |location, title|
-  visit edit_polymorphic_path(find_file_group(title, location))
-end
-
-Given /^I am editing a file group$/ do
-  visit edit_polymorphic_path(FactoryGirl.create(:file_group))
-end
-
 When(/^I view events for the file group named '(.*)'$/) do |name|
   visit events_file_group_path(FileGroup.find_by_name(name))
 end
