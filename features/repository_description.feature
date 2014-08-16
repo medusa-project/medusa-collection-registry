@@ -17,7 +17,7 @@ Feature: Repository description
       | URL   | http://repo.example.com                  |
       | Notes | This is a sample repository for the test |
     And I press 'Create Repository'
-    Then A repository with title 'Sample Repo' should exist
+    Then a repository with title 'Sample Repo' should exist
     And I should see 'This is a sample repository for the test'
     And I should see 'http://repo.example.com'
 

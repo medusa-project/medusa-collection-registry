@@ -4,10 +4,6 @@ And /^I have producers with fields:$/ do |table|
   end
 end
 
-Then /^A producer with the title '(.*)' should exist$/ do |title|
-  Producer.find_by_title(title).should_not be_nil
-end
-
 Then /^I should see all producer fields$/ do
   ['Address 1', 'Address 2', 'City', 'State', 'Zip', 'Phone Number', 'Email', 'URL', 'Notes'].each do |field|
     step "I should see '#{field}'"

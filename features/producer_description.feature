@@ -23,7 +23,7 @@ Feature: Producer description
       | URL          | http://scraping.example.com                        |
       | Notes        | Archiving web content |
     And I press 'Create Producer'
-    Then A producer with the title 'Scraping' should exist
+    Then a producer with title 'Scraping' should exist
     And I should see all of:
       | Scraping | Archiving web content |
 

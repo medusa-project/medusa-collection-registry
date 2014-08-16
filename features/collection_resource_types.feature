@@ -5,7 +5,7 @@ Feature: Collection Resource types
 
   Background:
     Given I am logged in as an admin
-    And there are resource types named:
+    And each resource type with name exists:
       | notated music | mixed material | text | cartographic |
     And the collection titled 'Dogs' has resource types named:
       | text | cartographic |
@@ -26,7 +26,7 @@ Feature: Collection Resource types
 
   Scenario: Resource types are seeded with common values
   #this is just a spot check - see seed file for all values - note we need to use some not in the background
-    Then there should be resource types named:
+    Then each resource type with name should exist:
       | still image | moving image |
 
 
