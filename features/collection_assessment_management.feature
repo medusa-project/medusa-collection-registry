@@ -20,7 +20,7 @@ Feature: Assessment Management
     When I view the collection with title 'Dogs'
     And I click on 'Delete' in the assessments table
     Then I should be on the view page for the collection with title 'Dogs'
-    And the collection titled 'Dogs' should have 0 assessments
+    And the collection with title 'Dogs' should have 0 assessments
 
   Scenario: Navigate to assessment
     When I view the collection with title 'Dogs'

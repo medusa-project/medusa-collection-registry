@@ -34,11 +34,6 @@ Then(/^I should be on the download page for the attachment '(.*)'$/) do |file_na
   current_path.should == download_attachment_path(Attachment.find_by_attachment_file_name(file_name))
 end
 
-And(/^the (.*) with (.*) '(.*)' should have (\d+) attachments?$/) do |object_type, key, value, count|
-  klass = class_for_object_type(object_type)
-  expect(klass.where(key.gsub(' ', '_') => value).first.attachments.count).to eq(count.to_i)
-end
-
 def setup_assessment_creation_and_return_expected_path(user_type)
   if user_type == 'visitor'
     rack_login('a visitor')

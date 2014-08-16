@@ -23,7 +23,7 @@ Feature: File Group Assessment Management
     When I view the file group with name 'Images'
     And I click on 'Delete' in the assessments table
     Then I should be on the view page for the file group with name 'Images'
-    And the collection titled 'Dogs' should have 0 assessments
+    And the collection with title 'Dogs' should have 0 assessments
 
   Scenario: Navigate to an assessment
     When I view the file group with name 'Images'

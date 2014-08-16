@@ -7,7 +7,7 @@ Feature: Collection Resource types
     Given I am logged in as an admin
     And each resource type with name exists:
       | notated music | mixed material | text | cartographic |
-    And the collection titled 'Dogs' has resource types named:
+    And the collection with title 'Dogs' has child resource types with field name:
       | text | cartographic |
 
   Scenario: View resource types

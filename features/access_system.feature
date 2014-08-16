@@ -82,10 +82,12 @@ Feature: Access Systems
     Then I should be on the edit page for the access system with name 'ContentDM'
 
   Scenario: View collections associated with an access system
-    Given the collection titled 'Dogs' has an access system named 'ContentDM'
-    And the collection titled 'Cats' has an access system named 'Dspace'
-    And the collection titled 'Cats' has an access system named 'ContentDM'
-    And the collection titled 'Bats' has an access system named 'Dspace'
+    Given the collection with title 'Dogs' has child access system with field name:
+    |ContentDM|
+    And the collection with title 'Cats' has child access systems with field name:
+    |Dspace|ContentDM|
+    And the collection with title 'Bats' has child access system with field name:
+    |Dspace|
     When I go to the access system index page
     And I click on 'ContentDM'
     Then I should see all of:
@@ -94,10 +96,12 @@ Feature: Access Systems
 
   Scenario: View collections associated with an access system as a manager
     Given I relogin as a manager
-    And the collection titled 'Dogs' has an access system named 'ContentDM'
-    And the collection titled 'Cats' has an access system named 'Dspace'
-    And the collection titled 'Cats' has an access system named 'ContentDM'
-    And the collection titled 'Bats' has an access system named 'Dspace'
+    Given the collection with title 'Dogs' has child access system with field name:
+    |ContentDM|
+    And the collection with title 'Cats' has child access systems with field name:
+    |Dspace|ContentDM|
+    And the collection with title 'Bats' has child access system with field name:
+    |Dspace|
     When I go to the access system index page
     And I click on 'ContentDM'
     Then I should see all of:
@@ -106,10 +110,12 @@ Feature: Access Systems
 
   Scenario: View collections associated with an access system as a visitor
     Given I relogin as a visitor
-    And the collection titled 'Dogs' has an access system named 'ContentDM'
-    And the collection titled 'Cats' has an access system named 'Dspace'
-    And the collection titled 'Cats' has an access system named 'ContentDM'
-    And the collection titled 'Bats' has an access system named 'Dspace'
+    Given the collection with title 'Dogs' has child access system with field name:
+    |ContentDM|
+    And the collection with title 'Cats' has child access systems with field name:
+    |Dspace|ContentDM|
+    And the collection with title 'Bats' has child access system with field name:
+    |Dspace|
     When I go to the access system index page
     And I click on 'ContentDM'
     Then I should see all of:

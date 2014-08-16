@@ -1,17 +1,9 @@
 require 'utils/luhn'
 
-And /^the repository titled '(.*)' should have a collection titled '(.*)'$/ do |repository_title, collection_title|
-  Repository.find_by_title(repository_title).collections.where(:title => collection_title).count.should == 1
-end
-
 And /^I click on 'Delete' in the assessments table$/ do
   within_table('assessments') do
     click_on 'Delete'
   end
-end
-
-And /^the collection titled 'Dogs' should have (\d+) assessments$/ do |count|
-  Collection.find_by_title('Dogs').assessments.count.should == count.to_i
 end
 
 Then /^I should see the file group collection table$/ do
@@ -54,25 +46,8 @@ And /^I check access system '(.*)'$/ do |name|
   check(name)
 end
 
-And /^The collection titled '(.*)' should have (\d+) access systems$/ do |title, count|
-  Collection.find_by_title(title).access_systems.count.should == count.to_i
-end
-
-And /^The collection titled '(.*)' should have access system named '(.*)'$/ do |title, name|
-  Collection.find_by_title(title).access_systems.where(:name => name).count.should == 1
-end
-
 And /^I should see a list of all collections$/ do
   page.should have_selector('table#collections')
-end
-
-And /^the collection titled '(.*)' has resource types named:$/ do |title, table|
-  step "the collection with title '#{title}' exists"
-  collection = Collection.find_by(title: title)
-  table.headers.each do |name|
-    step "the resource type with name '#{name}' exists"
-    collection.resource_types << ResourceType.find_by(name: name)
-  end
 end
 
 And /^I uncheck resource type '(.*)'$/ do |name|

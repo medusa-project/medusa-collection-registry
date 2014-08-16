@@ -17,7 +17,7 @@ Feature: Amazon backup
   Scenario: Create bag from a cfs directory
     Given the physical cfs directory 'dogs' has the data of bag 'small-bag'
     When I create Amazon bags for the cfs directory with path 'dogs'
-    Then the cfs directory with path 'dogs' should have 1 Amazon backup
+    Then the cfs directory with path 'dogs' should have 1 amazon backup
     And there should be 1 Amazon backup bag
     And there should be 1 Amazon backup manifest
     And all the data of bag 'small-bag' should be in some Amazon backup bag
@@ -25,7 +25,7 @@ Feature: Amazon backup
   Scenario: Create bags from a large cfs directory
     Given the physical cfs directory 'dogs' has the data of bag 'big-bag'
     When I create Amazon bags for the cfs directory with path 'dogs'
-    Then the cfs directory with path 'dogs' should have 1 Amazon backup
+    Then the cfs directory with path 'dogs' should have 1 amazon backup
     And there should be 2 Amazon backup bags
     And there should be 2 Amazon backup manifests
     And all the data of bag 'big-bag' should be in some Amazon backup bag

@@ -17,7 +17,7 @@ Feature: Collection description
     When I edit the collection with title 'cats'
     And I select 'Plays' from 'Repository'
     And I click on 'Update Collection'
-    Then the repository titled 'Plays' should have a collection titled 'cats'
+    Then the repository with title 'Plays' should have 1 collection with title 'cats'
 
   Scenario: View a collection
     When I view the collection with title 'dogs'
@@ -83,7 +83,7 @@ Feature: Collection description
     And I should see 'Reptile stuff'
     And I should see 'Snake farm'
     And The collection titled 'reptiles' should have a valid UUID
-    And the repository titled 'Sample Repo' should have a collection titled 'reptiles'
+    And the repository with title 'Sample Repo' should have 1 collection with title 'reptiles'
 
   Scenario: Create a new collection as a manager
     And I relogin as a manager
@@ -97,7 +97,7 @@ Feature: Collection description
     And I should see 'Reptile stuff'
     And I should see 'Snake farm'
     And The collection titled 'reptiles' should have a valid UUID
-    And the repository titled 'Sample Repo' should have a collection titled 'reptiles'
+    And the repository with title 'Sample Repo' should have 1 collection with title 'reptiles'
 
   Scenario: Index of all collections
     When I go to the collection index page

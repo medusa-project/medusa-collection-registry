@@ -52,7 +52,7 @@ Feature: Title uniqueness and presence
       | Title | Roses |
     And I press 'Create Collection'
     Then I should not see 'has already been taken'
-    And the repository titled 'Animals' should have a collection titled 'Roses'
+    And the repository with title 'Animals' should have 1 collection with title 'Roses'
 
   Scenario: Prevent blank collection titles
     When I start a new collection for the repository titled 'Animals'

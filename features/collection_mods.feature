@@ -7,7 +7,7 @@ Feature: MODS for collection
     Given the repository titled 'Animals' has collections with fields:
       | title | description        | access_url              |  uuid                                   |
       | Dogs  | Collection of dogs | http://dogs.example.com |  3da0fae0-e3fa-012f-ac10-005056b22849-8 |
-    And the collection titled 'Dogs' has resource types named:
+    And the collection with title 'Dogs' has child resource types with field name:
       | text | cartographic |
 
   Scenario: Link from collection show view to MODS

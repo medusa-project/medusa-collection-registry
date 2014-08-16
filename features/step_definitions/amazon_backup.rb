@@ -6,11 +6,6 @@ And(/^there should be (\d+) Amazon backup bags?$/) do |count|
   expect(Dir[File.join(AmazonBackup.global_bag_directory, '*')].size).to eq(count.to_i)
 end
 
-Then(/^the cfs directory with path '(.*)' should have (\d+) Amazon backups?$/) do |path, count|
-  cfs_directory = CfsDirectory.where(path: path).first
-  expect(cfs_directory.amazon_backups.count).to eq(count.to_i)
-end
-
 When(/^I create Amazon bags for the cfs directory with path '(.*)'$/) do |path|
   cfs_directory = CfsDirectory.where(path: path).first
   user = FactoryGirl.create(:user)
