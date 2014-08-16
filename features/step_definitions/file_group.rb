@@ -18,14 +18,6 @@ And /^I should not see '(.*)' in the related file groups section$/ do |string|
   end
 end
 
-When(/^I view events for the file group named '(.*)'$/) do |name|
-  visit events_file_group_path(FileGroup.find_by_name(name))
-end
-
-And(/^I should be viewing events for the file group named '(.*)'$/) do |name|
-  current_path.should == events_file_group_path(FileGroup.find_by_name(name))
-end
-
 And /^The collection titled '(.*)' should not have a file group with location '(.*)'$/ do |title, location|
   Collection.find_by_title(title).file_groups.where(:external_file_location => location).should be_empty
 end

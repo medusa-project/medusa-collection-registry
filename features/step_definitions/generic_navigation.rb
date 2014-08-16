@@ -51,8 +51,16 @@ def class_for_object_type(object_type)
   Kernel.const_get(object_type.gsub(' ', '_').camelize)
 end
 
+#uses polymorphic path in conjunction with the object to find the path - will usually work, but not for non-standard prefixes
 def generic_object_path(object_type, key, value, prefix = nil)
   klass = class_for_object_type(object_type)
   path_prefix = prefix ? "#{prefix}_" : ''
   self.send(:"#{path_prefix}polymorphic_path", klass.find_by(key.gsub(' ', '_') => value))
+end
+
+#uses the actual object type to find the path, needed for some prefixes
+def specific_object_path(object_type, key, value, prefix = nil)
+  klass = class_for_object_type(object_type)
+  path_prefix = prefix ? "#{prefix}_" : ''
+  self.send(:"#{path_prefix}#{object_type.gsub(' ', '_')}_path", klass.find_by(key.gsub(' ', '_') => value))
 end

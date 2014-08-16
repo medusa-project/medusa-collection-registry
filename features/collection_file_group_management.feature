@@ -30,7 +30,7 @@ Feature: File Group Management
   Scenario: View file group events
     When I view the collection with title 'Dogs'
     And I click on 'View All' in the event actions
-    Then I should be on the events page for the file group named 'images'
+    Then I should be viewing events for the file group with name 'images'
 
   Scenario: Add file group event
     When I view the collection with title 'Dogs'

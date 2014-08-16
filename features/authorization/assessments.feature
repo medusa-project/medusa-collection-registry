@@ -7,7 +7,7 @@ Feature: Assessment authorization
     Given the repository titled 'Animals' has collections with fields:
       | title |
       | Dogs  |
-    And the collection titled 'Dogs' has assessments with fields:
+    And the assessable collection with title 'Dogs' has assessments with fields:
       | date       | name      |
       | 2012-01-09 | Once over |
 

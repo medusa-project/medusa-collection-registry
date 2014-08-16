@@ -8,7 +8,7 @@ Feature: Assessment Management
     And the repository titled 'Animals' has collections with fields:
       | title |
       | Dogs  |
-    And the collection titled 'Dogs' has assessments with fields:
+    And the assessable collection with title 'Dogs' has assessments with fields:
       | date       | preservation_risks | notes            | name|
       | 2012-01-09 | Old formats        | Pictures of dogs |  Assessing   |
 

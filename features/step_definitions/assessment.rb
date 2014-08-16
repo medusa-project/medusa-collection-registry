@@ -1,14 +1,7 @@
-And /^the collection titled '(.*)' has assessments with fields:$/ do |title, table|
-  collection = Collection.find_by_title(title) || FactoryGirl.create(:collection, title => title)
+And /^the assessable (.*) with (.*) '(.*)' has assessments with fields:$/ do |object_type, key, value, table|
+  assessable = step "the #{object_type} with #{key} '#{value}' exists"
   table.hashes.each do |hash|
-    FactoryGirl.create(:assessment, hash.merge({:assessable => collection}))
-  end
-end
-
-And /^the file group with location '(.*)' has assessments with fields:$/ do |location, table|
-  file_group = FileGroup.find_by_external_file_location(location) || FactoryGirl.create(:file_group, :location => location)
-  table.hashes.each do |hash|
-    FactoryGirl.create(:assessment, hash.merge({:assessable => file_group}))
+    FactoryGirl.create(:assessment, hash.merge(assessable: assessable))
   end
 end
 

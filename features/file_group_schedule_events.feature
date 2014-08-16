@@ -13,7 +13,7 @@ Feature: Schedule events for a file group
       | external_to_bit | pete@example.com        | 2011-09-08  | scheduled |
 
   Scenario: View scheduled events for a file group
-    When I view events for the file group named 'Dogs'
+    When I view events for the file group with name 'Dogs'
     Then I should see the scheduled events table
     And I should see all of:
       | Ingest staged file group to bit-level store | pete@example.com | 2011-09-08 | scheduled |
@@ -49,20 +49,20 @@ Feature: Schedule events for a file group
 
 
   Scenario: Cancel a scheduled event for a file group
-    When I view events for the file group named 'Dogs'
+    When I view events for the file group with name 'Dogs'
     And I click on 'cancel' in the scheduled events table
     Then the file group named 'Dogs' should have a scheduled event with fields:
       | key             | state     |
       | external_to_bit | cancelled |
-    And I should be viewing events for the file group named 'Dogs'
+    And I should be viewing events for the file group with name 'Dogs'
     And I should see 'cancelled'
 
   Scenario: Complete a scheduled event for a file group
-    When I view events for the file group named 'Dogs'
+    When I view events for the file group with name 'Dogs'
     And I click on 'complete' in the scheduled events table
     Then the file group named 'Dogs' should have a scheduled event with fields:
       | key             | state|
       | external_to_bit | completed|
     And the file group named 'Dogs' should have an event with key 'staged_to_bit' performed by 'admin@example.com'
-    And I should be viewing events for the file group named 'Dogs'
+    And I should be viewing events for the file group with name 'Dogs'
     And I should see 'completed'
