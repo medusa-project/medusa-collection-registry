@@ -4,7 +4,7 @@ Feature: Producers authorization
   I want to enforce proper authorization
 
   Background:
-    Given I have producers with fields:
+    Given every producer with fields exists:
       | title    | address_1      | address_2 | city   | state    | zip   | phone_number | email                | url                         | notes                                          |
       | Scanning | 100 Elm Street | Suite 10  | Urbana | Illinois | 61801 | 555-2345     | scanning@example.com | http://scanning.example.com | They scan stuff here. http://notes.example.com |
 

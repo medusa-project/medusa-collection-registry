@@ -47,6 +47,13 @@ And /^each (.*) with (.*) exists:$/ do |object_type, key, table|
  end
 end
 
+And /^every (.*) with fields exists:$/ do |object_type, table|
+  table.hashes.each do |hash|
+    FactoryGirl.create object_type, hash
+  end
+end
+
+
 Then /^each (.*) with (.*) should exist:$/ do |object_type, key, table|
   table.headers.each do |header|
     step "a #{object_type} with #{key} '#{header}' should exist"

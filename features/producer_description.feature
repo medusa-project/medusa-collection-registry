@@ -4,7 +4,7 @@ Feature: Producer description
   I want to create and edit descriptive information about producers
 
   Background:
-    Given I have producers with fields:
+    Given every producer with fields exists:
       | title    | address_1      | address_2 | city   | state    | zip   | phone_number | email                | url                         | notes                |
       | Scanning | 100 Elm Street | Suite 10  | Urbana | Illinois | 61801 | 555-2345     | scanning@example.com | http://scanning.example.com | They scan stuff here. http://notes.example.com |
 
@@ -114,7 +114,7 @@ Feature: Producer description
     Given I am logged in as an admin
     When I go to the producer index page
     And I click on 'New Producer'
-    Then I should be on the producer creation page
+    Then I should be on the new producer page
     And I should see the producer definition
 
   Scenario: Navigate from view page to index page

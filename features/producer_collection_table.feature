@@ -5,7 +5,7 @@ Feature: Producer collection table
 
   Background:
     Given I am logged in as an admin
-    And I have producers with fields:
+    And every producer with fields exists:
       | title    |
       | Scanning |
     And the repository with title 'Animals' has child collections with fields:

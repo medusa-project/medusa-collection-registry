@@ -5,7 +5,7 @@ Feature: producers for File Groups
 
   Background:
     Given I am logged in as an admin
-    And I have producers with fields:
+    And every producer with fields exists:
       | title    |
       | Scanning |
       | Scraping |

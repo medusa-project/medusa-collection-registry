@@ -11,7 +11,7 @@ Feature: Title uniqueness and presence
     And the repository with title 'Plants' has child collections with fields:
       | title |
       | Roses |
-    And I have producers with fields:
+    And every producer with fields exists:
       | title    |
       | Scanning |
 

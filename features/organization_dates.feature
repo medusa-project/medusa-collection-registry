@@ -8,7 +8,7 @@ Feature: Track organization active dates
     And I have repositories with fields:
       | title   | active_start_date | active_end_date |
       | Animals | 2012-09-13        | 2012-10-14      |
-    And I have producers with fields:
+    And every producer with fields exists:
       | title    | active_start_date | active_end_date |
       | Scanning | 2012-11-15        | 2012-12-16      |
 

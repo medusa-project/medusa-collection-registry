@@ -11,7 +11,7 @@ Feature: File Group description
       | external_file_location | file_format | total_file_size | total_files | summary          | provenance_note     | name   | staged_file_location | external_id              |
       | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   | external-main-library-id |
       | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | staging_dir/texts    |                          |
-    And I have producers with fields:
+    And every producer with fields exists:
       | title    |
       | Scanning |
 
