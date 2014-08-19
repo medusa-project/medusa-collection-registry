@@ -20,11 +20,17 @@ Feature: Assessment summary
       | name           |
       | toy assessment |
     And the assessable file group with name 'Hot' has assessments with fields:
-          | name           |
-          | hot assessment |
-    And the collection titled 'Dogs' has an assessment named 'dog assessment'
-    And the collection titled 'Cats' has an assessment named 'cat assessment'
-    And the collection titled 'Cacti' has an assessment named 'cacti assessment'
+      | name           |
+      | hot assessment |
+    And the assessable collection with title 'Dogs' has assessments with fields:
+      | name           |
+      | dog assessment |
+    And the assessable collection with title 'Cats' has assessments with fields:
+      | name           |
+      | cat assessment |
+    And the assessable collection with title 'Cacti' has assessments with fields:
+      | name           |
+      | cacti assessment |
 
   Scenario: View collection and go to summary of assessments
     When I view the collection with title 'Dogs'

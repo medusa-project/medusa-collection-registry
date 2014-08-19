@@ -7,7 +7,7 @@ Feature: JSON data about a cfs directory
     Given the collection with title 'Dogs' has child file groups with fields:
       | external_file_location | name        | id | type              | cfs_directory_id |
       | Grainger               | Engineering | 1  | BitLevelFileGroup | 20               |
-    And there are cfs directory objects with fields:
+    And every cfs directory with fields exists:
       | id | path     | parent_cfs_directory_id | root_cfs_directory_id |
       | 20 | dir/path |                         | 20                    |
       | 40 | target   | 20                      | 20                    |

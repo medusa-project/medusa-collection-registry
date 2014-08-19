@@ -30,10 +30,6 @@ And /^I check access system '(.*)'$/ do |name|
   check(name)
 end
 
-And /^I should see a list of all collections$/ do
-  page.should have_selector('table#collections')
-end
-
 And /^I uncheck resource type '(.*)'$/ do |name|
   within('#collection_resource_types') do
     uncheck(name)
@@ -74,7 +70,3 @@ When(/^I view events for the collection titled '(.*)'$/) do |title|
   visit events_collection_path(Collection.find_by(title: title))
 end
 
-And(/^the collection titled '(.*)' has an assessment named '(.*)'$/) do |collection_title, assessment_name|
-  c = Collection.find_by_title(collection_title)
-  FactoryGirl.create(:assessment, :name => assessment_name, :assessable_id => c.id, :assessable_type => c.class.to_s)
-end

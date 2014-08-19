@@ -102,7 +102,7 @@ Feature: Collection description
   Scenario: Index of all collections
     When I go to the collection index page
     Then I should be on the collection index page
-    And I should see a list of all collections
+    And I should see the collections table
     And I should see 'external-dogs-id'
 
   Scenario: Index of all collections as a manager
