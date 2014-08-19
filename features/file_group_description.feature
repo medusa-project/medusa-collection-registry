@@ -123,7 +123,7 @@ Feature: File Group description
 
   Scenario: See package profile name and url in collection view
     Given I am logged in as an admin
-    Given I have package profiles with fields:
+    Given every package profile with fields exists:
       | name          | url                              |
       | image_profile | http://image_profile.example.com |
     And the file group named 'images' has package profile named 'image_profile'
@@ -140,7 +140,7 @@ Feature: File Group description
 
   Scenario: Change package profile when editing file group
     Given I am logged in as an admin
-    Given I have package profiles with fields:
+    Given every package profile with fields exists:
       | name          |
       | image_profile |
       | book_profile  |

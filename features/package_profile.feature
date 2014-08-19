@@ -4,7 +4,7 @@ Feature: Package Profiles
   I want to track the package profile used to preserve a collection
 
   Background:
-    Given I have package profiles with fields:
+    Given every package profile with fields exists:
       | name  | url                              | notes                           |
       | book  | http://book_profile.example.com  | Preservation package for books  |
       | image | http://image_profile.example.com | Preservation package for images |

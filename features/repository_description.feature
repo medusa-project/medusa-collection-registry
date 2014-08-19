@@ -135,7 +135,7 @@ Feature: Repository description
       | Contact Person Email | hding2@example.com |
     And I press 'Update Repository'
     Then I should see 'hding2@example.com'
-    And There should be a person with email 'hding2@example.com'
+    And a person with email 'hding2@example.com' should exist
 
   Scenario: Automatically convert things that look like links in notes to links in show view
     Given I am logged in as an admin

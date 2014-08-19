@@ -16,7 +16,7 @@ Feature: Dashboard running processes display
     Given I am running a virus scan job for the file group named 'Dogs'
     And I am running a virus scan job for the file group named 'Cats'
     When I go to the dashboard
-    Then I should see a table of running virus scans
+    Then I should see the running virus scans table
     And I should see all of:
       | Dogs | Cats |
     And I should not see 'Bats'
@@ -29,7 +29,7 @@ Feature: Dashboard running processes display
     And I am running a fits job for the file group named 'Dogs' with 12 files
     And I am running a fits job for the file group named 'Cats' with 13 files
     When I go to the dashboard
-    Then I should see a table of running fits scans
+    Then I should see the running fits scans table
     And I should see all of:
       | Dogs | Cats | files/dogs | files/cats | 12 | 13 |
     And I should see none of:
@@ -43,7 +43,7 @@ Feature: Dashboard running processes display
     And I am running an initial assessment job for the file group named 'Dogs' with 12 files
     And I am running an initial assessment job for the file group named 'Cats' with 13 files
     When I go to the dashboard
-    Then I should see a table of running initial assessment scans
+    Then I should see the running initial assessment scans table
     And I should see all of:
       | Dogs | Cats | files/dogs | files/cats | 12 | 13 |
     And I should see none of:

@@ -130,7 +130,7 @@ Feature: Assessment description
       | Author Email | wingram2@example.com |
     And I press 'Update Assessment'
     Then I should see 'wingram2@example.com'
-    And There should be a person with email 'wingram2@example.com'
+    And a person with email 'wingram2@example.com' should exist
 
   Scenario: Auto link links from notes and preservation risks
     Given I am logged in as an admin

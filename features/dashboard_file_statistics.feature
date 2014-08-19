@@ -19,27 +19,22 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
   Scenario: View file statistics section of dashboard
     When I go to the dashboard
     And I click on 'File Statistics'
-    Then I should see the bit & object preservation content_type statistics
-    And I should see the bit & object preservation summary file statistics
+    Then I should see the bit file stats table
+    And I should see the object file stats table
 
   Scenario: View bit preservation summary content_type table
     When I go to the dashboard
     And I click on 'File Statistics'
-    Then I should see a bit preservation content_type table
-    And I should see all of:
+    Then I should see all of:
       | image/jpeg      | 2 | 332 KB  |
       | application/xml | 1 | 2.89 KB |
-
-  Scenario: View object preservation summary content_type table
-    When I go to the dashboard
-    And I click on 'File Statistics'
-    Then I should see an object preservation content_type table
 
   Scenario: View bit & object preservation summary table
     Given The bit level file group statistics cache is up to date
     When I go to the dashboard
     And I click on 'File Statistics'
-    Then I should see the bit & object preservation summary file statistics
+    Then I should see the bit file stats table
+    And I should see the object file stats table
     And I should see all of:
       | Total Bit Preservation Files: | 3 | Total Object Preservation Files: | 0 |
     And I should see all of:

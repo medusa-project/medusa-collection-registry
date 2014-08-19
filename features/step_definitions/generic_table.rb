@@ -1,4 +1,7 @@
-TABLE_IDS = {'file groups' => 'file_groups', 'red flags' => 'red-flags-table'}
+TABLE_IDS = {'file groups' => 'file_groups', 'red flags' => 'red-flags-table',
+             'bit file stats' => 'file_stats_bits', 'object file stats' => 'file_stats_objects',
+             'file stats summary' => 'file_stats_summary', 'running virus scans' => 'running_virus_scans',
+             'running fits scans' => 'running_fits_scans', 'running initial assessment scans' => 'running_initial_assessment_scans'}
 
 def table_selector(key)
   id = TABLE_IDS[key.to_s] || key.gsub(' ', '-')
@@ -11,7 +14,7 @@ end
 
 Then(/^the (.*) table should have (\d+) rows?$/) do |key, count|
   within(table_selector(key)) do
-    within('tbody') {expect(all('tr').count).to eq(count.to_i)}
+    within('tbody') { expect(all('tr').count).to eq(count.to_i) }
   end
 end
 

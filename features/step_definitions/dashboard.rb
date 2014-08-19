@@ -18,41 +18,8 @@ Then /^The dashboard should have a storage overview section$/ do
   page.should have_selector('#storage-overview')
 end
 
-Then(/^The dashboard should have a storage table$/) do
-  page.should have_selector('#storage-overview')
-end
-
 When /^I go to the dashboard$/ do
   visit dashboard_path
-end
-
-Then /^I should see the bit & object preservation content_type statistics$/ do
-  page.should have_selector('table#file_stats_bits')
-  page.should have_selector('table#file_stats_objects')
-end
-
-And /^I should see the bit & object preservation summary file statistics$/ do
-  page.should have_selector('table#file_stats_summary')
-end
-
-Then /^I should see a bit preservation content_type table$/ do
-  page.should have_selector('table#file_stats_bits')
-end
-
-Then /^I should see an object preservation content_type table$/ do
-  page.should have_selector('table#file_stats_objects')
-end
-
-Then(/^I should see a table of running virus scans$/) do
-  page.should have_selector('table#running_virus_scans')
-end
-
-Then(/^I should see a table of running fits scans$/) do
-  page.should have_selector('table#running_fits_scans')
-end
-
-Then(/^I should see a table of running initial assessment scans$/) do
-  page.should have_selector('table#running_initial_assessment_scans')
 end
 
 Then /^show me the page$/ do

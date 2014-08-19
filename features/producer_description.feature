@@ -136,7 +136,7 @@ Feature: Producer description
       | Administrator Email | hding2@example.com |
     And I press 'Update Producer'
     Then I should see 'hding2@example.com'
-    And There should be a person with email 'hding2@example.com'
+    And a person with email 'hding2@example.com' should exist
 
   Scenario: Auto link from the notes text
     Given I am logged in as an admin

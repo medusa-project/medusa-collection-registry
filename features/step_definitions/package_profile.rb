@@ -1,9 +1,3 @@
-And(/^I have package profiles with fields:$/) do |table|
-  table.hashes.each do |hash|
-    FactoryGirl.create(:package_profile, hash)
-  end
-end
-
 Then(/^I should be on the collection index page for collections with package profile 'book'$/) do
   current_path.should == for_package_profile_collections_path
 end

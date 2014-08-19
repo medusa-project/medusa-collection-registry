@@ -19,7 +19,7 @@ Feature: Collection Registry Dashboard
   Scenario: Storage summary table
     Given I am logged in as an admin
     When I go to the dashboard
-    Then The dashboard should have a storage table
+    Then I should see the storage summary table
 
   Scenario: Storage summary
     Given I am logged in as an admin
