@@ -6,11 +6,6 @@ And(/^there should be (\d+) Amazon backup bags?$/) do |count|
   expect(Dir[File.join(AmazonBackup.global_bag_directory, '*')].size).to eq(count.to_i)
 end
 
-Then(/^the cfs directory with path '(.*)' should have (\d+) Amazon backup$/) do |path, count|
-  cfs_directory = CfsDirectory.where(path: path).first
-  expect(cfs_directory.amazon_backups.count).to eq(count.to_i)
-end
-
 When(/^I create Amazon bags for the cfs directory with path '(.*)'$/) do |path|
   cfs_directory = CfsDirectory.where(path: path).first
   user = FactoryGirl.create(:user)
@@ -32,5 +27,15 @@ And(/^all the data of bag '(.*)' should be in some Amazon backup bag$/) do |bag_
       end
       expect(containing_dir).to be_truthy
     end
+  end
+end
+
+Then(/^there should be (\d+) amazon backup delayed jobs?$/) do |count|
+  expect(AmazonBackup.count).to eq(count.to_i)
+end
+
+And(/^I check all amazon backup checkboxes$/) do
+  all('.amazon-backup-checkbox').each do |checkbox|
+    checkbox.set(true)
   end
 end

@@ -11,20 +11,20 @@ Feature: CFS file group integration
     And the collection titled 'Dogs' has file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |
-    And the file group named 'Toys' has cfs root 'dogs/toy-dogs'
+    And the file group named 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
 
   Scenario: See file group's cfs root when viewing it
-    When I view the file group named 'Toys'
+    When I view the file group with name 'Toys'
     Then I should see 'toy-dogs'
 
   Scenario: Navigate from file group to its cfs root
-    When I view the file group named 'Toys'
+    When I view the file group with name 'Toys'
     And I click on 'toy-dogs'
     Then I should be viewing the cfs root directory for the file group named 'Toys'
 
   Scenario: Set file group's cfs root from file group edit view
     Given there is a physical cfs directory 'englishmen/yorkies'
-    When I edit the file group named 'Toys'
+    When I edit the file group with name 'Toys'
     And I select 'englishmen/yorkies' from 'Cfs root'
     And I click on 'Update File group'
     Then the file group named 'Toys' should have cfs directory with path 'englishmen/yorkies'
@@ -36,9 +36,9 @@ Feature: CFS file group integration
   Scenario: Navigate from a cfs directory to the owning file group
     When I view the cfs directory for the file group named 'Toys' for the path '.'
     And I click on 'Toys'
-    Then I should be on the view page for the file group named 'Toys'
+    Then I should be on the view page for the file group with name 'Toys'
 
   Scenario: Navigate from a cfs file to the owning file group
     And I view the cfs file for the file group named 'Toys' for the path 'picture.jpg'
     And I click on 'Toys'
-    Then I should be on the view page for the file group named 'Toys'
+    Then I should be on the view page for the file group with name 'Toys'

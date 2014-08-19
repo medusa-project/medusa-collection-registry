@@ -10,7 +10,7 @@ Feature: Viewing CFS file information and content
     And the collection titled 'Animals' has file groups with fields:
       | name | type              |
       | Dogs | BitLevelFileGroup |
-    And the file group named 'Dogs' has cfs root 'dogs/places'
+    And the file group named 'Dogs' has cfs root 'dogs/places' and delayed jobs are run
 
   Scenario: View cfs file
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
@@ -58,7 +58,7 @@ Feature: Viewing CFS file information and content
   Scenario: Navigate to owning file group
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
     And I click on 'Dogs'
-    Then I should be on the view page for the file group named 'Dogs'
+    Then I should be on the view page for the file group with name 'Dogs'
 
   Scenario: See red flags associated with file
     Given the file group named 'Dogs' has a cfs file for the path 'grass.jpg' with red flags with fields:

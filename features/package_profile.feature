@@ -11,8 +11,8 @@ Feature: Package Profiles
 
   Scenario: View package profile
     Given I am logged in as an admin
-    When I view the package profile named 'book'
-    Then I should be on the view page for the package profile named 'book'
+    When I view the package profile with name 'book'
+    Then I should be on the view page for the package profile with name 'book'
     And I should see all of:
       | book | http://book_profile.example.com | Preservation package for books |
     And I should see none of:
@@ -20,13 +20,13 @@ Feature: Package Profiles
 
   Scenario: View package profile as manager
     Given I am logged in as a manager
-    When I view the package profile named 'book'
-    Then I should be on the view page for the package profile named 'book'
+    When I view the package profile with name 'book'
+    Then I should be on the view page for the package profile with name 'book'
 
   Scenario: View package profile as visitor
     Given I am logged in as a visitor
-    When I view the package profile named 'book'
-    Then I should be on the view page for the package profile named 'book'
+    When I view the package profile with name 'book'
+    Then I should be on the view page for the package profile with name 'book'
 
   Scenario: View package profile index as admin
     Given I am logged in as an admin
@@ -52,13 +52,13 @@ Feature: Package Profiles
 
   Scenario: Edit package profile
     Given I am logged in as an admin
-    When I edit the package profile named 'book'
+    When I edit the package profile with name 'book'
     And I fill in fields:
       | Name  | tome                            |
       | Url   | http://tome_profile.example.com |
       | Notes | Preservation package for tomes  |
     And I click on 'Update Package profile'
-    Then I should be on the view page for the package profile named 'tome'
+    Then I should be on the view page for the package profile with name 'tome'
     And I should see none of:
       | book | http://book_profile.example.com | Preservation package for books |
     And I should see all of:
@@ -73,7 +73,7 @@ Feature: Package Profiles
       | Url   | http://tome_profile.example.com |
       | Notes | Preservation package for tomes  |
     And I click on 'Create Package profile'
-    Then I should be on the view page for the package profile named 'tome'
+    Then I should be on the view page for the package profile with name 'tome'
     And I should see all of:
       | tome | http://tome_profile.example.com | Preservation package for tomes |
 
@@ -81,11 +81,11 @@ Feature: Package Profiles
     Given I am logged in as an admin
     When I go to the package profile index page
     And I click on 'View'
-    Then I should be on the view page for the package profile named 'book'
+    Then I should be on the view page for the package profile with name 'book'
 
   Scenario: Navigate from show to index
     Given I am logged in as an admin
-    When I view the package profile named 'book'
+    When I view the package profile with name 'book'
     And I click on 'Index'
     Then I should be on the package profile index page
 
@@ -99,7 +99,7 @@ Feature: Package Profiles
 
   Scenario: Delete package profile from show
     Given I am logged in as an admin
-    When I view the package profile named 'book'
+    When I view the package profile with name 'book'
     And I click on 'Delete'
     Then I should be on the package profile index page
     And I should see 'image'
@@ -109,13 +109,13 @@ Feature: Package Profiles
     Given I am logged in as an admin
     When I go to the package profile index page
     And I click on 'Edit'
-    Then I should be on the edit page for the package profile named 'book'
+    Then I should be on the edit page for the package profile with name 'book'
 
   Scenario: Edit package profile from show
     Given I am logged in as an admin
-    When I view the package profile named 'book'
+    When I view the package profile with name 'book'
     And I click on 'Edit'
-    Then I should be on the edit page for the package profile named 'book'
+    Then I should be on the edit page for the package profile with name 'book'
 
   Scenario: Link to package profile index from main page
     Given I am logged in as an admin

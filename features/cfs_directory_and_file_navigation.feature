@@ -11,7 +11,7 @@ Feature: CFS integration
     And the collection titled 'Animals' has file groups with fields:
       | name | type              |
       | Dogs | BitLevelFileGroup |
-    And the file group named 'Dogs' has cfs root 'dogs'
+    And the file group named 'Dogs' has cfs root 'dogs' and delayed jobs are run
 
   Scenario: View CFS directory as an admin
     Given I am logged in as an admin

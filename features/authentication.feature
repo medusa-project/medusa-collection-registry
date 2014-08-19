@@ -5,8 +5,8 @@ Feature: Authentication
 
   Scenario: Unauthenticated users are asked to log in if they visit a restricted page
     Given I am not logged in
-    And There is a collection titled 'Dogs'
-    When I edit the collection titled 'Dogs'
+    And the collection with title 'Dogs' exists
+    When I edit the collection with title 'Dogs'
     Then I should be on the login page
 
   Scenario: Log out

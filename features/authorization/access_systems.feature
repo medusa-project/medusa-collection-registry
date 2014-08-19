@@ -4,7 +4,7 @@ Feature: Access system authorization
   I want to enforce proper authorization
 
   Background:
-    Given The access system named 'ContentDM' exists
+    Given the access system with name 'ContentDM' exists
 
   Scenario: Enforce permissions
     Then deny object permission on the access system with name 'ContentDM' to users for action with redirection:

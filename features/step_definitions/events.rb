@@ -22,12 +22,12 @@ Then(/^the file group named '(.*)' should have an event with fields:$/) do |name
   end
 end
 
-Then /^I should be on the events page for the file group named '(.*)'$/ do |name|
-  current_path.should == events_file_group_path(FileGroup.find_by(name: name))
+When(/^I view events for the (.*) with (.*) '(.*)'$/) do |object_type, key, value|
+  visit specific_object_path(object_type, key, value, 'events')
 end
 
-And(/^I should be viewing events for the collection titled '(.*)'$/) do |title|
-  current_path.should == events_collection_path(Collection.find_by(title: title))
+Then /^I should be viewing events for the (.*) with (.*) '(.*)'$/ do |object_type, key, value|
+  expect(current_path).to eq(specific_object_path(object_type, key, value, 'events'))
 end
 
 And /^I should see the events table$/ do

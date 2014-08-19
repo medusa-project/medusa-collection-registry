@@ -5,11 +5,11 @@ Feature: Preservation Priority
 
   Background:
     Given I am logged in as an admin
-    And There is a collection titled 'Dogs'
+    And the collection with title 'Dogs' exists
     And The collection titled 'Dogs' has preservation priority 'low'
 
   Scenario: Edit and View preservation priority
-    When I edit the collection titled 'Dogs'
+    When I edit the collection with title 'Dogs'
     And I select 'urgent' from 'Preservation priority'
     And I click on 'Update Collection'
     Then I should see 'urgent'
@@ -21,6 +21,6 @@ Feature: Preservation Priority
     And I should see 'low'
 
   Scenario: See preservation priority in repository show page
-    When I view the repository with a collection titled 'Dogs'
+    When I view the repository having a collection titled 'Dogs'
     Then I should see 'Preservation Priority'
     And I should see 'low'

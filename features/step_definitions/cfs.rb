@@ -41,11 +41,21 @@ Given(/^the file group named '(.*)' has cfs root '(.*)'$/) do |name, path|
   file_group.save!
 end
 
+Given(/^the file group named '(.*)' has cfs root '(.*)' and delayed jobs are run$/) do |name, path|
+  step "the file group named '#{name}' has cfs root '#{path}'"
+  step "delayed jobs are run"
+end
+
 When(/^I set the cfs root of the file group named '(.*)' to '(.*)'$/) do |name, path|
   file_group = FileGroup.find_by_name(name)
   new_root = CfsDirectory.find_by(:path => path) || FactoryGirl.create(:cfs_directory, :path => path)
   file_group.cfs_directory = new_root
   file_group.save!
+end
+
+When(/^I set the cfs root of the file group named '(.*)' to '(.*)' and delayed jobs are run$/) do |name, path|
+  step "I set the cfs root of the file group named '#{name}' to '#{path}'"
+  step "delayed jobs are run"
 end
 
 When(/^I view fits for the cfs file '(.*)'$/) do |path|

@@ -6,7 +6,6 @@ And /^The dashboard should have a red flags section$/ do
   page.should have_selector('#red-flags')
 end
 
-
 And /^The dashboard should have a file statistics section$/ do
   page.should have_selector('#file-statistics')
 end

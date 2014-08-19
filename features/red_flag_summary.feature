@@ -37,7 +37,7 @@ Feature: Red Flag Summary
 
   Scenario: View red flags for file group
     Given I am logged in as an admin
-    When I view the file group named 'Toys'
+    When I view the file group with name 'Toys'
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:
@@ -47,19 +47,19 @@ Feature: Red Flag Summary
 
   Scenario: View red flags for file group as a manager
     Given I am logged in as a manager
-    When I view the file group named 'Toys'
+    When I view the file group with name 'Toys'
     And I click on 'Red Flags'
     Then I should see a table of red flags
 
   Scenario: View red flags for file group as a visitor
     Given I am logged in as a visitor
-    When I view the file group named 'Toys'
+    When I view the file group with name 'Toys'
     And I click on 'Red Flags'
     Then I should see a table of red flags
 
   Scenario: View red flags for collection
     Given I am logged in as an admin
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:
@@ -68,7 +68,7 @@ Feature: Red Flag Summary
 
   Scenario: View red flags for collection as a manager
     Given I am logged in as a manager
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:
@@ -77,7 +77,7 @@ Feature: Red Flag Summary
 
   Scenario: View red flags for collection as a visitor
     Given I am logged in as a visitor
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:
@@ -86,7 +86,7 @@ Feature: Red Flag Summary
 
   Scenario: View red flags for repository
     Given I am logged in as an admin
-    When I view the repository titled 'Animals'
+    When I view the repository with title 'Animals'
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:
@@ -94,7 +94,7 @@ Feature: Red Flag Summary
 
   Scenario: View red flags for repository as a manager
     Given I am logged in as a manager
-    When I view the repository titled 'Animals'
+    When I view the repository with title 'Animals'
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:
@@ -102,7 +102,7 @@ Feature: Red Flag Summary
 
   Scenario: View red flags for repository as a visitor
     Given I am logged in as a visitor
-    When I view the repository titled 'Animals'
+    When I view the repository with title 'Animals'
     And I click on 'Red Flags'
     Then I should see a table of red flags
     And I should see all of:

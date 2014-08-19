@@ -16,15 +16,6 @@ module DashboardHelper
     end
   end
 
-  def size_bits_total
-    CfsFile.sum(:size)
-  end
-
-  def file_count_bits_total
-    # only active records that have been ingested
-    CfsFile.count
-  end
-
   # File stats for objects preservation
 
   def list_of_object_file_formats

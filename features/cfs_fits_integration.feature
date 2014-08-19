@@ -12,7 +12,7 @@ Feature: CFS FITS integration
     And the collection titled 'Dogs' has file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |
-    And the file group named 'Toys' has cfs root 'dogs/toy-dogs'
+    And the file group named 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
 
   Scenario: Run fits on a file
     Given I am logged in as an admin
@@ -64,7 +64,7 @@ Feature: CFS FITS integration
   Scenario: Run fits on a whole directory tree
     Given I am logged in as an admin
     When I view the cfs directory for the file group named 'Toys' for the path '.'
-    And I click on 'Create FITS for tree'
+    And I click on 'Create FITS for tree' and delayed jobs are run
     And the file group named 'Toys' should have a cfs file for the path 'text.txt' with fits attached
     And the file group named 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
     And I should see 'Scheduling FITS creation for /dogs/toy-dogs'
@@ -72,7 +72,7 @@ Feature: CFS FITS integration
   Scenario: Run fits on a whole directory tree as manager
     Given I am logged in as a manager
     When I view the cfs directory for the file group named 'Toys' for the path '.'
-    And I click on 'Create FITS for tree'
+    And I click on 'Create FITS for tree' and delayed jobs are run
     And the file group named 'Toys' should have a cfs file for the path 'text.txt' with fits attached
     And the file group named 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
     And I should see 'Scheduling FITS creation for /dogs/toy-dogs'
@@ -85,8 +85,8 @@ Feature: CFS FITS integration
 
   Scenario: Run fits on a file group as an admin
     Given I am logged in as an admin
-    When I view the file group named 'Toys'
-    And I click on 'Create FITS for CFS tree'
+    When I view the file group with name 'Toys'
+    And I click on 'Create FITS for CFS tree' and delayed jobs are run
     Then the file group named 'Toys' should have a cfs file for the path 'text.txt' with fits attached
     And the file group named 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
     And I should see 'Scheduling FITS creation for /dogs/toy-dogs'
@@ -94,8 +94,8 @@ Feature: CFS FITS integration
 
   Scenario: Run fits on a file group as an admin as a manager
     Given I am logged in as a manager
-    When I view the file group named 'Toys'
-    And I click on 'Create FITS for CFS tree'
+    When I view the file group with name 'Toys'
+    And I click on 'Create FITS for CFS tree' and delayed jobs are run
     Then the file group named 'Toys' should have a cfs file for the path 'text.txt' with fits attached
     And the file group named 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
     And I should see 'Scheduling FITS creation for /dogs/toy-dogs'

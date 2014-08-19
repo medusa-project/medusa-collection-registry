@@ -16,14 +16,14 @@ Feature: Title uniqueness and presence
       | Scanning |
 
   Scenario: Prevent duplicate repository titles
-    When I go to the repository creation page
+    When I go to the new repository page
     And I fill in fields:
       | Title | Animals |
     And I press 'Create Repository'
     Then I should see 'has already been taken'
 
   Scenario: Prevent blank repository titles
-    When I go to the repository creation page
+    When I go to the new repository page
     And I press 'Create Repository'
     Then I should see 'can't be blank'
 
@@ -52,7 +52,7 @@ Feature: Title uniqueness and presence
       | Title | Roses |
     And I press 'Create Collection'
     Then I should not see 'has already been taken'
-    And the repository titled 'Animals' should have a collection titled 'Roses'
+    And the repository with title 'Animals' should have 1 collection with title 'Roses'
 
   Scenario: Prevent blank collection titles
     When I start a new collection for the repository titled 'Animals'

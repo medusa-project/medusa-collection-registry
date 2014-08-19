@@ -23,14 +23,14 @@ Feature: Assessment summary
     And the collection titled 'Cacti' has an assessment named 'cacti assessment'
 
   Scenario: View collection and go to summary of assessments
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     Then I should see all of:
       | toy assessment | hot assessment | dog assessment |
     And I should see none of:
       | cat assessment | cacti assessment |
 
   Scenario: View repository and go to summary of assessments
-    When I view the repository titled 'Animals'
+    When I view the repository with title 'Animals'
     Then I should see all of:
       | toy assessment | hot assessment | dog assessment | cat assessment |
     And I should see none of:

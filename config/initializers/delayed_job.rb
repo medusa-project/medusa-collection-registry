@@ -1,7 +1,11 @@
-#don't delay jobs in test environment - sometimes we may want to also not delay in development for debugging -
-#use second line for this
-Delayed::Worker.delay_jobs = !Rails.env.test?
-#Delayed::Worker.delay_jobs = false
+#Various controls for delayed jobs.
+
+# Delay in all environments
+Delayed::Worker.delay_jobs = true
+# Delay only in production and development
+#Delayed::Worker.delay_jobs = !Rails.env.test?
+#Delay only in production
+#Delayed::Worker.delay_jobs = Rails.env.production?
 
 #We set this in order to have some room on either side - recall that lower numbers take higher priority, with
 #0 being maximum priority (and the default unless we set it as in the following line)

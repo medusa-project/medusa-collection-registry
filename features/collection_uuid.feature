@@ -5,12 +5,12 @@ Feature: Collection UUID
 
   Background:
     Given I am logged in as an admin
-    And There is a collection titled 'Dogs'
+    And the collection with title 'Dogs' exists
 
   Scenario: Collection should have UUID
     Then The collection titled 'Dogs' should have a valid UUID
 
   Scenario:
-    When I view the collection titled 'Dogs'
+    When I view the collection with title 'Dogs'
     Then I should see 'UUID'
     And I should see the UUID of the collection titled 'Dogs'
