@@ -6,6 +6,6 @@
   %div
     %p
       - if @file_group.new_record?
-        = link_to("Back to #{@collection.title}", @collection, :class => 'btn btn-default')
+        = link_to('Cancel', @collection, :class => 'btn btn-default')
       - else
         = link_to(t('.cancel', :default => t('helpers.links.cancel')), @file_group, :class => 'btn btn-default')

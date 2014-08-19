@@ -1,7 +1,7 @@
 %p
   %strong Repository:
-  = @collection.repository.title
+  = link_to @collection.repository.title, @collection.repository
   &nbsp;
   %strong Collection:
-  = @collection.title
+  = link_to @collection.title, @collection
 %hr
