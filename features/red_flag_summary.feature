@@ -39,7 +39,7 @@ Feature: Red Flag Summary
     Given I am logged in as an admin
     When I view the file group with name 'Toys'
     And I click on 'Red Flags'
-    Then I should see a table of red flags
+    Then I should see the red flags table
     And I should see all of:
       | Bad toy picture | Bad checksum | Bad toy text | Toys | Bit level file group |
     And I should see none of:
@@ -49,19 +49,19 @@ Feature: Red Flag Summary
     Given I am logged in as a manager
     When I view the file group with name 'Toys'
     And I click on 'Red Flags'
-    Then I should see a table of red flags
+    Then I should see the red flags table
 
   Scenario: View red flags for file group as a visitor
     Given I am logged in as a visitor
     When I view the file group with name 'Toys'
     And I click on 'Red Flags'
-    Then I should see a table of red flags
+    Then I should see the red flags table
 
   Scenario: View red flags for collection
     Given I am logged in as an admin
     When I view the collection with title 'Dogs'
     And I click on 'Red Flags'
-    Then I should see a table of red flags
+    Then I should see the red flags table
     And I should see all of:
       | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Dogs | Collection |
     And I should not see 'Bad cool text'
@@ -70,7 +70,7 @@ Feature: Red Flag Summary
     Given I am logged in as a manager
     When I view the collection with title 'Dogs'
     And I click on 'Red Flags'
-    Then I should see a table of red flags
+    Then I should see the red flags table
     And I should see all of:
       | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Dogs | Collection |
     And I should not see 'Bad cool text'
@@ -79,7 +79,7 @@ Feature: Red Flag Summary
     Given I am logged in as a visitor
     When I view the collection with title 'Dogs'
     And I click on 'Red Flags'
-    Then I should see a table of red flags
+    Then I should see the red flags table
     And I should see all of:
       | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Dogs | Collection |
     And I should not see 'Bad cool text'
@@ -88,7 +88,7 @@ Feature: Red Flag Summary
     Given I am logged in as an admin
     When I view the repository with title 'Animals'
     And I click on 'Red Flags'
-    Then I should see a table of red flags
+    Then I should see the red flags table
     And I should see all of:
       | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals | Repository |
 
@@ -96,7 +96,7 @@ Feature: Red Flag Summary
     Given I am logged in as a manager
     When I view the repository with title 'Animals'
     And I click on 'Red Flags'
-    Then I should see a table of red flags
+    Then I should see the red flags table
     And I should see all of:
       | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals | Repository |
 
@@ -104,6 +104,6 @@ Feature: Red Flag Summary
     Given I am logged in as a visitor
     When I view the repository with title 'Animals'
     And I click on 'Red Flags'
-    Then I should see a table of red flags
+    Then I should see the red flags table
     And I should see all of:
       | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals | Repository |

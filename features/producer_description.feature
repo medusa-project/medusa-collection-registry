@@ -50,19 +50,19 @@ Feature: Producer description
   Scenario: View index as admin
     Given I am logged in as an admin
     When I go to the producer index page
-    Then I should see a table of producers
+    Then I should see the producers table
     And I should see 'Scanning'
     And I should see the producer definition
 
   Scenario: View index as manager
     Given I am logged in as a manager
     When I go to the producer index page
-    Then I should see a table of producers
+    Then I should see the producers table
 
   Scenario: View index as a visitor
     Given I am logged in as a visitor
     When I go to the producer index page
-    Then I should see a table of producers
+    Then I should see the producers table
 
   Scenario: View producer
     Given I am logged in as an admin

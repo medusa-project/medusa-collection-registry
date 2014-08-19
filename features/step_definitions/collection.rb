@@ -1,21 +1,5 @@
 require 'utils/luhn'
 
-And /^I click on 'Delete' in the assessments table$/ do
-  within_table('assessments') do
-    click_on 'Delete'
-  end
-end
-
-Then /^I should see the file group collection table$/ do
-  page.should have_selector('table#file_groups')
-end
-
-And /^I click on '(.*)' in the file groups table$/ do |button|
-  within_table('file_groups') do
-    click_on(button)
-  end
-end
-
 When(/^I click on '(.*)' in the attachments section$/) do |button|
   within('#attachments') do
     click_on(button)

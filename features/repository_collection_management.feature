@@ -11,7 +11,7 @@ Feature: Collection Management
 
   Scenario: View collections of a repository
     When I view the repository with title 'Sample Repo'
-    Then I should see the repository collection table
+    Then I should see the collections table
     And I should see 'Sample Collection'
     And I should see 'external_id'
 

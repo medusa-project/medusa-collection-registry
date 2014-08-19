@@ -30,10 +30,6 @@ Then /^I should be viewing events for the (.*) with (.*) '(.*)'$/ do |object_typ
   expect(current_path).to eq(specific_object_path(object_type, key, value, 'events'))
 end
 
-And /^I should see the events table$/ do
-  page.should have_selector('table#events')
-end
-
 Then /^a (.*) is unauthorized to create an event for the file group named '(.*)'$/ do |user_type, name|
   if user_type == 'visitor'
       rack_login('a visitor')

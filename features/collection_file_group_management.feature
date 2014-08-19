@@ -14,7 +14,7 @@ Feature: File Group Management
 
   Scenario: View file groups of a collection
     When I view the collection with title 'Dogs'
-    Then I should see the file group collection table
+    Then I should see the file groups table
     And I should see all of:
       | images | 1,200 |
 

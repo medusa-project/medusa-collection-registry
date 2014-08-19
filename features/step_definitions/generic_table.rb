@@ -1,0 +1,23 @@
+TABLE_IDS = {'file groups' => 'file_groups', 'red flags' => 'red-flags-table'}
+
+def table_selector(key)
+  id = TABLE_IDS[key.to_s] || key.gsub(' ', '-')
+  "table##{id}"
+end
+
+Then(/^I should see the ([^']*) table$/) do |key|
+  page.should have_selector(table_selector(key))
+end
+
+Then(/^the (.*) table should have (\d+) rows?$/) do |key, count|
+  within(table_selector(key)) do
+    within('tbody') {expect(all('tr').count).to eq(count.to_i)}
+  end
+end
+
+And(/^I click on '(.*)' in the ([^']*) table$/) do |link, key|
+  within(table_selector(key)) do
+    click_on(link)
+  end
+end
+

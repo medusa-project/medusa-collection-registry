@@ -13,16 +13,6 @@ When /^the repository titled '(.*)' has been deleted$/ do |title|
   Repository.find_by_title(title).destroy
 end
 
-Then /^I should see the repository collection table$/ do
-  page.should have_selector('table#collections')
-end
-
-And /^I click on 'Delete' in the collections table$/ do
-  within_table('collections') do
-    click_on 'Delete'
-  end
-end
-
 Then /^I should see all repository fields$/ do
   ['Title', 'URL', 'Notes', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Phone Number', 'Email'].each do |field|
     step "I should see '#{field}'"
@@ -48,10 +38,6 @@ And /^I have some repositories with files totalling '(\d+)' GB$/ do |size|
     collection = repository.collections.sample
     FactoryGirl.create(:file_group, :collection => collection, :total_file_size => x)
   end
-end
-
-And(/^the repository titled '(.*)' should have (\d+) assessments$/) do |title, count|
-  Repository.find_by_title(title).assessments.count.to_s.should == count
 end
 
 Then(/^I should be editing repository administration groups$/) do

@@ -18,7 +18,7 @@ Feature: Producer collection table
 
   Scenario: Collection table should exist
     When I view the producer with title 'Scanning'
-    Then I should see a table of collections
+    Then I should see the collections table
 
   Scenario: Collection table should be correct
     When I view the producer with title 'Scanning'
@@ -26,7 +26,7 @@ Feature: Producer collection table
       | Dogs | Cats | dog_external_id |
     And I should see none of:
       | Bears | bear_external_id |
-    And The table of collections should have 2 rows
+    And the collections table should have 2 rows
 
   Scenario: Collection table should link repository owning each collection
     When I view the producer with title 'Scanning'

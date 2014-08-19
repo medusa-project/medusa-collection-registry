@@ -12,16 +12,6 @@ Given(/^the file group named '(.*)' has scheduled events with fields:$/) do |nam
   end
 end
 
-Then(/^I should see the scheduled events table$/) do
-  page.should have_selector('table#scheduled-events')
-end
-
-And(/^I click on '(.*)' in the scheduled events table$/) do |link|
-  within('table#scheduled-events') do
-    click_on(link)
-  end
-end
-
 Then(/^I should on the edit page for the scheduled event with key '(.*)' and action date '(.*)'$/) do |key, date|
   current_path.should == edit_scheduled_event_path(ScheduledEvent.where(:key => key, :action_date => date).first)
 end

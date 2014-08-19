@@ -19,12 +19,12 @@ Feature: Bit Level File Group virus check
     Given I am logged in as an admin
     When I view the collection with title 'Dogs'
     And I click on 'Run' in the virus-scan actions and delayed jobs are run
-    Then the file group named 'images' should have 1 virus scan attached
+    Then the file group with name 'images' should have 1 virus scan
     And the cfs file at path 'clam.exe' for the file group named 'images' should have 1 red flag
 
   Scenario: Run a virus check as a manager
     Given I am logged in as a manager
     When I view the collection with title 'Dogs'
     And I click on 'Run' in the virus-scan actions and delayed jobs are run
-    Then the file group named 'images' should have 1 virus scan attached
+    Then the file group with name 'images' should have 1 virus scan
     And the cfs file at path 'clam.exe' for the file group named 'images' should have 1 red flag
