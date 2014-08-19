@@ -8,8 +8,8 @@ Feature: JSON data about file group
       | external_file_location | name        | id | type              | cfs_directory_id |
       | Grainger               | Engineering | 1  | BitLevelFileGroup | 20               |
     And every cfs directory with fields exists:
-      | id |path|
-      | 20 | dir/path   |
+      | id | path     |
+      | 20 | dir/path |
 
   Scenario: Fetch JSON for a file group for basic auth user
     Given I provide basic authentication
