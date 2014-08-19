@@ -7,7 +7,7 @@ Feature: Viewing CFS file information and content
     Given I am logged in as an admin
     And I clear the cfs root directory
     And the cfs directory 'dogs/places' contains cfs fixture file 'grass.jpg'
-    And the collection titled 'Animals' has file groups with fields:
+    And the collection with title 'Animals' has child file groups with fields:
       | name | type              |
       | Dogs | BitLevelFileGroup |
     And the file group named 'Dogs' has cfs root 'dogs/places' and delayed jobs are run

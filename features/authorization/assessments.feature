@@ -4,7 +4,7 @@ Feature: Assessment authorization
   I want to enforce proper authorization
 
   Background:
-    Given the repository titled 'Animals' has collections with fields:
+    Given the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
     And the assessable collection with title 'Dogs' has assessments with fields:

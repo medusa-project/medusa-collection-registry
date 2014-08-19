@@ -5,10 +5,10 @@ Feature: File Group Assessment Management
 
   Background:
     Given I am logged in as an admin
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | external_file_location | file_format | total_file_size | total_files | summary      | provenance_note | name   |
       | Main Library           | image/jpeg  | 100             | 1200        | main summary | main provenance | Images |
     And the assessable file group with name 'Images' has assessments with fields:

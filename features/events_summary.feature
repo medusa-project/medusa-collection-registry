@@ -5,15 +5,15 @@ Feature: Events Summary
 
   Background:
     Given I am logged in as an admin
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
       | Cats  |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |
       | Hot  | BitLevelFileGroup |
-    And the collection titled 'Cats' has file groups with fields:
+    And the collection with title 'Cats' has child file groups with fields:
       | name | type              |
       | Cool | BitLevelFileGroup |
     And the file group named 'Toys' has events with fields:
@@ -36,10 +36,10 @@ Feature: Events Summary
     And the file group named 'Cool' has scheduled events with fields:
       | key             | actor_email | action_date | state     |
       | external_to_bit | Coltrane@example.com    | 2011-09-10  | scheduled |
-    And the repository titled 'Plants' has collections with fields:
+    And the repository with title 'Plants' has child collections with fields:
       | title |
       | Crops |
-    And the collection titled 'Crops' has file groups with fields:
+    And the collection with title 'Crops' has child file groups with fields:
       | name | type              |
       | Corn | BitLevelFileGroup |
     And the file group named 'Corn' has events with fields:

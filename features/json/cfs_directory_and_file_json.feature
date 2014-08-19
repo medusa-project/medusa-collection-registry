@@ -4,7 +4,7 @@ Feature: JSON data about a cfs directory
   I want to be able to export JSON describing a cfs directory
 
   Background:
-    Given the collection titled 'Dogs' has file groups with fields:
+    Given the collection with title 'Dogs' has child file groups with fields:
       | external_file_location | name        | id | type              | cfs_directory_id |
       | Grainger               | Engineering | 1  | BitLevelFileGroup | 20               |
     And there are cfs directory objects with fields:

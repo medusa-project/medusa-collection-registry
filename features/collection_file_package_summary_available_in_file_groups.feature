@@ -5,10 +5,10 @@ Feature: Collection File Package Summary in File Groups
 
   Background:
     Given I am logged in as an admin
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title | file_package_summary          |
       | Dogs  | Original file package summary |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name | external_file_location | file_format | total_file_size | total_files |
       | main | Main Library           | image/jpeg  | 100             | 1200        |
 

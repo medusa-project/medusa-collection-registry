@@ -4,15 +4,15 @@ Feature: Red Flag Summary
   I want to be able to view red flags at a variety of levels
 
   Background:
-    Given the repository titled 'Animals' has collections with fields:
+    Given the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
       | Cats  |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |
       | Hot  | BitLevelFileGroup |
-    And the collection titled 'Cats' has file groups with fields:
+    And the collection with title 'Cats' has child file groups with fields:
       | name | type              |
       | Cool | BitLevelFileGroup |
     And there is a physical cfs directory 'dogs/toys'

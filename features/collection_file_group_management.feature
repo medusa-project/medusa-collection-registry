@@ -5,10 +5,10 @@ Feature: File Group Management
 
   Background:
     Given I am logged in as an admin
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | external_file_location | file_format | total_file_size | total_files | name   | type              |
       | Main Library           | image/jpeg  | 100             | 1200        | images | ExternalFileGroup |
 
@@ -54,7 +54,7 @@ Feature: File Group Management
     Then I should be on the edit page for the file group with name 'images'
 
   Scenario: See related file group
-    Given the collection titled 'Dogs' has file groups with fields:
+    Given the collection with title 'Dogs' has child file groups with fields:
       | name | type              |
       | text | BitLevelFileGroup |
     And the file group named 'images' has relation note 'text created from images' for the target file group 'text'
@@ -63,7 +63,7 @@ Feature: File Group Management
       | Ingested from | Ingested to |
 
   Scenario: Navigate to files of a bit level file group
-    Given the collection titled 'Dogs' has file groups with fields:
+    Given the collection with title 'Dogs' has child file groups with fields:
       | name | type              |
       | bit  | BitLevelFileGroup |
     And there is a physical cfs directory 'bit/path'

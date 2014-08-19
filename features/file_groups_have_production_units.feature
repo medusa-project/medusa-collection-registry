@@ -9,7 +9,7 @@ Feature: producers for File Groups
       | title    |
       | Scanning |
       | Scraping |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name     | external_file_location |
       | grainger | Grainger               |
     And The file group with location 'Grainger' for the collection titled 'Dogs' has producer titled 'Scanning'

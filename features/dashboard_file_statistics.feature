@@ -9,7 +9,7 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
     And the cfs directory 'animals/dogs' contains cfs fixture file 'grass.jpg'
     And the cfs directory 'animals/dogs/pictures' contains cfs fixture file 'grass.jpg'
     And the cfs directory 'animals/dogs' contains cfs fixture file 'fits.xml'
-    And the collection titled 'Animals' has file groups with fields:
+    And the collection with title 'Animals' has child file groups with fields:
       | name          | type              |
       | Cats          | ExternalFileGroup |
       | Dogs-external | ExternalFileGroup |

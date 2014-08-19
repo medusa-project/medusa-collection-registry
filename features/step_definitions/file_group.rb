@@ -1,10 +1,3 @@
-And /^the collection titled '(.*)' has file groups with fields:$/ do |title, table|
-  collection = Collection.find_by_title(title) || FactoryGirl.create(:collection, :title => title)
-  table.hashes.each do |hash|
-    FactoryGirl.create(:file_group, hash.merge({:collection => collection}))
-  end
-end
-
 Then /^I should see the file group id for the file group with location '(.*)' in the file group collection table$/ do |location|
   id = FileGroup.find_by_external_file_location(location).id
   within_table('file_groups') do

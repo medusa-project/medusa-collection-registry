@@ -5,7 +5,7 @@ Feature: CFS basic properties
 
   Background:
     Given I am logged in as an admin
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |
     And I clear the cfs root directory

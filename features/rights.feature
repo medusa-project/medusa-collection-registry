@@ -5,10 +5,10 @@ Feature: Record structured rights data for collections and file groups
 
   Background:
     Given I am logged in as an admin
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name     | external_file_location |
       | grainger | Grainger               |
 

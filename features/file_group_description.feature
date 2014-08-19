@@ -4,10 +4,10 @@ Feature: File Group description
   I want to edit file group information
 
   Background:
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | external_file_location | file_format | total_file_size | total_files | summary          | provenance_note     | name   | staged_file_location | external_id              |
       | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   | external-main-library-id |
       | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | staging_dir/texts    |                          |

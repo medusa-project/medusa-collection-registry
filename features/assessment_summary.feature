@@ -5,14 +5,14 @@ Feature: Assessment summary
 
   Background:
     Given I am logged in as an admin
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
       | Cats  |
-    And the repository titled 'Plants' has collections with fields:
+    And the repository with title 'Plants' has child collections with fields:
       | title |
       | Cacti |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name |
       | Toy  |
       | Hot  |

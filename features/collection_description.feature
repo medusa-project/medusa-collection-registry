@@ -5,13 +5,13 @@ Feature: Collection description
 
   Background:
     Given I am logged in as an admin
-    And the repository titled 'Sample Repo' has collections with fields:
+    And the repository with title 'Sample Repo' has child collections with fields:
       | title | published | ongoing | description                               | private_description                          | access_url              | file_package_summary      | notes                                       | external_id      |
       | dogs  | true      | true    | Dog stuff                                 | private dog info                             | http://dogs.example.com | Dog files, not so orderly | Stuff about dogs                            | external-dogs-id |
       | cats  | false     | true    | Cat stuff. http://description.example.com | private cat info. http://private.example.com | http://cats.example.com | Cat files, very orderly   | Stuff about cats. https://notes.example.com |                  |
 
   Scenario: Change repository of a collection
-    Given the repository titled 'Plays' has collections with fields:
+    Given the repository with title 'Plays' has child collections with fields:
       | title |
       | Proof |
     When I edit the collection with title 'cats'

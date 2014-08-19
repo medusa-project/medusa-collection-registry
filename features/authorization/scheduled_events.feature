@@ -4,7 +4,7 @@ Feature: Scheduled event authorization
   I want to enforce proper authorization
 
   Background:
-    Given the collection titled 'Dogs' has file groups with fields:
+    Given the collection with title 'Dogs' has child file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |
     And the file group named 'Toys' has scheduled events with fields:

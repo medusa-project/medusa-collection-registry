@@ -5,9 +5,11 @@ Feature: Repository Assessment Management
 
   Background:
     Given I am logged in as an admin
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title |
-    And the repository titled 'Animals' has an assessment named 'Evaluation'
+    And the assessable repository with title 'Animals' has assessments with fields:
+      | name       |
+      | Evaluation |
 
   Scenario: View assessments of a repository
     When I view the repository with title 'Animals'

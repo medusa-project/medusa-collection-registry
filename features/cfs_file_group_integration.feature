@@ -8,7 +8,7 @@ Feature: CFS file group integration
     And I clear the cfs root directory
     And the physical cfs directory 'dogs/toy-dogs' has a file 'picture.jpg' with contents 'does not matter'
     And the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'also irrelevant'
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |
     And the file group named 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run

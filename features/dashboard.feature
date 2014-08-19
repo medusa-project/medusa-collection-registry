@@ -23,23 +23,23 @@ Feature: Collection Registry Dashboard
 
   Scenario: Storage summary
     Given I am logged in as an admin
-    Given the repository titled 'Animals' has collections with fields:
+    Given the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
       | Cats  |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name   | total_files | total_file_size | type              |
       | Hounds | 1000        | 10              | ExternalFileGroup |
       | Toys   | 2000        | 20              | ExternalFileGroup |
-    And the collection titled 'Cats' has file groups with fields:
+    And the collection with title 'Cats' has child file groups with fields:
       | name     | total_files | total_file_size | type              |
       | Wild     | 10000       | 100             | ExternalFileGroup |
       | Domestic | 20000       | 200             | ExternalFileGroup |
       | Musical  | 40000       | 400             | BitLevelFileGroup |
-    Given the repository titled 'Computers' has collections with fields:
+    Given the repository with title 'Computers' has child collections with fields:
       | title   |
       | Laptops |
-    And the collection titled 'Laptops' has file groups with fields:
+    And the collection with title 'Laptops' has child file groups with fields:
       | name  | total_files | total_file_size | type              |
       | Dells | 500         | 50              | ExternalFileGroup |
     When I go to the dashboard

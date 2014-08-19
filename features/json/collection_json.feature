@@ -4,7 +4,7 @@ Feature: JSON data about collection
   I want to be able to export JSON describing a collection
 
   Background:
-    Given the collection titled 'Dogs' has file groups with fields:
+    Given the collection with title 'Dogs' has child file groups with fields:
       | external_file_location | name        | id | type              |
       | Grainger               | Engineering | 1  | BitLevelFileGroup |
       | Main Library           | Classical   | 2  | ExternalFileGroup |

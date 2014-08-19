@@ -9,14 +9,6 @@ And /^the repository titled '(.*)' is managed by '(.*)'$/ do |title, email|
   FactoryGirl.create(:repository, :contact => person, :title => title)
 end
 
-
-And /^the repository titled '(.*)' has collections with fields:$/ do |repository_title, table|
-  repository = Repository.find_by(title: repository_title) || FactoryGirl.create(:repository, title: repository_title)
-  table.hashes.each do |hash|
-    FactoryGirl.create(:collection, hash.merge(:repository => repository))
-  end
-end
-
 When /^the repository titled '(.*)' has been deleted$/ do |title|
   Repository.find_by_title(title).destroy
 end

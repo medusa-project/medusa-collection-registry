@@ -8,7 +8,7 @@ Feature: Cfs directory export
     And the physical cfs directory 'dogs' has a file 'intro.txt' with contents 'anything'
     And the physical cfs directory 'dogs/pugs' has a file 'picture.jpg' with contents 'anything'
     And the physical cfs directory 'dogs/pugs' has a file 'description.txt' with contents 'anything'
-    And the collection titled 'Animals' has file groups with fields:
+    And the collection with title 'Animals' has child file groups with fields:
       | name | type              |
       | Dogs | BitLevelFileGroup |
     And the file group named 'Dogs' has cfs root 'dogs' and delayed jobs are run

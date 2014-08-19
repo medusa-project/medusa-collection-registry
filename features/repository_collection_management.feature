@@ -5,7 +5,7 @@ Feature: Collection Management
 
   Background:
     Given I am logged in as an admin
-    And the repository titled 'Sample Repo' has collections with fields:
+    And the repository with title 'Sample Repo' has child collections with fields:
       | title             | external_id |
       | Sample Collection | external_id |
 

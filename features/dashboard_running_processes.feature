@@ -5,7 +5,7 @@ Feature: Dashboard running processes display
 
   Background:
     Given I am logged in as an admin
-    Given the collection titled 'Animals' has file groups with fields:
+    Given the collection with title 'Animals' has child file groups with fields:
       | name  | type              |
       | Dogs  | BitLevelFileGroup |
       | Cats  | BitLevelFileGroup |

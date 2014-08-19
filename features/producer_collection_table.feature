@@ -8,7 +8,7 @@ Feature: Producer collection table
     And I have producers with fields:
       | title    |
       | Scanning |
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title | external_id      |
       | Dogs  | dog_external_id  |
       | Cats  |                  |

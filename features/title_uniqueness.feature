@@ -5,10 +5,10 @@ Feature: Title uniqueness and presence
 
   Background:
     Given I am logged in as an admin
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
-    And the repository titled 'Plants' has collections with fields:
+    And the repository with title 'Plants' has child collections with fields:
       | title |
       | Roses |
     And I have producers with fields:

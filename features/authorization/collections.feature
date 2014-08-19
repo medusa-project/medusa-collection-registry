@@ -4,7 +4,7 @@ Feature: Collection authorization
   I want to enforce proper authorization
 
   Background:
-    Given the repository titled 'Sample Repo' has collections with fields:
+    Given the repository with title 'Sample Repo' has child collections with fields:
       | title | published | ongoing | description |
       | dogs  | true      | true    | Dog stuff   |
 

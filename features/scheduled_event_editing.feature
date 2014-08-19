@@ -1,11 +1,11 @@
-Feature:
+Feature: Editing scheduled events
   As a preservation manager
   In order to change date and people assigned to scheduled events or remove them
   I want to be able to edit and delete scheduled events
 
   Background:
     Given I am logged in as an admin
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |
     And the file group named 'Toys' has scheduled events with fields:

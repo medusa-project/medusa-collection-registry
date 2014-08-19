@@ -5,16 +5,16 @@ Feature: File Group related file groups
 
   Background:
     Given I am logged in as an admin
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
       | Cats  |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name              | type                 |
       | texts             | ExternalFileGroup    |
       | access_images     | BitLevelFileGroup    |
       | production_images | ObjectLevelFileGroup |
-    And the collection titled 'Cats' has file groups with fields:
+    And the collection with title 'Cats' has child file groups with fields:
       | name       | type                 |
       | cat_images | ObjectLevelFileGroup |
 

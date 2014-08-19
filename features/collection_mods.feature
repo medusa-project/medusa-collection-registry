@@ -4,7 +4,7 @@ Feature: MODS for collection
   I want to be able to view MODS metadata for a collection
 
   Background:
-    Given the repository titled 'Animals' has collections with fields:
+    Given the repository with title 'Animals' has child collections with fields:
       | title | description        | access_url              |  uuid                                   |
       | Dogs  | Collection of dogs | http://dogs.example.com |  3da0fae0-e3fa-012f-ac10-005056b22849-8 |
     And the collection with title 'Dogs' has child resource types with field name:

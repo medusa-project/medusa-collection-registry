@@ -4,10 +4,10 @@ Feature: File group authorization
   I want to enforce proper authorization
 
   Background:
-    Given the repository titled 'Animals' has collections with fields:
+    Given the repository with title 'Animals' has child collection with fields:
       | title |
       | Dogs  |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name   |
       | images |
 

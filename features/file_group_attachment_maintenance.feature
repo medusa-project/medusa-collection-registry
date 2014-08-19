@@ -5,7 +5,7 @@ Feature: File group attachment maintenance
 
   Background:
     Given I am logged in as an admin
-    And the collection titled 'Animals' has file groups with fields:
+    And the collection with title 'Animals' has child file groups with fields:
       | name |
       | Dogs |
     And I view the file group with name 'Dogs'

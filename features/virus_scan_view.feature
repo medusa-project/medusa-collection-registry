@@ -7,10 +7,10 @@ Feature: View virus check
     Given I clear the cfs root directory
     And the cfs directory 'dogs/images' contains cfs fixture file 'clam.exe'
     And the cfs directory 'dogs/images' contains cfs fixture file 'grass.jpg'
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name   | type              |
       | images | BitLevelFileGroup |
     And the file group named 'images' has cfs root 'dogs/images' and delayed jobs are run

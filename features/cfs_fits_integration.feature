@@ -9,7 +9,7 @@ Feature: CFS FITS integration
     And there is a physical cfs directory 'dogs/toy-dogs/pictures'
     And the physical cfs directory 'dogs/toy-dogs' has a file 'text.txt' with contents 'some text'
     And the physical cfs directory 'dogs/toy-dogs/pictures' has a file 'picture.txt' with contents 'more text'
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name | type              |
       | Toys | BitLevelFileGroup |
     And the file group named 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run

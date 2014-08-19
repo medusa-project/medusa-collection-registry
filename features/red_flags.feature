@@ -7,7 +7,7 @@ Feature: Red flags
     Given I clear the cfs root directory
     And there is a physical cfs directory 'dogs'
     And the cfs directory 'dogs' contains cfs fixture file 'grass.jpg'
-    And the collection titled 'Dogs' has file groups with fields:
+    And the collection with title 'Dogs' has child file groups with fields:
       | name     | type              |
       | pictures | BitLevelFileGroup |
     And the file group named 'pictures' has cfs root 'dogs'

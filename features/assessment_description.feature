@@ -4,7 +4,7 @@ Feature: Assessment description
   I want to edit assessment information
 
   Background:
-    And the repository titled 'Animals' has collections with fields:
+    And the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
     And the assessable collection with title 'Dogs' has assessments with fields:

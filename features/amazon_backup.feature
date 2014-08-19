@@ -5,7 +5,7 @@ Feature: Amazon backup
 
   Background:
     Given I clear the cfs root directory
-    And the collection titled 'Animals' has file groups with fields:
+    And the collection with title 'Animals' has child file groups with fields:
       | name | type              |
       | Dogs | BitLevelFileGroup |
       | Cats | BitLevelFileGroup |
