@@ -16,8 +16,12 @@ Feature: Assessment summary
       | name |
       | Toy  |
       | Hot  |
-    And the file group named 'Toy' has an assessment named 'toy assessment'
-    And the file group named 'Hot' has an assessment named 'hot assessment'
+    And the assessable file group with name 'Toy' has assessments with fields:
+      | name           |
+      | toy assessment |
+    And the assessable file group with name 'Hot' has assessments with fields:
+          | name           |
+          | hot assessment |
     And the collection titled 'Dogs' has an assessment named 'dog assessment'
     And the collection titled 'Cats' has an assessment named 'cat assessment'
     And the collection titled 'Cacti' has an assessment named 'cacti assessment'

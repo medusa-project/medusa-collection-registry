@@ -36,7 +36,7 @@ Feature: File Group Management
     When I view the collection with title 'Dogs'
     And I click on 'Add New' in the event actions
     And I submit the new event form on the collection view page
-    Then the file group named 'images' should have 1 events
+    Then the file group with name 'images' should have 1 events
 
   Scenario: View file group assessments
     When I view the collection with title 'Dogs'

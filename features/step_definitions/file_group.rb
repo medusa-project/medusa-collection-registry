@@ -11,14 +11,6 @@ And /^I should not see '(.*)' in the related file groups section$/ do |string|
   end
 end
 
-And /^The collection titled '(.*)' should not have a file group with location '(.*)'$/ do |title, location|
-  Collection.find_by_title(title).file_groups.where(:external_file_location => location).should be_empty
-end
-
-And /^The collection titled '(.*)' should have a file group with location '(.*)'$/ do |title, location|
-  Collection.find_by_title(title).file_groups.where(:external_file_location => location).should_not be_empty
-end
-
 And /^The file group with location '(.*)' for the collection titled '(.*)' should have producer titled '(.*)'$/ do |location, collection_title, producer_title|
   find_file_group(collection_title, location).producer.title.should == producer_title
 end
@@ -33,18 +25,6 @@ Given /^The file group with location '(.*)' has file type '(.*)'$/ do |location,
   file_group = FileGroup.find_by_external_file_location(location)
   file_group.file_type = FileType.find_by_name(file_type)
   file_group.save
-end
-
-And(/^the file group named '(.*)' should have a target file group named '(.*)'$/) do |source_name, target_name|
-  source_file_group = FileGroup.find_by_name(source_name)
-  target_file_group = FileGroup.find_by_name(target_name)
-  source_file_group.target_file_groups.include?(target_file_group).should be_truthy
-end
-
-And(/^the file group named '(.*)' should not have a target file group named '(.*)'$/) do |source_name, target_name|
-  source_file_group = FileGroup.find_by_name(source_name)
-  target_file_group = FileGroup.find_by_name(target_name)
-  source_file_group.target_file_groups.include?(target_file_group).should be_falsy
 end
 
 And(/^the file group named '(.*)' has a target file group named '(.*)'$/) do |source_name, target_name|
@@ -67,17 +47,8 @@ And(/^the file group named '(.*)' has relation note '(.*)' for the target file g
   join.save!
 end
 
-And /^the file group named '(.*)' should have (\d+) events?$/ do |name, number|
-  FileGroup.find_by_name(name).events.length.should == number.to_i
-end
-
 And(/^the cfs root for the file group named '(.*)' should be nil$/) do |name|
   FileGroup.find_by_name(name).cfs_root.should be_nil
-end
-
-And(/^the file group named '(.*)' has an assessment named '(.*)'$/) do |file_group_name, assessment_name|
-  file_group = FileGroup.find_by_name(file_group_name)
-  FactoryGirl.create(:assessment, :name => assessment_name, :assessable_id => file_group.id, :assessable_type => 'FileGroup')
 end
 
 Then(/^a visitor is unauthorized to start a file group for the collection titled '(.*)'$/) do |title|

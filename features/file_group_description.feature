@@ -83,7 +83,7 @@ Feature: File Group description
     When I view the file group with name 'images'
     And I click on 'Delete'
     Then I should be on the view page for the collection with title 'Dogs'
-    And The collection titled 'Dogs' should not have a file group with location 'Main Library'
+    And the collection with title 'Dogs' should have 0 file groups with name 'images'
 
   Scenario: Create a new file group as an admin
     Given I am logged in as an admin
@@ -100,7 +100,7 @@ Feature: File Group description
     Then I should be on the view page for the file group with name 'My file group'
     And I should see 'Undergrad'
     And I should see 'image/tiff'
-    And The collection titled 'Dogs' should have a file group with location 'Undergrad'
+    And the collection with title 'Dogs' should have 1 file group with name 'My file group'
     And the cfs root for the file group named 'My file group' should be nil
 
   Scenario: Create a new file group as a manager
@@ -118,7 +118,7 @@ Feature: File Group description
     Then I should be on the view page for the file group with name 'My file group'
     And I should see 'Undergrad'
     And I should see 'image/tiff'
-    And The collection titled 'Dogs' should have a file group with location 'Undergrad'
+    And the collection with title 'Dogs' should have 1 file group with name 'My file group'
     And the cfs root for the file group named 'My file group' should be nil
 
   Scenario: See package profile name and url in collection view
