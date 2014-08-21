@@ -11,6 +11,7 @@
   .tab-content
     #about.tab-pane
       .well
+        = show_value link_to(@repository.institution.name, @repository.institution), 'Institution'
         = show_field @repository, :contact_email
         = show_field @repository, :address_1
         = show_field @repository, :address_2

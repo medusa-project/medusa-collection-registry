@@ -5,8 +5,8 @@ Feature: Repository description
 
   Background:
     Given the institution with name 'UIUC' has child repositories with fields:
-      | title    | notes            |
-      | Sample 1 | Some notes       |
+      | title    | notes                                                     |
+      | Sample 1 | Some notes                                                |
       | Sample 2 | Some other notes. http://animals.example.com. More notes. |
 
   Scenario: Create repository
@@ -121,6 +121,13 @@ Feature: Repository description
     When I view the repository with title 'Sample 1'
     And I click on 'Edit'
     Then I should be on the edit page for the repository with title 'Sample 1'
+
+  Scenario: Navigate from view page to institution
+    Given I am logged in as an admin
+    When I view the repository with title 'Sample 1'
+    And I click on 'UIUC'
+    Then I should be on the view page for the institution with name 'UIUC'
+
 
   Scenario: Associate contact with repository
     Given I am logged in as an admin
