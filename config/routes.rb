@@ -24,6 +24,7 @@ MedusaRails3::Application.routes.draw do
       put 'update_ldap_admin'
     end
   end
+  resources :institutions
   resources :assessments, only: [:show, :edit, :update, :new, :create, :destroy]
   resources :attachments, only: [:show, :edit, :update, :new, :create, :destroy] do
     member do

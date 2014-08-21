@@ -1,0 +1,18 @@
+.page_header
+  %h1 Institutions
+
+%table.table.table-striped#institutions
+  %thead
+    %tr
+      %th Name
+      %th
+  %tbody
+    - @institutions.each do |institution|
+      %tr
+        %td= link_to(institution.name, institution)
+        %td= link_to 'Edit', edit_institution_path(institution), class: 'btn btn-default btn-xs'
+        %td= link_to 'Delete', institution_path(institution), method: :delete, data: {confirm: institution_confirm_message}, class: 'btn btn-xs btn-danger'
+
+%br
+
+= link_to 'New Institution', new_institution_path, class: 'btn btn-primary'

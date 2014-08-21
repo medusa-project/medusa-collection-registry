@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140801204239) do
+ActiveRecord::Schema.define(version: 20140821180028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -208,6 +208,12 @@ ActiveRecord::Schema.define(version: 20140801204239) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "institutions", force: true do |t|
+    t.string "name"
+  end
+
+  add_index "institutions", ["name"], name: "index_institutions_on_name", using: :btree
 
   create_table "job_amazon_backups", force: true do |t|
     t.integer "amazon_backup_id"
