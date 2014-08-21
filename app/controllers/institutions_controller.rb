@@ -1,9 +1,62 @@
 class InstitutionsController < ApplicationController
   before_filter :require_logged_in
+  before_filter :find_institution, only: [:show, :edit, :update, :destroy]
 
   def index
-    authorize! :manage, Institution
+    authorize! :read, Institution
     @institutions = Institution.order('name ASC').all
+  end
+
+  def new
+    authorize! :create, Institution
+    @institution = Institution.new
+  end
+
+  def create
+    authorize! :create, Institution
+    @institution = Institution.new(allowed_params)
+    if @institution.save
+      redirect_to institution_path(@institution)
+    else
+      render 'new'
+    end
+  end
+
+  def show
+    authorize! :read, @institution
+    @repositories = @institution.repositories
+  end
+
+  def edit
+    authorize! :update, @institution
+  end
+
+  def update
+    authorize! :update, @institution
+    if @institution.update_attributes(allowed_params)
+      redirect_to institution_path(@institution)
+    else
+      render 'edit'
+    end
+  end
+
+  def destroy
+    authorize! :destroy, @institution
+    if @institution.destroy
+      redirect_to institutions_path
+    else
+      redirect_to :back, alert: 'Unable to delete institution'
+    end
+  end
+
+  protected
+
+  def allowed_params
+    params[:institution].permit(:name)
+  end
+
+  def find_institution
+    @institution = Institution.find(params[:id])
   end
 
 end

@@ -1,0 +1,7 @@
+.row
+  = simple_form_for @institution, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
+    .col-sm-12
+      = f.input :name
+    .form-aactions.col-sm-12
+      = f.button :submit, class: 'btn btn-primary'
+      = link_to 'Cancel', institutions_path, class: 'btn btn-default'

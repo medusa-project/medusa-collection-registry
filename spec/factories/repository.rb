@@ -6,5 +6,6 @@ FactoryGirl.define do
     association :contact, :factory => :person
     ldap_admin_domain 'uofi'
     ldap_admin_group 'manager'
+    association :institution
   end
 end

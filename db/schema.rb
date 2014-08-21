@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140821180028) do
+ActiveRecord::Schema.define(version: 20140821185728) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -371,9 +371,11 @@ ActiveRecord::Schema.define(version: 20140821180028) do
     t.date     "active_end_date"
     t.string   "ldap_admin_domain"
     t.string   "ldap_admin_group"
+    t.integer  "institution_id"
   end
 
   add_index "repositories", ["contact_id"], name: "index_repositories_on_contact_id", using: :btree
+  add_index "repositories", ["institution_id"], name: "index_repositories_on_institution_id", using: :btree
 
   create_table "resource_types", force: true do |t|
     t.string   "name"

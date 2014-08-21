@@ -6,10 +6,12 @@ class RepositoriesController < ApplicationController
   def new
     authorize! :create, Repository
     @repository = Repository.new
+    @institution_id = params[:institution_id]
   end
 
   def create
     authorize! :create, Repository
+    #TODO check that the user is allowed to create with the supplied institution
     @repository = Repository.new(allowed_params)
     if @repository.save
       redirect_to repository_path(@repository), notice: 'Repository was successfully created.'
@@ -33,6 +35,8 @@ class RepositoriesController < ApplicationController
 
   def update
     authorize! :update, @repository
+    #disallow changing the owning institution
+    params[:repository].delete(:institution_id)
     if @repository.update_attributes(allowed_params)
       redirect_to repository_path(@repository), notice: 'Repository was successfully updated.'
     else
@@ -82,7 +86,7 @@ class RepositoriesController < ApplicationController
   def allowed_params
     params[:repository].permit(:notes, :title, :url, :address_1, :address_2, :city, :state,
                                :zip, :phone_number, :email, :active_start_date,
-                               :active_end_date, :contact_email)
+                               :active_end_date, :contact_email, :institution_id)
   end
 
 end

@@ -4,20 +4,21 @@ Feature: Repository description
   I want to be able to create repositories and edit descriptive information about them
 
   Background:
-    Given I have repositories with fields:
+    Given the institution with name 'UIUC' has child repositories with fields:
       | title    | notes            |
       | Sample 1 | Some notes       |
       | Sample 2 | Some other notes. http://animals.example.com. More notes. |
 
   Scenario: Create repository
     Given I am logged in as an admin
-    When I go to the new repository page
+    When I view the institution with name 'UIUC'
+    And I click on 'Create Repository'
     And I fill in fields:
       | Title | Sample Repo                              |
       | URL   | http://repo.example.com                  |
       | Notes | This is a sample repository for the test |
     And I press 'Create Repository'
-    Then a repository with title 'Sample Repo' should exist
+    And the institution with name 'UIUC' should have 1 repository with title 'Sample Repo'
     And I should see 'This is a sample repository for the test'
     And I should see 'http://repo.example.com'
 
@@ -114,13 +115,6 @@ Feature: Repository description
     Then I should be on the repository index page
     And I should not see 'Sample 1'
     And I should not see 'Sample 2'
-
-  Scenario: Create from index page
-    Given I am logged in as an admin
-    When I go to the repository index page
-    And I click on 'New Repository'
-    Then I should be on the new repository page
-    And I should see the repository definition
 
   Scenario: Navigate from view page to edit page
     Given I am logged in as an admin

@@ -2,6 +2,7 @@
   = simple_form_for @repository, :html => { :class => 'form-horizontal' }, :wrapper => :horizontal_form do |f|
     .col-sm-12
       = f.input :title
+      = f.input :institution_id, as: :hidden, input_html: {value: (@repository.institution_id || @institution_id)}
     .col-sm-6
       = f.input :contact_email, :label => 'Contact Person Email', :wrapper => :wide_horizontal_file_input, type: :email
       = f.input :address_1, :wrapper => :wide_horizontal_file_input

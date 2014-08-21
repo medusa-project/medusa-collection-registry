@@ -4,6 +4,7 @@ class Repository < ActiveRecord::Base
   include RedFlagAggregator
 
   email_person_association(:contact)
+  belongs_to :institution
   has_many :collections, :dependent => :destroy
   has_many :assessments, :as => :assessable, :dependent => :destroy
 
@@ -11,6 +12,7 @@ class Repository < ActiveRecord::Base
 
   validates_uniqueness_of :title
   validates_presence_of :title
+  validates_presence_of :institution_id
   validate :check_active_dates
   validates_inclusion_of :ldap_admin_domain, in: LDAP_DOMAINS, allow_blank: true
 

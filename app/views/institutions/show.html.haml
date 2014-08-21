@@ -1,0 +1,16 @@
+.btn-group.pull-right
+  = link_to 'Create Repository', new_repository_path(institution_id: @institution.id), class: 'btn btn-primary'
+  = link_to 'Edit', edit_institution_path(@institution), class: 'btn btn-default'
+  = link_to 'Delete Institution', institution_path(@institution), method: :delete, data: {confirm: institution_confirm_message}, class: 'btn btn-danger'
+
+%h1.text_center= @institution.name
+
+%br
+
+#about
+  .well
+    = show_field @institution, :name
+
+%h2 Repositories
+
+= render 'repositories/table'

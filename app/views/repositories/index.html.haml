@@ -4,24 +4,7 @@
 
 = render 'shared/definitions/repository'
 
-%table.table.table-striped#repositories
-  %thead
-    %tr
-      %th Title
-      %th Contact
-      %th URL
-      %th Total Size (GB)
-      %th
-  %tbody
-    - @repositories.each do |repository|
-      %tr
-        %td #{link_to repository.title, repository}
-        %td #{repository.contact_email}
-        %td #{link_to_external repository.url, repository.url}
-        %td #{repository.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
-        %td
-          = link_to 'Edit', edit_repository_path(repository), :class => 'btn btn-default btn-xs'
-          = link_to 'Delete', repository_path(repository), :method => :delete, :data => { :confirm => repository_confirm_message}, :class => 'btn btn-xs btn-danger'
+= render 'table'
 
 %br
 
@@ -29,6 +12,5 @@
 
 %br
 
-= link_to 'New Repository', new_repository_path, :class => 'btn btn-primary'
 - if can? :update_ldap_admins, Repository
   = link_to 'Edit Repository Admins', edit_ldap_admins_repositories_path, :class => 'btn btn-primary'
