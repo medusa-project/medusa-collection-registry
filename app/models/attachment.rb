@@ -11,4 +11,11 @@ class Attachment < ActiveRecord::Base
   validates_attachment :attachment, :presence => true, :size => {:less_than => 5.megabytes}
   do_not_validate_attachment_file_type :attachment
   do_not_validate_attachment_file_type :attachment
+
+  before_destroy :destroy_attachment
+
+  def destroy_attachment
+    self.attachment.destroy if self.attachment
+  end
+
 end
