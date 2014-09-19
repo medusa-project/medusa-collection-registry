@@ -84,6 +84,7 @@ gem 'uuid'
 gem 'paperclip', :git => 'git://github.com/thoughtbot/paperclip.git'
 
 gem 'font-awesome-rails'
+gem 'state_machine'
 
 group :development, :test do
   # To use debugger
