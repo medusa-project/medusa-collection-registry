@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140919195200) do
+ActiveRecord::Schema.define(version: 20140919211418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -447,6 +447,19 @@ ActiveRecord::Schema.define(version: 20140919195200) do
   end
 
   add_index "virus_scans", ["file_group_id"], name: "index_virus_scans_on_file_group_id", using: :btree
+
+  create_table "workflow_ingests", force: true do |t|
+    t.string   "state"
+    t.integer  "external_file_group_id_id"
+    t.integer  "bit_level_file_group_id_id"
+    t.integer  "user_id_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "workflow_ingests", ["bit_level_file_group_id_id"], name: "index_workflow_ingests_on_bit_level_file_group_id_id", using: :btree
+  add_index "workflow_ingests", ["external_file_group_id_id"], name: "index_workflow_ingests_on_external_file_group_id_id", using: :btree
+  add_index "workflow_ingests", ["user_id_id"], name: "index_workflow_ingests_on_user_id_id", using: :btree
 
   create_table "workflow_workflow_job_relations", force: true do |t|
     t.integer  "workflow_id"
