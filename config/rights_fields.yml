@@ -14,7 +14,10 @@ copyright_jurisdictions:
 default_copyright_statement: ui
 copyright_statements:
   per: In copyright. Digitized with permission.  Contact digicc@library.illinois.edu for information.
+  uofi: Copyright of these records is held by the University of Illinois. Please contact us if you would like to use this information.
   ui: In copyright. Digitized with permission of the University of Illinois Board of Trustees.  Contact digicc@library.illinois.edu for information.
+  nui: Copyright of these records is not owned by the University of Illinois. Please contact us for more information about these materials or if you would like to request a copy of personal use.
+  nuip: Copyright of these records is not owned by the University of Illinois and they are provided for personal use only. Any other use of these records is strictly prohibited without the express permission of the copyright holder. Please contact us for more information.
   con: Copyright restrictions may apply to selected content. Please contact archives staff for further details.
   ddd: Orphaned work. Due diligence documentation on file. Contact digicc@library.Illinois.edu for information.
   ncn: Published 1923-1977 in U.S. without printed copyright notice.
@@ -23,6 +26,8 @@ copyright_statements:
   il: Public domain. Illinois state government document.
   md: Public domain. Municipal document.
   pd: Public domain.
+  pdpi: These records are in the public domain. Please contact us if you would like to purchase a high-resolution copy of the image.
+  unkn: The holder of copyright for these records is unknown. Please contact us if you would like to use these materials, or if you can help us identify the copyright holder.
 
 default_access_restrictions: DISSEMINATE/DISALLOW
 access_restrictions:
