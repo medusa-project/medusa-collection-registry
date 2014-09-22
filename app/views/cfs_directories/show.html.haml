@@ -18,7 +18,9 @@
   %tbody
     - @directory.subdirectories.each do |subdirectory|
       %tr
-        %td= link_to subdirectory.path, cfs_directory_path(subdirectory)
+        %td
+          = fa_icon 'folder'
+          = link_to subdirectory.path, cfs_directory_path(subdirectory)
 
 %hr
 

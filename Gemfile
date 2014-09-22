@@ -83,6 +83,8 @@ gem 'rvm-capistrano'
 gem 'uuid'
 gem 'paperclip', :git => 'git://github.com/thoughtbot/paperclip.git'
 
+gem 'font-awesome-rails'
+
 group :development, :test do
   # To use debugger
   #gem 'ruby-debug19'
