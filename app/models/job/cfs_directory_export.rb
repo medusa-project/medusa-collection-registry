@@ -39,7 +39,7 @@ class Job::CfsDirectoryExport < Job::Base
   end
 
   def group_directory
-    self.cfs_directory.repository.ldap_admin_group || ApplicationController.admin_ad_group
+    (self.cfs_directory.repository.ldap_admin_group || ApplicationController.admin_ad_group).gsub(' ', '_')
   end
 
 end
