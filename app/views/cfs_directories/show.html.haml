@@ -35,7 +35,9 @@
   %tbody
     - @directory.cfs_files.each do |file|
       %tr
-        %td= link_to file.name, cfs_file_path(file)
+        %td
+          = fa_icon 'file-o'
+          = link_to file.name, cfs_file_path(file)
         %td= file.size
         %td= file.mtime
         %td
