@@ -169,6 +169,22 @@ Repository Id: #{file_group.repository.id}
     #remove bag directory for this part
     FileUtils.rm_rf(self.bag_directory(part)) if File.exists?(self.bag_directory(part))
     AmazonMailer.progress(self, part).deliver
+    create_backup_completion_event(part)
+  end
+
+  def create_backup_completion_event(part)
+    file_group = self.cfs_directory.try(:file_group)
+    if file_group
+      event = Event.new(eventable: file_group, date: Date.today, actor_email: self.user.email)
+      if self.completed?
+        event.key = 'amazon_backup_completed'
+        event.note = "Glacier backup completed. "
+      else
+        event.key = 'amazon_backup_part_completed'
+        event.note = "Glacier backup part number #{part} completed. #{self.completed_part_count} of #{self.part_count} complete."
+      end
+      event.save!
+    end
   end
 
   def completed_part_count
