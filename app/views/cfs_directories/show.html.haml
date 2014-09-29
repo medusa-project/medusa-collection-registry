@@ -31,7 +31,7 @@
     - @directory.cfs_files.each do |file|
       %tr
         %td{'data-sort' => "b-#{file.name}"}
-          = fa_icon 'file-o'
+          = fa_icon 'file'
           = link_to file.name, cfs_file_path(file)
         %td= file.size
         %td= file.mtime
