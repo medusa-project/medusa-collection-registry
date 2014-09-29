@@ -178,7 +178,7 @@ Repository Id: #{file_group.repository.id}
       event = Event.new(eventable: file_group, date: Date.today, actor_email: self.user.email)
       if self.completed?
         event.key = 'amazon_backup_completed'
-        event.note = "Glacier backup completed. "
+        event.note = "Glacier backup completed. #{self.part_count} part(s) backed up."
       else
         event.key = 'amazon_backup_part_completed'
         event.note = "Glacier backup part number #{part} completed. #{self.completed_part_count} of #{self.part_count} complete."
