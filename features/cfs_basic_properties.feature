@@ -25,3 +25,29 @@ Feature: CFS basic properties
       | content_type | application/xml                  |
       | md5_sum      | 9972d3c67a1155d5694c6647e1e2dafc |
 
+  Scenario: When I remove a file and rerun assessments then the record for that file is deleted
+    When PENDING
+
+  Scenario: When I modify a file and rerun assessments then the record for that file is updated
+    When PENDING
+
+  Scenario: When I add a file and rerun assessments then the record for that file is created
+    When PENDING
+
+  Scenario: When I rerun assessments then the records for unchanged files are unchanged
+    When PENDING
+
+  Scenario: There is a button to press to set off an assessment if no current assessment is running for a file group's cfs dir
+    When PENDING
+
+  Scenario: There is a no button to press to set off an assessment if a current assessment is running for a file group's cfs dir
+    When PENDING
+
+  Scenario: There is a button to press for a root cfs directory if no current assessment is running for it
+    When PENDING
+
+  Scenario: There is no button to press for a root cfs directory if an assessment is running for it
+    When PENDING
+
+  Scenario: There is no button to press for a non-root cfs directory assessment
+    When PENDING
