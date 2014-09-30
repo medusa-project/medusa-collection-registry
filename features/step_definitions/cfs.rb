@@ -58,6 +58,12 @@ When(/^I set the cfs root of the file group named '(.*)' to '(.*)' and delayed j
   step "delayed jobs are run"
 end
 
+And(/^I run assessments on the the file group named '(.*)'$/) do |name|
+  file_group = BitLevelFileGroup.where(name: name).first
+  file_group.schedule_initial_cfs_assessment
+  step "delayed jobs are run"
+end
+
 When(/^I view fits for the cfs file '(.*)'$/) do |path|
   visit cfs_fits_info_path(:path => path)
 end

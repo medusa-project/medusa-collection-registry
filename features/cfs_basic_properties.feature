@@ -26,7 +26,15 @@ Feature: CFS basic properties
       | md5_sum      | 9972d3c67a1155d5694c6647e1e2dafc |
 
   Scenario: When I remove a file and rerun assessments then the record for that file is deleted
-    When PENDING
+    When I remove the cfs path 'dogs/toy-dogs/chihuahuas/freakdog.xml'
+    And I run assessments on the the file group named 'Toys'
+    Then the file group named 'Toys' should not have a cfs file for the path 'chihuahuas/freakdog.xml'
+
+  Scenario: When I remove a directory and rerun assessments then the record for that directory and its files are deleted
+    When I remove the cfs path 'dogs/toy-dogs/chihuahuas'
+    And I run assessments on the the file group named 'Toys'
+    Then the file group named 'Toys' should not have a cfs file for the path 'chihuahuas/freakdog.xml'
+    And the file group named 'Toys' should not have a cfs directory for the path 'chihuahuas'
 
   Scenario: When I modify a file and rerun assessments then the record for that file is updated
     When PENDING
