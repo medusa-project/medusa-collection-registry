@@ -42,6 +42,9 @@ Feature: CFS basic properties
   Scenario: When I add a file and rerun assessments then the record for that file is created
     When PENDING
 
+  Scenario: When I add a directory and rerun assessments then the record for that directory is created
+    When PENDING
+
   Scenario: When I rerun assessments then the records for unchanged files are unchanged
     When PENDING
 
