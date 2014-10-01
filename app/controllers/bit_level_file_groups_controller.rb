@@ -16,8 +16,8 @@ class BitLevelFileGroupsController < FileGroupsController
       params[:bit_level_file_groups].each do |file_group_id|
         file_group = BitLevelFileGroup.find(file_group_id)
         amazon_backup = AmazonBackup.new(user_id: current_user.id,
-                                            cfs_directory_id: file_group.cfs_directory_id,
-                                            date: Date.today)
+                                         cfs_directory_id: file_group.cfs_directory_id,
+                                         date: Date.today)
         amazon_backup.save!
         Job::AmazonBackup.create_for(amazon_backup)
       end
@@ -28,8 +28,12 @@ class BitLevelFileGroupsController < FileGroupsController
   def create_initial_cfs_assessment
     @file_group = BitLevelFileGroup.find(params[:id])
     authorize! :create_cfs_fits, @file_group
-    @file_group.schedule_initial_cfs_assessment
-    flash[:notice] = 'CFS simple assessment scheduled'
+    if @file_group.is_currently_assessable?
+      @file_group.schedule_initial_cfs_assessment
+      flash[:notice] = 'CFS simple assessment scheduled'
+    else
+      flash[:notice] = 'CFS simple assessment already underway for this file group. Please try again later.'
+    end
     redirect_to @file_group
   end
 
