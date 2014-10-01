@@ -79,5 +79,7 @@ Feature: CFS basic properties
     Then I should not see 'Run Simple Assessment'
 
   Scenario: There is no button to press to set off an assessment if a current assessment is scheduled for a directory in the file groups cfs tree
-    When PENDING
+    When the cfs directory for the path 'chihuahuas' for the file group named 'Toys' has an assessment scheduled
+    When I view the file group with name 'Toys'
+    Then I should not see 'Run Simple Assessment'
 
