@@ -89,6 +89,11 @@ Then(/^the file group named '(.*)' has a cfs file for the path '(.*)' with resul
   end
 end
 
+Then(/^the file group named '(.*)' should have a cfs directory for the path '(.*)'$/) do |name, path|
+  file_group = FileGroup.where(name: name).first
+  expect(file_group.cfs_directory_at_path(path)).to be_a(CfsDirectory)
+end
+
 Then(/^the file group named '(.*)' should not have a cfs file for the path '(.*)'$/) do |name, path|
   file_group = FileGroup.where(name: name).first
   expect {file_group.cfs_file_at_path(path)}.to raise_error(RuntimeError)

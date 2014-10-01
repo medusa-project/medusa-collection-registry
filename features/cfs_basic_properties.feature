@@ -40,10 +40,21 @@ Feature: CFS basic properties
     When PENDING
 
   Scenario: When I add a file and rerun assessments then the record for that file is created
-    When PENDING
+    When the physical cfs directory 'dogs/toy-dogs/chihuahuas' has a file 'yappy.txt' with contents 'yap yap'
+    And I run assessments on the the file group named 'Toys'
+    Then the file group named 'Toys' has a cfs file for the path 'chihuahuas/yappy.txt' with results:
+      | size         | 7.0        |
+      | name         | yappy.txt  |
+      | content_type | text/plain |
 
   Scenario: When I add a directory and rerun assessments then the record for that directory is created
-    When PENDING
+    When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'good.txt' with contents 'unfreakish'
+    And I run assessments on the the file group named 'Toys'
+    Then the file group named 'Toys' should have a cfs directory for the path 'yorkies'
+    And the file group named 'Toys' has a cfs file for the path 'yorkies/good.txt' with results:
+      | size         | 10.0       |
+      | name         | good.txt   |
+      | content_type | text/plain |
 
   Scenario: When I rerun assessments then the records for unchanged files are unchanged
     When PENDING
