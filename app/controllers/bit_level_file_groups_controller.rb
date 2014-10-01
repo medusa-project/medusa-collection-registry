@@ -25,4 +25,12 @@ class BitLevelFileGroupsController < FileGroupsController
     redirect_to dashboard_path
   end
 
+  def create_initial_cfs_assessment
+    @file_group = BitLevelFileGroup.find(params[:id])
+    authorize! :create_cfs_fits, @file_group
+    @file_group.schedule_initial_cfs_assessment
+    flash[:notice] = 'CFS simple assessment scheduled'
+    redirect_to @file_group
+  end
+
 end

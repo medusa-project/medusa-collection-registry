@@ -139,4 +139,8 @@ class BitLevelFileGroup < FileGroup
     end
   end
 
+  def is_currently_assessable?
+    !Job::CfsInitialFileGroupAssessment.where(file_group_id: self.id).first
+  end
+
 end
