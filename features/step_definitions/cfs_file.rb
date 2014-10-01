@@ -80,7 +80,7 @@ When(/^I run an initial cfs file assessment on the file group named '(.*)'$/) do
   FileGroup.find_by(name: name).schedule_initial_cfs_assessment
 end
 
-Then(/^the file group named '(.*)' has a cfs file for the path '(.*)' with results:$/) do |name, path, table|
+Then(/^the file group named '(.*)' should have a cfs file for the path '(.*)' with results:$/) do |name, path, table|
   file_group = FileGroup.find_by(name: name)
   cfs_file = file_group.cfs_file_at_path(path)
   expect(cfs_file).not_to be_nil

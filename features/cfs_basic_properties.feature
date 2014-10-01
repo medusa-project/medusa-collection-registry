@@ -14,12 +14,12 @@ Feature: CFS basic properties
     And the file group named 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
 
   Scenario: When I do an initial assessment on a bit level file group there should be file objects with file properties
-    Then the file group named 'Toys' has a cfs file for the path 'stuff.txt' with results:
+    Then the file group named 'Toys' should have a cfs file for the path 'stuff.txt' with results:
       | size         | 13.0                             |
       | name         | stuff.txt                        |
       | content_type | text/plain                       |
       | md5_sum      | 36dc5ffa0b229e9311cf0c4485b21a54 |
-    And the file group named 'Toys' has a cfs file for the path 'chihuahuas/freakdog.xml' with results:
+    And the file group named 'Toys' should have a cfs file for the path 'chihuahuas/freakdog.xml' with results:
       | size         | 56.0                             |
       | name         | freakdog.xml                     |
       | content_type | application/xml                  |
@@ -42,7 +42,7 @@ Feature: CFS basic properties
   Scenario: When I add a file and rerun assessments then the record for that file is created
     When the physical cfs directory 'dogs/toy-dogs/chihuahuas' has a file 'yappy.txt' with contents 'yap yap'
     And I run assessments on the the file group named 'Toys'
-    Then the file group named 'Toys' has a cfs file for the path 'chihuahuas/yappy.txt' with results:
+    Then the file group named 'Toys' should have a cfs file for the path 'chihuahuas/yappy.txt' with results:
       | size         | 7.0        |
       | name         | yappy.txt  |
       | content_type | text/plain |
@@ -51,7 +51,7 @@ Feature: CFS basic properties
     When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'good.txt' with contents 'unfreakish'
     And I run assessments on the the file group named 'Toys'
     Then the file group named 'Toys' should have a cfs directory for the path 'yorkies'
-    And the file group named 'Toys' has a cfs file for the path 'yorkies/good.txt' with results:
+    And the file group named 'Toys' should have a cfs file for the path 'yorkies/good.txt' with results:
       | size         | 10.0       |
       | name         | good.txt   |
       | content_type | text/plain |
