@@ -170,6 +170,9 @@ Repository Id: #{file_group.repository.id}
     FileUtils.rm_rf(self.bag_directory(part)) if File.exists?(self.bag_directory(part))
     AmazonMailer.progress(self, part).deliver
     create_backup_completion_event(part)
+    if self.completed?
+      self.job_amazon_backup.try(:destroy)
+    end
   end
 
   def create_backup_completion_event(part)
