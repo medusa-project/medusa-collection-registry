@@ -1,7 +1,7 @@
 var task_refresh_timer;
 
 var ready = function() {
-    if ($('body#tasks').length) {
+    if ($('input[name="auto-update-frequency"]').length) {
         var Tasks = {
 
             init: function() {

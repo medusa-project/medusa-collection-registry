@@ -16,7 +16,7 @@
           <td><%= task.pid %></td>
           <td><%= task.name %></td>
           <td class="<%= bootstrap_class_for_status(task.status) %>">
-            <%= Status::to_s(task.status) %>
+            <%= BookTracker::Status::to_s(task.status) %>
           </td>
           <td><%= (task.percent_complete * 100).round(1) %>%</td>
           <td><%= local_time_ago(task.created_at) %></td>
