@@ -110,5 +110,16 @@ MedusaRails3::Application.routes.draw do
   match '/static/:page', to: 'static#page', as: :static, :via => [:get, :post]
   match '/dashboard', to: 'dashboard#show', as: :dashboard, :via => [:get, :post]
 
+  namespace :book_tracker do
+    resources 'items'
+    match 'status', to: 'status#index', via: 'get'
+    match 'tasks', to: 'tasks#index', via: 'get'
+
+    match 'check-hathitrust', to: 'tasks#check_hathitrust', via: 'post',
+          as: 'check_hathitrust'
+    match 'check-internet-archive', to: 'tasks#check_internet_archive',
+          via: 'post', as: 'check_internet_archive'
+    match 'import', to: 'tasks#import', via: 'post'
+  end
 
 end

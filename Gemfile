@@ -81,6 +81,7 @@ gem 'capistrano'
 gem 'rvm-capistrano'
 
 # Medusa Book Tracker compatibility
+gem 'local_time'
 gem 'will_paginate'
 
 gem 'uuid'

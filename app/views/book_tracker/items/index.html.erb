@@ -1,0 +1,36 @@
+<% provide(:body_id, 'items') %>
+
+<h1>Items</h1>
+
+<table class="table table-striped datatable">
+  <thead>
+    <tr>
+      <th>Bib ID</th>
+      <th>Object ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Volume</th>
+      <th>Date</th>
+      <th>HathiTrust</th>
+      <th>Internet Archive</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= item.bib_id %></td>
+        <td><%= item.obj_id %></td>
+        <td><%= link_to(item.title, item) %></td>
+        <td><%= item.author %></td>
+        <td><%= item.volume %></td>
+        <td><%= item.date %></td>
+        <td><%= item.exists_in_hathitrust? ?
+                        link_to(raw('&check;'), item.hathitrust_handle, target: 'blank') : '' %></td>
+        <td><%= item.exists_in_internet_archive? ?
+                        link_to(raw('&check;'), item.internet_archive_url, target: 'blank') : '' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate %>
