@@ -8,7 +8,10 @@ $(function () {
     "aLengthMenu": [
       [10, 25, 50, 100, -1],
       [10, 25, 50, 100, "All"]
-    ]
+    ],
+    "language": {
+      "search": "Narrow: "
+    }
   })
 });
 $(function () {
@@ -27,6 +30,9 @@ $(function () {
     },
     "fnStateLoad": function (oSettings) {
       return JSON.parse(localStorage.getItem('DataTables_' + window.location.pathname));
+    },
+    "language": {
+      "search": "Narrow: "
     }
   });
   if (table) {
