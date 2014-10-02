@@ -19,7 +19,7 @@ module BookTracker
 
         flash[:success] = 'Checking HathiTrust.'
       end
-      redirect_to tasks_url
+      redirect_to :back
     end
 
     ##
@@ -38,7 +38,7 @@ module BookTracker
 
         flash[:success] = 'Checking Internet Archive.'
       end
-      redirect_to tasks_url
+      redirect_to :back
     end
 
     ##
@@ -56,7 +56,7 @@ module BookTracker
 
         flash[:success] = 'Importing MARCXML files.'
       end
-      redirect_to tasks_url
+      redirect_to :back
     end
 
     def index

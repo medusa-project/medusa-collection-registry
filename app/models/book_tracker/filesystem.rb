@@ -46,6 +46,7 @@ module BookTracker
         files.each_with_index do |file, index|
           fh = File.open(file)
           doc = Nokogiri::XML(fh, &:noblanks)
+          doc.encoding = 'utf-8'
 
           doc.xpath('//xmlns:collection/xmlns:record').each do |record|
             item, status = Item.insert_or_update!(
