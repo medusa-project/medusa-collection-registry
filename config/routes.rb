@@ -112,8 +112,8 @@ MedusaRails3::Application.routes.draw do
 
   namespace :book_tracker do
     resources 'items'
+    resources 'tasks', only: 'index'
     match 'status', to: 'status#index', via: 'get'
-    match 'tasks', to: 'tasks#index', via: 'get'
 
     match 'check-hathitrust', to: 'tasks#check_hathitrust', via: 'post',
           as: 'check_hathitrust'
