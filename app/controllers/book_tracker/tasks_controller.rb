@@ -2,6 +2,8 @@ module BookTracker
 
   class TasksController < ApplicationController
 
+    before_filter :require_book_tracker_admin
+
     ##
     # Responds to POST /check-hathitrust
     #
@@ -72,6 +74,10 @@ module BookTracker
           order(completed_at: :desc).limit(1).first
 
       render partial: 'tasks' if request.xhr?
+    end
+
+    def require_book_tracker_admin
+      authorize! :update, BookTracker::Item
     end
 
   end
