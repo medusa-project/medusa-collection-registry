@@ -24,15 +24,17 @@ module BookTracker
         'in progress.'
       end
 
-      task = Task.create!(name: 'Check HathiTrust', service: Service::HATHITRUST)
+      task = Task.create!(name: 'Checking HathiTrust',
+                          service: Service::HATHITRUST)
 
       begin
-        pathname = get_hathifile
+        pathname = get_hathifile(task)
 
-        nuc_code = Mbt::Application.config.library_nuc_code
+        nuc_code = MedusaRails3::Application.medusa_config['book_tracker']['library_nuc_code']
 
-        puts "Scanning the HathiFile for #{nuc_code} records. This could take a "\
-        "while..."
+        task.name = "Scanning the HathiFile for #{nuc_code} records..."
+        task.save!
+        puts task.name
 
         num_lines = File.foreach(pathname).count
 
@@ -71,20 +73,22 @@ module BookTracker
         task.name += ": Updated database with #{items_in_hathitrust} found items."
         task.status = Status::SUCCEEDED
         task.save!
-
-        puts "Updated database with #{items_in_hathitrust} found items."
+        puts task.name
       end
     end
 
     ##
     # Downloads the latest HathiFile into the cache folder.
     #
+    # @param task The active Task
     # @return The path of the HathiFile.
     #
-    def get_hathifile
+    def get_hathifile(task)
       # As there is no single URI for the latest HathiFile, we have to scrape
       # the HathiFile listing out of the index HTML page.
-      puts 'Getting HathiFile index...'
+      task.name = 'Getting HathiFile index...'
+      task.save!
+      puts task.name
 
       uri = URI.parse('http://www.hathitrust.org/hathifiles')
       response = Net::HTTP.get_response(uri)
@@ -109,7 +113,10 @@ module BookTracker
           each { |f| File.delete(f) }
 
       # And progressively download the new one (because it's big)
-      puts "Downloading the latest HathiFile (#{gz_filename})..."
+      task.name = "Downloading the latest HathiFile (#{gz_filename})..."
+      task.save!
+      puts task.name
+
       Net::HTTP.get_response(URI.parse(uri)) do |res|
         res.read_body do |chunk|
           File.open(gz_pathname, 'ab') { |file|
@@ -118,7 +125,9 @@ module BookTracker
         end
       end
 
-      puts "Unzipping #{gz_filename}..."
+      task.name = "Unzipping #{gz_filename}..."
+      task.save!
+      puts task.name
       `gunzip #{gz_pathname}`
 
       txt_pathname

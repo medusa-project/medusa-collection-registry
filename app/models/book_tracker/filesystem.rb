@@ -33,9 +33,8 @@ module BookTracker
         'progress.'
       end
 
-      task = Task.create!(name: 'Import MARCXML files')
-
-      puts 'Importing MARCXML records. This may take a while...'
+      task = Task.create!(name: 'Importing MARCXML records')
+      puts task.name
 
       begin
         num_inserted = 0
@@ -78,9 +77,7 @@ module BookTracker
         "records updated or unchanged"
         task.status = Status::SUCCEEDED
         task.save!
-
-        puts "#{num_inserted} records inserted; #{num_updated} records updated "\
-        "or unchanged"
+        puts task.name
       end
     end
 
