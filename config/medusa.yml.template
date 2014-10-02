@@ -21,6 +21,7 @@ development:
     incoming_queue: glacier_to_medusa
   book_tracker:
     import_path: ~/Projects/mbt_marcxml
+    library_nuc_code: UIU
 test:
   cfs:
     root: /home/hading/repos/medusa-rails3/tmp/cfs-root-test
@@ -40,3 +41,4 @@ production:
     export_autoclean: true
   book_tracker:
     import_path: /mnt/library-storage-hathitrust/documentation/2014
+    library_nuc_code: UIU
