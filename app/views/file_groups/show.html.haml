@@ -25,5 +25,5 @@
         #amazon-tab.tab-pane
           = render 'amazon_backups'
 
-= render :partial => 'events/form', :locals => {:eventable => @file_group, :remote => false, :dialog_id => :addEventModal}
+= render :partial => 'events/modal_form', :locals => {:eventable => @file_group, :remote => false, :dialog_id => :addEventModal}
 = render :partial => 'scheduled_events/form', :locals => {:eventable => @file_group, :remote => false, :dialog_id => :addScheduledEventModal}

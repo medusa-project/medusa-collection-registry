@@ -27,7 +27,7 @@ class Ability
     end
     #Events - must be done for each eventable, where the real check occurs
     [FileGroup, BitLevelFileGroup, ObjectLevelFileGroup, ExternalFileGroup].each do |klass|
-      can [:create_event, :delete_event], klass do |eventable|
+      can [:create_event, :delete_event, :update_event], klass do |eventable|
         repository_manager?(user, eventable)
       end
     end

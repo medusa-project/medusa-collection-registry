@@ -37,4 +37,14 @@ Feature: Record events
     And the file group with name 'dog-files' should have 0 events
 
   Scenario: Update an event
-    When PENDING
+    Given I am logged in as a manager
+    When I view events for the file group with name 'dog-files'
+    And I click on 'Edit'
+    And I fill in fields:
+      | Note | Added note |
+    And I click on 'Update Event'
+    Then I should be viewing events for the external file group with name 'dog-files'
+    And I should see all of:
+      | FITS analysis performed | admin@example.com | Added note |
+    And the file group with name 'dog-files' should have 1 event
+
