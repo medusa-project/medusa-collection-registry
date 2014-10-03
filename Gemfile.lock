@@ -202,6 +202,8 @@ GEM
       actionpack (>= 3.1)
       less (~> 2.5.0)
     libv8 (3.16.14.3)
+    local_time (1.0.0)
+      coffee-rails
     logger (1.2.8)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
@@ -342,6 +344,7 @@ GEM
       activemodel
       mail
     validatable (1.6.7)
+    will_paginate (3.0.7)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -375,6 +378,7 @@ DEPENDENCIES
   json_spec
   launchy
   less-rails
+  local_time
   logger
   mini_magick
   net-http-digest_auth!
@@ -402,3 +406,4 @@ DEPENDENCIES
   uglifier
   uuid
   valid_email
+  will_paginate

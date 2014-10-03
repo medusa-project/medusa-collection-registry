@@ -18,5 +18,6 @@
 //= require dataTables.bootstrap
 //= require data_tables_common
 //= require autocomplete-rails
+//= require local_time
 //= require common
 //= require_tree .
