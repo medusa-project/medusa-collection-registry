@@ -9,4 +9,14 @@ FactoryGirl.define do
     collection
     producer
   end
+
+  factory :external_file_group, parent: :file_group do
+    type 'ExternalFileGroup'
+  end
+
+  factory :bit_level_file_group, parent: :file_group do
+    type 'BitLevelFileGroup'
+  end
+
 end
+

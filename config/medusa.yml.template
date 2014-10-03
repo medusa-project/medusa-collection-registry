@@ -5,7 +5,7 @@ development:
     root: /home/hading/repos/medusa-rails3/tmp/cfs-root-dev
     export_root: /home/hading/repos/medusa-rails3/tmp/cfs-export-root-dev
     export_autoclean: false
-  staging:
+  staging_storage:
     #an array of hashes which have the local_path (i.e. as the medusa server sees it) and the remote_path
     #what will be recorded in the external file path)
     roots:
