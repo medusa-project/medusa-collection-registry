@@ -11,7 +11,7 @@ class ExternalFileGroup < FileGroup
   end
 
   def has_staged_directory?
-    #check that the staged_file_location is okay
+    #check that the staged_file_location is okay - it must end in collection_id/file_group_id
     #check that the staged storage has a matching root
     #check that the corresponding staged storage local directory exists
   end
