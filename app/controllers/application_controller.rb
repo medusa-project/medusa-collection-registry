@@ -93,11 +93,11 @@ class ApplicationController < ActionController::Base
   end
 
   def self.is_ad_user?(user)
-    self.is_member_of?(user_ad_group, user, 'uofi')
+    user and self.is_member_of?(user_ad_group, user, 'uofi')
   end
 
   def self.is_ad_admin?(user)
-    self.is_member_of?(admin_ad_group, user, 'uofi')
+    user and self.is_member_of?(admin_ad_group, user, 'uofi')
   end
 
   def self.user_ad_group

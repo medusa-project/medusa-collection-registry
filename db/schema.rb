@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140919211418) do
+ActiveRecord::Schema.define(version: 20141002155446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,33 @@ ActiveRecord::Schema.define(version: 20140919211418) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "book_tracker_items", force: true do |t|
+    t.integer  "bib_id"
+    t.string   "oclc_number"
+    t.string   "obj_id"
+    t.string   "title"
+    t.string   "author"
+    t.string   "volume"
+    t.string   "date"
+    t.boolean  "exists_in_hathitrust",       default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "ia_identifier"
+    t.boolean  "exists_in_internet_archive", default: false
+    t.text     "raw_marcxml"
+  end
+
+  create_table "book_tracker_tasks", force: true do |t|
+    t.string   "name"
+    t.decimal  "service",          precision: 1, scale: 0
+    t.decimal  "status",           precision: 1, scale: 0
+    t.decimal  "pid",              precision: 6, scale: 0
+    t.float    "percent_complete",                         default: 0.0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "completed_at"
   end
 
   create_table "cfs_directories", force: true do |t|

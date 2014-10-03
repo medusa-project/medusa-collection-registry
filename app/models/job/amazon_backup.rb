@@ -11,7 +11,7 @@ class Job::AmazonBackup < Job::Base
     self.amazon_backup.request_backup
   end
 
-  #I had a problem doing this an a association - I don't know why
+  #I had a problem doing this an a association - I don't know why. Maybe because the unnamespace qualified names are the same?
   def amazon_backup
     AmazonBackup.find(self.amazon_backup_id)
   end

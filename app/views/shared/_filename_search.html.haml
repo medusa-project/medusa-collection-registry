@@ -1,0 +1,6 @@
+%li
+  = simple_form_for :search, url: filename_searches_path, html: {id: 'filename_search', class: 'form-inline'}, method: :post do |f|
+    = f.input :filename, label: false, required: true, placeholder: 'Search file name'
+    -#Couldn't find a way to do the following directly with simple form, so drop back to standard Rails helpers
+    = button_tag(type: 'submit', class: 'btn-primary', title: 'Search filenames', id: 'filename_search_submit') do
+      = fa_icon 'search'

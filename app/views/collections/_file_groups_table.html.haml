@@ -48,5 +48,5 @@
 -# rather than rendering a form for each one, hidden though they may be.
 %div#event_forms
   - @collection.file_groups.order('created_at').each do |file_group|
-    = render :partial => 'events/form', :locals => {:eventable => file_group, :remote => true, :dialog_id => "add-event-file-group-#{file_group.id}"}
+    = render :partial => 'events/modal_form', :locals => {:eventable => file_group, :remote => true, :dialog_id => "add-event-file-group-#{file_group.id}"}
     = render :partial => 'scheduled_events/form', :locals => {:eventable => file_group, :remote => true, :dialog_id => "add-scheduled-event-file-group-#{file_group.id}" }

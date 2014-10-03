@@ -3,10 +3,6 @@ class SearchesController < ApplicationController
 
   SEARCH_LIMIT = 100
 
-  def new
-
-  end
-
   def filename
     @search_string = params[:search][:filename]
     #for SQL this needs to be quoted appropriately, then any wildcards handled

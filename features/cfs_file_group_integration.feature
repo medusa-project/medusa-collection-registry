@@ -27,7 +27,7 @@ Feature: CFS file group integration
     When I edit the file group with name 'Toys'
     And I select 'englishmen/yorkies' from 'Cfs root'
     And I click on 'Update File group'
-    Then the file group named 'Toys' should have cfs directory with path 'englishmen/yorkies'
+    Then the file group named 'Toys' should have root cfs directory with path 'englishmen/yorkies'
 
   Scenario: See that a cfs directory belongs to a file group when viewing it
     When I view the cfs directory for the file group named 'Toys' for the path 'yorkies'

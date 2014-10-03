@@ -33,12 +33,12 @@ class CfsFilesController < ApplicationController
 
   def download
     authorize! :download, @file.file_group
-    send_file @file.absolute_path, type: @file.content_type, disposition: 'attachment', filename: @file.name
+    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
   end
 
   def view
     authorize! :download, @file.file_group
-    send_file @file.absolute_path, type: @file.content_type, disposition: 'inline', filename: @file.name
+    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
   end
 
   def preview_image
@@ -76,6 +76,10 @@ class CfsFilesController < ApplicationController
         values.each { |value| h[value] = key.to_sym }
       end
     end
+  end
+
+  def safe_content_type(cfs_file)
+    cfs_file.content_type || 'application/octet-stream'
   end
 
 end

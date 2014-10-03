@@ -1,0 +1,17 @@
+-# Must pass in eventable (to which event will apply), remote (is this a remote form), dialog_id (used by bootstrap to handle dialog display)
+.modal.fade{:id => dialog_id}
+  = simple_form_for Event.new, :url => events_path(:eventable_id => eventable, :eventable_type => eventable.class.to_s),:html => {:class => 'form-search'}, :remote => remote do |f|
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button{:type => 'button', :class => 'close', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'}
+            ×
+          %h3#modalLabel New Event
+        .modal-body
+          = f.input :key, :as => :select, :include_blank => false, :collection => eventable.event_select_options, :label => 'Event'
+          = f.input :actor_email, :label => 'Actor Email', :input_html => {:value => current_user.try(:email), :class => 'form-control'}, :as => :autocomplete, :url => autocomplete_user_email_events_path
+          = f.input :date, :as => :string, :input_html => {:class => 'datepicker', :value => Date.today.to_s}
+          = f.input :note, :input_html => {:class => 'col-sm-5'}
+        .modal-footer
+          %button{:class => 'btn btn-default', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Cancel
+          = f.button :submit, :class => 'btn btn-primary', 'data-hide' => 'modal'

@@ -80,7 +80,7 @@ When(/^I run an initial cfs file assessment on the file group named '(.*)'$/) do
   FileGroup.find_by(name: name).schedule_initial_cfs_assessment
 end
 
-Then(/^the file group named '(.*)' has a cfs file for the path '(.*)' with results:$/) do |name, path, table|
+Then(/^the file group named '(.*)' should have a cfs file for the path '(.*)' with results:$/) do |name, path, table|
   file_group = FileGroup.find_by(name: name)
   cfs_file = file_group.cfs_file_at_path(path)
   expect(cfs_file).not_to be_nil
@@ -88,6 +88,22 @@ Then(/^the file group named '(.*)' has a cfs file for the path '(.*)' with resul
     expect(cfs_file.send(field).to_s).to eq(value)
   end
 end
+
+Then(/^the file group named '(.*)' should have a cfs directory for the path '(.*)'$/) do |name, path|
+  file_group = FileGroup.where(name: name).first
+  expect(file_group.cfs_directory_at_path(path)).to be_a(CfsDirectory)
+end
+
+Then(/^the file group named '(.*)' should not have a cfs file for the path '(.*)'$/) do |name, path|
+  file_group = FileGroup.where(name: name).first
+  expect {file_group.cfs_file_at_path(path)}.to raise_error(RuntimeError)
+end
+
+Then(/^the file group named '(.*)' should not have a cfs directory for the path '(.*)'$/) do |name, path|
+  file_group = FileGroup.where(name: name).first
+  expect {file_group.cfs_directory_at_path(path)}.to raise_error(RuntimeError)
+end
+
 
 And(/^the file group named '(.*)' should have a cfs file for the path '(.*)' with fits attached$/) do |name, path|
   file_group = FileGroup.find_by(name: name)

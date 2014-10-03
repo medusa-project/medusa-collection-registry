@@ -43,7 +43,9 @@ class CfsFile < ActiveRecord::Base
   #run an initial assessment on files that need it - skip if we've already done it and the mtime hasn't changed
   def run_initial_assessment
     file_info = File.stat(self.absolute_path)
-    if self.mtime.blank? or (file_info.mtime > self.mtime)
+    #This won't guarantee that we rerun if the file has changed, but it should pick up most of the cases. mtime only seems to go
+    #down to the second
+    if self.mtime.blank? or (file_info.mtime > self.mtime) or (file_info.size != self.size)
       self.size = file_info.size
       self.mtime = file_info.mtime
       self.content_type = (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream')

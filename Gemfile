@@ -80,6 +80,10 @@ gem 'rest-client'
 gem 'capistrano'
 gem 'rvm-capistrano'
 
+# Medusa Book Tracker compatibility
+gem 'local_time'
+gem 'will_paginate'
+
 gem 'uuid'
 gem 'paperclip', :git => 'git://github.com/thoughtbot/paperclip.git'
 

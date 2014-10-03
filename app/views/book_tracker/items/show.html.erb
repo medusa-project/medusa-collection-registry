@@ -1,0 +1,73 @@
+<% provide(:body_id, 'show_item') %>
+
+<div class="row">
+
+  <div class="col-sm-9">
+    <div class="page-header">
+      <h1 class="title">
+        <%= @item.title.blank? ? 'Untitled' : @item.title %>
+        <% unless @item.volume.blank? %>
+          <br>
+          <small class="volume"><%= @item.volume %></small>
+        <% end %>
+        <% unless @item.author.blank? %>
+          <br>
+          <small class="author"><%= @item.author %></small>
+        <% end %>
+        <% unless @item.date.blank? %>
+          <br>
+          <small class="date"><%= @item.date %></small>
+        <% end %>
+      </h1>
+    </div>
+  </div>
+
+  <div class="col-sm-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Identifiers</h3>
+      </div>
+      <div class="panel-body">
+        <dl>
+          <dt>Bib ID</dt>
+          <dd><%= @item.bib_id %></dd>
+          <dt>Object ID</dt>
+          <dd><%= @item.obj_id %></dd>
+          <dt>Medusa Book Tracker ID</dt>
+          <dd><%= @item.id %></dd>
+          <dt>OCLC Number</dt>
+          <dd><%= @item.oclc_number %></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="btn-group mbt-view-buttons">
+  <%= link_to('View in UIUC Catalog', @item.uiuc_catalog_url,
+              class: 'btn btn-default', target: '_blank') %>
+  <%= link_to('View in HathiTrust', @item.hathitrust_handle,
+              class: 'btn btn-default ' + (@item.exists_in_hathitrust? ? '' : 'disabled'),
+              target: '_blank') %>
+  <%= link_to('View in Internet Archive', @item.internet_archive_url,
+              class: 'btn btn-default ' + (@item.exists_in_internet_archive? ? '' : 'disabled'),
+              target: '_blank') %>
+</div>
+
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+          Raw MARCXML
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse">
+      <div class="panel-body">
+        <pre><%= @item.raw_marcxml %></pre>
+      </div>
+    </div>
+  </div>
+</div>

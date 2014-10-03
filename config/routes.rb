@@ -46,6 +46,7 @@ MedusaRails3::Application.routes.draw do
         get 'red_flags'
         post 'create_virus_scan'
         post 'create_amazon_backup'
+        post 'create_initial_cfs_assessment' if file_group_type == :bit_level_file_groups
       end
       collection do
         post 'bulk_amazon_backup'
@@ -95,7 +96,7 @@ MedusaRails3::Application.routes.draw do
     end
   end
 
-  resources :searches, :only => :new do
+  resources :searches, :only => [] do
     collection do
       post :filename
     end
@@ -109,5 +110,16 @@ MedusaRails3::Application.routes.draw do
   match '/static/:page', to: 'static#page', as: :static, :via => [:get, :post]
   match '/dashboard', to: 'dashboard#show', as: :dashboard, :via => [:get, :post]
 
+  namespace :book_tracker do
+    resources 'items'
+    resources 'tasks', only: 'index'
+    match 'status', to: 'status#index', via: 'get'
+
+    match 'check-hathitrust', to: 'tasks#check_hathitrust', via: 'post',
+          as: 'check_hathitrust'
+    match 'check-internet-archive', to: 'tasks#check_internet_archive',
+          via: 'post', as: 'check_internet_archive'
+    match 'import', to: 'tasks#import', via: 'post'
+  end
 
 end

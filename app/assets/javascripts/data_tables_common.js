@@ -17,6 +17,9 @@ function initialize_data_table(tableSelector) {
       },
       "fnStateLoad": function (oSettings) {
         return JSON.parse(localStorage.getItem('DataTables_' + window.location.pathname));
+      },
+      "language": {
+        "search": "Narrow: "
       }
     })
   })

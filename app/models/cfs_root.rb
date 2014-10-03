@@ -1,5 +1,6 @@
 require 'singleton'
 require 'set'
+require 'timeout'
 
 class CfsRoot
   include Singleton
@@ -18,11 +19,7 @@ class CfsRoot
   #it, but they would involve more database access.
   def available_roots
     ActiveRecord::Base.transaction do
-      physical_root_set = Dir.chdir(self.path) do
-        Dir[File.join('*', '*')].select do |entry|
-          File.directory?(entry)
-        end
-      end.to_set
+      physical_root_set = available_physical_root_set
       all_database_root_hash = Hash.new.tap do |h|
         CfsDirectory.includes(:file_group).where(parent_cfs_directory_id: nil).each do |cfs_directory|
           h[cfs_directory.path] = cfs_directory
@@ -52,6 +49,24 @@ class CfsRoot
       x = available_database_root_set.collect { |path| all_database_root_hash[path] }.sort_by(&:path)
       return x
     end
+  end
+
+  def available_physical_root_set
+    Timeout::timeout(10) do
+      Dir.chdir(self.path) do
+        Dir[File.join('*', '*')].select do |entry|
+          File.directory?(entry)
+        end
+      end.to_set.tap do |roots|
+        Rails.cache.write(self.physical_root_set_cache_key, roots)
+      end
+    end
+  rescue Timeout::Error
+    Rails.cache.read(self.physical_root_set_cache_key) || [].to_set
+  end
+
+  def physical_root_set_cache_key
+    :cfs_physical_root_set
   end
 
 end
