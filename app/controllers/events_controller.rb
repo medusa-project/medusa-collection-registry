@@ -25,6 +25,14 @@ class EventsController < ApplicationController
     end
   end
 
+  def destroy
+    event = Event.find(params[:id])
+    authorize! :delete_event, event.eventable
+    event.destroy!
+    #redirect_to self.send("events_#{event.eventable.class.to_s.underscore}_path", event.eventable)
+    redirect_to :back
+  end
+
   protected
 
   def allowed_params

@@ -8,6 +8,7 @@
       %td User
       %td Message
       %td Note
+      %td Actions
   %tbody
     - @events.each do |event|
       %tr
@@ -18,3 +19,6 @@
         %td= event.actor_email
         %td= event.message
         %td= event.note
+        %td
+          - if safe_can?(:delete_event, event.eventable)
+            = link_to 'Delete', event_path(event), method: :delete, data: {confirm: event_confirm_message}, class: 'btn btn-xs btn-danger'
