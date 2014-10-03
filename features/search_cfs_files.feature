@@ -11,40 +11,29 @@ Feature: Search CFS Files
       | Doggies.txt |
       | cats.jpg    |
 
-  Scenario: Navigate to search page
-    When I go to the dashboard
-    And I click on 'Search'
-    Then I should be on the search page
-
-  Scenario: Public users cannot access search page
+  Scenario: Public users do not see search
     When I logout
-    And I go to the search page
-    Then I should be on the login page
+    And I go to the site home
+    Then there is no filename search box
 
   Scenario: Public users cannot perform searches
     When I logout
     Then trying to do post with the path 'filename_searches_path' as a public user should redirect to authentication
 
   Scenario: Search and find for exact string
-    When I go to the search page
-    And I fill in fields:
-      | File name | dog.txt |
-    And I click on 'Search filenames'
+    When I go to the site home
+    And I do a filename search for 'dog.txt'
     Then I should see a table of cfs files with 1 row
     And I should see 'dog.txt'
 
   Scenario: Search for and do not find exact string
-    When I go to the search page
-    And I fill in fields:
-      | File name | joebob.txt |
-    And I click on 'Search filenames'
+    When I go to the site home
+    And I do a filename search for 'joebob.txt'
     Then I should see 'No files found with name joebob.txt.'
 
   Scenario: Wildcard search
-    When I go to the search page
-    And I fill in fields:
-      | File name | dog* |
-    And I click on 'Search filenames'
+    When I go to the site home
+    And I do a filename search for 'dog*'
     Then I should see a table of cfs files with 2 rows
     And I should see all of:
       | dog.txt | Doggies.txt |

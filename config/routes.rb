@@ -96,7 +96,7 @@ MedusaRails3::Application.routes.draw do
     end
   end
 
-  resources :searches, :only => :new do
+  resources :searches, :only => [] do
     collection do
       post :filename
     end

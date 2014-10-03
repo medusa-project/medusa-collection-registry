@@ -1,11 +1,3 @@
-Then(/^I should be on the search page$/) do
-  current_path.should == new_search_path
-end
-
-And(/^I go to the search page$/) do
-  visit new_search_path
-end
-
 Then(/^I should see a table of cfs files with (\d+) rows?$/) do |count|
   expect(page).to have_selector('#search_results')
   within('#search_results') do
@@ -15,4 +7,15 @@ end
 
 And(/^I try to submit a filename search$/) do
   self.send(:post, filename_searches_path)
+end
+
+Then(/^there is no filename search box$/) do
+  expect(page).not_to have_css('#filename_search')
+end
+
+And(/^I do a filename search for '(.*)'$/) do |search_string|
+  within('#filename_search') do
+    fill_in('Search file name', with: search_string)
+    click_on('filename_search_submit')
+  end
 end
