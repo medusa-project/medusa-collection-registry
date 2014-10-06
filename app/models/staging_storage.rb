@@ -15,12 +15,12 @@ class StagingStorage < Object
     path.tr('\\', '/').gsub(/\/+/, '/')
   end
 
-  #if one of the roots is a possible root for the given path true, otherwise false
-  def root_for(path)
-    root = self.roots.detect {|root| path.match(/^#{root.remote_path}/)}
+  #if there is a local path corresponding to the supplied remote path return it, otherwise nil
+  def local_path_for(remote_path)
+    root = self.roots.detect {|root| remote_path.match(/^#{root.remote_path}/)}
     return nil unless root
-    local_path = self.class.normalize_path(path.sub(/^#{root.remote_path}/, root.local_path))
-    return File.directory?(local_path)
+    local_path = self.class.normalize_path(remote_path.sub(/^#{root.remote_path}/, root.local_path))
+    File.directory?(local_path) ? local_path : nil
   end
 
 end
