@@ -22,3 +22,8 @@ And(/^the external file group with name '(.*)' has a related bit level file grou
   bit_level_file_group = FactoryGirl.create(:bit_level_file_group)
   external_file_group.target_file_groups << bit_level_file_group
 end
+
+Then(/^the external file group with name '(.*)' should be in the process of ingestion$/) do |name|
+  external_file_group = ExternalFileGroup.find_by(name: name)
+  expect(external_file_group.workflow_ingest).to be_a(Workflow::Ingest)
+end

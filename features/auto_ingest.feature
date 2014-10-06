@@ -9,7 +9,8 @@ Feature: Automatic ingestion from staged to bit level
   Scenario: There is a button to start the process if the group is ready for ingestion
     Given an external file group with name 'stuff' is staged with bag data 'small-bag'
     When I view the external file group with name 'stuff'
-    Then I should see 'Approve for ingest'
+    And I click on 'Approve for ingest'
+    Then the external file group with name 'stuff' should be in the process of ingestion
 
   Scenario: There is not a button to start the process if there is a related bit level file group
     Given an external file group with name 'stuff' is staged with bag data 'small-bag'
