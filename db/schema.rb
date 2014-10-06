@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141002155446) do
+ActiveRecord::Schema.define(version: 20141006163154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,6 +97,17 @@ ActiveRecord::Schema.define(version: 20141002155446) do
     t.boolean  "exists_in_internet_archive", default: false
     t.text     "raw_marcxml"
   end
+
+  add_index "book_tracker_items", ["author"], name: "index_book_tracker_items_on_author", using: :btree
+  add_index "book_tracker_items", ["bib_id"], name: "index_book_tracker_items_on_bib_id", using: :btree
+  add_index "book_tracker_items", ["date"], name: "index_book_tracker_items_on_date", using: :btree
+  add_index "book_tracker_items", ["exists_in_hathitrust"], name: "index_book_tracker_items_on_exists_in_hathitrust", using: :btree
+  add_index "book_tracker_items", ["exists_in_internet_archive"], name: "index_book_tracker_items_on_exists_in_internet_archive", using: :btree
+  add_index "book_tracker_items", ["ia_identifier"], name: "index_book_tracker_items_on_ia_identifier", using: :btree
+  add_index "book_tracker_items", ["obj_id"], name: "index_book_tracker_items_on_obj_id", using: :btree
+  add_index "book_tracker_items", ["oclc_number"], name: "index_book_tracker_items_on_oclc_number", using: :btree
+  add_index "book_tracker_items", ["title"], name: "index_book_tracker_items_on_title", using: :btree
+  add_index "book_tracker_items", ["volume"], name: "index_book_tracker_items_on_volume", using: :btree
 
   create_table "book_tracker_tasks", force: true do |t|
     t.string   "name"
