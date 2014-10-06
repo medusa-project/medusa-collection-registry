@@ -32,13 +32,6 @@ module BookTracker
       return item, status
     end
 
-    # TODO: replace with service() returning a ServiceType
-    def google?
-      # It's a Google record if the object ID is a barcode. Barcodes are 14
-      # digits and start with number 3.
-      self.obj_id.length == 14 and self.obj_id[0] == '3'
-    end
-
     ##
     # Returns the expected HathiTrust handle of the item. If the item does not
     # exist in HathiTrust, the handle will not resolve to anything. The handle
@@ -47,18 +40,14 @@ module BookTracker
     # @return string
     #
     def hathitrust_handle
-      if self.internet_archive?
-        "http://hdl.handle.net/2027/uiuo.#{self.obj_id}"
-      elsif self.google?
-        "http://hdl.handle.net/2027/uiug.#{self.obj_id}"
-      else # digitized locally or by vendors
-        "http://hdl.handle.net/2027/uiuc.#{self.obj_id}"
+      case self.service
+        when Service::INTERNET_ARCHIVE
+          "http://hdl.handle.net/2027/uiuo.#{self.obj_id}"
+        when Service::GOOGLE
+          "http://hdl.handle.net/2027/uiug.#{self.obj_id}"
+        else # digitized locally or by vendors
+          "http://hdl.handle.net/2027/uiuc.#{self.obj_id}"
       end
-    end
-
-    # TODO: replace with service() returning a ServiceType
-    def internet_archive?
-      self.obj_id.start_with?('ark:/')
     end
 
     ##
@@ -70,6 +59,16 @@ module BookTracker
     #
     def internet_archive_url
       "https://archive.org/details/#{self.ia_identifier}"
+    end
+
+    def service
+      if self.obj_id.start_with?('ark:/')
+        Service::INTERNET_ARCHIVE
+      elsif self.obj_id.length == 14 and self.obj_id[0] == '3'
+        # It's a Google record if the object ID is a barcode. Barcodes are 14
+        # digits and start with number 3.
+        Service::GOOGLE
+      end
     end
 
     def uiuc_catalog_url

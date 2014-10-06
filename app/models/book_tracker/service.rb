@@ -7,6 +7,7 @@ module BookTracker
 
     HATHITRUST = 0
     INTERNET_ARCHIVE = 1
+    GOOGLE = 2
 
     def self.check_in_progress?
       Hathitrust.check_in_progress? or InternetArchive.check_in_progress?
@@ -18,6 +19,8 @@ module BookTracker
     #
     def self.to_s(service)
       case service
+        when Service::GOOGLE
+          'Google'
         when Service::HATHITRUST
           'HathiTrust'
         when Service::INTERNET_ARCHIVE
