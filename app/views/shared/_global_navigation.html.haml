@@ -17,15 +17,15 @@
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
       %ul.nav.navbar-nav
         %li= link_to 'Dashboard', dashboard_path
-        - if safe_can?(:manage, Institution)
-          %li= link_to 'Institutions', institutions_path
         %li= link_to 'Repositories', repositories_path
         %li= link_to 'Collections', collections_path
         %li.dropdown
           %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
-            Others
+            Other
             %span.caret
           %ul.dropdown-menu{role: 'menu'}
+            - if safe_can?(:manage, Institution)
+              %li= link_to 'Institutions', institutions_path
             %li= link_to 'Producers', producers_path
             %li= link_to 'Access', access_systems_path
             %li= link_to 'Packages', package_profiles_path
