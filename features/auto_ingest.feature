@@ -25,4 +25,5 @@ Feature: Automatic ingestion from staged to bit level
   Scenario: There is not a button to start the process if an ingest has already been started
     Given an external file group with name 'stuff' is staged with bag data 'small-bag'
     And the external file group with name 'stuff' is already being ingested
+    When I view the external file group with name 'stuff'
     Then I should not see 'Approve for ingest'

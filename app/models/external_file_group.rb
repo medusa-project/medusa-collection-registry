@@ -1,6 +1,7 @@
 class ExternalFileGroup < FileGroup
 
   before_save :nullify_cfs_directory
+  has_one :workflow_ingest, :class_name => 'Workflow::Ingest'
 
   def storage_level
     'external'
@@ -16,11 +17,13 @@ class ExternalFileGroup < FileGroup
   def has_staged_directory?
     self.staged_file_location and
         StagingStorage.normalize_path(self.staged_file_location).match(/#{self.collection_id}\/#{self.id}$/) and
-        StagingStorage.root_for(self.staged_file_location)
+        StagingStorage.instance.root_for(self.staged_file_location)
   end
 
   def ready_for_bit_level_ingest?
-    self.has_staged_directory?
+    self.has_staged_directory? and
+        !self.target_file_groups.present? and
+        !self.workflow_ingest
   end
 
 end

@@ -1,7 +1,8 @@
 require 'fileutils'
 
-And(/^the external file group with name 'stuff' is already being ingested$/) do
-  pending # express the regexp above with the code you wish you had
+And(/^the external file group with name '(.*)' is already being ingested$/) do |name|
+  external_file_group = ExternalFileGroup.find_by(name: name)
+  FactoryGirl.create(:workflow_ingest, external_file_group_id: external_file_group.id)
 end
 
 Given(/^an external file group with name '(.*)' is staged with bag data '(.*)'$/) do |name, bag_name|
