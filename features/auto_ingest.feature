@@ -27,3 +27,9 @@ Feature: Automatic ingestion from staged to bit level
     And the external file group with name 'stuff' is already being ingested
     When I view the external file group with name 'stuff'
     Then I should not see 'Approve for ingest'
+
+  Scenario: There is not a button to start the process unless I am an admin
+    Given an external file group with name 'stuff' is staged with bag data 'small-bag'
+    And I relogin as a manager
+    When I view the external file group with name 'stuff'
+    Then I should not see 'Approve for ingest'
