@@ -15,6 +15,15 @@
           %br
           %small.date
             = @item.date
+      .btn-group.mbt-view-buttons
+        = link_to('View in UIUC Catalog', @item.uiuc_catalog_url,
+                  class: 'btn btn-default', target: '_blank')
+        = link_to('View in HathiTrust', @item.hathitrust_handle,
+                  class: 'btn btn-default ' + (@item.exists_in_hathitrust? ? '' : 'disabled'),
+                  target: '_blank')
+        = link_to('View in Internet Archive', @item.internet_archive_url,
+                  class: 'btn btn-default ' + (@item.exists_in_internet_archive? ? '' : 'disabled'),
+                  target: '_blank')
 
   .col-sm-3
     .panel.panel-default
@@ -30,21 +39,11 @@
             Object ID
           %dd= @item.obj_id
           %dt
-            Medusa Book Tracker ID
+            Medusa ID
           %dd= @item.id
           %dt
             OCLC Number
           %dd= @item.oclc_number
-
-.btn-group.mbt-view-buttons
-  = link_to('View in UIUC Catalog', @item.uiuc_catalog_url,
-            class: 'btn btn-default', target: '_blank')
-  = link_to('View in HathiTrust', @item.hathitrust_handle,
-            class: 'btn btn-default ' + (@item.exists_in_hathitrust? ? '' : 'disabled'),
-            target: '_blank')
-  = link_to('View in Internet Archive', @item.internet_archive_url,
-            class: 'btn btn-default ' + (@item.exists_in_internet_archive? ? '' : 'disabled'),
-            target: '_blank')
 
 #accordion.panel-group
   .panel.panel-default
