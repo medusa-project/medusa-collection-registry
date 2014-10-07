@@ -70,7 +70,8 @@ module BookTracker
         task.save!
         raise e
       else
-        task.name += ": Updated database with #{items_in_hathitrust} found items."
+        task.name = "Checking HathiTrust: Updated database with "\
+        "#{items_in_hathitrust} found items."
         task.status = Status::SUCCEEDED
         task.save!
         puts task.name
