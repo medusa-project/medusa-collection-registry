@@ -10,24 +10,24 @@
     %th Internet Archive
   %tr
     %td.text-success
-      = @num_items_in_ht
+      = link_to(@num_items_in_ht, book_tracker_items_path(ht: 1))
       present
     %td.text-success
-      = @num_items_in_ia
+      = link_to(@num_items_in_ia, book_tracker_items_path(ia: 1))
       present
   %tr
     %td.text-danger
-      = @num_items_not_in_ht
+      = link_to(@num_items_not_in_ht, book_tracker_items_path(ht: 0))
       missing
     %td.text-danger
-      = @num_items_not_in_ia
+      = link_to(@num_items_not_in_ia, book_tracker_items_path(ia: 0))
       missing
   %tr
     %td.text-danger
-      = @num_ht_items_not_in_ia
+      = link_to(@num_ht_items_not_in_ia, book_tracker_items_path(ht: 1, ia: 0))
       not in Internet Archive
     %td.text-danger
-      = @num_ia_items_not_in_ht
+      = link_to(@num_ia_items_not_in_ht, book_tracker_items_path(ht: 0, ia: 1))
       not in HathiTrust
   %tr
     %td

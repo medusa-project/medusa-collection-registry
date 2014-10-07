@@ -8,8 +8,10 @@
     <%= form_tag book_tracker_items_path, method: 'get',
                  class: 'form-inline book-tracker-live-search',
                  style: 'float:right' do %>
-        <%= search_field_tag :q, params[:q], placeholder: 'Search',
-                             class: 'form-control', style: 'width:150px' %>
+      <%= hidden_field_tag(:ht, params[:ht]) %>
+      <%= hidden_field_tag(:ia, params[:ia]) %>
+      <%= search_field_tag(:q, params[:q], placeholder: 'Search',
+                           class: 'form-control', style: 'width:150px') %>
     <% end %>
   </div>
 </div>

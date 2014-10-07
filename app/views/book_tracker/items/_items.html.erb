@@ -1,3 +1,11 @@
+<% if @messages.any? %>
+  <ul>
+    <% @messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
 <% if @items.any? %>
 
   <table class="table table-striped datatable">
