@@ -8,7 +8,7 @@ $(function() {
     var timer;
     $('.book-tracker-live-search input').on('keyup', function() {
         clearTimeout(timer);
-        var msec = 500;
+        var msec = 800; // wait this long after user has stopped typing
         var val = $(this).val();
         timer = setTimeout(function() {
             $.get($('.book-tracker-live-search').attr('action'),
