@@ -65,8 +65,10 @@ module BookTracker
       @last_fs_import = Task.where('name LIKE \'Import%\'').
           order(completed_at: :desc).limit(1).first
       @last_ht_check = Task.where(service: Service::HATHITRUST).
+          where('completed_at IS NOT NULL').
           order(completed_at: :desc).limit(1).first
       @last_ia_check = Task.where(service: Service::INTERNET_ARCHIVE).
+          where('completed_at IS NOT NULL').
           order(completed_at: :desc).limit(1).first
 
       render partial: 'tasks' if request.xhr?
