@@ -62,10 +62,6 @@ module BookTracker
     def index
       @tasks = Task.order(created_at: :desc).limit(100)
 
-      @num_items = Item.count
-      @num_items_not_in_ht = Item.where(exists_in_hathitrust: false).count
-      @num_items_not_in_ia = Item.where(exists_in_internet_archive: false).count
-
       @last_fs_import = Task.where('name LIKE \'Import%\'').
           order(completed_at: :desc).limit(1).first
       @last_ht_check = Task.where(service: Service::HATHITRUST).

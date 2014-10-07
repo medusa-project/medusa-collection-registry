@@ -4,22 +4,6 @@
   <h1 class="title">Tasks</h1>
 </div>
 
-<table class="table mbt-item-counts">
-  <tr>
-    <th rowspan="3"><%= @num_items %> items</th>
-    <th>HathiTrust</th>
-    <th>Internet Archive</th>
-  </tr>
-  <tr>
-    <td class="text-success"><%= @num_items - @num_items_not_in_ht %> present</td>
-    <td class="text-success"><%= @num_items - @num_items_not_in_ia %> present</td>
-  </tr>
-  <tr>
-    <td class="text-danger"><%= @num_items_not_in_ht %> missing</td>
-    <td class="text-danger"><%= @num_items_not_in_ia %> missing</td>
-  </tr>
-</table>
-
 <div class="row">
 
   <div class="col-sm-6">

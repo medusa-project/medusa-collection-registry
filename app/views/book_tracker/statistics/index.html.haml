@@ -1,0 +1,37 @@
+.page_header
+  %h1 Statistics
+
+%table.table.mbt-item-counts
+  %tr
+    %th{:rowspan => 4}
+      = @num_items
+      items
+    %th HathiTrust
+    %th Internet Archive
+  %tr
+    %td.text-success
+      = @num_items_in_ht
+      present
+    %td.text-success
+      = @num_items_in_ia
+      present
+  %tr
+    %td.text-danger
+      = @num_items_not_in_ht
+      missing
+    %td.text-danger
+      = @num_items_not_in_ia
+      missing
+  %tr
+    %td.text-danger
+      = @num_ht_items_not_in_ia
+      not in Internet Archive
+    %td.text-danger
+      = @num_ia_items_not_in_ht
+      not in HathiTrust
+  %tr
+    %td
+      in MARCXML files in
+      = @import_path
+    %td
+    %td
