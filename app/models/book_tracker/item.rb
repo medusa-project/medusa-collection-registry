@@ -32,6 +32,21 @@ module BookTracker
       return item, status
     end
 
+    def self.to_csv(options = {})
+      headings = ['Medusa ID'] + ['Bib ID'] + ['OCLC Number'] + ['Object ID'] +
+          ['Title'] + ['Author'] + ['Volume'] + ['Date'] + ['IA Identifier'] +
+          ['Exists in HathiTrust'] + ['Exists in IA']
+      columns = ['id'] + ['bib_id'] + ['oclc_number'] + ['obj_id'] + ['title'] +
+          ['author'] + ['volume'] + ['date'] + ['ia_identifier'] +
+          ['exists_in_hathitrust'] + ['exists_in_internet_archive']
+      CSV.generate(options) do |csv|
+        csv << headings
+        all.each do |item|
+          csv << item.attributes.values_at(*columns)
+        end
+      end
+    end
+
     ##
     # Returns the expected HathiTrust handle of the item. If the item does not
     # exist in HathiTrust, the handle will not resolve to anything. The handle

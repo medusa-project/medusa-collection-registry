@@ -1,10 +1,20 @@
-<% if @messages.any? %>
-  <ul>
-    <% @messages.each do |msg| %>
-      <li><%= msg %></li>
+<div class="row">
+  <div class="col-sm-8">
+    <% if @messages.any? %>
+      <ul>
+        <% @messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
     <% end %>
-  </ul>
-<% end %>
+  </div>
+  <div class="col-sm-4" style="text-align:right">
+    <%= link_to(params.merge(format: 'xls'), class: 'btn btn-default') do %>
+      <span class="glyphicon glyphicon-export"></span>
+      Export as XLSX
+    <% end %>
+  </div>
+</div>
 
 <% if @items.any? %>
 
