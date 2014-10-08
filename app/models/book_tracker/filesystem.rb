@@ -103,8 +103,8 @@ module BookTracker
       # extract OCLC no. from 035 subfield a
       nodes = record.
           xpath('xmlns:datafield[@tag = 035][1]/xmlns:subfield[@code = \'a\'][1]')
-      item_params[:oclc_number] = nodes[0].content.sub(/^[(OCoLC)]*/, '').strip if
-          nodes.any?
+      item_params[:oclc_number] = nodes[0].content.sub(/^[(OCoLC)]*/, '').
+          gsub(/[^0-9]/, '').strip if nodes.any?
 
       # extract author & title from 100 & 245
       item_params[:author] = record.
