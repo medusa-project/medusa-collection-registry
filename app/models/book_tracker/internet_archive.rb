@@ -18,8 +18,10 @@ module BookTracker
         'check is in progress.'
       end
 
-      last_successful_task = Task.where(service: Service::INTERNET_ARCHIVE).
-          where(status: Status::SUCCEEDED).limit(1).first
+      last_successful_task = Task.
+          where(service: Service::INTERNET_ARCHIVE).
+          where(status: Status::SUCCEEDED).
+          order(completed_at: :desc).limit(1).first
       task = Task.create!(name: 'Checking Internet Archive',
                           service: Service::INTERNET_ARCHIVE)
       puts task.name
