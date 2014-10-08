@@ -30,6 +30,7 @@ class AmazonBackup < ActiveRecord::Base
   has_one :job_amazon_backup, :class_name => 'Job::AmazonBackup', :dependent => :destroy
   #This is the user who requested the backup, needed so we can email progress reports
   belongs_to :user
+  has_one :workflow_ingest, :class_name => 'Workflow::Ingest'
 
   #Only allow one backup per day for a file group
   validates_uniqueness_of :date, scope: :cfs_directory_id
@@ -174,6 +175,9 @@ Repository Id: #{file_group.repository.id}
     create_backup_completion_event(part)
     if self.completed?
       self.job_amazon_backup.try(:destroy)
+      if self.workflow_ingest
+        #TODO do what needs to be done if this is a workflow_ingest backup job
+      end
     end
   end
 
