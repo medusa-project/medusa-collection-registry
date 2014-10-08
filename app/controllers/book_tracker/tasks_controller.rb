@@ -13,10 +13,8 @@ module BookTracker
       elsif Service.check_in_progress?
         flash[:error] = 'A service check is already in progress.'
       else
-        pid = Process.spawn('rake', 'book_tracker:check_hathitrust',
-                            out: '/dev/null', err: '/dev/null')
-        Process.detach(pid)
-
+        ht = BookTracker::Hathitrust.new
+        ht.delay.check
         flash[:success] = 'Checking HathiTrust.'
       end
       redirect_to :back
@@ -32,10 +30,8 @@ module BookTracker
       elsif Service.check_in_progress?
         flash[:error] = 'A service check is already in progress.'
       else
-        pid = Process.spawn('rake', 'book_tracker:check_internet_archive',
-                            out: '/dev/null', err: '/dev/null')
-        Process.detach(pid)
-
+        ia = BookTracker::InternetArchive.new
+        ia.delay.check
         flash[:success] = 'Checking Internet Archive.'
       end
       redirect_to :back
@@ -50,10 +46,8 @@ module BookTracker
       elsif Service.check_in_progress?
         flash[:error] = 'Cannot import while a service check is in progress.'
       else
-        pid = Process.spawn('rake', 'book_tracker:import',
-                            out: '/dev/null', err: '/dev/null')
-        Process.detach(pid)
-
+        fs = BookTracker::Filesystem.new
+        fs.delay.import
         flash[:success] = 'Importing MARCXML files.'
       end
       redirect_to :back
