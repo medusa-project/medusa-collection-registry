@@ -11,6 +11,8 @@ Feature: Automatic ingestion from staged to bit level
     When I view the external file group with name 'stuff'
     And I click on 'Approve for ingest'
     Then the external file group with name 'stuff' should be in the process of ingestion
+    And a bit_level_file_group with name 'stuff' should exist
+    And the external file group with name 'stuff' should have a related bit level file group named 'stuff' with relation note 'Created by automatic ingest'
 
   Scenario: There is not a button to start the process if there is a related bit level file group
     Given an external file group with name 'stuff' is staged with bag data 'small-bag'

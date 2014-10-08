@@ -26,4 +26,12 @@ class ExternalFileGroup < FileGroup
         !self.workflow_ingest
   end
 
+  def create_related_bit_level_file_group
+    BitLevelFileGroup.new(self.attributes.slice('producer_id', 'package_profile_id',
+                                                'file_type_id', 'name', 'collection_id')).tap do |bit_level_file_group|
+      bit_level_file_group.save!
+      self.target_file_group_joins.create(target_file_group_id: bit_level_file_group.id, note: 'Created by automatic ingest')
+    end
+  end
 end
+
