@@ -93,7 +93,7 @@ module BookTracker
       item_params = { bib_id: nil, oclc_number: nil, obj_id: nil, title: nil,
                       author: nil, volume: nil, date: nil, raw_marcxml: nil }
 
-      # raw MARCML
+      # raw MARCXML
       item_params[:raw_marcxml] = record.to_xml(indent: 2)
 
       # extract bib ID
