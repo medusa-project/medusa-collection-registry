@@ -11,22 +11,8 @@ namespace :amazon do
       delivery_info, properties, raw_payload = queue.pop
       break unless raw_payload
       puts "Handling message: #{raw_payload}"
-      #check status - if okay then find and callback to backup
-      #if error then report via email
-      payload = JSON.parse(raw_payload)
-      amazon_backup = AmazonBackup.find(payload['pass_through']['amazon_backup_id'])
-      status = payload ['status']
-      error_message = payload['error_message']
-      case status
-        when 'success'
-          part = payload['pass_through']['part']
-          archive_id = payload['parameters']['archive_id']
-          amazon_backup.receive_backup_response_message(part, archive_id)
-        when 'failure'
-          AmazonMailer.failure(amazon_backup, error_message).deliver
-        else
-          AmazonMailer.failure.deliver(amazon_backup, 'Unrecognized status code in AMQP response')
-      end
+      response = AmazonBackupServerResponse.new(raw_payload)
+      response.dispatch_result
     end
   end
 end

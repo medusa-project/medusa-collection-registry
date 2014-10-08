@@ -142,7 +142,7 @@ class AmazonBackup < ActiveRecord::Base
     exchange = channel.default_exchange
     request = {action: 'upload_directory',
                parameters: {directory: directory, description: self.glacier_description(part)},
-               pass_through: {amazon_backup_id: self.id, part: part, directory: directory}}
+               pass_through: {backup_job_class: self.class.to_s, backup_job_id: self.id, part: part, directory: directory}}
     exchange.publish(request.to_json, routing_key: self.class.outgoing_queue)
   end
 
@@ -163,7 +163,9 @@ Repository Id: #{file_group.repository.id}
     return description
   end
 
-  def receive_backup_response_message(part, archive_id)
+  def on_amazon_backup_succeeded_message(response)
+    part = response.pass_through('part').to_i
+    archive_id = response.archive_id
     self.archive_ids[part.to_i - 1] = archive_id
     self.save!
     #remove bag directory for this part
@@ -173,6 +175,14 @@ Repository Id: #{file_group.repository.id}
     if self.completed?
       self.job_amazon_backup.try(:destroy)
     end
+  end
+
+  def on_amazon_backup_failed_message(response)
+    AmazonMailer.failure(self, response.error_message).deliver
+  end
+
+  def on_amazon_backup_unrecognized_message(response)
+    AmazonMailer.failure.deliver(self, 'Unrecognized status code in AMQP response')
   end
 
   def create_backup_completion_event(part)
