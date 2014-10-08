@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141006163154) do
+ActiveRecord::Schema.define(version: 20141008134937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 20141006163154) do
     t.string   "ia_identifier"
     t.boolean  "exists_in_internet_archive", default: false
     t.text     "raw_marcxml"
+    t.boolean  "exists_in_google",           default: false
   end
 
   add_index "book_tracker_items", ["author"], name: "index_book_tracker_items_on_author", using: :btree

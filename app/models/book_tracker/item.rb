@@ -35,10 +35,11 @@ module BookTracker
     def self.to_csv(options = {})
       headings = ['Medusa ID'] + ['Bib ID'] + ['OCLC Number'] + ['Object ID'] +
           ['Title'] + ['Author'] + ['Volume'] + ['Date'] + ['IA Identifier'] +
-          ['Exists in HathiTrust'] + ['Exists in IA']
+          ['Exists in HathiTrust'] + ['Exists in IA'] + ['Exists in Google']
       columns = ['id'] + ['bib_id'] + ['oclc_number'] + ['obj_id'] + ['title'] +
           ['author'] + ['volume'] + ['date'] + ['ia_identifier'] +
-          ['exists_in_hathitrust'] + ['exists_in_internet_archive']
+          ['exists_in_hathitrust'] + ['exists_in_internet_archive'] +
+          ['exists_in_google']
       CSV.generate(options) do |csv|
         csv << headings
         all.each do |item|
@@ -48,9 +49,18 @@ module BookTracker
     end
 
     ##
-    # Returns the expected HathiTrust handle of the item. If the item does not
-    # exist in HathiTrust, the handle will not resolve to anything. The handle
-    # should work if self.exists_in_hathitrust is true.
+    # Returns the expected Google URL of the item. The URL should work if
+    # if self.exists_in_google is true; otherwise it will be broken.
+    #
+    # @return string
+    #
+    def google_url
+      # TODO: write this
+    end
+
+    ##
+    # Returns the expected HathiTrust handle of the item. The handle should
+    # work if self.exists_in_hathitrust is true; otherwise it will be broken.
     #
     # @return string
     #

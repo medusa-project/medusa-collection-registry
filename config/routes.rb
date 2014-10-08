@@ -115,6 +115,8 @@ MedusaRails3::Application.routes.draw do
     resources 'tasks', only: 'index'
     match 'statistics', to: 'statistics#index', via: 'get'
 
+    match 'check-google', to: 'tasks#check_google', via: 'post',
+          as: 'check_google'
     match 'check-hathitrust', to: 'tasks#check_hathitrust', via: 'post',
           as: 'check_hathitrust'
     match 'check-internet-archive', to: 'tasks#check_internet_archive',

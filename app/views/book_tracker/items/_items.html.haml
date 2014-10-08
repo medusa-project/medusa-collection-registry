@@ -30,6 +30,8 @@
           HathiTrust
         %th
           Internet Archive
+        %th
+          Google
     %tbody
       - @items.each do |item|
         %tr
@@ -41,5 +43,6 @@
           %td= item.date
           %td= item.exists_in_hathitrust? ? link_to(raw('&check;'), item.hathitrust_handle, target: 'blank') : ''
           %td= item.exists_in_internet_archive? ? link_to(raw('&check;'), item.internet_archive_url, target: 'blank') : ''
+          %td= item.exists_in_google? ? link_to(raw('&check;'), item.google_url, target: 'blank') : ''
 
   = will_paginate

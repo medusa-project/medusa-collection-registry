@@ -12,14 +12,17 @@ module BookTracker
         q, q, q, q, q, q, q) unless params[:q].blank?
       @items = @items.where(exists_in_hathitrust: params[:ht]) unless params[:ht].blank?
       @items = @items.where(exists_in_internet_archive: params[:ia]) unless params[:ia].blank?
+      @items = @items.where(exists_in_google: params[:gb]) unless params[:gb].blank?
       @items = @items.order(:title)
 
       @messages = []
       @messages << "Containing \"#{params[:q]}\"" unless params[:q].blank?
-      @messages << 'In HathiTrust' if !params[:ht].blank? and params[:ht] == '1'
-      @messages << 'In Internet Archive' if !params[:ia].blank? and params[:ia] == '1'
+      @messages << 'In HathiTrust' if params[:ht] == '1'
+      @messages << 'In Internet Archive' if params[:ia] == '1'
+      @messages << 'In Google' if params[:gb] == '1'
       @messages << 'Not in HathiTrust' if params[:ht] == '0'
       @messages << 'Not in Internet Archive' if params[:ia] == '0'
+      @messages << 'Not in Google' if params[:gb] == '0'
 
       respond_to do |format|
         format.html {

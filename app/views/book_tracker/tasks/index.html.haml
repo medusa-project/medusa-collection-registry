@@ -3,7 +3,7 @@
     Tasks
 
 .row
-  .col-sm-6
+  .col-sm-3
     .panel.panel-default
       .panel-heading
         %h3.panel-title
@@ -12,10 +12,6 @@
             = submit_tag('Import', class: 'btn btn-default btn-xs')
       .panel-body
         %dl
-          %dt
-            Import path
-          %dd
-            = MedusaRails3::Application.medusa_config['book_tracker']['import_path']
           %dt
             Last import
           %dd
@@ -58,6 +54,23 @@
           %dd
             - if @last_ia_check and @last_ia_check.completed_at
               = local_time_ago(@last_ia_check.completed_at)
+            - else
+              Unknown
+
+  .col-sm-3
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          = form_tag(book_tracker_check_google_path, method: 'post') do
+            Google
+            = submit_tag('Check', class: 'btn btn-default btn-xs')
+      .panel-body
+        %dl
+          %dt
+            Last check
+          %dd
+            - if @last_gb_check and @last_gb_check.completed_at
+              = local_time_ago(@last_gb_check.completed_at)
             - else
               Unknown
 
