@@ -284,6 +284,7 @@ GEM
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.3)
+    rsync (1.0.9)
     ruby-filemagic (0.6.0)
     rvm-capistrano (1.5.3)
       capistrano (~> 2.15.4)
@@ -393,6 +394,7 @@ DEPENDENCIES
   rails3-jquery-autocomplete
   rest-client
   rspec-rails
+  rsync
   ruby-filemagic
   rvm-capistrano
   sass-rails

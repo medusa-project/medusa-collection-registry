@@ -28,6 +28,11 @@ Then(/^the external file group with name '(.*)' should be in the process of inge
   expect(external_file_group.workflow_ingest).to be_a(Workflow::Ingest)
 end
 
+And(/^the external file group with name '(.*)' should not be in the process of ingestion$/) do |name|
+  external_file_group = ExternalFileGroup.find_by(name: name)
+  expect(external_file_group.workflow_ingest).to be_nil
+end
+
 And(/^the external file group with name '(.*)' should have a related bit level file group named '(.*)' with relation note '(.*)'$/) do |external_name, bit_level_name, note|
   external_file_group = ExternalFileGroup.find_by(name: external_name)
   bit_level_file_group = BitLevelFileGroup.find_by(name: bit_level_name)

@@ -17,7 +17,11 @@ class ExternalFileGroup < FileGroup
   def has_staged_directory?
     self.staged_file_location and
         StagingStorage.normalize_path(self.staged_file_location).match(/#{self.collection_id}\/#{self.id}$/) and
-        StagingStorage.instance.local_path_for(self.staged_file_location)
+        self.local_staged_file_location
+  end
+
+  def local_staged_file_location
+    StagingStorage.instance.local_path_for(self.staged_file_location)
   end
 
   def ready_for_bit_level_ingest?

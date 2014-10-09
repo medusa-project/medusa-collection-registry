@@ -13,6 +13,15 @@ Feature: Automatic ingestion from staged to bit level
     Then the external file group with name 'stuff' should be in the process of ingestion
     And a bit_level_file_group with name 'stuff' should exist
     And the external file group with name 'stuff' should have a related bit level file group named 'stuff' with relation note 'Created by automatic ingest'
+    When delayed jobs are run
+    Then the file group named 'stuff' should have a cfs directory
+    And the file group named 'stuff' should have a cfs file for the path 'stuff/more.txt' with results:
+      | name | more.txt |
+    And there should be 1 amazon backup delayed job
+    When amazon backup runs successfully
+    Then the file group named 'stuff' should have a completed Amazon backup
+    When delayed jobs are run
+    Then the external file group with name 'stuff' should not be in the process of ingestion
 
   Scenario: There is not a button to start the process if there is a related bit level file group
     Given an external file group with name 'stuff' is staged with bag data 'small-bag'

@@ -81,7 +81,7 @@ When(/^I run an initial cfs file assessment on the file group named '(.*)'$/) do
 end
 
 Then(/^the file group named '(.*)' should have a cfs file for the path '(.*)' with results:$/) do |name, path, table|
-  file_group = FileGroup.find_by(name: name)
+  file_group = BitLevelFileGroup.find_by(name: name)
   cfs_file = file_group.cfs_file_at_path(path)
   expect(cfs_file).not_to be_nil
   table.raw.each do |field, value|
@@ -92,6 +92,10 @@ end
 Then(/^the file group named '(.*)' should have a cfs directory for the path '(.*)'$/) do |name, path|
   file_group = FileGroup.where(name: name).first
   expect(file_group.cfs_directory_at_path(path)).to be_a(CfsDirectory)
+end
+
+Then(/^the file group named '(.*)' should have a cfs directory$/) do |name|
+  expect(BitLevelFileGroup.find_by(name: name).cfs_directory).to be_a(CfsDirectory)
 end
 
 Then(/^the file group named '(.*)' should not have a cfs file for the path '(.*)'$/) do |name, path|

@@ -50,6 +50,10 @@ When(/^I run a full Amazon backup for the file group named '(.*)'$/) do |name|
   amazon_backup = AmazonBackup.create(user_id: User.first.id, cfs_directory_id: file_group.cfs_directory_id, date: Date.today)
   Job::AmazonBackup.create_for(amazon_backup)
   step "delayed jobs are run"
+  step "amazon backup runs successfully"
+end
+
+When(/^amazon backup runs successfully$/) do
   Test::AmazonGlacierServer.instance.import_succeed
   AmazonBackupServerResponse.handle_responses
 end

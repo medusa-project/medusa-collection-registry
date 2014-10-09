@@ -175,9 +175,7 @@ Repository Id: #{file_group.repository.id}
     create_backup_completion_event(part)
     if self.completed?
       self.job_amazon_backup.try(:destroy)
-      if self.workflow_ingest
-        #TODO do what needs to be done if this is a workflow_ingest backup job
-      end
+      self.workflow_ingest.try(:be_at_end)
     end
   end
 

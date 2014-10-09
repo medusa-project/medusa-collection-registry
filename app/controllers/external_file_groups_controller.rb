@@ -9,8 +9,7 @@ class ExternalFileGroupsController < FileGroupsController
       flash[:notice] = 'Ingest started.'
       external_file_group.transaction do
         bit_level_file_group = external_file_group.create_related_bit_level_file_group
-        Workflow::Ingest.create!(user: current_user, external_file_group: external_file_group,
-                                 bit_level_file_group: bit_level_file_group)
+        Workflow::Ingest.create_for(current_user, external_file_group, bit_level_file_group)
       end
     end
     redirect_to external_file_group

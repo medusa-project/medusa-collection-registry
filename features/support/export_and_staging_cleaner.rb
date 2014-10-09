@@ -1,8 +1,12 @@
 require 'fileutils'
 
-#before each test make sure that the export directory and any staging directories are empty
+#before each test make sure that the cfs directories and any staging directories are empty
 Before do
   Dir[File.join(CfsDirectory.export_root, '*')].each do |dir|
+    FileUtils.rm_rf(dir)
+  end
+
+  Dir[File.join(CfsRoot.instance.path, '*')].each do |dir|
     FileUtils.rm_rf(dir)
   end
 
