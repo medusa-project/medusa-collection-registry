@@ -108,7 +108,6 @@ module BookTracker
     ##
     # Downloads the latest HathiFile into the cache folder.
     #
-    # @param task The active Task
     # @return The path of the HathiFile.
     #
     def get_hathifile
