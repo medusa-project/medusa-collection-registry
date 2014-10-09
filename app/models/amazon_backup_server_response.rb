@@ -52,7 +52,6 @@ class AmazonBackupServerResponse < Object
     while true
       delivery_info, properties, raw_payload = queue.pop
       break unless raw_payload
-      puts "Handling message: #{raw_payload}"
       response = self.new(raw_payload)
       response.dispatch_result
     end
