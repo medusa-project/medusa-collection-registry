@@ -1,20 +1,20 @@
 namespace :book_tracker do
   desc 'Scans the filesystem for MARCXML records to import, and imports them.'
   task import: :environment do
-    fs = BookTracker::Filesystem.new
-    fs.import
+    puts 'Importing items in the background.'
+    Delayed::Job.enqueue(BookTracker::ImportJob.new)
   end
 
   desc 'Checks to see whether each item exists in HathiTrust.'
   task check_hathitrust: :environment do
-    ht = BookTracker::Hathitrust.new
-    ht.check
+    puts 'Checking HathiTrust in the background.'
+    Delayed::Job.enqueue(BookTracker::HathitrustJob.new)
   end
 
   desc 'Checks to see whether each item exists in Internet Archive.'
   task check_internet_archive: :environment do
-    ia = BookTracker::InternetArchive.new
-    ia.check
+    puts 'Checking Internet Archive in the background.'
+    Delayed::Job.enqueue(BookTracker::InternetArchiveJob.new)
   end
 
 end

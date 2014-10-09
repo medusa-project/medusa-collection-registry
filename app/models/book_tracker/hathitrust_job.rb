@@ -3,75 +3,103 @@ require 'nokogiri'
 module BookTracker
 
   ##
-  # Checks HathiTrust for bibliographic data and updates the corresponding local
-  # items with its findings.
+  # DelayedJob that checks HathiTrust for bibliographic data and updates the
+  # corresponding local items with its findings.
   #
-  class Hathitrust < Service
+  class HathitrustJob < Struct.new(:a)
+
+    QUEUE_NAME = 'book_tracker:hathitrust'
 
     def self.check_in_progress?
-      Task.where(service: Service::HATHITRUST).
-          where('status NOT IN (?)', [Status::SUCCEEDED, Status::FAILED]).
-          limit(1).any?
+      Delayed::Job.where(queue: QUEUE_NAME).where('locked_by IS NOT NULL').any?
+    end
+
+    ##
+    # For delayed_job
+    #
+    def max_attempts
+      1
+    end
+
+    ##
+    # For delayed_job
+    #
+    def queue_name
+      QUEUE_NAME
     end
 
     ##
     # Checks HathiTrust by downloading the latest HathiFile
     # (http://www.hathitrust.org/hathifiles).
     #
-    def check
-      if Filesystem.import_in_progress? or Service.check_in_progress?
+    def perform
+      if ImportJob.import_in_progress? or Service.check_in_progress?
         raise 'Cannot check HathiTrust while another import or service check is '\
         'in progress.'
       end
-
       task = Task.create!(name: 'Checking HathiTrust',
                           service: Service::HATHITRUST)
+      puts task.name
 
-      begin
-        pathname = get_hathifile(task)
-        nuc_code = MedusaRails3::Application.medusa_config['book_tracker']['library_nuc_code']
+      pathname = get_hathifile
+      nuc_code = MedusaRails3::Application.medusa_config['book_tracker']['library_nuc_code']
 
-        task.name = "Scanning the HathiFile for #{nuc_code} records..."
-        task.save!
-        puts task.name
+      task.name = "Scanning the HathiFile for #{nuc_code} records..."
+      task.save!
+      puts task.name
 
-        num_lines = File.foreach(pathname).count
+      num_lines = File.foreach(pathname).count
 
-        # http://www.hathitrust.org/hathifiles_description
-        File.open(pathname).each_with_index do |line, index|
-          parts = line.split("\t")
-          if parts[5] == nuc_code
-            item = Item.find_by_bib_id(parts[6])
-            if item
-              if !item.exists_in_hathitrust
-                item.exists_in_hathitrust = true
-                item.save!
-              end
+      # http://www.hathitrust.org/hathifiles_description
+      File.open(pathname).each_with_index do |line, index|
+        parts = line.split("\t")
+        if parts[5] == nuc_code
+          item = Item.find_by_bib_id(parts[6])
+          if item
+            if !item.exists_in_hathitrust
+              item.exists_in_hathitrust = true
+              item.save!
             end
           end
-
-          if index % 50000 == 0
-            task.percent_complete = (index + 1).to_f / num_lines.to_f
-            task.save!
-          end
         end
-      rescue Interrupt => e
-        task.name = 'HathiTrust check aborted'
-        task.status = Status::FAILED
-        task.save!
-        raise e
-      rescue => e
-        task.name = "HathiTrust check failed: #{e}"
-        task.status = Status::FAILED
-        task.save!
-        raise e
-      else
-        task.name = "Checking HathiTrust: Updated database with "\
-        "#{Item.where(exists_in_hathitrust: true).count} found items."
-        task.status = Status::SUCCEEDED
-        task.save!
-        puts task.name
+
+        if index % 50000 == 0
+          task.percent_complete = (index + 1).to_f / num_lines.to_f
+          task.save!
+        end
       end
+
+      task.name = "Checking HathiTrust: Updated database with "\
+        "#{Item.where(exists_in_hathitrust: true).count} found items."
+      task.status = Status::SUCCEEDED
+      task.save!
+      puts task.name
+    end
+
+    ##
+    # delayed_job hook
+    #
+    def error(job, exception)
+      task = current_task
+      task.name = "HathiTrust check failed: #{exception}"
+      task.status = Status::FAILED
+      task.save!
+    end
+
+    ##
+    # delayed_job hook
+    #
+    def failure(job)
+      task = current_task
+      task.name = "HathiTrust check failed"
+      task.status = Status::FAILED
+      task.save!
+    end
+
+    private
+
+    def current_task
+      Task.where(service: Service::HATHITRUST).order(created_at: :desc).first
     end
 
     ##
@@ -80,7 +108,9 @@ module BookTracker
     # @param task The active Task
     # @return The path of the HathiFile.
     #
-    def get_hathifile(task)
+    def get_hathifile
+      task = current_task
+
       # As there is no single URI for the latest HathiFile, we have to scrape
       # the HathiFile listing out of the index HTML page.
       task.name = 'Getting HathiFile index...'
