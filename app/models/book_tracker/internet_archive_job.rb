@@ -28,8 +28,8 @@ module BookTracker
 
     def perform
       if ImportJob.import_in_progress? or Service.check_in_progress?
-        raise 'Cannot check HathiTrust while another import or service check is '\
-        'in progress.'
+        raise 'Cannot check Internet Archive while another import or service '\
+        'check is in progress.'
       end
 
       last_successful_task = Task.
@@ -77,7 +77,8 @@ module BookTracker
         end
       end
 
-      task.name += ": Updated database with #{items_in_ia} found items."
+      task.name = "Checking Internet Archive: Updated database with "\
+      "#{items_in_ia} found items."
       task.status = Status::SUCCEEDED
       task.save!
       puts task.name
@@ -98,7 +99,7 @@ module BookTracker
     #
     def failure(job)
       task = current_task
-      task.name = "HathiTrust check failed"
+      task.name = "Internet Archive check failed"
       task.status = Status::FAILED
       task.save!
     end

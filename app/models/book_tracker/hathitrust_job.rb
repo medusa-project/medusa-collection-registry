@@ -44,7 +44,8 @@ module BookTracker
       pathname = get_hathifile
       nuc_code = MedusaRails3::Application.medusa_config['book_tracker']['library_nuc_code']
 
-      task.name = "Scanning the HathiFile for #{nuc_code} records..."
+      task.name = "Checking HathiTrust: Scanning the HathiFile for "\
+      "#{nuc_code} records..."
       task.save!
       puts task.name
 
@@ -141,7 +142,8 @@ module BookTracker
           each { |f| File.delete(f) }
 
       # And progressively download the new one (because it's big)
-      task.name = "Downloading the latest HathiFile (#{gz_filename})..."
+      task.name = "Checking HathiTrust: Downloading the latest HathiFile "\
+      "(#{gz_filename})..."
       task.save!
       puts task.name
 
@@ -154,7 +156,7 @@ module BookTracker
         end
       end
 
-      task.name = "Unzipping #{gz_filename}..."
+      task.name = 'Checking HathiTrust: Unzipping the HathiFile...'
       task.save!
       puts task.name
       `gunzip #{gz_pathname}`
