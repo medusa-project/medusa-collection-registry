@@ -32,7 +32,6 @@ module Test
       with_parsed_message(self.incoming_queue) do |message|
         return_message = {pass_through: message['pass_through'], status: 'success',
                           parameters: {archive_id: UUID.generate}}
-        puts "Sending message: #{}"
         send_message(self.outgoing_queue, return_message)
       end
     end
