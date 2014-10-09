@@ -11,7 +11,9 @@ module BookTracker
     QUEUE_NAME = 'book_tracker:import'
 
     def self.import_in_progress?
-      Delayed::Job.where(queue: QUEUE_NAME).where('locked_by IS NOT NULL').any?
+      Task.where(service: Service::LOCAL_STORAGE).
+          where('status NOT IN (?)', [Status::SUCCEEDED, Status::FAILED]).
+          limit(1).any?
     end
 
     ##

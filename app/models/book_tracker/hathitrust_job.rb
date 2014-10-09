@@ -11,7 +11,9 @@ module BookTracker
     QUEUE_NAME = 'book_tracker:hathitrust'
 
     def self.check_in_progress?
-      Delayed::Job.where(queue: QUEUE_NAME).where('locked_by IS NOT NULL').any?
+      Task.where(service: Service::HATHITRUST).
+          where('status NOT IN (?)', [Status::SUCCEEDED, Status::FAILED]).
+          limit(1).any?
     end
 
     ##
