@@ -29,7 +29,6 @@ module BookTracker
 
       begin
         pathname = get_hathifile(task)
-
         nuc_code = MedusaRails3::Application.medusa_config['book_tracker']['library_nuc_code']
 
         task.name = "Scanning the HathiFile for #{nuc_code} records..."
@@ -38,15 +37,12 @@ module BookTracker
 
         num_lines = File.foreach(pathname).count
 
-        items_in_hathitrust = 0
-
         # http://www.hathitrust.org/hathifiles_description
-        File.open(pathname, 'rt').each_with_index do |line, index|
+        File.open(pathname).each_with_index do |line, index|
           parts = line.split("\t")
           if parts[5] == nuc_code
             item = Item.find_by_bib_id(parts[6])
             if item
-              items_in_hathitrust += 1
               if !item.exists_in_hathitrust
                 item.exists_in_hathitrust = true
                 item.save!
@@ -71,7 +67,7 @@ module BookTracker
         raise e
       else
         task.name = "Checking HathiTrust: Updated database with "\
-        "#{items_in_hathitrust} found items."
+        "#{Item.where(exists_in_hathitrust: true).count} found items."
         task.status = Status::SUCCEEDED
         task.save!
         puts task.name
