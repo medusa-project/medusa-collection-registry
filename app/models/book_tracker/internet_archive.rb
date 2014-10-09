@@ -22,16 +22,22 @@ module BookTracker
           where(service: Service::INTERNET_ARCHIVE).
           where(status: Status::SUCCEEDED).
           order(completed_at: :desc).limit(1).first
-      task = Task.create!(name: 'Checking Internet Archive',
-                          service: Service::INTERNET_ARCHIVE)
+      start_date = last_successful_task ?
+          last_successful_task.completed_at.strftime('%Y-%m-%d') : '1980-01-01'
+      end_date = Date.today.strftime("%Y-%m-%d")
+
+      task_name = "Checking Internet Archive for "
+      if last_successful_task
+        task_name += "items added between #{start_date} (the date of the last "\
+        "check) and #{end_date}"
+      else
+        task_name += "all items"
+      end
+      task = Task.create!(name: task_name, service: Service::INTERNET_ARCHIVE)
       puts task.name
 
       begin
         items_in_ia = 0
-
-        start_date = last_successful_task ?
-            last_successful_task.completed_at.strftime('%Y-%m-%d') : '2009-01-01'
-        end_date = Date.today.strftime("%Y-%m-%d")
 
         # https://archive.org/advancedsearch.php
         uri = URI.parse("https://archive.org/advancedsearch.php?q=mediatype:texts"\
