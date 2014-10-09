@@ -5,7 +5,7 @@
 
 require 'fileutils'
 
-class Workflow::Ingest < Workflow::Base
+class Workflow::Ingest < Job::Base
   belongs_to :external_file_group
   belongs_to :bit_level_file_group
   belongs_to :user
@@ -68,7 +68,7 @@ class Workflow::Ingest < Workflow::Base
 
   def success(job)
     if self.state == 'end'
-      self.destroy
+      self.destroy_queued_jobs_and_self
     end
   end
 
