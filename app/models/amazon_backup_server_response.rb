@@ -28,7 +28,7 @@ class AmazonBackupServerResponse < Object
   end
 
   def backup_handler
-    klass = kernel.const_get(self.pass_through(:backup_job_class))
+    klass = Kernel.const_get(self.pass_through(:backup_job_class))
     id = self.pass_through(:backup_job_id)
     klass.find(id)
   end
