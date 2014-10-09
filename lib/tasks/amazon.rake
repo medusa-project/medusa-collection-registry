@@ -3,17 +3,7 @@ require 'rake'
 namespace :amazon do
   desc 'Handle and incoming messages from the medusa-glacier server'
   task :handle_responses => :environment do
-    connection = Bunny.new
-    connection.start
-    channel = connection.create_channel
-    queue = channel.queue(AmazonBackup.incoming_queue, durable: true)
-    while true
-      delivery_info, properties, raw_payload = queue.pop
-      break unless raw_payload
-      puts "Handling message: #{raw_payload}"
-      response = AmazonBackupServerResponse.new(raw_payload)
-      response.dispatch_result
-    end
+    AmazonBackupServerResponse.handle_responses
   end
 end
 

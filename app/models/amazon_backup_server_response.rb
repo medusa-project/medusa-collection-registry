@@ -44,4 +44,18 @@ class AmazonBackupServerResponse < Object
     end
   end
 
+  def self.handle_responses
+    connection = Bunny.new
+    connection.start
+    channel = connection.create_channel
+    queue = channel.queue(AmazonBackup.incoming_queue, durable: true)
+    while true
+      delivery_info, properties, raw_payload = queue.pop
+      break unless raw_payload
+      puts "Handling message: #{raw_payload}"
+      response = self.new(raw_payload)
+      response.dispatch_result
+    end
+  end
+
 end
