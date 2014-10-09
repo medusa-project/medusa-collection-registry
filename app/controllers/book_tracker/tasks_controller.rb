@@ -8,14 +8,13 @@ module BookTracker
     # Responds to POST /check-hathitrust
     #
     def check_hathitrust
-      if Filesystem.import_in_progress?
+      if ImportJob.import_in_progress?
         flash[:error] = 'Cannot check HathiTrust while an import is in progress.'
       elsif Service.check_in_progress?
         flash[:error] = 'A service check is already in progress.'
       else
-        ht = BookTracker::Hathitrust.new
-        ht.delay.check
-        flash[:success] = 'Checking HathiTrust.'
+        Delayed::Job.enqueue(HathitrustJob.new)
+        flash[:success] = 'HathiTrust check will begin momentarily.'
       end
       redirect_to :back
     end
@@ -24,15 +23,14 @@ module BookTracker
     # Responds to POST /check-internet-archive
     #
     def check_internet_archive
-      if Filesystem.import_in_progress?
+      if ImportJob.import_in_progress?
         flash[:error] = 'Cannot check Internet Archive while an import is in '\
         'progress.'
       elsif Service.check_in_progress?
         flash[:error] = 'A service check is already in progress.'
       else
-        ia = BookTracker::InternetArchive.new
-        ia.delay.check
-        flash[:success] = 'Checking Internet Archive.'
+        Delayed::Job.enqueue(InternetArchiveJob.new)
+        flash[:success] = 'Internet Archive check will begin momentarily.'
       end
       redirect_to :back
     end
@@ -41,14 +39,13 @@ module BookTracker
     # Responds to POST /import
     #
     def import
-      if Filesystem.import_in_progress?
+      if ImportJob.import_in_progress?
         flash[:error] = 'An import is already in progress.'
       elsif Service.check_in_progress?
         flash[:error] = 'Cannot import while a service check is in progress.'
       else
-        fs = BookTracker::Filesystem.new
-        fs.delay.import
-        flash[:success] = 'Importing MARCXML files.'
+        Delayed::Job.enqueue(ImportJob.new)
+        flash[:success] = 'Import will begin momentarily.'
       end
       redirect_to :back
     end
@@ -56,7 +53,8 @@ module BookTracker
     def index
       @tasks = Task.order(created_at: :desc).limit(100)
 
-      @last_fs_import = Task.where('name LIKE \'Import%\'').
+      @last_fs_import = Task.where(service: Service::LOCAL_STORAGE).
+          where('completed_at IS NOT NULL').
           order(completed_at: :desc).limit(1).first
       @last_ht_check = Task.where(service: Service::HATHITRUST).
           where('completed_at IS NOT NULL').
@@ -70,6 +68,8 @@ module BookTracker
 
       render partial: 'tasks' if request.xhr?
     end
+
+    private
 
     def require_book_tracker_admin
       authorize! :update, BookTracker::Item
