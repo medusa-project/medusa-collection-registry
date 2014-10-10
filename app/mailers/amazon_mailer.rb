@@ -3,6 +3,7 @@ class AmazonMailer < ActionMailer::Base
 
   def progress(amazon_backup, part)
     @amazon_backup = amazon_backup
+    @workflow_ingest = @amazon_backup.workflow_ingest
     @part = part.to_i
     mail(to: amazon_backup.user.email, subject: 'Amazon backup progress')
   end
