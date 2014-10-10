@@ -58,7 +58,6 @@
       %th Status
   %tbody
     - ['copying', 'amazon_backup'].each do |state|
-      - x = Workflow::Ingest.count
       - Workflow::Ingest.where(state: state).each do |ingest|
         %tr
           %td= link_to ingest.most_advanced_file_group.name, ingest.most_advanced_file_group
