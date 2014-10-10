@@ -49,6 +49,14 @@ Feature: Dashboard running processes display
     And I should see none of:
       | Gnats | Bats |
 
+  Scenario: See running ingest processes
+    Given I am ingesting 3 file groups with status 'copying'
+    And I am ingesting 4 file groups with status 'amazon_backup'
+    When I go to the dashboard
+    Then I should see the running ingests table
+    And I should see 'Copying from staging'
+    And I should see 'Backing up to Amazon'
+
   Scenario: Display failed job count
     Given there are 2 failed delayed jobs
     When I go to the dashboard

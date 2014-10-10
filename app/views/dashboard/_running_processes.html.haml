@@ -50,4 +50,16 @@
           %td= link_to(file_group.name, polymorphic_path(file_group))
           %td= file_group.running_initial_assessments_file_count
 
-
+%table.table.table-striped.table-bordered.table-condensed#running_ingests
+  %caption Ingests
+  %thead
+    %tr
+      %th File Group
+      %th Status
+  %tbody
+    - ['copying', 'amazon_backup'].each do |state|
+      - x = Workflow::Ingest.count
+      - Workflow::Ingest.where(state: state).each do |ingest|
+        %tr
+          %td= link_to ingest.most_advanced_file_group.name, ingest.most_advanced_file_group
+          %td= ingest_state_text(state)

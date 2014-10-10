@@ -10,12 +10,13 @@ FactoryGirl.define do
     producer
   end
 
-  factory :external_file_group, parent: :file_group do
+  factory :external_file_group, parent: :file_group, class: ExternalFileGroup do
     type 'ExternalFileGroup'
   end
 
-  factory :bit_level_file_group, parent: :file_group do
+  factory :bit_level_file_group, parent: :file_group, class: BitLevelFileGroup do
     type 'BitLevelFileGroup'
+    cfs_directory
   end
 
 end

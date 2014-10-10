@@ -43,4 +43,11 @@ module DashboardHelper
     0
   end
 
+  INGEST_STATE_LABELS = {'start' => 'Starting', 'copying' => 'Copying from staging', 'amazon_backup' => 'Backing up to Amazon',
+                         'end' => 'Ended'}
+
+  def ingest_state_text(state)
+    INGEST_STATE_LABELS[state] || 'Unknown'
+  end
+
 end

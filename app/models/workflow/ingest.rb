@@ -77,4 +77,8 @@ class Workflow::Ingest < Job::Base
     end
   end
 
+  def most_advanced_file_group
+    self.bit_level_file_group || self.external_file_group
+  end
+
 end

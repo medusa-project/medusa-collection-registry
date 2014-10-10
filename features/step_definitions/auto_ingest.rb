@@ -39,3 +39,9 @@ And(/^the external file group with name '(.*)' should have a related bit level f
   expect(external_file_group.target_file_groups).to include(bit_level_file_group)
   expect(external_file_group.target_file_group_joins.where(target_file_group_id: bit_level_file_group.id).first.note).to eq(note)
 end
+
+And(/^I am ingesting (\d+) file groups with status '(.*)'$/) do |count, status|
+  count.to_i.times do
+    FactoryGirl.create(:"#{status}_workflow_ingest")
+  end
+end
