@@ -19,13 +19,13 @@
         = link_to('View in UIUC Catalog', @item.uiuc_catalog_url,
                   class: 'btn btn-default btn-sm', target: '_blank')
         = link_to('View in HathiTrust', @item.hathitrust_handle,
-                  class: 'btn btn-default btn-sm' + (@item.exists_in_hathitrust? ? '' : ' disabled'),
+                  class: 'btn btn-default btn-sm' + (@item.exists_in_hathitrust ? '' : ' disabled'),
                   target: '_blank')
         = link_to('View in Internet Archive', @item.internet_archive_url,
-                  class: 'btn btn-default btn-sm' + (@item.exists_in_internet_archive? ? '' : ' disabled'),
+                  class: 'btn btn-default btn-sm' + (@item.exists_in_internet_archive ? '' : ' disabled'),
                   target: '_blank')
         = link_to('View in Google', @item.google_url,
-                  class: 'btn btn-default btn-sm' + (@item.exists_in_google? ? '' : ' disabled'),
+                  class: 'btn btn-default btn-sm' + (@item.exists_in_google ? '' : ' disabled'),
                   target: '_blank')
 
   .col-sm-3

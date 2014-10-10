@@ -5,6 +5,12 @@ namespace :book_tracker do
     Delayed::Job.enqueue(BookTracker::ImportJob.new)
   end
 
+  desc 'Checks to see whether each item exists in Google.'
+  task check_google: :environment do
+    puts 'Checking Google in the background.'
+    Delayed::Job.enqueue(BookTracker::GoogleJob.new)
+  end
+
   desc 'Checks to see whether each item exists in HathiTrust.'
   task check_hathitrust: :environment do
     puts 'Checking HathiTrust in the background.'

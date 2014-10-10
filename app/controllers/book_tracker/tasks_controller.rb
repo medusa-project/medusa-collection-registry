@@ -5,6 +5,21 @@ module BookTracker
     before_filter :require_book_tracker_admin
 
     ##
+    # Responds to POST /check-google
+    #
+    def check_google
+      if ImportJob.import_in_progress?
+        flash[:error] = 'Cannot check Google while an import is in progress.'
+      elsif Service.check_in_progress?
+        flash[:error] = 'A service check is already in progress.'
+      else
+        Delayed::Job.enqueue(GoogleJob.new)
+        flash[:success] = 'Google check will begin momentarily.'
+      end
+      redirect_to :back
+    end
+
+    ##
     # Responds to POST /check-hathitrust
     #
     def check_hathitrust
