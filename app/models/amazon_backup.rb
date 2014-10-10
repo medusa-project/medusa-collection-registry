@@ -144,7 +144,7 @@ class AmazonBackup < ActiveRecord::Base
     request = {action: 'upload_directory',
                parameters: {directory: directory, description: self.glacier_description(part)},
                pass_through: {backup_job_class: self.class.to_s, backup_job_id: self.id, part: part, directory: directory}}
-    exchange.publish(request.to_json, routing_key: self.class.outgoing_queue)
+    exchange.publish(request.to_json, routing_key: self.class.outgoing_queue, persistent: true)
   end
 
   def glacier_description(part)
