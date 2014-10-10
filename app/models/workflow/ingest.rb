@@ -62,7 +62,7 @@ class Workflow::Ingest < Job::Base
   end
 
   def perform_end
-    #do nothing - on success will be destroyed
+    Workflow::IngestMailer.done(self).deliver
   end
 
   def be_at_end
