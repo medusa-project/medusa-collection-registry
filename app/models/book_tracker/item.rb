@@ -32,11 +32,19 @@ module BookTracker
       return item, status
     end
 
-    # TODO: replace with service() returning a ServiceType
-    def google?
-      # It's a Google record if the object ID is a barcode. Barcodes are 14
-      # digits and start with number 3.
-      self.obj_id.length == 14 and self.obj_id[0] == '3'
+    def self.to_csv(options = {})
+      headings = ['Medusa ID'] + ['Bib ID'] + ['OCLC Number'] + ['Object ID'] +
+          ['Title'] + ['Author'] + ['Volume'] + ['Date'] + ['IA Identifier'] +
+          ['Exists in HathiTrust'] + ['Exists in IA']
+      columns = ['id'] + ['bib_id'] + ['oclc_number'] + ['obj_id'] + ['title'] +
+          ['author'] + ['volume'] + ['date'] + ['ia_identifier'] +
+          ['exists_in_hathitrust'] + ['exists_in_internet_archive']
+      CSV.generate(options) do |csv|
+        csv << headings
+        all.each do |item|
+          csv << item.attributes.values_at(*columns)
+        end
+      end
     end
 
     ##
@@ -47,18 +55,14 @@ module BookTracker
     # @return string
     #
     def hathitrust_handle
-      if self.internet_archive?
-        "http://hdl.handle.net/2027/uiuo.#{self.obj_id}"
-      elsif self.google?
-        "http://hdl.handle.net/2027/uiug.#{self.obj_id}"
-      else # digitized locally or by vendors
-        "http://hdl.handle.net/2027/uiuc.#{self.obj_id}"
+      case self.service
+        when Service::INTERNET_ARCHIVE
+          "http://hdl.handle.net/2027/uiuo.#{self.obj_id}"
+        when Service::GOOGLE
+          "http://hdl.handle.net/2027/uiug.#{self.obj_id}"
+        else # digitized locally or by vendors
+          "http://hdl.handle.net/2027/uiuc.#{self.obj_id}"
       end
-    end
-
-    # TODO: replace with service() returning a ServiceType
-    def internet_archive?
-      self.obj_id.start_with?('ark:/')
     end
 
     ##
@@ -70,6 +74,16 @@ module BookTracker
     #
     def internet_archive_url
       "https://archive.org/details/#{self.ia_identifier}"
+    end
+
+    def service
+      if self.obj_id.start_with?('ark:/')
+        Service::INTERNET_ARCHIVE
+      elsif self.obj_id.length == 14 and self.obj_id[0] == '3'
+        # It's a Google record if the object ID is a barcode. Barcodes are 14
+        # digits and start with number 3.
+        Service::GOOGLE
+      end
     end
 
     def uiuc_catalog_url

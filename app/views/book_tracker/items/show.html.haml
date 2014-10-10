@@ -1,0 +1,56 @@
+.row
+  .col-sm-9
+    .page-header
+      %h1.title
+        = @item.title.blank? ? 'Untitled' : @item.title
+        - unless @item.volume.blank?
+          %br
+          %small.volume
+            = @item.volume
+        - unless @item.author.blank?
+          %br
+          %small.author
+            = @item.author
+        - unless @item.date.blank?
+          %br
+          %small.date
+            = @item.date
+      .btn-group.mbt-view-buttons
+        = link_to('View in UIUC Catalog', @item.uiuc_catalog_url,
+                  class: 'btn btn-default', target: '_blank')
+        = link_to('View in HathiTrust', @item.hathitrust_handle,
+                  class: 'btn btn-default ' + (@item.exists_in_hathitrust? ? '' : 'disabled'),
+                  target: '_blank')
+        = link_to('View in Internet Archive', @item.internet_archive_url,
+                  class: 'btn btn-default ' + (@item.exists_in_internet_archive? ? '' : 'disabled'),
+                  target: '_blank')
+
+  .col-sm-3
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          Identifiers
+      .panel-body
+        %dl
+          %dt
+            Bib ID
+          %dd= @item.bib_id
+          %dt
+            Object ID
+          %dd= @item.obj_id
+          %dt
+            Medusa ID
+          %dd= @item.id
+          %dt
+            OCLC Number
+          %dd= @item.oclc_number
+
+#accordion.panel-group
+  .panel.panel-default
+    .panel-heading
+      %h4.panel-title
+        %a{'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href' => '#collapseOne'}
+          Raw MARCXML
+    #collapseOne.panel-collapse.collapse
+      .panel-body
+        %pre= @item.raw_marcxml

@@ -1,0 +1,16 @@
+.page-header.row
+  .col-sm-6
+    %h1.title
+      Items
+
+  .col-sm-6
+    = form_tag(book_tracker_items_path, method: 'get',
+               class: 'form-inline book-tracker-live-search',
+               style: 'float:right') do
+      = hidden_field_tag(:ht, params[:ht])
+      = hidden_field_tag(:ia, params[:ia])
+      = search_field_tag(:q, params[:q], placeholder: 'Filter',
+                           class: 'form-control', style: 'width:150px')
+
+#items_list
+  = render partial: 'items'

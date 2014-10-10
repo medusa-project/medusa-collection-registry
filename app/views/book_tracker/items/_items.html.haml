@@ -1,0 +1,45 @@
+.row
+  .col-sm-8
+    - if @messages.any?
+      %ul
+        - @messages.each do |msg|
+          %li
+            =msg
+  .col-sm-4{style: 'text-align:right'}
+    = link_to(params.merge(format: 'xls'), class: 'btn btn-default') do
+      %span.glyphicon.glyphicon-export
+      Export as XLS
+
+- if @items.any?
+  %table.table.table-striped.datatable
+    %thead
+      %tr
+        %th
+          Bib ID
+        %th
+          Object ID
+        %th
+          Title
+        %th
+          Author
+        %th
+          Volume
+        %th
+          Date
+        %th
+          HathiTrust
+        %th
+          Internet Archive
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= item.bib_id
+          %td= item.obj_id
+          %td= link_to(item.title, item)
+          %td= item.author
+          %td= item.volume
+          %td= item.date
+          %td= item.exists_in_hathitrust? ? link_to(raw('&check;'), item.hathitrust_handle, target: 'blank') : ''
+          %td= item.exists_in_internet_archive? ? link_to(raw('&check;'), item.internet_archive_url, target: 'blank') : ''
+
+  = will_paginate

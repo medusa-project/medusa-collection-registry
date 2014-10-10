@@ -1,0 +1,37 @@
+.page_header
+  %h1 Statistics
+
+%table.table.mbt-item-counts
+  %tr
+    %th{:rowspan => 4}
+      =number_with_delimiter(@num_items, :delimiter => ',')
+      items
+    %th HathiTrust
+    %th Internet Archive
+  %tr
+    %td.text-success
+      = link_to(number_with_delimiter(@num_items_in_ht, :delimiter => ','), book_tracker_items_path(ht: 1))
+      present
+    %td.text-success
+      = link_to(number_with_delimiter(@num_items_in_ia, :delimiter => ','), book_tracker_items_path(ia: 1))
+      present
+  %tr
+    %td.text-danger
+      = link_to(number_with_delimiter(@num_items_not_in_ht, :delimiter => ','), book_tracker_items_path(ht: 0))
+      missing
+    %td.text-danger
+      = link_to(number_with_delimiter(@num_items_not_in_ia, :delimiter => ','), book_tracker_items_path(ia: 0))
+      missing
+  %tr
+    %td.text-danger
+      = link_to(number_with_delimiter(@num_ht_items_not_in_ia, :delimiter => ','), book_tracker_items_path(ht: 1, ia: 0))
+      not in Internet Archive
+    %td.text-danger
+      = link_to(number_with_delimiter(@num_ia_items_not_in_ht, :delimiter => ','), book_tracker_items_path(ht: 0, ia: 1))
+      not in HathiTrust
+  %tr
+    %td
+      in MARCXML files in
+      = @import_path
+    %td
+    %td
