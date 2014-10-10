@@ -37,8 +37,13 @@ class Workflow::Ingest < Job::Base
     FileUtils.mkdir_p(self.bit_level_file_group.expected_absolute_cfs_root_directory)
     #copy files from staged location to cfs storage
     Rsync.run(self.external_file_group.local_staged_file_location + '/', self.bit_level_file_group.expected_absolute_cfs_root_directory,
-              '-a')
-    #TODO check copy
+              '-a') do |result|
+      unless result.success?
+        message = "Error doing rsync for ingest job #{self.id}. Rescheduling"
+        Rails.logger.error message
+        raise RuntimeError, message
+      end
+    end
     cfs_directory = CfsDirectory.find_or_create_by(path: self.bit_level_file_group.expected_relative_cfs_root_directory)
     bit_level_file_group.cfs_directory = cfs_directory
     bit_level_file_group.save!
@@ -49,7 +54,7 @@ class Workflow::Ingest < Job::Base
 
   def perform_amazon_backup
     self.amazon_backup = AmazonBackup.create(user_id: self.user.id, cfs_directory_id: self.bit_level_file_group.cfs_directory_id,
-                                         date: Date.today)
+                                             date: Date.today)
     self.save!
     Job::AmazonBackup.create_for(self.amazon_backup)
     #stay in amazon backup state - AmazonBackup will take care of next transition when the glacier server sends the

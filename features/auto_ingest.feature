@@ -20,6 +20,7 @@ Feature: Automatic ingestion from staged to bit level
     And there should be 1 amazon backup delayed job
     When amazon backup runs successfully
     Then the file group named 'stuff' should have a completed Amazon backup
+    And the external file group with name 'stuff' should be in the process of ingestion
     When delayed jobs are run
     Then the external file group with name 'stuff' should not be in the process of ingestion
 
