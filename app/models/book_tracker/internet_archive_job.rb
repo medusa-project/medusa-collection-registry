@@ -80,7 +80,12 @@ module BookTracker
       end
 
       task.name = "Checking Internet Archive: Updated database with "\
-      "#{items_in_ia} found items."
+      "#{items_in_ia} found items "
+      if last_successful_task
+        task.name += "between #{start_date} and #{end_date}."
+      else
+        task.name += "with no date constraint."
+      end
       task.status = Status::SUCCEEDED
       task.save!
       puts task.name
