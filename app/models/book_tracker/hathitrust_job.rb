@@ -66,7 +66,7 @@ module BookTracker
           end
         end
 
-        if index % 50000 == 0
+        if index % 20000 == 0
           task.percent_complete = (index + 1).to_f / num_lines.to_f
           task.save!
         end
