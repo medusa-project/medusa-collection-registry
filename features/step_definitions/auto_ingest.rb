@@ -17,6 +17,11 @@ Given(/^an external file group with name '(.*)' is staged with bag data '(.*)'$/
   external_file_group.save!
 end
 
+And(/^the external file group with name '(.*)' should have no staged content$/) do |name|
+  external_file_group = ExternalFileGroup.find_by(name: name)
+  expect(external_file_group.local_staged_file_location).to be_nil
+end
+
 And(/^the external file group with name '(.*)' has a related bit level file group$/) do |name|
   external_file_group = ExternalFileGroup.find_by(name: name)
   bit_level_file_group = FactoryGirl.create(:bit_level_file_group)
@@ -44,4 +49,9 @@ And(/^I am ingesting (\d+) file groups with status '(.*)'$/) do |count, status|
   count.to_i.times do
     FactoryGirl.create(:"#{status}_workflow_ingest")
   end
+end
+
+And(/^there should be a staging deletion job for the external file group named '(.*)'$/) do |name|
+  external_file_group = ExternalFileGroup.find_by(name: name)
+  expect(Job::IngestStagingDelete.find_by(external_file_group_id: external_file_group.id)).to be_truthy
 end

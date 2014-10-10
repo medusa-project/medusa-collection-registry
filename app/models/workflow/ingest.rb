@@ -63,6 +63,7 @@ class Workflow::Ingest < Job::Base
 
   def perform_end
     Workflow::IngestMailer.done(self).deliver
+    Job::IngestStagingDelete.create_for(self.external_file_group, self.user)
   end
 
   def be_at_end

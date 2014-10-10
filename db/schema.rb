@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141009210118) do
+ActiveRecord::Schema.define(version: 20141010214341) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,7 +113,6 @@ ActiveRecord::Schema.define(version: 20141009210118) do
     t.string   "name"
     t.decimal  "service",          precision: 1, scale: 0
     t.decimal  "status",           precision: 1, scale: 0
-    t.decimal  "pid",              precision: 6, scale: 0
     t.float    "percent_complete",                         default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -312,6 +311,15 @@ ActiveRecord::Schema.define(version: 20141009210118) do
   end
 
   add_index "job_fits_files", ["fits_directory_tree_id"], name: "index_job_fits_files_on_fits_directory_tree_id", using: :btree
+
+  create_table "job_ingest_staging_deletes", force: true do |t|
+    t.integer "external_file_group_id"
+    t.integer "user_id"
+    t.text    "path"
+  end
+
+  add_index "job_ingest_staging_deletes", ["external_file_group_id"], name: "index_job_ingest_staging_deletes_on_external_file_group_id", using: :btree
+  add_index "job_ingest_staging_deletes", ["user_id"], name: "index_job_ingest_staging_deletes_on_user_id", using: :btree
 
   create_table "job_virus_scans", force: true do |t|
     t.integer  "file_group_id"

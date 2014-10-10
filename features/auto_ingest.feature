@@ -25,6 +25,10 @@ Feature: Automatic ingestion from staged to bit level
     When delayed jobs are run
     Then the external file group with name 'stuff' should not be in the process of ingestion
     And 'admin@example.com' should receive an email with subject 'Medusa ingest completed'
+    And there should be a staging deletion job for the external file group named 'stuff'
+    When delayed jobs are run
+    Then the external file group with name 'stuff' should have no staged content
+    And 'admin@example.com' should receive an email with subject 'Staged Medusa content deleted'
 
   Scenario: There is not a button to start the process if there is a related bit level file group
     Given an external file group with name 'stuff' is staged with bag data 'small-bag'

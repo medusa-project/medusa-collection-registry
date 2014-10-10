@@ -7,4 +7,9 @@ class Workflow::IngestMailer < ActionMailer::Base
     mail(to: @workflow_ingest.user.email, subject: 'Medusa ingest completed')
   end
 
+  def staging_delete_done(user, external_file_group)
+    @file_group = external_file_group
+    mail(to: user.email, subject: 'Staged Medusa content deleted')
+  end
+
 end
