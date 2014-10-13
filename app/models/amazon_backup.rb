@@ -131,6 +131,10 @@ class AmazonBackup < ActiveRecord::Base
       end
     end
     self.save!
+    send_all_backup_request_messages
+  end
+
+  def send_all_backup_request_messages
     (1..(self.part_count)).each do |part|
       self.send_backup_request_message(part, self.bag_directory(part))
     end
