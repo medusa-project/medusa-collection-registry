@@ -141,14 +141,10 @@ class AmazonBackup < ActiveRecord::Base
   end
 
   def send_backup_request_message(part, directory)
-    connection = Bunny.new
-    connection.start
-    channel = connection.create_channel
-    exchange = channel.default_exchange
     request = {action: 'upload_directory',
                parameters: {directory: directory, description: self.glacier_description(part)},
                pass_through: {backup_job_class: self.class.to_s, backup_job_id: self.id, part: part, directory: directory}}
-    exchange.publish(request.to_json, routing_key: self.class.outgoing_queue, persistent: true)
+    AmqpConnector.instance.send_message(self.class.outgoing_queue, request)
   end
 
   def glacier_description(part)
