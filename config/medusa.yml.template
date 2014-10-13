@@ -27,6 +27,12 @@ development:
     #AMQP queues to communicate with glacier server
     outgoing_queue: medusa_to_glacier
     incoming_queue: glacier_to_medusa
+  #You can set anything here that you might pass to Bunny.new. Anything you don't set just gets the Bunny default.
+  amqp:
+    #port: 5762
+    #host: 127.0.0.1
+    #user: user
+    #password: pw
   book_tracker:
     import_path: ~/Projects/mbt_marcxml
     library_nuc_code: UIU
