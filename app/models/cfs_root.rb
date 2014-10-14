@@ -1,6 +1,7 @@
 require 'singleton'
 require 'set'
 require 'timeout'
+require 'pathname'
 
 class CfsRoot
   include Singleton
@@ -52,13 +53,13 @@ class CfsRoot
   end
 
   def available_physical_root_set
-    Timeout::timeout(10) do
-      Dir.chdir(self.path) do
-        Dir[File.join('*', '*')].select do |entry|
-          File.directory?(entry)
-        end
-      end.to_set.tap do |roots|
-        Rails.cache.write(self.physical_root_set_cache_key, roots)
+    Timeout::timeout(20) do
+      root = Pathname.new(self.path)
+      children = root.children.select { |entry| entry.directory? }
+      grandchildren = children.collect { |child| child.children.select { |entry| entry.directory? } }.flatten
+      roots = grandchildren.collect { |grandchild| grandchild.relative_path_from(root).to_s }
+      roots.to_set.tap do |root_set|
+        Rails.cache.write(self.physical_root_set_cache_key, root_set)
       end
     end
   rescue Timeout::Error
