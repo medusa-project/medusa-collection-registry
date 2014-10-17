@@ -21,7 +21,7 @@ module Test
     def import_succeed
       AmqpConnector.instance.with_parsed_message(self.incoming_queue) do |message|
         return_message = {pass_through: message['pass_through'], status: 'success',
-                          parameters: {archive_id: UUID.generate}}
+                          parameters: {archive_ids: [UUID.generate]}}
         AmqpConnector.instance.send_message(self.outgoing_queue, return_message)
       end
     end

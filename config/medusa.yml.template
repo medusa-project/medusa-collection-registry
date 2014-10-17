@@ -20,10 +20,6 @@ development:
   medusa_admins_group: Library Medusa Admins
   #Configuration for the amazon backup
   amazon:
-    #threshold where we start a new bag, in megabytes
-    maximum_bag_size: 10240
-    #directory to be used for creating and zipping bags, storing manifests
-    bag_storage_root: /home/hading/medusa-rails3/tmp/amazon-development
     #AMQP queues to communicate with glacier server
     outgoing_queue: medusa_to_glacier
     incoming_queue: glacier_to_medusa

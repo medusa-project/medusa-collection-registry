@@ -47,110 +47,24 @@ class AmazonBackup < ActiveRecord::Base
     self.cfs_directory.amazon_backups.where('date < ?', self.date).order('date desc').first
   end
 
-  #return list of files to back up with sizes, restricting to recently
-  #modified files if appropriate
-  def backup_file_list
-    #If there is a previous backup then only copy things changed since then.
-    #Note that we don't try to be too fussy with this - anything actually
-    #changed on that date may wind up in two different back even if unchanged
-    #since the first backup.
-    cutoff_date = self.previous_backup.try(:date)
-    Array.new.tap do |file_list|
-      directory_walker = TreeRb::DirTreeWalker.new
-      file_visitor = TreeRb::TreeNodeVisitor.new do
-        on_leaf do |file|
-          if cutoff_date.blank? or File.mtime(file) >= cutoff_date
-            file_list << [file, File.size(file)]
-          end
-        end
-      end
-      directory_walker.run(self.content_directory, file_visitor)
-    end
-  end
-
-  #partition a list of files to back up into a list of lists
-  #respecting the size limit. Set the number of parts.
-  #I'd rather do this recursively, but we can't count on tail call optimization
-  def partition_file_list(files_and_sizes)
-    maximum_size = self.class.maximum_bag_size
-    current_size = 0
-    current_list = Array.new
-    completed_lists = Array.new
-    files_and_sizes.each do |file, size|
-      if size + current_size < maximum_size
-        current_size += size
-        current_list << file
-      else
-        completed_lists << current_list
-        current_list = [file]
-        current_size = size
-      end
-    end
-    completed_lists << current_list unless current_list.blank?
-    self.part_count = completed_lists.size
-    self.save!
-    return completed_lists
-  end
-
-  #given a list of list of files to backup create bags for each one
-  def create_bags(file_lists)
-    content_path = self.content_directory
-    file_lists.each_with_index do |file_list, index|
-      bag_dir = self.bag_directory(index + 1)
-      FileUtils.rm_rf(bag_dir)
-      FileUtils.mkdir_p(bag_dir)
-      bag = BagIt::Bag.new(bag_dir)
-      file_list.each do |file|
-        bag_data_path = file.sub(/^#{content_path}\//, '')
-        bag.add_file(bag_data_path, file)
-      end
-      bag.manifest!
-      manifest = self.manifest_file(index + 1)
-      FileUtils.rm_rf(manifest)
-      FileUtils.copy(File.join(bag_dir, 'manifest-md5.txt'),
-                     manifest)
-    end
-  end
-
-  def make_backup_bags
-    self.create_bags(self.partition_file_list(self.backup_file_list))
-  end
-
-  def delete_backup_bags_and_manifests
-    (1..(self.part_count)).each do |part|
-      FileUtils.rm_rf(self.bag_directory(part))
-      FileUtils.rm(self.manifest_file(part))
-    end
-  end
-
   def request_backup
-    self.make_backup_bags
-    self.archive_ids = Array.new.tap do |ids|
-      self.part_count.times do
-        ids << nil
-      end
-    end
+    self.part_count = 1
+    self.archive_ids = [nil]
     self.save!
-    send_all_backup_request_messages
+    self.send_backup_request_message
   end
 
-  def send_all_backup_request_messages
-    (1..(self.part_count)).each do |part|
-      self.send_backup_request_message(part, self.bag_directory(part))
-    end
-  end
-
-  def send_backup_request_message(part, directory)
+  def send_backup_request_message
+    date = self.previous_backup.try(:date)
     request = {action: 'upload_directory',
-               parameters: {directory: directory, description: self.glacier_description(part)},
-               pass_through: {backup_job_class: self.class.to_s, backup_job_id: self.id, part: part, directory: directory}}
+               parameters: {directory: self.cfs_directory.path, description: self.glacier_description, date: date},
+               pass_through: {backup_job_class: self.class.to_s, backup_job_id: self.id, directory: self.cfs_directory.path}}
     AmqpConnector.instance.send_message(self.class.outgoing_queue, request)
   end
 
-  def glacier_description(part)
+  def glacier_description
     file_group = self.cfs_directory.file_group
     description = %Q(Amazon Backup Id: #{self.id}
-Part: #{part} of #{self.part_count}
 Date: #{self.date}
 Cfs Directory Id: #{self.cfs_directory.id}
 Cfs Directory: #{self.cfs_directory.absolute_path}
@@ -165,14 +79,11 @@ Repository Id: #{file_group.repository.id}
   end
 
   def on_amazon_backup_succeeded_message(response)
-    part = response.pass_through('part').to_i
-    archive_id = response.archive_id
-    self.archive_ids[part.to_i - 1] = archive_id
+    self.archive_ids = response.archive_ids
+    self.part_count = self.archive_ids.length
     self.save!
-    #remove bag directory for this part
-    FileUtils.rm_rf(self.bag_directory(part)) if File.exists?(self.bag_directory(part))
-    AmazonMailer.progress(self, part).deliver
-    create_backup_completion_event(part)
+    AmazonMailer.progress(self).deliver
+    create_backup_completion_event
     if self.completed?
       self.job_amazon_backup.try(:destroy)
       self.workflow_ingest.try(:be_at_end)
@@ -187,17 +98,12 @@ Repository Id: #{file_group.repository.id}
     AmazonMailer.failure.deliver(self, 'Unrecognized status code in AMQP response')
   end
 
-  def create_backup_completion_event(part)
+  def create_backup_completion_event
     file_group = self.cfs_directory.try(:file_group)
     if file_group
       event = Event.new(eventable: file_group, date: Date.today, actor_email: self.user.email)
-      if self.completed?
-        event.key = 'amazon_backup_completed'
-        event.note = "Glacier backup completed. #{self.part_count} part(s) backed up."
-      else
-        event.key = 'amazon_backup_part_completed'
-        event.note = "Glacier backup part number #{part} completed. #{self.completed_part_count} of #{self.part_count} complete."
-      end
+      event.key = 'amazon_backup_completed'
+      event.note = "Glacier backup completed. #{self.part_count} part(s) backed up."
       event.save!
     end
   end
@@ -210,14 +116,6 @@ Repository Id: #{file_group.repository.id}
     self.part_count.present? and self.archive_ids.present? and (self.completed_part_count == self.part_count)
   end
 
-  #This is a bit of a misnomer, as a bag may be allowed to have a single
-  #file larger than this. It's really the threshold where a new bag is
-  #created. In production we don't expect to see anything larger than this
-  #anyway; having a smaller size available will be useful for testing though.
-  def self.maximum_bag_size
-    MedusaRails3::Application.medusa_config['amazon']['maximum_bag_size'].to_i.megabytes
-  end
-
   def self.storage_root
     MedusaRails3::Application.medusa_config['amazon']['bag_storage_root']
   end
@@ -228,38 +126,6 @@ Repository Id: #{file_group.repository.id}
 
   def self.outgoing_queue
     MedusaRails3::Application.medusa_config['amazon']['outgoing_queue']
-  end
-
-  def manifest_file(part)
-    File.join(self.class.manifest_directory, "#{self.part_file_name(part)}.md5.txt")
-  end
-
-  def bag_directory(part)
-    File.join(self.class.global_bag_directory, self.part_file_name(part))
-  end
-
-  def self.global_bag_directory
-    File.join(self.storage_root, 'bags').tap do |dir|
-      FileUtils.mkdir_p(dir)
-    end
-  end
-
-  def self.manifest_directory
-    File.join(self.storage_root, 'manifests').tap do |dir|
-      FileUtils.mkdir_p(dir)
-    end
-  end
-
-  def content_directory
-    self.cfs_directory.absolute_path
-  end
-
-  def base_file_name
-    "dir_#{self.cfs_directory.path.gsub('/', '_')}-#{self.date.to_time.strftime('%Y%m%d')}"
-  end
-
-  def part_file_name(part)
-    "#{self.base_file_name}-p#{part}"
   end
 
 end
