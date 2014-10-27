@@ -30,6 +30,7 @@ class AmazonBackup < ActiveRecord::Base
   has_one :job_amazon_backup, :class_name => 'Job::AmazonBackup', :dependent => :destroy
   #This is the user who requested the backup, needed so we can email progress reports
   belongs_to :user
+  has_one :workflow_ingest, :class_name => 'Workflow::Ingest'
 
   #Only allow one backup per day for a file group
   validates_uniqueness_of :date, scope: :cfs_directory_id
@@ -130,20 +131,20 @@ class AmazonBackup < ActiveRecord::Base
       end
     end
     self.save!
+    send_all_backup_request_messages
+  end
+
+  def send_all_backup_request_messages
     (1..(self.part_count)).each do |part|
       self.send_backup_request_message(part, self.bag_directory(part))
     end
   end
 
   def send_backup_request_message(part, directory)
-    connection = Bunny.new
-    connection.start
-    channel = connection.create_channel
-    exchange = channel.default_exchange
     request = {action: 'upload_directory',
                parameters: {directory: directory, description: self.glacier_description(part)},
-               pass_through: {amazon_backup_id: self.id, part: part, directory: directory}}
-    exchange.publish(request.to_json, routing_key: self.class.outgoing_queue)
+               pass_through: {backup_job_class: self.class.to_s, backup_job_id: self.id, part: part, directory: directory}}
+    AmqpConnector.instance.send_message(self.class.outgoing_queue, request)
   end
 
   def glacier_description(part)
@@ -163,7 +164,9 @@ Repository Id: #{file_group.repository.id}
     return description
   end
 
-  def receive_backup_response_message(part, archive_id)
+  def on_amazon_backup_succeeded_message(response)
+    part = response.pass_through('part').to_i
+    archive_id = response.archive_id
     self.archive_ids[part.to_i - 1] = archive_id
     self.save!
     #remove bag directory for this part
@@ -172,7 +175,16 @@ Repository Id: #{file_group.repository.id}
     create_backup_completion_event(part)
     if self.completed?
       self.job_amazon_backup.try(:destroy)
+      self.workflow_ingest.try(:be_at_end)
     end
+  end
+
+  def on_amazon_backup_failed_message(response)
+    AmazonMailer.failure(self, response.error_message).deliver
+  end
+
+  def on_amazon_backup_unrecognized_message(response)
+    AmazonMailer.failure.deliver(self, 'Unrecognized status code in AMQP response')
   end
 
   def create_backup_completion_event(part)

@@ -47,6 +47,7 @@ MedusaRails3::Application.routes.draw do
         post 'create_virus_scan'
         post 'create_amazon_backup'
         post 'create_initial_cfs_assessment' if file_group_type == :bit_level_file_groups
+        post 'ingest' if file_group_type == :external_file_groups
       end
       collection do
         post 'bulk_amazon_backup'

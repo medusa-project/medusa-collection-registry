@@ -22,6 +22,13 @@ Feature: Amazon backup
     And there should be 1 Amazon backup manifest
     And all the data of bag 'small-bag' should be in some Amazon backup bag
 
+  Scenario: Full Amazon backup
+    Given I am logged in as an admin
+    And the physical cfs directory 'dogs' has the data of bag 'small-bag'
+    And I run an initial cfs file assessment on the file group named 'Dogs'
+    When I run a full Amazon backup for the file group named 'Dogs'
+    Then the file group named 'Dogs' should have a completed Amazon backup
+
   Scenario: Create bags from a large cfs directory
     Given the physical cfs directory 'dogs' has the data of bag 'big-bag'
     When I create Amazon bags for the cfs directory with path 'dogs'

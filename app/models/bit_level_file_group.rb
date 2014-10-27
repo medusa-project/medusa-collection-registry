@@ -36,6 +36,13 @@ class BitLevelFileGroup < FileGroup
     File.join(CfsRoot.instance.path, self.cfs_directory.path)
   end
 
+  def expected_absolute_cfs_root_directory
+    File.join(CfsRoot.instance.path, self.expected_relative_cfs_root_directory)
+  end
+
+  def expected_relative_cfs_root_directory
+    File.join(self.collection_id.to_s, self.id.to_s)
+  end
   #make sure that there is a CfsFile object at the supplied absolute path and return it
   def ensure_file_at_absolute_path(path)
     self.cfs_directory.ensure_file_at_absolute_path(path)

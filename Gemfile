@@ -18,6 +18,7 @@ gem 'simple_memoize'
 gem 'auto_strip_attributes'
 gem 'dalli'
 gem 'valid_email'
+gem 'rsync'
 
 gem 'logger'
 #need slightly patched version of this
@@ -88,6 +89,7 @@ gem 'uuid'
 gem 'paperclip', :git => 'git://github.com/thoughtbot/paperclip.git'
 
 gem 'font-awesome-rails'
+gem 'state_machine'
 
 group :development, :test do
   # To use debugger
