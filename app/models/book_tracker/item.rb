@@ -11,6 +11,8 @@ module BookTracker
 
     before_save :truncate_values
 
+    self.table_name = 'book_tracker_items'
+
     ##
     # Static method that either inserts a new item, or updates an existing item,
     # depending on whether an item with a matching bib ID is already present in

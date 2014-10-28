@@ -5,6 +5,8 @@ module BookTracker
     after_initialize :init
     before_save :constrain_progress, :auto_complete
 
+    self.table_name = 'book_tracker_tasks'
+
     def init
       self.status ||= Status::RUNNING
     end
