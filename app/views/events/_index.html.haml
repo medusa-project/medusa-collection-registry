@@ -13,7 +13,7 @@
     - @events.each do |event|
       %tr
         %td= event.date
-        %td= event.eventable.label
+        %td= link_to event.eventable.label, event.eventable
         %td= event.eventable.class.to_s.underscore.humanize
         %td= link_to(event.eventable.parent.label, event.eventable.parent)
         %td= event.actor_email

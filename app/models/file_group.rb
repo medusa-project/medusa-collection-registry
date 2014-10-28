@@ -20,6 +20,7 @@ class FileGroup < ActiveRecord::Base
 
   before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root
+  before_save :strip_fields
   before_validation :initialize_file_info
 
   validates_uniqueness_of :cfs_root, :allow_blank => true
@@ -85,6 +86,10 @@ class FileGroup < ActiveRecord::Base
 
   def canonicalize_cfs_root
     self.cfs_root = nil if self.cfs_root.blank? or !self.supports_cfs
+  end
+
+  def strip_fields
+    self.staged_file_location.try(:strip!)
   end
 
   #override in subclasses that do

@@ -78,7 +78,12 @@ Feature: Events Summary
     And I should see none of:
       | cool note 1 | corn note 1 | Coltrane | delmonte |
 
-
+  Scenario: Navigate from events list to owning object of an event
+    When I view the collection with title 'Dogs'
+    And I click on 'View events'
+    And I click on 'Toys'
+    Then I should be on the view page for the file group with name 'Toys'
+    
   Scenario: View repository events
     When I view the repository with title 'Animals'
     And I click on 'View events'
