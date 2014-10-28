@@ -49,13 +49,22 @@ module BookTracker
     end
 
     ##
-    # Returns the expected Google URL of the item. The URL should work if
-    # if self.exists_in_google is true; otherwise it will be broken.
+    # It is not possible to generate a link directly to a Google item, as
+    # Google Books URLs use private IDs. Instead, this method returns a URL
+    # of a search for the item.
     #
     # @return string
     #
     def google_url
-      # TODO: write this
+      disallowed_characters = '`~!@#$%^&*()_\+\-=[]{}|\\\"\'<>,.?/:;'
+      sanitized_title = self.title.tr(disallowed_characters, '')
+      sanitized_author = self.author.tr(disallowed_characters, '')
+      q = []
+      q << 'intitle:' + sanitized_title.split(' ').select{ |t| t.length > 1 }.
+          join(' intitle:') unless sanitized_title.blank?
+      q << 'inauthor:' + sanitized_author.split(' ').select{ |t| t.length > 1 }.
+          join(' inauthor:') unless sanitized_author.blank?
+      "https://www.google.com/search?tbo=p&tbm=bks&q=#{q.join('+')}&num=10&gws_rd=ssl"
     end
 
     ##
