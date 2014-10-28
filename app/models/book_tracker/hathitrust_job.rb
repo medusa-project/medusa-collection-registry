@@ -43,40 +43,47 @@ module BookTracker
                           service: Service::HATHITRUST)
       puts task.name
 
-      pathname = get_hathifile
-      nuc_code = MedusaRails3::Application.medusa_config['book_tracker']['library_nuc_code']
+      begin
+        pathname = get_hathifile
+        nuc_code = MedusaRails3::Application.medusa_config['book_tracker']['library_nuc_code']
 
-      task.name = "Checking HathiTrust: Scanning the HathiFile for "\
-      "#{nuc_code} records..."
-      task.save!
-      puts task.name
+        task.name = "Checking HathiTrust: Scanning the HathiFile for "\
+        "#{nuc_code} records..."
+        task.save!
+        puts task.name
 
-      num_lines = File.foreach(pathname).count
+        num_lines = File.foreach(pathname).count
 
-      # http://www.hathitrust.org/hathifiles_description
-      File.open(pathname).each_with_index do |line, index|
-        parts = line.split("\t")
-        if parts[5] == nuc_code
-          item = Item.find_by_bib_id(parts[6])
-          if item
-            if !item.exists_in_hathitrust
-              item.exists_in_hathitrust = true
-              item.save!
+        # http://www.hathitrust.org/hathifiles_description
+        File.open(pathname).each_with_index do |line, index|
+          parts = line.split("\t")
+          if parts[5] == nuc_code
+            item = Item.find_by_bib_id(parts[6])
+            if item
+              if !item.exists_in_hathitrust
+                item.exists_in_hathitrust = true
+                item.save!
+              end
             end
           end
-        end
 
-        if index % 20000 == 0
-          task.percent_complete = (index + 1).to_f / num_lines.to_f
-          task.save!
+          if index % 20000 == 0
+            task.percent_complete = (index + 1).to_f / num_lines.to_f
+            task.save!
+          end
         end
+      rescue => e
+        task.name = "HathiTrust check failed: #{e}"
+        task.status = Status::FAILED
+        task.save!
+        puts task.name
+      else
+        task.name = "Checking HathiTrust: Updated database with "\
+          "#{Item.where(exists_in_hathitrust: true).count} found items."
+        task.status = Status::SUCCEEDED
+        task.save!
+        puts task.name
       end
-
-      task.name = "Checking HathiTrust: Updated database with "\
-        "#{Item.where(exists_in_hathitrust: true).count} found items."
-      task.status = Status::SUCCEEDED
-      task.save!
-      puts task.name
     end
 
     ##
@@ -93,10 +100,7 @@ module BookTracker
     # delayed_job hook
     #
     def failure(job)
-      task = current_task
-      task.name = "HathiTrust check failed"
-      task.status = Status::FAILED
-      task.save!
+      self.error(job, 'Unknown Delayed::Job failure')
     end
 
     private

@@ -34,61 +34,55 @@ module BookTracker
         'check is in progress.'
       end
 
-      last_successful_task = Task.
-          where(service: Service::INTERNET_ARCHIVE).
-          where(status: Status::SUCCEEDED).
-          order(completed_at: :desc).limit(1).first
-      start_date = last_successful_task ?
-          last_successful_task.completed_at.strftime('%Y-%m-%d') : '1980-01-01'
+      start_date = '1980-01-01'
       end_date = Date.today.strftime("%Y-%m-%d")
 
-      task_name = "Checking Internet Archive "
-      if last_successful_task
-        task_name += "for items added between #{start_date} (the date of the "\
-        "last check) and #{end_date}"
-      else
-        task_name += "with no date constraint"
-      end
-      task = Task.create!(name: task_name,
+      task = Task.create!(name: 'Checking Internet Archive: Downloading UIUC '\
+      'inventory',
                           service: Service::INTERNET_ARCHIVE)
       puts task.name
 
-      items_in_ia = 0
+      begin
+        items_in_ia = 0
 
-      # https://archive.org/advancedsearch.php
-      uri = URI.parse("https://archive.org/advancedsearch.php?q=mediatype:texts"\
-        "%20updatedate:[#{start_date}%20TO%20#{end_date}]%20contributor:"\
-        "%22University%20of%20Illinois%20Urbana-Champaign%22&fl[]=identifier"\
-        "&rows=9999999&indent=no&fmt=json")
-      response = Net::HTTP.get_response(uri)
-      json = JSON.parse(response.body)
+        # https://archive.org/advancedsearch.php
+        uri = URI.parse("https://archive.org/advancedsearch.php?"\
+        "q=mediatype:texts+updatedate:[#{start_date}+TO+#{end_date}]&"\
+        "fl[]=identifier&rows=9999999&page=1&output=json&save=yes%20"\
+        "contributor:%22University%20of%20Illinois%20Urbana-Champaign")
+        body = open(uri, { ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE })
+        json = JSON.parse(body.readlines.join(''))
+        num_items = json['response']['docs'].length
 
-      num_items = json['response']['docs'].length
+        task.name = 'Checking Internet Archive: Scanning the inventory for '\
+        'UIU records...'
+        task.save!
 
-      json['response']['docs'].each_with_index do |doc, index|
-        item = Item.find_by_ia_identifier(doc['identifier'])
-        if item
-          item.exists_in_internet_archive = true
-          item.save!
-          items_in_ia += 1
+        json['response']['docs'].each_with_index do |doc, index|
+          item = Item.find_by_ia_identifier(doc['identifier'])
+          if item
+            item.exists_in_internet_archive = true
+            item.save!
+            items_in_ia += 1
+          end
+
+          if index % 500 == 0
+            task.percent_complete = (index + 1).to_f / num_items.to_f
+            task.save!
+          end
         end
-
-        if index % 500 == 0
-          task.percent_complete = (index + 1).to_f / num_items.to_f
-          task.save!
-        end
-      end
-
-      task.name = "Checking Internet Archive: Updated database with "\
-      "#{items_in_ia} found items "
-      if last_successful_task
-        task.name += "between #{start_date} and #{end_date}."
+      rescue => e
+        task = current_task
+        task.name = "Internet Archive check failed: #{e}"
+        task.status = Status::FAILED
+        task.save!
       else
-        task.name += "with no date constraint."
+        task.name = "Checking Internet Archive: Updated database with "\
+        "#{items_in_ia} found items."
+        task.status = Status::SUCCEEDED
+        task.save!
+        puts task.name
       end
-      task.status = Status::SUCCEEDED
-      task.save!
-      puts task.name
     end
 
     ##
@@ -105,10 +99,7 @@ module BookTracker
     # delayed_job hook
     #
     def failure(job)
-      task = current_task
-      task.name = "Internet Archive check failed"
-      task.status = Status::FAILED
-      task.save!
+      self.error(job, 'Unknown Delayed::Job failure')
     end
 
     private
