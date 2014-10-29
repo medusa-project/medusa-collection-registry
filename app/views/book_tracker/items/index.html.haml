@@ -60,7 +60,8 @@
         = search_field_tag(:q, params[:q], placeholder: 'Filter',
                              class: 'form-control', style: 'width:150px')
 
-        = submit_tag('Search', class: 'form-control')
+        = button_tag('Clear', class: 'btn btn-default mbt-clear')
+        = submit_tag('Search', class: 'btn btn-primary')
 
 #items_list
   = render partial: 'items'

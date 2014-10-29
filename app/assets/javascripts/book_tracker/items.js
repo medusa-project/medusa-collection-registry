@@ -5,18 +5,6 @@ $('.book-tracker-live-search').submit(function() {
 });
 
 $(function() {
-    var timer;
-    var search_fields = $('.book-tracker-live-search');
-    search_fields.find('input').on('keyup', function() {
-        clearTimeout(timer);
-        var MSEC = 800; // wait this long after user has stopped typing
-        timer = setTimeout(function() {
-            $.get(search_fields.attr('action'), search_fields.serialize(),
-                null, 'script');
-            return false;
-        }, MSEC);
-    });
-
     // prevent searching both "in" and "not in" a particular service
     // simultaneously
     var checkboxes = $('.book-tracker-service-checkbox');
@@ -59,6 +47,13 @@ $(function() {
             prop('checked', !$(this).hasClass('mbt-uncheck-all')).
             trigger('change');
         refreshCheckAllButtons();
+        return false;
+    });
+
+    $('.mbt-clear').on('click', function() {
+        $('.book-tracker-service-checkbox').prop('checked', false).
+            trigger('change');
+        $('.book-tracker-search input[type=search]').val(null);
         return false;
     });
 });
