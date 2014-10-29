@@ -38,7 +38,10 @@ form.book-tracker-search {
 }
 
 form.book-tracker-search {
-  input[type=search] {
+  textarea {
     margin:0em 0em 1em 0em;
+  }
+  button.mbt-clear, input[type=submit] {
+    margin-bottom:1em;
   }
 }

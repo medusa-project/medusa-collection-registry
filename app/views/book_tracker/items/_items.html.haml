@@ -1,11 +1,10 @@
 .row
   .col-sm-8
+    %h4= pluralize(@items.total_entries, 'item', 'items')
   .col-sm-4{style: 'text-align:right'}
     = link_to(params.merge(format: 'xls'), class: 'btn btn-default') do
       %span.glyphicon.glyphicon-export
       Export as XLS
-
-= pluralize(@items.total_entries, 'item', 'items')
 
 - if @items.any?
   %table.table.table-striped.datatable

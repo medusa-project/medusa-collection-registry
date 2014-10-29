@@ -6,7 +6,7 @@
   = form_tag(book_tracker_items_path, method: 'get',
              class: 'form-inline book-tracker-search') do
     .row
-      .col-sm-9
+      .col-sm-8
         %table.table
           %tr
             %th
@@ -57,11 +57,11 @@
       .col-sm-3
         = hidden_field_tag(:ht, params[:ht])
         = hidden_field_tag(:ia, params[:ia])
-        = search_field_tag(:q, params[:q], placeholder: 'Filter',
-                             class: 'form-control', style: 'width:150px')
-
+        = text_area_tag(:q, params[:q], placeholder: 'Filter by term or list of bib IDs',
+                             class: 'form-control', rows: 5, style: 'width:100%')
+      .col-sm-1
         = button_tag('Clear', class: 'btn btn-default mbt-clear')
-        = submit_tag('Search', class: 'btn btn-primary')
+        = submit_tag('Filter', class: 'btn btn-primary')
 
 #items_list
   = render partial: 'items'

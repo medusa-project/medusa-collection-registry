@@ -51,10 +51,10 @@ $(function() {
     });
 
     $('.mbt-clear').on('click', function() {
-        $('.book-tracker-service-checkbox').prop('checked', false).
-            trigger('change');
-        $('.book-tracker-search input[type=search]').val(null);
-        return false;
+        var form = $('.book-tracker-search');
+        form.find('input[type=checkbox]').prop('checked', false).trigger('change');
+        form.find('textarea, input[type=text], input[type=search]').val(null);
+        form.submit();
     });
 });
 
