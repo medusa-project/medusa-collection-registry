@@ -14,14 +14,31 @@
   margin:1em auto;
 }
 
-form.book-tracker-live-search {
-  input {
-    display:inline;
-    margin:0em 0em 1em 0em;
-    width:120px;
+div.well {
+  padding-bottom: 0px;
+}
+
+form.book-tracker-search {
+  table {
+    td, th {
+      border: 0px;
+    }
+    td {
+      text-align:center;
+      width: 20%;
+    }
+    td:last-child {
+      text-align: left;
+    }
+    th {
+      text-align:right;
+      width:10%;
+    }
   }
-  input.active {
-    background:#FFFFFF url(image_path('progress-indicator-16.gif')) no-repeat 126px 8px;
-    @include image-2x('progress-indicator-16@2x.gif', 16px, 16px);
+}
+
+form.book-tracker-search {
+  input[type=search] {
+    margin:0em 0em 1em 0em;
   }
 }

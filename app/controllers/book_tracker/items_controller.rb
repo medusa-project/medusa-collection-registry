@@ -10,19 +10,39 @@ module BookTracker
         'OR LOWER(author) LIKE LOWER(?) OR LOWER(ia_identifier) LIKE LOWER(?)' \
         'OR LOWER(date) LIKE LOWER(?)',
         q, q, q, q, q, q, q) unless params[:q].blank?
-      @items = @items.where(exists_in_hathitrust: params[:ht]) unless params[:ht].blank?
-      @items = @items.where(exists_in_internet_archive: params[:ia]) unless params[:ia].blank?
-      @items = @items.where(exists_in_google: params[:gb]) unless params[:gb].blank?
-      @items = @items.order(:title)
 
-      @messages = []
-      @messages << "Containing \"#{params[:q]}\"" unless params[:q].blank?
-      @messages << 'In HathiTrust' if params[:ht] == '1'
-      @messages << 'In Internet Archive' if params[:ia] == '1'
-      @messages << 'In Google' if params[:gb] == '1'
-      @messages << 'Not in HathiTrust' if params[:ht] == '0'
-      @messages << 'Not in Internet Archive' if params[:ia] == '0'
-      @messages << 'Not in Google' if params[:gb] == '0'
+      if params[:in].kind_of?(Array) and params[:ni].kind_of?(Array) and
+          (params[:in] & params[:ni]).length > 0
+        flash[:error] = 'Cannot search for items that are both in and not in '\
+        'the same service.'
+      else
+        if params[:in].kind_of?(Array)
+          params[:in].each do |service|
+            case service
+              when 'ht'
+                @items = @items.where(exists_in_hathitrust: true)
+              when 'ia'
+                @items = @items.where(exists_in_internet_archive: true)
+              when 'gb'
+                @items = @items.where(exists_in_google: true)
+            end
+          end
+        end
+        if params[:ni].kind_of?(Array)
+          params[:ni].each do |service|
+            case service
+              when 'ht'
+                @items = @items.where(exists_in_hathitrust: false)
+              when 'ia'
+                @items = @items.where(exists_in_internet_archive: false)
+              when 'gb'
+                @items = @items.where(exists_in_google: false)
+            end
+          end
+        end
+
+        @items = @items.order(:title)
+      end
 
       respond_to do |format|
         format.html {

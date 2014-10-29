@@ -1,10 +1,5 @@
 .row
   .col-sm-8
-    - if @messages.any?
-      %ul
-        - @messages.each do |msg|
-          %li
-            =msg
   .col-sm-4{style: 'text-align:right'}
     = link_to(params.merge(format: 'xls'), class: 'btn btn-default') do
       %span.glyphicon.glyphicon-export
