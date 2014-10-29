@@ -5,6 +5,8 @@
       %span.glyphicon.glyphicon-export
       Export as XLS
 
+= pluralize(@items.total_entries, 'item', 'items')
+
 - if @items.any?
   %table.table.table-striped.datatable
     %thead
