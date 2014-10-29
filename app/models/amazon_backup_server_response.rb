@@ -23,8 +23,8 @@ class AmazonBackupServerResponse < Object
     self.payload['pass_through'][field.to_s]
   end
 
-  def archive_id
-    self.payload['parameters']['archive_id']
+  def archive_ids
+    self.payload['parameters']['archive_ids']
   end
 
   def backup_handler

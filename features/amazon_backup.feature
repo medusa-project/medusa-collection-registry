@@ -14,28 +14,12 @@ Feature: Amazon backup
     And the file group named 'Dogs' has cfs root 'dogs'
     And the file group named 'Cats' has cfs root 'cats' and delayed jobs are run
 
-  Scenario: Create bag from a cfs directory
-    Given the physical cfs directory 'dogs' has the data of bag 'small-bag'
-    When I create Amazon bags for the cfs directory with path 'dogs'
-    Then the cfs directory with path 'dogs' should have 1 amazon backup
-    And there should be 1 Amazon backup bag
-    And there should be 1 Amazon backup manifest
-    And all the data of bag 'small-bag' should be in some Amazon backup bag
-
   Scenario: Full Amazon backup
     Given I am logged in as an admin
     And the physical cfs directory 'dogs' has the data of bag 'small-bag'
     And I run an initial cfs file assessment on the file group named 'Dogs'
     When I run a full Amazon backup for the file group named 'Dogs'
     Then the file group named 'Dogs' should have a completed Amazon backup
-
-  Scenario: Create bags from a large cfs directory
-    Given the physical cfs directory 'dogs' has the data of bag 'big-bag'
-    When I create Amazon bags for the cfs directory with path 'dogs'
-    Then the cfs directory with path 'dogs' should have 1 amazon backup
-    And there should be 2 Amazon backup bags
-    And there should be 2 Amazon backup manifests
-    And all the data of bag 'big-bag' should be in some Amazon backup bag
 
   Scenario: Schedule amazon backup of a bit level file group
     Given I am logged in as a medusa admin

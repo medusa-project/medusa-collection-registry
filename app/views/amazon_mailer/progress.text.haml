@@ -1,13 +1,8 @@
 :plain
 
-Progress update for your Amazon Glacier backup.
+The following backup has completed:
 
-Completed parts: #{@amazon_backup.completed_part_count}
-Total parts: #{@amazon_backup.part_count}
-
-The following part has completed:
-
-#{@amazon_backup.glacier_description(@part)}
+#{@amazon_backup.glacier_description}
 
 - if @workflow_ingest
   This is part of the automatic ingest of the file group '#{@workflow_ingest.bit_level_file_group.name}'
