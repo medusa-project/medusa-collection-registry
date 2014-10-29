@@ -114,7 +114,6 @@ MedusaRails3::Application.routes.draw do
   namespace :book_tracker do
     resources 'items'
     resources 'tasks', only: 'index'
-    match 'statistics', to: 'statistics#index', via: 'get'
 
     match 'check-google', to: 'tasks#check_google', via: 'post',
           as: 'check_google'
