@@ -1,9 +1,3 @@
-$('.book-tracker-live-search').submit(function() {
-    $.get(this.action, $(this).serialize(), null, 'script');
-    $(this).nextAll('input').addClass('active');
-    return false;
-});
-
 $(function() {
     // prevent searching both "in" and "not in" a particular service
     // simultaneously
@@ -56,12 +50,4 @@ $(function() {
         form.find('textarea, input[type=text], input[type=search]').val(null);
         form.submit();
     });
-});
-
-$(document).ajaxStart(function(event, request, options) {
-    $('form.book-tracker-live-search input').addClass('active');
-});
-
-$(document).ajaxComplete(function(event, request, options) {
-    $('form.book-tracker-live-search input').removeClass('active');
 });
