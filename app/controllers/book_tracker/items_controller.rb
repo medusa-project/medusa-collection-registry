@@ -13,8 +13,7 @@ module BookTracker
       unless params[:q].blank?
         lines = params[:q].strip.split("\n")
         if lines.length > 1 # if >1 line, assume a newline-separated bib ID list
-          @items = @items.where('CAST(bib_id AS VARCHAR(10)) IN (?)',
-                                lines.map{ |x| x.strip })
+          @items = @items.where('bib_id IN (?)', lines.map{ |x| x.strip })
         else
           q = "%#{params[:q]}%"
           @items = @items.where('CAST(bib_id AS VARCHAR(10)) LIKE ? '\
