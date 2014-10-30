@@ -58,7 +58,7 @@
         = hidden_field_tag(:ht, params[:ht])
         = hidden_field_tag(:ia, params[:ia])
         = text_area_tag(:q, params[:q], placeholder: 'Filter by term or list of bib IDs',
-                             class: 'form-control', rows: 5, style: 'width:100%')
+                             class: 'form-control', rows: 4, style: 'width:100%')
       .col-sm-1
         = button_tag('Clear', class: 'btn btn-default mbt-clear')
         = submit_tag('Filter', class: 'btn btn-primary')
