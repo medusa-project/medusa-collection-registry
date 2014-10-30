@@ -44,16 +44,18 @@ module BookTracker
         # [5] downloaded date
         # Dates are in the form yyyy-mm-dd hh:mm
         response.body.split("\n").each_with_index do |line, index|
-          item = Item.find_by_obj_id(line.split("\t")[0].strip)
-          if item
-            unless item.exists_in_google
-              item.exists_in_google = true
-              item.save!
-              new_bt_items_in_gb += 1
+          parts = line.split("\t")
+          if parts.any?
+            item = Item.find_by_obj_id(parts.first.strip)
+            if item
+              unless item.exists_in_google
+                item.exists_in_google = true
+                item.save!
+                new_bt_items_in_gb += 1
+              end
+              bt_items_in_gb += 1
             end
-            bt_items_in_gb += 1
           end
-
           if index % 1000 == 0
             task.percent_complete = (index + 1).to_f / response.body.length.to_f
             task.save!
