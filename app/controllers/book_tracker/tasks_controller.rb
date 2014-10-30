@@ -3,19 +3,14 @@ module BookTracker
   class TasksController < ApplicationController
 
     before_filter :require_book_tracker_admin
+    before_filter :service_check_in_progress, except: :index
 
     ##
     # Responds to POST /check-google
     #
     def check_google
-      if ImportJob.import_in_progress?
-        flash[:error] = 'Cannot check Google while an import is in progress.'
-      elsif Service.check_in_progress?
-        flash[:error] = 'A service check is already in progress.'
-      else
-        Delayed::Job.enqueue(GoogleJob.new)
-        flash[:success] = 'Google check will begin momentarily.'
-      end
+      Delayed::Job.enqueue(GoogleJob.new)
+      flash[:success] = 'Google check will begin momentarily.'
       redirect_to :back
     end
 
@@ -23,14 +18,8 @@ module BookTracker
     # Responds to POST /check-hathitrust
     #
     def check_hathitrust
-      if ImportJob.import_in_progress?
-        flash[:error] = 'Cannot check HathiTrust while an import is in progress.'
-      elsif Service.check_in_progress?
-        flash[:error] = 'A service check is already in progress.'
-      else
-        Delayed::Job.enqueue(HathitrustJob.new)
-        flash[:success] = 'HathiTrust check will begin momentarily.'
-      end
+      Delayed::Job.enqueue(HathitrustJob.new)
+      flash[:success] = 'HathiTrust check will begin momentarily.'
       redirect_to :back
     end
 
@@ -38,15 +27,8 @@ module BookTracker
     # Responds to POST /check-internet-archive
     #
     def check_internet_archive
-      if ImportJob.import_in_progress?
-        flash[:error] = 'Cannot check Internet Archive while an import is in '\
-        'progress.'
-      elsif Service.check_in_progress?
-        flash[:error] = 'A service check is already in progress.'
-      else
-        Delayed::Job.enqueue(InternetArchiveJob.new)
-        flash[:success] = 'Internet Archive check will begin momentarily.'
-      end
+      Delayed::Job.enqueue(InternetArchiveJob.new)
+      flash[:success] = 'Internet Archive check will begin momentarily.'
       redirect_to :back
     end
 
@@ -54,17 +36,14 @@ module BookTracker
     # Responds to POST /import
     #
     def import
-      if ImportJob.import_in_progress?
-        flash[:error] = 'An import is already in progress.'
-      elsif Service.check_in_progress?
-        flash[:error] = 'Cannot import while a service check is in progress.'
-      else
-        Delayed::Job.enqueue(ImportJob.new)
-        flash[:success] = 'Import will begin momentarily.'
-      end
+      Delayed::Job.enqueue(ImportJob.new)
+      flash[:success] = 'Import will begin momentarily.'
       redirect_to :back
     end
 
+    ##
+    # Responds to GET /book_tracker/tasks
+    #
     def index
       @tasks = Task.order(created_at: :desc).limit(100)
 
@@ -88,6 +67,13 @@ module BookTracker
 
     def require_book_tracker_admin
       authorize! :update, BookTracker::Item
+    end
+
+    def service_check_in_progress
+      if Service::check_in_progress?
+        flash[:error] = 'Cannot import or check multiple services concurrently.'
+        redirect_to :back
+      end
     end
 
   end
