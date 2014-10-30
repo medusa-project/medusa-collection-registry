@@ -112,7 +112,8 @@ MedusaRails3::Application.routes.draw do
   match '/dashboard', to: 'dashboard#show', as: :dashboard, :via => [:get, :post]
 
   namespace :book_tracker do
-    resources 'items'
+    match 'items', to: 'items#index', as: :items, :via => [:get, :post]
+    match 'items/:id', to: 'items#show', as: :item, :via => :get
     resources 'tasks', only: 'index'
 
     match 'check-google', to: 'tasks#check_google', via: 'post',

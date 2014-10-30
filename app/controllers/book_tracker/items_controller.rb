@@ -2,6 +2,10 @@ module BookTracker
 
   class ItemsController < ApplicationController
 
+    ##
+    # Responds to both GET /book_tracker/items (and also POST due to search
+    # form's ability to accept long lists of bib IDs)
+    #
     def index
       @items = Item.all
 
