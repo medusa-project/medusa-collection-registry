@@ -44,7 +44,6 @@ module BookTracker
         task.save!
 
         # Find all XML files in or beneath self.path
-
         files = Dir.glob(path + '/**/*.xml').select{ |file| File.file?(file) }
         files.each_with_index do |file, index|
           File.open(file) do |contents|
@@ -65,6 +64,10 @@ module BookTracker
                   puts "#{file}: #{e}"
                 end
                 record_index += 1
+                if record_index % 1000 == 0
+                  task.percent_complete = record_index.to_f / num_records.to_f
+                  task.save!
+                end
               end
             rescue
               # This is probably an undefined namespace prefix error, which
@@ -73,8 +76,6 @@ module BookTracker
               num_invalid_files += 1
             end
           end
-          task.percent_complete = (record_index + 1).to_f / num_records.to_f
-          task.save!
         end
       rescue SystemExit, Interrupt => e
         task.name = "Import failed: #{e}"
