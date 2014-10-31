@@ -30,6 +30,7 @@ module BookTracker
 
       begin
         path = MedusaRails3::Application.medusa_config['book_tracker']['import_path']
+        path = File.expand_path(path.chomp('/'))
         raise "Import path (#{path}) does not exist." unless Dir.exist?(path)
 
         num_inserted = 0
@@ -37,8 +38,7 @@ module BookTracker
         num_missing_bib_ids = 0
 
         # Find all XML files in or beneath self.path
-        files = Dir.glob(File.expand_path(path.chomp('/')) + '/**/*.xml').
-            select{ |file| File.file?(file) }
+        files = Dir.glob(path + '/**/*.xml').select{ |file| File.file?(file) }
         files.each_with_index do |file, index|
           File.open(file) do |contents|
             doc = Nokogiri::XML(contents, &:noblanks)
