@@ -44,7 +44,8 @@ module BookTracker
         # [2] processed date, [3] analyzed date, [4] converted date,
         # [5] downloaded date
         # Dates are in the form yyyy-mm-dd hh:mm
-        response.body.split(/\n/).each_with_index do |line, index|
+        lines = response.body.split(/\n/)
+        lines.each_with_index do |line, index|
           begin
             parts = CSV.parse_line(line, { col_sep: "\t" })
             if parts.any?
@@ -62,7 +63,7 @@ module BookTracker
             num_skipped_lines += 1
           end
           if index % 1000 == 0
-            task.percent_complete = (index + 1).to_f / response.body.length.to_f
+            task.percent_complete = (index + 1).to_f / lines.length.to_f
             task.save!
           end
         end
