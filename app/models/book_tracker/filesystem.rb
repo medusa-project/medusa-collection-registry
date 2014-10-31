@@ -24,7 +24,7 @@ module BookTracker
         'progress.'
       end
 
-      task = Task.create!(name: 'Importing MARCXML records',
+      task = Task.create!(name: 'Getting record count',
                           service: Service::LOCAL_STORAGE)
       puts task.name
 
@@ -36,30 +36,44 @@ module BookTracker
         num_inserted = 0
         num_updated = 0
         num_missing_bib_ids = 0
+        num_invalid_files = 0
+        record_index = 0
+        num_records = record_count(path)
+
+        task.name = "Importing #{num_records} MARCXML records"
+        task.save!
 
         # Find all XML files in or beneath self.path
+
         files = Dir.glob(path + '/**/*.xml').select{ |file| File.file?(file) }
         files.each_with_index do |file, index|
           File.open(file) do |contents|
-            doc = Nokogiri::XML(contents, &:noblanks)
-            doc.encoding = 'utf-8'
-
-            doc.xpath('//xmlns:collection/xmlns:record').each do |record|
-              begin
-                item, status = Item.insert_or_update!(
-                    Item.params_from_marcxml_record(record))
-                if status == Item::INSERTED
-                  num_inserted += 1
-                else
-                  num_updated += 1
+            begin
+              doc = Nokogiri::XML(contents, &:noblanks)
+              doc.encoding = 'utf-8'
+              doc.xpath('//xmlns:collection/xmlns:record').each do |record|
+                begin
+                  item, status = Item.insert_or_update!(
+                      Item.params_from_marcxml_record(record))
+                  if status == Item::INSERTED
+                    num_inserted += 1
+                  else
+                    num_updated += 1
+                  end
+                rescue => e
+                  num_missing_bib_ids += 1 if e.message.include?('Bib can\'t be blank')
+                  puts "#{file}: #{e}"
                 end
-              rescue => e
-                num_missing_bib_ids += 1 if e.message.include?('Bib can\'t be blank')
-                puts "#{file}: #{e}"
+                record_index += 1
               end
+            rescue
+              # This is probably an undefined namespace prefix error, which
+              # means it's either an invalid MARCXML file or, more likely, a
+              # non-MARCXML XML file, which is not an issue.
+              num_invalid_files += 1
             end
           end
-          task.percent_complete = (index + 1).to_f / files.length.to_f
+          task.percent_complete = (record_index + 1).to_f / num_records.to_f
           task.save!
         end
       rescue SystemExit, Interrupt => e
@@ -74,13 +88,29 @@ module BookTracker
         task.save!
         puts task.name
       else
-        task.name += ": #{num_inserted} records inserted; #{num_updated} "\
+        task.name += ": #{num_inserted} records added; #{num_updated} "\
         "records updated or unchanged; #{num_missing_bib_ids} missing bib IDs "\
-        "and not imported"
+        "and not imported; #{num_invalid_files} skipped XML files"
         task.status = Status::SUCCEEDED
         task.save!
         puts task.name
       end
+    end
+
+    private
+
+    def record_count(path)
+      count = 0
+      Dir.glob(File.expand_path(path.chomp('/')) + '/**/*.xml').each do |file|
+        File.open(file) do |contents|
+          doc = Nokogiri::XML(contents, &:noblanks)
+          begin
+            count += doc.xpath('//xmlns:collection/xmlns:record').length
+          rescue
+          end
+        end
+      end
+      count
     end
 
   end
