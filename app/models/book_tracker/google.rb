@@ -28,9 +28,10 @@ module BookTracker
       begin
         bt_items_in_gb = 0
         new_bt_items_in_gb = 0
+        num_skipped_lines = 0
 
         uri = URI.parse('https://books.google.com/libraries/UIUC/_all_books?format=text&mode=all')
-        request = Net::HTTP::Get.new(uri.path)
+        request = Net::HTTP::Get.new(uri)
         response = Net::HTTP.start(uri.host, uri.port,
                                    use_ssl: uri.scheme == 'https',
                                    verify_mode: OpenSSL::SSL::VERIFY_NONE) do |https|
@@ -43,18 +44,22 @@ module BookTracker
         # [2] processed date, [3] analyzed date, [4] converted date,
         # [5] downloaded date
         # Dates are in the form yyyy-mm-dd hh:mm
-        response.body.split("\n").each_with_index do |line, index|
-          parts = line.split("\t")
-          if parts.any?
-            item = Item.find_by_obj_id(parts.first.strip)
-            if item
-              unless item.exists_in_google
-                item.exists_in_google = true
-                item.save!
-                new_bt_items_in_gb += 1
+        response.body.split(/\n/).each_with_index do |line, index|
+          begin
+            parts = CSV.parse_line(line, { col_sep: "\t" })
+            if parts.any?
+              item = Item.find_by_obj_id(parts.first.strip)
+              if item
+                unless item.exists_in_google
+                  item.exists_in_google = true
+                  item.save!
+                  new_bt_items_in_gb += 1
+                end
+                bt_items_in_gb += 1
               end
-              bt_items_in_gb += 1
             end
+          rescue
+            num_skipped_lines += 1
           end
           if index % 1000 == 0
             task.percent_complete = (index + 1).to_f / response.body.length.to_f
@@ -74,7 +79,8 @@ module BookTracker
         puts task.name
       else
         task.name = "Checking Google: Updated database with #{new_bt_items_in_gb} "\
-        "new items out of #{bt_items_in_gb} total book tracker items in Google."
+        "new items out of #{bt_items_in_gb} total book tracker items in "\
+        "Google; #{num_skipped_lines} lines malformed/skipped."
         task.status = Status::SUCCEEDED
         task.save!
         puts task.name
