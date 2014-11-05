@@ -7,7 +7,6 @@ class Collection < ActiveRecord::Base
   include RegistersHandle
   include ModsHelper
   include RedFlagAggregator
-  include ActiveRecordToCsv
   email_person_association(:contact)
 
   belongs_to :repository
@@ -118,11 +117,8 @@ class Collection < ActiveRecord::Base
     self.file_groups.collect { |file_group| file_group.incomplete_scheduled_events }.flatten
   end
 
-  def self.default_csv_header_hash
-    {:id => 'Id', :external_id => 'External Id', :uuid => 'UUID',
-     :title => 'Title', [:repository, :title] => 'Repository',
-     :contact_email => 'Contact', :total_size => 'Total Size(GB)', :preservation_priority_name => 'Preservation Priority',
-     :notes => 'Notes', :description => 'Description'}
+  def repository_title
+    self.repository.title
   end
 
 end
