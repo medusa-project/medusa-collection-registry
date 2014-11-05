@@ -1,10 +1,9 @@
-require 'csv_generator'
-
 class CollectionsController < ApplicationController
 
   before_filter :require_logged_in, :except => [:show]
   before_filter :require_logged_in_or_basic_auth, :only => [:show]
   before_filter :find_collection_and_repository, :only => [:show, :destroy, :edit, :update, :red_flags]
+  include CollectionsToCsv
 
   def show
     @assessable = @collection
@@ -109,14 +108,6 @@ class CollectionsController < ApplicationController
                                :rights_declaration_attributes => [:rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions],
                                :resource_type_ids => [], :access_system_ids => []
     )
-  end
-
-  def collections_to_csv(collections, csv_options = {})
-    CsvGenerator.generate(collections, {:id => 'Id', :external_id => 'External Id', :uuid => 'UUID',
-                                        :title => 'Title', :repository_title => 'Repository',
-                                        :contact_email => 'Contact', :total_size => 'Total Size(GB)', :preservation_priority_name => 'Preservation Priority',
-                                        :notes => 'Notes', :description => 'Description'},
-                          csv_options)
   end
 
 end

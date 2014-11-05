@@ -22,6 +22,7 @@ MedusaRails3::Application.routes.draw do
       get 'red_flags'
       get 'events'
       put 'update_ldap_admin'
+      get 'collections'
     end
   end
   resources :institutions
