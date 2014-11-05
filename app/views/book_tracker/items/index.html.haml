@@ -2,6 +2,29 @@
   %h1.title
     Items
 
+.panel.panel-default.book-tracker-checks
+  .panel-heading
+    %h4.panel-title Last Updates
+  %table.table
+    %tr
+      %th
+        Local index
+      %th
+        HathiTrust
+      %th
+        Internet Archive
+      %th
+        Google
+    %tr
+      %td
+        = @dates[:local_storage]
+      %td
+        = @dates[:hathitrust]
+      %td
+        = @dates[:internet_archive]
+      %td
+        = @dates[:google]
+
 .well
   = form_tag(book_tracker_items_path, method: 'post',
              class: 'form-inline book-tracker-search') do

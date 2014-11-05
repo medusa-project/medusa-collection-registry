@@ -10,6 +10,18 @@ module BookTracker
       @items = Item.all
       @missing_bib_ids = []
 
+      @dates = {
+          local_storage: Task.where(service: Service::LOCAL_STORAGE).
+              where(status: Status::SUCCEEDED).last,
+          hathitrust: Task.where(service: Service::HATHITRUST).
+              where(status: Status::SUCCEEDED).last,
+          internet_archive: Task.where(service: Service::INTERNET_ARCHIVE).
+              where(status: Status::SUCCEEDED).last,
+          google: Task.where(service: Service::GOOGLE).
+              where(status: Status::SUCCEEDED).last
+      }
+      @dates.each{ |k, v| @dates[k] = v ? v.completed_at.strftime('%Y-%m-%d') : 'Never' }
+
       # query (q=)
       unless params[:q].blank?
         lines = params[:q].strip.split("\n")
