@@ -60,8 +60,8 @@ class CollectionsController < ApplicationController
     @collections = Collection.order(:title).includes(:repository)
     respond_to do |format|
       format.html
-      format.xls { send_data collections_to_csv(col_sep: "\t"), type: 'text/csv', filename: 'collections.xls' }
-      format.csv { send_data collections_to_csv, type: 'text/csv', filename: 'collections.csv' }
+      format.xls { send_data collections_to_csv(@collections, col_sep: "\t"), type: 'text/csv', filename: 'collections.xls' }
+      format.csv { send_data collections_to_csv(@collections), type: 'text/csv', filename: 'collections.csv' }
     end
   end
 
@@ -111,11 +111,11 @@ class CollectionsController < ApplicationController
     )
   end
 
-  def collections_to_csv(csv_options = {})
-    CsvGenerator.generate(@collections, {:id => 'Id', :external_id => 'External Id', :uuid => 'UUID',
-                                         :title => 'Title', :repository_title => 'Repository',
-                                         :contact_email => 'Contact', :total_size => 'Total Size(GB)', :preservation_priority_name => 'Preservation Priority',
-                                         :notes => 'Notes', :description => 'Description'},
+  def collections_to_csv(collections, csv_options = {})
+    CsvGenerator.generate(collections, {:id => 'Id', :external_id => 'External Id', :uuid => 'UUID',
+                                        :title => 'Title', :repository_title => 'Repository',
+                                        :contact_email => 'Contact', :total_size => 'Total Size(GB)', :preservation_priority_name => 'Preservation Priority',
+                                        :notes => 'Notes', :description => 'Description'},
                           csv_options)
   end
 
