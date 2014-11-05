@@ -14,10 +14,10 @@ module BookTracker
       unless params[:q].blank?
         lines = params[:q].strip.split("\n")
         if lines.length > 1 # if >1 line, assume a newline-separated bib ID list
-          @items = @items.where('bib_id IN (?)', lines.map{ |x| x.strip.gsub(/\D/, '') })
+          @items = @items.where('bib_id IN (?)', lines.map{ |x| x.strip.gsub(/\D/, '')[0..8] })
           # Get a list of entered bib IDs for which items were not found
           sql = "SELECT * FROM "\
-            "(values #{lines.map{ |x| "(#{x.strip})" }.join(',')}) as T(ID) "\
+            "(values #{lines.map{ |x| "(#{x.strip[0..8]})" }.join(',')}) as T(ID) "\
             "EXCEPT "\
             "SELECT bib_id "\
             "FROM book_tracker_items;"
