@@ -7,6 +7,7 @@ class Collection < ActiveRecord::Base
   include RegistersHandle
   include ModsHelper
   include RedFlagAggregator
+  include ActiveRecordToCsv
   email_person_association(:contact)
 
   belongs_to :repository
