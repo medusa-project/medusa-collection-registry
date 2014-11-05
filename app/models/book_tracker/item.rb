@@ -91,13 +91,14 @@ module BookTracker
     end
 
     def self.to_csv(options = {})
-      headings = ['Medusa ID'] + ['Bib ID'] + ['OCLC Number'] + ['Object ID'] +
-          ['Title'] + ['Author'] + ['Volume'] + ['Date'] + ['IA Identifier'] +
-          ['Exists in HathiTrust'] + ['Exists in IA'] + ['Exists in Google']
-      columns = ['id'] + ['bib_id'] + ['oclc_number'] + ['obj_id'] + ['title'] +
-          ['author'] + ['volume'] + ['date'] + ['ia_identifier'] +
-          ['exists_in_hathitrust'] + ['exists_in_internet_archive'] +
-          ['exists_in_google']
+      # If moving bib ID out of position 0, also need to change the respond_to
+      # format.xls block in ItemsController.index()
+      headings = ['Bib ID', 'Medusa ID', 'OCLC Number', 'Object ID',
+          'Title', 'Author', 'Volume', 'Date', 'IA Identifier',
+          'Exists in HathiTrust', 'Exists in IA', 'Exists in Google']
+      columns = %w(bib_id id oclc_number obj_id title author volume date
+          ia_identifier exists_in_hathitrust exists_in_internet_archive
+          exists_in_google)
       CSV.generate(options) do |csv|
         csv << headings
         all.each do |item|

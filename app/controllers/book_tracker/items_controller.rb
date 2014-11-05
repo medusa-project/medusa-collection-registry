@@ -74,7 +74,12 @@ module BookTracker
         format.js {
           @items = @items.paginate(page: params[:page], per_page: 100)
         }
-        format.xls { send_data @items.to_csv(col_sep: "\t") }
+        format.xls {
+          items_csv = @items.to_csv(col_sep: "\t")
+          num_cols = items_csv.split("\n")[0].split("\t").length
+          send_data(items_csv + @missing_bib_ids.
+              map{ |id| id + ("\t" * (num_cols - 1)) }.join("\n"))
+        }
       end
     end
 
