@@ -3,6 +3,7 @@ class RepositoriesController < ApplicationController
   before_filter :require_logged_in
   before_filter :find_repository, :only => [:show, :edit, :update, :destroy, :red_flags, :update_ldap_admin, :collections]
   include CollectionsToCsv
+  include RepositoriesToCsv
 
   def new
     authorize! :create, Repository
@@ -27,7 +28,11 @@ class RepositoriesController < ApplicationController
   end
 
   def index
-    @repositories = Repository.all.includes(:collections => :file_groups).includes(:contact)
+    @repositories = Repository.all.includes(collections: :file_groups).includes(:contact)
+    respond_to do |format|
+      format.html
+      format.xls {send_data repositories_to_csv(@repositories), type: 'text/csv', filename: 'repositories.csv'}
+    end
   end
 
   def edit
