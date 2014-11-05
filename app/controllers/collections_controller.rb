@@ -55,7 +55,12 @@ class CollectionsController < ApplicationController
   end
 
   def index
-    @collections = Collection.order(:title).includes(:repository).load
+    @collections = Collection.order(:title).includes(:repository)
+    respond_to do |format|
+      format.html
+      format.xls {send_data @collections.to_csv(csv_options: {col_sep: "\t"})}
+      format.csv {send_data @collections.to_csv}
+    end
   end
 
   def for_access_system

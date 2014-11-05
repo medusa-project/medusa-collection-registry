@@ -14,7 +14,7 @@ module ActiveRecordToCsv
       CSV.generate(csv_options) do |csv|
         csv << header_hash.values
         all.each do |record|
-          csv << header_hash.keys.collect {|key| Array.wrap(key).inject(record) {|object, message| object.send(message)}}
+          csv << header_hash.keys.collect {|key| Array.wrap(key).inject(record) {|object, message| object.send(message)} rescue ''}
         end
       end
     end

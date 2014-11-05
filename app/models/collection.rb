@@ -50,7 +50,7 @@ class Collection < ActiveRecord::Base
   aggregates_red_flags :collections => :file_groups, :label_method => :title
 
   def total_size
-    self.file_groups.collect {|fg| fg.total_file_size}.sum
+    self.file_groups.collect { |fg| fg.total_file_size }.sum
   end
 
   def ensure_uuid
@@ -116,6 +116,13 @@ class Collection < ActiveRecord::Base
 
   def incomplete_scheduled_events
     self.file_groups.collect { |file_group| file_group.incomplete_scheduled_events }.flatten
+  end
+
+  def self.default_csv_header_hash
+    {:id => 'Id', :external_id => 'External Id', :uuid => 'UUID',
+     :title => 'Title', [:repository, :title] => 'Repository',
+     :contact_email => 'Contact', :total_size => 'Total Size(GB)', :preservation_priority_name => 'Preservation Priority',
+     :notes => 'Notes', :description => 'Description'}
   end
 
 end
