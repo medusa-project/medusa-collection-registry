@@ -60,8 +60,8 @@ class CollectionsController < ApplicationController
     @collections = Collection.order(:title).includes(:repository)
     respond_to do |format|
       format.html
-      format.xls { send_data collections_to_csv(col_sep: "\t"), type: 'text/csv' }
-      format.csv { send_data collections_to_csv, type: 'text/csv' }
+      format.xls { send_data collections_to_csv(col_sep: "\t"), type: 'text/csv', filename: 'collections.xls' }
+      format.csv { send_data collections_to_csv, type: 'text/csv', filename: 'collections.csv' }
     end
   end
 
