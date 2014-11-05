@@ -17,7 +17,7 @@
           %tr
             %td= content_type
             %td= data[:count].to_formatted_s(:delimited)
-            %td= data[:size].to_formatted_s(:human_size, precision: 3)
+            %td{'data-order' => data[:size]}= data[:size].to_formatted_s(:human_size, precision: 3)
 
   .col-sm-6
     %table.table.table-striped.table-bordered.table-condensed#file_stats_objects
@@ -34,6 +34,7 @@
           %tr
             %td= content_type
             %td= file_count_objects_type_format(content_type).to_formatted_s(:delimited)
+            -# This will need a data-order attribute when we implement it
             %td= size_objects_type_format(content_type).to_formatted_s(:delimited)
 
 .row
