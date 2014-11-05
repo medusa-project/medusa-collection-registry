@@ -8,16 +8,16 @@
         %tr
           %th{:colspan => 3}
             Bits
-          %tr
-            %th File Format
-            %th Number of Files
-            %th Size
-      %tbody
-      - bit_file_info_summary.each do |content_type, data|
         %tr
-          %td= content_type
-          %td= data[:count].to_formatted_s(:delimited)
-          %td= data[:size].to_formatted_s(:human_size, precision: 3)
+          %th File Format
+          %th Number of Files
+          %th Size
+      %tbody
+        - bit_file_info_summary.each do |content_type, data|
+          %tr
+            %td= content_type
+            %td= data[:count].to_formatted_s(:delimited)
+            %td= data[:size].to_formatted_s(:human_size, precision: 3)
 
   .col-sm-6
     %table.table.table-striped.table-bordered.table-condensed#file_stats_objects
@@ -25,16 +25,16 @@
         %tr
           %th{:colspan => 3}
             Objects
-          %tr
-            %th File Format
-            %th Number of Files
-            %th Size
-      %tbody
-      - list_of_object_file_formats.each do |content_type|
         %tr
-          %td= content_type
-          %td= file_count_objects_type_format(content_type).to_formatted_s(:delimited)
-          %td= size_objects_type_format(content_type).to_formatted_s(:delimited)
+          %th File Format
+          %th Number of Files
+          %th Size
+      %tbody
+        - list_of_object_file_formats.each do |content_type|
+          %tr
+            %td= content_type
+            %td= file_count_objects_type_format(content_type).to_formatted_s(:delimited)
+            %td= size_objects_type_format(content_type).to_formatted_s(:delimited)
 
 .row
   .col-sm-12
