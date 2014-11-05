@@ -8,12 +8,21 @@ module BookTracker
     #
     def index
       @items = Item.all
+      @missing_bib_ids = []
 
       # query (q=)
       unless params[:q].blank?
         lines = params[:q].strip.split("\n")
         if lines.length > 1 # if >1 line, assume a newline-separated bib ID list
-          @items = @items.where('bib_id IN (?)', lines.map{ |x| x.strip })
+          @items = @items.where('bib_id IN (?)', lines.map{ |x| x.strip.gsub(/\D/, '') })
+          # Get a list of entered bib IDs for which items were not found
+          sql = "SELECT * FROM "\
+            "(values #{lines.map{ |x| "(#{x.strip})" }.join(',')}) as T(ID) "\
+            "EXCEPT "\
+            "SELECT bib_id "\
+            "FROM book_tracker_items;"
+          @missing_bib_ids = ActiveRecord::Base.connection.execute(sql).
+              map{ |r| r['id'] }
         else
           q = "%#{params[:q]}%"
           @items = @items.where('CAST(bib_id AS VARCHAR(10)) LIKE ? '\

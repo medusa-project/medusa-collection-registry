@@ -1,6 +1,13 @@
 .row
   .col-sm-8
-    %h4= pluralize(@items.total_entries, 'item', 'items')
+    %h4
+      = pluralize(@items.total_entries, 'item', 'items')
+      - if @missing_bib_ids.any?
+        = link_to("#{@missing_bib_ids.length} bib IDs not found", '#',
+        id: 'book-tracker-bib-ids-not-found',
+        class: 'btn btn-default btn-xs btn-danger',
+        data: { toggle: 'modal', target: '#bib-ids-modal' },
+        title: 'Missing bib IDs')
   .col-sm-4{style: 'text-align:right'}
     = link_to(params.merge(format: 'xls'), class: 'btn btn-default') do
       %span.glyphicon.glyphicon-export
@@ -42,3 +49,18 @@
           %td= item.exists_in_google? ? link_to(raw('&check;'), item.google_url, target: 'blank') : ''
 
   = will_paginate
+
+#bib-ids-modal.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ 'type' => 'button', 'data-dismiss' => 'modal' }
+          %span{'aria-hidden' => 'true'}
+            &times;
+          %span.sr-only
+            Close
+        %h4.modal-title
+          Missing bib IDs
+      .modal-body
+        %ul
+          = raw(@missing_bib_ids.uniq.map{ |id| "<li>#{id}</li>" }.join)
