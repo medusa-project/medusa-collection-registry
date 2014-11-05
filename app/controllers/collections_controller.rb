@@ -1,3 +1,5 @@
+require 'csv_generator'
+
 class CollectionsController < ApplicationController
 
   before_filter :require_logged_in, :except => [:show]
@@ -58,8 +60,8 @@ class CollectionsController < ApplicationController
     @collections = Collection.order(:title).includes(:repository)
     respond_to do |format|
       format.html
-      format.xls {send_data @collections.to_csv(csv_options: {col_sep: "\t"})}
-      format.csv {send_data @collections.to_csv}
+      format.xls { send_data collections_to_csv(col_sep: "\t"), type: 'text/csv' }
+      format.csv { send_data collections_to_csv, type: 'text/csv' }
     end
   end
 
@@ -107,6 +109,14 @@ class CollectionsController < ApplicationController
                                :rights_declaration_attributes => [:rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions],
                                :resource_type_ids => [], :access_system_ids => []
     )
+  end
+
+  def collections_to_csv(csv_options = {})
+    CsvGenerator.generate(@collections, {:id => 'Id', :external_id => 'External Id', :uuid => 'UUID',
+                                         :title => 'Title', :repository_title => 'Repository',
+                                         :contact_email => 'Contact', :total_size => 'Total Size(GB)', :preservation_priority_name => 'Preservation Priority',
+                                         :notes => 'Notes', :description => 'Description'},
+                          csv_options)
   end
 
 end
