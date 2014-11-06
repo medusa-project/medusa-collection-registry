@@ -9,9 +9,9 @@
         data: { toggle: 'modal', target: '#bib-ids-modal' },
         title: 'Missing bib IDs')
   .col-sm-4{style: 'text-align:right'}
-    = link_to(params.merge(format: 'xls'), class: 'btn btn-default') do
+    = link_to(params.merge(format: 'csv'), class: 'btn btn-default') do
       %span.glyphicon.glyphicon-export
-      Export as XLS
+      Export as CSV
 
 - if @items.any?
   %table.table.table-striped.datatable
