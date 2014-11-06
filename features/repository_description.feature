@@ -49,6 +49,13 @@ Feature: Repository description
     When I go to the repository index page
     Then I should be on the repository index page
 
+  Scenario: Get CSV list of all repositories
+    Given I am logged in as a visitor
+    When I go to the repository index page
+    And I click on 'Export as XLS'
+    Then I should receive a file 'repositories.csv' of type 'text/csv' matching:
+      | Sample 1 | Some notes | Sample 2 | Some other notes. http://animals.example.com. More notes. |
+
   Scenario: View repository
     Given I am logged in as an admin
     When I view the repository with title 'Sample 1'

@@ -115,6 +115,18 @@ Feature: Collection description
     When I go to the collection index page
     Then I should be on the collection index page
 
+  Scenario: Get CSV dump of all collections
+    When I go to the collection index page
+    And I click on 'Export as XLS'
+    Then I should receive a file 'collections.xls' of type 'text/csv' matching:
+      | Dog stuff | Stuff about dogs | external-dogs-id | Cat stuff | Stuff about cats. https://notes.example.com | Sample Repo |
+
+  Scenario: Get CSV dump of a repository's collections
+    When I view the repository with title 'Sample Repo'
+    And I click on 'Export as XLS'
+    Then I should receive a file 'collections.xls' of type 'text/csv' matching:
+      | Dog stuff | Stuff about dogs | external-dogs-id | Cat stuff | Stuff about cats. https://notes.example.com | Sample Repo |
+
   Scenario: Navigate index to collection
     When I go to the collection index page
     And I click on 'dogs'
