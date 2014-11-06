@@ -31,7 +31,7 @@ class RepositoriesController < ApplicationController
     @repositories = Repository.all.includes(collections: :file_groups).includes(:contact)
     respond_to do |format|
       format.html
-      format.xls {send_data repositories_to_csv(@repositories), type: 'text/csv', filename: 'repositories.csv'}
+      format.csv {send_data repositories_to_csv(@repositories), type: 'text/csv', filename: 'repositories.csv'}
     end
   end
 
@@ -85,7 +85,7 @@ class RepositoriesController < ApplicationController
 
   def collections
     respond_to do |format|
-      format.xls {send_data collections_to_csv(@repository.collections, col_sep: "\t"), type: 'text/csv', filename: 'collections.xls'}
+      format.csv {send_data collections_to_csv(@repository.collections), type: 'text/csv', filename: 'collections.csv'}
     end
   end
 
