@@ -18,6 +18,13 @@ div.well {
   padding-bottom: 0px;
 }
 
+.book-tracker-checks {
+  th, td {
+    text-align: center;
+    width:25%;
+  }
+}
+
 form.book-tracker-search {
   table {
     td, th {
@@ -35,9 +42,6 @@ form.book-tracker-search {
       width:5em;
     }
   }
-}
-
-form.book-tracker-search {
   textarea {
     margin:0em 0em 1em 0em;
   }

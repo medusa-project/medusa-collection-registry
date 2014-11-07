@@ -5,16 +5,13 @@
         = @item.title.blank? ? 'Untitled' : @item.title
         - unless @item.volume.blank?
           %br
-          %small.volume
-            = @item.volume
+          %small.volume= @item.volume
         - unless @item.author.blank?
           %br
-          %small.author
-            = @item.author
+          %small.author= @item.author
         - unless @item.date.blank?
           %br
-          %small.date
-            = @item.date
+          %small.date= @item.date
       .btn-group.mbt-view-buttons
         = link_to('View in UIUC Catalog', @item.uiuc_catalog_url,
                   class: 'btn btn-default btn-sm', target: '_blank')
@@ -31,21 +28,16 @@
   .col-sm-3
     .panel.panel-default
       .panel-heading
-        %h3.panel-title
-          Identifiers
+        %h3.panel-title Identifiers
       .panel-body
         %dl
-          %dt
-            Bib ID
+          %dt Bib ID
           %dd= @item.bib_id
-          %dt
-            Object ID
+          %dt Object ID
           %dd= @item.obj_id
-          %dt
-            Medusa ID
+          %dt Medusa ID
           %dd= @item.id
-          %dt
-            OCLC Number
+          %dt OCLC Number
           %dd= @item.oclc_number
 
 #accordion.panel-group
@@ -54,6 +46,6 @@
       %h4.panel-title
         %a{'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href' => '#collapseOne'}
           Raw MARCXML
-    #collapseOne.panel-collapse.collapse
+    #collapseOne.panel-collapse.collapse.in
       .panel-body
         %pre= @item.raw_marcxml

@@ -50,4 +50,31 @@ $(function() {
         form.find('textarea, input[type=text], input[type=search]').val(null);
         form.submit();
     });
+
+    // set up infinite scrolling
+    var loading = false;
+    var results_container = $('#items_list');
+    var num_results = parseInt($('input[name="num_results"]:last').val());
+
+    $(window).scroll(function() {
+        if ($(window).scrollTop() + $(window).height() > results_container.height() - 2000 &&
+            results_container.find('tr').length < num_results) {
+            var next_page_url = $('input[name="next-page-url"]:last').val();
+            if (next_page_url) {
+                if (loading) {
+                    return;
+                }
+                loading = true;
+                console.log('Loading ' + next_page_url);
+                $.ajax({
+                    url: next_page_url,
+                    type: 'POST',
+                    success: function(html) {
+                        results_container.find('tbody:first').append(html);
+                        loading = false;
+                    }
+                });
+            }
+        }
+    });
 });
