@@ -121,5 +121,9 @@ class Collection < ActiveRecord::Base
     self.repository.title
   end
 
+  def public?
+    self.rights_declaration.public?
+  end
+
 end
 

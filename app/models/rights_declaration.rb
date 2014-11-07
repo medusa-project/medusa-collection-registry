@@ -38,4 +38,8 @@ copyright_statements default_copyright_statement access_restrictions default_acc
     self.class.access_restrictions[self.access_restrictions]
   end
 
+  def public?
+    self.access_restrictions == 'DISSEMINATE'
+  end
+
 end

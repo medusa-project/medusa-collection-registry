@@ -15,3 +15,18 @@ end
 Then /^I should see the rights declaration section$/ do
   page.should have_selector('#rights-declaration')
 end
+
+And(/^the (.*) with (.*) '(.*)' has (.*) rights$/) do |object_type, key, value, rights_type|
+  klass = class_for_object_type(object_type)
+  instance = klass.find_by(key.gsub(' ', '_') => value)
+  rights_declaration = instance.rights_declaration
+  rights_declaration.access_restrictions = case rights_type
+    when 'public'
+      'DISSEMINATE'
+    when 'private'
+      'DISSEMINATE/DISALLOW'
+    else
+      raise Runtime Error, 'Unrecognized rights type'
+                                           end
+  rights_declaration.save!
+end
