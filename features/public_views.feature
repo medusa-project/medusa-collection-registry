@@ -25,77 +25,85 @@ Feature: Public views
     And the file group with name 'Cats' has private rights
 
   Scenario: View allowed collection metadata
-    Given I public view the collection with title 'Dogs'
+    When I public view the collection with title 'Dogs'
     Then I should see all of:
       | Dogs | public dog description |
     And I should not see 'private dog description'
 
   Scenario: Attempt to view restricted collection metadata
-    Given I public view the collection with title 'Cats'
+    When I public view the collection with title 'Cats'
     Then I should be redirected to the unauthorized page
 
   Scenario: View allowed file group metadata
-    Given I public view the file group with name 'Dogs'
+    When I public view the file group with name 'Dogs'
     Then I should see all of:
       | Dogs | dog summary |
     And I should not see '/private/location'
 
   Scenario: Attempt to view restricted file group metadata
-    Given I public view the file group with name 'Cats'
+    When I public view the file group with name 'Cats'
     Then I should be redirected to the unauthorized page
 
   Scenario: View allowed cfs directory metadata
-    Given I public view the cfs directory for the file group named 'Dogs' for the path '.'
+    When I public view the cfs directory for the file group named 'Dogs' for the path '.'
     Then I should see all of:
       | intro.txt |
 
   Scenario: Attempt to view restricted cfs directory metadata
-    Given I public view the cfs directory for the file group named 'Cats' for the path '.'
+    When I public view the cfs directory for the file group named 'Cats' for the path '.'
     Then I should be redirected to the unauthorized page
 
   Scenario: View allowed cfs file metadata
-    Given I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    When I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
     Then I should see all of:
       | intro.txt | 9 Bytes | f346bd77c403097b0656ecd011e8c118 | text/plain |
 
   Scenario: Attempt to view restricted cfs file metadata
-    Given I public view the cfs file for the file group named 'Cats' for the path 'intro.txt'
+    When I public view the cfs file for the file group named 'Cats' for the path 'intro.txt'
     Then I should be redirected to the unauthorized page
 
   Scenario: Download allowed file
-    Given I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    When I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
     And I click on 'Download'
     Then I should have downloaded a file 'intro.txt' with contents 'dog intro'
 
   Scenario: View allowed file
-    Given I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    When I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
     And I click on 'View'
     Then I should have viewed a file 'intro.txt' with contents 'dog intro'
 
   #For convenience here we do this and the next a bit artificially
   Scenario: Attempt to download restricted file
-    Given I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    When I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
     And the file group with name 'Dogs' has private rights
     And I click on 'Download'
     Then I should be redirected to the unauthorized page
 
   Scenario: Attempt to view restricted file
-    Given I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    When I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
     And the file group with name 'Dogs' has private rights
     And I click on 'View'
     Then I should be redirected to the unauthorized page
 
-  Scenario: Attempt to view private collection info is redirected to public
-    Given PENDING
+  Scenario: Attempt to view internal collection info is redirected to public if available
+    When PENDING
+    When I view the collection with title 'Dogs'
+    Then I should be on the public view page for the collection with title 'Dogs'
 
-  Scenario: Attempt to view private file group info is redirected to public
-    Given PENDING
+  Scenario: Attempt to view internal file group info is redirected to public if available
+    When PENDING
+    When I view the file group with name 'Dogs'
+    Then I should be on the public view page for the file group with name 'Dogs'
 
-  Scenario: Attempt to view private cfs directory info is redirected to public
-    Given PENDING
+  Scenario: Attempt to view internal cfs directory info is redirected to public if available
+    When PENDING
+    When I view the cfs directory for the file group named 'Dogs' for the path '.'
+    Then I should be public viewing the cfs directory for the file group named 'Dogs' for the path '.'
 
-  Scenario: Attempt to view private cfs file info is redirected to public
-    Given PENDING
+  Scenario: Attempt to view internal cfs file info is redirected to public if available
+    When PENDING
+    When I view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    Then I should be public viewing the cfs file for the file group named 'Dogs' for the path 'intro.txt'
 
   Scenario: Navigation between these
     Given PENDING
