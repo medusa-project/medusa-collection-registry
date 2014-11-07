@@ -5,6 +5,7 @@ class CfsFilesController < ApplicationController
   before_filter :find_file, :only => [:show, :public, :create_fits_xml, :fits_xml,
                                       :download, :view, :public_download, :public_view,
                                       :preview_image, :public_preview_image]
+  before_filter :require_public_file, only: [:public, :public_download, :public_view, :public_preview_image]
 
   cattr_accessor :mime_type_viewers, :extension_viewers
 
@@ -19,7 +20,6 @@ class CfsFilesController < ApplicationController
   end
 
   def public
-    redirect_to unauthorized_path unless @file.public?
     @file_group = @file.file_group
     @directory = @file.cfs_directory
     @preview_viewer_type = find_preview_viewer_type(@file)
@@ -50,12 +50,10 @@ class CfsFilesController < ApplicationController
   end
 
   def public_download
-    (redirect_to unauthorized_path and return) unless @file.public?
     send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
   end
 
   def public_view
-    (redirect_to unauthorized_path and return) unless @file.public?
     send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
   end
 
@@ -65,7 +63,6 @@ class CfsFilesController < ApplicationController
   end
 
   def public_preview_image
-    redirect_to unauthorized_path unless @file.public
     common_preview_image
   end
 
@@ -107,6 +104,10 @@ class CfsFilesController < ApplicationController
     image.format 'jpg'
     image.resize '300x300>'
     send_data image.to_blob, type: 'image/jpeg', disposition: 'inline'
+  end
+
+  def require_public_file
+    redirect_to unauthorized_path unless @file.public?
   end
 
 end
