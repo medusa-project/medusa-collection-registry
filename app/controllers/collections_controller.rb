@@ -16,7 +16,7 @@ class CollectionsController < ApplicationController
   end
 
   def public
-    redirect_to unauthorized_path unless logged_in? or @collection.public?
+    redirect_to unauthorized_path unless @collection.public?
   end
 
   def destroy

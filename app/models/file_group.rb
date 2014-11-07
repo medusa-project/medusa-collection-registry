@@ -150,4 +150,8 @@ class FileGroup < ActiveRecord::Base
     self.total_file_size ||= 0
   end
 
+  def public?
+    self.rights_declaration.public?
+  end
+
 end

@@ -31,13 +31,18 @@ Feature: Public views
     And I should not see 'private dog description'
 
   Scenario: Attempt to view restricted collection metadata
-    Given PENDING
+    Given I public view the collection with title 'Cats'
+    Then I should be redirected to the unauthorized page
 
   Scenario: View allowed file group metadata
-    Given PENDING
+    Given I public view the file group with name 'Dogs'
+    Then I should see all of:
+      | Dogs | dog summary |
+    And I should not see '/private/location'
 
   Scenario: Attempt to view restricted file group metadata
-    Given PENDING
+    Given I public view the file group with name 'Cats'
+    Then I should be redirected to the unauthorized page
 
   Scenario: View allowed cfs directory metadata
     Given PENDING

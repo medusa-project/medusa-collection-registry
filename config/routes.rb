@@ -46,6 +46,7 @@ MedusaRails3::Application.routes.draw do
         post 'create_cfs_fits'
         get 'events'
         get 'red_flags'
+        get 'public'
         post 'create_virus_scan'
         post 'create_amazon_backup'
         post 'create_initial_cfs_assessment' if file_group_type == :bit_level_file_groups
@@ -84,6 +85,7 @@ MedusaRails3::Application.routes.draw do
 
   resources :cfs_files, :only => :show do
     member do
+      get 'public'
       get 'create_fits_xml'
       get 'fits_xml'
       get 'download'
@@ -96,6 +98,7 @@ MedusaRails3::Application.routes.draw do
       post 'create_fits_for_tree'
       post 'export'
       post 'export_tree'
+      get 'public'
     end
   end
 
