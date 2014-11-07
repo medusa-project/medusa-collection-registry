@@ -17,6 +17,7 @@ class CollectionsController < ApplicationController
 
   def public
     redirect_to unauthorized_path unless @collection.public?
+    @public_file_groups = @collection.file_groups.order('created_at').select {|file_group| file_group.public? and file_group.is_a?(BitLevelFileGroup)}
   end
 
   def destroy

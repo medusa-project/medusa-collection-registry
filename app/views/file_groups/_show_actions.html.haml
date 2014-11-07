@@ -1,3 +1,5 @@
+- if @file_group.public?
+  = link_to 'Public View', public_file_group_path(@file_group), class: 'btn btn-default'
 = link_to 'View events', events_file_group_path(@file_group), :class => 'btn btn-default'
 = link_to  'Schedule Event', '#addScheduledEventModal', :role => 'button', 'data-toggle' => 'modal', :class => 'btn btn-default'
 = link_to('Add Event', '#addEventModal', :role => 'button', 'data-toggle' => 'modal', :class => 'btn btn-default')

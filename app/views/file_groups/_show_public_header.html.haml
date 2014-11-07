@@ -2,4 +2,4 @@
 %p.lead Collection: #{link_to @collection.title, public_collection_path(@collection)}
 - if @file_group.cfs_directory
   %p
-    CFS Root: #{link_to @file_group.cfs_directory.path, public_cfs_directory_path(@file_group.cfs_directory)}
+    = link_to 'See files', public_cfs_directory_path(@file_group.cfs_directory)

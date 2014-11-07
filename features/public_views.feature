@@ -105,8 +105,61 @@ Feature: Public views
     When I view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
     Then I should be public viewing the cfs file for the file group named 'Dogs' for the path 'intro.txt'
 
-  Scenario: Navigation between these
-    Given PENDING
+  Scenario: Go from collection to file group
+    When I public view the collection with title 'Dogs'
+    And I click on 'Dogs'
+    Then I should be on the public view page for the file group with name 'Dogs'
 
-  Scenario: Links from private to public versions (for sharing)
-    Given PENDING
+  Scenario: Go from collection to cfs directory
+    When I public view the collection with title 'Dogs'
+    And I click on 'View Files'
+    Then I should be public viewing the cfs directory for the file group named 'Dogs' for the path '.'
+
+  Scenario: Go from file group to cfs directory
+    When I public view the file group with name 'Dogs'
+    And I click on 'See files'
+    Then I should be public viewing the cfs directory for the file group named 'Dogs' for the path '.'
+    
+  Scenario: Go from file group to collection
+    When I public view the file group with name 'Dogs'
+    And I click on 'Dogs'
+    Then I should be on the public view page for the collection with title 'Dogs'
+
+  Scenario: Go from directory to file
+    When I public view the cfs directory for the file group named 'Dogs' for the path '.'
+    And I click on 'intro.txt'
+    Then I should be public viewing the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+
+  Scenario: Go from directory to file group
+    When I public view the cfs directory for the file group named 'Dogs' for the path '.'
+    And I click on 'Dogs'
+    Then I should be on the public view page for the file group with name 'Dogs'
+
+  Scenario: Go from file to file group
+    When I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    And I click on 'Dogs'
+    Then I should be on the public view page for the file group with name 'Dogs'
+
+  Scenario: Go from private collection page to public
+    Given I am logged in as an admin
+    When I view the collection with title 'Dogs'
+    And I click on 'Public View'
+    Then I should be on the public view page for the collection with title 'Dogs'
+
+  Scenario: Go from private file group page to public
+    Given I am logged in as an admin
+    When I view the file group with name 'Dogs'
+    And I click on 'Public View'
+    Then I should be on the public view page for the file group with name 'Dogs'
+
+  Scenario: Go from private cfs directory to public
+    Given I am logged in as an admin
+    When I view the cfs directory for the file group named 'Dogs' for the path '.'
+    And I click on 'Public View'
+    Then I should be public viewing the cfs directory for the file group named 'Dogs' for the path '.'
+    
+  Scenario: Go from private cfs file to public
+    Given I am logged in as an admin
+    When I view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    And I click on 'Public View'
+    Then I should be public viewing the cfs file for the file group named 'Dogs' for the path 'intro.txt'

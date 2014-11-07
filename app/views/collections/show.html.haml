@@ -3,6 +3,8 @@
 %h1.text-center= @collection.title
 .tabbable
   .btn-group.pull-right
+    - if @collection.public?
+      = link_to 'Public View', public_collection_path(@collection), :class => 'btn btn-default'
     = link_to 'Red Flags', red_flags_collection_path(@collection), :class => 'btn btn-default'
     = link_to 'View events', events_collection_path(@collection), :class => 'btn btn-default'
     = link_to 'Mods', collection_path(@collection, :format => :xml), :class => 'btn btn-default'

@@ -1,0 +1,26 @@
+%h2 File Groups
+
+- if @public_file_groups.present?
+  %table#file_groups.table.table-striped
+    %thead
+      %tr
+        %th Id
+        %th Name
+        %th Type
+        %th Profile
+        %th Producer
+        %th Total files
+        %th Total file size (GB)
+    %tbody
+      - @public_file_groups.each do |file_group|
+        %tr
+          %td #{file_group.id}
+          %td
+            #{link_to file_group.name, public_file_group_path(file_group)}
+            - if file_group.supports_cfs and file_group.cfs_directory.present?
+              %div= link_to 'View Files', public_cfs_directory_path(file_group.cfs_directory)
+          %td #{file_group.file_type_name}
+          %td #{link_to(file_group.package_profile.name, file_group.package_profile) if file_group.package_profile.present?}
+          %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
+          %td #{file_group.total_files.to_s(:delimited) rescue ''}
+          %td #{file_group.file_size.to_s(:rounded, precision: 2, delimiter: ',')}

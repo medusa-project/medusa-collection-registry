@@ -1,5 +1,9 @@
 = render 'show_breadcrumbs'
 
+.pull-right
+  - if @file.public?
+    = link_to 'Public View', public_cfs_file_path(@file), class: 'btn btn-default'
+
 %h1 File information
 
 .row
