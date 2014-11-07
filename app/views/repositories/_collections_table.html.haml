@@ -2,9 +2,9 @@
   Collections
   %span.pull-right
     = link_to 'Add Collection', new_collection_path(repository_id: @repository.id), class: 'btn btn-primary btn-xs'
-    = link_to collections_repository_path(@repository, format: 'xls'), class: 'btn btn-default btn-xs' do
+    = link_to collections_repository_path(@repository, format: 'csv'), class: 'btn btn-default btn-xs' do
       %span.glyphicon.glyphicon-export
-      Export as XLS
+      Export as CSV
 
 %div
   %table.table.table-striped#collections

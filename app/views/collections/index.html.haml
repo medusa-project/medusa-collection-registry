@@ -5,9 +5,9 @@
     %p= @subheader
 
 = link_to 'Add Collection', new_collection_path, :class => 'btn btn-primary'
-= link_to(collections_path(:format => 'xls'), :class => 'btn btn-default') do
+= link_to(collections_path(:format => 'csv'), :class => 'btn btn-default') do
   %span.glyphicon.glyphicon-export
-  Export as XLS
+  Export as CSV
 
 %table#collections.table.table-striped
   %thead
