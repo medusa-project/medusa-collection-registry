@@ -37,6 +37,19 @@ Then(/^I should have viewed the fixture file '(.*)'$/) do |name|
   expect(page.source).to eq(fixture_file_content(name))
 end
 
+Then(/^I should have downloaded a file '(.*)' with contents '(.*)'$/) do |name, contents|
+  expect(page.response_headers['Content-Disposition']).to match('attachment')
+  expect(page.response_headers['Content-Disposition']).to match(name)
+  expect(page.source).to eq(contents)
+end
+
+Then(/^I should have viewed a file '(.*)' with contents '(.*)'$/) do |name, contents|
+  expect(page.response_headers['Content-Disposition']).to match('inline')
+  expect(page.response_headers['Content-Disposition']).to match(name)
+  expect(page.source).to eq(contents)
+end
+
+
 def fixture_file_content(name)
   File.binread(File.join(Rails.root,  'features', 'fixtures', name))
 end

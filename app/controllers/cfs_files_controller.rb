@@ -1,8 +1,9 @@
 class CfsFilesController < ApplicationController
 
-  before_filter :require_logged_in, :except => [:show, :public]
+  before_filter :require_logged_in, :except => [:show, :public, :public_view, :public_download, :public_preview_image]
   before_filter :require_logged_in_or_basic_auth, :only => [:show]
-  before_filter :find_file, :only => [:show, :public, :create_fits_xml, :fits_xml, :download, :view,
+  before_filter :find_file, :only => [:show, :public, :create_fits_xml, :fits_xml,
+                                      :download, :view, :public_download, :public_view,
                                       :preview_image, :public_preview_image]
 
   cattr_accessor :mime_type_viewers, :extension_viewers
@@ -45,6 +46,16 @@ class CfsFilesController < ApplicationController
 
   def view
     authorize! :download, @file.file_group
+    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
+  end
+
+  def public_download
+    (redirect_to unauthorized_path and return) unless @file.public?
+    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
+  end
+
+  def public_view
+    (redirect_to unauthorized_path and return) unless @file.public?
     send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
   end
 

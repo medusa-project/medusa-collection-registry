@@ -63,22 +63,27 @@ Feature: Public views
     Then I should be redirected to the unauthorized page
 
   Scenario: Download allowed file
-    Given PENDING
-
-  Scenario: Attempt to download restricted file
-    Given PENDING
+    Given I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    And I click on 'Download'
+    Then I should have downloaded a file 'intro.txt' with contents 'dog intro'
 
   Scenario: View allowed file
-    Given PENDING
+    Given I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    And I click on 'View'
+    Then I should have viewed a file 'intro.txt' with contents 'dog intro'
+
+  #For convenience here we do this and the next a bit artificially
+  Scenario: Attempt to download restricted file
+    Given I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    And the file group with name 'Dogs' has private rights
+    And I click on 'Download'
+    Then I should be redirected to the unauthorized page
 
   Scenario: Attempt to view restricted file
-    Given PENDING
-
-  Scenario: Collection rights are used if there are no file group rights
-    Given PENDING
-
-  Scenario: File group rights override collection rights if there are both
-    Given PENDING
+    Given I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    And the file group with name 'Dogs' has private rights
+    And I click on 'View'
+    Then I should be redirected to the unauthorized page
 
   Scenario: Attempt to view private collection info is redirected to public
     Given PENDING
