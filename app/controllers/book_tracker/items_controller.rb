@@ -2,6 +2,8 @@ module BookTracker
 
   class ItemsController < ApplicationController
 
+    RESULTS_LIMIT = 50
+
     ##
     # Responds to both GET /book_tracker/items (and also POST due to search
     # form's ability to accept long lists of bib IDs)
@@ -78,20 +80,28 @@ module BookTracker
         @items = @items.order(:title)
       end
 
-      respond_to do |format|
-        format.html {
-          @items = @items.paginate(page: params[:page], per_page: 100)
-        }
-        format.csv {
-          items_csv = @items.to_csv
-          @missing_bib_ids.each do |id|
-            items_csv << id
-          end
-          send_data(items_csv)
-        }
-        format.js {
-          @items = @items.paginate(page: params[:page], per_page: 100)
-        }
+      next_page = params[:page].to_i > 1 ? params[:page].to_i + 1 : 2
+      # TODO: set this to nil if there is no next page
+      @next_page_url = book_tracker_items_path(params.merge(page: next_page))
+
+      if request.xhr?
+        @items = @items.paginate(page: params[:page], per_page: RESULTS_LIMIT)
+        render partial: 'item_rows', locals: { items: @items,
+                                               next_page_url: @next_page_url }
+      else
+        respond_to do |format|
+          format.html {
+            @items = @items.paginate(page: params[:page],
+                                     per_page: RESULTS_LIMIT)
+          }
+          format.csv {
+            items_csv = @items.to_csv
+            @missing_bib_ids.each do |id|
+              items_csv << id
+            end
+            send_data(items_csv)
+          }
+        end
       end
     end
 

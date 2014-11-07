@@ -7,23 +7,15 @@
     %h4.panel-title Last Updates
   %table.table
     %tr
-      %th
-        Local index
-      %th
-        HathiTrust
-      %th
-        Internet Archive
-      %th
-        Google
+      %th Local Index
+      %th HathiTrust
+      %th Internet Archive
+      %th Google
     %tr
-      %td
-        = @dates[:local_storage]
-      %td
-        = @dates[:hathitrust]
-      %td
-        = @dates[:internet_archive]
-      %td
-        = @dates[:google]
+      %td= @dates[:local_storage]
+      %td= @dates[:hathitrust]
+      %td= @dates[:internet_archive]
+      %td= @dates[:google]
 
 .well
   = form_tag(book_tracker_items_path, method: 'post',
@@ -32,8 +24,7 @@
       .col-sm-8
         %table.table
           %tr
-            %th
-              In:
+            %th In:
             %td
               = label_tag('', class: 'checkbox-inline') do
                 = check_box_tag('in[]', 'ht', (params[:in] and params[:in].include?('ht')),
@@ -55,8 +46,7 @@
               %button.btn.btn-default.btn-xs.mbt-check-all.mbt-uncheck-all
                 &times;
           %tr
-            %th
-              Not in:
+            %th Not in:
             %td
               = label_tag('', class: 'checkbox-inline') do
                 = check_box_tag('ni[]', 'ht', (params[:ni] and params[:ni].include?('ht')),
@@ -86,5 +76,37 @@
         = button_tag('Clear', class: 'btn btn-default mbt-clear')
         = submit_tag('Filter', class: 'btn btn-primary')
 
+.row
+  .col-sm-8
+    %h4
+      = pluralize(@items.total_entries, 'item', 'items')
+      - if @missing_bib_ids.any?
+        = link_to("#{@missing_bib_ids.length} bib IDs not found", '#',
+        id: 'book-tracker-bib-ids-not-found',
+        class: 'btn btn-default btn-xs btn-danger',
+        data: { toggle: 'modal', target: '#bib-ids-modal' },
+        title: 'Missing bib IDs')
+  .col-sm-4{style: 'text-align:right'}
+    = link_to(params.merge(format: 'csv'), class: 'btn btn-default') do
+      %span.glyphicon.glyphicon-export
+      Export as CSV
+
+%input{type: "hidden", name: "num_results", value: "#{@items.total_entries}"}
+
 #items_list
-  = render partial: 'items'
+  = render partial: 'items', locals: { items: @items, next_page_url: @next_page_url }
+
+#bib-ids-modal.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ 'type' => 'button', 'data-dismiss' => 'modal' }
+          %span{'aria-hidden' => 'true'}
+            &times;
+          %span.sr-only
+            Close
+        %h4.modal-title
+          Missing bib IDs
+      .modal-body
+        %ul
+          = raw(@missing_bib_ids.uniq.map{ |id| "<li>#{id}</li>" }.join)
