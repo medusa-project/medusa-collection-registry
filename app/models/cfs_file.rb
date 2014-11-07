@@ -98,6 +98,10 @@ class CfsFile < ActiveRecord::Base
     end
   end
 
+  def public?
+    self.cfs_directory.public?
+  end
+
   protected
 
   def get_fits_xml

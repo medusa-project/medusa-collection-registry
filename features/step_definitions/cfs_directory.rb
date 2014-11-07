@@ -8,9 +8,19 @@ When(/^I view the cfs directory for the file group named '(.*)' for the path '(.
   visit cfs_directory_path(file_group.cfs_directory_at_path(path))
 end
 
+Given(/^I public view the cfs directory for the file group named '(.*)' for the path '(.*)'$/) do |name, path|
+  file_group = FileGroup.find_by(name: name)
+  visit public_cfs_directory_path(file_group.cfs_directory_at_path(path))
+end
+
 Then(/^I should be viewing the cfs directory for the file group named '(.*)' for the path '(.*)'$/) do |name, path|
   file_group = FileGroup.find_by(name: name)
   expect(current_path).to eq(cfs_directory_path(file_group.cfs_directory_at_path(path)))
+end
+
+Then(/^I should be public viewing the cfs directory for the file group named '(.*)' for the path '(.*)'$/) do |name, path|
+  file_group = FileGroup.find_by(name: name)
+  expect(current_path).to eq(public_cfs_directory_path(file_group.cfs_directory_at_path(path)))
 end
 
 When(/^the cfs directory for the path '(.*)' for the file group named '(.*)' has an assessment scheduled$/) do |path, name|

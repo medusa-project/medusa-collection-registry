@@ -1,6 +1,6 @@
 class CfsDirectoriesController < ApplicationController
 
-  before_filter :require_logged_in, except: [:show]
+  before_filter :require_logged_in, except: [:show, :public]
   before_filter :require_logged_in_or_basic_auth, only: [:show]
 
   def show
@@ -10,6 +10,12 @@ class CfsDirectoriesController < ApplicationController
       format.html
       format.json
     end
+  end
+
+  def public
+    @directory = CfsDirectory.includes(:subdirectories, :cfs_files).find(params[:id])
+    @file_group = @directory.owning_file_group
+    redirect_to unauthorized_path unless @directory.public?
   end
 
   def create_fits_for_tree

@@ -1,9 +1,9 @@
 class CfsFilesController < ApplicationController
 
-  before_filter :require_logged_in, :except => [:show]
+  before_filter :require_logged_in, :except => [:show, :public]
   before_filter :require_logged_in_or_basic_auth, :only => [:show]
-  before_filter :find_file, :only => [:show, :create_fits_xml, :fits_xml, :download, :view,
-                                      :preview_image]
+  before_filter :find_file, :only => [:show, :public, :create_fits_xml, :fits_xml, :download, :view,
+                                      :preview_image, :public_preview_image]
 
   cattr_accessor :mime_type_viewers, :extension_viewers
 
@@ -15,6 +15,13 @@ class CfsFilesController < ApplicationController
       format.html
       format.json
     end
+  end
+
+  def public
+    redirect_to unauthorized_path unless @file.public?
+    @file_group = @file.file_group
+    @directory = @file.cfs_directory
+    @preview_viewer_type = find_preview_viewer_type(@file)
   end
 
   def create_fits_xml
@@ -43,10 +50,12 @@ class CfsFilesController < ApplicationController
 
   def preview_image
     authorize! :download, @file.file_group
-    image = MiniMagick::Image.read(StringIO.new(File.open(@file.absolute_path, 'rb') { |f| f.read }))
-    image.format 'jpg'
-    image.resize '300x300>'
-    send_data image.to_blob, type: 'image/jpeg', disposition: 'inline'
+    common_image_preview
+  end
+
+  def public_preview_image
+    redirect_to unauthorized_path unless @file.public
+    common_preview_image
   end
 
   protected
@@ -80,6 +89,13 @@ class CfsFilesController < ApplicationController
 
   def safe_content_type(cfs_file)
     cfs_file.content_type || 'application/octet-stream'
+  end
+
+  def common_image_preview
+    image = MiniMagick::Image.read(StringIO.new(File.open(@file.absolute_path, 'rb') { |f| f.read }))
+    image.format 'jpg'
+    image.resize '300x300>'
+    send_data image.to_blob, type: 'image/jpeg', disposition: 'inline'
   end
 
 end

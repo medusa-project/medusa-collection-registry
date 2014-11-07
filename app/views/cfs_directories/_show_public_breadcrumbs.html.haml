@@ -1,0 +1,4 @@
+- links = @directory.ancestors.collect {|directory| link_to(directory.path, public_cfs_directory_path(directory))}
+%div.breadcrumbs
+  Parents:
+  = links.join(' > ').html_safe

@@ -45,16 +45,22 @@ Feature: Public views
     Then I should be redirected to the unauthorized page
 
   Scenario: View allowed cfs directory metadata
-    Given PENDING
+    Given I public view the cfs directory for the file group named 'Dogs' for the path '.'
+    Then I should see all of:
+      | intro.txt |
 
   Scenario: Attempt to view restricted cfs directory metadata
-    Given PENDING
+    Given I public view the cfs directory for the file group named 'Cats' for the path '.'
+    Then I should be redirected to the unauthorized page
 
   Scenario: View allowed cfs file metadata
-    Given PENDING
+    Given I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    Then I should see all of:
+      | intro.txt | 9 Bytes | f346bd77c403097b0656ecd011e8c118 | text/plain |
 
   Scenario: Attempt to view restricted cfs file metadata
-    Given PENDING
+    Given I public view the cfs file for the file group named 'Cats' for the path 'intro.txt'
+    Then I should be redirected to the unauthorized page
 
   Scenario: Download allowed file
     Given PENDING
@@ -84,4 +90,10 @@ Feature: Public views
     Given PENDING
 
   Scenario: Attempt to view private cfs file info is redirected to public
+    Given PENDING
+
+  Scenario: Navigation between these
+    Given PENDING
+
+  Scenario: Links from private to public versions (for sharing)
     Given PENDING

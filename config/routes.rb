@@ -86,11 +86,14 @@ MedusaRails3::Application.routes.draw do
   resources :cfs_files, :only => :show do
     member do
       get 'public'
+      get 'public_download'
+      get 'public_view'
       get 'create_fits_xml'
       get 'fits_xml'
       get 'download'
       get 'view'
       get 'preview_image'
+      get 'public_preview_image'
     end
   end
   resources :cfs_directories, :only => :show do
