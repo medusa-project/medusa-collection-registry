@@ -56,10 +56,13 @@ class AmazonBackup < ActiveRecord::Base
 
   def send_backup_request_message
     date = self.previous_backup.try(:date)
-    request = {action: 'upload_directory',
-               parameters: {directory: self.cfs_directory.path, description: self.glacier_description, date: date},
-               pass_through: {backup_job_class: self.class.to_s, backup_job_id: self.id, directory: self.cfs_directory.path}}
-    AmqpConnector.instance.send_message(self.class.outgoing_queue, request)
+    AmqpConnector.instance.send_message(self.class.outgoing_queue, create_backup_request_message(date))
+  end
+
+  def create_backup_request_message(date)
+    {action: 'upload_directory',
+     parameters: {directory: self.cfs_directory.path, description: self.glacier_description, date: date},
+     pass_through: {backup_job_class: self.class.to_s, backup_job_id: self.id, directory: self.cfs_directory.path}}
   end
 
   def glacier_description
