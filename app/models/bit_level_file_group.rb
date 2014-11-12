@@ -1,13 +1,13 @@
 class BitLevelFileGroup < FileGroup
   include RedFlagAggregator
 
-  has_many :virus_scans, :dependent => :destroy, :foreign_key => :file_group_id
+  has_many :virus_scans, dependent: :destroy, foreign_key: :file_group_id
 
-  aggregates_red_flags :self => :cfs_red_flags, :label_method => :name
+  aggregates_red_flags self: :cfs_red_flags, label_method: :name
 
   belongs_to :cfs_directory
-  has_many :job_fits_directories, :class_name => 'Job::FitsDirectory', foreign_key: :file_group_id
-  has_many :job_cfs_initial_directory_assessments, :class_name => 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
+  has_many :job_fits_directories, class_name: 'Job::FitsDirectory', foreign_key: :file_group_id
+  has_many :job_cfs_initial_directory_assessments, class_name: 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
 
   after_save :handle_cfs_assessment
 
@@ -99,9 +99,9 @@ class BitLevelFileGroup < FileGroup
 
   def cfs_red_flags
     return [] unless self.cfs_directory
-    RedFlag.where(:red_flaggable_type => 'CfsFile').
+    RedFlag.where(red_flaggable_type: 'CfsFile').
         joins('JOIN cfs_files ON red_flags.red_flaggable_id = cfs_files.id').
-        where(:cfs_files => {:cfs_directory_id => self.cfs_directory.recursive_subdirectory_ids})
+        where(cfs_files: {cfs_directory_id: self.cfs_directory.recursive_subdirectory_ids})
   end
 
   def file_size
