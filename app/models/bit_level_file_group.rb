@@ -43,6 +43,7 @@ class BitLevelFileGroup < FileGroup
   def expected_relative_cfs_root_directory
     File.join(self.collection_id.to_s, self.id.to_s)
   end
+
   #make sure that there is a CfsFile object at the supplied absolute path and return it
   def ensure_file_at_absolute_path(path)
     self.cfs_directory.ensure_file_at_absolute_path(path)
@@ -106,23 +107,21 @@ class BitLevelFileGroup < FileGroup
   def file_size
     return 0 unless self.cfs_directory
     size = self.cfs_directory.tree_size / 1.gigabyte
-    self.total_file_size = size
-    self.save!
+    if self.total_file_size != size
+      self.total_file_size = size
+      self.save!
+    end
     return size
   end
 
   def file_count
     return 0 unless self.cfs_directory
     count = self.cfs_directory.tree_count
-    self.total_files = count
-    self.save!
+    if self.total_files != count
+      self.total_files = count
+      self.save!
+    end
     return count
-  end
-
-  def update_file_statistics
-    self.total_file_size = self.file_size
-    self.total_files = self.file_count
-    self.save!
   end
 
   def amazon_backups

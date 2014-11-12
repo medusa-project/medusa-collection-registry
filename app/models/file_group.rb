@@ -135,12 +135,13 @@ class FileGroup < ActiveRecord::Base
     self.scheduled_events.where("state != 'completed'")
   end
 
-  #override this as needed for subclasses. Size should be in GB.
+  #override this as needed for subclasses. Size should be in GB. Should use this method rather than the db column to
+  #read this value.
   def file_size
     self.total_file_size || 0
   end
 
-  #override as needed for subclasses
+  #override as needed for subclasses. Should use this method rather than the db column to read this value.
   def file_count
     self.total_files || 0
   end
