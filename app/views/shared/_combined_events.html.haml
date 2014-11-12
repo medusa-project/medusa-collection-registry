@@ -1,7 +1,7 @@
 %h1 Events for #{@eventable.class.to_s.underscore.humanize}: #{link_to @eventable.label, @eventable}
 
 .tabbable
-  = render :partial => 'shared/tab_header', :locals => {:id => 'tab-headers', :tabs => [['events-tab', 'Events'], ['scheduled-events-tab', 'Scheduled Events']], :active_index => 0}
+  = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs:[['events-tab', 'Events'], ['scheduled-events-tab', 'Scheduled Events']], active_index: 0}
   .tab-content
     #events-tab.tab-pane.active
       = render 'events/index'

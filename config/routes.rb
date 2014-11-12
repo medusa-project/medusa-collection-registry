@@ -2,7 +2,7 @@ MedusaRails3::Application.routes.draw do
 
   get "events/index"
 
-  root :to => 'static#page', :page => 'landing'
+  root to: 'static#page', page: 'landing'
 
   resources :collections do
     collection do
@@ -67,15 +67,15 @@ MedusaRails3::Application.routes.draw do
   resources :producers
   resources :access_systems
   resources :package_profiles
-  resources :directories, :only => :show
-  resources :files, :only => :show, :controller => "bit_files" do
+  resources :directories, only: :show
+  resources :files, only: :show, controller:"bit_files" do
     member do
       get 'contents'
       get 'view_fits_xml'
       get 'create_fits_xml'
     end
   end
-  resources :virus_scans, :only => :show
+  resources :virus_scans, only: :show
   resources :scheduled_events, only: [:edit, :update, :create, :destroy] do
     member do
       post 'complete'
@@ -83,7 +83,7 @@ MedusaRails3::Application.routes.draw do
     end
   end
 
-  resources :cfs_files, :only => :show do
+  resources :cfs_files, only: :show do
     member do
       get 'public'
       get 'public_download'
@@ -96,7 +96,7 @@ MedusaRails3::Application.routes.draw do
       get 'public_preview_image'
     end
   end
-  resources :cfs_directories, :only => :show do
+  resources :cfs_directories, only: :show do
     member do
       post 'create_fits_for_tree'
       post 'export'
@@ -105,23 +105,23 @@ MedusaRails3::Application.routes.draw do
     end
   end
 
-  resources :searches, :only => [] do
+  resources :searches, only: [] do
     collection do
       post :filename
     end
   end
 
-  match '/auth/:provider/callback', to: 'sessions#create', :via => [:get, :post]
-  match '/login', to: 'sessions#new', as: :login, :via => [:get, :post]
-  match '/logout', to: 'sessions#destroy', as: :logout, :via => [:get, :post]
-  match '/unauthorized', to: 'sessions#unauthorized', as: :unauthorized, :via => [:get, :post]
-  match '/unauthorized_net_id', to: 'sessions#unauthorized_net_id', as: :unauthorized_net_id, :via => [:get, :post]
-  match '/static/:page', to: 'static#page', as: :static, :via => [:get, :post]
-  match '/dashboard', to: 'dashboard#show', as: :dashboard, :via => [:get, :post]
+  match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
+  match '/login', to: 'sessions#new', as: :login, via: [:get, :post]
+  match '/logout', to: 'sessions#destroy', as: :logout, via: [:get, :post]
+  match '/unauthorized', to: 'sessions#unauthorized', as: :unauthorized, via: [:get, :post]
+  match '/unauthorized_net_id', to: 'sessions#unauthorized_net_id', as: :unauthorized_net_id, via: [:get, :post]
+  match '/static/:page', to: 'static#page', as: :static, via: [:get, :post]
+  match '/dashboard', to: 'dashboard#show', as: :dashboard, via: [:get, :post]
 
   namespace :book_tracker do
-    match 'items', to: 'items#index', as: :items, :via => [:get, :post]
-    match 'items/:id', to: 'items#show', as: :item, :via => :get
+    match 'items', to: 'items#index', as: :items, via: [:get, :post]
+    match 'items/:id', to: 'items#show', as: :item, via: :get
     resources 'tasks', only: 'index'
 
     match 'check-google', to: 'tasks#check_google', via: 'post',

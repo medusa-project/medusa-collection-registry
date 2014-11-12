@@ -9,7 +9,7 @@ Then /^the file group named '(.*)' should have an event with key '(.*)' performe
 end
 
 And(/^the file group named '(.*)' has events with fields:$/) do |name, table|
-  file_group = FileGroup.find_by_name(name)
+  file_group = FileGroup.find_by(name: name) || FactoryGirl.create(:file_group, name: name)
   table.hashes.each do |hash|
     FactoryGirl.create(:event, hash.merge(:eventable => file_group))
   end

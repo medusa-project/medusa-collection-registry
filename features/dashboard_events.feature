@@ -5,9 +5,6 @@ Feature: Dashboard event list
 
   Background:
     Given I am logged in as an admin
-    And the collection with title 'Animals' has child file groups with fields:
-      | name | type              |
-      | Dogs | BitLevelFileGroup |
     And the file group named 'Dogs' has events with fields:
       | note         |
       | Current Event |
