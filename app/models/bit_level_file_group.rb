@@ -5,6 +5,8 @@ class BitLevelFileGroup < FileGroup
 
   aggregates_red_flags self: :cfs_red_flags, label_method: :name
 
+  belongs_to :cfs_directory
+
   has_many :job_fits_directories, class_name: 'Job::FitsDirectory', foreign_key: :file_group_id
   has_many :job_cfs_initial_directory_assessments, class_name: 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
 
