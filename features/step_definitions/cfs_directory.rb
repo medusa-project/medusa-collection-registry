@@ -37,3 +37,29 @@ end
 When(/^I request JSON for the cfs directory with id '(\d+)'$/) do |id|
   visit cfs_directory_path(CfsDirectory.find(id), format: :json)
 end
+
+Given(/^there are cfs directories with fields:$/) do |table|
+  table.hashes.each do |hash|
+    FactoryGirl.create(:cfs_directory, hash)
+  end
+end
+
+And(/^there are cfs subdirectories of the cfs directory with path '(.*)' with fields:$/) do |path, table|
+  parent = CfsDirectory.find_by(path: path)
+  table.hashes.each do |hash|
+    parent.subdirectories.create!(hash.merge(root_cfs_directory_id: parent.root_cfs_directory_id))
+  end
+end
+
+And(/^there are cfs files of the cfs directory with path '(.*)' with fields:$/) do |path, table|
+  parent = CfsDirectory.find_by(path: path)
+  table.hashes.each do |hash|
+    parent.cfs_files.create!(hash)
+  end
+end
+
+Then(/^the cfs directory for the path '(.*)' should have tree size (\d+) and count (\d+)$/) do |path, size, count|
+  cfs_directory = CfsDirectory.find_by(path: path)
+  expect(cfs_directory.tree_size).to eq(size.to_d)
+  expect(cfs_directory.tree_count).to eq(count.to_d)
+end

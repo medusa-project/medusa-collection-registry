@@ -59,3 +59,9 @@ Then /^each (.*) with (.*) should exist:$/ do |object_type, key, table|
     step "a #{object_type} with #{key} '#{header}' should exist"
   end
 end
+
+When(/^I destroy the (.*) with (.*) '(.*)'$/) do |object_type, key, value|
+  klass = class_for_object_type(object_type)
+  underscored_key = key.gsub(' ', '_')
+  klass.find_by(underscored_key => value).destroy
+end
