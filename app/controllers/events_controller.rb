@@ -5,6 +5,10 @@ class EventsController < ApplicationController
   before_filter :find_event, only: [:destroy, :edit, :update]
   helper_method :eventable_events_path
 
+  def index
+    @events = Event.order('updated_at desc')
+  end
+
   def create
     klass = Kernel.const_get(params[:eventable_type])
     eventable = klass.find(params[:eventable_id])

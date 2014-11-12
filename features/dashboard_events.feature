@@ -9,11 +9,11 @@ Feature: Dashboard event list
       | name | type              |
       | Dogs | BitLevelFileGroup |
     And the file group named 'Dogs' has events with fields:
-      | key            | note         |
-      | staged_deleted | Current Event |
+      | note         |
+      | Current Event |
     And the file group named 'Dogs' has events with fields:
-      | key            | note      | updated_at |
-      | staged_deleted | Old Event | 2010-01-01 |
+      | note      | updated_at |
+      | Old Event | 2010-01-01 |
 
   Scenario: Dashboard shows recent events, but not old ones
     When I go to the dashboard
@@ -21,3 +21,6 @@ Feature: Dashboard event list
     And I should not see 'Old Event'
 
   Scenario: Navigate from dashboard to complete events index
+    When I go to the dashboard
+    And I click on 'View all events'
+    Then I should be on the events index page
