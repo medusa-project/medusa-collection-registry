@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141010214341) do
+ActiveRecord::Schema.define(version: 20141111220854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,8 @@ ActiveRecord::Schema.define(version: 20141010214341) do
     t.text    "path"
     t.integer "parent_cfs_directory_id"
     t.integer "root_cfs_directory_id"
+    t.decimal "tree_size",               default: 0.0
+    t.integer "tree_count",              default: 0
   end
 
   add_index "cfs_directories", ["parent_cfs_directory_id", "path"], name: "index_cfs_directories_on_parent_cfs_directory_id_and_path", unique: true, using: :btree
