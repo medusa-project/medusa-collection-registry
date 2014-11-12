@@ -226,6 +226,7 @@ GEM
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
     netrc (0.7.7)
+    newrelic_rpm (3.9.6.257)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     omniauth (1.2.2)
@@ -386,6 +387,7 @@ DEPENDENCIES
   logger
   mini_magick
   net-http-digest_auth!
+  newrelic_rpm
   nokogiri
   omniauth
   omniauth-shibboleth!

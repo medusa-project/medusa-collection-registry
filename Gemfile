@@ -99,6 +99,7 @@ group :development, :test do
   gem 'factory_girl'
   gem 'shoulda-matchers'
   gem 'thin'
+  gem 'newrelic_rpm'
 end
 
 group :test do
