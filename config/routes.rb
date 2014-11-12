@@ -1,7 +1,5 @@
 MedusaRails3::Application.routes.draw do
 
-  get "events/index"
-
   root to: 'static#page', page: 'landing'
 
   resources :collections do
