@@ -17,7 +17,7 @@ class DashboardController < ApplicationController
   #TODO - I bet we can do this more efficiently - it'd be easy with SQL, but we can probably do it with arel as well.
   def setup_storage_summary
     @storage_summary = []
-    Repository.includes(:collections => {:file_groups => :target_file_groups}).load.each do |repository|
+    Repository.includes(:collections => {:file_groups => [:target_file_groups, :cfs_directory]}).load.each do |repository|
       external_file_groups = repository.collections.collect { |c| c.file_groups.select { |fg| fg.is_a?(ExternalFileGroup) } }.flatten
       uningested_external_file_groups = external_file_groups.reject do |fg|
         fg.target_file_groups.detect { |target| target.is_a?(BitLevelFileGroup) }

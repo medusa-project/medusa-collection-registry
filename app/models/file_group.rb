@@ -7,6 +7,9 @@ class FileGroup < ActiveRecord::Base
   belongs_to :parent, class_name: 'Collection', foreign_key: 'collection_id'
   belongs_to :producer
   belongs_to :file_type
+  #Note this this only really applies to bit level file groups, but is advantageous to declare here
+  belongs_to :cfs_directory
+
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
   has_many :assessments, :as => :assessable, :dependent => :destroy
   has_many :target_file_group_joins, :dependent => :destroy, :class_name => 'RelatedFileGroupJoin', :foreign_key => :source_file_group_id

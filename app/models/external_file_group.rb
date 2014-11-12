@@ -3,6 +3,8 @@ class ExternalFileGroup < FileGroup
   before_save :nullify_cfs_directory
   has_one :workflow_ingest, :class_name => 'Workflow::Ingest'
 
+  validates_absence_of :cfs_directory
+
   def storage_level
     'external'
   end
