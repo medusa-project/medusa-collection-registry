@@ -1,7 +1,7 @@
 %h2 File Groups
 
 %div
-  = link_to 'Add File Group', new_file_group_path(:collection_id => @collection.id), :class => 'btn btn-primary btn-xs'
+  = link_to 'Add File Group', new_file_group_path(collection_id: @collection.id), class: 'btn btn-primary btn-xs'
 = render 'storage_level_filter'
 
 - if @collection.file_groups.present?
@@ -42,12 +42,12 @@
                 Ingested to: #{'File group'.pluralize(file_group.target_file_groups.count)}
                 #{file_group.target_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}
           %td
-            = render 'file_group_actions', :file_group => file_group
+            = render 'file_group_actions', file_group: file_group
 
 -# TODO Consider rendering one of each of these forms and adapting to the appropriate file group
 -# rather than rendering a form for each one, hidden though they may be.
 -# TODO why do these take so long to render sometimes?
 %div#event_forms
   - @collection.file_groups.order('created_at').each do |file_group|
-    = render :partial => 'events/modal_form', :locals => {:eventable => file_group, :remote => true, :dialog_id => "add-event-file-group-#{file_group.id}"}
-    = render :partial => 'scheduled_events/form', :locals => {:eventable => file_group, :remote => true, :dialog_id => "add-scheduled-event-file-group-#{file_group.id}" }
+    = render partial: 'events/modal_form', locals: {eventable: file_group, remote: true, dialog_id: "add-event-file-group-#{file_group.id}"}
+    = render partial: 'scheduled_events/form', locals: {eventable: file_group, remote: true, dialog_id: "add-scheduled-event-file-group-#{file_group.id}" }
