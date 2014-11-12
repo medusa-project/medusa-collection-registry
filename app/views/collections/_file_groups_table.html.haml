@@ -30,7 +30,7 @@
           %td #{file_group.file_type_name}
           %td #{link_to(file_group.package_profile.name, file_group.package_profile) if file_group.package_profile.present?}
           %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
-          %td #{file_group.total_files.to_s(:delimited) rescue ''}
+          %td #{file_group.file_count.to_s(:delimited) rescue ''}
           %td #{file_group.file_size.to_s(:rounded, precision: 2, delimiter: ',')}
           %td.related_file_groups
             - if file_group.source_file_groups.present?
@@ -46,6 +46,7 @@
 
 -# TODO Consider rendering one of each of these forms and adapting to the appropriate file group
 -# rather than rendering a form for each one, hidden though they may be.
+-# TODO why do these take so long to render sometimes?
 %div#event_forms
   - @collection.file_groups.order('created_at').each do |file_group|
     = render :partial => 'events/modal_form', :locals => {:eventable => file_group, :remote => true, :dialog_id => "add-event-file-group-#{file_group.id}"}

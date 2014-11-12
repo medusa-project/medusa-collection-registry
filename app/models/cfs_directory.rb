@@ -9,14 +9,20 @@ class CfsDirectory < ActiveRecord::Base
   has_many :amazon_backups, -> { order 'date desc'}
 
   validates :path, presence: true
-  validates_uniqueness_of :path, scope: :parent_cfs_directory_id
-
+  validates_uniqueness_of :path, scope: :parent_cfs_directory_id, if: :parent_cfs_directory_id
+  validate(unless: :parent_cfs_directory_id) do |cfs_directory|
+    unless (CfsDirectory.where(path: cfs_directory.path).where('parent_cfs_directory_id IS NULL').all - [cfs_directory]).empty?
+      errors.add(:base, "Path must be unique for roots")
+    end
+  end
   #two validations are needed because we can't set the root directory to self
   #until after we've saved once. The after_save callback sets this by default
   #after the initial save
   validates :root_cfs_directory_id, presence: true, if: :parent_cfs_directory_id
   validates :root_cfs_directory_id, presence: true, unless: :parent_cfs_directory_id, on: :update
   after_save :ensure_root
+  after_save :update_parent_tree_size_and_count
+  after_destroy :update_parent_tree_size_and_count
 
   #ensure there is a CfsFile object at the given absolute path and return it
   def ensure_file_at_absolute_path(path)
@@ -168,6 +174,16 @@ class CfsDirectory < ActiveRecord::Base
 
   def public?
     self.owning_file_group.public?
+  end
+
+  def update_tree_size_and_count
+    self.tree_size = self.subdirectories.sum(:tree_size) + self.cfs_files.sum(:size)
+    self.tree_count = self.subdirectories.sum(:tree_count) + self.cfs_files.count
+    self.save!
+  end
+
+  def update_parent_tree_size_and_count
+    self.parent_cfs_directory.update_tree_size_and_count if self.parent_cfs_directory
   end
 
   protected

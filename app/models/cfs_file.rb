@@ -7,6 +7,9 @@ class CfsFile < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: :cfs_directory_id, allow_blank: false
 
+  after_save :update_cfs_directory_tree_size_and_count
+  after_destroy :update_cfs_directory_tree_size_and_count
+
   def repository
     self.cfs_directory.repository
   end
@@ -103,6 +106,10 @@ class CfsFile < ActiveRecord::Base
   end
 
   protected
+
+  def update_cfs_directory_tree_size_and_count
+    self.cfs_directory.update_tree_size_and_count
+  end
 
   def get_fits_xml
     file_path = URI.encode(self.absolute_path.gsub(/^\/+/, ''))

@@ -105,8 +105,7 @@ class BitLevelFileGroup < FileGroup
 
   def file_size
     return 0 unless self.cfs_directory
-    directory_ids = self.cfs_directory.recursive_subdirectory_ids
-    size = CfsFile.where(cfs_directory_id: directory_ids).sum(:size) / (1.gigabyte)
+    size = self.cfs_directory.tree_size / 1.gigabyte
     self.total_file_size = size
     self.save!
     return size
@@ -114,8 +113,7 @@ class BitLevelFileGroup < FileGroup
 
   def file_count
     return 0 unless self.cfs_directory
-    directory_ids = self.cfs_directory.recursive_subdirectory_ids
-    count = CfsFile.where(cfs_directory_id: directory_ids).count
+    count = self.cfs_directory.tree_count
     self.total_files = count
     self.save!
     return count
