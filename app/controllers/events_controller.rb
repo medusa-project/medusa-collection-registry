@@ -6,7 +6,7 @@ class EventsController < ApplicationController
   helper_method :eventable_events_path
 
   def index
-    @events = Event.order('updated_at desc').paginate(page: params[:page] || 1, per_page: params[:per_page] || 25)
+    @events = Event.order('updated_at desc').page(params[:page]).per_page(params[:per_page] || 25)
   end
 
   def create
