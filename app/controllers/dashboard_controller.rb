@@ -37,8 +37,8 @@ class DashboardController < ApplicationController
   end
 
   def setup_events
-    @events = Event.order('date DESC').includes(:eventable => :parent).load
-    @scheduled_events = ScheduledEvent.incomplete.order('action_date ASC').includes(:scheduled_eventable => :parent).load
+    @events = Event.order('date DESC')
+    @scheduled_events = ScheduledEvent.incomplete.order('action_date ASC')
   end
 
 end
