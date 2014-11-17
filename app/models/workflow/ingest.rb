@@ -53,7 +53,7 @@ class Workflow::Ingest < Job::Base
   end
 
   def perform_amazon_backup
-    self.amazon_backup = AmazonBackup.create(user_id: self.user.id, cfs_directory_id: self.bit_level_file_group.cfs_directory_id,
+    self.amazon_backup = AmazonBackup.create(user_id: self.user.id, cfs_directory_id: self.bit_level_file_group.cfs_directory.id,
                                              date: Date.today)
     self.save!
     Job::AmazonBackup.create_for(self.amazon_backup)

@@ -9,6 +9,7 @@ class FileGroup < ActiveRecord::Base
   belongs_to :file_type
 
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
+  has_one :cfs_directory, inverse_of: :file_group
   has_many :assessments, :as => :assessable, :dependent => :destroy
   has_many :target_file_group_joins, :dependent => :destroy, :class_name => 'RelatedFileGroupJoin', :foreign_key => :source_file_group_id
   has_many :target_file_groups, :through => :target_file_group_joins
@@ -98,8 +99,13 @@ class FileGroup < ActiveRecord::Base
     false
   end
 
-  #override (e.g. by association) in subclasses that do support cfs
-  def cfs_directory
+  #override in subclasses that support cfs
+  def cfs_directory_id
+    nil
+  end
+
+  #override in subclasses that support cfs
+  def cfs_directory_id=(id)
     nil
   end
 
@@ -126,10 +132,6 @@ class FileGroup < ActiveRecord::Base
 
   def repository
     self.collection.repository
-  end
-
-  def nullify_cfs_directory
-    self.cfs_directory_id = nil
   end
 
   def incomplete_scheduled_events

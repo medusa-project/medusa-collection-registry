@@ -9,7 +9,7 @@ class Job::CfsInitialDirectoryAssessment < Job::Base
   end
 
   def perform
-    self.cfs_directory.run_initial_assessment
+    self.cfs_directory.run_initial_assessment if self.cfs_directory
   end
 
   def success(job)

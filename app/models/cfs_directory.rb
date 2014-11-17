@@ -4,7 +4,7 @@ class CfsDirectory < ActiveRecord::Base
   has_many :subdirectories, class_name: 'CfsDirectory', foreign_key: :parent_cfs_directory_id, dependent: :destroy
   has_many :cfs_files, dependent: :destroy
   belongs_to :parent_cfs_directory, class_name: 'CfsDirectory'
-  has_one :file_group, inverse_of: :cfs_directory, class_name: 'BitLevelFileGroup'
+  belongs_to :file_group, inverse_of: :cfs_directory, class_name: 'BitLevelFileGroup'
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
   has_many :amazon_backups, -> { order 'date desc'}
 
@@ -22,6 +22,7 @@ class CfsDirectory < ActiveRecord::Base
   validates :root_cfs_directory_id, presence: true, unless: :parent_cfs_directory_id, on: :update
   after_save :ensure_root
   after_save :update_parent_tree_size_and_count
+  after_save :handle_cfs_assessment
   after_destroy :update_parent_tree_size_and_count
 
   #ensure there is a CfsFile object at the given absolute path and return it
@@ -184,6 +185,25 @@ class CfsDirectory < ActiveRecord::Base
 
   def update_parent_tree_size_and_count
     self.parent_cfs_directory.update_tree_size_and_count if self.parent_cfs_directory
+  end
+
+  def handle_cfs_assessment
+    #It is important to do the following in order
+
+    #If the cfs directory had a present value for file_group_id before saving
+    #and it changed then cancel the jobs in the old assessment.
+    if file_group_id_was.present? and file_group_id_changed?
+      Job::CfsInitialFileGroupAssessment.where(file_group_id: file_group_id_was).each do |assessment|
+        assessment.destroy_queued_jobs_and_self
+      end
+      Job::CfsInitialDirectoryAssessment.where(file_group_id: file_group_id_was, cfs_directory_id: self.id).each do |assessment|
+        assessment.destroy_queued_jobs_and_self
+      end
+    end
+    #If there is a new, present value for file_group_id then schedule the cfs assessment
+    if file_group_id.present? and file_group_id_changed?
+      self.file_group.schedule_initial_cfs_assessment
+    end
   end
 
   protected

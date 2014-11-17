@@ -5,12 +5,8 @@ class BitLevelFileGroup < FileGroup
 
   aggregates_red_flags self: :cfs_red_flags, label_method: :name
 
-  belongs_to :cfs_directory, inverse_of: :file_group
-
   has_many :job_fits_directories, class_name: 'Job::FitsDirectory', foreign_key: :file_group_id
   has_many :job_cfs_initial_directory_assessments, class_name: 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
-
-  after_save :handle_cfs_assessment
 
   def create_cfs_file_infos
     #TODO nothing - exists to clear some delayed jobs, then delete this method
@@ -22,10 +18,6 @@ class BitLevelFileGroup < FileGroup
 
   def self.downstream_types
     ['ObjectLevelFileGroup']
-  end
-
-  def self.having_cfs_directory
-    where('cfs_directory_id is not null')
   end
 
   def supports_cfs
@@ -60,25 +52,6 @@ class BitLevelFileGroup < FileGroup
   #i.e. CfsRoot.path + self.cfs_directory.path
   def cfs_file_at_path(path)
     self.cfs_directory.find_file_at_relative_path(path)
-  end
-
-  def handle_cfs_assessment
-    #If the file group had a present value for cfs_directory_id before saving
-    #and it changed, then cancel the jobs in the old assessment. It is important
-    #to do it in this order.
-    if self.cfs_directory_id_was.present? and self.cfs_directory_id_changed?
-      Job::CfsInitialFileGroupAssessment.where(file_group_id: self.id).each do |assessment|
-        assessment.destroy_queued_jobs_and_self
-      end
-      Job::CfsInitialDirectoryAssessment.where(file_group_id: self.id, cfs_directory_id: self.cfs_directory_id_was).each do |assessment|
-        assessment.destroy_queued_jobs_and_self
-      end
-    end
-    #If the file group has a new, present value for cfs_directory_id
-    # then schedule the cfs_assessment.
-    if self.cfs_directory_id.present? and self.cfs_directory_id_changed?
-      self.schedule_initial_cfs_assessment
-    end
   end
 
   def schedule_initial_cfs_assessment
@@ -145,8 +118,35 @@ class BitLevelFileGroup < FileGroup
   end
 
   def is_currently_assessable?
-    !(Job::CfsInitialFileGroupAssessment.where(file_group_id: self.id).first or
-        Job::CfsInitialDirectoryAssessment.where(file_group_id: self.id).first)
+    !(Job::CfsInitialFileGroupAssessment.find_by(file_group_id: self.id) or
+        Job::CfsInitialDirectoryAssessment.find_by(file_group_id: self.id))
+  end
+
+  def cfs_directory_id
+    cfs_directory.try(:id)
+  end
+
+  def cfs_directory_id=(cfs_directory_id)
+    current_cfs_directory = self.cfs_directory
+    if cfs_directory_id.present?
+      cfs_directory = CfsDirectory.find(cfs_directory_id)
+      return unless cfs_directory
+      transaction do
+        cfs_directory.file_group_id = self.id
+        cfs_directory.save!
+        if current_cfs_directory
+          current_cfs_directory.file_group_id = nil
+          current_cfs_directory.save!
+        end
+      end
+    else
+      if current_cfs_directory
+        transaction do
+          current_cfs_directory.file_group_id = nil
+          current_cfs_directory.save!
+        end
+      end
+    end
   end
 
 end
