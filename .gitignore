@@ -26,3 +26,4 @@ daemons.rb.pid
 coverage/
 
 public/system/
+solr/
