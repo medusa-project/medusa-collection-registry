@@ -10,6 +10,7 @@ Feature: JSON data about file group
     And every cfs directory with fields exists:
       | id | path     |
       | 20 | dir/path |
+    And I set the cfs root of the file group named 'Engineering' to 'dir/path'
 
   Scenario: Fetch JSON for a file group for basic auth user
     Given I provide basic authentication
