@@ -127,26 +127,22 @@ class BitLevelFileGroup < FileGroup
   end
 
   def cfs_directory_id=(cfs_directory_id)
-    current_cfs_directory = self.cfs_directory
-    if cfs_directory_id.present?
-      cfs_directory = CfsDirectory.find(cfs_directory_id)
-      return unless cfs_directory
-      transaction do
-        cfs_directory.file_group_id = self.id
-        cfs_directory.save!
-        if current_cfs_directory
-          current_cfs_directory.file_group_id = nil
-          current_cfs_directory.save!
-        end
+    old_cfs_directory = self.cfs_directory
+    new_cfs_directory = (CfsDirectory.find(cfs_directory_id) rescue nil)
+    #just return if there is no change
+    return if cfs_directory_id.blank? and old_cfs_directory.blank?
+    return if old_cfs_directory == new_cfs_directory
+    transaction do
+      if new_cfs_directory
+        new_cfs_directory.file_group_id = self.id
+        new_cfs_directory.save!
       end
-    else
-      if current_cfs_directory
-        transaction do
-          current_cfs_directory.file_group_id = nil
-          current_cfs_directory.save!
-        end
+      if old_cfs_directory
+        old_cfs_directory.file_group_id = nil
+        old_cfs_directory.save
       end
     end
+    self.cfs_directory(true)
   end
 
 end
