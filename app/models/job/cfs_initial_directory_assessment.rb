@@ -1,6 +1,6 @@
 class Job::CfsInitialDirectoryAssessment < Job::Base
-  belongs_to :file_group
-  belongs_to :cfs_directory
+  belongs_to :file_group, touch: true
+  belongs_to :cfs_directory, touch: true
 
   def self.create_for(cfs_directory, file_group)
     Delayed::Job.enqueue(self.create(cfs_directory: cfs_directory, file_group: file_group,

@@ -1,5 +1,5 @@
 class Job::FitsFile < ActiveRecord::Base
-  belongs_to :fits_directory_tree
+  belongs_to :fits_directory_tree, touch: true
 
   def perform
     Cfs.ensure_fits_for(self.path)

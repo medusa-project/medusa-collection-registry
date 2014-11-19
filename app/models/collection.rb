@@ -9,14 +9,15 @@ class Collection < ActiveRecord::Base
   include RedFlagAggregator
   email_person_association(:contact)
 
-  belongs_to :repository
+  belongs_to :repository, touch: true
+  belongs_to :preservation_priority, touch: true
+
   has_many :assessments, :dependent => :destroy, :as => :assessable
   has_many :file_groups, :dependent => :destroy
   has_many :access_system_collection_joins, :dependent => :destroy
   has_many :access_systems, :through => :access_system_collection_joins
   has_many :collection_resource_type_joins, :dependent => :destroy
   has_many :resource_types, :through => :collection_resource_type_joins
-  belongs_to :preservation_priority
   has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
   has_many :attachments, :as => :attachable, :dependent => :destroy
 

@@ -2,30 +2,30 @@ class FileGroup < ActiveRecord::Base
   include Eventable
   include ScheduledEventable
 
-  belongs_to :collection
+  belongs_to :collection, touch: true
   #parent is a duplicate, but allows uniformity for events, i.e. we can do eventable.parent
   belongs_to :parent, class_name: 'Collection', foreign_key: 'collection_id'
-  belongs_to :producer
-  belongs_to :file_type
+  belongs_to :producer, touch: true
+  belongs_to :file_type, touch: true
+  belongs_to :package_profile, touch: true
 
-  has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
+  has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
   has_one :cfs_directory
-  has_many :assessments, :as => :assessable, :dependent => :destroy
-  has_many :target_file_group_joins, :dependent => :destroy, :class_name => 'RelatedFileGroupJoin', :foreign_key => :source_file_group_id
-  has_many :target_file_groups, :through => :target_file_group_joins
-  has_many :source_file_group_joins, :dependent => :destroy, :class_name => 'RelatedFileGroupJoin', :foreign_key => :target_file_group_id
-  has_many :source_file_groups, :through => :source_file_group_joins
-  has_many :events, -> { order 'date DESC' }, :as => :eventable, :dependent => :destroy
-  has_many :scheduled_events, -> { order 'action_date ASC' }, :as => :scheduled_eventable, :dependent => :destroy
-  belongs_to :package_profile
-  has_many :attachments, :as => :attachable, :dependent => :destroy
+  has_many :assessments, as: :assessable, dependent: :destroy
+  has_many :target_file_group_joins, dependent: :destroy, class_name: 'RelatedFileGroupJoin', foreign_key: :source_file_group_id
+  has_many :target_file_groups, through: :target_file_group_joins
+  has_many :source_file_group_joins, dependent: :destroy, class_name: 'RelatedFileGroupJoin', foreign_key: :target_file_group_id
+  has_many :source_file_groups, through: :source_file_group_joins
+  has_many :events, -> { order 'date DESC' }, as: :eventable, dependent: :destroy
+  has_many :scheduled_events, -> { order 'action_date ASC' }, as: :scheduled_eventable, dependent: :destroy
+  has_many :attachments, as: :attachable, dependent: :destroy
 
   before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root
   before_save :strip_fields
   before_validation :initialize_file_info
 
-  validates_uniqueness_of :cfs_root, :allow_blank => true
+  validates_uniqueness_of :cfs_root, allow_blank: true
   validates_presence_of :name, :total_files, :total_file_size
   validates_presence_of :producer_id
 

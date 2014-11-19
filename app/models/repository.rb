@@ -4,9 +4,9 @@ class Repository < ActiveRecord::Base
   include RedFlagAggregator
 
   email_person_association(:contact)
-  belongs_to :institution
-  has_many :collections, :dependent => :destroy
-  has_many :assessments, :as => :assessable, :dependent => :destroy
+  belongs_to :institution, touch: true
+  has_many :collections, dependent: :destroy
+  has_many :assessments, as: :assessable, dependent: :destroy
 
   LDAP_DOMAINS = ['uofi', 'uiuc']
 
@@ -18,11 +18,11 @@ class Repository < ActiveRecord::Base
 
   auto_html_for :notes do
     html_escape
-    link :target => '_blank'
+    link target: '_blank'
     simple_format
   end
 
-  aggregates_red_flags :collections => :collections, :label_method => :title
+  aggregates_red_flags collections: :collections, label_method: :title
 
   def total_size
     self.collections.collect { |c| c.total_size }.sum

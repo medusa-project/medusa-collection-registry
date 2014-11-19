@@ -1,12 +1,12 @@
 class ScheduledEvent < ActiveRecord::Base
-  belongs_to :scheduled_eventable, :polymorphic => true
+  belongs_to :scheduled_eventable, polymorphic: true, touch: true
 
   STATES = ['scheduled', 'completed', 'cancelled']
 
-  validates_inclusion_of :key, :in => lambda { |event| event.scheduled_eventable.supported_scheduled_event_keys }
+  validates_inclusion_of :key, in: lambda { |event| event.scheduled_eventable.supported_scheduled_event_keys }
   validates :actor_email, email: true
   validates_presence_of :action_date
-  validates_inclusion_of :state, :in => STATES
+  validates_inclusion_of :state, in: STATES
   before_validation :ensure_state
 
   def self.incomplete
@@ -22,7 +22,7 @@ class ScheduledEvent < ActiveRecord::Base
   end
 
   def enqueue_initial
-    Delayed::Job.enqueue(self, :run_at => self.action_date)
+    Delayed::Job.enqueue(self, run_at: self.action_date)
   end
 
   def perform
@@ -64,7 +64,7 @@ class ScheduledEvent < ActiveRecord::Base
   end
 
   def create_completion_event(completing_user)
-    e = self.scheduled_eventable.events.build(:actor_email => completing_user.email, :key => self.scheduled_eventable.normal_event_key(self.key), :date => Date.today)
+    e = self.scheduled_eventable.events.build(actor_email: completing_user.email, key: self.scheduled_eventable.normal_event_key(self.key), date: Date.today)
     e.save!
   end
 

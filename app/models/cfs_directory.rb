@@ -3,8 +3,8 @@ class CfsDirectory < ActiveRecord::Base
 
   has_many :subdirectories, class_name: 'CfsDirectory', foreign_key: :parent_cfs_directory_id, dependent: :destroy
   has_many :cfs_files, dependent: :destroy
-  belongs_to :parent_cfs_directory, class_name: 'CfsDirectory'
-  belongs_to :file_group
+  belongs_to :parent_cfs_directory, class_name: 'CfsDirectory', touch: true
+  belongs_to :file_group, touch: true
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
   has_many :amazon_backups, -> { order 'date desc'}
 

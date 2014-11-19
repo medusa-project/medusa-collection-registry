@@ -1,7 +1,7 @@
 require 'rest_client'
 
 class CfsFile < ActiveRecord::Base
-  belongs_to :cfs_directory
+  belongs_to :cfs_directory, touch: true
 
   has_many :red_flags, :as => :red_flaggable, :dependent => :destroy
 

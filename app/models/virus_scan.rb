@@ -1,16 +1,16 @@
 require 'open3'
 
 class VirusScan < ActiveRecord::Base
-  belongs_to :file_group
+  belongs_to :file_group, touch: true
 
   def self.check_file_group(file_group)
     return unless file_group.cfs_directory.present?
     scan_result = self.run_clam(file_group.full_cfs_directory_path)
     self.transaction do
-      file_group.virus_scans.create(:scan_result => scan_result[:raw_result])
+      file_group.virus_scans.create(scan_result: scan_result[:raw_result])
       scan_result[:hits].each do |hit|
         file = file_group.ensure_file_at_absolute_path(hit[:path])
-        file.red_flags.create(:message => "Virus Detected: #{hit[:message]}")
+        file.red_flags.create(message: "Virus Detected: #{hit[:message]}")
       end
     end
   end
@@ -41,7 +41,7 @@ class VirusScan < ActiveRecord::Base
       h[:scanned_data_size] = summary_section.match(/Data scanned: (.*)$/)[1]
       h[:time] = summary_section.match(/Time: (.*)$/)[1]
     end
-    return {:hits => hits, :summary => summary, :raw_result => result}
+    return {hits: hits, summary: summary, raw_result: result}
   end
 
 end

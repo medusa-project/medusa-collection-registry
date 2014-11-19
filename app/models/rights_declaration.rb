@@ -1,9 +1,9 @@
 class RightsDeclaration < ActiveRecord::Base
-  belongs_to :rights_attachable, :polymorphic => true
+  belongs_to :rights_attachable, polymorphic: true, touch: true
   before_validation :set_defaults
   cattr_accessor :rights_bases, :default_rights_basis, :copyright_jurisdictions, :default_copyright_jurisdiction,
                  :copyright_statements, :default_copyright_statement, :access_restrictions,
-                 :default_access_restrictions, :instance_accessor => false
+                 :default_access_restrictions, instance_accessor: false
 
   #initialization of fields
   def self.load_rights_data
