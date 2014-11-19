@@ -5,7 +5,7 @@ class ActiveRecord::Base
   #that do the right things. You still need to make a #{attr_name}_id field via a migration
   #and a reverse association if desired
   def self.email_person_association(attr_name)
-    belongs_to attr_name, :class_name => Person
+    belongs_to attr_name, class_name: Person
     define_method :"#{attr_name}_email" do
       self.send(attr_name).try(:email)
     end

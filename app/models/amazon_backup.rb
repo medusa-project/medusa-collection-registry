@@ -30,8 +30,8 @@ class AmazonBackup < ActiveRecord::Base
   #This is the user who requested the backup, needed so we can email progress reports
   belongs_to :user, touch: true
 
-  has_one :job_amazon_backup, :class_name => 'Job::AmazonBackup', :dependent => :destroy
-  has_one :workflow_ingest, :class_name => 'Workflow::Ingest'
+  has_one :job_amazon_backup, class_name: 'Job::AmazonBackup', dependent: :destroy
+  has_one :workflow_ingest, class_name: 'Workflow::Ingest'
 
   #Only allow one backup per day for a file group
   validates_uniqueness_of :date, scope: :cfs_directory_id

@@ -23,7 +23,7 @@ When /^I start a new collection for the repository titled '(.*)'$/ do |title|
 end
 
 When /^I view MODS for the collection titled '(.*)'$/ do |title|
-  visit collection_path(Collection.find_by_title(title), :format => 'xml')
+  visit collection_path(Collection.find_by_title(title), format: 'xml')
 end
 
 And /^I check access system '(.*)'$/ do |name|

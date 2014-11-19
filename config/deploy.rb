@@ -9,13 +9,13 @@ default_run_options[:shell] = '/bin/bash -l'
 task :production do
   role :web, production_server
   role :app, production_server
-  role :db, production_server, :primary => true
+  role :db, production_server, primary: true
 end
 
 task :staging do
   role :web, staging_server
   role :app, staging_server
-  role :db, staging_server, :primary => true
+  role :db, staging_server, primary: true
 end
 
 set :application, "Medusa"
@@ -53,7 +53,7 @@ namespace :deploy do
     run "cd #{home}/bin ; ./stop-rails || echo 'Passenger not currently running'"
   end
   desc "Restart rails"
-  task :restart, :roles => :app, :except => {:no_release => true} do
+  task :restart, roles: :app, except: {no_release: true} do
     ;
   end
 

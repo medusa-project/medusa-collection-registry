@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
         #elsewhere.
         redirect_to return_url
       else
-        redirect_to unauthorized_net_id_url(:net_id => user.net_id)
+        redirect_to unauthorized_net_id_url(net_id: user.net_id)
       end
     else
       redirect_to login_url

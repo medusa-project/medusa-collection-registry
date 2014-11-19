@@ -1,7 +1,7 @@
 class ProducersController < ApplicationController
 
   before_filter :require_logged_in
-  before_filter :find_producer, :only => [:show, :destroy, :edit, :update]
+  before_filter :find_producer, only: [:show, :destroy, :edit, :update]
 
   def index
     @producers = Producer.all
@@ -16,7 +16,7 @@ class ProducersController < ApplicationController
     if @producer.destroy
       redirect_to producers_path
     else
-      redirect_to :back, :alert => 'Producers with associated file groups cannot be deleted.'
+      redirect_to :back, alert: 'Producers with associated file groups cannot be deleted.'
     end
   end
 

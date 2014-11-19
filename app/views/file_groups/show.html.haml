@@ -16,7 +16,7 @@
       #description-tab.tab-pane.active
         = render 'show_description'
       #rights-tab.tab-pane
-        = render :partial => 'rights_declarations/show', :locals => {:rights_declaration => @file_group.rights_declaration}
+        = render partial: 'rights_declarations/show', locals: {rights_declaration: @file_group.rights_declaration}
       #assessments-tab.tab-pane
         = render 'assessments/table'
       #attachments-tab.tab-pane
@@ -25,5 +25,5 @@
         #amazon-tab.tab-pane
           = render 'amazon_backups'
 
-= render :partial => 'events/modal_form', :locals => {:eventable => @file_group, :remote => false, :dialog_id => :addEventModal}
-= render :partial => 'scheduled_events/form', :locals => {:eventable => @file_group, :remote => false, :dialog_id => :addScheduledEventModal}
+= render partial: 'events/modal_form', locals: {eventable: @file_group, remote: false, dialog_id: :addEventModal}
+= render partial: 'scheduled_events/form', locals: {eventable: @file_group, remote: false, dialog_id: :addScheduledEventModal}

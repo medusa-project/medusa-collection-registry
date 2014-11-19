@@ -16,11 +16,11 @@
     = show_field @producer, :active_end_date, 'Active End Date'
     = show_field @producer, :notes_html, 'Notes'
   .btn-group
-    = link_to 'Back', producers_path, :class => 'btn btn-default'
-    = link_to 'Edit', edit_producer_path(@producer), :class => 'btn btn-default'
-    = link_to 'Delete Producer', @producer, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
+    = link_to 'Back', producers_path, class: 'btn btn-default'
+    = link_to 'Edit', edit_producer_path(@producer), class: 'btn btn-default'
+    = link_to 'Delete Producer', @producer, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-danger'
 
 .col-sm-9#content
-  %a.toggles{:href=>'#', :rel => 'tooltip', :title => 'Hide or show the sidebar' }
+  %a.toggles{:href=>'#', rel: 'tooltip', title: 'Hide or show the sidebar' }
     %span.glyphicon.glyphicon-arrow-left
   = render 'collections_table'

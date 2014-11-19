@@ -1,13 +1,13 @@
-%nav.navbar.navbar-default#global-navigation{:role => 'navigation'}
+%nav.navbar.navbar-default#global-navigation{role: 'navigation'}
   .container
     / Brand and toggle get grouped for better mobile display
     .navbar-header
-      %button.navbar-toggle{'data-target' => '#bs-example-navbar-collapse-1', 'data-toggle' => 'collapse', :type => 'button'}
+      %button.navbar-toggle{'data-target' => '#bs-example-navbar-collapse-1', 'data-toggle' => 'collapse', type: 'button'}
         %span.sr-only Toggle navigation
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      %a.navbar-brand{:href => root_url}
+      %a.navbar-brand{href: root_url}
         - if logged_in?
           %span.glyphicon.glyphicon-eye-open
         - else
@@ -38,7 +38,7 @@
             - if safe_can?(:update, BookTracker::Item)
               %li= link_to 'Tasks', book_tracker_tasks_path
         - if logged_in?
-          = render :partial => 'shared/filename_search'
+          = render partial: 'shared/filename_search'
       %ul.nav.navbar-nav.navbar-right
         - if logged_in?
           %li= link_to('Logout', logout_path)

@@ -16,7 +16,7 @@
           %th Completed
           %th Backup
       %tbody
-        - BitLevelFileGroup.includes(:collection => :repository).includes(:cfs_directory => :amazon_backups).each do |file_group|
+        - BitLevelFileGroup.includes(collection: :repository).includes(cfs_directory: :amazon_backups).each do |file_group|
           -# Protect against pathological case when id is present but the cfs directory doesn't actually exist
           - if file_group.cfs_directory
           - last_backup = file_group.last_amazon_backup
@@ -34,4 +34,4 @@
   %br
 
   %div
-    = f.button :submit, value: 'Create Backups', :class => 'btn btn-primary pull-right'
+    = f.button :submit, value: 'Create Backups', class: 'btn btn-primary pull-right'

@@ -5,8 +5,8 @@ And /^I have repositories with fields:$/ do |table|
 end
 
 And /^the repository titled '(.*)' is managed by '(.*)'$/ do |title, email|
-  person = FactoryGirl.create(:person, :email => email,)
-  FactoryGirl.create(:repository, :contact => person, :title => title)
+  person = FactoryGirl.create(:person, email: email,)
+  FactoryGirl.create(:repository, contact: person, title: title)
 end
 
 When /^the repository titled '(.*)' has been deleted$/ do |title|
@@ -30,13 +30,13 @@ And /^I have some repositories with files totalling '(\d+)' GB$/ do |size|
   repositories = 3.times.collect { FactoryGirl.create(:repository) }
   repositories.each do |r|
     3.times do
-      FactoryGirl.create(:collection, :repository => r)
+      FactoryGirl.create(:collection, repository: r)
     end
   end
   decompose_size(size).each do |x|
     repository = repositories.sample
     collection = repository.collections.sample
-    FactoryGirl.create(:file_group, :collection => collection, :total_file_size => x)
+    FactoryGirl.create(:file_group, collection: collection, total_file_size: x)
   end
 end
 

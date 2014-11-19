@@ -3,12 +3,12 @@ require 'nokogiri'
 
 namespace :content_models do
   desc 'Ingest medusa content models, overwriting old versions if necessary'
-  task :refresh => [:remove, :ingest_new] do
+  task refresh: [:remove, :ingest_new] do
     #nothing - just the two other tasks
   end
 
   desc 'Ingest medusa content models not currently present in the repository'
-  task :ingest_new => :environment do
+  task ingest_new: :environment do
     ActiveFedora.init
     each_content_model_file_and_pid do |file, pid|
       begin
@@ -18,7 +18,7 @@ namespace :content_models do
       rescue Rubydora::RecordNotFound
         #this is actually the case where we'll try to ingest - I didn't see a nicer way to do it in Rubydora
         begin
-          repository.ingest(:file => File.read(file), :pid => pid)
+          repository.ingest(file: File.read(file), pid: pid)
           puts "Ingested: #{pid}"
         rescue Exception => e
           puts "Error ingesting #{pid}: #{e.to_s}"
@@ -28,7 +28,7 @@ namespace :content_models do
   end
 
   desc 'Remove medusa content models that are currently in the repository'
-  task :remove => :environment do
+  task remove: :environment do
     each_content_model_file_and_pid do |file, pid|
       begin
         repository = ActiveFedora::Base.connection_for_pid(pid)

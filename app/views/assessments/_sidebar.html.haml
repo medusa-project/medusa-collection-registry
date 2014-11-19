@@ -1,9 +1,9 @@
 .col-sm-3
   %div
-    %p= f.button :submit, :class => 'btn btn-primary'
+    %p= f.button :submit, class: 'btn btn-primary'
   %div
     %p
       - if @assessment.new_record?
-        = link_to("Back to #{@assessable.class.name}", @assessable, :class => 'btn btn-default')
+        = link_to("Back to #{@assessable.class.name}", @assessable, class: 'btn btn-default')
       - else
-        = link_to(t('.cancel', :default => t('helpers.links.cancel')), @assessment, :class => 'btn btn-default')
+        = link_to(t('.cancel', default: t('helpers.links.cancel')), @assessment, class: 'btn btn-default')

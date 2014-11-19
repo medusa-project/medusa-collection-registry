@@ -1,10 +1,10 @@
-DJ_QUEUES = {:default => 3, :glacier => 1}
+DJ_QUEUES = {default: 3, glacier: 1}
 
 namespace :medusa do
   namespace :delayed_job do
 
     desc 'Start delayed job'
-    task :start => :environment do
+    task start: :environment do
       ENV['RAILS_ENV'] = Rails.env
       DJ_QUEUES.each do |queue, count|
         # Create the tmp/pids directory if it's not there
@@ -17,7 +17,7 @@ namespace :medusa do
     end
 
     desc 'Stop delayed_job'
-    task :stop => :environment do
+    task stop: :environment do
       ENV['RAILS_ENV'] = Rails.env
       DJ_QUEUES.each do |queue, count|
         stop_jobs(queue)

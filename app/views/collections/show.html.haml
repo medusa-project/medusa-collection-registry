@@ -4,12 +4,12 @@
 .tabbable
   .btn-group.pull-right
     - if @collection.public?
-      = link_to 'Public View', public_collection_path(@collection), :class => 'btn btn-default'
-    = link_to 'Red Flags', red_flags_collection_path(@collection), :class => 'btn btn-default'
-    = link_to 'View events', events_collection_path(@collection), :class => 'btn btn-default'
-    = link_to 'Mods', collection_path(@collection, :format => :xml), :class => 'btn btn-default'
-    = link_to 'Edit', edit_collection_path(@collection), :class => 'btn btn-default'
-    = link_to 'Delete Collection', collection_path(@collection), :method => 'delete', :data => { :confirm => collection_confirm_message}, :class => 'btn btn-danger'
+      = link_to 'Public View', public_collection_path(@collection), class: 'btn btn-default'
+    = link_to 'Red Flags', red_flags_collection_path(@collection), class: 'btn btn-default'
+    = link_to 'View events', events_collection_path(@collection), class: 'btn btn-default'
+    = link_to 'Mods', collection_path(@collection, format: :xml), class: 'btn btn-default'
+    = link_to 'Edit', edit_collection_path(@collection), class: 'btn btn-default'
+    = link_to 'Delete Collection', collection_path(@collection), method: 'delete', data: { confirm: collection_confirm_message}, class: 'btn btn-danger'
   - if logged_in?
     = render 'show_tabs_logged_in'
   - else

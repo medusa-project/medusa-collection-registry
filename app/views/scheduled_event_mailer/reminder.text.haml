@@ -10,4 +10,4 @@ on #{@event.action_date.to_s}.
 
 You can view the event at:
 
-#{url_for(:only_path => false, :action => 'events', :controller => @eventable.class.to_s.pluralize.underscore, :id => @eventable.id)}
+#{url_for(only_path: false, action: 'events', controller: @eventable.class.to_s.pluralize.underscore, id: @eventable.id)}

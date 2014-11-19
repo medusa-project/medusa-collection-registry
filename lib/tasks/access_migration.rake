@@ -2,7 +2,7 @@ require 'rake'
 require 'csv'
 
 desc 'migrate Access data'
-task :access_migrate => :environment do
+task access_migrate: :environment do
   #back up current database against failure
   system("pg_dump medusa_#{Rails.env} > #{File.join(Rails.root, "tmp", "medusa_#{Rails.env}.sql")}")
   #read csv as hashes
@@ -88,8 +88,8 @@ def create_collections
   @collections.each do |c|
     repository = Repository.find_by_title(c[:repository_title])
     raise(RuntimeError, "Didn't find repository") unless repository
-    collection = Collection.create(:title => c[:title], :repository_id => repository.id, :published => c[:published],
-                                   :ongoing => c[:ongoing], :description => c[:description], :access_url => c[:access_url])
+    collection = Collection.create(title: c[:title], repository_id: repository.id, published: c[:published],
+                                   ongoing: c[:ongoing], description: c[:description], access_url: c[:access_url])
     access_system = AccessSystem.find_by_name(c[:access_system_name])
     if access_system
       collection.access_systems << access_system
@@ -117,8 +117,8 @@ def create_file_groups
     production_unit = Producer.find_by_title(fg[:production_unit_title])
     file_type = FileType.find_by_name(fg[:file_type_name])
     raise(RuntimeError, "Can't find associated model") unless collection and production_unit and file_type
-    FileGroup.create(:collection_id => collection.id, :production_unit_id => production_unit.id,
-                     :file_type_id => file_type.id)
+    FileGroup.create(collection_id: collection.id, production_unit_id: production_unit.id,
+                     file_type_id: file_type.id)
   end
   puts "Total File Groups: #{FileGroup.count}"
 end

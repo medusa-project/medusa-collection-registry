@@ -1,6 +1,6 @@
 .pull-right
-  = link_to 'Edit', edit_assessment_path(@assessment), :class => 'btn btn-default'
-  = link_to 'Delete', @assessment, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-danger'
+  = link_to 'Edit', edit_assessment_path(@assessment), class: 'btn btn-default'
+  = link_to 'Delete', @assessment, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-danger'
 
 .page-header
   %h1 Assessment: #{@assessment.date}

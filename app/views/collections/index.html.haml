@@ -1,11 +1,11 @@
 - model_class = Collection
 .page-header
-  %h1=t '.title', :default => model_class.model_name.human.pluralize
+  %h1=t '.title', default: model_class.model_name.human.pluralize
   - if @subheader
     %p= @subheader
 
-= link_to 'Add Collection', new_collection_path, :class => 'btn btn-primary'
-= link_to(collections_path(:format => 'csv'), :class => 'btn btn-default') do
+= link_to 'Add Collection', new_collection_path, class: 'btn btn-primary'
+= link_to(collections_path(format: 'csv'), class: 'btn btn-default') do
   %span.glyphicon.glyphicon-export
   Export as CSV
 
@@ -40,9 +40,9 @@
         %td #{number_with_precision(collection.total_size, precision: 3)}
         %td #{collection.preservation_priority_name}
         %td
-          = link_to t('.edit', :default => t('helpers.links.edit')), edit_collection_path(collection), :class => 'btn btn-default btn-xs'
-          = link_to t('.destroy', :default => t('helpers.links.destroy')), collection_path(collection), :method => :delete, :data => {:confirm => collection_confirm_message}, :class => 'btn btn-xs btn-danger'
+          = link_to t('.edit', default: t('helpers.links.edit')), edit_collection_path(collection), class: 'btn btn-default btn-xs'
+          = link_to t('.destroy', default: t('helpers.links.destroy')), collection_path(collection), method: :delete, data: {confirm: collection_confirm_message}, class: 'btn btn-xs btn-danger'
 
 %br
 
-= link_to 'Add Collection', new_collection_path, :class => 'btn btn-primary'
+= link_to 'Add Collection', new_collection_path, class: 'btn btn-primary'

@@ -1,8 +1,8 @@
 class CollectionsController < ApplicationController
 
-  before_filter :require_logged_in, :except => [:show, :public]
-  before_filter :require_logged_in_or_basic_auth, :only => [:show]
-  before_filter :find_collection_and_repository, :only => [:show, :destroy, :edit, :update, :red_flags, :public]
+  before_filter :require_logged_in, except: [:show, :public]
+  before_filter :require_logged_in_or_basic_auth, only: [:show]
+  before_filter :find_collection_and_repository, only: [:show, :destroy, :edit, :update, :red_flags, :public]
   include CollectionsToCsv
 
   def show
@@ -10,7 +10,7 @@ class CollectionsController < ApplicationController
     @assessments = @assessable.recursive_assessments
     respond_to do |format|
       format.html
-      format.xml { render :xml => @collection.to_mods }
+      format.xml { render xml: @collection.to_mods }
       format.json
     end
   end
@@ -41,7 +41,7 @@ class CollectionsController < ApplicationController
 
   def new
     @collection = Collection.new
-    @collection.rights_declaration = RightsDeclaration.new(:rights_declarable_type => 'Collection')
+    @collection.rights_declaration = RightsDeclaration.new(rights_declarable_type: 'Collection')
     @repository = Repository.find(params[:repository_id]) rescue Repository.order(:title).first
     @collection.repository = @repository
     authorize! :create, @collection
@@ -77,7 +77,7 @@ class CollectionsController < ApplicationController
 
   def for_package_profile
     package_profile = PackageProfile.find(params[:package_profile_id])
-    file_groups = package_profile.file_groups.includes(:collection => :repository)
+    file_groups = package_profile.file_groups.includes(collection: :repository)
     @collections = file_groups.collect do |file_group|
       file_group.collection
     end.uniq.sort_by(&:title)
@@ -109,8 +109,8 @@ class CollectionsController < ApplicationController
     params[:collection].permit(:access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
                                :ongoing, :published, :repository_id, :start_date, :title,
                                :preservation_priority_id, :package_profile_id, :contact_email, :external_id,
-                               :rights_declaration_attributes => [:rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions],
-                               :resource_type_ids => [], :access_system_ids => []
+                               rights_declaration_attributes: [:rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions],
+                               resource_type_ids: [], access_system_ids: []
     )
   end
 

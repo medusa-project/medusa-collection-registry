@@ -53,15 +53,15 @@ end
 
 Then(/^a visitor is unauthorized to start a file group for the collection titled '(.*)'$/) do |title|
   rack_login('a visitor')
-  get new_file_group_path(:collection_id => Collection.find_by(:title => title).id)
+  get new_file_group_path(collection_id: Collection.find_by(title: title).id)
   expect(last_response.redirect?).to be_truthy
   expect(last_response.location).to match(/#{unauthorized_path}$/)
 end
 
 Then(/^a visitor is unauthorized to create a file group for the collection titled '(.*)'$/) do |title|
   rack_login('a visitor')
-  post file_groups_path(:file_group => {:collection_id => Collection.find_by(:title => title).id,
-                                        :storage_level => 'bit-level store'})
+  post file_groups_path(file_group: {collection_id: Collection.find_by(title: title).id,
+                                        storage_level: 'bit-level store'})
   expect(last_response.redirect?).to be_truthy
   expect(last_response.location).to match(/#{unauthorized_path}$/)
 end
@@ -70,5 +70,5 @@ private
 
 def find_file_group(collection_title, location)
   collection = Collection.find_by_title(collection_title)
-  collection.file_groups.where(:external_file_location => location).first
+  collection.file_groups.where(external_file_location: location).first
 end

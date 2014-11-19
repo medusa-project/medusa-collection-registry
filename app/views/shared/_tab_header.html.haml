@@ -4,9 +4,9 @@
 -#         we Array.wrap entries beforehand to make generating the lists easier with default labels
 -#  may pass index that is to be active via :active_index
 - active_index ||= 0
-%ul.nav.nav-tabs{:id => id}
+%ul.nav.nav-tabs{id: id}
   - tabs.collect {|tab| Array.wrap(tab)}.each_with_index do |tab, index|
     - tab_id = tab.first
     - tab_label = tab.second || tab_id.underscore.titlecase
-    %li{:class => (index == active_index ? 'active' : '')}
-      %a{:href => "##{tab_id}", 'data-toggle' => 'tab'}= tab_label
+    %li{class: (index == active_index ? 'active' : '')}
+      %a{href: "##{tab_id}", 'data-toggle' => 'tab'}= tab_label

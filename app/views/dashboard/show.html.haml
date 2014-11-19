@@ -1,5 +1,5 @@
 .tabbable
-  = render :partial => 'shared/tab_header', :locals => {:id => 'tab-headers', :tabs => dashboard_tab_list}
+  = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: dashboard_tab_list}
   .tab-content
     #storage-overview.tab-pane.active
       = render 'storage_overview'

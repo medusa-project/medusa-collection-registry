@@ -11,7 +11,7 @@
 #  <oai:itemID>oai:example.edu:changeme:500</oai:itemID>
 # 
 # With the last two lines of this file uncommented, the relationships hash of your object will include:
-#   :oai_item_id => ["info:fedora/oai:example.edu:changeme:500"]
+#   oai_item_id: ["info:fedora/oai:example.edu:changeme:500"]
 #
 :predicate_mapping:
   info:fedora/fedora-system:def/relations-external#: 

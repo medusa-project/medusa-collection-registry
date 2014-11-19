@@ -1,6 +1,6 @@
 - model_class = Producer
 .page-header
-  %h1= t('.title', :default => model_class.model_name.human.pluralize)
+  %h1= t('.title', default: model_class.model_name.human.pluralize)
 
 = render 'shared/definitions/producer'
 
@@ -18,9 +18,9 @@
         %td #{producer.administrator_email}
         %td #{link_to_external producer.url, producer.url}
         %td
-          = link_to 'Edit', edit_producer_path(producer), :class => 'btn btn-default btn-xs'
-          = link_to 'Delete', producer, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-xs btn-danger'
+          = link_to 'Edit', edit_producer_path(producer), class: 'btn btn-default btn-xs'
+          = link_to 'Delete', producer, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-xs btn-danger'
 
 %br
 
-= link_to 'New Producer', new_producer_path, :class => 'btn btn-primary'
+= link_to 'New Producer', new_producer_path, class: 'btn btn-primary'

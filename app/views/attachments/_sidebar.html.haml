@@ -1,9 +1,9 @@
 .col-sm-3
   %div
-    %p= f.button :submit, :class => 'btn btn-primary'
+    %p= f.button :submit, class: 'btn btn-primary'
   %div
     %p
       - if @attachment.new_record?
-        = link_to("Back to #{@attachable.class.name}", @attachable, :class => 'btn btn-default')
+        = link_to("Back to #{@attachable.class.name}", @attachable, class: 'btn btn-default')
       - else
-        = link_to(t('.cancel', :default => t('helpers.links.cancel')), @attachable, :class => 'btn btn-default')
+        = link_to(t('.cancel', default: t('helpers.links.cancel')), @attachable, class: 'btn btn-default')

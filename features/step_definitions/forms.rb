@@ -47,7 +47,7 @@ And /^I click on '(.*)' and delayed jobs are run$/ do |link_name|
 end
 
 And /^I select '(.*)' from '(.*)'$/ do |value, label|
-  select(value, :from => label)
+  select(value, from: label)
 end
 
 And /^I check '(.*)'$/ do |string|
@@ -64,7 +64,7 @@ end
 
 def complete_form_from_table(table)
   table.raw.each do |row|
-    fill_in(row.first, :with => row.last)
+    fill_in(row.first, with: row.last)
   end
 end
 

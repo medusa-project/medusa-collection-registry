@@ -17,7 +17,7 @@ And(/^in the ldap administration form for the repository titled '(.*)' I click o
 end
 
 Then(/^the repository titled '(.*)' should be administered by the group '(.*)' in the domain '(.*)'$/) do |title, group, domain|
-  repository = Repository.where(:title => title).first
+  repository = Repository.where(title: title).first
   expect(repository.ldap_admin_domain).to eq(domain)
   expect(repository.ldap_admin_group).to eq(group)
 end

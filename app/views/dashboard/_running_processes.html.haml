@@ -27,7 +27,7 @@
       %th File Group
       %th Files remaining
   %tbody
-    - BitLevelFileGroup.where(:id => Job::FitsDirectory.distinct.pluck(:file_group_id)).includes(:cfs_directory).each do |file_group|
+    - BitLevelFileGroup.where(id: Job::FitsDirectory.distinct.pluck(:file_group_id)).includes(:cfs_directory).each do |file_group|
       - if file_group.cfs_directory.present?
         %tr
           %td= file_group.cfs_directory.relative_path
@@ -43,7 +43,7 @@
       %th File Group
       %th Files remaining
   %tbody
-    - BitLevelFileGroup.where(:id => Job::CfsInitialDirectoryAssessment.distinct.pluck(:file_group_id)).includes(:cfs_directory).each do |file_group|
+    - BitLevelFileGroup.where(id: Job::CfsInitialDirectoryAssessment.distinct.pluck(:file_group_id)).includes(:cfs_directory).each do |file_group|
       - if file_group.cfs_directory.present?
         %tr
           %td= file_group.cfs_directory.relative_path

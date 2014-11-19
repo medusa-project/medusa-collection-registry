@@ -19,7 +19,7 @@ class DashboardController < ApplicationController
     @storage_summary = []
     #TODO - it'd be nice to get the cfs_directories here as well, but that doesn't seem possible at present. There's a
     #kludge below that helps some.
-    Repository.includes(:collections => {:file_groups => :target_file_groups}).each do |repository|
+    Repository.includes(collections: {file_groups: :target_file_groups}).each do |repository|
       external_file_groups = repository.collections.collect { |c| c.file_groups.select { |fg| fg.is_a?(ExternalFileGroup) } }.flatten
       uningested_external_file_groups = external_file_groups.reject do |fg|
         fg.target_file_groups.detect { |target| target.is_a?(BitLevelFileGroup) }
@@ -41,8 +41,8 @@ class DashboardController < ApplicationController
   end
 
   def setup_events
-    @events = Event.order('date DESC').where('updated_at >= ?', Time.now - 7.days).includes(:eventable => :parent)
-    @scheduled_events = ScheduledEvent.incomplete.order('action_date ASC').includes(:scheduled_eventable => :parent)
+    @events = Event.order('date DESC').where('updated_at >= ?', Time.now - 7.days).includes(eventable: :parent)
+    @scheduled_events = ScheduledEvent.incomplete.order('action_date ASC').includes(scheduled_eventable: :parent)
   end
 
 end

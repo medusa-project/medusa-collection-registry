@@ -1,31 +1,31 @@
 Then /^a (.*) is unauthorized to start an attachment for the collection titled '(.*)'$/ do |user_type, title|
   expected_path = setup_assessment_creation_and_return_expected_path(user_type)
-  get new_attachment_path(:attachable_type => 'Collection',
-                          :attachable_id => Collection.where(:title => title).first.id)
+  get new_attachment_path(attachable_type: 'Collection',
+                          attachable_id: Collection.where(title: title).first.id)
   expect(last_response.redirect?).to be_truthy
   expect(last_response.location).to match(/#{expected_path}$/)
 end
 
 Then /^a (.*) is unauthorized to create an attachment for the collection titled '(.*)'$/ do |user_type, title|
   expected_path = setup_assessment_creation_and_return_expected_path(user_type)
-  post attachments_path(:attachment => {:attachable_type => 'Collection',
-                                        :attachable_id => Collection.where(:title => title).first.id})
+  post attachments_path(attachment: {attachable_type: 'Collection',
+                                        attachable_id: Collection.where(title: title).first.id})
   expect(last_response.redirect?).to be_truthy
   expect(last_response.location).to match(/#{expected_path}$/)
 end
 
 Then /^a (.*) is unauthorized to start an attachment for the file group named '(.*)'$/ do |user_type, name|
   expected_path = setup_assessment_creation_and_return_expected_path(user_type)
-  get new_attachment_path(:attachable_type => 'FileGroup',
-                          :attachable_id => FileGroup.where(:name => name).first.id)
+  get new_attachment_path(attachable_type: 'FileGroup',
+                          attachable_id: FileGroup.where(name: name).first.id)
   expect(last_response.redirect?).to be_truthy
   expect(last_response.location).to match(/#{expected_path}$/)
 end
 
 Then /^a (.*) is unauthorized to create an attachment for the file group named '(.*)'$/ do |user_type, name|
   expected_path = setup_assessment_creation_and_return_expected_path(user_type)
-  post attachments_path(:attachment => {:attachable_type => 'FileGroup',
-                                        :attachable_id => FileGroup.where(:name => name).first.id})
+  post attachments_path(attachment: {attachable_type: 'FileGroup',
+                                        attachable_id: FileGroup.where(name: name).first.id})
   expect(last_response.redirect?).to be_truthy
   expect(last_response.location).to match(/#{expected_path}$/)
 end

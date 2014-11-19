@@ -1,10 +1,10 @@
 class CfsFilesController < ApplicationController
 
-  before_filter :require_logged_in, :except => [:show, :public, :public_view, :public_download, :public_preview_image]
-  before_filter :require_logged_in_or_basic_auth, :only => [:show]
-  before_filter :find_file, :only => [:show, :public, :create_fits_xml, :fits_xml,
-                                      :download, :view, :public_download, :public_view,
-                                      :preview_image, :public_preview_image]
+  before_filter :require_logged_in, except: [:show, :public, :public_view, :public_download, :public_preview_image]
+  before_filter :require_logged_in_or_basic_auth, only: [:show]
+  before_filter :find_file, only: [:show, :public, :create_fits_xml, :fits_xml,
+                                   :download, :view, :public_download, :public_view,
+                                   :preview_image, :public_preview_image]
   before_filter :require_public_file, only: [:public, :public_download, :public_view, :public_preview_image]
 
   cattr_accessor :mime_type_viewers, :extension_viewers
@@ -33,9 +33,9 @@ class CfsFilesController < ApplicationController
 
   def fits_xml
     if @file.fits_xml.present?
-      render :xml => @file.fits_xml
+      render xml: @file.fits_xml
     else
-      render :text => "Fits XML not present for cfs file #{@file.relative_path}"
+      render text: "Fits XML not present for cfs file #{@file.relative_path}"
     end
   end
 

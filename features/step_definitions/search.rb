@@ -1,7 +1,7 @@
 Then(/^I should see a table of cfs files with (\d+) rows?$/) do |count|
   expect(page).to have_selector('#search_results')
   within('#search_results') do
-    expect(page).to have_css('tbody tr', :count => count.to_i)
+    expect(page).to have_css('tbody tr', count: count.to_i)
   end
 end
 

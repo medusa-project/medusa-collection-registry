@@ -1,11 +1,11 @@
 .col-sm-3
   %div
-    %p= f.button :submit, :class => 'btn btn-primary'
+    %p= f.button :submit, class: 'btn btn-primary'
   %div
     %p
       - if @producer.new_record?
-        = link_to('Index', producers_path, :class => 'btn btn-default')
+        = link_to('Index', producers_path, class: 'btn btn-default')
       - else
-        = link_to(t('.cancel', :default => t('helpers.links.cancel')), @producer, :class => 'btn btn-default')
+        = link_to(t('.cancel', default: t('helpers.links.cancel')), @producer, class: 'btn btn-default')
   %hr
   = render 'shared/definitions/producer'

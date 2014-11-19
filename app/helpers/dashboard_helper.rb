@@ -11,7 +11,7 @@ module DashboardHelper
     Hash.new.tap do |h|
       CfsFile.select('content_type, sum(size) as total_size, count(*) as count').group('content_type').order('content_type').each do |record|
         content_type = record[:content_type] || 'Unknown'
-        h[content_type] = {:size => record[:total_size] || 0, :count => record[:count] || 0}
+        h[content_type] = {size: record[:total_size] || 0, count: record[:count] || 0}
       end
     end
   end
@@ -25,7 +25,7 @@ module DashboardHelper
 
   def size_objects_type_format (ct)
     # only active records of certain format that have been ingested
-    number_with_precision(0.0, :precision => 4)
+    number_with_precision(0.0, precision: 4)
   end
 
   def file_count_objects_type_format (ct)
@@ -43,11 +43,11 @@ module DashboardHelper
     0
   end
 
-  INGEST_STATE_LABELS = {'start' => 'Starting', 'copying' => 'Copying from staging', 'amazon_backup' => 'Backing up to Amazon',
-                         'end' => 'Ended'}
+  INGEST_STATE_LABELS = {start: 'Starting', copying: 'Copying from staging', amazon_backup: 'Backing up to Amazon',
+                         end: 'Ended'}
 
   def ingest_state_text(state)
-    INGEST_STATE_LABELS[state] || 'Unknown'
+    INGEST_STATE_LABELS[state.to_sym] || 'Unknown'
   end
 
 end

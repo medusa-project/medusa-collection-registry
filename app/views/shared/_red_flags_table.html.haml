@@ -23,7 +23,7 @@
       %th Actions
   %tbody
     - @red_flags.each do |red_flag|
-      %tr{:id => "red-flag-#{red_flag.id}"}
+      %tr{id: "red-flag-#{red_flag.id}"}
         %td= red_flag.red_flaggable.class.cfs_type
         %td= red_flag.red_flaggable.cfs_label
         %td= red_flag.priority
@@ -37,4 +37,4 @@
           - if red_flag.flagged?
             %span.unflag-link
               |
-              = link_to('Unflag', unflag_red_flag_path(red_flag), :method => :post, :remote => true)
+              = link_to('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true)

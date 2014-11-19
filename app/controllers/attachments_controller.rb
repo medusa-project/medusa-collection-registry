@@ -1,7 +1,7 @@
 class AttachmentsController < ApplicationController
 
   before_filter :require_logged_in
-  before_filter :find_attachment_and_attachable, :only => [:destroy, :show, :edit, :update, :download]
+  before_filter :find_attachment_and_attachable, only: [:destroy, :show, :edit, :update, :download]
 
   def destroy
     authorize! :destroy_attachment, @attachable
@@ -33,7 +33,7 @@ class AttachmentsController < ApplicationController
 
   def download
     @attachment = Attachment.find(params[:id])
-    send_file(@attachment.attachment.path, :disposition => 'inline')
+    send_file(@attachment.attachment.path, disposition: 'inline')
   end
 
   def new

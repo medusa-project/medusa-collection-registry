@@ -18,5 +18,5 @@
         %td #{link_to_external repository.url, repository.url}
         %td #{repository.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
         %td
-          = link_to 'Edit', edit_repository_path(repository), :class => 'btn btn-default btn-xs'
-          = link_to 'Delete', repository_path(repository), :method => :delete, :data => { :confirm => repository_confirm_message}, :class => 'btn btn-xs btn-danger'
+          = link_to 'Edit', edit_repository_path(repository), class: 'btn btn-default btn-xs'
+          = link_to 'Delete', repository_path(repository), method: :delete, data: { confirm: repository_confirm_message}, class: 'btn btn-xs btn-danger'

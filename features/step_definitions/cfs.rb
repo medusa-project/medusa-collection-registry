@@ -27,16 +27,16 @@ And(/^I remove the cfs path '(.*)'$/) do |path|
 end
 
 When(/^I view the cfs path '(.*)'$/) do |path|
-  visit cfs_show_path(:path => path)
+  visit cfs_show_path(path: path)
 end
 
 Then(/^I should be viewing the cfs file '(.*)'$/) do |path|
-  current_path.should == cfs_show_path(:path => path)
+  current_path.should == cfs_show_path(path: path)
 end
 
 Given(/^the file group named '(.*)' has cfs root '(.*)'$/) do |name, path|
   file_group = FileGroup.find_by_name(name)
-  root_directory = FactoryGirl.create(:cfs_directory, :path => path)
+  root_directory = FactoryGirl.create(:cfs_directory, path: path)
   file_group.cfs_directory = root_directory
   file_group.save!
 end
@@ -48,7 +48,7 @@ end
 
 When(/^I set the cfs root of the file group named '(.*)' to '(.*)'$/) do |name, path|
   file_group = FileGroup.find_by_name(name)
-  new_root = CfsDirectory.find_by(:path => path) || FactoryGirl.create(:cfs_directory, :path => path)
+  new_root = CfsDirectory.find_by(path: path) || FactoryGirl.create(:cfs_directory, path: path)
   file_group.cfs_directory = new_root
   file_group.save!
 end
@@ -65,7 +65,7 @@ And(/^I run assessments on the the file group named '(.*)'$/) do |name|
 end
 
 When(/^I view fits for the cfs file '(.*)'$/) do |path|
-  visit cfs_fits_info_path(:path => path)
+  visit cfs_fits_info_path(path: path)
 end
 
 

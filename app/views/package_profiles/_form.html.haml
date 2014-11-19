@@ -1,6 +1,6 @@
-= simple_form_for @package_profile, :html => {:class => 'form-horizontal'}, :wrapper => :horizontal_form do |f|
+= simple_form_for @package_profile, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
   .row
-    = render :partial => 'sidebar', :locals => {:f => f}
+    = render partial: 'sidebar', locals: {f: f}
     .col-sm-9
       = f.input :name
       = f.input :url

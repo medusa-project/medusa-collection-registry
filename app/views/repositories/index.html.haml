@@ -1,6 +1,6 @@
 - model_class = Repository
 .page-header
-  %h1= t '.title', :default => model_class.model_name.human.pluralize
+  %h1= t '.title', default: model_class.model_name.human.pluralize
 
 = render 'shared/definitions/repository'
 
@@ -13,4 +13,4 @@
 %br
 
 - if can? :update_ldap_admins, Repository
-  = link_to 'Edit Repository Admins', edit_ldap_admins_repositories_path, :class => 'btn btn-primary'
+  = link_to 'Edit Repository Admins', edit_ldap_admins_repositories_path, class: 'btn btn-primary'

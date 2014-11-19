@@ -1,6 +1,6 @@
 %h2 Administrative Attachments
 
-= link_to 'Add Attachment', new_attachment_path(:attachable_id => @attachable.id, :attachable_type => @attachable.class.name), :class => 'btn btn-primary btn-xs'
+= link_to 'Add Attachment', new_attachment_path(attachable_id: @attachable.id, attachable_type: @attachable.class.name), class: 'btn btn-primary btn-xs'
 
 - if @attachable.attachments.present?
   %table#attachments.table.table-striped
@@ -19,6 +19,6 @@
           %td #{attachment.attachment_content_type}
           %td #{attachment.author_email}
           %td
-            = link_to 'Download', download_attachment_path(attachment), :class => 'btn btn-default btn-xs'
-            = link_to 'Update', edit_attachment_path(attachment), :class => 'btn btn-default btn-xs'
-            = link_to 'Delete', attachment, :method => :delete, :data => {:confirm => generic_confirm_message}, :class => 'btn btn-xs btn-danger'
+            = link_to 'Download', download_attachment_path(attachment), class: 'btn btn-default btn-xs'
+            = link_to 'Update', edit_attachment_path(attachment), class: 'btn btn-default btn-xs'
+            = link_to 'Delete', attachment, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-xs btn-danger'

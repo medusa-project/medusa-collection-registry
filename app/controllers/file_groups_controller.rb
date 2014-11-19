@@ -1,9 +1,9 @@
 class FileGroupsController < ApplicationController
 
-  before_filter :require_logged_in, :except => [:show, :public]
-  before_filter :require_logged_in_or_basic_auth, :only => [:show]
-  before_filter :find_file_group_and_collection, :only => [:show, :destroy, :edit, :update, :create_all_fits,
-                                                           :create_cfs_fits, :create_virus_scan, :red_flags, :public]
+  before_filter :require_logged_in, except: [:show, :public]
+  before_filter :require_logged_in_or_basic_auth, only: [:show]
+  before_filter :find_file_group_and_collection, only: [:show, :destroy, :edit, :update, :create_all_fits,
+                                                        :create_cfs_fits, :create_virus_scan, :red_flags, :public]
   respond_to :html, :js, :json
 
   def show
@@ -45,7 +45,7 @@ class FileGroupsController < ApplicationController
 
   def new
     @collection = Collection.find(params[:collection_id])
-    @file_group = FileGroup.new(:collection_id => @collection.id)
+    @file_group = FileGroup.new(collection_id: @collection.id)
     authorize! :create, @file_group
     @file_group.rights_declaration = @file_group.clone_collection_rights_declaration
     @related_file_group_id = params[:related_file_group_id]
@@ -56,7 +56,7 @@ class FileGroupsController < ApplicationController
       @collection = Collection.find(params[:file_group][:collection_id])
       klass = determine_creation_class(params[:file_group])
       handling_nested_collection_and_rights_declaration(allowed_params) do
-        @file_group = klass.new(:collection => @collection)
+        @file_group = klass.new(collection: @collection)
         authorize! :create, @file_group
         @file_group.update_attributes(allowed_params)
         if @file_group.save
@@ -82,7 +82,7 @@ class FileGroupsController < ApplicationController
     authorize! :create_virus_scan, @file_group
     if @file_group.cfs_directory.present?
       @alert = "Running virus scan on cfs directory #{@file_group.cfs_directory.path}."
-      Delayed::Job.enqueue(Job::VirusScan.create(:file_group_id => @file_group.id), :priority => 20)
+      Delayed::Job.enqueue(Job::VirusScan.create(file_group_id: @file_group.id), priority: 20)
     else
       @alert = 'Selected File Group does not have a cfs root directory'
     end
@@ -135,7 +135,7 @@ class FileGroupsController < ApplicationController
     yield
     @file_group.target_file_group_ids = target_file_group_ids
     target_file_group_notes.each do |id, note|
-      if join = RelatedFileGroupJoin.where(:source_file_group_id => @file_group.id, :target_file_group_id => id).first
+      if join = RelatedFileGroupJoin.where(source_file_group_id: @file_group.id, target_file_group_id: id).first
         join.note = note
         join.save!
       end

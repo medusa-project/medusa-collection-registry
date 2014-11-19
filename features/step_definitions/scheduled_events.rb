@@ -13,14 +13,14 @@ Given(/^the file group named '(.*)' has scheduled events with fields:$/) do |nam
 end
 
 Then(/^I should on the edit page for the scheduled event with key '(.*)' and action date '(.*)'$/) do |key, date|
-  current_path.should == edit_scheduled_event_path(ScheduledEvent.where(:key => key, :action_date => date).first)
+  current_path.should == edit_scheduled_event_path(ScheduledEvent.where(key: key, action_date: date).first)
 end
 
 When(/^I edit the scheduled event with key '(.*)' and action date '(.*)'$/) do |key, date|
-  visit edit_scheduled_event_path(ScheduledEvent.where(:key => key, :action_date => date).first)
+  visit edit_scheduled_event_path(ScheduledEvent.where(key: key, action_date: date).first)
 end
 
 Then(/^there should be no scheduled event having key '(.*)' and action date '(.*)'$/) do |key, date|
-  ScheduledEvent.where(:key => key, :action_date => date).first.should == nil
+  ScheduledEvent.where(key: key, action_date: date).first.should == nil
 end
 
