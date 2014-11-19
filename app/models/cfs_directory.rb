@@ -104,7 +104,7 @@ class CfsDirectory < ActiveRecord::Base
   #a list of all subdirectory ids in the tree under and including this directory
   def recursive_subdirectory_ids
     if self.file_group_root?
-      CfsDirectory.where(:root_cfs_directory_id => self.id).ids
+      CfsDirectory.where(root_cfs_directory_id: self.id).ids
     else
       #for the non root case we actually need to do some work, but we may not need this
       raise RuntimeError, "Not yet implemented"
@@ -251,14 +251,14 @@ class CfsDirectory < ActiveRecord::Base
 
   def ensure_file_with_directory_components(file_name, path_components)
     if path_components.blank?
-      self.cfs_files.find_or_create_by(:name => file_name)
+      self.cfs_files.find_or_create_by(name: file_name)
     else
       subdirectory_path = path_components.shift
       if subdirectory_path == '.'
         self.ensure_file_with_directory_components(file_name, path_components)
       else
-        subdirectory = self.subdirectories.find_or_create_by(:path => subdirectory_path,
-                                                             :parent_cfs_directory => self, :root_cfs_directory => self.root_cfs_directory)
+        subdirectory = self.subdirectories.find_or_create_by(path: subdirectory_path,
+                                                             parent_cfs_directory: self, root_cfs_directory: self.root_cfs_directory)
         subdirectory.ensure_file_with_directory_components(file_name, path_components)
       end
     end
@@ -271,8 +271,8 @@ class CfsDirectory < ActiveRecord::Base
     if subdirectory_path == '.'
       self.ensure_directory_with_directory_components(path_components)
     else
-      subdirectory = self.subdirectories.find_or_create_by(:path => subdirectory_path,
-                                                           :parent_cfs_directory => self, :root_cfs_directory => self.root_cfs_directory)
+      subdirectory = self.subdirectories.find_or_create_by(path: subdirectory_path,
+                                                           parent_cfs_directory: self, root_cfs_directory: self.root_cfs_directory)
       subdirectory.ensure_directory_with_directory_components(path_components)
     end
   end

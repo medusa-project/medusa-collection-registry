@@ -43,7 +43,7 @@ class CfsRoot
         end
       end
       (available_physical_root_set - available_database_root_set).each do |path|
-        new_root = CfsDirectory.create(:path => path)
+        new_root = CfsDirectory.create(path: path)
         available_database_root_set.add(path)
         all_database_root_hash[path] = new_root
       end

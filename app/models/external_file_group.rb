@@ -1,6 +1,6 @@
 class ExternalFileGroup < FileGroup
 
-  has_one :workflow_ingest, :class_name => 'Workflow::Ingest'
+  has_one :workflow_ingest, class_name: 'Workflow::Ingest'
 
   validates_absence_of :cfs_directory
 

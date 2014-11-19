@@ -21,10 +21,10 @@ copyright_statements default_copyright_statement access_restrictions default_acc
     self.access_restrictions ||= self.class.default_access_restrictions
   end
 
-  validates_inclusion_of :rights_basis, :in => Proc.new{self.rights_bases}
-  validates_inclusion_of :copyright_jurisdiction, :in => Proc.new{self.copyright_jurisdictions.keys}
-  validates_inclusion_of :copyright_statement, :in => Proc.new{self.copyright_statements.keys}, :allow_blank => true
-  validates_inclusion_of :access_restrictions, :in => Proc.new{self.access_restrictions.keys}
+  validates_inclusion_of :rights_basis, in: Proc.new{self.rights_bases}
+  validates_inclusion_of :copyright_jurisdiction, in: Proc.new{self.copyright_jurisdictions.keys}
+  validates_inclusion_of :copyright_statement, in: Proc.new{self.copyright_statements.keys}, allow_blank: true
+  validates_inclusion_of :access_restrictions, in: Proc.new{self.access_restrictions.keys}
 
   def copyright_jurisdiction_text
     self.class.copyright_jurisdictions[self.copyright_jurisdiction]

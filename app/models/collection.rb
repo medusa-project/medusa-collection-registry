@@ -12,17 +12,17 @@ class Collection < ActiveRecord::Base
   belongs_to :repository, touch: true
   belongs_to :preservation_priority, touch: true
 
-  has_many :assessments, :dependent => :destroy, :as => :assessable
-  has_many :file_groups, :dependent => :destroy
-  has_many :access_system_collection_joins, :dependent => :destroy
-  has_many :access_systems, :through => :access_system_collection_joins
-  has_many :collection_resource_type_joins, :dependent => :destroy
-  has_many :resource_types, :through => :collection_resource_type_joins
-  has_one :rights_declaration, :dependent => :destroy, :autosave => true, :as => :rights_declarable
-  has_many :attachments, :as => :attachable, :dependent => :destroy
+  has_many :assessments, dependent: :destroy, as: :assessable
+  has_many :file_groups, dependent: :destroy
+  has_many :access_system_collection_joins, dependent: :destroy
+  has_many :access_systems, through: :access_system_collection_joins
+  has_many :collection_resource_type_joins, dependent: :destroy
+  has_many :resource_types, through: :collection_resource_type_joins
+  has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
+  has_many :attachments, as: :attachable, dependent: :destroy
 
   validates_presence_of :title
-  validates_uniqueness_of :title, :scope => :repository_id
+  validates_uniqueness_of :title, scope: :repository_id
   validates_presence_of :repository_id
   validates_presence_of :preservation_priority_id
   validates_uniqueness_of :uuid
@@ -37,17 +37,17 @@ class Collection < ActiveRecord::Base
 
   accepts_nested_attributes_for :rights_declaration
 
-  auto_strip_attributes :description, :private_description, :notes, :file_package_summary, :nullify => false
+  auto_strip_attributes :description, :private_description, :notes, :file_package_summary, nullify: false
 
   [:description, :private_description, :notes, :file_package_summary].each do |field|
     auto_html_for field do
       html_escape
-      link :target => '_blank'
+      link target: '_blank'
       simple_format
     end
   end
 
-  aggregates_red_flags :collections => :file_groups, :label_method => :title
+  aggregates_red_flags collections: :file_groups, label_method: :title
 
   def total_size
     self.file_groups.collect { |fg| fg.file_size }.sum
@@ -62,7 +62,7 @@ class Collection < ActiveRecord::Base
   end
 
   def medusa_url
-    Rails.application.routes.url_helpers.collection_url(self, :host => MedusaRails3::Application.medusa_host, :protocol => 'https')
+    Rails.application.routes.url_helpers.collection_url(self, host: MedusaRails3::Application.medusa_host, protocol: 'https')
   end
 
   def resource_type_names
@@ -74,8 +74,8 @@ class Collection < ActiveRecord::Base
   end
 
   def ensure_rights_declaration
-    self.rights_declaration ||= RightsDeclaration.new(:rights_declarable_id => self.id,
-                                                      :rights_declarable_type => 'Collection')
+    self.rights_declaration ||= RightsDeclaration.new(rights_declarable_id: self.id,
+                                                      rights_declarable_type: 'Collection')
   end
 
   def to_mods
@@ -83,14 +83,14 @@ class Collection < ActiveRecord::Base
       xml.titleInfo do
         xml.title self.title
       end
-      xml.identifier(self.uuid, :type => 'uuid')
-      xml.identifier(self.handle, :type => 'handle')
+      xml.identifier(self.uuid, type: 'uuid')
+      xml.identifier(self.handle, type: 'handle')
       self.resource_types.each do |resource_type|
-        xml.typeOfResource(resource_type.name, :collection => 'yes')
+        xml.typeOfResource(resource_type.name, collection: 'yes')
       end
       xml.abstract self.description
       xml.location do
-        xml.url(self.access_url || '', :access => 'object in context', :usage => 'primary')
+        xml.url(self.access_url || '', access: 'object in context', usage: 'primary')
       end
       xml.originInfo do
         xml.publisher(self.repository.title)

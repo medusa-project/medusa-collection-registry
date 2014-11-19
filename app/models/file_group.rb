@@ -66,8 +66,8 @@ class FileGroup < ActiveRecord::Base
     RightsDeclaration.new(self.collection.rights_declaration.attributes.slice(
                               :rights_basis, :copyright_jurisdiction,
                               :copyright_statement, :access_restrictions).merge(
-                              :rights_declarable_id => self.id,
-                              :rights_declarable_type => self.class.to_s))
+                              rights_declarable_id: self.id,
+                              rights_declarable_type: self.class.to_s))
   end
 
   def self.aggregate_size
@@ -110,7 +110,7 @@ class FileGroup < ActiveRecord::Base
   end
 
   def potential_target_file_groups
-    self.collection.file_groups.where(:type => self.class.downstream_types)
+    self.collection.file_groups.where(type: self.class.downstream_types)
   end
 
   #subclasses override this to give a list that contains the potential downstream classes for relating filegroups
@@ -123,11 +123,11 @@ class FileGroup < ActiveRecord::Base
   end
 
   def target_relation_note(file_group)
-    self.target_file_group_joins.where(:target_file_group_id => file_group.id).first.try(:note)
+    self.target_file_group_joins.where(target_file_group_id: file_group.id).first.try(:note)
   end
 
   def source_relation_note(file_group)
-    self.source_file_group_joins.where(:source_file_group_id => file_group.id).first.try(:note)
+    self.source_file_group_joins.where(source_file_group_id: file_group.id).first.try(:note)
   end
 
   def repository

@@ -3,7 +3,7 @@ require 'rest_client'
 class CfsFile < ActiveRecord::Base
   belongs_to :cfs_directory, touch: true
 
-  has_many :red_flags, :as => :red_flaggable, :dependent => :destroy
+  has_many :red_flags, as: :red_flaggable, dependent: :destroy
 
   validates_uniqueness_of :name, scope: :cfs_directory_id, allow_blank: false
 
@@ -78,14 +78,14 @@ class CfsFile < ActiveRecord::Base
 
   def update_size_from_fits(new_size)
     if size != new_size
-      self.red_flags.create(:message => "Size changed. Old: #{self.size} New: #{new_size}") unless self.size.blank?
+      self.red_flags.create(message: "Size changed. Old: #{self.size} New: #{new_size}") unless self.size.blank?
       self.size = new_size
     end
   end
 
   def update_md5_sum_from_fits(new_md5_sum)
     if self.md5_sum != new_md5_sum
-      self.red_flags.create(:message => "Md5 Sum changed. Old: #{self}.md5_sum} New: #{new_md5_sum}}") unless self.md5_sum.blank?
+      self.red_flags.create(message: "Md5 Sum changed. Old: #{self}.md5_sum} New: #{new_md5_sum}}") unless self.md5_sum.blank?
       self.md5_sum = new_md5_sum
     end
 
@@ -94,7 +94,7 @@ class CfsFile < ActiveRecord::Base
         #For this one we don't report a red flag if this is the first generation of
         #the fits xml overwriting the content type found by the 'file' command
         unless self.content_type.blank? or self.fits_xml_was.blank?
-          self.red_flags.create(:message => "Content Type changed. Old: #{self.content_type} New: #{new_content_type}")
+          self.red_flags.create(message: "Content Type changed. Old: #{self.content_type} New: #{new_content_type}")
         end
       end
       self.content_type = new_content_type

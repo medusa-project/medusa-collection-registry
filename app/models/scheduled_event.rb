@@ -34,7 +34,7 @@ class ScheduledEvent < ActiveRecord::Base
     ScheduledEventMailer.reminder(self).deliver
     #reschedule self - avoid endless loop in test system
     unless Rails.env.test?
-      Delayed::Job.enqueue(self, :run_at => Date.today + 7.days)
+      Delayed::Job.enqueue(self, run_at: Date.today + 7.days)
     end
   end
 

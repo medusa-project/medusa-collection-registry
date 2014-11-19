@@ -6,7 +6,7 @@ module DashboardHelper
   end
 
   # File Stats for bit preservation
-  #return a hash with content_type => hash(total_size, count)
+  #return a hash with content_type: hash(total_size, count)
   def bit_file_info_summary
     Hash.new.tap do |h|
       CfsFile.select('content_type, sum(size) as total_size, count(*) as count').group('content_type').order('content_type').each do |record|
