@@ -2,21 +2,23 @@
   %span.glyphicon.glyphicon-export
   = 'Export as CSV'
 
-%table.table.table-striped#repositories
-  %thead
-    %tr
-      %th Title
-      %th Contact
-      %th URL
-      %th Total Size (GB)
-      %th
-  %tbody
-    - @repositories.each do |repository|
+- cache(cache_key_for_all(Repository)) do
+  %table.table.table-striped#repositories
+    %thead
       %tr
-        %td #{link_to repository.title, repository}
-        %td #{repository.contact_email}
-        %td #{link_to_external repository.url, repository.url}
-        %td #{repository.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
-        %td
-          = link_to 'Edit', edit_repository_path(repository), class: 'btn btn-default btn-xs'
-          = link_to 'Delete', repository_path(repository), method: :delete, data: { confirm: repository_confirm_message}, class: 'btn btn-xs btn-danger'
+        %th Title
+        %th Contact
+        %th URL
+        %th Total Size (GB)
+        %th
+    %tbody
+      - @repositories.each do |repository|
+        - cache([repository, repository.contact]) do
+          %tr
+            %td #{link_to repository.title, repository}
+            %td #{repository.contact_email}
+            %td #{link_to_external repository.url, repository.url}
+            %td #{repository.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
+            %td
+              = link_to 'Edit', edit_repository_path(repository), class: 'btn btn-default btn-xs'
+              = link_to 'Delete', repository_path(repository), method: :delete, data: { confirm: repository_confirm_message}, class: 'btn btn-xs btn-danger'
