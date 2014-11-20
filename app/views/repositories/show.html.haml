@@ -8,24 +8,25 @@
     = link_to 'Edit', edit_repository_path(@repository), class: 'btn btn-default'
     = link_to 'Delete Repository', repository_path(@repository), method: 'delete', data: { confirm: repository_confirm_message}, class: 'btn btn-danger'
   = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: ['about', 'collection-list', 'assessment-list'], active_index: 1}
-  .tab-content
-    #about.tab-pane
-      .well
-        = show_value link_to(@repository.institution.name, @repository.institution), 'Institution'
-        = show_field @repository, :contact_email
-        = show_field @repository, :address_1
-        = show_field @repository, :address_2
-        = show_field @repository, :city
-        = show_field @repository, :state
-        = show_field @repository, :zip
-        = show_field @repository, :phone_number
-        = show_field @repository, :email
-        = show_value link_to_external(@repository.url, @repository.url), 'URL'
-        = show_field @repository, :notes_html, 'Notes'
-        = show_field @repository, :total_size, 'Total Size (GB)'
-        = show_field @repository, :active_start_date, 'Active Start Date'
-        = show_field @repository, :active_end_date, 'Active End Date'
-    #collection-list.tab-pane.active
-      = render 'collections_table'
-    #assessment-list.tab-pane
-      = render 'assessments/table'
+  - cache(@repository) do
+    .tab-content
+      #about.tab-pane
+        .well
+          = show_value link_to(@repository.institution.name, @repository.institution), 'Institution'
+          = show_field @repository, :contact_email
+          = show_field @repository, :address_1
+          = show_field @repository, :address_2
+          = show_field @repository, :city
+          = show_field @repository, :state
+          = show_field @repository, :zip
+          = show_field @repository, :phone_number
+          = show_field @repository, :email
+          = show_value link_to_external(@repository.url, @repository.url), 'URL'
+          = show_field @repository, :notes_html, 'Notes'
+          = show_field @repository, :total_size, 'Total Size (GB)'
+          = show_field @repository, :active_start_date, 'Active Start Date'
+          = show_field @repository, :active_end_date, 'Active End Date'
+      #collection-list.tab-pane.active
+        = render 'collections_table'
+      #assessment-list.tab-pane
+        = render 'assessments/table'

@@ -1,7 +1,7 @@
 class RepositoriesController < ApplicationController
 
   before_filter :require_logged_in
-  before_filter :find_repository, only: [:show, :edit, :update, :destroy, :red_flags, :update_ldap_admin, :collections]
+  before_filter :find_repository, only: [:edit, :update, :destroy, :red_flags, :update_ldap_admin, :collections]
   include CollectionsToCsv
   include RepositoriesToCsv
 
@@ -23,6 +23,8 @@ class RepositoriesController < ApplicationController
   end
 
   def show
+    @repository = Repository.includes(collections: [:assessments, :contact, :preservation_priority,
+                                                    {file_groups: [:cfs_directory, :assessments]}]).find(params[:id])
     @assessable = @repository
     @assessments = @assessable.recursive_assessments
   end

@@ -18,12 +18,13 @@
         %th
     %tbody
       - @repository.collections.each do |collection|
-        %tr
-          %td #{collection.external_id}
-          %td #{link_to collection.title, collection}
-          %td #{collection.contact_email}
-          %td #{collection.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
-          %td #{collection.preservation_priority_name}
-          %td
-            = link_to 'Edit', edit_collection_path(collection), class: 'btn btn-default btn-xs'
-            = link_to 'Delete', collection, method: :delete, data: { confirm: collection_confirm_message}, class: 'btn btn-xs btn-danger'
+        - cache(collection) do
+          %tr
+            %td #{collection.external_id}
+            %td #{link_to collection.title, collection}
+            %td #{collection.contact_email}
+            %td #{collection.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
+            %td #{collection.preservation_priority_name}
+            %td
+              = link_to 'Edit', edit_collection_path(collection), class: 'btn btn-default btn-xs'
+              = link_to 'Delete', collection, method: :delete, data: { confirm: collection_confirm_message}, class: 'btn btn-xs btn-danger'
