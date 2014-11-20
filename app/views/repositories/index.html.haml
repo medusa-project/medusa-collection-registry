@@ -4,7 +4,8 @@
 
 = render 'shared/definitions/repository'
 
-= render 'table'
+- cache(cache_key_for_all(Repository)) do
+  = render 'table'
 
 %br
 
