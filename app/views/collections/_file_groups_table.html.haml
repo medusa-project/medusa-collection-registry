@@ -20,34 +20,38 @@
         %th Actions
     %tbody
       - @collection.file_groups.order('created_at').each do |file_group|
-        %tr
-          %td #{file_group.id}
-          %td
-            #{link_to file_group.name, file_group}
-            - if file_group.supports_cfs and file_group.cfs_directory.present?
-              %div= link_to 'View files', cfs_directory_path(file_group.cfs_directory)
-          %td #{file_group.storage_level}
-          %td #{file_group.file_type_name}
-          %td #{link_to(file_group.package_profile.name, file_group.package_profile) if file_group.package_profile.present?}
-          %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
-          %td #{file_group.file_count.to_s(:delimited) rescue ''}
-          %td #{file_group.file_size.to_s(:rounded, precision: 2, delimiter: ',')}
-          %td.related_file_groups
-            - if file_group.source_file_groups.present?
-              %div
-                Ingested from: #{'File group'.pluralize(file_group.source_file_groups.count)}
-                #{file_group.source_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}
-            - if file_group.target_file_groups.present?
-              %div
-                Ingested to: #{'File group'.pluralize(file_group.target_file_groups.count)}
-                #{file_group.target_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}
-          %td
-            = render 'file_group_actions', file_group: file_group
+        - cache([file_group, file_group.producer, file_group.package_profile]) do
+          %tr
+            %td #{file_group.id}
+            %td
+              #{link_to file_group.name, file_group}
+              - if file_group.supports_cfs and file_group.cfs_directory.present?
+                %div= link_to 'View files', cfs_directory_path(file_group.cfs_directory)
+            %td #{file_group.storage_level}
+            %td #{file_group.file_type_name}
+            %td #{link_to(file_group.package_profile.name, file_group.package_profile) if file_group.package_profile.present?}
+            %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
+            %td #{file_group.file_count.to_s(:delimited) rescue ''}
+            %td #{file_group.file_size.to_s(:rounded, precision: 2, delimiter: ',')}
+            %td.related_file_groups
+              - if file_group.source_file_groups.present?
+                %div
+                  Ingested from: #{'File group'.pluralize(file_group.source_file_groups.count)}
+                  #{file_group.source_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}
+              - if file_group.target_file_groups.present?
+                %div
+                  Ingested to: #{'File group'.pluralize(file_group.target_file_groups.count)}
+                  #{file_group.target_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}
+            %td
+              - cache(['file_group_actions', file_group]) do
+                = render 'file_group_actions', file_group: file_group
 
 -# TODO Consider rendering one of each of these forms and adapting to the appropriate file group
 -# rather than rendering a form for each one, hidden though they may be.
 -# TODO why do these take so long to render sometimes?
-%div#event_forms
-  - @collection.file_groups.order('created_at').each do |file_group|
-    = render partial: 'events/modal_form', locals: {eventable: file_group, remote: true, dialog_id: "add-event-file-group-#{file_group.id}"}
-    = render partial: 'scheduled_events/form', locals: {eventable: file_group, remote: true, dialog_id: "add-scheduled-event-file-group-#{file_group.id}" }
+- cache(@collection) do
+  %div#event_forms
+    - @collection.file_groups.order('created_at').each do |file_group|
+      - cache(['event_forms', file_group]) do
+        = render partial: 'events/modal_form', locals: {eventable: file_group, remote: true, dialog_id: "add-event-file-group-#{file_group.id}"}
+        = render partial: 'scheduled_events/form', locals: {eventable: file_group, remote: true, dialog_id: "add-scheduled-event-file-group-#{file_group.id}" }

@@ -1,24 +1,26 @@
-%h2 Administrative Attachments
+- cache(@attachable) do
+  %h2 Administrative Attachments
 
-= link_to 'Add Attachment', new_attachment_path(attachable_id: @attachable.id, attachable_type: @attachable.class.name), class: 'btn btn-primary btn-xs'
+  = link_to 'Add Attachment', new_attachment_path(attachable_id: @attachable.id, attachable_type: @attachable.class.name), class: 'btn btn-primary btn-xs'
 
-- if @attachable.attachments.present?
-  %table#attachments.table.table-striped
-    %thead
-      %tr
-        %th Filename
-        %th Description
-        %th Content Type
-        %th Author
-        %th
-    %tbody
-      - @attachable.attachments.each do |attachment|
+  - if @attachable.attachments.includes(:author).present?
+    %table#attachments.table.table-striped
+      %thead
         %tr
-          %td #{link_to attachment.attachment_file_name, attachment}
-          %td #{attachment.description}
-          %td #{attachment.attachment_content_type}
-          %td #{attachment.author_email}
-          %td
-            = link_to 'Download', download_attachment_path(attachment), class: 'btn btn-default btn-xs'
-            = link_to 'Update', edit_attachment_path(attachment), class: 'btn btn-default btn-xs'
-            = link_to 'Delete', attachment, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-xs btn-danger'
+          %th Filename
+          %th Description
+          %th Content Type
+          %th Author
+          %th
+      %tbody
+        - @attachable.attachments.each do |attachment|
+          - cache(attachment, attachment.author) do
+            %tr
+              %td #{link_to attachment.attachment_file_name, attachment}
+              %td #{attachment.description}
+              %td #{attachment.attachment_content_type}
+              %td #{attachment.author_email}
+              %td
+                = link_to 'Download', download_attachment_path(attachment), class: 'btn btn-default btn-xs'
+                = link_to 'Update', edit_attachment_path(attachment), class: 'btn btn-default btn-xs'
+                = link_to 'Delete', attachment, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-xs btn-danger'
