@@ -3,7 +3,8 @@ class DashboardController < ApplicationController
   before_filter :require_logged_in
 
   def show
-    setup_storage_summary
+    setup_full_storage_summary
+    setup_repository_storage_summary
     setup_red_flags
     setup_events
   end
@@ -14,30 +15,39 @@ class DashboardController < ApplicationController
     @red_flags = RedFlag.order('created_at DESC').includes(:red_flaggable).load
   end
 
-  #TODO - I bet we can do this more efficiently - it'd be easy with SQL, but we can probably do it with arel as well.
-  def setup_storage_summary
-    @storage_summary = []
-    #TODO - it'd be nice to get the cfs_directories here as well, but that doesn't seem possible at present. There's a
-    #kludge below that helps some.
-    Repository.includes(collections: {file_groups: :target_file_groups}).each do |repository|
-      external_file_groups = repository.collections.collect { |c| c.file_groups.select { |fg| fg.is_a?(ExternalFileGroup) } }.flatten
-      uningested_external_file_groups = external_file_groups.reject do |fg|
-        fg.target_file_groups.detect { |target| target.is_a?(BitLevelFileGroup) }
-      end
-      bit_level_file_groups = repository.collections.collect { |c| c.file_groups.select { |fg| fg.is_a?(BitLevelFileGroup) } }.flatten
-      #Reload with cfs directory include. Kludgey, but still better than loading the cfs directories individually.
-      bit_level_file_groups = BitLevelFileGroup.where(id: bit_level_file_groups.collect {|fg| fg.id}).includes(:cfs_directory)
-      @storage_summary << Hash.new.tap do |h|
-        h[:repository] = repository
-        h[:external_file_count] = external_file_groups.collect { |fg| fg.file_count || 0 }.sum
-        h[:external_size] = external_file_groups.collect { |fg| fg.file_size || 0 }.sum
-        h[:uningested_file_count] = uningested_external_file_groups.collect { |fg| fg.file_count || 0 }.sum
-        h[:uningested_size] = uningested_external_file_groups.collect { |fg| fg.file_size || 0 }.sum
-        h[:bit_level_file_count] = bit_level_file_groups.collect { |fg| fg.file_count || 0 }.sum
-        h[:bit_level_file_size] = bit_level_file_groups.collect { |fg| fg.file_size || 0 }.sum
+  def setup_full_storage_summary
+    @full_storage_summary = Hash.new.tap do |h|
+      FileGroup.group(:type).select('type, sum(total_file_size) as size, sum(total_files) as count').each do |row|
+        h[row[:type]] = {count: row[:count], size: row[:size]}
       end
     end
-    @storage_summary.sort! { |a, b| b[:external_size] <=> a[:external_size] }
+    ['ExternalFileGroup', 'BitLevelFileGroup'].each do |type|
+      @full_storage_summary[type] ||= {count: 0, size: 0}
+    end
+    ingested_external_storage =
+        RelatedFileGroupJoin.joins('JOIN file_groups AS source_file_group ON source_file_group.id = related_file_group_joins.source_file_group_id').
+            joins('JOIN file_groups AS target_file_group ON target_file_group.id = related_file_group_joins.target_file_group_id').
+            where('source_file_group.type = ?', 'ExternalFileGroup').where('target_file_group.type = ?', 'BitLevelFileGroup').
+            select('sum(source_file_group.total_files) as count, sum(source_file_group.total_file_size) as size').load.first
+    @full_storage_summary['ExternalUningested'] = {count: @full_storage_summary['ExternalFileGroup'][:count] - (ingested_external_storage.count || 0),
+                                                   size: @full_storage_summary['ExternalFileGroup'][:size] - (ingested_external_storage.size || 0)}
+  end
+
+  def setup_repository_storage_summary
+    @repository_storage_summary = Hash.new.tap do |h|
+      FileGroup.joins(collection: :repository).group('type, repositories.id, repositories.title').
+          select('type as type, repositories.id as repository_id, repositories.title as repository_title,
+                  sum(total_file_size) as size, sum(total_files) as count').
+          order('type desc, size desc').each do |row|
+        h[row.repository_id] ||= {title: row.repository_title}
+        h[row.repository_id][row.type] = {count: row.count, size: row.size}
+      end
+    end
+    ['ExternalFileGroup', 'BitLevelFileGroup'].each do |type|
+      @repository_storage_summary.each do |repository_id, summary|
+        summary[type] ||= {count: 0, size: 0}
+      end
+    end
   end
 
   def setup_events
