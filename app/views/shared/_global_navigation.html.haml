@@ -1,48 +1,49 @@
-%nav.navbar.navbar-default#global-navigation{role: 'navigation'}
-  .container
-    / Brand and toggle get grouped for better mobile display
-    .navbar-header
-      %button.navbar-toggle{'data-target' => '#bs-example-navbar-collapse-1', 'data-toggle' => 'collapse', type: 'button'}
-        %span.sr-only Toggle navigation
-        %span.icon-bar
-        %span.icon-bar
-        %span.icon-bar
-      %a.navbar-brand{href: root_url}
-        - if logged_in?
-          %span.glyphicon.glyphicon-eye-open
-        - else
-          %span.glyphicon.glyphicon-eye-close
-        Medusa
-    / Collect the nav links, forms, and other content for toggling
-    #bs-example-navbar-collapse-1.collapse.navbar-collapse
-      %ul.nav.navbar-nav
-        %li= link_to 'Dashboard', dashboard_path
-        %li= link_to 'Repositories', repositories_path
-        %li= link_to 'Collections', collections_path
-        %li.dropdown
-          %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
-            Other
-            %span.caret
-          %ul.dropdown-menu{role: 'menu'}
-            - if safe_can?(:manage, Institution)
-              %li= link_to 'Institutions', institutions_path
-            %li= link_to 'Producers', producers_path
-            %li= link_to 'Access', access_systems_path
-            %li= link_to 'Packages', package_profiles_path
-        %li.dropdown
-          %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
-            Book Tracker
-            %span.caret
-          %ul.dropdown-menu{role: 'menu'}
-            %li= link_to 'Items', book_tracker_items_path
-            - if safe_can?(:update, BookTracker::Item)
-              %li= link_to 'Tasks', book_tracker_tasks_path
-        - if logged_in?
-          = render partial: 'shared/filename_search'
-      %ul.nav.navbar-nav.navbar-right
-        - if logged_in?
-          %li= link_to('Logout', logout_path)
-        - else
-          %li= link_to('Login', login_path)
-        %li= wiki_link('Wiki')
-        %li= link_to 'Help', '#'
+- cache(current_user) do
+  %nav.navbar.navbar-default#global-navigation{role: 'navigation'}
+    .container
+      / Brand and toggle get grouped for better mobile display
+      .navbar-header
+        %button.navbar-toggle{'data-target' => '#bs-example-navbar-collapse-1', 'data-toggle' => 'collapse', type: 'button'}
+          %span.sr-only Toggle navigation
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+        %a.navbar-brand{href: root_url}
+          - if logged_in?
+            %span.glyphicon.glyphicon-eye-open
+          - else
+            %span.glyphicon.glyphicon-eye-close
+          Medusa
+      / Collect the nav links, forms, and other content for toggling
+      #bs-example-navbar-collapse-1.collapse.navbar-collapse
+        %ul.nav.navbar-nav
+          %li= link_to 'Dashboard', dashboard_path
+          %li= link_to 'Repositories', repositories_path
+          %li= link_to 'Collections', collections_path
+          %li.dropdown
+            %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+              Other
+              %span.caret
+            %ul.dropdown-menu{role: 'menu'}
+              - if safe_can?(:manage, Institution)
+                %li= link_to 'Institutions', institutions_path
+              %li= link_to 'Producers', producers_path
+              %li= link_to 'Access', access_systems_path
+              %li= link_to 'Packages', package_profiles_path
+          %li.dropdown
+            %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+              Book Tracker
+              %span.caret
+            %ul.dropdown-menu{role: 'menu'}
+              %li= link_to 'Items', book_tracker_items_path
+              - if safe_can?(:update, BookTracker::Item)
+                %li= link_to 'Tasks', book_tracker_tasks_path
+          - if logged_in?
+            = render partial: 'shared/filename_search'
+        %ul.nav.navbar-nav.navbar-right
+          - if logged_in?
+            %li= link_to('Logout', logout_path)
+          - else
+            %li= link_to('Login', login_path)
+          %li= wiki_link('Wiki')
+          %li= link_to 'Help', '#'
