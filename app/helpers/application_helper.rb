@@ -42,4 +42,10 @@ module ApplicationHelper
     current_user and (can?(action, *args))
   end
 
+  def cache_key_for_all(klass)
+    count = klass.count
+    max_updated_at = klass.maximum(:updated_at)
+    "#{klass.to_s.pluralize.underscore}/all-#{count}-#{max_updated_at}"
+  end
+
 end

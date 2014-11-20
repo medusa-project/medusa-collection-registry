@@ -12,12 +12,13 @@
           %th File Format
           %th Number of Files
           %th Size
-      %tbody
-        - bit_file_info_summary.each do |content_type, data|
-          %tr
-            %td= content_type
-            %td= data[:count].to_formatted_s(:delimited)
-            %td{'data-order' => data[:size]}= data[:size].to_formatted_s(:human_size, precision: 3)
+      - cache(cache_key_for_all(FileGroup)) do
+        %tbody
+          - bit_file_info_summary.each do |content_type, data|
+            %tr
+              %td= content_type
+              %td= data[:count].to_formatted_s(:delimited)
+              %td{'data-order' => data[:size]}= data[:size].to_formatted_s(:human_size, precision: 3)
 
   .col-sm-6
     %table.table.table-striped.table-bordered.table-condensed#file_stats_objects

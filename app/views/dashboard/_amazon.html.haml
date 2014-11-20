@@ -1,4 +1,3 @@
-
 %h3 Glacier Backups
 
 = simple_form_for :file_group, url: bulk_amazon_backup_bit_level_file_groups_path, method: :post do |f|
@@ -16,20 +15,22 @@
           %th Completed
           %th Backup
       %tbody
-        - BitLevelFileGroup.includes(collection: :repository).includes(cfs_directory: :amazon_backups).each do |file_group|
-          -# Protect against pathological case when id is present but the cfs directory doesn't actually exist
-          - if file_group.cfs_directory
-          - last_backup = file_group.last_amazon_backup
-            %tr
-              %td= file_group.id
-              %td= link_to(file_group.name, file_group)
-              %td= link_to(file_group.collection.title, file_group.collection)
-              %td= link_to(file_group.repository.title, file_group.repository)
-              %td= file_group.file_count.to_formatted_s(:delimited)
-              %td= file_group.file_size.to_formatted_s(:rounded, precision: 3)
-              %td= last_backup ? last_backup.date : 'None'
-              %td= last_backup ? (last_backup.completed? ? 'Yes' : 'No') : 'N/A'
-              %td= check_box_tag("bit_level_file_groups[]", file_group.id, false, id: "bit_level_file_groups_#{file_group.id}", class: 'amazon-backup-checkbox')  unless last_backup
+        - cache(cache_key_for_all(BitLevelFileGroup)) do
+          - BitLevelFileGroup.includes(collection: :repository).includes(cfs_directory: :amazon_backups).each do |file_group|
+            -# Protect against pathological case when id is present but the cfs directory doesn't actually exist
+            - cache file_group do
+              - if file_group.cfs_directory
+              - last_backup = file_group.last_amazon_backup
+                %tr
+                  %td= file_group.id
+                  %td= link_to(file_group.name, file_group)
+                  %td= link_to(file_group.collection.title, file_group.collection)
+                  %td= link_to(file_group.repository.title, file_group.repository)
+                  %td= file_group.file_count.to_formatted_s(:delimited)
+                  %td= file_group.file_size.to_formatted_s(:rounded, precision: 3)
+                  %td= last_backup ? last_backup.date : 'None'
+                  %td= last_backup ? (last_backup.completed? ? 'Yes' : 'No') : 'N/A'
+                  %td= check_box_tag("bit_level_file_groups[]", file_group.id, false, id: "bit_level_file_groups_#{file_group.id}", class: 'amazon-backup-checkbox')  unless last_backup
 
   %br
 
