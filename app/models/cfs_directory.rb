@@ -120,15 +120,6 @@ class CfsDirectory < ActiveRecord::Base
     Dir.chdir(self.absolute_path) do
       #create the entire directory tree under this directory
       entries = ((Dir['*'] + Dir['.*']) - ['.', '..']).reject { |entry| File.symlink?(entry) }
-      disk_files = entries.select { |entry| File.file?(entry) }.to_set
-      disk_files.each do |entry|
-        self.ensure_file_at_relative_path(entry)
-      end
-      self.cfs_files(true).each do |cfs_file|
-        unless disk_files.include?(cfs_file.name)
-          cfs_file.destroy
-        end
-      end
       disk_directories = entries.select { |entry| File.directory?(entry) }.to_set
       disk_directories.each do |entry|
         self.ensure_directory_at_relative_path(entry)
@@ -138,9 +129,18 @@ class CfsDirectory < ActiveRecord::Base
           directory.destroy
         end
       end
-    end
-    self.subdirectories(true).each do |directory|
-      directory.make_initial_tree
+      self.subdirectories(true).each do |directory|
+        directory.make_initial_tree
+      end
+      disk_files = entries.select { |entry| File.file?(entry) }.to_set
+      disk_files.each do |entry|
+        self.ensure_file_at_relative_path(entry)
+      end
+      self.cfs_files(true).each do |cfs_file|
+        unless disk_files.include?(cfs_file.name)
+          cfs_file.destroy
+        end
+      end
     end
   end
 
