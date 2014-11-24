@@ -7,8 +7,9 @@ class CfsFile < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: :cfs_directory_id, allow_blank: false
 
-  after_save :update_cfs_directory_tree_size_and_count
-  after_destroy :update_cfs_directory_tree_size_and_count
+  after_create :add_cfs_directory_tree_stats
+  after_destroy :remove_cfs_directory_tree_stats
+  after_update :update_cfs_directory_tree_stats
 
   def repository
     self.cfs_directory.repository
@@ -107,8 +108,16 @@ class CfsFile < ActiveRecord::Base
 
   protected
 
-  def update_cfs_directory_tree_size_and_count
-    self.cfs_directory.update_tree_size_and_count
+  def add_cfs_directory_tree_stats
+    self.cfs_directory.update_tree_stats(1, self.size || 0)
+  end
+
+  def update_cfs_directory_tree_stats
+    self.cfs_directory.update_tree_stats(0, (self.size || 0) - (self.size_was || 0)) if self.size_changed?
+  end
+
+  def remove_cfs_directory_tree_stats
+    self.cfs_directory.update_tree_stats(-1, -1 * self.size || 0)
   end
 
   def get_fits_xml

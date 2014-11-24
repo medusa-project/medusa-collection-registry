@@ -6,7 +6,7 @@ class CfsDirectory < ActiveRecord::Base
   belongs_to :parent_cfs_directory, class_name: 'CfsDirectory', touch: true
   belongs_to :file_group, touch: true
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
-  has_many :amazon_backups, -> { order 'date desc'}
+  has_many :amazon_backups, -> { order 'date desc' }
 
   validates :path, presence: true
   validates_uniqueness_of :path, scope: :parent_cfs_directory_id, if: :parent_cfs_directory_id
@@ -26,9 +26,7 @@ class CfsDirectory < ActiveRecord::Base
   validates :root_cfs_directory_id, presence: true, if: :parent_cfs_directory_id
   validates :root_cfs_directory_id, presence: true, unless: :parent_cfs_directory_id, on: :update
   after_save :ensure_root
-  after_save :update_parent_tree_size_and_count
   after_save :handle_cfs_assessment
-  after_destroy :update_parent_tree_size_and_count
 
   #ensure there is a CfsFile object at the given absolute path and return it
   def ensure_file_at_absolute_path(path)
@@ -185,14 +183,27 @@ class CfsDirectory < ActiveRecord::Base
     self.owning_file_group.public?
   end
 
-  def update_tree_size_and_count
+  def update_tree_stats(count_difference, size_difference)
+    self.tree_count += count_difference
+    self.tree_size += size_difference
+    self.save!
+    if self.parent_cfs_directory
+      self.parent_cfs_directory.update_tree_stats(count_difference, size_difference)
+    end
+  end
+
+  def update_tree_stats_from_db
     self.tree_size = self.subdirectories.sum(:tree_size) + self.cfs_files.sum(:size)
     self.tree_count = self.subdirectories.sum(:tree_count) + self.cfs_files.count
     self.save!
+    if self.parent_cfs_directory
+      self.parent_cfs_directory.update_tree_stats_from_db
+    end
   end
 
-  def update_parent_tree_size_and_count
-    self.parent_cfs_directory.update_tree_size_and_count if self.parent_cfs_directory
+  def self.update_all_tree_stats_from_db
+    leaves = self.all.select {|cfs_directory| cfs_directory.subdirectories.blank?}
+    leaves.each {|leaf| leaf.update_tree_stats_from_db}
   end
 
   def handle_cfs_assessment
