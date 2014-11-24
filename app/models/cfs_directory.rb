@@ -124,23 +124,26 @@ class CfsDirectory < ActiveRecord::Base
       disk_directories.each do |entry|
         self.ensure_directory_at_relative_path(entry)
       end
-      self.subdirectories(true).each do |directory|
+      self.subdirectories.reload.each do |directory|
         unless disk_directories.include?(directory.path)
           directory.destroy
         end
       end
-      self.subdirectories(true).each do |directory|
+      self.subdirectories.reload.each do |directory|
         directory.make_initial_tree
       end
       disk_files = entries.select { |entry| File.file?(entry) }.to_set
       disk_files.each do |entry|
         self.ensure_file_at_relative_path(entry)
       end
-      self.cfs_files(true).each do |cfs_file|
+      self.cfs_files.reload.each do |cfs_file|
         unless disk_files.include?(cfs_file.name)
           cfs_file.destroy
         end
       end
+      #We do this to free up the subdirectories and files for GC. I think it should do so.
+      self.subdirectories.reset
+      self.cfs_files.reset
     end
   end
 
