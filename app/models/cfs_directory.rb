@@ -208,8 +208,8 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def self.update_all_tree_stats_from_db
-    leaves = self.all.select {|cfs_directory| cfs_directory.subdirectories.blank?}
-    leaves.each {|leaf| leaf.update_tree_stats_from_db}
+    roots = self.where('parent_cfs_directory_id IS NULL')
+    roots.each {|root| root.update_all_tree_stats_from_db}
   end
 
   def handle_cfs_assessment
