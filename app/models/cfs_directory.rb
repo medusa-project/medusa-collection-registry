@@ -201,6 +201,12 @@ class CfsDirectory < ActiveRecord::Base
     end
   end
 
+  def update_all_tree_stats_from_db
+    root = self.root_cfs_directory
+    leaves = CfsDirectory.where(root_cfs_directory_id: root.id).all.select {|cfs_directory| cfs_directory.subdirectories.blank?}
+    leaves.each {|leaf| leaf.update_tree_stats_from_db}
+  end
+
   def self.update_all_tree_stats_from_db
     leaves = self.all.select {|cfs_directory| cfs_directory.subdirectories.blank?}
     leaves.each {|leaf| leaf.update_tree_stats_from_db}
