@@ -130,7 +130,7 @@ class BitLevelFileGroup < FileGroup
     old_cfs_directory = self.cfs_directory
     new_cfs_directory = (CfsDirectory.find(cfs_directory_id) rescue nil)
     #just return if there is no change
-    return if cfs_directory_id.blank? and old_cfs_directory.blank?
+    return if new_cfs_directory.blank? and old_cfs_directory.blank?
     return if old_cfs_directory == new_cfs_directory
     transaction do
       if new_cfs_directory
@@ -139,7 +139,7 @@ class BitLevelFileGroup < FileGroup
       end
       if old_cfs_directory
         old_cfs_directory.file_group_id = nil
-        old_cfs_directory.save
+        old_cfs_directory.save!
       end
     end
     self.cfs_directory(true)
