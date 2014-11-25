@@ -10,6 +10,10 @@ Then /^I should see a global navigation bar$/ do
   page.should have_selector('#global-navigation')
 end
 
+Then(/^I should not see a global navigation bar$/) do
+  page.should_not have_selector('#global-navigation')
+end
+
 When /^I click on '(.*)' in the global navigation bar$/ do |name|
   within('#global-navigation') {click_link name}
 end

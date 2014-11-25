@@ -163,3 +163,19 @@ Feature: Public views
     When I view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
     And I click on 'Public View'
     Then I should be public viewing the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+
+  Scenario: Hide main navbar for collection public view
+    When I public view the collection with title 'Dogs'
+    Then I should not see a global navigation bar
+
+  Scenario: Hide main navbar for file group public view
+    When I public view the file group with name 'Dogs'
+    Then I should not see a global navigation bar
+
+  Scenario: Hide main navbar for cfs directory public view
+    When I public view the cfs directory for the file group named 'Dogs' for the path '.'
+    Then I should not see a global navigation bar
+
+  Scenario: Hide main navbar for cfs file public view
+    When I public view the cfs file for the file group named 'Dogs' for the path 'intro.txt'
+    Then I should not see a global navigation bar

@@ -1,0 +1,50 @@
+!!! 5
+%html{lang: 'en'}
+  %head
+    %meta{charset: 'utf-8'}/
+    %title= content_for?(:title) ? yield(:title) : 'Medusa'
+    = csrf_meta_tags
+
+    / Le styles
+    = stylesheet_link_tag 'application', media: 'all'
+    = yield :more_css
+
+    / Le HTML5 shim, for IE6-8 support of HTML elements
+    /[if lt IE 9]
+      = javascript_include_tag 'http://html5shim.googlecode.com/svn/trunk/html5.js'
+
+    / Le fav and touch icons
+    %link{href: '/images/favicon.ico', rel: 'shortcut icon'}/
+    %link{href: '/images/apple-touch-icon.png', rel: 'apple-touch-icon'}/
+    %link{href: '/images/apple-touch-icon-72x72.png', rel: 'apple-touch-icon', sizes: '72x72'}/
+    %link{href: '/images/apple-touch-icon-114x114.png', rel: 'apple-touch-icon', sizes: '114x114'}/
+
+
+  %body{'data-spy' => 'scroll', 'data-target' => '.affix-sidebar'}
+    .container
+      .row
+        .col-sm-12
+          = render 'shared/flash', flash: flash
+          = yield
+
+          .clearfix
+
+          %footer.footer
+            %p.pull-left
+              = link_to image_tag('imark_footer.gif', alt: 'University of Illinois at Urbana-Champaign logo'), 'http://illinois.edu'
+              %p
+                More information: Medusa at
+                %a{href: 'tel:2173334618'} 217-333-4648
+                or
+                %a{href: 'mailto:medusa@library.illinois.edu'} medusa@library.illinois.edu
+              %p
+                %span.pa Medusa
+                | UNIVERSITY OF ILLINOIS AT URBANA-CHAMPAIGN
+                %br
+                  %a{href: 'http://medusa.library.illinois.edu'} http://medusa.library.illinois.edu
+    /
+      Le javascript
+      \==================================================
+    / Placed at the end of the document so the pages load faster
+    = javascript_include_tag 'application'
+    = yield :more_javascript

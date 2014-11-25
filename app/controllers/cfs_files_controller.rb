@@ -6,6 +6,7 @@ class CfsFilesController < ApplicationController
                                    :download, :view, :public_download, :public_view,
                                    :preview_image, :public_preview_image]
   before_filter :require_public_file, only: [:public, :public_download, :public_view, :public_preview_image]
+  layout 'public', only: [:public]
 
   cattr_accessor :mime_type_viewers, :extension_viewers
 

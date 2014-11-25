@@ -2,6 +2,7 @@ class CfsDirectoriesController < ApplicationController
 
   before_filter :require_logged_in, except: [:show, :public]
   before_filter :require_logged_in_or_basic_auth, only: [:show]
+  layout 'public', only: [:public]
 
   def show
     @directory = CfsDirectory.includes(:subdirectories, :cfs_files).find(params[:id])
