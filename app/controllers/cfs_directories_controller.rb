@@ -16,6 +16,7 @@ class CfsDirectoriesController < ApplicationController
   def public
     @directory = CfsDirectory.includes(:subdirectories, :cfs_files).find(params[:id])
     @file_group = @directory.owning_file_group
+    @collection = @file_group.collection
     redirect_to unauthorized_path unless @directory.public?
   end
 

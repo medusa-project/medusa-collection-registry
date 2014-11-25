@@ -1,0 +1,11 @@
+.well
+  = show_field @collection, :uuid, 'UUID'
+  = show_field @collection, :external_id, 'External ID'
+  = show_field @collection, :contact_email
+  = show_field @collection, :resource_type_names, 'Type of Resource'
+  = show_value @collection.total_size.round(3).to_formatted_s(:delimited), 'Total Size (GB)'
+  = show_field @collection, :description_html, 'Description'
+  = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
+%hr
+.well
+  = render 'collections/show_rights_declaration'
