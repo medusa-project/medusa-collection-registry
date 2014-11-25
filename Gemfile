@@ -58,8 +58,8 @@ gem 'bunny'
 
   gem 'uglifier'
 
-  # Use "bootstrap3" branch Twitter Bootstrap 3.x.x (Latest Bootstrap 3 completely supported)
-  gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails', branch: 'bootstrap3'
+  # The "bootstrap3" branch is no longer needed -- bootstrap 3.2 is the default
+  gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 
 #end
 
