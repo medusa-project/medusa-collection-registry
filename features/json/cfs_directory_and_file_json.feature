@@ -14,7 +14,7 @@ Feature: JSON data about a cfs directory
       | 60 | child_1  | 40                      | 20                    |
       | 80 | child_2  | 40                      | 20                    |
     And there are cfs files with fields:
-      | id  | name        | cfs_directory_id | md5_sum                          | content_type | size  | mtime                |
+      | id  | name        | cfs_directory_id | md5_sum                          | content_type_name | size  | mtime                |
       | 100 | file.txt    | 40               |                                  |              |       |                      |
       | 200 | picture.jpg | 40               | 33c25385888a2203c09493224fffda27 | image/jpeg   | 12345 | 2014-04-23T15:38:43Z |
       | 300 | sound.aiff  | 40               |                                  |              |       |                      |

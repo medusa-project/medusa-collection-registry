@@ -160,8 +160,6 @@ end
 
 And(/^there are cfs files with fields:$/) do |table|
   table.hashes.each do |hash|
-    content_type_name = hash.delete('content_type')
-    hash[:content_type] = ContentType.find_or_create_by(name: content_type_name) if content_type_name
     FactoryGirl.create(:cfs_file, hash)
   end
 end

@@ -58,7 +58,7 @@ class CfsFile < ActiveRecord::Base
     if self.mtime.blank? or (file_info.mtime > self.mtime) or (file_info.size != self.size)
       self.size = file_info.size
       self.mtime = file_info.mtime
-      self.content_type = ContentType.find_or_create_by(name: (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream'))
+      self.content_type_name = (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream')
       self.md5_sum = Digest::MD5.file(self.absolute_path).to_s
       self.save!
     end
@@ -104,7 +104,7 @@ class CfsFile < ActiveRecord::Base
           self.red_flags.create(message: "Content Type changed. Old: #{self.content_type_name} New: #{new_content_type_name}")
         end
       end
-      self.content_type = ContentType.find_or_create_by(name: new_content_type_name)
+      self.content_type_name = new_content_type_name
     end
   end
 
@@ -117,7 +117,11 @@ class CfsFile < ActiveRecord::Base
   end
 
   def content_type_name=(name)
-    self.content_type = ContentType.find_or_create_by(name: name)
+    if name.present?
+      self.content_type = ContentType.find_or_create_by(name: name)
+    else
+      self.content_type = nil
+    end
   end
 
   protected
