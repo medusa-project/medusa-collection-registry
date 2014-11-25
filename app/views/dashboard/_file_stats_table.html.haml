@@ -14,11 +14,11 @@
           %th Size
       - cache(cache_key_for_all(FileGroup)) do
         %tbody
-          - bit_file_info_summary.each do |content_type, data|
+          - ContentType.order(:name).each do |content_type|
             %tr
-              %td= content_type
-              %td= data[:count].to_formatted_s(:delimited)
-              %td{'data-order' => data[:size]}= data[:size].to_formatted_s(:human_size, precision: 3)
+              %td= content_type.name
+              %td= content_type.cfs_file_count.to_formatted_s(:delimited)
+              %td{'data-order' => content_type.cfs_file_size}= content_type.cfs_file_size.to_formatted_s(:human_size, precision: 3)
 
   .col-sm-6
     %table.table.table-striped.table-bordered.table-condensed#file_stats_objects

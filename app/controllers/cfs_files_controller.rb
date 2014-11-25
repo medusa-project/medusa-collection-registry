@@ -96,7 +96,7 @@ class CfsFilesController < ApplicationController
   end
 
   def safe_content_type(cfs_file)
-    cfs_file.content_type || 'application/octet-stream'
+    cfs_file.content_type_name || 'application/octet-stream'
   end
 
   def common_image_preview

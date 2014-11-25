@@ -1,7 +1,9 @@
 require 'rest_client'
 
 class CfsFile < ActiveRecord::Base
+
   belongs_to :cfs_directory, touch: true
+  belongs_to :content_type, touch: true
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
 
@@ -10,6 +12,10 @@ class CfsFile < ActiveRecord::Base
   after_create :add_cfs_directory_tree_stats
   after_destroy :remove_cfs_directory_tree_stats
   after_update :update_cfs_directory_tree_stats
+
+  after_create :add_content_type_stats
+  after_destroy :remove_content_type_stats
+  after_update :update_content_type_stats
 
   def repository
     self.cfs_directory.repository
@@ -52,7 +58,7 @@ class CfsFile < ActiveRecord::Base
     if self.mtime.blank? or (file_info.mtime > self.mtime) or (file_info.size != self.size)
       self.size = file_info.size
       self.mtime = file_info.mtime
-      self.content_type = (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream')
+      self.content_type = ContentType.find_or_create_by(name: (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream'))
       self.md5_sum = Digest::MD5.file(self.absolute_path).to_s
       self.save!
     end
@@ -90,20 +96,28 @@ class CfsFile < ActiveRecord::Base
       self.md5_sum = new_md5_sum
     end
 
-    def update_content_type_from_fits(new_content_type)
-      if self.content_type != new_content_type
+    def update_content_type_from_fits(new_content_type_name)
+      if self.content_type_name != new_content_type_name
         #For this one we don't report a red flag if this is the first generation of
         #the fits xml overwriting the content type found by the 'file' command
         unless self.content_type.blank? or self.fits_xml_was.blank?
-          self.red_flags.create(message: "Content Type changed. Old: #{self.content_type} New: #{new_content_type}")
+          self.red_flags.create(message: "Content Type changed. Old: #{self.content_type_name} New: #{new_content_type_name}")
         end
       end
-      self.content_type = new_content_type
+      self.content_type = ContentType.find_or_create_by(name: new_content_type_name)
     end
   end
 
   def public?
     self.cfs_directory.public?
+  end
+
+  def content_type_name
+    self.content_type.try(:name)
+  end
+
+  def content_type_name=(name)
+    self.content_type = ContentType.find_or_create_by(name: name)
   end
 
   protected
@@ -118,6 +132,33 @@ class CfsFile < ActiveRecord::Base
 
   def remove_cfs_directory_tree_stats
     self.cfs_directory.update_tree_stats(-1, -1 * self.size || 0)
+  end
+
+  def add_content_type_stats
+    if self.content_type.present?
+      self.content_type.update_stats(1, self.size || 0)
+    end
+  end
+
+  def update_content_type_stats
+    if self.content_type_id_changed?
+      if self.content_type.present?
+        self.content_type.update_stats(1, self.size || 0)
+      end
+      if self.content_type_was.present?
+        self.content_type_was.update_stats(-1, -1 * (self.size_was || 0))
+      end
+    else
+      if self.content_type.present? and self.size_changed?
+        self.content_type.update_stats(0, (self.size || 0) - (self.size_was || 0))
+      end
+    end
+  end
+
+  def remove_content_type_stats
+    if self.content_type.present?
+      self.content_type.update_stats(-1, -1 * (self.size || 0))
+    end
   end
 
   def get_fits_xml

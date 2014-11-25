@@ -15,11 +15,11 @@ Feature: Red flags
   Scenario: A file with basic properties but no FITS replaces the content-type without red flags
     Given I am logged in as an admin
     And the file group named 'pictures' has a cfs file for the path 'grass.jpg' with fields:
-      | content_type |
+      | content_type_name |
       | text/plain   |
     And the cfs file at path 'grass.jpg' for the file group named 'pictures' has fits attached
     Then the cfs file at path 'grass.jpg' for the file group named 'pictures' should have fields:
-      | content_type |
+      | content_type_name |
       | image/jpeg   |
     And the cfs file at path 'grass.jpg' for the file group named 'pictures' should have 0 red flags
     And the file group named 'pictures' should have a cfs file for the path 'grass.jpg' with fits attached
@@ -49,7 +49,7 @@ Feature: Red flags
   Scenario: A file with FITS already run gets a red flag when content type, size, or md5 sum changes
     Given I am logged in as an admin
     And the file group named 'pictures' has a cfs file for the path 'grass.jpg' with fields:
-      |fits_xml|content_type|size| md5_sum |
+      |fits_xml|content_type_name|size| md5_sum |
       |<fits/>|text/plain   |100 |   36dc5ffa0b229e9311cf0c4485b21a54 |
     And the cfs file at path 'grass.jpg' for the file group named 'pictures' has fits rerun
     Then the cfs file at path 'grass.jpg' for the file group named 'pictures' should have 3 red flags

@@ -18,7 +18,7 @@
         #{link_to(@file_group.name, public_file_group_path(@file_group))}
     - if @file.size
       = show_value @file.size.to_formatted_s(:human_size, precision: 3), 'File size'
-    = show_value @file.content_type, 'Mimetype'
+    = show_value @file.content_type_name, 'Mimetype'
 
   .col-sm-8
     = render "public_preview_viewer_#{@preview_viewer_type}"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141119230908) do
+ActiveRecord::Schema.define(version: 20141124221933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -152,13 +152,13 @@ ActiveRecord::Schema.define(version: 20141119230908) do
     t.text     "fits_xml"
     t.datetime "mtime"
     t.string   "md5_sum"
-    t.string   "content_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "content_type_id"
   end
 
   add_index "cfs_files", ["cfs_directory_id", "name"], name: "index_cfs_files_on_cfs_directory_id_and_name", unique: true, using: :btree
-  add_index "cfs_files", ["content_type"], name: "index_cfs_files_on_content_type", using: :btree
+  add_index "cfs_files", ["content_type_id"], name: "index_cfs_files_on_content_type_id", using: :btree
   add_index "cfs_files", ["mtime"], name: "index_cfs_files_on_mtime", using: :btree
   add_index "cfs_files", ["name"], name: "index_cfs_files_on_name", using: :btree
   add_index "cfs_files", ["size"], name: "index_cfs_files_on_size", using: :btree
@@ -202,6 +202,14 @@ ActiveRecord::Schema.define(version: 20141119230908) do
   add_index "collections", ["repository_id"], name: "index_collections_on_repository_id", using: :btree
   add_index "collections", ["updated_at"], name: "index_collections_on_updated_at", using: :btree
   add_index "collections", ["uuid"], name: "index_collections_on_uuid", using: :btree
+
+  create_table "content_types", force: true do |t|
+    t.string   "name",           default: ""
+    t.integer  "cfs_file_count", default: 0
+    t.decimal  "cfs_file_size",  default: 0.0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0
