@@ -76,7 +76,7 @@ class CfsFilesController < ApplicationController
   #return a symbol that will be used to select the right viewer
   def find_preview_viewer_type(cfs_file)
     self.class.ensure_viewer_hashes
-    self.class.mime_type_viewers[cfs_file.content_type] ||
+    self.class.mime_type_viewers[cfs_file.content_type_name] ||
         self.class.extension_viewers[File.extname(cfs_file.name).sub(/^\./, '')] ||
         :none
   end
