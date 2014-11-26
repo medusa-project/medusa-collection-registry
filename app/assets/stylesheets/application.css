@@ -20,6 +20,10 @@
   padding: 5px 0px;
 }
 
+.table.dataTable {
+    font-size: 13px;
+}
+
 #file_stats_summary td {
   border-top: none;
 }
