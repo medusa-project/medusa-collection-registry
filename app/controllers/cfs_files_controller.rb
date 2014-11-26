@@ -4,7 +4,7 @@ class CfsFilesController < ApplicationController
   before_filter :require_logged_in_or_basic_auth, only: [:show]
   before_filter :find_file, only: [:show, :public, :create_fits_xml, :fits_xml,
                                    :download, :view, :public_download, :public_view,
-                                   :preview_image, :public_preview_image]
+                                   :preview_image, :public_preview_image, :preview_video]
   before_filter :require_public_file, only: [:public, :public_download, :public_view, :public_preview_image]
   layout 'public', only: [:public]
 
@@ -65,6 +65,11 @@ class CfsFilesController < ApplicationController
 
   def public_preview_image
     common_image_preview
+  end
+
+  def preview_video
+    authorize! :download, @file.file_group
+    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
   end
 
   protected
