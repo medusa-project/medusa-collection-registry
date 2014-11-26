@@ -77,7 +77,7 @@ class CfsFilesController < ApplicationController
   def find_preview_viewer_type(cfs_file)
     self.class.ensure_viewer_hashes
     self.class.mime_type_viewers[cfs_file.content_type_name] ||
-        self.class.extension_viewers[File.extname(cfs_file.name).sub(/^\./, '')] ||
+        self.class.extension_viewers[File.extname(cfs_file.name).sub(/^\./, '').downcase] ||
         :none
   end
 
