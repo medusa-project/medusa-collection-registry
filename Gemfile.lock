@@ -34,15 +34,6 @@ GIT
       delayed_job (>= 3.0)
 
 GIT
-  remote: git://github.com/plataformatec/simple_form.git
-  revision: c3bc4af79df2f3f51500a38d8a84aa682f9ad009
-  branch: master
-  specs:
-    simple_form (3.1.0.rc2)
-      actionpack (~> 4.0)
-      activemodel (~> 4.0)
-
-GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
   revision: 67f160dd2ff5cc7cd843a17866c3b6bc8e7f2794
   specs:
@@ -296,6 +287,9 @@ GEM
       sprockets-rails (~> 2.0)
     shoulda-matchers (2.6.2)
       activesupport (>= 3.0.0)
+    simple_form (3.1.0)
+      actionpack (~> 4.0)
+      activemodel (~> 4.0)
     simple_memoize (1.1.2)
     simplecov (0.9.0)
       docile (~> 1.1.0)
@@ -402,7 +396,7 @@ DEPENDENCIES
   rvm-capistrano
   sass-rails
   shoulda-matchers
-  simple_form (~> 3.1.0.rc2)!
+  simple_form
   simple_memoize
   simplecov
   state_machine
