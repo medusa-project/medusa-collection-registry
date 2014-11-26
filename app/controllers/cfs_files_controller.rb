@@ -64,7 +64,7 @@ class CfsFilesController < ApplicationController
   end
 
   def public_preview_image
-    common_preview_image
+    common_image_preview
   end
 
   protected
