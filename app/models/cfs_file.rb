@@ -149,8 +149,8 @@ class CfsFile < ActiveRecord::Base
       if self.content_type.present?
         self.content_type.update_stats(1, self.size || 0)
       end
-      if self.content_type_was.present?
-        self.content_type_was.update_stats(-1, -1 * (self.size_was || 0))
+      if self.content_type_id_was.present?
+        ContentType.find(self.content_type_id_was).update_stats(-1, -1 * (self.size_was || 0))
       end
     else
       if self.content_type.present? and self.size_changed?
