@@ -15,7 +15,7 @@ class CreateMedusaUuids < ActiveRecord::Migration
 
   def down
     add_column :collections, :uuid, :string, unique: true
-    Collection.add.each do |collection|
+    Collection.all.each do |collection|
       uuid = MedusaUuid.find_by(uuidable_id: collection.id, uuidable_type: 'Collection')
       collection.uuid = uuid.uuid
       collection.save!
