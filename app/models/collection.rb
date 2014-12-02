@@ -25,14 +25,9 @@ class Collection < ActiveRecord::Base
   validates_uniqueness_of :title, scope: :repository_id
   validates_presence_of :repository_id
   validates_presence_of :preservation_priority_id
-  validates_uniqueness_of :uuid
-  validates_each :uuid do |record, attr, value|
-    record.errors.add attr, 'is not a valid uuid' unless Utils::Luhn.verify(value)
-  end
 
   after_create :delayed_ensure_handle
   before_destroy :remove_handle
-  before_validation :ensure_uuid
   before_validation :ensure_rights_declaration
 
   accepts_nested_attributes_for :rights_declaration
@@ -53,8 +48,26 @@ class Collection < ActiveRecord::Base
     self.file_groups.collect { |fg| fg.file_size }.sum
   end
 
+  has_one :medusa_uuid, dependent: :destroy, as: :uuidable
+  after_create :ensure_uuid
+
   def ensure_uuid
-    self.uuid ||= Utils::Luhn.add_check_character(UUID.generate)
+    unless self.medusa_uuid
+      MedusaUuid.generate_for(self)
+    end
+    self.medusa_uuid(true)
+  end
+
+  def uuid
+    self.medusa_uuid.try(:uuid)
+  end
+
+  #This method is needed for some testing, but shouldn't really be used
+  if Rails.env.test?
+    def uuid=(uuid)
+      self.medusa_uuid.destroy if self.medusa_uuid
+      MedusaUuid.create!(uuid: uuid, uuidable: self)
+    end
   end
 
   def handle

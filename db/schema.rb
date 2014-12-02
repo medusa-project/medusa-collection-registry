@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141124221933) do
+ActiveRecord::Schema.define(version: 20141202170603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,7 +192,6 @@ ActiveRecord::Schema.define(version: 20141124221933) do
     t.text     "notes_html"
     t.text     "description_html"
     t.text     "private_description_html"
-    t.string   "uuid"
     t.text     "file_package_summary_html"
     t.string   "external_id"
   end
@@ -201,7 +200,6 @@ ActiveRecord::Schema.define(version: 20141124221933) do
   add_index "collections", ["external_id"], name: "index_collections_on_external_id", using: :btree
   add_index "collections", ["repository_id"], name: "index_collections_on_repository_id", using: :btree
   add_index "collections", ["updated_at"], name: "index_collections_on_updated_at", using: :btree
-  add_index "collections", ["uuid"], name: "index_collections_on_uuid", using: :btree
 
   create_table "content_types", force: true do |t|
     t.string   "name",           default: ""
@@ -362,6 +360,17 @@ ActiveRecord::Schema.define(version: 20141124221933) do
   end
 
   add_index "job_virus_scans", ["updated_at"], name: "index_job_virus_scans_on_updated_at", using: :btree
+
+  create_table "medusa_uuids", force: true do |t|
+    t.string   "uuid"
+    t.integer  "uuidable_id"
+    t.string   "uuidable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "medusa_uuids", ["uuid"], name: "index_medusa_uuids_on_uuid", unique: true, using: :btree
+  add_index "medusa_uuids", ["uuidable_id", "uuidable_type"], name: "index_medusa_uuids_on_uuidable_id_and_uuidable_type", using: :btree
 
   create_table "package_profiles", force: true do |t|
     t.string   "name"
