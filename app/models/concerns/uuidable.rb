@@ -9,7 +9,7 @@ module Uuidable
   end
 
   def ensure_uuid
-    unless self.medusa_uuid
+    unless self.medusa_uuid.present?
       MedusaUuid.generate_for(self)
     end
     self.medusa_uuid(true)

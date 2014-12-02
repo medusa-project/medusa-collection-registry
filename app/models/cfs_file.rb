@@ -43,6 +43,10 @@ class CfsFile < ActiveRecord::Base
     self.cfs_directory.owning_file_group
   end
 
+  def owning_file_group
+    self.file_group
+  end
+
   def self.cfs_type
     'CFS File'
   end

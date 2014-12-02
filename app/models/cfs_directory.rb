@@ -182,7 +182,7 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def public?
-    self.owning_file_group.public?
+    self.owning_file_group.try(:public?)
   end
 
   def update_tree_stats(count_difference, size_difference)

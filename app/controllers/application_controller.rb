@@ -134,4 +134,9 @@ class ApplicationController < ActionController::Base
     self.class.ldap_cache_key(user)
   end
 
+  def public_path(object)
+    class_name = object.class.to_s.underscore
+    self.send("public_#{class_name}_path", object)
+  end
+
 end
