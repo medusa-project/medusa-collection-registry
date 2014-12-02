@@ -1,4 +1,7 @@
+require 'active_support/concern'
 module ScheduledEventable
+  extend ActiveSupport::Concern
+
   def supported_scheduled_event_hash
     raise RuntimeError, 'Responsibility of including class'
   end

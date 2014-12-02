@@ -1,4 +1,8 @@
+require 'active_support/concern'
+
 module Eventable
+  extend ActiveSupport::Concern
+
   def supported_event_hash
     raise RuntimeError, 'Responsibility of including class'
   end

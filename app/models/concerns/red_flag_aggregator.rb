@@ -9,13 +9,9 @@
 #and the returned red flags are accumulated
 #The :label_method option specifies a method to send to the object to get a link label (to go back from the red flag
 # table to the object.)
-
+require 'active_support/concern'
 module RedFlagAggregator
-
-  def self.included(base)
-    base.send(:extend, ClassMethods)
-    base.send(:include, InstanceMethods)
-  end
+  extend ActiveSupport::Concern
 
   #TODO - I'm not sure how this will work with FileGroup STI, but at some point we may find out.
   #If it doesn't work correctly then fix it.
@@ -40,24 +36,23 @@ module RedFlagAggregator
 
   end
 
-  module InstanceMethods
-    def all_red_flags
-      red_flags = Array.new
-      self.class.red_flag_methods.each do |method|
-        red_flags = red_flags + self.send(method)
-      end
-      self.class.red_flag_child_collections.each do |child|
-        collection = self.send(child)
-        collection.each do |member|
-          red_flags = red_flags + member.method_value_or_default(:all_red_flags, [])
-        end
-      end
-      red_flags.uniq.sort { |a, b| b.created_at <=> a.created_at }
+  def all_red_flags
+    red_flags = Array.new
+    self.class.red_flag_methods.each do |method|
+      red_flags = red_flags + self.send(method)
     end
-
-    def red_flag_aggregator_label
-      self.send(self.class.red_flag_aggregator_label_method)
+    self.class.red_flag_child_collections.each do |child|
+      collection = self.send(child)
+      collection.each do |member|
+        red_flags = red_flags + member.method_value_or_default(:all_red_flags, [])
+      end
     end
-
+    red_flags.uniq.sort { |a, b| b.created_at <=> a.created_at }
   end
+
+  def red_flag_aggregator_label
+    self.send(self.class.red_flag_aggregator_label_method)
+  end
+
+
 end
