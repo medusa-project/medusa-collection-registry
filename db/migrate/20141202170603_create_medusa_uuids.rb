@@ -15,11 +15,8 @@ class CreateMedusaUuids < ActiveRecord::Migration
 
   def down
     add_column :collections, :uuid, :string, unique: true
-    Collection.all.each do |collection|
-      uuid = MedusaUuid.find_by(uuidable_id: collection.id, uuidable_type: 'Collection')
-      collection.uuid = uuid.uuid
-      collection.save!
-    end
+    Collection.connection.execute("UPDATE collections C SET uuid=(SELECT uuid FROM medusa_uuids MU
+        WHERE MU.uuidable_type = 'Collection' AND MU.uuidable_id = C.id)")
     drop_table :medusa_uuids
   end
 end
