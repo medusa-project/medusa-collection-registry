@@ -32,6 +32,12 @@ development:
   book_tracker:
     import_path: ~/Projects/mbt_marcxml
     library_nuc_code: UIU
+  loris:
+    host: localhost
+    port: 3000
+    #this is the path from the loris server's base path, e.g. /usr/local/share/images for the docker version, to
+    #the cfs root for this environment
+    root: dev
 test:
   cfs:
     root: /home/hading/repos/medusa-rails3/tmp/cfs-root-test
@@ -45,6 +51,10 @@ test:
   amazon:
     outgoing_queue: medusa_to_glacier_test
     incoming_queue: glacier_to_medusa_test
+  loris:
+    host: localhost
+    port: 3000
+    root: test
 production:
   basic_auth: change_this_user:change_this_password
   medusa_users_group: Library Medusa Users
@@ -56,3 +66,6 @@ production:
   book_tracker:
     import_path: /mnt/library-storage-hathitrust/documentation/2014
     library_nuc_code: UIU
+  loris:
+    host: localhost
+    port: 3000
