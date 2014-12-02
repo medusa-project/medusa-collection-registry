@@ -13,9 +13,10 @@ Feature: Viewing CFS file information and content
     And the file group named 'Dogs' has cfs root 'dogs/places' and delayed jobs are run
 
   Scenario: View cfs file
+    Given the uuid of the cfs file with name 'grass.jpg' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'
     Then I should see all of:
-      | grass.jpg | image/jpeg | b001b52b12fc80ef6145b7655de0b668 | 166 KB |
+      | grass.jpg | image/jpeg | b001b52b12fc80ef6145b7655de0b668 | 166 KB | 3da0fae0-e3fa-012f-ac10-005056b22849-8 |
 
   Scenario: Download cfs file
     When I view the cfs file for the file group named 'Dogs' for the path 'grass.jpg'

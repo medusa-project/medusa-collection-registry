@@ -15,9 +15,10 @@ Feature: CFS integration
 
   Scenario: View CFS directory as an admin
     Given I am logged in as an admin
+    And the uuid of the cfs directory with path 'dogs' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
     When I view the cfs directory for the file group named 'Dogs' for the path '.'
     Then I should see all of:
-      | intro.txt | pugs |
+      | intro.txt | pugs |3da0fae0-e3fa-012f-ac10-005056b22849-8|
 
   Scenario: View CFS directory as a manager
     Given I am logged in as a manager

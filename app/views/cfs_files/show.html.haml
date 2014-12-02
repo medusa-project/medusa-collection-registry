@@ -17,6 +17,7 @@
     = show_value @file.name, 'File name'
     = show_value 'bit-level', 'Storage level'
     = show_value @file.md5_sum, 'MD5'
+    = show_value @file.uuid, 'UUID'
     %p
       %strong FITS:
       - if @file.fits_xml

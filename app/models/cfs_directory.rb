@@ -1,6 +1,8 @@
 require 'pathname'
 class CfsDirectory < ActiveRecord::Base
 
+  include Uuidable
+
   has_many :subdirectories, class_name: 'CfsDirectory', foreign_key: :parent_cfs_directory_id, dependent: :destroy
   has_many :cfs_files, dependent: :destroy
   belongs_to :parent_cfs_directory, class_name: 'CfsDirectory', touch: true
