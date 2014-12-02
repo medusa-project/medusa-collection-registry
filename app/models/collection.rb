@@ -1,12 +1,13 @@
 require 'email_person_associator'
 require 'registers_handle'
 require 'mods_helper'
-require 'utils/luhn'
 
 class Collection < ActiveRecord::Base
   include RegistersHandle
   include ModsHelper
   include RedFlagAggregator
+  include Uuidable
+
   email_person_association(:contact)
 
   belongs_to :repository, touch: true
@@ -46,32 +47,6 @@ class Collection < ActiveRecord::Base
 
   def total_size
     self.file_groups.collect { |fg| fg.file_size }.sum
-  end
-
-  has_one :medusa_uuid, dependent: :destroy, as: :uuidable
-  after_create :ensure_uuid
-
-  def ensure_uuid
-    unless self.medusa_uuid
-      MedusaUuid.generate_for(self)
-    end
-    self.medusa_uuid(true)
-  end
-
-  def uuid
-    self.medusa_uuid.try(:uuid)
-  end
-
-  #This method is needed for some testing, but shouldn't really be used
-  if Rails.env.test?
-    def uuid=(uuid)
-      self.medusa_uuid.destroy if self.medusa_uuid
-      MedusaUuid.create!(uuid: uuid, uuidable: self)
-    end
-  end
-
-  def handle
-    self.uuid ? "10111/MEDUSA:#{self.uuid}" : nil
   end
 
   def medusa_url
