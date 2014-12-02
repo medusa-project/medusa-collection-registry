@@ -7,8 +7,9 @@ class CreateMedusaUuids < ActiveRecord::Migration
       t.timestamps
     end
     add_index :medusa_uuids, :uuid, unique: true
-    Collection.connection.execute("INSERT INTO medusa_uuids (uuid, uuidable_id, uuidable_type)
-      SELECT uuid, id, 'Collection' FROM collections")
+    Collection.connection.execute("INSERT INTO medusa_uuids (uuid, uuidable_id, uuidable_type, created_at, updated_at)
+      SELECT uuid, id, 'Collection', now(), now() FROM collections")
+    MedusaUuid.all.each {|m| m.touch}
     remove_column :collections, :uuid
   end
 
