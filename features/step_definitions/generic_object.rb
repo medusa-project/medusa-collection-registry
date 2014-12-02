@@ -65,3 +65,10 @@ When(/^I destroy the (.*) with (.*) '(.*)'$/) do |object_type, key, value|
   underscored_key = key.gsub(' ', '_')
   klass.find_by(underscored_key => value).destroy
 end
+
+And(/^the uuid of the (.*) with (.*) '(.*)' is '(.*)'$/) do |object_type, key, value, uuid|
+  klass = class_for_object_type(object_type)
+  object = klass.find_by(key => value)
+  object.uuid = uuid
+  object.save!
+end
