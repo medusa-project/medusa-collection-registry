@@ -17,8 +17,6 @@ class FileGroup < ActiveRecord::Base
   has_many :target_file_groups, through: :target_file_group_joins
   has_many :source_file_group_joins, dependent: :destroy, class_name: 'RelatedFileGroupJoin', foreign_key: :target_file_group_id
   has_many :source_file_groups, through: :source_file_group_joins
-  has_many :events, -> { order 'date DESC' }, as: :eventable, dependent: :destroy
-  has_many :scheduled_events, -> { order 'action_date ASC' }, as: :scheduled_eventable, dependent: :destroy
   has_many :attachments, as: :attachable, dependent: :destroy
 
   before_validation :ensure_rights_declaration
@@ -133,10 +131,6 @@ class FileGroup < ActiveRecord::Base
 
   def repository
     self.collection.repository
-  end
-
-  def incomplete_scheduled_events
-    self.scheduled_events.where("state != 'completed'")
   end
 
   #override this as needed for subclasses. Size should be in GB. Should use this method rather than the db column to

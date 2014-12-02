@@ -3,6 +3,10 @@ require 'active_support/concern'
 module Eventable
   extend ActiveSupport::Concern
 
+  included do
+    has_many :events, -> { order 'date DESC' }, as: :eventable, dependent: :destroy
+  end
+
   def supported_event_hash
     raise RuntimeError, 'Responsibility of including class'
   end

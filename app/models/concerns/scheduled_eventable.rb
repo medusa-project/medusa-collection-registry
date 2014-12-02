@@ -2,6 +2,10 @@ require 'active_support/concern'
 module ScheduledEventable
   extend ActiveSupport::Concern
 
+  included do
+    has_many :scheduled_events, -> { order 'action_date ASC' }, as: :scheduled_eventable, dependent: :destroy
+  end
+
   def supported_scheduled_event_hash
     raise RuntimeError, 'Responsibility of including class'
   end
@@ -26,6 +30,10 @@ module ScheduledEventable
     self.supported_scheduled_event_hash.collect do |k,v|
       [v['message'], k]
     end
+  end
+
+  def incomplete_scheduled_events
+    self.scheduled_events.where("state != 'completed'")
   end
 
 end
