@@ -2,6 +2,8 @@ require 'rest_client'
 
 class CfsFile < ActiveRecord::Base
 
+  include Uuidable
+
   belongs_to :cfs_directory, touch: true
   belongs_to :content_type, touch: true
 
@@ -39,6 +41,10 @@ class CfsFile < ActiveRecord::Base
 
   def file_group
     self.cfs_directory.owning_file_group
+  end
+
+  def owning_file_group
+    self.file_group
   end
 
   def self.cfs_type

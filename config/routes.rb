@@ -92,6 +92,7 @@ MedusaRails3::Application.routes.draw do
       get 'view'
       get 'preview_image'
       get 'public_preview_image'
+      get 'preview_video'
     end
   end
   resources :cfs_directories, only: :show do
@@ -108,6 +109,8 @@ MedusaRails3::Application.routes.draw do
       post :filename
     end
   end
+
+  resources :uuids, only: [:show]
 
   match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   match '/login', to: 'sessions#new', as: :login, via: [:get, :post]

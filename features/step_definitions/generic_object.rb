@@ -36,9 +36,14 @@ end
 
 
 And /^the (.*) with (.*) '(.*)' exists$/ do |object_type, key, value|
-  klass = class_for_object_type(object_type)
+  klass = class_for_object_type(object_type) rescue nil
   underscored_key = key.gsub(' ', '_')
-  klass.find_by(underscored_key => value) || FactoryGirl.create(object_type.gsub(' ', '_'), underscored_key => value)
+  if klass
+    klass.find_by(underscored_key => value) || FactoryGirl.create(object_type.gsub(' ', '_'), underscored_key => value)
+  else
+    FactoryGirl.create(object_type.gsub(' ', '_'), underscored_key => value)
+  end
+
 end
 
 And /^each (.*) with (.*) exists:$/ do |object_type, key, table|
@@ -64,4 +69,15 @@ When(/^I destroy the (.*) with (.*) '(.*)'$/) do |object_type, key, value|
   klass = class_for_object_type(object_type)
   underscored_key = key.gsub(' ', '_')
   klass.find_by(underscored_key => value).destroy
+end
+
+And(/^the uuid of the (.*) with (.*) '(.*)' is '(.*)'$/) do |object_type, key, value, uuid|
+  klass = class_for_object_type(object_type)
+  object = klass.find_by(key => value)
+  object.uuid = uuid
+  object.save!
+end
+
+When(/^I visit the object with uuid '(.*)'$/) do |uuid|
+  visit uuid_path(uuid)
 end

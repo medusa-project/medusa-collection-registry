@@ -22,3 +22,6 @@ Then /^I should see a link to '(.*)'$/ do |url|
   page.should have_link(url)
 end
 
+And(/^the http status should be '(\d+)'$/) do |status_code|
+  expect(page.status_code.to_s).to eq(status_code)
+end

@@ -1,12 +1,13 @@
 require 'email_person_associator'
 require 'registers_handle'
 require 'mods_helper'
-require 'utils/luhn'
 
 class Collection < ActiveRecord::Base
   include RegistersHandle
   include ModsHelper
   include RedFlagAggregator
+  include Uuidable
+
   email_person_association(:contact)
 
   belongs_to :repository, touch: true
@@ -25,14 +26,9 @@ class Collection < ActiveRecord::Base
   validates_uniqueness_of :title, scope: :repository_id
   validates_presence_of :repository_id
   validates_presence_of :preservation_priority_id
-  validates_uniqueness_of :uuid
-  validates_each :uuid do |record, attr, value|
-    record.errors.add attr, 'is not a valid uuid' unless Utils::Luhn.verify(value)
-  end
 
   after_create :delayed_ensure_handle
   before_destroy :remove_handle
-  before_validation :ensure_uuid
   before_validation :ensure_rights_declaration
 
   accepts_nested_attributes_for :rights_declaration
@@ -51,14 +47,6 @@ class Collection < ActiveRecord::Base
 
   def total_size
     self.file_groups.collect { |fg| fg.file_size }.sum
-  end
-
-  def ensure_uuid
-    self.uuid ||= Utils::Luhn.add_check_character(UUID.generate)
-  end
-
-  def handle
-    self.uuid ? "10111/MEDUSA:#{self.uuid}" : nil
   end
 
   def medusa_url

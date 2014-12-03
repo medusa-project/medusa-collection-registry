@@ -5,8 +5,9 @@ Feature: MODS for collection
 
   Background:
     Given the repository with title 'Animals' has child collections with fields:
-      | title | description        | access_url              |  uuid                                   |
-      | Dogs  | Collection of dogs | http://dogs.example.com |  3da0fae0-e3fa-012f-ac10-005056b22849-8 |
+      | title | description        | access_url              |
+      | Dogs  | Collection of dogs | http://dogs.example.com |
+    And the uuid of the collection with title 'Dogs' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
     And the collection with title 'Dogs' has child resource types with field name:
       | text | cartographic |
 

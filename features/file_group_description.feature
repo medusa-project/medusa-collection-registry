@@ -17,9 +17,10 @@ Feature: File Group description
 
   Scenario: View a file group
     Given I am logged in as an admin
+    And the uuid of the file group with name 'images' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
     When I view the file group with name 'images'
     Then I should see all of:
-      | image/jpeg | 1,200 | main summary | main provenance | images | external | staging_dir/images | external-main-library-id |
+      | image/jpeg | 1,200 | main summary | main provenance | images | external | staging_dir/images | external-main-library-id |3da0fae0-e3fa-012f-ac10-005056b22849-8|
 
   Scenario: View a file group as a manager
     Given I am logged in as a manager
