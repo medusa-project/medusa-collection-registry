@@ -5,6 +5,6 @@ class DelayedJobErrorMailer < ActionMailer::Base
     @handler = job.handler
     @exception = exception.to_s
     @id = job.id
-    mail(to: 'hding2@illinois.edu', subject: 'Delayed Job Error')
+    mail(to: 'hding2@illinois.edu', subject: 'Medusa Delayed Job Error')
   end
 end
