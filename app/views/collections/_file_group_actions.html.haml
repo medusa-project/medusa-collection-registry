@@ -17,7 +17,7 @@
 - if file_group.is_a?(BitLevelFileGroup)
   .fits-actions
     %strong FITS
-    = link_to 'Run', create_all_fits_file_group_path(file_group), method: 'post', remote: 'true'
+    = link_to 'Run', create_cfs_fits_file_group_path(file_group), method: 'post', remote: 'true'
   .virus-scan-actions
     %strong Virus Scan
     - if file_group.virus_scans.present?

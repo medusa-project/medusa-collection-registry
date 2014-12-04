@@ -40,7 +40,6 @@ MedusaRails3::Application.routes.draw do
   [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
     resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy] do
       member do
-        post 'create_all_fits'
         post 'create_cfs_fits'
         get 'events'
         get 'red_flags'
