@@ -13,4 +13,8 @@ class Job::Base < ActiveRecord::Base
     Delayed::Job.where(handler: self.to_yaml).all
   end
 
+  def success(job)
+    self.destroy!
+  end
+
 end

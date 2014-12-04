@@ -9,8 +9,4 @@ class Job::CfsInitialFileGroupAssessment < Job::Base
     self.file_group.run_initial_cfs_assessment
   end
 
-  def success(job)
-    self.destroy
-  end
-
 end
