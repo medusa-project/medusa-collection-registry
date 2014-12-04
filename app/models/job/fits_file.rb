@@ -1,4 +1,4 @@
-class Job::FitsFile < ActiveRecord::Base
+class Job::FitsFile < Job::Base
   belongs_to :fits_directory_tree, touch: true
 
   def perform

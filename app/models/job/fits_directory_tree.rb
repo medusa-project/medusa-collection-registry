@@ -1,4 +1,4 @@
-class Job::FitsDirectoryTree < ActiveRecord::Base
+class Job::FitsDirectoryTree < Job::Base
 
   belongs_to :file_group, touch: true
   belongs_to :cfs_directory, touch: true
