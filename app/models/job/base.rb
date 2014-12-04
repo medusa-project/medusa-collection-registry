@@ -26,7 +26,7 @@ class Job::Base < ActiveRecord::Base
   end
 
   def notify_on_error(job, exception = nil)
-    
+    DelayedJobErrorMailer.error(job, exception).deliver
   end
 
 end
