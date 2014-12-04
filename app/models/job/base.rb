@@ -17,4 +17,16 @@ class Job::Base < ActiveRecord::Base
     self.destroy!
   end
 
+  def error(job, exception)
+    notify_on_error(job, exception)
+  end
+
+  def failure(job)
+    notify_on_error(job, nil)
+  end
+
+  def notify_on_error(job, exception = nil)
+    
+  end
+
 end
