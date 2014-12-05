@@ -1,3 +1,4 @@
+require 'net/http'
 class CfsFilesController < ApplicationController
 
   before_filter :require_logged_in, except: [:show, :public, :public_view, :public_download, :public_preview_image]
@@ -65,7 +66,15 @@ class CfsFilesController < ApplicationController
 
   def preview_iiif_image
     authorize! :download, @file.file_group
-    common_image_preview
+    #find url for image from the image's file path
+    image_server_config = MedusaRails3::Application.medusa_config['loris']
+    image_server_base_url = "http://#{image_server_config['host'] || 'localhost'}:#{image_server_config['port'] || 3000}/#{image_server_config['root']}"
+    image_server_image_url = "#{image_server_base_url}/#{@file.relative_path}"
+    image_server_url = "#{image_server_image_url}/full/full/0/color.jpg"
+    #make http request for image from image server
+    image = Net::HTTP.get(URI.parse(image_server_url))
+    #send result to browser
+    send_data image, type: 'image/jpeg', disposition: 'inline'
   end
 
   def public_preview_image
