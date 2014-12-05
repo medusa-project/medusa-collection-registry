@@ -1,14 +1,17 @@
 mime_types:
-  image:
+  iiif_image:
     - image/jpeg
     - image/tiff
+  image:
+    - image/png
   video:
     - video/mp4
 extensions:
-  image:
-    - tiff
+  iiif_image:
     - tif
     - jpg
+  image:
+    - tiff
     - jpeg
     - png
     - gif

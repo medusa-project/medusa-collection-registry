@@ -90,6 +90,7 @@ MedusaRails3::Application.routes.draw do
       get 'download'
       get 'view'
       get 'preview_image'
+      get 'preview_iiif_image'
       get 'public_preview_image'
       get 'preview_video'
     end
