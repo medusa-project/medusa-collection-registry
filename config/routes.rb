@@ -90,11 +90,12 @@ MedusaRails3::Application.routes.draw do
       get 'download'
       get 'view'
       get 'preview_image'
-      get 'preview_iiif_image'
       get 'public_preview_image'
       get 'preview_video'
     end
   end
+  get 'cfs_files/:id/preview_iiif_image/*iiif_parameters', to: 'cfs_files#preview_iiif_image', as: 'preview_iiif_image_cfs_file'
+
   resources :cfs_directories, only: :show do
     member do
       post 'create_fits_for_tree'

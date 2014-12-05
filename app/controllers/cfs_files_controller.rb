@@ -70,7 +70,7 @@ class CfsFilesController < ApplicationController
     image_server_config = MedusaRails3::Application.medusa_config['loris']
     image_server_base_url = "http://#{image_server_config['host'] || 'localhost'}:#{image_server_config['port'] || 3000}/#{image_server_config['root']}"
     image_server_image_url = "#{image_server_base_url}/#{@file.relative_path}"
-    image_server_url = "#{image_server_image_url}/full/full/0/color.jpg"
+    image_server_url = "#{image_server_image_url}/#{params[:iiif_parameters]}.#{params[:format]}"
     #make http request for image from image server
     image = Net::HTTP.get(URI.parse(image_server_url))
     #send result to browser
