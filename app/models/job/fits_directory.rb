@@ -1,7 +1,8 @@
-class Job::FitsDirectory < ActiveRecord::Base
+class Job::FitsDirectory < Job::Base
 
   belongs_to :file_group, touch: true
   belongs_to :cfs_directory, touch: true
+  has_many :job_fits_directories, :class_name => 'Job::FitsDirectory'
 
   def self.create_for(cfs_directory)
     Delayed::Job.enqueue(self.create(cfs_directory: cfs_directory, file_group: cfs_directory.owning_file_group,

@@ -25,7 +25,7 @@ class Job::CfsDirectoryExport < Job::Base
     if CfsDirectory.export_autoclean
       Job::CfsDirectoryExportCleanup.create_for(self.export_directory)
     end
-    self.destroy!
+    super
   end
 
   #TODO - make this more useful, but that needs to wait until we know better

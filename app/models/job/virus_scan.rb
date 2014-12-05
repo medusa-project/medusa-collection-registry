@@ -1,4 +1,4 @@
-class Job::VirusScan < ActiveRecord::Base
+class Job::VirusScan < Job::Base
   belongs_to :file_group, touch: true
 
   def perform

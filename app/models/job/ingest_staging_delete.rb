@@ -13,7 +13,7 @@ class Job::IngestStagingDelete < Job::Base
     end
     job = self.create(external_file_group_id: external_file_group.id, path: path, user_id: user.id)
     options = {priority: 10}
-    (options[:run_at] = Time.now + 30.days) if Rails.env.production?
+    options[:run_at] = Time.now + (Rails.env.production? ? 30.days : 2.seconds)
     Delayed::Job.enqueue(job, options)
   end
 
@@ -21,8 +21,6 @@ class Job::IngestStagingDelete < Job::Base
     if File.directory?(self.path)
       FileUtils.rm_rf(self.path)
     end
-    u = self.user
-    fg = self.external_file_group
     Workflow::IngestMailer.staging_delete_done(self.user, self.external_file_group).deliver
   end
 

@@ -111,8 +111,12 @@ class CfsDirectory < ActiveRecord::Base
     if self.file_group_root?
       CfsDirectory.where(root_cfs_directory_id: self.id).ids
     else
-      #for the non root case we actually need to do some work, but we may not need this
-      raise RuntimeError, "Not yet implemented"
+      ids = [self.id]
+      while true
+        new_ids = (CfsDirectory.where(parent_cfs_directory_id: ids).ids << self.id).sort
+        return new_ids if ids == new_ids
+        ids = new_ids
+      end
     end
   end
 
@@ -242,8 +246,7 @@ class CfsDirectory < ActiveRecord::Base
     if self.file_group_root?
       directories = CfsDirectory.where(root_cfs_directory_id: self.id)
     else
-      raise RuntimeError, 'Not yet implemented'
-      #directories = ??
+      directories = CfsDirectory.where(id: self.recursive_subdirectory_ids)
     end
     (directories = directories - [self]) unless include_self
     directories.each do |directory|

@@ -2,7 +2,7 @@ class FileGroupsController < ApplicationController
 
   before_filter :require_logged_in, except: [:show, :public]
   before_filter :require_logged_in_or_basic_auth, only: [:show]
-  before_filter :find_file_group_and_collection, only: [:show, :destroy, :edit, :update, :create_all_fits,
+  before_filter :find_file_group_and_collection, only: [:show, :destroy, :edit, :update,
                                                         :create_cfs_fits, :create_virus_scan, :red_flags, :public]
   layout 'public', only: [:public]
   respond_to :html, :js, :json
