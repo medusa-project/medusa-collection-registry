@@ -1,1 +1,49 @@
-%img{src: preview_iiif_image_cfs_file_path(id: @file.id, iiif_parameters: ['full', '!300,300', '0', 'default.jpg']), alt: "Preview image for #{@file.name}"}
+-# %img{src: preview_iiif_image_cfs_file_path(id: @file.id, iiif_parameters: ['full', '!300,300', '0', 'default.jpg']), alt: "Preview image for #{@file.name}"}
+
+-#= javascript_include_tag '/iipmooviewer/js/iipmooviewer-2.0-min'
+-#= javascript_include_tag '/iipmooviewer/src/protocols/iiif'
+-#= javascript_include_tag '/iipmooviewer/src/protocols/deepzoom'
+-#%iframe{style: "width: 600px; height: 400px;"}
+-#:javascript
+-#  jQuery(function() {
+-#      var iipmooviewer = new IIPMooViewer("viewer", {
+-#      protocol: "IIIF",
+-#      image: "/cfs_files/#{@file.id}/preview_iiif_image",
+-#      prefix: "/iipmooviewer/images/",
+-#      server: "http://localhost:3000"
+-#      });
+-#  })
+
+-#%div#openseadragon1{style: "width: 300px; height: 300px;"}
+-#= javascript_include_tag '/openseadragon/openseadragon.js'
+-#:javascript
+-#  var viewer = OpenSeadragon({
+-#    id: "openseadragon1",
+-#    prefixUrl: "/openseadragon/images/",
+-#    preserveViewport: true,
+-#    minZoomLevel: 1,
+-#    defaultZoomLevel: 1,
+-#    tileSources:   [{
+-#      "@context": "http://library.stanford.edu/iiif/image-api/1.1/context.json",
+-#      "@id": "/cfs_files/#{@file.id}/preview_iiif_image",
+-#      "height": 175,
+-#      "profile": "http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2",
+-#      "tile_height": 100,
+-#      "tile_width": 100,
+-#      "width": 287
+-#    }]
+-#  });
+
+%div#openseadragon1{style: "width: 300px; height: 300px;"}
+= javascript_include_tag '/openseadragon/openseadragon.js'
+:javascript
+  var viewer = OpenSeadragon({
+    id: "openseadragon1",
+    prefixUrl: "/openseadragon/images/",
+    preserveViewport: true,
+    minZoomLevel: 1,
+    defaultZoomLevel: 1,
+    tileSources:   [
+      "/cfs_files/#{@file.id}/preview_iiif_image/info.json"
+    ]
+  });

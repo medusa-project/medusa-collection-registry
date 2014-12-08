@@ -70,11 +70,19 @@ class CfsFilesController < ApplicationController
     image_server_config = MedusaRails3::Application.medusa_config['loris']
     image_server_base_url = "http://#{image_server_config['host'] || 'localhost'}:#{image_server_config['port'] || 3000}/#{image_server_config['root']}"
     image_server_image_url = "#{image_server_base_url}/#{@file.relative_path}"
-    image_server_url = "#{image_server_image_url}/#{params[:iiif_parameters]}.#{params[:format]}"
+    params[:iiif_parameters].gsub(/native$/, 'default')
+    if params[:iiif_parameters] == 'info' and params[:format] == 'json'
+      image_server_url = "#{image_server_image_url}/#{params[:iiif_parameters]}.#{params[:format]}"
+      response_type = 'application/json'
+    else
+      image_server_url = "#{image_server_image_url}/#{params[:iiif_parameters]}.#{params[:format]}"
+      response_type = 'image/jpeg'
+    end
     #make http request for image from image server
     image = Net::HTTP.get(URI.parse(image_server_url))
+    Rails.logger.debug "IMAGE:\n" + image
     #send result to browser
-    send_data image, type: 'image/jpeg', disposition: 'inline'
+    send_data image, type: response_type, disposition: 'inline'
   end
 
   def public_preview_image

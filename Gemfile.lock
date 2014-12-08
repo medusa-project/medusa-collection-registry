@@ -205,6 +205,9 @@ GEM
       subexec (~> 0.2.1)
     mini_portile (0.6.0)
     minitest (5.4.3)
+    mootools-rails (3.1.0)
+      railties (>= 3.0, < 5.0)
+      thor (>= 0.14, < 2.0)
     multi_json (1.10.1)
     multi_test (0.1.1)
     multi_xml (0.5.5)
@@ -379,6 +382,7 @@ DEPENDENCIES
   local_time
   logger
   mini_magick
+  mootools-rails
   net-http-digest_auth!
   newrelic_rpm
   nokogiri

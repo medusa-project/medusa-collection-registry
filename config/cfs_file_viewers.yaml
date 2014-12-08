@@ -2,8 +2,9 @@ mime_types:
   iiif_image:
     - image/jpeg
     - image/tiff
-  image:
     - image/png
+  image:
+    - image/gif
   video:
     - video/mp4
 extensions:

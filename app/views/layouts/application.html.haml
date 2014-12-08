@@ -9,9 +9,13 @@
     = stylesheet_link_tag 'application', media: 'all'
     = yield :more_css
 
+    = javascript_include_tag 'application'
+    = yield :more_javascript
+
+
     / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
-      = javascript_include_tag 'http://html5shim.googlecode.com/svn/trunk/html5.js'
+    = javascript_include_tag 'http://html5shim.googlecode.com/svn/trunk/html5.js'
 
     / Le fav and touch icons
     %link{href: '/images/favicon.ico', rel: 'shortcut icon'}/
@@ -43,9 +47,3 @@
                 | UNIVERSITY OF ILLINOIS AT URBANA-CHAMPAIGN
                 %br
                   %a{href: 'http://medusa.library.illinois.edu'} http://medusa.library.illinois.edu
-    /
-      Le javascript
-      \==================================================
-    / Placed at the end of the document so the pages load faster
-    = javascript_include_tag 'application'
-    = yield :more_javascript

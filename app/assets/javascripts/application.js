@@ -20,4 +20,7 @@
 //= require autocomplete-rails
 //= require local_time
 //= require common
+//= require mootools
+//= require mootools_ujs
+//= require mootools-more
 //= require_tree .

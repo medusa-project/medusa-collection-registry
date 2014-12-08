@@ -68,6 +68,8 @@ gem 'jquery-ui-rails'
 #'def input(wrapper_options)'.
 gem 'rails3-jquery-autocomplete'
 
+gem 'mootools-rails'
+
 gem 'nokogiri'
 
 gem 'omniauth'
