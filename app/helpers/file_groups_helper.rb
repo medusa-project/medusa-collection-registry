@@ -6,12 +6,6 @@ module FileGroupsHelper
     end
   end
 
-  def file_types_select_collection
-    FileType.order(:name).load.collect do |type|
-      [type.name, type.id]
-    end
-  end
-
   def cfs_file_group_root_select_collection(file_group)
     #an existing record for a file group of type that doesn't support cfs doesn't need anything to display
     return [] unless (file_group.new_record? or file_group.supports_cfs)

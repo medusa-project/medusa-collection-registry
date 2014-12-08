@@ -7,7 +7,6 @@ class FileGroup < ActiveRecord::Base
   #parent is a duplicate, but allows uniformity for events, i.e. we can do eventable.parent
   belongs_to :parent, class_name: 'Collection', foreign_key: 'collection_id'
   belongs_to :producer, touch: true
-  belongs_to :file_type, touch: true
   belongs_to :package_profile, touch: true
 
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
@@ -38,10 +37,6 @@ class FileGroup < ActiveRecord::Base
 
   def self.storage_levels
     STORAGE_LEVEL_HASH.keys
-  end
-
-  def file_type_name
-    self.file_type.try(:name)
   end
 
   def label

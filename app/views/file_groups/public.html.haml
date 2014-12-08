@@ -10,7 +10,6 @@
     .well
       = show_field @file_group, :name
       = show_field @file_group, :external_id, 'External ID'
-      = show_field @file_group, :file_type_name, 'File type'
       = show_field @file_group, :file_format
       = show_value (@file_group.file_size * 1.gigabyte).to_formatted_s(:human_size, precision: 3), 'Total file size'
       = show_value @file_group.file_count.to_s(:delimited), 'Total files'

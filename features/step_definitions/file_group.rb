@@ -21,12 +21,6 @@ Given /^The file group with location '(.*)' for the collection titled '(.*)' has
   file_group.save
 end
 
-Given /^The file group with location '(.*)' has file type '(.*)'$/ do |location, file_type|
-  file_group = FileGroup.find_by_external_file_location(location)
-  file_group.file_type = FileType.find_by_name(file_type)
-  file_group.save
-end
-
 And(/^the file group named '(.*)' has a target file group named '(.*)'$/) do |source_name, target_name|
   source_file_group = FileGroup.find_by_name(source_name)
   target_file_group = FileGroup.find_by_name(target_name)
