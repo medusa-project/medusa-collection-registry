@@ -10,7 +10,6 @@
 = f.input :external_file_location
 = f.input :staged_file_location
 = f.input :package_profile_id, as: :select, include_blank: true, collection: package_profile_select_collection
-= f.input :file_type_id, collection: file_types_select_collection
 - if @file_group.new_record? or @file_group.supports_cfs
   = f.input :cfs_directory_id, as: :select, include_blank: true, collection: cfs_file_group_root_select_collection(@file_group), label: 'Cfs root'
 = f.input :file_format

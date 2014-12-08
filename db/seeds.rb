@@ -19,12 +19,6 @@ ActiveRecord::Base.transaction do
     StorageMedium.find_or_create_by(name: media_name)
   end
 
-#File types
-  ['Derivative Content', 'Master Content', 'Derivative Metadata', 'Master Metadata', 'Other',
-   'Mixed Content', 'Master Mixed Content', 'Derivative Mixed Content'].each do |name|
-    FileType.find_or_create_by(name: name)
-  end
-
 #Resource types
   ['text', 'cartographic', 'notated music', 'sound recording', 'sound recording-musical',
    'sound recording-nonmusical', 'still image', 'moving image',

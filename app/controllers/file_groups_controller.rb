@@ -146,7 +146,7 @@ class FileGroupsController < ApplicationController
 
   def allowed_params
     params[:file_group].permit(:collection_id, :external_file_location,
-                               :producer_id, :file_type_id, :summary, :provenance_note,
+                               :producer_id, :summary, :provenance_note,
                                :name, :external_id, :staged_file_location, :total_file_size,
                                :file_format, :total_files, :related_file_group_ids, :cfs_root,
                                :package_profile_id, :cfs_directory_id)
@@ -158,7 +158,6 @@ class FileGroupsController < ApplicationController
       json.name @file_group.name
       json.collection_id @collection.id
       json.external_file_location @file_group.external_file_location
-      json.type @file_group.file_type_name
       json.storage_level @file_group.json_storage_level
       if @file_group.cfs_directory.present?
         json.cfs_directory do
