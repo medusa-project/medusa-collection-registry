@@ -1,8 +1,8 @@
-- model_class = Collection
-.page-header
-  %h1=t '.title', default: model_class.model_name.human.pluralize
-  - if @subheader
+- if @subheader
+  - content_for(:page_header_extra) do
     %p= @subheader
+= render layout: 'layouts/page_header' do
+  Collections
 
 = link_to 'Add Collection', new_collection_path, class: 'btn btn-primary'
 = link_to(collections_path(format: 'csv'), class: 'btn btn-default') do
