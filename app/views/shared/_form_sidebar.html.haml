@@ -8,3 +8,5 @@
   %div
     %p
       = link_to('Cancel', cancel_return, class: 'btn btn-default')
+  - if content_for?(:form_sidebar_extra)
+    = content_for(:form_sidebar_extra)

@@ -31,12 +31,12 @@ Feature: Title uniqueness and presence
     When I go to the new producer page
     And I fill in fields:
       | Title | Scanning |
-    And I press 'Create Producer'
+    And I press 'Create'
     Then I should see 'has already been taken'
 
   Scenario: Prevent blank producer titles
     When I go to the new producer page
-    And I press 'Create Producer'
+    And I press 'Create'
     Then I should see 'can't be blank'
 
   Scenario: Prevent duplicate collection titles under same repository
