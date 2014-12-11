@@ -11,7 +11,7 @@ Feature: Collection attachment maintenance
     And I fill in fields:
       | Description | What the attachment is. |
     And I attach fixture file 'grass.jpg' to 'Attachment'
-    And I click on 'Create Attachment'
+    And I click on 'Create'
 
   Scenario: Download attachment from collection
     When I view the collection with title 'Dogs'
@@ -42,7 +42,7 @@ Feature: Collection attachment maintenance
     And I fill in fields:
       | Description | New info for attachment |
     And I attach fixture file 'fits.xml' to 'Attachment'
-    And I click on 'Update Attachment'
+    And I click on 'Update'
     Then I should see 'New info for attachment'
     And I should not see 'What the attachment is.'
     And the collection with title 'Dogs' should have 1 attachment
@@ -54,7 +54,7 @@ Feature: Collection attachment maintenance
     And I fill in fields:
       | Description | New info for attachment |
     And I attach fixture file 'fits.xml' to 'Attachment'
-    And I click on 'Update Attachment'
+    And I click on 'Update'
     Then I should see 'New info for attachment'
     And I should not see 'What the attachment is.'
     And the collection with title 'Dogs' should have 1 attachment

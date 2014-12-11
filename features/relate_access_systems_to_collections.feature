@@ -13,7 +13,7 @@ Feature: Relate access systems to collections
     When I edit the collection with title 'Dogs'
     And I check access system 'ContentDM'
     And I check access system 'Olive'
-    And I press 'Update Collection'
+    And I press 'Update'
     Then I should see 'ContentDM'
     And I should see 'Olive'
     And the collection with title 'Dogs' should have 2 access systems

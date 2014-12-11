@@ -16,7 +16,7 @@ Feature: Collection description
       | Proof |
     When I edit the collection with title 'cats'
     And I select 'Plays' from 'Repository'
-    And I click on 'Update Collection'
+    And I click on 'Update'
     Then the repository with title 'Plays' should have 1 collection with title 'cats'
 
   Scenario: View a collection
@@ -42,7 +42,7 @@ Feature: Collection description
       | Description         | Puppy stuff          |
       | Private description | Internal puppy stuff |
       | External ID         | external-puppy-id    |
-    And I press 'Update Collection'
+    And I press 'Update'
     Then I should be on the view page for the collection with title 'dogs'
     And I should see all of:
       | Puppy stuff | Internal puppy stuff | external-puppy-id |
@@ -55,7 +55,7 @@ Feature: Collection description
     And I fill in fields:
       | Description         | Puppy stuff          |
       | Private description | Internal puppy stuff |
-    And I press 'Update Collection'
+    And I press 'Update'
     Then I should be on the view page for the collection with title 'dogs'
     And I should see 'Puppy stuff'
     And I should see 'Internal puppy stuff'
@@ -78,7 +78,7 @@ Feature: Collection description
       | Title               | reptiles      |
       | Description         | Reptile stuff |
       | Private description | Snake farm    |
-    And I press 'Create Collection'
+    And I press 'Create'
     Then I should be on the view page for the collection with title 'reptiles'
     And I should see 'Reptile stuff'
     And I should see 'Snake farm'
@@ -92,7 +92,7 @@ Feature: Collection description
       | Title               | reptiles      |
       | Description         | Reptile stuff |
       | Private description | Snake farm    |
-    And I press 'Create Collection'
+    And I press 'Create'
     Then I should be on the view page for the collection with title 'reptiles'
     And I should see 'Reptile stuff'
     And I should see 'Snake farm'
@@ -141,7 +141,7 @@ Feature: Collection description
     When I edit the collection with title 'dogs'
     And I fill in fields:
       | Contact Person Email | hding2@example.com |
-    And I press 'Update Collection'
+    And I press 'Update'
     Then I should see 'hding2@example.com'
     And a person with email 'hding2@example.com' should exist
 

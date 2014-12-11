@@ -55,7 +55,7 @@ Feature: Record structured rights data for collections and file groups
     And I select 'Canada' from 'Copyright jurisdiction'
     And I select 'Public domain.' from 'Copyright statement'
     And I select 'Access is open and unrestricted.' from 'Access restrictions'
-    And I click on 'Update Collection'
+    And I click on 'Update'
     Then I should be on the view page for the collection with title 'Dogs'
     And I should not see 'copyright'
     And I should see all of:

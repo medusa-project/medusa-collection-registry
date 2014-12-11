@@ -11,7 +11,7 @@ Feature: Preservation Priority
   Scenario: Edit and View preservation priority
     When I edit the collection with title 'Dogs'
     And I select 'urgent' from 'Preservation priority'
-    And I click on 'Update Collection'
+    And I click on 'Update'
     Then I should see 'urgent'
     And The collection titled 'Dogs' should have preservation priority 'urgent'
 
