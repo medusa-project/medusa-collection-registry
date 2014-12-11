@@ -24,7 +24,7 @@ Feature: Package summary
     And I fill in fields:
       | Summary         | New summary    |
       | Provenance Note | New provenance |
-    And I click on 'Update File group'
+    And I click on 'Update'
     Then I should see all of:
       | New summary | New provenance |
 

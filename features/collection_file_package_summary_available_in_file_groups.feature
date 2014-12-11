@@ -21,7 +21,7 @@ Feature: Collection File Package Summary in File Groups
     When I edit the file group with name 'main'
     And I fill in fields:
       | Collection File Package Summary | New file package summary |
-    And I click on 'Update File group'
+    And I click on 'Update'
     Then I should see 'New file package summary'
     And I should not see 'Original file package summary'
 
@@ -29,7 +29,7 @@ Feature: Collection File Package Summary in File Groups
     When I edit the file group with name 'main'
     And I fill in fields:
       | Collection File Package Summary | New file package summary |
-    And I click on 'Update File group'
+    And I click on 'Update'
     And I view the collection with title 'Dogs'
     Then I should see 'New file package summary'
     And I should not see 'Original file package summary'

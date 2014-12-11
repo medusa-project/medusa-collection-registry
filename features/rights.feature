@@ -64,7 +64,7 @@ Feature: Record structured rights data for collections and file groups
   Scenario: Editing and changing rights information for a file group
     When I edit the file group with name 'grainger'
     And I select 'license' from 'Rights basis'
-    And I click on 'Update File group'
+    And I click on 'Update'
     Then I should be on the view page for the file group with name 'grainger'
     And I should see 'license'
     And I should not see 'copyright'
