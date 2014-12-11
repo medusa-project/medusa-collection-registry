@@ -7,6 +7,7 @@ class Collection < ActiveRecord::Base
   include ModsHelper
   include RedFlagAggregator
   include Uuidable
+  include Breadcrumb
 
   email_person_association(:contact)
 
@@ -44,6 +45,7 @@ class Collection < ActiveRecord::Base
   end
 
   aggregates_red_flags collections: :file_groups, label_method: :title
+  breadcrumbs parent: :repository
 
   def total_size
     self.file_groups.collect { |fg| fg.file_size }.sum

@@ -1,7 +1,7 @@
 require 'pathname'
 class CfsDirectory < ActiveRecord::Base
-
   include Uuidable
+  include Breadcrumb
 
   has_many :subdirectories, class_name: 'CfsDirectory', foreign_key: :parent_cfs_directory_id, dependent: :destroy
   has_many :cfs_files, dependent: :destroy
@@ -29,6 +29,8 @@ class CfsDirectory < ActiveRecord::Base
   validates :root_cfs_directory_id, presence: true, unless: :parent_cfs_directory_id, on: :update
   after_save :ensure_root
   after_save :handle_cfs_assessment
+
+  breadcrumbs parent: :parent, label: :path
 
   #ensure there is a CfsFile object at the given absolute path and return it
   def ensure_file_at_absolute_path(path)
@@ -235,6 +237,10 @@ class CfsDirectory < ActiveRecord::Base
     if file_group_id.present? and file_group_id_changed?
       self.file_group.schedule_initial_cfs_assessment
     end
+  end
+
+  def parent
+    self.parent_cfs_directory || self.file_group
   end
 
   protected

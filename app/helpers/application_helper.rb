@@ -24,6 +24,14 @@ module ApplicationHelper
     show_value(model.send(field), label)
   end
 
+  def show_present_value(value, label)
+    show_value(value, label) if value.present?
+  end
+
+  def show_present_field(model, field, label = nil)
+    show_field(model, field, label) if model.send(field).present?
+  end
+
   def generic_confirm_message
     'This is irreversible - are you sure?'
   end

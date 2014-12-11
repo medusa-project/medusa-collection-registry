@@ -1,0 +1,21 @@
+%table#files.table.table-striped
+  %thead
+    %tr
+      %th Name
+      %th Size
+      %th Last Modified
+  %tbody
+    - @directory.subdirectories.order(:path).each do |subdirectory|
+      %tr
+        %td{'data-sort' => "a-#{subdirectory.path}"}
+          = fa_icon 'folder-o'
+          = link_to subdirectory.path, public_cfs_directory_path(subdirectory)
+        %td
+        %td
+    - @directory.cfs_files.each do |file|
+      %tr
+        %td{'data-sort' => "b-#{file.name}"}
+          = fa_icon 'file'
+          = link_to file.name, public_cfs_file_path(file)
+        %td= file.size
+        %td= file.mtime
