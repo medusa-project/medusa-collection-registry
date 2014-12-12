@@ -1,5 +1,3 @@
-.well
-  %p= @collection.title
-  %p= @collection.description
-  %p= @collection.rights_declaration.copyright_statement
-  %p= @collection.rights_declaration.access_restrictions_text
+= show_present_field @collection, :description
+= show_present_value @collection.rights_declaration.copyright_statement, 'Copyright'
+= show_present_value @collection.rights_declaration.access_restrictions_text, 'Access restrictions'

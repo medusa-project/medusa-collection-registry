@@ -1,24 +1,12 @@
-= render 'show_public_breadcrumbs'
-
-%h1 File information
-
-.row
-  .col-sm-12
-    = link_to('Download', public_download_cfs_file_path(@file))
-    |
-    = link_to('View', public_view_cfs_file_path(@file))
-
-.row
-  .col-sm-4
-    = show_value @file.name, 'File name'
-    = show_value @file.md5_sum, 'MD5'
-    - if @file_group
-      %p
-        %strong Belongs to:
-        #{link_to(@file_group.name, public_file_group_path(@file_group))}
-    - if @file.size
-      = show_value @file.size.to_formatted_s(:human_size, precision: 3), 'File size'
-    = show_value @file.content_type_name, 'Mimetype'
-
-  .col-sm-8
-    = render "public_preview_viewer_#{@preview_viewer_type}"
+- content_for :public_body do
+  = link_to('Download', public_download_cfs_file_path(@file))
+  |
+  = link_to('View', public_view_cfs_file_path(@file))
+  %br
+  = render "public_preview_viewer_#{@preview_viewer_type}"
+- content_for :public_metadata do
+  = show_value @file.md5_sum, 'MD5'
+  - if @file.size
+    = show_value @file.size.to_formatted_s(:human_size, precision: 3), 'File size'
+  = show_value @file.content_type_name, 'Mimetype'
+= render 'shared/public_body'

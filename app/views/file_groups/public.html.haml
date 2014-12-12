@@ -1,17 +1,10 @@
-.page_header
-  .row
-    .col-sm-4
-      = render 'show_public_header'
-
-.row
-  .col-sm-6
-    = render 'collections/public_metadata'
-  .col-sm-6
-    .well
-      = show_field @file_group, :name
-      = show_field @file_group, :external_id, 'External ID'
-      = show_field @file_group, :file_format
-      = show_value (@file_group.file_size * 1.gigabyte).to_formatted_s(:human_size, precision: 3), 'Total file size'
-      = show_value @file_group.file_count.to_s(:delimited), 'Total files'
-      = show_field @file_group, :summary
-      = show_field @file_group, :provenance_note
+- content_for :public_body do
+  - if @directory = @file_group.cfs_directory
+    = render 'cfs_directories/public_files'
+  - else
+    %p No files currently attached
+- content_for :public_metadata do
+  = render 'collections/public_metadata'
+  %hr
+  = render 'public_metadata'
+= render 'shared/public_body'
