@@ -31,30 +31,30 @@ Feature: Title uniqueness and presence
     When I go to the new producer page
     And I fill in fields:
       | Title | Scanning |
-    And I press 'Create Producer'
+    And I press 'Create'
     Then I should see 'has already been taken'
 
   Scenario: Prevent blank producer titles
     When I go to the new producer page
-    And I press 'Create Producer'
+    And I press 'Create'
     Then I should see 'can't be blank'
 
   Scenario: Prevent duplicate collection titles under same repository
     When I start a new collection for the repository titled 'Animals'
     And I fill in fields:
       | Title | Dogs |
-    And I press 'Create Collection'
+    And I press 'Create'
     Then I should see 'has already been taken'
 
   Scenario: Allow duplicate collection titles under different repositories
     When I start a new collection for the repository titled 'Animals'
     And I fill in fields:
       | Title | Roses |
-    And I press 'Create Collection'
+    And I press 'Create'
     Then I should not see 'has already been taken'
     And the repository with title 'Animals' should have 1 collection with title 'Roses'
 
   Scenario: Prevent blank collection titles
     When I start a new collection for the repository titled 'Animals'
-    And I press 'Create Collection'
+    And I press 'Create'
     Then I should see 'can't be blank'

@@ -13,7 +13,7 @@ Feature: File group attachment maintenance
     And I fill in fields:
       | Description | What the attachment is. |
     And I attach fixture file 'grass.jpg' to 'Attachment'
-    And I click on 'Create Attachment'
+    And I click on 'Create'
 
   Scenario: Download attachment from file group
     When I view the file group with name 'Dogs'
@@ -44,7 +44,7 @@ Feature: File group attachment maintenance
     And I fill in fields:
       | Description | New info for attachment |
     And I attach fixture file 'fits.xml' to 'Attachment'
-    And I click on 'Update Attachment'
+    And I click on 'Update'
     Then I should see 'New info for attachment'
     And I should not see 'What the attachment is.'
     And the file group with name 'Dogs' should have 1 attachment
@@ -56,7 +56,7 @@ Feature: File group attachment maintenance
     And I fill in fields:
       | Description | New info for attachment |
     And I attach fixture file 'fits.xml' to 'Attachment'
-    And I click on 'Update Attachment'
+    And I click on 'Update'
     Then I should see 'New info for attachment'
     And I should not see 'What the attachment is.'
     And the file group with name 'Dogs' should have 1 attachment

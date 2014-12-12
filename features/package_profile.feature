@@ -57,7 +57,7 @@ Feature: Package Profiles
       | Name  | tome                            |
       | Url   | http://tome_profile.example.com |
       | Notes | Preservation package for tomes  |
-    And I click on 'Update Package profile'
+    And I click on 'Update'
     Then I should be on the view page for the package profile with name 'tome'
     And I should see none of:
       | book | http://book_profile.example.com | Preservation package for books |
@@ -72,7 +72,7 @@ Feature: Package Profiles
       | Name  | tome                            |
       | Url   | http://tome_profile.example.com |
       | Notes | Preservation package for tomes  |
-    And I click on 'Create Package profile'
+    And I click on 'Create'
     Then I should be on the view page for the package profile with name 'tome'
     And I should see all of:
       | tome | http://tome_profile.example.com | Preservation package for tomes |

@@ -20,7 +20,7 @@ Feature: Collection Resource types
     When I edit the collection with title 'Dogs'
     And I uncheck resource type 'text'
     And I check resource type 'notated music'
-    And I click on 'Update Collection'
+    And I click on 'Update'
     Then I should see 'notated music'
     And I should not see 'text'
 

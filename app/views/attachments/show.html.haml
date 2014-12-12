@@ -2,8 +2,8 @@
   = link_to 'Edit', edit_attachment_path(@attachment), class: 'btn btn-default'
   = link_to 'Delete', @attachment, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-danger'
 
-.page-header
-  %h1 Attachment: #{@attachment.attachment_file_name}
+= render layout: 'layouts/page_header' do
+  Attachment: #{@attachment.attachment_file_name}
 
 .row
   .col-sm-8

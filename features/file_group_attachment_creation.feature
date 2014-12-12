@@ -13,7 +13,7 @@ Feature: File group attachments
     And I fill in fields:
       | Description | What the attachment is. |
     And I attach fixture file 'grass.jpg' to 'Attachment'
-    And I click on 'Create Attachment'
+    And I click on 'Create'
     When I view the file group with name 'Dogs'
     Then I should see 'What the attachment is.'
     And the file group with name 'Dogs' should have 1 attachment
@@ -28,7 +28,7 @@ Feature: File group attachments
     And I fill in fields:
       | Description | What the attachment is. |
     And I attach fixture file 'grass.jpg' to 'Attachment'
-    And I click on 'Create Attachment'
+    And I click on 'Create'
     When I view the file group with name 'Dogs'
     Then I should see 'What the attachment is.'
     And the file group with name 'Dogs' should have 1 attachment

@@ -1,5 +1,5 @@
 = simple_form_for @access_system, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
   .row
-    = render partial:'sidebar', locals: {f: f}
+    = render partial: 'shared/form_sidebar', locals: {f: f, object: @access_system, cancel_return: (access_systems_path if @access_system.new_record?)}
     .col-sm-9
       = f.input :name

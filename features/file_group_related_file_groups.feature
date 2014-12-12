@@ -33,7 +33,7 @@ Feature: File Group related file groups
   Scenario: Adding a related file group
     When I edit the file group with name 'texts'
     And I check 'access_images'
-    And I click on 'Update File group'
+    And I click on 'Update'
     Then I should see 'access_images'
     And I should not see 'production_images'
     And the file group with name 'texts' should have 1 target file group with name 'access_images'
@@ -42,7 +42,7 @@ Feature: File Group related file groups
     And the file group named 'texts' has a target file group named 'access_images'
     When I edit the file group with name 'texts'
     And I uncheck 'access_images'
-    And I click on 'Update File group'
+    And I click on 'Update'
     Then I should not see 'access_images'
     And the file group with name 'texts' should have 0 target file groups with name 'access_images'
 
@@ -51,7 +51,7 @@ Feature: File Group related file groups
     And I check 'access_images'
     And I fill in fields:
       | Note | How these are related |
-    And I click on 'Update File group'
+    And I click on 'Update'
     Then I should see 'How these are related'
     And the file group named 'texts' should have relation note 'How these are related' for the target file group 'access_images'
 

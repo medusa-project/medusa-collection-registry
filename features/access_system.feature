@@ -24,7 +24,7 @@ Feature: Access Systems
     When I edit the access system with name 'ContentDM'
     And I fill in fields:
       | Name | Blacklight |
-    And I press 'Update Access system'
+    And I press 'Update'
     Then I should be on the view page for the access system with name 'Blacklight'
     And there should be no access system with name 'ContentDB'
 
@@ -32,7 +32,7 @@ Feature: Access Systems
     When I edit the access system with name 'ContentDM'
     And I fill in fields:
       | Name |  |
-    And I press 'Update Access system'
+    And I press 'Update'
     Then I should be on the update page for the access system with name 'ContentDM'
     And I should see 'can't be blank'
 
@@ -58,7 +58,7 @@ Feature: Access Systems
     And I click on 'New Access System'
     And I fill in fields:
       | Name | New System |
-    And I click on 'Create Access system'
+    And I click on 'Create'
     Then I should be on the view page for the access system with name 'New System'
     And I should see 'New System'
 
@@ -67,7 +67,7 @@ Feature: Access Systems
     And I click on 'New Access System'
     And I fill in fields:
       | Name |  |
-    And I click on 'Create Access system'
+    And I click on 'Create'
     Then I should be on the create access system page
     And I should see 'can't be blank'
 

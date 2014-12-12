@@ -1,6 +1,9 @@
 = simple_form_for @producer, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
   .row
-    = render partial: 'sidebar', locals: {f: f}
+    - content_for(:form_sidebar_extra) do
+      %hr
+      = render 'shared/definitions/producer'
+    = render partial: 'shared/form_sidebar', locals: {f: f, object: @producer, cancel_return: (producers_path if @producer.new_record?)}
 
     .col-sm-9
       .tabbable

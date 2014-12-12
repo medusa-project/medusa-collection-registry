@@ -22,7 +22,7 @@ Feature: Producer description
       | Email        | scraping@example.com                               |
       | URL          | http://scraping.example.com                        |
       | Notes        | Archiving web content |
-    And I press 'Create Producer'
+    And I press 'Create'
     Then a producer with title 'Scraping' should exist
     And I should see all of:
       | Scraping | Archiving web content |
@@ -75,7 +75,7 @@ Feature: Producer description
     When I edit the producer with title 'Scanning'
     And I fill in fields:
       | Notes | New notes |
-    And I press 'Update Producer'
+    And I press 'Update'
     Then I should see 'New notes'
     And I should not see 'They scan stuff here'
 
@@ -134,7 +134,7 @@ Feature: Producer description
     When I edit the producer with title 'Scanning'
     And I fill in fields:
       | Administrator Email | hding2@example.com |
-    And I press 'Update Producer'
+    And I press 'Update'
     Then I should see 'hding2@example.com'
     And a person with email 'hding2@example.com' should exist
 

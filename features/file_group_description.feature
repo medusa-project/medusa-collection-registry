@@ -42,7 +42,7 @@ Feature: File Group description
       | Name                 | pictures           |
       | Staged file location | staging_dir/pics   |
       | External ID          | external-dogs-id   |
-    And I press 'Update File group'
+    And I press 'Update'
     Then I should be on the view page for the file group with name 'pictures'
     And I should see all of:
       | 1,300 | Changed summary | Changed provenance | pictures | staging_dir/pics | external-dogs-id |
@@ -54,7 +54,7 @@ Feature: File Group description
     When I edit the file group with name 'images'
     And I fill in fields:
       | Total files | 1300 |
-    And I press 'Update File group'
+    And I press 'Update'
     Then I should be on the view page for the file group with name 'images'
     And I should see all of:
       | 1,300 |
@@ -97,7 +97,7 @@ Feature: File Group description
       | Total files            | 333           |
       | Name                   | My file group |
     And I select 'Scanning' from 'Producer'
-    And I press 'Create File group'
+    And I press 'Create'
     Then I should be on the view page for the file group with name 'My file group'
     And I should see 'Undergrad'
     And I should see 'image/tiff'
@@ -115,7 +115,7 @@ Feature: File Group description
       | Total files            | 333           |
       | Name                   | My file group |
     And I select 'Scanning' from 'Producer'
-    And I press 'Create File group'
+    And I press 'Create'
     Then I should be on the view page for the file group with name 'My file group'
     And I should see 'Undergrad'
     And I should see 'image/tiff'
@@ -148,5 +148,5 @@ Feature: File Group description
     And the file group named 'images' has package profile named 'image_profile'
     When I edit the file group with name 'images'
     And I select 'book_profile' from 'Package profile'
-    And I click on 'Update File group'
+    And I click on 'Update'
     Then the file group named 'images' should have package profile named 'book_profile'

@@ -3,8 +3,8 @@
   = link_to 'Edit', edit_package_profile_path(@package_profile), class: 'btn btn-default'
   = link_to 'Delete', @package_profile, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-danger'
 
-.page_header
-  %h1 Package Profile: #{@package_profile.name}
+= render layout: 'layouts/page_header' do
+  Package Profile: #{@package_profile.name}
 
 .row
   .col-sm-8
