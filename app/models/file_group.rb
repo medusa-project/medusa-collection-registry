@@ -2,6 +2,7 @@ class FileGroup < ActiveRecord::Base
   include Eventable
   include ScheduledEventable
   include Uuidable
+  include Breadcrumb
 
   belongs_to :collection, touch: true
   #parent is a duplicate, but allows uniformity for events, i.e. we can do eventable.parent
@@ -26,6 +27,8 @@ class FileGroup < ActiveRecord::Base
   validates_uniqueness_of :cfs_root, allow_blank: true
   validates_presence_of :name, :total_files, :total_file_size
   validates_presence_of :producer_id
+
+  breadcrumbs parent: :collection
 
   STORAGE_LEVEL_HASH = {'external' => 'ExternalFileGroup',
                         'bit-level store' => 'BitLevelFileGroup',

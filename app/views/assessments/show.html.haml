@@ -2,9 +2,10 @@
   = link_to 'Edit', edit_assessment_path(@assessment), class: 'btn btn-default'
   = link_to 'Delete', @assessment, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-danger'
 
-.page-header
-  %h1 Assessment: #{@assessment.date}
+- content_for(:page_header_extra) do
   %p.lead #{@assessable.class.name}: #{link_to(@assessable.label, @assessable)}
+= render layout: 'layouts/page_header' do
+  Assessment: #{@assessment.date}
 
 .row
   .col-sm-8

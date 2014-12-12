@@ -1,8 +1,8 @@
 require 'rest_client'
 
 class CfsFile < ActiveRecord::Base
-
   include Uuidable
+  include Breadcrumb
 
   belongs_to :cfs_directory, touch: true
   belongs_to :content_type, touch: true
@@ -18,6 +18,8 @@ class CfsFile < ActiveRecord::Base
   after_create :add_content_type_stats
   after_destroy :remove_content_type_stats
   after_update :update_content_type_stats
+
+  breadcrumbs parent: :cfs_directory, label: :name
 
   def repository
     self.cfs_directory.repository

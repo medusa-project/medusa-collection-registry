@@ -2,6 +2,7 @@ require 'email_person_associator'
 class Repository < ActiveRecord::Base
   include ActiveDateChecker
   include RedFlagAggregator
+  include Breadcrumb
 
   email_person_association(:contact)
   belongs_to :institution, touch: true
@@ -23,6 +24,7 @@ class Repository < ActiveRecord::Base
   end
 
   aggregates_red_flags collections: :collections, label_method: :title
+  breadcrumbs parent: nil
 
   def total_size
     self.collections.collect { |c| c.total_size }.sum

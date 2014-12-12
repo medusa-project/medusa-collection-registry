@@ -11,7 +11,7 @@ Feature: Attachment authorization
     And I fill in fields:
       | Description | grass |
     And I attach fixture file 'grass.jpg' to 'Attachment'
-    And I click on 'Create Attachment'
+    And I click on 'Create'
     And I logout
 
   Scenario: Enforce permissions

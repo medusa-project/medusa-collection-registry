@@ -18,6 +18,7 @@ class FileGroupsController < ApplicationController
 
   def public
     @collection = @file_group.collection
+    @public_object = @file_group
     redirect_to unauthorized_path unless @file_group.public?
   end
 

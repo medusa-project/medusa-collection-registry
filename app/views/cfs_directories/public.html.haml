@@ -1,33 +1,7 @@
-= render 'show_public_breadcrumbs'
-
-%h3 Directory: #{@directory.path}
-- if @file_group
-  %h4 File Group: #{link_to @file_group.name, public_file_group_path(@file_group)}
-
-%hr
-
-.row
-  .col-sm-6
-    = render 'collections/public_metadata'
-  .col-sm-6
-    %table#files.table.table-striped
-      %thead
-        %tr
-          %th Name
-          %th Size
-          %th Last Modified
-      %tbody
-        - @directory.subdirectories.order(:path).each do |subdirectory|
-          %tr
-            %td{'data-sort' => "a-#{subdirectory.path}"}
-              = fa_icon 'folder-o'
-              = link_to subdirectory.path, public_cfs_directory_path(subdirectory)
-            %td
-            %td
-        - @directory.cfs_files.each do |file|
-          %tr
-            %td{'data-sort' => "b-#{file.name}"}
-              = fa_icon 'file'
-              = link_to file.name, public_cfs_file_path(file)
-            %td= file.size
-            %td= file.mtime
+- content_for :public_body do
+  = render 'public_files'
+- content_for :public_metadata do
+  = render 'collections/public_metadata'
+  %hr
+  = render 'file_groups/public_metadata'
+= render 'shared/public_body'

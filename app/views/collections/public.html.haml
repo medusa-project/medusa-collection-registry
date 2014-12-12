@@ -1,10 +1,5 @@
-%div #{link_to @collection.repository.title, @collection.repository} > #{@collection.title}
-%br
-%h1.text-center= @collection.title
-
-.row
-  .col-sm-6
-    = render 'public_metadata'
-  .col-sm-6
-    .well
-      = render 'public_file_groups_table'
+- content_for :public_body do
+  = render 'public_file_groups_table'
+- content_for :public_metadata do
+  = render 'public_metadata'
+= render 'shared/public_body'

@@ -1,0 +1,11 @@
+.row
+  %div= public_breadcrumbs(@public_object)
+  %br
+  %h1.text-center= @public_object.breadcrumb_label
+%hr
+.row
+  = yield :public_body
+%hr
+.row
+  .well
+    = yield :public_metadata

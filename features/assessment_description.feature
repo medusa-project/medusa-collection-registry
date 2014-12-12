@@ -35,7 +35,7 @@ Feature: Assessment description
     When I edit the assessment with date '2012-01-09'
     And I fill in fields:
       | Notes | Images of canines |
-    And I press 'Update Assessment'
+    And I press 'Update'
     Then I should be on the view page for the assessment with date '2012-01-09'
     And I should see 'Images of canines'
     And I should not see 'Pictures of dogs'
@@ -45,7 +45,7 @@ Feature: Assessment description
     When I edit the assessment with date '2012-01-09'
     And I fill in fields:
       | Notes | Images of canines |
-    And I press 'Update Assessment'
+    And I press 'Update'
     Then I should be on the view page for the assessment with date '2012-01-09'
     And I should see 'Images of canines'
     And I should not see 'Pictures of dogs'
@@ -87,7 +87,7 @@ Feature: Assessment description
     And I select 'external_files' from 'Assessment type'
     And I select 'low' from 'Preservation risk level'
     And I select 'paper tape' from 'Storage medium'
-    And I press 'Create Assessment'
+    And I press 'Create'
     Then I should be on the view page for the assessment with date '2012-02-10'
     And I should see all of:
       | I like dogs | Random | Unstructured | 2013-02-14 | Heterogeneous | 100 | 50 |
@@ -111,7 +111,7 @@ Feature: Assessment description
     And I select 'external_files' from 'Assessment type'
     And I select 'low' from 'Preservation risk level'
     And I select 'paper tape' from 'Storage medium'
-    And I press 'Create Assessment'
+    And I press 'Create'
     Then I should be on the view page for the assessment with date '2012-02-10'
     And I should see all of:
       | I like dogs | Random | Unstructured | 2013-02-14 | Heterogeneous | 100 | 50 |
@@ -128,7 +128,7 @@ Feature: Assessment description
     When I edit the assessment with date '2012-01-09'
     And I fill in fields:
       | Author Email | wingram2@example.com |
-    And I press 'Update Assessment'
+    And I press 'Update'
     Then I should see 'wingram2@example.com'
     And a person with email 'wingram2@example.com' should exist
 
@@ -143,5 +143,5 @@ Feature: Assessment description
     When I edit the assessment with date '2012-01-09'
     And I fill in fields:
       | Name |  |
-    And I press 'Update Assessment'
+    And I press 'Update'
     Then I should see 'can't be blank'

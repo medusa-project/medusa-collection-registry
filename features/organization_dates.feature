@@ -37,7 +37,7 @@ Feature: Track organization active dates
     And I fill in fields:
       | Active Start Date | 2011-01-20 |
       | Active End Date   | 2011-02-21 |
-    And I click on 'Update Producer'
+    And I click on 'Update'
     Then I should see all of:
       | 2011-01-20 | 2011-02-21 |
     And I should not see '2012-12-16'
@@ -54,6 +54,6 @@ Feature: Track organization active dates
     When I edit the producer with title 'Scanning'
     And I fill in fields:
       | Active End Date | 1990-01-01 |
-    And I click on 'Update Producer'
+    And I click on 'Update'
     Then I should not see '1990-01-01'
     And I should see 'Start date must not be later than end date.'

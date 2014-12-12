@@ -22,8 +22,11 @@ class CfsFilesController < ApplicationController
   end
 
   def public
-    @file_group = @file.file_group
+    redirect_to unauthorized_path unless @file.public?
     @directory = @file.cfs_directory
+    @file_group = @file.file_group
+    @collection = @file_group.collection
+    @public_object = @file
     @preview_viewer_type = find_preview_viewer_type(@file)
   end
 
