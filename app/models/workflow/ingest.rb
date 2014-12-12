@@ -11,7 +11,7 @@ class Workflow::Ingest < Job::Base
   belongs_to :user, touch: true
   belongs_to :amazon_backup, touch: true
 
-  validates_uniqueness_of :external_file_group, allow_blank: false
+  validates_uniqueness_of :external_file_group_id, allow_blank: false
 
   STATES = %w(start copying amazon_backup end)
 
