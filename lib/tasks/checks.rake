@@ -27,7 +27,7 @@ namespace :check do
 
   desc 'Compare file and size totals computed in different ways'
   task file_count_and_size_totals: :environment do
-    puts "Method,FileCount,FileSize"
+    puts "\nMethod,FileCount,FileSize"
     puts "CfsFile objects,#{CfsFile.count},#{CfsFile.sum(:size)}"
     puts "ContentType objects,#{ContentType.sum(:cfs_file_count)},#{ContentType.sum(:cfs_file_size)}"
     roots = CfsDirectory.roots
