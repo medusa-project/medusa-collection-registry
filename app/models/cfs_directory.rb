@@ -32,6 +32,10 @@ class CfsDirectory < ActiveRecord::Base
 
   breadcrumbs parent: :parent, label: :path
 
+  def self.roots
+    where('parent_cfs_directory_id IS NULL')
+  end
+
   #ensure there is a CfsFile object at the given absolute path and return it
   def ensure_file_at_absolute_path(path)
     full_path = Pathname.new(path)
