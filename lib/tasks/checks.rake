@@ -3,7 +3,7 @@ require 'rake'
 namespace :check do
   desc 'Run all checks'
   task :all => [:cfs_directories_vs_bit_level_file_groups, :file_count_and_size_totals,
-                :cfs_directories_vs_physical_paths] do
+                :cfs_directories_vs_physical_paths, :combined_paths] do
     #just run all dependencies
   end
 
@@ -50,6 +50,22 @@ namespace :check do
     CfsRoot.instance.non_cached_physical_root_set.each do |path|
       next if CfsDirectory.find_by(path: path)
       puts path
+    end
+  end
+
+  desc 'List all paths for which a physical path, cfs directory, or bit level file group is missing and show status of each'
+  task combined_paths: :environment do
+    puts "\nCombined path summary. We look at all paths implied by the physical file system,
+\nthe CfsDirectory objects, and the Bit Level File Group objects. For any path where all are not present we show which are and are not."
+    puts "Path,Physical,CfsDirectory,BitLevelFileGroup"
+    physical_roots = CfsRoot.instance.non_cached_physical_root_set
+    paths = CfsRoot.instance.non_cached_physical_root_set + CfsDirectory.roots.pluck(:path) + BitLevelFileGroup.find_each.collect {|fg| fg.expected_relative_cfs_root_directory}
+    paths.sort.each do |path|
+      physical_root_present = physical_roots.include?(path)
+      cfs_directory = CfsDirectory.roots.find_by(path: path)
+      bit_level_file_group = BitLevelFileGroup.find_by(id: path.split('/').last)
+      next if physical_root_present and cfs_directory.present? and bit_level_file_group.present?
+      puts [path, physical_root_present, cfs_directory.present?, bit_level_file_group.present?].join(',')
     end
   end
 end

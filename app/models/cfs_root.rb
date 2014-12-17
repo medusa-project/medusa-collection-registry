@@ -55,7 +55,7 @@ class CfsRoot
   def available_physical_root_set
     Timeout::timeout(20) do
       roots = self.non_cached_physical_root_set
-      roots.to_set.tap do |root_set|
+      roots.tap do |root_set|
         Rails.cache.write(self.physical_root_set_cache_key, root_set)
       end
     end
@@ -67,7 +67,7 @@ class CfsRoot
     root = Pathname.new(self.path)
     children = root.children.select { |entry| entry.directory? }
     grandchildren = children.collect { |child| child.children.select { |entry| entry.directory? } }.flatten
-    grandchildren.collect { |grandchild| grandchild.relative_path_from(root).to_s }
+    grandchildren.collect { |grandchild| grandchild.relative_path_from(root).to_s }.to_set
   end
 
   def physical_root_set_cache_key
