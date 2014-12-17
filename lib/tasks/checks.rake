@@ -32,7 +32,7 @@ namespace :check do
     puts "ContentType objects,#{ContentType.sum(:cfs_file_count)},#{ContentType.sum(:cfs_file_size)}"
     roots = CfsDirectory.roots
     puts "RootCfsDirectories,#{roots.sum(:tree_count)},#{roots.sum(:tree_size)}"
-    puts "BitLevelFileGroups,#{BitLevelFileGroup.sum(:total_files)},#{BitLevelFileGroup.sum(:total_file_size)}"
+    puts "BitLevelFileGroups,#{BitLevelFileGroup.sum(:total_files)},#{BitLevelFileGroup.sum(:total_file_size) * 1.gigabyte}"
   end
 
   desc 'Find cfs directories with no physical path and vice-versa'
