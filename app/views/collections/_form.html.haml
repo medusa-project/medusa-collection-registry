@@ -17,7 +17,6 @@
             = f.input :access_url, as: :string, label: 'Access URL'
             = f.association :preservation_priority, include_blank: false, selected: (@collection.preservation_priority.id rescue PreservationPriority.default.id)
           #content.tab-pane
-            = f.input :file_package_summary
             = f.association :resource_types, as: :check_boxes, wrapper_html: {id: 'collection_resource_types'}, wrapper: :horizontal_radio_and_checkboxes
           #rights.tab-pane
             = render partial: 'rights_declarations/nested_form', locals: {containing_form: f, rights_declaration: @collection.rights_declaration}

@@ -15,9 +15,6 @@
             = f.input :provenance_note, label: 'Provenance Note'
           #rights-declaration.tab-pane
             = render partial: 'rights_declarations/nested_form', locals: {containing_form: f, rights_declaration: @file_group.rights_declaration}
-          #collection-file-package-summary.tab-pane
-            = f.simple_fields_for :collection, @collection do |c|
-              = c.input :file_package_summary, label: 'Collection File Package Summary'
           #related-file-groups.tab-pane
             - if @file_group.new_record?
               %p

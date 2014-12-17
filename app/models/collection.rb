@@ -34,9 +34,9 @@ class Collection < ActiveRecord::Base
 
   accepts_nested_attributes_for :rights_declaration
 
-  auto_strip_attributes :description, :private_description, :notes, :file_package_summary, nullify: false
+  auto_strip_attributes :description, :private_description, :notes, nullify: false
 
-  [:description, :private_description, :notes, :file_package_summary].each do |field|
+  [:description, :private_description, :notes].each do |field|
     auto_html_for field do
       html_escape
       link target: '_blank'

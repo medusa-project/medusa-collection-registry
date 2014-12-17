@@ -6,9 +6,9 @@ Feature: Collection description
   Background:
     Given I am logged in as an admin
     And the repository with title 'Sample Repo' has child collections with fields:
-      | title | published | ongoing | description                               | private_description                          | access_url              | file_package_summary      | notes                                       | external_id      |
-      | dogs  | true      | true    | Dog stuff                                 | private dog info                             | http://dogs.example.com | Dog files, not so orderly | Stuff about dogs                            | external-dogs-id |
-      | cats  | false     | true    | Cat stuff. http://description.example.com | private cat info. http://private.example.com | http://cats.example.com | Cat files, very orderly   | Stuff about cats. https://notes.example.com |                  |
+      | title | published | ongoing | description                               | private_description                          | access_url               | notes                                       | external_id      |
+      | dogs  | true      | true    | Dog stuff                                 | private dog info                             | http://dogs.example.com  | Stuff about dogs                            | external-dogs-id |
+      | cats  | false     | true    | Cat stuff. http://description.example.com | private cat info. http://private.example.com | http://cats.example.com   | Stuff about cats. https://notes.example.com |                  |
 
   Scenario: Change repository of a collection
     Given the repository with title 'Plays' has child collections with fields:
@@ -24,7 +24,7 @@ Feature: Collection description
     Then I should see all of:
       | Dog stuff | private dog info | http://dogs.example.com |
     And I should see all of:
-      | Stuff about dogs | File Manager | Dog files, not so orderly | external-dogs-id |
+      | Stuff about dogs | File Manager | external-dogs-id |
 
   Scenario: View a collection as a manager
     Given I relogin as a manager
