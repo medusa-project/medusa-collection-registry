@@ -40,6 +40,6 @@
         %td= file.mtime
         %td
           - if file.fits_xml
-            = link_to 'View XML', fits_xml_cfs_file_path(file)
+            = link_to 'View XML', fits_cfs_file_path(file, format: :xml)
           - else
             = link_to 'Create XML', create_fits_xml_cfs_file_path(file, method: :post)

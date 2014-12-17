@@ -2,7 +2,7 @@ class CfsFilesController < ApplicationController
 
   before_filter :require_logged_in, except: [:show, :public, :public_view, :public_download, :public_preview_image]
   before_filter :require_logged_in_or_basic_auth, only: [:show]
-  before_filter :find_file, only: [:show, :public, :create_fits_xml, :fits_xml,
+  before_filter :find_file, only: [:show, :public, :create_fits_xml, :fits,
                                    :download, :view, :public_download, :public_view,
                                    :preview_image, :public_preview_image, :preview_video]
   before_filter :require_public_file, only: [:public, :public_download, :public_view, :public_preview_image]
@@ -35,7 +35,7 @@ class CfsFilesController < ApplicationController
     redirect_to :back
   end
 
-  def fits_xml
+  def fits
     if @file.fits_xml.present?
       render xml: @file.fits_xml
     else

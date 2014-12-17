@@ -143,7 +143,7 @@ end
 Then(/^I should be on the fits info page for the cfs file at path '(.*)' for the file group named '(.*)'$/) do |path, name|
   file_group = FileGroup.find_by(name: name)
   cfs_file = file_group.cfs_file_at_path(path)
-  expect(current_path).to eql(fits_xml_cfs_file_path(cfs_file))
+  expect(current_path).to eql(fits_cfs_file_path(cfs_file, format: :xml))
 end
 
 And(/^the cfs file at path '(.*)' for the file group named '(.*)' has fits attached$/) do |path, name|

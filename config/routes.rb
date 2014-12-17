@@ -86,7 +86,7 @@ MedusaRails3::Application.routes.draw do
       get 'public_download'
       get 'public_view'
       get 'create_fits_xml'
-      get 'fits_xml'
+      get 'fits'
       get 'download'
       get 'view'
       get 'preview_image'
