@@ -52,7 +52,7 @@ class AccessSystemsController < ApplicationController
   end
 
   def allowed_params
-    params[:access_system].permit(:name)
+    params[:access_system].permit(:name, :service_owner, :application_manager)
   end
 
 end

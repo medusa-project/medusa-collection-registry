@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141217152139) do
+ActiveRecord::Schema.define(version: 20141217155120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(version: 20141217152139) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "service_owner"
+    t.string   "application_manager"
   end
 
   add_index "access_systems", ["updated_at"], name: "index_access_systems_on_updated_at", using: :btree
