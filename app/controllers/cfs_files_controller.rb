@@ -1,15 +1,16 @@
 require 'net/http'
 class CfsFilesController < ApplicationController
 
-  before_filter :require_logged_in, except: [:show, :public, :public_view, :public_download, :public_preview_image]
+  before_filter :require_logged_in, except: [:show, :public, :public_view, :public_download, :public_preview_image, :public_preview_iiif_image]
   before_filter :require_logged_in_or_basic_auth, only: [:show]
   before_filter :find_file, only: [:show, :public, :create_fits_xml, :fits_xml,
                                    :download, :view, :public_download, :public_view,
-                                   :preview_image, :public_preview_image, :preview_video, :preview_iiif_image]
-  before_filter :require_public_file, only: [:public, :public_download, :public_view, :public_preview_image]
+                                   :preview_image, :public_preview_image, :preview_video, :preview_iiif_image, :public_preview_iiif_image]
+  before_filter :require_public_file, only: [:public, :public_download, :public_view, :public_preview_image, :public_preview_iiif_image]
   layout 'public', only: [:public]
 
   cattr_accessor :mime_type_viewers, :extension_viewers
+  helper_method :is_iiif_compatible?
 
   def show
     @file_group = @file.file_group
@@ -67,29 +68,17 @@ class CfsFilesController < ApplicationController
     common_image_preview
   end
 
-  def preview_iiif_image
-    authorize! :download, @file.file_group
-    #find url for image from the image's file path
-    image_server_config = MedusaRails3::Application.medusa_config['loris']
-    image_server_base_url = "http://#{image_server_config['host'] || 'localhost'}:#{image_server_config['port'] || 3000}/#{image_server_config['root']}"
-    image_server_image_url = "#{image_server_base_url}/#{@file.relative_path}"
-    params[:iiif_parameters].gsub(/native$/, 'default')
-    if params[:iiif_parameters] == 'info' and params[:format] == 'json'
-      image_server_url = "#{image_server_image_url}/#{params[:iiif_parameters]}.#{params[:format]}"
-      response_type = 'application/json'
-    else
-      image_server_url = "#{image_server_image_url}/#{params[:iiif_parameters]}.#{params[:format]}"
-      response_type = 'image/jpeg'
-    end
-    #make http request for image from image server
-    image = Net::HTTP.get(URI.parse(image_server_url))
-    Rails.logger.debug "IMAGE:\n" + image
-    #send result to browser
-    send_data image, type: response_type, disposition: 'inline'
-  end
-
   def public_preview_image
     common_image_preview
+  end
+
+  def public_preview_iiif_image
+    common_preview_iiif_image
+  end
+
+  def preview_iiif_image
+    authorize! :download, @file.file_group
+    common_preview_iiif_image
   end
 
   def preview_video
@@ -135,6 +124,37 @@ class CfsFilesController < ApplicationController
     image.format 'jpg'
     image.resize '300x300>'
     send_data image.to_blob, type: 'image/jpeg', disposition: 'inline'
+  end
+
+  def common_preview_iiif_image
+    if params[:iiif_parameters] == 'info' and params[:format] == 'json'
+      image_server_url = iiif_info_json_url(@file)
+      response_type = 'application/json'
+    else
+      image_server_url = iiif_url(@file, params[:iiif_parameters], params[:format])
+      response_type = 'image/jpeg'
+    end
+    image = Net::HTTP.get(URI.parse(image_server_url))
+    send_data image, type: response_type, disposition: 'inline'
+  end
+
+  def is_iiif_compatible?(file)
+    result = Net::HTTP.get_response(URI.parse(iiif_info_json_url(file)))
+    result.code == '200' && result.body.index('http://iiif.io/api/image/2/level2.json')
+  end
+
+  def iiif_url(file, iiif_parameters, format)
+    "#{iiif_base_url(file)}/#{iiif_parameters}.#{format}"
+  end
+
+  def iiif_info_json_url(file)
+    "#{iiif_base_url(file)}/info.json"
+  end
+
+  def iiif_base_url(file)
+    image_server_config = MedusaRails3::Application.medusa_config['loris']
+    image_server_base_url = "http://#{image_server_config['host'] || 'localhost'}:#{image_server_config['port'] || 3000}/#{image_server_config['root']}"
+    "#{image_server_base_url}/#{file.relative_path}"
   end
 
   def require_public_file
