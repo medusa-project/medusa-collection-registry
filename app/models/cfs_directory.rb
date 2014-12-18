@@ -73,6 +73,7 @@ class CfsDirectory < ActiveRecord::Base
       self.root_cfs_directory = self
       self.save!
     end
+    true
   end
 
   def find_file_at_relative_path(path)
@@ -241,6 +242,7 @@ class CfsDirectory < ActiveRecord::Base
     if file_group_id.present? and file_group_id_changed?
       self.file_group.schedule_initial_cfs_assessment
     end
+    true
   end
 
   def parent
