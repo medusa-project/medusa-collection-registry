@@ -85,6 +85,7 @@ class BitLevelFileGroup < FileGroup
   end
 
   def refresh_file_size
+    return unless self.cfs_directory
     size = self.cfs_directory.tree_size / 1.gigabyte
     if self.total_file_size != size
       self.total_file_size = size
@@ -99,6 +100,7 @@ class BitLevelFileGroup < FileGroup
   end
 
   def refresh_file_count
+    return unless self.cfs_directory
     count = self.cfs_directory.tree_count
     if self.total_files != count
       self.total_files = count
