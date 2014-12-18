@@ -80,23 +80,37 @@ class BitLevelFileGroup < FileGroup
 
   def file_size
     return 0 unless self.cfs_directory
+    self.refresh_file_size
+    return total_file_size
+  end
+
+  def refresh_file_size
     size = self.cfs_directory.tree_size / 1.gigabyte
     if self.total_file_size != size
       self.total_file_size = size
       self.save!
     end
-    return size
   end
 
   def file_count
     return 0 unless self.cfs_directory
+    refresh_file_count
+    return total_files
+  end
+
+  def refresh_file_count
     count = self.cfs_directory.tree_count
     if self.total_files != count
       self.total_files = count
       self.save!
     end
-    return count
   end
+
+  def refresh_file_stats
+    self.refresh_file_size
+    self.refresh_file_count
+  end
+
 
   def amazon_backups
     if self.cfs_directory.present?

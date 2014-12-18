@@ -3,7 +3,7 @@ require 'rake'
 namespace :check do
   desc 'Run all checks'
   task :all => [:cfs_directories_vs_bit_level_file_groups, :file_count_and_size_totals,
-                :cfs_directories_vs_physical_paths, :combined_paths] do
+                :cfs_directories_vs_physical_paths, :combined_paths, :unassessed_cfs_file_count] do
     #just run all dependencies
   end
 
@@ -68,4 +68,15 @@ namespace :check do
       puts [path, physical_root_present, cfs_directory.present?, bit_level_file_group.present?].join(',')
     end
   end
+
+  desc 'Count cfs files that are not scheduled for assessment'
+  task unassessed_cfs_file_count: :environment do
+    puts "\nCfs files assessment status summary"
+    unassessed_cfs_files = CfsFile.where('content_type_id IS NULL')
+    puts "Currently unassessed cfs files: #{unassessed_cfs_files.count}"
+    directory_assessment_ids = Job::CfsInitialDirectoryAssessment.pluck(:cfs_directory_id).uniq
+    scheduled_cfs_files = unassessed_cfs_files.where(cfs_directory_id: directory_assessment_ids)
+    puts "Unassessed unscheduled cfs files: #{unassessed_cfs_files.count - scheduled_cfs_files.count}"
+  end
+
 end

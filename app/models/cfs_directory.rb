@@ -162,7 +162,7 @@ class CfsDirectory < ActiveRecord::Base
     #walk the directory tree under and including this directory and schedule an
     #initial assessment for each directory
     self.each_directory_in_tree(true) do |directory|
-      Job::CfsInitialDirectoryAssessment.create_for(directory, self.owning_file_group)
+      Job::CfsInitialDirectoryAssessment.create_for(directory, self.owning_file_group) unless directory.cfs_files.count == 0
     end
   end
 
@@ -200,7 +200,9 @@ class CfsDirectory < ActiveRecord::Base
     self.tree_count += count_difference
     self.tree_size += size_difference
     self.save!
-    if self.parent_cfs_directory
+    if self.file_group_root?
+      self.owning_file_group.refresh_file_stats if self.owning_file_group.present?
+    else
       self.parent_cfs_directory.update_tree_stats(count_difference, size_difference)
     end
   end
@@ -209,20 +211,22 @@ class CfsDirectory < ActiveRecord::Base
     self.tree_size = self.subdirectories.sum(:tree_size) + self.cfs_files.sum(:size)
     self.tree_count = self.subdirectories.sum(:tree_count) + self.cfs_files.count
     self.save!
-    if self.parent_cfs_directory
+    if self.file_group_root?
+      self.owning_file_group.refresh_file_stats if self.owning_file_group.present?
+    else
       self.parent_cfs_directory.update_tree_stats_from_db
     end
   end
 
   def update_all_tree_stats_from_db
     root = self.root_cfs_directory
-    leaves = CfsDirectory.where(root_cfs_directory_id: root.id).all.select {|cfs_directory| cfs_directory.subdirectories.blank?}
-    leaves.each {|leaf| leaf.update_tree_stats_from_db}
+    leaves = CfsDirectory.where(root_cfs_directory_id: root.id).all.select { |cfs_directory| cfs_directory.subdirectories.blank? }
+    leaves.each { |leaf| leaf.update_tree_stats_from_db }
   end
 
   def self.update_all_tree_stats_from_db
     roots = self.where('parent_cfs_directory_id IS NULL')
-    roots.each {|root| root.update_all_tree_stats_from_db}
+    roots.each { |root| root.update_all_tree_stats_from_db }
   end
 
   def handle_cfs_assessment
