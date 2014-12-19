@@ -113,7 +113,6 @@ class BitLevelFileGroup < FileGroup
     self.refresh_file_count
   end
 
-
   def amazon_backups
     if self.cfs_directory.present?
       self.cfs_directory.amazon_backups
