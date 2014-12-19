@@ -11,20 +11,20 @@ Feature: Bit Level File Group virus check
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | name   | type              |
+      | title   | type              |
       | images | BitLevelFileGroup |
-    And the file group named 'images' has cfs root 'dogs/images'
+    And the file group titled 'images' has cfs root 'dogs/images'
 
   Scenario: Run a virus check
     Given I am logged in as an admin
     When I view the collection with title 'Dogs'
     And I click on 'Run' in the virus-scan actions and delayed jobs are run
-    Then the file group with name 'images' should have 1 virus scan
-    And the cfs file at path 'clam.exe' for the file group named 'images' should have 1 red flag
+    Then the file group with title 'images' should have 1 virus scan
+    And the cfs file at path 'clam.exe' for the file group titled 'images' should have 1 red flag
 
   Scenario: Run a virus check as a manager
     Given I am logged in as a manager
     When I view the collection with title 'Dogs'
     And I click on 'Run' in the virus-scan actions and delayed jobs are run
-    Then the file group with name 'images' should have 1 virus scan
-    And the cfs file at path 'clam.exe' for the file group named 'images' should have 1 red flag
+    Then the file group with title 'images' should have 1 virus scan
+    And the cfs file at path 'clam.exe' for the file group titled 'images' should have 1 red flag

@@ -11,7 +11,7 @@
       - @public_file_groups.each do |file_group|
         %tr
           %td
-            #{link_to file_group.name, public_file_group_path(file_group)}
+            #{link_to file_group.title, public_file_group_path(file_group)}
             - if file_group.supports_cfs and file_group.cfs_directory.present?
               %div= link_to 'View Files', public_cfs_directory_path(file_group.cfs_directory)
           %td #{file_group.file_count.to_s(:delimited) rescue ''}

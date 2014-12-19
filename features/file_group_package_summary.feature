@@ -9,20 +9,20 @@ Feature: Package summary
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | name     | external_file_location | summary              | provenance_note        |
+      | title    | external_file_location | description          | provenance_note        |
       | grainger | Grainger               | Summation of package | Provenance information |
 
   Scenario: View file group to see package summary
-    When I view the file group with name 'grainger'
+    When I view the file group with title 'grainger'
     Then I should see all of:
       | Summation of package | Provenance information |
     And I should see all of:
-      | Summary | Provenance Note |
+      | Description | Provenance Note |
 
   Scenario: Update file group package summary fields
-    When I edit the file group with name 'grainger'
+    When I edit the file group with title 'grainger'
     And I fill in fields:
-      | Summary         | New summary    |
+      | Description         | New summary    |
       | Provenance Note | New provenance |
     And I click on 'Update'
     Then I should see all of:

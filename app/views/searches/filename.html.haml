@@ -21,5 +21,5 @@
         %tr
           %td= link_to(cfs_file.name, cfs_file_path(cfs_file))
           %td= cfs_file.cfs_directory.path
-          %td= link_to(file_group.name, file_group_path(file_group)) if file_group.present?
+          %td= link_to(file_group.title, file_group_path(file_group)) if file_group.present?
           %td= link_to(collection.title, collection_path(collection)) if collection.present?

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141217155120) do
+ActiveRecord::Schema.define(version: 20141219200334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -249,14 +249,16 @@ ActiveRecord::Schema.define(version: 20141217155120) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "producer_id"
-    t.text     "summary"
+    t.text     "description"
     t.text     "provenance_note"
-    t.string   "name"
+    t.string   "title"
     t.string   "staged_file_location"
     t.string   "cfs_root"
     t.string   "type"
     t.integer  "package_profile_id"
     t.string   "external_id"
+    t.text     "private_description"
+    t.string   "access_url"
   end
 
   add_index "file_groups", ["cfs_root"], name: "index_file_groups_on_cfs_root", unique: true, using: :btree

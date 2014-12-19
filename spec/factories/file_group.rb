@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :file_group do
-    sequence(:name) {|n| "File Group #{n}"}
+    sequence(:title) {|n| "File Group #{n}"}
     type 'ExternalFileGroup'
     external_file_location 'External File Location'
     total_files 0

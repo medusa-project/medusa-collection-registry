@@ -147,16 +147,16 @@ class FileGroupsController < ApplicationController
 
   def allowed_params
     params[:file_group].permit(:collection_id, :external_file_location,
-                               :producer_id, :summary, :provenance_note,
-                               :name, :external_id, :staged_file_location, :total_file_size,
+                               :producer_id, :description, :provenance_note,
+                               :title, :external_id, :staged_file_location, :total_file_size,
                                :file_format, :total_files, :related_file_group_ids, :cfs_root,
-                               :package_profile_id, :cfs_directory_id)
+                               :package_profile_id, :cfs_directory_id, :access_url, :private_description)
   end
 
   def show_json
     Jbuilder.encode do |json|
       json.id @file_group.id
-      json.name @file_group.name
+      json.title @file_group.title
       json.collection_id @collection.id
       json.external_file_location @file_group.external_file_location
       json.storage_level @file_group.json_storage_level

@@ -23,7 +23,7 @@
           %tr
             %td #{file_group.id}
             %td
-              #{link_to file_group.name, file_group}
+              #{link_to file_group.title, file_group}
               - if file_group.supports_cfs and file_group.cfs_directory.present?
                 %div= link_to 'View files', cfs_directory_path(file_group.cfs_directory)
             %td #{file_group.storage_level}

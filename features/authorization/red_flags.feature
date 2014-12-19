@@ -8,10 +8,10 @@ Feature: Red flags authorization
     And there is a physical cfs directory 'dogs'
     And the cfs directory 'dogs' contains cfs fixture file 'grass.jpg'
     And the collection with title 'Dogs' has child file groups with fields:
-      | name     | type              |
+      | title     | type              |
       | pictures | BitLevelFileGroup |
-    And I set the cfs root of the file group named 'pictures' to 'dogs'
-    And the file group named 'pictures' has a cfs file for the path 'grass.jpg' with red flags with fields:
+    And I set the cfs root of the file group titled 'pictures' to 'dogs'
+    And the file group titled 'pictures' has a cfs file for the path 'grass.jpg' with red flags with fields:
       | message       | notes           |
       | Size red flag | The size is off |
 

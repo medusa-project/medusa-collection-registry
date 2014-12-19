@@ -1,5 +1,5 @@
 = f.input :collection_id, as: :hidden, input_html: {value: @collection.id}
-= f.input :name, required: true
+= f.input :title, required: true
 = f.input :external_id, label: 'External ID'
 - if @file_group.new_record?
   = f.input :storage_level, as: :select, include_blank: false, collection: FileGroup.storage_levels, required: true

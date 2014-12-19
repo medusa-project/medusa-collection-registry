@@ -17,8 +17,7 @@ module FileGroupsHelper
   end
 
   def file_group_form_tab_list
-    ['essential-information', 'rights-declaration', 'summary', 'provenance-note',
-     'collection-file-package-summary', 'related-file-groups']
+    ['essential-information', 'rights-declaration', 'summary', 'provenance-note', 'related-file-groups']
   end
 
   def file_group_show_tab_list

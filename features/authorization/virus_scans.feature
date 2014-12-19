@@ -11,9 +11,9 @@ Feature: Virus scans authorization
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | name   | type              |
+      | title   | type              |
       | images | BitLevelFileGroup |
-    And the file group named 'images' has cfs root 'dogs/images' and delayed jobs are run
+    And the file group titled 'images' has cfs root 'dogs/images' and delayed jobs are run
     And I am logged in as an admin
     And I view the collection with title 'Dogs'
     And I click on 'Run' in the virus-scan actions and delayed jobs are run

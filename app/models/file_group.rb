@@ -25,7 +25,7 @@ class FileGroup < ActiveRecord::Base
   before_validation :initialize_file_info
 
   validates_uniqueness_of :cfs_root, allow_blank: true
-  validates_presence_of :name, :total_files, :total_file_size
+  validates_presence_of :title, :total_files, :total_file_size
   validates_presence_of :producer_id
 
   breadcrumbs parent: :collection
@@ -43,7 +43,7 @@ class FileGroup < ActiveRecord::Base
   end
 
   def label
-    self.name
+    self.title
   end
 
   #subclasses should override appropriately - this is blank here to facilitate the form
@@ -72,7 +72,7 @@ class FileGroup < ActiveRecord::Base
   end
 
   def sibling_file_groups
-    self.collection.file_groups.order(:name).all - [self]
+    self.collection.file_groups.order(:title).all - [self]
   end
 
   def supported_event_hash

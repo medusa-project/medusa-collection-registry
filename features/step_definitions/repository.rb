@@ -10,7 +10,7 @@ And /^the repository titled '(.*)' is managed by '(.*)'$/ do |title, email|
 end
 
 When /^the repository titled '(.*)' has been deleted$/ do |title|
-  Repository.find_by_title(title).destroy
+  Repository.find_by(title: title).destroy
 end
 
 Then /^I should see all repository fields$/ do
@@ -20,7 +20,7 @@ Then /^I should see all repository fields$/ do
 end
 
 When /^I view the repository having a collection titled '(.*)'$/ do |title|
-  collection = Collection.find_by_title(title)
+  collection = Collection.find_by(title: title)
   visit repository_path(collection.repository)
 end
 

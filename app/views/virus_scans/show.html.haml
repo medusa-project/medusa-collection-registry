@@ -1,7 +1,7 @@
 %div
   Collection: #{link_to @collection.title, @collection}
 %div
-  File Group: #{link_to @file_group.name, @file_group}
+  File Group: #{link_to @file_group.title, @file_group}
 
 - other_scans = @file_group.virus_scans.order('created_at desc').load - [@virus_scan]
 - if other_scans.present?

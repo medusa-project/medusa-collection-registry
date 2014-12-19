@@ -6,9 +6,9 @@ Feature: Attachment authorization
   Background:
     Given I am logged in as an admin
     And the collection with title 'Animals' has child file groups with fields:
-      | name |
+      | title |
       | Dogs |
-    And I view the file group with name 'Dogs'
+    And I view the file group with title 'Dogs'
     And I click on 'Add Attachment'
     And I fill in fields:
       | Description | grass |
@@ -23,14 +23,14 @@ Feature: Attachment authorization
       | manager     | delete                               | unauthorized   |
 
   Scenario: Public user tries to start attachment
-    Then a public user is unauthorized to start an attachment for the file group named 'Dogs'
+    Then a public user is unauthorized to start an attachment for the file group titled 'Dogs'
 
   Scenario: Public user tries to create attachment
-    Then a public user is unauthorized to create an attachment for the file group named 'Dogs'
+    Then a public user is unauthorized to create an attachment for the file group titled 'Dogs'
 
   Scenario: Visitor tries to start attachment
-    Then a visitor is unauthorized to start an attachment for the file group named 'Dogs'
+    Then a visitor is unauthorized to start an attachment for the file group titled 'Dogs'
 
   Scenario: Visitor tries to create attachment
-    Then a visitor is unauthorized to start an attachment for the file group named 'Dogs'
+    Then a visitor is unauthorized to start an attachment for the file group titled 'Dogs'
 
