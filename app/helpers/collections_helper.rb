@@ -13,11 +13,7 @@ module CollectionsHelper
   end
 
   def collection_form_tab_list
-    [['essential', 'Essential Information'],
-    ['about', 'About this Collection'],
-    ['content', 'About the Content'],
-    ['rights', 'Rights Declaration'],
-    'notes']
+    ['descriptive-metadata', 'administrative-metadata', 'rights-metadata']
   end
 
 end
