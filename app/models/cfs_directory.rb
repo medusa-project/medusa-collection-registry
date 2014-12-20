@@ -253,6 +253,20 @@ class CfsDirectory < ActiveRecord::Base
     self.parent_cfs_directory || self.file_group
   end
 
+  #recursively destroy the tree (including this directory) in the database from the bottom up
+  #this has the advantage of not creating a giant transaction like self.destroy would because of
+  #all of the association callbacks. Instead we descend to the leaves, destroy them and work up,
+  #each time with just a little transaction. So this can also be interrupted and resumed.
+  def destroy_tree_from_leaves
+    self.subdirectories.each do |subdirectory|
+      subdirectory.destroy_tree_from_leaves
+    end
+    self.cfs_files.each do |cfs_file|
+      cfs_file.destroy!
+    end
+    self.destroy!
+  end
+
   protected
 
   #yield each CfsDirectory in the tree to the block.
