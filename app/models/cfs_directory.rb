@@ -261,9 +261,11 @@ class CfsDirectory < ActiveRecord::Base
     self.subdirectories.each do |subdirectory|
       subdirectory.destroy_tree_from_leaves
     end
+    self.subdirectories(true)
     self.cfs_files.each do |cfs_file|
       cfs_file.destroy!
     end
+    self.cfs_files(true)
     self.destroy!
   end
 
