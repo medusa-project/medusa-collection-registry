@@ -8,9 +8,9 @@ Feature: File Group description
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | description      | provenance_note     | title  | staged_file_location | external_id              |
-      | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   | external-main-library-id |
-      | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | staging_dir/texts    |                          |
+      | external_file_location | file_format | total_file_size | total_files | description      | provenance_note     | title  | staged_file_location | external_id              | access_url                | private_description |
+      | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   | external-main-library-id | http://access.example.com | private summary     |
+      | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | staging_dir/texts    |                          |                           |                     |
     And every producer with fields exists:
       | title    |
       | Scanning |
@@ -20,7 +20,7 @@ Feature: File Group description
     And the uuid of the file group with title 'images' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
     When I view the file group with title 'images'
     Then I should see all of:
-      | image/jpeg | 1,200 | main summary | main provenance | images | external | staging_dir/images | external-main-library-id | 3da0fae0-e3fa-012f-ac10-005056b22849-8 |
+      | image/jpeg | 1,200 | main summary | main provenance | images | external | staging_dir/images | external-main-library-id | 3da0fae0-e3fa-012f-ac10-005056b22849-8 | private summary | http://access.example.com |
 
   Scenario: View a file group as a manager
     Given I am logged in as a manager
@@ -36,18 +36,20 @@ Feature: File Group description
     Given I am logged in as an admin
     When I edit the file group with title 'images'
     And I fill in fields:
-      | Total files          | 1300               |
-      | Description          | Changed summary    |
-      | Provenance Note      | Changed provenance |
-      | Title                 | pictures           |
-      | Staged file location | staging_dir/pics   |
-      | External ID          | external-dogs-id   |
+      | Total files          | 1300                          |
+      | Description          | Changed summary               |
+      | Provenance Note      | Changed provenance            |
+      | Title                | pictures                      |
+      | Staged file location | staging_dir/pics              |
+      | External ID          | external-dogs-id              |
+      | Access Url           | http://new-access.example.com |
+      | Private description  | changed secret description    |
     And I press 'Update'
     Then I should be on the view page for the file group with title 'pictures'
     And I should see all of:
-      | 1,300 | Changed summary | Changed provenance | pictures | staging_dir/pics | external-dogs-id |
+      | 1,300 | Changed summary | Changed provenance | pictures | staging_dir/pics | external-dogs-id | http://new-access.example.com | changed secret description |
     And I should see none of:
-      | 1,200 | main summary | main provenance | images | staging_dir/pictures | external-main-library-id |
+      | 1,200 | main summary | main provenance | images | staging_dir/pictures | external-main-library-id | http://access.example.com | private summary |
 
   Scenario: Edit a file group as a manager
     Given I am logged in as a manager
