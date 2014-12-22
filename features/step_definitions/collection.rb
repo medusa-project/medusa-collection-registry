@@ -31,13 +31,13 @@ And /^I check access system '(.*)'$/ do |name|
 end
 
 And /^I uncheck resource type '(.*)'$/ do |name|
-  within('#collection_resource_types') do
+  within('#resource_types') do
     uncheck(name)
   end
 end
 
 And /^I check resource type '(.*)'$/ do |name|
-  within('#collection_resource_types') do
+  within('#resource_types') do
     check(name)
   end
 end
