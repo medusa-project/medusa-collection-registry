@@ -18,8 +18,8 @@ class Collection < ActiveRecord::Base
   has_many :file_groups, dependent: :destroy
   has_many :access_system_collection_joins, dependent: :destroy
   has_many :access_systems, through: :access_system_collection_joins
-  has_many :collection_resource_type_joins, dependent: :destroy
-  has_many :resource_types, through: :collection_resource_type_joins
+  has_many :resource_typeable_resource_type_joins, dependent: :destroy, as: :resource_typeable
+  has_many :resource_types, through: :resource_typeable_resource_type_joins
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
   has_many :attachments, as: :attachable, dependent: :destroy
 
