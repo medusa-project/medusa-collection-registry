@@ -52,6 +52,6 @@ Feature: File Group related file groups
     And I fill in fields:
       | Note | How these are related |
     And I click on 'Update'
-    Then I should see 'How these are related'
-    And the file group titled 'texts' should have relation note 'How these are related' for the target file group 'access_images'
+    Then the file group titled 'texts' should have relation note 'How these are related' for the target file group 'access_images'
+    And I should see 'How these are related'
 
