@@ -50,7 +50,7 @@ module BookTracker
             begin
               doc = Nokogiri::XML(contents, &:noblanks)
               doc.encoding = 'utf-8'
-              doc.xpath('//xmlns:collection/xmlns:record').each do |record|
+              doc.xpath('//xmlns:record').each do |record|
                 begin
                   item, status = Item.insert_or_update!(
                       Item.params_from_marcxml_record(record))
@@ -106,8 +106,7 @@ module BookTracker
         File.open(file) do |contents|
           doc = Nokogiri::XML(contents, &:noblanks)
           begin
-            count += doc.xpath('//xmlns:collection/xmlns:record').length
-          rescue
+            count += doc.xpath('//xmlns:record').length
           end
         end
       end
