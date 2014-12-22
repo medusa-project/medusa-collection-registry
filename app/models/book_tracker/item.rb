@@ -56,12 +56,15 @@ module BookTracker
       item_params[:oclc_number] = nodes[0].content.sub(/^[(OCoLC)]*/, '').
           gsub(/[^0-9]/, '').strip if nodes.any?
 
-      # extract author & title from 100 & 245
+      # extract author & title from 100 & 245 subfields a & b
       item_params[:author] = record.
           xpath('xmlns:datafield[@tag = 100][1]/xmlns:subfield[1]').
           map{ |t| t.content }.join(' ').strip
       item_params[:title] = record.
-          xpath('xmlns:datafield[@tag = 245][1]/xmlns:subfield[1]').
+          xpath('xmlns:datafield[@tag = 245][1]/xmlns:subfield[@code = \'a\'][1]').
+          map{ |t| t.content }.join(' ').strip
+      item_params[:title] += record.
+          xpath('xmlns:datafield[@tag = 245][1]/xmlns:subfield[@code = \'b\'][1]').
           map{ |t| t.content }.join(' ').strip
 
       # extract volume from 955 subfield v
