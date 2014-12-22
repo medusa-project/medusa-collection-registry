@@ -13,9 +13,3 @@
             = render partial: 'form_administrative_metadata', locals: {f: f}
           #rights-metadata.tab-pane
             = render partial: 'rights_declarations/nested_form', locals: {containing_form: f, rights_declaration: @file_group.rights_declaration}
-          #related-file-groups.tab-pane
-            - if @file_group.new_record?
-              %p
-                Related file groups can only be defined for an already saved file group.
-            - else
-              = render partial: 'form_related_file_groups'
