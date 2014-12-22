@@ -10,7 +10,7 @@ module ResourceTypeable
 
   def resource_type_names
     self.resource_types.collect(&:name).join('; ')
-  endZ
+  end
 
   def resource_types_to_mods(xml)
     self.resource_types.each do |resource_type|
