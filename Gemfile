@@ -74,7 +74,7 @@ gem 'handle-server', '~> 1.0.1', git: 'git://github.com/medusa-project/handle-se
 gem 'rest-client'
 
 # Deploy with Capistrano
-gem 'capistrano'
+gem 'capistrano', '~> 2'
 gem 'rvm-capistrano'
 
 # Medusa Book Tracker compatibility
