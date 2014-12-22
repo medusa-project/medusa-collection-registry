@@ -150,7 +150,8 @@ class FileGroupsController < ApplicationController
                                :producer_id, :description, :provenance_note,
                                :title, :external_id, :staged_file_location, :total_file_size,
                                :file_format, :total_files, :related_file_group_ids, :cfs_root,
-                               :package_profile_id, :cfs_directory_id, :access_url, :private_description)
+                               :package_profile_id, :cfs_directory_id, :access_url, :private_description,
+                               resource_type_ids: [])
   end
 
   def show_json

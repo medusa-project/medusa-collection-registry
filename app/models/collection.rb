@@ -8,6 +8,7 @@ class Collection < ActiveRecord::Base
   include RedFlagAggregator
   include Uuidable
   include Breadcrumb
+  include ResourceTypeable
 
   email_person_association(:contact)
 
@@ -18,8 +19,6 @@ class Collection < ActiveRecord::Base
   has_many :file_groups, dependent: :destroy
   has_many :access_system_collection_joins, dependent: :destroy
   has_many :access_systems, through: :access_system_collection_joins
-  has_many :resource_typeable_resource_type_joins, dependent: :destroy, as: :resource_typeable
-  has_many :resource_types, through: :resource_typeable_resource_type_joins
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
   has_many :attachments, as: :attachable, dependent: :destroy
 
@@ -53,10 +52,6 @@ class Collection < ActiveRecord::Base
 
   def medusa_url
     Rails.application.routes.url_helpers.collection_url(self, host: MedusaRails3::Application.medusa_host, protocol: 'https')
-  end
-
-  def resource_type_names
-    self.resource_types.collect(&:name).join('; ')
   end
 
   def preservation_priority_name

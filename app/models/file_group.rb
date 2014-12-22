@@ -3,6 +3,7 @@ class FileGroup < ActiveRecord::Base
   include ScheduledEventable
   include Uuidable
   include Breadcrumb
+  include ResourceTypeable
 
   belongs_to :collection, touch: true
   #parent is a duplicate, but allows uniformity for events, i.e. we can do eventable.parent

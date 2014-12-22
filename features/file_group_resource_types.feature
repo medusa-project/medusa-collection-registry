@@ -1,0 +1,25 @@
+Feature: File Group Resource types
+  In order to facilitate preservation
+  As a librarian
+  I want to be able to track the types of resources in a file group
+
+  Background:
+    Given I am logged in as an admin
+    And each resource type with name exists:
+      | notated music | mixed material | text | cartographic |
+    And the bit level file group with title 'Dogs' has child resource types with field name:
+      | text | cartographic |
+
+  Scenario: View resource types
+    When I view the bit level file group with title 'Dogs'
+    Then I should see all of:
+      | text | cartographic |
+    And I should not see 'notated music'
+
+  Scenario: Edit resource types
+    When I edit the bit level file group with title 'Dogs'
+    And I uncheck resource type 'text'
+    And I check resource type 'notated music'
+    And I click on 'Update'
+    Then I should see 'notated music'
+    And I should not see 'text'
