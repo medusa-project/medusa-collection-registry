@@ -40,6 +40,7 @@ module BookTracker
     # @return Params hash for an Item
     #
     def self.params_from_marcxml_record(record)
+      namespaces = { 'marc' => 'http://www.loc.gov/MARC21/slim' }
       item_params = { bib_id: nil, oclc_number: nil, obj_id: nil, title: nil,
                       author: nil, volume: nil, date: nil, raw_marcxml: nil }
 
@@ -47,48 +48,47 @@ module BookTracker
       item_params[:raw_marcxml] = record.to_xml(indent: 2)
 
       # extract bib ID
-      nodes = record.xpath('xmlns:controlfield[@tag = 001][1]')
-      item_params[:bib_id] = nodes[0].content.strip if nodes.any?
+      nodes = record.xpath('marc:controlfield[@tag = 001]', namespaces)
+      item_params[:bib_id] = nodes.first.content.strip if nodes.any?
 
       # extract OCLC no. from 035 subfield a
       nodes = record.
-          xpath('xmlns:datafield[@tag = 035][1]/xmlns:subfield[@code = \'a\'][1]')
-      item_params[:oclc_number] = nodes[0].content.sub(/^[(OCoLC)]*/, '').
+          xpath('marc:datafield[@tag = 035][1]/marc:subfield[@code = \'a\']', namespaces)
+      item_params[:oclc_number] = nodes.first.content.sub(/^[(OCoLC)]*/, '').
           gsub(/[^0-9]/, '').strip if nodes.any?
 
       # extract author & title from 100 & 245 subfields a & b
       item_params[:author] = record.
-          xpath('xmlns:datafield[@tag = 100][1]/xmlns:subfield[1]').
+          xpath('marc:datafield[@tag = 100][1]/marc:subfield', namespaces).
           map{ |t| t.content }.join(' ').strip
       item_params[:title] = record.
-          xpath('xmlns:datafield[@tag = 245][1]/xmlns:subfield[@code = \'a\'][1]').
+          xpath('marc:datafield[@tag = 245][1]/marc:subfield[@code = \'a\']', namespaces).
           map{ |t| t.content }.join(' ').strip
       item_params[:title] += record.
-          xpath('xmlns:datafield[@tag = 245][1]/xmlns:subfield[@code = \'b\'][1]').
+          xpath('marc:datafield[@tag = 245][1]/marc:subfield[@code = \'b\']', namespaces).
           map{ |t| t.content }.join(' ').strip
 
       # extract volume from 955 subfield v
-      nodes = record.
-          xpath('xmlns:datafield[@tag = 955][1]/xmlns:subfield[@code = \'v\'][1]')
-      item_params[:volume] = nodes[0].content.strip if nodes.any?
+      nodes = record.xpath('marc:datafield[@tag = 955][1]/marc:subfield[@code = \'v\']', namespaces)
+      item_params[:volume] = nodes.first.content.strip if nodes.any?
 
       # extract date from 260 subfield c
       nodes = record.
-          xpath('xmlns:datafield[@tag = 260][1]/xmlns:subfield[@code = \'c\'][1]')
-      item_params[:date] = nodes[0].content.strip if nodes.any?
+          xpath('marc:datafield[@tag = 260][1]/marc:subfield[@code = \'c\']', namespaces)
+      item_params[:date] = nodes.first.content.strip if nodes.any?
 
       # extract object ID from 955 subfield b
       # For Google digitized volumes, this will be the barcode.
       # For Internet Archive digitized volumes, this will be the Ark ID.
       # For locally digitized volumes, this will be the bib ID (and other extensions)
       nodes = record.
-          xpath('xmlns:datafield[@tag = 955]/xmlns:subfield[@code = \'b\'][1]')
-      item_params[:obj_id] = nodes[0].content.strip if nodes.any?
+          xpath('marc:datafield[@tag = 955]/marc:subfield[@code = \'b\']', namespaces)
+      item_params[:obj_id] = nodes.first.content.strip if nodes.any?
 
       # extract IA identifier from 955 subfield q
       nodes = record.
-          xpath('xmlns:datafield[@tag = 955]/xmlns:subfield[@code = \'q\'][1]')
-      item_params[:ia_identifier] = nodes[0].content.strip if nodes.any?
+          xpath('marc:datafield[@tag = 955]/marc:subfield[@code = \'q\']', namespaces)
+      item_params[:ia_identifier] = nodes.first.content.strip if nodes.any?
 
       item_params
     end
