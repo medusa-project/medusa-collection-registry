@@ -21,7 +21,7 @@ class Job::CfsDirectoryExport < Job::Base
   end
 
   def success(job)
-    CfsMailer.export_complete(self).deliver
+    CfsMailer.export_complete(self).deliver_now
     if CfsDirectory.export_autoclean
       Job::CfsDirectoryExportCleanup.create_for(self.export_directory)
     end

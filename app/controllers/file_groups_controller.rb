@@ -118,12 +118,11 @@ class FileGroupsController < ApplicationController
   #and nested attributes to work correctly, so here we are. It's not too bad since the file group will already exist
   #and is guaranteed to have both a collection and rights declaration, making both of those just updates.
   def handling_nested_collection_and_rights_declaration(params)
-    collection_params = params.delete(:collection)
-    rights_params = params.delete(:rights_declaration)
+    rights_params = params.delete(:rights_declaration) || ActionController::Parameters.new
+    rights_params = rights_params.permit(:rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions)
     FileGroup.transaction do
       yield
-      @file_group.collection.update_attributes!(collection_params) if collection_params.present?
-      @file_group.rights_declaration.update_attributes!(rights_params) if rights_params.present?
+      @file_group.rights_declaration.update_attributes!(rights_params)
     end
   end
 
@@ -150,7 +149,7 @@ class FileGroupsController < ApplicationController
                                :producer_id, :description, :provenance_note,
                                :title, :external_id, :staged_file_location, :total_file_size,
                                :file_format, :total_files, :related_file_group_ids, :cfs_root,
-                               :package_profile_id, :cfs_directory_id, :access_url, :private_description,
+                               :package_profile_id, :cfs_directory_id, :access_url, :private_description, :rights_declaration,
                                resource_type_ids: [])
   end
 

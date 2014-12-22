@@ -86,7 +86,7 @@ Repository Id: #{file_group.repository.id}
     self.archive_ids = response.archive_ids
     self.part_count = self.archive_ids.length
     self.save!
-    AmazonMailer.progress(self).deliver
+    AmazonMailer.progress(self).deliver_now
     create_backup_completion_event
     if self.completed?
       self.job_amazon_backup.try(:destroy)
