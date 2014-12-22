@@ -38,7 +38,7 @@ module BookTracker
           @missing_bib_ids = ActiveRecord::Base.connection.execute(sql).
               map{ |r| r['id'] }
         else
-          q = "%#{params[:q]}%"
+          q = "%#{params[:q].strip}%"
           @items = @items.where('CAST(bib_id AS VARCHAR(10)) LIKE ? '\
           'OR oclc_number LIKE ? OR obj_id LIKE ? OR LOWER(title) LIKE LOWER(?) '\
           'OR LOWER(author) LIKE LOWER(?) OR LOWER(ia_identifier) LIKE LOWER(?)' \
