@@ -6,8 +6,6 @@ module BookTracker
   #
   class InternetArchive
 
-    QUEUE_NAME = 'book_tracker:internet_archive'
-
     def self.check_in_progress?
       Task.where(service: Service::INTERNET_ARCHIVE).
           where('status NOT IN (?)', [Status::SUCCEEDED, Status::FAILED]).
@@ -23,9 +21,9 @@ module BookTracker
       start_date = '1980-01-01'
       end_date = Date.today.strftime("%Y-%m-%d")
 
-      task = Task.create!(name: 'Checking Internet Archive: Downloading UIUC '\
-      'inventory',
-                          service: Service::INTERNET_ARCHIVE)
+      task = Task.create!(
+          name: 'Checking Internet Archive: Downloading UIUC inventory',
+          service: Service::INTERNET_ARCHIVE)
       puts task.name
 
       begin
