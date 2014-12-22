@@ -70,9 +70,7 @@ class Collection < ActiveRecord::Base
       end
       xml.identifier(self.uuid, type: 'uuid')
       xml.identifier(self.handle, type: 'handle')
-      self.resource_types.each do |resource_type|
-        xml.typeOfResource(resource_type.name, collection: 'yes')
-      end
+      resource_types_to_mods(xml)
       xml.abstract self.description
       xml.location do
         xml.url(self.access_url || '', access: 'object in context', usage: 'primary')
