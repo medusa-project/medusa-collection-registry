@@ -22,9 +22,9 @@ GIT
 
 GIT
   remote: git://github.com/medusa-project/net-http-digest_auth.git
-  revision: 414bdfbabab588ad038b748d0a435ddc0fcde111
+  revision: 4816df9f44f27c774ea8172fab66eae74dd304ba
   specs:
-    net-http-digest_auth (1.3.0.1)
+    net-http-digest_auth (1.4)
 
 GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
