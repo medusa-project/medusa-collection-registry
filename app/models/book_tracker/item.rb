@@ -41,8 +41,7 @@ module BookTracker
     #
     def self.params_from_marcxml_record(record)
       namespaces = { 'marc' => 'http://www.loc.gov/MARC21/slim' }
-      item_params = { bib_id: nil, oclc_number: nil, obj_id: nil, title: nil,
-                      author: nil, volume: nil, date: nil, raw_marcxml: nil }
+      item_params = {}
 
       # raw MARCXML
       item_params[:raw_marcxml] = record.to_xml(indent: 2)
@@ -62,10 +61,7 @@ module BookTracker
           xpath('marc:datafield[@tag = 100][1]/marc:subfield', namespaces).
           map{ |t| t.content }.join(' ').strip
       item_params[:title] = record.
-          xpath('marc:datafield[@tag = 245][1]/marc:subfield[@code = \'a\']', namespaces).
-          map{ |t| t.content }.join(' ').strip
-      item_params[:title] += record.
-          xpath('marc:datafield[@tag = 245][1]/marc:subfield[@code = \'b\']', namespaces).
+          xpath('marc:datafield[@tag = 245][1]/marc:subfield[@code = \'a\' or @code = \'b\']', namespaces).
           map{ |t| t.content }.join(' ').strip
 
       # extract volume from 955 subfield v
