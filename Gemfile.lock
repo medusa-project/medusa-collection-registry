@@ -22,9 +22,9 @@ GIT
 
 GIT
   remote: git://github.com/medusa-project/net-http-digest_auth.git
-  revision: 28c9ab897e240aa19afe120bce3b40f28c443bb0
+  revision: 414bdfbabab588ad038b748d0a435ddc0fcde111
   specs:
-    net-http-digest_auth (1.3.0)
+    net-http-digest_auth (1.3.0.1)
 
 GIT
   remote: git://github.com/medusa-project/omniauth-shibboleth.git
