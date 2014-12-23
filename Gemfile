@@ -35,10 +35,6 @@ gem 'daemons'
 #image processing for file previews
 gem 'mini_magick'
 
-#creation of bags for off-site archiving of files
-gem 'bagit'
-gem 'tree.rb', require: 'tree_rb'
-
 #AMQP communication
 gem 'bunny'
 
@@ -86,11 +82,8 @@ gem 'uuid'
 gem 'paperclip', git: 'git://github.com/thoughtbot/paperclip.git'
 
 gem 'font-awesome-rails'
-gem 'state_machine'
 
 group :development, :test do
-  # To use debugger
-  #gem 'ruby-debug19'
   gem 'rspec-rails'
   gem 'factory_girl'
   gem 'shoulda-matchers'
