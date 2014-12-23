@@ -7,23 +7,21 @@ module BookTracker
     # Used by self.insert_or_update!
     UPDATED = 1
 
-    validates :bib_id, presence: true, length: { maximum: 255 } # TODO: what is the max length of a bib ID?
-
     before_save :truncate_values
 
     self.table_name = 'book_tracker_items'
 
     ##
     # Static method that either inserts a new item, or updates an existing item,
-    # depending on whether an item with a matching bib ID is already present in
-    # the database.
+    # depending on whether an item with a matching object ID is already present
+    # in the database.
     #
     # @return Array with the created or updated Item at position 0 and the status
     # (Item::INSERTED or Item::UPDATED) at position 1
     #
     def self.insert_or_update!(params)
       status = Item::UPDATED
-      item = Item.find_by_bib_id(params[:bib_id])
+      item = Item.find_by_obj_id(params[:obj_id])
       if item
         item.update_attributes(params)
       else

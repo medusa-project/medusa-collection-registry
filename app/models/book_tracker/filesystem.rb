@@ -35,13 +35,13 @@ module BookTracker
 
         num_inserted = 0
         num_updated = 0
-        num_missing_bib_ids = 0
         num_invalid_files = 0
         record_index = 0
         num_records = record_count(path)
 
         task.name = "Importing #{num_records} MARCXML records"
         task.save!
+        puts task.name
 
         # Find all XML files in or beneath self.path
         files = Dir.glob(path + '/**/*.xml').select{ |file| File.file?(file) }
@@ -53,17 +53,12 @@ module BookTracker
               namespaces = { 'marc' => 'http://www.loc.gov/MARC21/slim' }
 
               doc.xpath('//marc:record', namespaces).each do |record|
-                begin
-                  item, status = Item.insert_or_update!(
-                      Item.params_from_marcxml_record(record))
-                  if status == Item::INSERTED
-                    num_inserted += 1
-                  else
-                    num_updated += 1
-                  end
-                rescue => e
-                  num_missing_bib_ids += 1 if e.message.include?('Bib can\'t be blank')
-                  puts "#{file}: #{e}"
+                item, status = Item.insert_or_update!(
+                    Item.params_from_marcxml_record(record))
+                if status == Item::INSERTED
+                  num_inserted += 1
+                else
+                  num_updated += 1
                 end
                 record_index += 1
                 if record_index % 1000 == 0
@@ -93,8 +88,7 @@ module BookTracker
         puts task.name
       else
         task.name += ": #{num_inserted} records added; #{num_updated} "\
-        "records updated or unchanged; #{num_missing_bib_ids} missing bib IDs "\
-        "and not imported; #{num_invalid_files} skipped XML files"
+        "records updated or unchanged; #{num_invalid_files} skipped XML files"
         task.status = Status::SUCCEEDED
         task.save!
         puts task.name
