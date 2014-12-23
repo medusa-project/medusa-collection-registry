@@ -27,13 +27,6 @@ GIT
     net-http-digest_auth (1.3.0.1)
 
 GIT
-  remote: git://github.com/medusa-project/omniauth-shibboleth.git
-  revision: 2c8f3390eeaf6be7d15f6aeaee605917aa985295
-  specs:
-    omniauth-shibboleth (1.0.8)
-      omniauth (>= 1.0.0)
-
-GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
   revision: 67f160dd2ff5cc7cd843a17866c3b6bc8e7f2794
   specs:
@@ -241,6 +234,8 @@ GEM
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
       rack (~> 1.0)
+    omniauth-shibboleth (1.2.0)
+      omniauth (>= 1.0.0)
     passenger (4.0.56)
       daemon_controller (>= 1.2.0)
       rack
@@ -412,7 +407,7 @@ DEPENDENCIES
   newrelic_rpm
   nokogiri
   omniauth
-  omniauth-shibboleth!
+  omniauth-shibboleth
   paperclip!
   passenger
   pg
