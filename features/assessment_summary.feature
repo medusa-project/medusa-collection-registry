@@ -13,13 +13,13 @@ Feature: Assessment summary
       | title |
       | Cacti |
     And the collection with title 'Dogs' has child file groups with fields:
-      | name |
+      | title |
       | Toy  |
       | Hot  |
-    And the assessable file group with name 'Toy' has assessments with fields:
+    And the assessable file group with title 'Toy' has assessments with fields:
       | name           |
       | toy assessment |
-    And the assessable file group with name 'Hot' has assessments with fields:
+    And the assessable file group with title 'Hot' has assessments with fields:
       | name           |
       | hot assessment |
     And the assessable collection with title 'Dogs' has assessments with fields:

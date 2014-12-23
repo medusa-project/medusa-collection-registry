@@ -6,24 +6,24 @@ Feature: Amazon backup
   Background:
     Given I clear the cfs root directory
     And the collection with title 'Animals' has child file groups with fields:
-      | name | type              |
+      | title | type              |
       | Dogs | BitLevelFileGroup |
       | Cats | BitLevelFileGroup |
     And there is a physical cfs directory 'dogs'
     And there is a physical cfs directory 'cats'
-    And the file group named 'Dogs' has cfs root 'dogs'
-    And the file group named 'Cats' has cfs root 'cats' and delayed jobs are run
+    And the file group titled 'Dogs' has cfs root 'dogs'
+    And the file group titled 'Cats' has cfs root 'cats' and delayed jobs are run
 
   Scenario: Full Amazon backup
     Given I am logged in as an admin
     And the physical cfs directory 'dogs' has the data of bag 'small-bag'
-    And I run an initial cfs file assessment on the file group named 'Dogs'
-    When I run a full Amazon backup for the file group named 'Dogs'
-    Then the file group named 'Dogs' should have a completed Amazon backup
+    And I run an initial cfs file assessment on the file group titled 'Dogs'
+    When I run a full Amazon backup for the file group titled 'Dogs'
+    Then the file group titled 'Dogs' should have a completed Amazon backup
 
   Scenario: Schedule amazon backup of a bit level file group
     Given I am logged in as a medusa admin
-    When I view the file group with name 'Dogs'
+    When I view the file group with title 'Dogs'
     And I click on 'Create backup'
     Then there should be 1 amazon backup delayed job
 
@@ -35,7 +35,7 @@ Feature: Amazon backup
     Then there should be 2 amazon backup delayed jobs
 
   Scenario: Amazon backup is restricted to medusa admins
-    Then deny object permission on the bit level file group with name 'Dogs' to users for action with redirection:
+    Then deny object permission on the bit level file group with title 'Dogs' to users for action with redirection:
       | public user      | create_amazon_backup(post) | authentication |
       | visitor, manager | create_amazon_backup(post) | unauthorized   |
 

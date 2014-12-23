@@ -1,25 +1,3 @@
-#Create bags to be sent to Amazon Glacier for backup (other code will be
-# responsible for requesting creation and for actually uploading)
-#Receive the (bit level) file group to back up
-#Figure out if there are previous backups and use this information
-#to restrict files to back up.
-#Make a list of files to back up
-#If necessary break the list into pieces for size considerations
-#Make bag(s) as backup - use bagit gem
-# - create bag b = BagIt::Bag.new(path)
-# - add files b.add_file(dest_path, source_path)
-# - make manifests b.manifest!
-#Extract manifest files from created bags and store
-
-#Record backup in AmazonBackup (relate to filegroup, hold manifest file names, date)
-
-#Config
-# - backup registry directory (stores manifests)
-# - bag creation dir - where to create the bags - this will
-# need significant space, so probably will need to be on our main storage
-# - maximum size of bag (environment sensitive so as to enable testing)
-
-#Registry/bag naming format: fg<id>-<dt>-p<part>[.txt|.zip]
 require 'fileutils'
 class AmazonBackup < ActiveRecord::Base
 
@@ -86,7 +64,7 @@ Repository Id: #{file_group.repository.id}
     self.archive_ids = response.archive_ids
     self.part_count = self.archive_ids.length
     self.save!
-    AmazonMailer.progress(self).deliver
+    AmazonMailer.progress(self).deliver_now
     create_backup_completion_event
     if self.completed?
       self.job_amazon_backup.try(:destroy)

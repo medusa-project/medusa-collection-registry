@@ -10,16 +10,18 @@
   .tabbable
     = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: file_group_show_tab_list}
     .tab-content
-      #description-tab.tab-pane.active
-        = render 'show_description'
-      #rights-tab.tab-pane
+      #descriptive-metadata.tab-pane.active
+        = render 'show_descriptive_metadata'
+      #administrative-metadata.tab-pane
+        = render 'show_administrative_metadata'
+      #rights-metadata.tab-pane
         = render partial: 'rights_declarations/show', locals: {rights_declaration: @file_group.rights_declaration}
-      #assessments-tab.tab-pane
+      #assessments.tab-pane
         = render 'assessments/table'
-      #attachments-tab.tab-pane
+      #attachments.tab-pane
         = render 'attachments_table' if logged_in?
       - if @file_group.cfs_directory.present?
-        #amazon-tab.tab-pane
+        #amazon.tab-pane
           = render 'amazon_backups'
 
 = render partial: 'events/modal_form', locals: {eventable: @file_group, remote: false, dialog_id: :addEventModal}

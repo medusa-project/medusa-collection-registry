@@ -1,12 +1,12 @@
-Then(/^the file group named '(.*)' should have a scheduled event with fields:$/) do |name, table|
-  file_group = FileGroup.find_by_name(name)
+Then(/^the file group titled '(.*)' should have a scheduled event with fields:$/) do |title, table|
+  file_group = FileGroup.find_by(title: title)
   table.hashes.each do |hash|
     file_group.scheduled_events.where(hash).first.should be_truthy
   end
 end
 
-Given(/^the file group named '(.*)' has scheduled events with fields:$/) do |name, table|
-  file_group = FileGroup.find_by_name(name)
+Given(/^the file group titled '(.*)' has scheduled events with fields:$/) do |title, table|
+  file_group = FileGroup.find_by(title: title)
   table.hashes.each do |hash|
     file_group.scheduled_events.create(hash)
   end

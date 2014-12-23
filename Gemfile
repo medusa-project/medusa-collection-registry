@@ -1,10 +1,8 @@
 source 'https://rubygems.org'
 
-#gem 'rails', "~> 4.0.0"
 gem 'rails', "~> 4.1"
+gem 'responders', '~> 2.0'
 
-# Bundle edge Rails instead:
-# gem 'rails', git: 'git://github.com/rails/rails.git'
 gem 'pg'
 
 #deployment webserver
@@ -31,16 +29,11 @@ gem 'jbuilder'
 gem 'fits', '~> 1.0.6', git: 'git://github.com/medusa-project/fits.git'
 
 #fixes a problem caused by our old postgres version
-#gem 'delayed_job_active_record', git: 'git://github.com/medusa-project/delayed_job_active_record.git'
-gem 'delayed_job_active_record', git: 'git://github.com/panter/delayed_job_active_record.git'
+gem 'delayed_job_active_record', git: 'git://github.com/medusa-project/delayed_job_active_record.git'
 gem 'daemons'
 
 #image processing for file previews
 gem 'mini_magick'
-
-#creation of bags for off-site archiving of files
-gem 'bagit'
-gem 'tree.rb', require: 'tree_rb'
 
 #AMQP communication
 gem 'bunny'
@@ -71,13 +64,13 @@ gem 'rails3-jquery-autocomplete'
 gem 'nokogiri'
 
 gem 'omniauth'
-gem 'omniauth-shibboleth', git: 'git://github.com/medusa-project/omniauth-shibboleth.git'
+gem 'omniauth-shibboleth'
 gem 'cancan'
 gem 'handle-server', '~> 1.0.1', git: 'git://github.com/medusa-project/handle-server.git'
 gem 'rest-client'
 
 # Deploy with Capistrano
-gem 'capistrano'
+gem 'capistrano', '~> 2'
 gem 'rvm-capistrano'
 
 # Medusa Book Tracker compatibility
@@ -89,11 +82,8 @@ gem 'uuid'
 gem 'paperclip', git: 'git://github.com/thoughtbot/paperclip.git'
 
 gem 'font-awesome-rails'
-gem 'state_machine'
 
 group :development, :test do
-  # To use debugger
-  #gem 'ruby-debug19'
   gem 'rspec-rails'
   gem 'factory_girl'
   gem 'shoulda-matchers'

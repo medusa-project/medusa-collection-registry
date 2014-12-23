@@ -3,7 +3,7 @@ class BitLevelFileGroup < FileGroup
 
   has_many :virus_scans, dependent: :destroy, foreign_key: :file_group_id
 
-  aggregates_red_flags self: :cfs_red_flags, label_method: :name
+  aggregates_red_flags self: :cfs_red_flags, label_method: :title
 
   has_many :job_fits_directories, class_name: 'Job::FitsDirectory', foreign_key: :file_group_id
   has_many :job_cfs_initial_directory_assessments, class_name: 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id

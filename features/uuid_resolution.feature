@@ -25,18 +25,18 @@ Feature: UUID resolution
 
   Scenario: Uuid for file group shows file group for admin
     Given I am logged in as an admin
-    And the external file group with name 'Dogs' exists
-    And the uuid of the file group with name 'Dogs' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
+    And the external file group with title 'Dogs' exists
+    And the uuid of the file group with title 'Dogs' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
     When I visit the object with uuid '3da0fae0-e3fa-012f-ac10-005056b22849-8'
-    Then I should be on the view page for the external file group with name 'Dogs'
+    Then I should be on the view page for the external file group with title 'Dogs'
 
   Scenario: Uuid for file group public shows file group for public
     Given I logout
-    And the external file group with name 'Dogs' exists
-    And the uuid of the file group with name 'Dogs' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
-    And the file group with name 'Dogs' has public rights
+    And the external file group with title 'Dogs' exists
+    And the uuid of the file group with title 'Dogs' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
+    And the file group with title 'Dogs' has public rights
     When I visit the object with uuid '3da0fae0-e3fa-012f-ac10-005056b22849-8'
-    Then I should be on the public view page for the external file group with name 'Dogs'
+    Then I should be on the public view page for the external file group with title 'Dogs'
 
   Scenario: Uuid for cfs directory shows cfs directory for admin
     Given I am logged in as an admin

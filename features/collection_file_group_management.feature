@@ -9,7 +9,7 @@ Feature: File Group Management
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | name   | type              |
+      | external_file_location | file_format | total_file_size | total_files | title   | type              |
       | Main Library           | image/jpeg  | 100             | 1200        | images | ExternalFileGroup |
 
   Scenario: View file groups of a collection
@@ -21,7 +21,7 @@ Feature: File Group Management
   Scenario: Navigate to file group
     When I view the collection with title 'Dogs'
     And I click on 'images' in the file groups table
-    Then I should be on the view page for the file group with name 'images'
+    Then I should be on the view page for the file group with title 'images'
 
   Scenario: See id of file group in table
     When I view the collection with title 'Dogs'
@@ -30,18 +30,18 @@ Feature: File Group Management
   Scenario: View file group events
     When I view the collection with title 'Dogs'
     And I click on 'View All' in the event actions
-    Then I should be viewing events for the file group with name 'images'
+    Then I should be viewing events for the file group with title 'images'
 
   Scenario: Add file group event
     When I view the collection with title 'Dogs'
     And I click on 'Add New' in the event actions
     And I submit the new event form on the collection view page
-    Then the file group with name 'images' should have 1 events
+    Then the file group with title 'images' should have 1 events
 
   Scenario: View file group assessments
     When I view the collection with title 'Dogs'
     And I click on 'View All' in the assessment actions
-    Then I should be on the view page for the file group with name 'images'
+    Then I should be on the view page for the file group with title 'images'
 
   Scenario: Create new assessment
     When I view the collection with title 'Dogs'
@@ -51,35 +51,35 @@ Feature: File Group Management
   Scenario: Create related file group
     When I view the collection with title 'Dogs'
     And I click on 'Add New' in the related-file-group actions
-    Then I should be on the edit page for the file group with name 'images'
+    Then I should be on the edit page for the file group with title 'images'
 
   Scenario: See related file group
     Given the collection with title 'Dogs' has child file groups with fields:
-      | name | type              |
+      | title | type              |
       | text | BitLevelFileGroup |
-    And the file group named 'images' has relation note 'text created from images' for the target file group 'text'
+    And the file group titled 'images' has relation note 'text created from images' for the target file group 'text'
     When I view the collection with title 'Dogs'
     Then I should see all of:
       | Ingested from | Ingested to |
 
   Scenario: Navigate to files of a bit level file group
     Given the collection with title 'Dogs' has child file groups with fields:
-      | name | type              |
+      | title | type              |
       | bit  | BitLevelFileGroup |
     And there is a physical cfs directory 'bit/path'
-    And the file group named 'bit' has cfs root 'bit/path'
+    And the file group titled 'bit' has cfs root 'bit/path'
     When I view the collection with title 'Dogs'
     And I click on 'View files'
-    Then I should be viewing the cfs root directory for the file group named 'bit'
+    Then I should be viewing the cfs root directory for the file group titled 'bit'
     #Then I should be viewing the cfs directory 'bit/path'
 
   Scenario: See the package profile of a file group in the file groups table
-    Given the file group named 'images' has package profile named 'image_package'
+    Given the file group titled 'images' has package profile named 'image_package'
     When I view the collection with title 'Dogs'
     Then I should see 'image_package'
 
   Scenario: Navigate to package profile of owned file group
-    Given the file group named 'images' has package profile named 'image_package'
+    Given the file group titled 'images' has package profile named 'image_package'
     When I view the collection with title 'Dogs'
     And I click on 'image_package'
     Then I should be on the view page for the package profile with name 'image_package'

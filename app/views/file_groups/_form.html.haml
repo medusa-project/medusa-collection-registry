@@ -7,17 +7,9 @@
       .tabbable
         = render partial: 'shared/tab_header', locals: {id: 'edit-tabs', tabs: file_group_form_tab_list}
         .tab-content
-          #essential-information.tab-pane.active
-            = render 'form_base_fields', f: f
-          #summary.tab-pane
-            = f.input :summary
-          #provenance-note.tab-pane
-            = f.input :provenance_note, label: 'Provenance Note'
-          #rights-declaration.tab-pane
+          #descriptive-metadata.tab-pane.active
+            = render partial: 'form_descriptive_metadata', locals: {f: f}
+          #administrative-metadata.tab-pane
+            = render partial: 'form_administrative_metadata', locals: {f: f}
+          #rights-metadata.tab-pane
             = render partial: 'rights_declarations/nested_form', locals: {containing_form: f, rights_declaration: @file_group.rights_declaration}
-          #related-file-groups.tab-pane
-            - if @file_group.new_record?
-              %p
-                Related file groups can only be defined for an already saved file group.
-            - else
-              = render partial: 'form_related_file_groups'

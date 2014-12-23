@@ -43,7 +43,6 @@ private
 
 def login_user(opts = {})
   opts[:email] ||= opts[:uid] if opts[:uid]
-  u = User.all.load
   user = User.find_by(uid: opts[:uid]) || FactoryGirl.create(:user, opts)
   visit(login_path)
   fill_in('name', with: user.uid)

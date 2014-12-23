@@ -23,7 +23,7 @@
               - last_backup = file_group.last_amazon_backup
                 %tr
                   %td= file_group.id
-                  %td= link_to(file_group.name, file_group)
+                  %td= link_to(file_group.title, file_group)
                   %td= link_to(file_group.collection.title, file_group.collection)
                   %td= link_to(file_group.repository.title, file_group.repository)
                   %td= file_group.file_count.to_formatted_s(:delimited)

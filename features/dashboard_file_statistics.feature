@@ -10,11 +10,11 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
     And the cfs directory 'animals/dogs/pictures' contains cfs fixture file 'grass.jpg'
     And the cfs directory 'animals/dogs' contains cfs fixture file 'fits.xml'
     And the collection with title 'Animals' has child file groups with fields:
-      | name          | type              |
+      | title          | type              |
       | Cats          | ExternalFileGroup |
       | Dogs-external | ExternalFileGroup |
       | Dogs          | BitLevelFileGroup |
-    And I set the cfs root of the file group named 'Dogs' to 'animals/dogs' and delayed jobs are run
+    And I set the cfs root of the file group titled 'Dogs' to 'animals/dogs' and delayed jobs are run
 
   Scenario: View file statistics section of dashboard
     When I go to the dashboard

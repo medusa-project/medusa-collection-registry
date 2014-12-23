@@ -1,0 +1,23 @@
+-# must pass the form as f
+= f.input :collection_id, as: :hidden, input_html: {value: @collection.id}
+= f.input :external_id, label: 'External ID'
+= f.input :producer_id, collection: producers_select_collection, required: :true, include_blank: false
+- if @file_group.new_record? or @file_group.supports_cfs
+  = f.input :cfs_directory_id, as: :select, include_blank: true, collection: cfs_file_group_root_select_collection(@file_group), label: 'Cfs root'
+= f.input :private_description
+= f.input :provenance_note, label: 'Provenance Note'
+- if @file_group.new_record?
+  = f.input :storage_level, as: :select, include_blank: false, collection: FileGroup.storage_levels, required: true
+- else
+  = f.input :storage_level, disabled: true
+- if @file_group.new_record?
+  %p
+    Related file groups can only be defined for an already saved file group.
+- else
+  = render partial: 'form_related_file_groups'
+= f.input :external_file_location
+= f.input :staged_file_location
+= f.input :file_format
+= f.input :package_profile_id, as: :select, include_blank: true, collection: package_profile_select_collection
+= f.input :total_file_size, label: 'Total file size (GB)', disabled: @file_group.is_a?(BitLevelFileGroup), input_html: {value: @file_group.file_size}
+= f.input :total_files, disabled: @file_group.is_a?(BitLevelFileGroup), input_html: {value: @file_group.file_count}

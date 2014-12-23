@@ -21,7 +21,7 @@ class Job::IngestStagingDelete < Job::Base
     if File.directory?(self.path)
       FileUtils.rm_rf(self.path)
     end
-    Workflow::IngestMailer.staging_delete_done(self.user, self.external_file_group).deliver
+    Workflow::IngestMailer.staging_delete_done(self.user, self.external_file_group).deliver_now
   end
 
 end

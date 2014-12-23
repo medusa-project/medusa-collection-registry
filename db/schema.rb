@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141217155120) do
+ActiveRecord::Schema.define(version: 20141222162152) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,17 +166,6 @@ ActiveRecord::Schema.define(version: 20141217155120) do
   add_index "cfs_files", ["size"], name: "index_cfs_files_on_size", using: :btree
   add_index "cfs_files", ["updated_at"], name: "index_cfs_files_on_updated_at", using: :btree
 
-  create_table "collection_resource_type_joins", force: true do |t|
-    t.integer  "collection_id"
-    t.integer  "resource_type_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
-
-  add_index "collection_resource_type_joins", ["collection_id"], name: "index_collection_resource_type_joins_on_collection_id", using: :btree
-  add_index "collection_resource_type_joins", ["resource_type_id"], name: "index_collection_resource_type_joins_on_resource_type_id", using: :btree
-  add_index "collection_resource_type_joins", ["updated_at"], name: "index_collection_resource_type_joins_on_updated_at", using: :btree
-
   create_table "collections", force: true do |t|
     t.integer  "repository_id"
     t.string   "title"
@@ -249,14 +238,16 @@ ActiveRecord::Schema.define(version: 20141217155120) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "producer_id"
-    t.text     "summary"
+    t.text     "description"
     t.text     "provenance_note"
-    t.string   "name"
+    t.string   "title"
     t.string   "staged_file_location"
     t.string   "cfs_root"
     t.string   "type"
     t.integer  "package_profile_id"
     t.string   "external_id"
+    t.text     "private_description"
+    t.string   "access_url"
   end
 
   add_index "file_groups", ["cfs_root"], name: "index_file_groups_on_cfs_root", unique: true, using: :btree
@@ -457,6 +448,18 @@ ActiveRecord::Schema.define(version: 20141217155120) do
   add_index "repositories", ["contact_id"], name: "index_repositories_on_contact_id", using: :btree
   add_index "repositories", ["institution_id"], name: "index_repositories_on_institution_id", using: :btree
   add_index "repositories", ["updated_at"], name: "index_repositories_on_updated_at", using: :btree
+
+  create_table "resource_typeable_resource_type_joins", force: true do |t|
+    t.integer  "resource_typeable_id"
+    t.integer  "resource_type_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "resource_typeable_type"
+  end
+
+  add_index "resource_typeable_resource_type_joins", ["resource_type_id"], name: "index_resource_typeable_resource_type_joins_on_resource_type_id", using: :btree
+  add_index "resource_typeable_resource_type_joins", ["resource_typeable_id"], name: "index_resource_typeable_id", using: :btree
+  add_index "resource_typeable_resource_type_joins", ["updated_at"], name: "index_resource_typeable_resource_type_joins_on_updated_at", using: :btree
 
   create_table "resource_types", force: true do |t|
     t.string   "name"

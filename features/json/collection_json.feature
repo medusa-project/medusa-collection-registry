@@ -5,7 +5,7 @@ Feature: JSON data about collection
 
   Background:
     Given the collection with title 'Dogs' has child file groups with fields:
-      | external_file_location | name        | id | type              |
+      | external_file_location | title       | id | type              |
       | Grainger               | Engineering | 1  | BitLevelFileGroup |
       | Main Library           | Classical   | 2  | ExternalFileGroup |
 
@@ -19,7 +19,7 @@ Feature: JSON data about collection
     And the JSON at "file_groups" should have 2 entries
     And the JSON at "file_groups/0/id" should be 1
     And the JSON at "file_groups/0/path" should be "/file_groups/1.json"
-    And the JSON at "file_groups/0/name" should be "Engineering"
+    And the JSON at "file_groups/0/title" should be "Engineering"
     And the JSON at "file_groups/0/storage_level" should be "bit_level"
 
 
