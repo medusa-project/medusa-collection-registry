@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "access_system_collection_joins", force: true do |t|
+  create_table "access_system_collection_joins", force: :cascade do |t|
     t.integer  "access_system_id"
     t.integer  "collection_id"
     t.datetime "created_at",       null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "access_system_collection_joins", ["collection_id"], name: "index_access_system_collection_joins_on_collection_id", using: :btree
   add_index "access_system_collection_joins", ["updated_at"], name: "index_access_system_collection_joins_on_updated_at", using: :btree
 
-  create_table "access_systems", force: true do |t|
+  create_table "access_systems", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
 
   add_index "access_systems", ["updated_at"], name: "index_access_systems_on_updated_at", using: :btree
 
-  create_table "amazon_backups", force: true do |t|
+  create_table "amazon_backups", force: :cascade do |t|
     t.integer  "cfs_directory_id"
     t.integer  "part_count"
     t.date     "date"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "amazon_backups", ["cfs_directory_id"], name: "index_amazon_backups_on_cfs_directory_id", using: :btree
   add_index "amazon_backups", ["updated_at"], name: "index_amazon_backups_on_updated_at", using: :btree
 
-  create_table "assessments", force: true do |t|
+  create_table "assessments", force: :cascade do |t|
     t.date     "date"
     t.text     "preservation_risks"
     t.text     "notes"
@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "assessments", ["author_id"], name: "index_assessments_on_author_id", using: :btree
   add_index "assessments", ["updated_at"], name: "index_assessments_on_updated_at", using: :btree
 
-  create_table "attachments", force: true do |t|
+  create_table "attachments", force: :cascade do |t|
     t.integer  "attachable_id"
     t.string   "attachable_type"
     t.string   "attachment_file_name"
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
 
   add_index "attachments", ["updated_at"], name: "index_attachments_on_updated_at", using: :btree
 
-  create_table "book_tracker_items", force: true do |t|
+  create_table "book_tracker_items", force: :cascade do |t|
     t.integer  "bib_id"
     t.string   "oclc_number"
     t.string   "obj_id"
@@ -122,17 +122,17 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "book_tracker_items", ["title"], name: "index_book_tracker_items_on_title", using: :btree
   add_index "book_tracker_items", ["volume"], name: "index_book_tracker_items_on_volume", using: :btree
 
-  create_table "book_tracker_tasks", force: true do |t|
+  create_table "book_tracker_tasks", force: :cascade do |t|
     t.string   "name"
-    t.decimal  "service",          precision: 1, scale: 0
-    t.decimal  "status",           precision: 1, scale: 0
-    t.float    "percent_complete",                         default: 0.0
+    t.decimal  "service",          precision: 1
+    t.decimal  "status",           precision: 1
+    t.float    "percent_complete",               default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
   end
 
-  create_table "cfs_directories", force: true do |t|
+  create_table "cfs_directories", force: :cascade do |t|
     t.text     "path"
     t.integer  "parent_cfs_directory_id"
     t.integer  "root_cfs_directory_id"
@@ -148,7 +148,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "cfs_directories", ["root_cfs_directory_id"], name: "index_cfs_directories_on_root_cfs_directory_id", using: :btree
   add_index "cfs_directories", ["updated_at"], name: "index_cfs_directories_on_updated_at", using: :btree
 
-  create_table "cfs_files", force: true do |t|
+  create_table "cfs_files", force: :cascade do |t|
     t.integer  "cfs_directory_id"
     t.string   "name"
     t.decimal  "size"
@@ -167,7 +167,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "cfs_files", ["size"], name: "index_cfs_files_on_size", using: :btree
   add_index "cfs_files", ["updated_at"], name: "index_cfs_files_on_updated_at", using: :btree
 
-  create_table "collections", force: true do |t|
+  create_table "collections", force: :cascade do |t|
     t.integer  "repository_id"
     t.string   "title"
     t.boolean  "published"
@@ -191,7 +191,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "collections", ["repository_id"], name: "index_collections_on_repository_id", using: :btree
   add_index "collections", ["updated_at"], name: "index_collections_on_updated_at", using: :btree
 
-  create_table "content_types", force: true do |t|
+  create_table "content_types", force: :cascade do |t|
     t.string   "name",           default: ""
     t.integer  "cfs_file_count", default: 0
     t.decimal  "cfs_file_size",  default: 0.0
@@ -199,7 +199,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
     t.datetime "updated_at"
   end
 
-  create_table "delayed_jobs", force: true do |t|
+  create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0
     t.integer  "attempts",   default: 0
     t.text     "handler"
@@ -215,7 +215,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
-  create_table "events", force: true do |t|
+  create_table "events", force: :cascade do |t|
     t.string   "key"
     t.text     "note"
     t.integer  "eventable_id"
@@ -230,7 +230,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "events", ["eventable_id"], name: "index_events_on_eventable_id", using: :btree
   add_index "events", ["updated_at"], name: "index_events_on_updated_at", using: :btree
 
-  create_table "file_groups", force: true do |t|
+  create_table "file_groups", force: :cascade do |t|
     t.string   "external_file_location"
     t.string   "file_format"
     t.decimal  "total_file_size"
@@ -257,7 +257,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "file_groups", ["type"], name: "index_file_groups_on_type", using: :btree
   add_index "file_groups", ["updated_at"], name: "index_file_groups_on_updated_at", using: :btree
 
-  create_table "institutions", force: true do |t|
+  create_table "institutions", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -266,22 +266,22 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "institutions", ["name"], name: "index_institutions_on_name", using: :btree
   add_index "institutions", ["updated_at"], name: "index_institutions_on_updated_at", using: :btree
 
-  create_table "job_amazon_backups", force: true do |t|
+  create_table "job_amazon_backups", force: :cascade do |t|
     t.integer "amazon_backup_id"
   end
 
-  create_table "job_cfs_directory_export_cleanups", force: true do |t|
+  create_table "job_cfs_directory_export_cleanups", force: :cascade do |t|
     t.string "directory"
   end
 
-  create_table "job_cfs_directory_exports", force: true do |t|
+  create_table "job_cfs_directory_exports", force: :cascade do |t|
     t.integer "user_id"
     t.integer "cfs_directory_id"
     t.string  "uuid"
     t.boolean "recursive"
   end
 
-  create_table "job_cfs_initial_directory_assessments", force: true do |t|
+  create_table "job_cfs_initial_directory_assessments", force: :cascade do |t|
     t.integer "file_group_id"
     t.integer "cfs_directory_id"
     t.integer "file_count"
@@ -290,13 +290,13 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "job_cfs_initial_directory_assessments", ["cfs_directory_id"], name: "index_job_cfs_initial_directory_assessments_on_cfs_directory_id", using: :btree
   add_index "job_cfs_initial_directory_assessments", ["file_group_id"], name: "index_job_cfs_initial_directory_assessments_on_file_group_id", using: :btree
 
-  create_table "job_cfs_initial_file_group_assessments", force: true do |t|
+  create_table "job_cfs_initial_file_group_assessments", force: :cascade do |t|
     t.integer "file_group_id"
   end
 
   add_index "job_cfs_initial_file_group_assessments", ["file_group_id"], name: "index_job_cfs_initial_file_group_assessments_on_file_group_id", using: :btree
 
-  create_table "job_fits_directories", force: true do |t|
+  create_table "job_fits_directories", force: :cascade do |t|
     t.integer  "cfs_directory_id"
     t.integer  "file_group_id"
     t.integer  "file_count"
@@ -307,7 +307,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "job_fits_directories", ["cfs_directory_id"], name: "index_job_fits_directories_on_cfs_directory_id", using: :btree
   add_index "job_fits_directories", ["file_group_id"], name: "index_job_fits_directories_on_file_group_id", using: :btree
 
-  create_table "job_fits_directory_trees", force: true do |t|
+  create_table "job_fits_directory_trees", force: :cascade do |t|
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.integer  "cfs_directory_id"
@@ -317,7 +317,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "job_fits_directory_trees", ["cfs_directory_id"], name: "index_job_fits_directory_trees_on_cfs_directory_id", using: :btree
   add_index "job_fits_directory_trees", ["file_group_id"], name: "index_job_fits_directory_trees_on_file_group_id", using: :btree
 
-  create_table "job_ingest_staging_deletes", force: true do |t|
+  create_table "job_ingest_staging_deletes", force: :cascade do |t|
     t.integer "external_file_group_id"
     t.integer "user_id"
     t.text    "path"
@@ -326,7 +326,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "job_ingest_staging_deletes", ["external_file_group_id"], name: "index_job_ingest_staging_deletes_on_external_file_group_id", using: :btree
   add_index "job_ingest_staging_deletes", ["user_id"], name: "index_job_ingest_staging_deletes_on_user_id", using: :btree
 
-  create_table "job_virus_scans", force: true do |t|
+  create_table "job_virus_scans", force: :cascade do |t|
     t.integer  "file_group_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
@@ -334,7 +334,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
 
   add_index "job_virus_scans", ["updated_at"], name: "index_job_virus_scans_on_updated_at", using: :btree
 
-  create_table "medusa_uuids", force: true do |t|
+  create_table "medusa_uuids", force: :cascade do |t|
     t.string   "uuid"
     t.integer  "uuidable_id"
     t.string   "uuidable_type"
@@ -345,7 +345,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "medusa_uuids", ["uuid"], name: "index_medusa_uuids_on_uuid", unique: true, using: :btree
   add_index "medusa_uuids", ["uuidable_id", "uuidable_type"], name: "index_medusa_uuids_on_uuidable_id_and_uuidable_type", using: :btree
 
-  create_table "package_profiles", force: true do |t|
+  create_table "package_profiles", force: :cascade do |t|
     t.string   "name"
     t.string   "url"
     t.text     "notes"
@@ -355,7 +355,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
 
   add_index "package_profiles", ["updated_at"], name: "index_package_profiles_on_updated_at", using: :btree
 
-  create_table "people", force: true do |t|
+  create_table "people", force: :cascade do |t|
     t.string   "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -364,7 +364,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "people", ["email"], name: "index_people_on_email", using: :btree
   add_index "people", ["updated_at"], name: "index_people_on_updated_at", using: :btree
 
-  create_table "preservation_priorities", force: true do |t|
+  create_table "preservation_priorities", force: :cascade do |t|
     t.string   "name"
     t.float    "priority"
     t.datetime "created_at", null: false
@@ -373,7 +373,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
 
   add_index "preservation_priorities", ["updated_at"], name: "index_preservation_priorities_on_updated_at", using: :btree
 
-  create_table "producers", force: true do |t|
+  create_table "producers", force: :cascade do |t|
     t.string   "title"
     t.string   "address_1"
     t.string   "address_2"
@@ -395,7 +395,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "producers", ["administrator_id"], name: "index_production_units_on_administrator_id", using: :btree
   add_index "producers", ["updated_at"], name: "index_producers_on_updated_at", using: :btree
 
-  create_table "red_flags", force: true do |t|
+  create_table "red_flags", force: :cascade do |t|
     t.integer  "red_flaggable_id"
     t.string   "red_flaggable_type"
     t.string   "message"
@@ -412,7 +412,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "red_flags", ["status"], name: "index_red_flags_on_status", using: :btree
   add_index "red_flags", ["updated_at"], name: "index_red_flags_on_updated_at", using: :btree
 
-  create_table "related_file_group_joins", force: true do |t|
+  create_table "related_file_group_joins", force: :cascade do |t|
     t.integer  "source_file_group_id"
     t.integer  "target_file_group_id"
     t.string   "note"
@@ -424,7 +424,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "related_file_group_joins", ["target_file_group_id"], name: "index_related_file_group_joins_on_target_file_group_id", using: :btree
   add_index "related_file_group_joins", ["updated_at"], name: "index_related_file_group_joins_on_updated_at", using: :btree
 
-  create_table "repositories", force: true do |t|
+  create_table "repositories", force: :cascade do |t|
     t.string   "title"
     t.string   "url"
     t.text     "notes"
@@ -450,7 +450,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "repositories", ["institution_id"], name: "index_repositories_on_institution_id", using: :btree
   add_index "repositories", ["updated_at"], name: "index_repositories_on_updated_at", using: :btree
 
-  create_table "resource_typeable_resource_type_joins", force: true do |t|
+  create_table "resource_typeable_resource_type_joins", force: :cascade do |t|
     t.integer  "resource_typeable_id"
     t.integer  "resource_type_id"
     t.datetime "created_at",             null: false
@@ -462,7 +462,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "resource_typeable_resource_type_joins", ["resource_typeable_id"], name: "index_resource_typeable_id", using: :btree
   add_index "resource_typeable_resource_type_joins", ["updated_at"], name: "index_resource_typeable_resource_type_joins_on_updated_at", using: :btree
 
-  create_table "resource_types", force: true do |t|
+  create_table "resource_types", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -470,7 +470,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
 
   add_index "resource_types", ["updated_at"], name: "index_resource_types_on_updated_at", using: :btree
 
-  create_table "rights_declarations", force: true do |t|
+  create_table "rights_declarations", force: :cascade do |t|
     t.integer  "rights_declarable_id"
     t.string   "rights_declarable_type"
     t.string   "rights_basis"
@@ -484,7 +484,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "rights_declarations", ["rights_declarable_id"], name: "index_rights_declarations_on_rights_declarable_id", using: :btree
   add_index "rights_declarations", ["updated_at"], name: "index_rights_declarations_on_updated_at", using: :btree
 
-  create_table "scheduled_events", force: true do |t|
+  create_table "scheduled_events", force: :cascade do |t|
     t.string   "key"
     t.string   "state"
     t.date     "action_date"
@@ -502,7 +502,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "scheduled_events", ["scheduled_eventable_type"], name: "index_scheduled_events_on_scheduled_eventable_type", using: :btree
   add_index "scheduled_events", ["updated_at"], name: "index_scheduled_events_on_updated_at", using: :btree
 
-  create_table "sessions", force: true do |t|
+  create_table "sessions", force: :cascade do |t|
     t.string   "session_id", null: false
     t.text     "data"
     t.datetime "created_at", null: false
@@ -512,7 +512,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
-  create_table "storage_media", force: true do |t|
+  create_table "storage_media", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -520,7 +520,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
 
   add_index "storage_media", ["updated_at"], name: "index_storage_media_on_updated_at", using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -531,7 +531,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "users", ["uid"], name: "index_users_on_uid", using: :btree
   add_index "users", ["updated_at"], name: "index_users_on_updated_at", using: :btree
 
-  create_table "virus_scans", force: true do |t|
+  create_table "virus_scans", force: :cascade do |t|
     t.integer  "file_group_id"
     t.text     "scan_result"
     t.datetime "created_at",    null: false
@@ -541,7 +541,7 @@ ActiveRecord::Schema.define(version: 20141223214209) do
   add_index "virus_scans", ["file_group_id"], name: "index_virus_scans_on_file_group_id", using: :btree
   add_index "virus_scans", ["updated_at"], name: "index_virus_scans_on_updated_at", using: :btree
 
-  create_table "workflow_ingests", force: true do |t|
+  create_table "workflow_ingests", force: :cascade do |t|
     t.string   "state"
     t.integer  "external_file_group_id"
     t.integer  "bit_level_file_group_id"
