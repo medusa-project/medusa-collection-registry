@@ -29,8 +29,8 @@ gem 'jbuilder'
 gem 'fits', '~> 1.0.6', git: 'git://github.com/medusa-project/fits.git'
 
 #fixes a problem caused by our old postgres version
-#gem 'delayed_job_active_record', git: 'git://github.com/medusa-project/delayed_job_active_record.git'
-gem 'delayed_job_active_record', git: 'git://github.com/panter/delayed_job_active_record.git'
+gem 'delayed_job_active_record', git: 'git://github.com/medusa-project/delayed_job_active_record.git'
+#gem 'delayed_job_active_record', git: 'git://github.com/panter/delayed_job_active_record.git'
 gem 'daemons'
 
 #image processing for file previews

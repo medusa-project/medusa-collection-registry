@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/medusa-project/delayed_job_active_record.git
+  revision: 5f881a113e3f8391e66be0537c9641d2039e2ff7
+  specs:
+    delayed_job_active_record (4.0.3)
+      activerecord (>= 3.0, < 5.0)
+      delayed_job (>= 3.0, < 4.1)
+
+GIT
   remote: git://github.com/medusa-project/fits.git
   revision: 1d8620943d7cb44b2690dc368a92f0e3ab6b01eb
   specs:
@@ -26,14 +34,6 @@ GIT
       omniauth (>= 1.0.0)
 
 GIT
-  remote: git://github.com/panter/delayed_job_active_record.git
-  revision: 111a122cdc4d5cdae027691ef7c68c5a76470df7
-  specs:
-    delayed_job_active_record (4.0.0)
-      activerecord (>= 3.0)
-      delayed_job (>= 3.0)
-
-GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
   revision: 67f160dd2ff5cc7cd843a17866c3b6bc8e7f2794
   specs:
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: git://github.com/thoughtbot/paperclip.git
-  revision: 818bef008354a90098da95472f08c312d66e95e5
+  revision: 0e39d750f2fed89f3bafbb5a819810e1fc26e126
   specs:
     paperclip (4.2.1)
       activemodel (>= 3.0.0)
