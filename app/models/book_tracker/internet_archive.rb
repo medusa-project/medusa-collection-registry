@@ -18,29 +18,19 @@ module BookTracker
         'check is in progress.'
       end
 
-      start_date = '1980-01-01'
-      end_date = Date.today.strftime("%Y-%m-%d")
-
-      task = Task.create!(
-          name: 'Checking Internet Archive: Downloading UIUC inventory',
-          service: Service::INTERNET_ARCHIVE)
-      puts task.name
+      task = Task.create!(name: 'Checking Internet Archive',
+                          service: Service::INTERNET_ARCHIVE)
 
       begin
-        items_in_ia = 0
+        json = get_api_results(task)
 
-        # https://archive.org/advancedsearch.php
-        uri = URI.parse("https://archive.org/advancedsearch.php?"\
-        "q=mediatype:texts+updatedate:[#{start_date}+TO+#{end_date}]&"\
-        "fl[]=identifier&rows=9999999&page=1&output=json&save=yes%20"\
-        "contributor:%22University%20of%20Illinois%20Urbana-Champaign")
-        body = open(uri, { ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE })
-        json = JSON.parse(body.readlines.join(''))
+        items_in_ia = 0
         num_items = json['response']['docs'].length
 
         task.name = 'Checking Internet Archive: Scanning the inventory for '\
         'UIU records...'
         task.save!
+        puts task.name
 
         json['response']['docs'].each_with_index do |doc, index|
           item = Item.find_by_ia_identifier(doc['identifier'])
@@ -73,6 +63,49 @@ module BookTracker
         task.save!
         puts task.name
       end
+    end
+
+    private
+
+    ##
+    # Downloads all UIUC records from IA, caching the same day's results.
+    #
+    # @return JSON object
+    #
+    def get_api_results(task)
+      expected_filename = "ia_results_#{Date.today.strftime('%Y%m%d')}.json"
+      cache_pathname = Rails.root.join('public', 'system', 'book_tracker')
+      expected_pathname = File.join(cache_pathname, expected_filename)
+
+      unless File.exists?(expected_pathname)
+        # Delete any older downloads that may exist, as they are now outdated
+        Dir.glob(File.join(cache_pathname, 'ia_results_*.json')).
+            each{ |f| File.delete(f) }
+
+        task.name = 'Checking Internet Archive: Downloading UIUC inventory'
+        task.save!
+        puts task.name
+
+        # https://archive.org/advancedsearch.php
+        start_date = '1980-01-01'
+        end_date = Date.today.strftime('%Y-%m-%d')
+        uri = URI.parse("https://archive.org/advancedsearch.php?"\
+            "q=mediatype:texts+updatedate:[#{start_date}+TO+#{end_date}]&"\
+            "fl[]=identifier&rows=9999999&page=1&output=json&save=yes%20"\
+            "contributor:%22University%20of%20Illinois%20Urbana-Champaign")
+
+        FileUtils.mkdir_p(cache_pathname)
+        Net::HTTP.get_response(uri) do |res|
+          res.read_body do |chunk|
+            File.open(expected_pathname, 'ab') { |file|
+              file.write(chunk)
+            }
+          end
+        end
+      end
+
+      json = File.read(expected_pathname)
+      JSON.parse(json)
     end
 
   end
