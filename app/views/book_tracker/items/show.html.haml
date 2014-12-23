@@ -28,7 +28,7 @@
   .col-sm-3
     .panel.panel-default
       .panel-heading
-        %h3.panel-title Identifiers
+        %h3.panel-title Info
       .panel-body
         %dl
           %dt Bib ID
@@ -39,6 +39,11 @@
           %dd= @item.id
           %dt OCLC Number
           %dd= @item.oclc_number
+        %dl
+          %dt First Ingest
+          %dd= local_time(@item.created_at)
+          %dt Most Recent Update
+          %dd= local_time(@item.updated_at)
 
 #accordion.panel-group
   .panel.panel-default
