@@ -54,7 +54,7 @@ module BookTracker
 
               doc.xpath('//marc:record', namespaces).each do |record|
                 item, status = Item.insert_or_update!(
-                    Item.params_from_marcxml_record(record))
+                    Item.params_from_marcxml_record(record), file)
                 if status == Item::INSERTED
                   num_inserted += 1
                 else

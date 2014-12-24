@@ -1,34 +1,45 @@
+.page-header
+  %h1.title
+    = @item.title.blank? ? 'Untitled' : @item.title
+    - unless @item.volume.blank?
+      %br
+      %small.volume= @item.volume
+    - unless @item.author.blank?
+      %br
+      %small.author= @item.author
+    - unless @item.date.blank?
+      %br
+      %small.date= @item.date
+  .btn-group.mbt-view-buttons
+    = link_to('View in UIUC Catalog', @item.uiuc_catalog_url,
+              class: 'btn btn-default btn-sm', target: '_blank')
+    = link_to('View in HathiTrust', @item.hathitrust_handle,
+              class: 'btn btn-default btn-sm' + (@item.exists_in_hathitrust ? '' : ' disabled'),
+              target: '_blank')
+    = link_to('View in Internet Archive', @item.internet_archive_url,
+              class: 'btn btn-default btn-sm' + (@item.exists_in_internet_archive ? '' : ' disabled'),
+              target: '_blank')
+    = link_to('View in Google', @item.google_url,
+              class: 'btn btn-default btn-sm' + (@item.exists_in_google ? '' : ' disabled'),
+              target: '_blank')
+
 .row
   .col-sm-9
-    .page-header
-      %h1.title
-        = @item.title.blank? ? 'Untitled' : @item.title
-        - unless @item.volume.blank?
-          %br
-          %small.volume= @item.volume
-        - unless @item.author.blank?
-          %br
-          %small.author= @item.author
-        - unless @item.date.blank?
-          %br
-          %small.date= @item.date
-      .btn-group.mbt-view-buttons
-        = link_to('View in UIUC Catalog', @item.uiuc_catalog_url,
-                  class: 'btn btn-default btn-sm', target: '_blank')
-        = link_to('View in HathiTrust', @item.hathitrust_handle,
-                  class: 'btn btn-default btn-sm' + (@item.exists_in_hathitrust ? '' : ' disabled'),
-                  target: '_blank')
-        = link_to('View in Internet Archive', @item.internet_archive_url,
-                  class: 'btn btn-default btn-sm' + (@item.exists_in_internet_archive ? '' : ' disabled'),
-                  target: '_blank')
-        = link_to('View in Google', @item.google_url,
-                  class: 'btn btn-default btn-sm' + (@item.exists_in_google ? '' : ' disabled'),
-                  target: '_blank')
-
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Ingest
+      .panel-body#book-tracker-ingest-panel
+        %dl
+          %dt First Ingest
+          %dd= local_time(@item.created_at)
+          %dt Latest Update
+          %dd= local_time(@item.updated_at)
+          %dt Source Path
+          %dd= @item.source_path
   .col-sm-3
     .panel.panel-default
       .panel-heading
-        %h3.panel-title Info
+        %h3.panel-title Identifiers
       .panel-body
         %dl
           %dt Bib ID
@@ -39,11 +50,6 @@
           %dd= @item.id
           %dt OCLC Number
           %dd= @item.oclc_number
-        %dl
-          %dt First Ingest
-          %dd= local_time(@item.created_at)
-          %dt Most Recent Update
-          %dd= local_time(@item.updated_at)
 
 #accordion.panel-group
   .panel.panel-default

@@ -16,10 +16,13 @@ module BookTracker
     # depending on whether an item with a matching object ID is already present
     # in the database.
     #
+    # @param params Params hash
+    # @param source_path Pathname of the file from which the params were
+    # extracted
     # @return Array with the created or updated Item at position 0 and the status
     # (Item::INSERTED or Item::UPDATED) at position 1
     #
-    def self.insert_or_update!(params)
+    def self.insert_or_update!(params, source_path = nil)
       status = Item::UPDATED
       item = Item.find_by_obj_id(params[:obj_id])
       if item
@@ -28,6 +31,7 @@ module BookTracker
         item = Item.new(params)
         status = Item::INSERTED
       end
+      item.source_path = source_path
       item.save!
       return item, status
     end
