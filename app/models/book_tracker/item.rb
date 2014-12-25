@@ -7,9 +7,14 @@ module BookTracker
     # Used by self.insert_or_update!
     UPDATED = 1
 
+    attr_accessor :url
     before_save :truncate_values
 
     self.table_name = 'book_tracker_items'
+
+    def as_json(options = { })
+      super((options || { }).merge({methods: [:url] }))
+    end
 
     ##
     # Static method that either inserts a new item, or updates an existing item,

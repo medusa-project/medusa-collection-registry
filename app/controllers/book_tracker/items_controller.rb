@@ -94,6 +94,12 @@ module BookTracker
             @items = @items.paginate(page: params[:page],
                                      per_page: RESULTS_LIMIT)
           }
+          format.json {
+            @items = @items.paginate(page: params[:page],
+                                    per_page: RESULTS_LIMIT)
+            @items.each{ |item| item.url = url_for(item) }
+            render json: @items, except: :raw_marcxml
+          }
           format.csv {
             items_csv = @items.to_csv
             @missing_bib_ids.each do |id|
@@ -107,6 +113,10 @@ module BookTracker
 
     def show
       @item = Item.find(params[:id])
+      respond_to do |format|
+        format.html {}
+        format.json { render json: @item }
+      end
     end
 
   end
