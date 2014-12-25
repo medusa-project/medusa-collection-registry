@@ -86,7 +86,8 @@ module BookTracker
       # For locally digitized volumes, this will be the bib ID (and other extensions)
       nodes = record.
           xpath('marc:datafield[@tag = 955]/marc:subfield[@code = \'b\']', namespaces)
-      item_params[:obj_id] = nodes.first.content.strip if nodes.any?
+      # strip leading "uiuc."
+      item_params[:obj_id] = nodes.first.content.gsub(/^uiuc./, '').strip if nodes.any?
 
       # extract IA identifier from 955 subfield q
       nodes = record.
