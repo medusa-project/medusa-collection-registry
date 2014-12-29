@@ -47,7 +47,7 @@
   .col-sm-3
     .panel.panel-default
       .panel-heading
-        %h3.panel-title Identifiers
+        %h3.panel-title Info
       .panel-body
         %dl
           %dt Bib ID
@@ -58,6 +58,8 @@
           %dd= @item.id
           %dt OCLC Number
           %dd= @item.oclc_number
+          %dt HathiTrust Rights
+          %dd= @item.exists_in_hathitrust ? readable_hathitrust_rights(@item) : 'N/A'
 
 #accordion.panel-group
   .panel.panel-default

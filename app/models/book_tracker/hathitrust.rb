@@ -44,8 +44,10 @@ module BookTracker
           if parts[5] == nuc_code
             item = Item.find_by_bib_id(parts[6])
             if item
-              if !item.exists_in_hathitrust
+              if !item.exists_in_hathitrust or
+                  item.hathitrust_rights != parts[2]
                 item.exists_in_hathitrust = true
+                item.hathitrust_rights = parts[2]
                 item.save!
               end
             end
