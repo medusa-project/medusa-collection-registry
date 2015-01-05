@@ -10,10 +10,6 @@
   }
 }
 
-.mbt-view-buttons {
-  margin:1em auto;
-}
-
 div.well {
   padding-bottom: 0px;
 }
@@ -23,6 +19,10 @@ div.well {
     text-align: center;
     width:25%;
   }
+}
+
+#book-tracker-ingest-panel {
+  overflow-x: scroll;
 }
 
 form.book-tracker-search {

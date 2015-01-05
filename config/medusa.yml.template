@@ -54,5 +54,5 @@ production:
     export_root: /path/to/cfs/exports
     export_autoclean: true
   book_tracker:
-    import_path: /mnt/library-storage-hathitrust/documentation/2014
+    import_path: /mnt/cnfs-ro/root/813/1127
     library_nuc_code: UIU

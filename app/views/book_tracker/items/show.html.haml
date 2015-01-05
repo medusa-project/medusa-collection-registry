@@ -12,23 +12,42 @@
         - unless @item.date.blank?
           %br
           %small.date= @item.date
-      .btn-group.mbt-view-buttons
-        = link_to('View in UIUC Catalog', @item.uiuc_catalog_url,
-                  class: 'btn btn-default btn-sm', target: '_blank')
-        = link_to('View in HathiTrust', @item.hathitrust_handle,
-                  class: 'btn btn-default btn-sm' + (@item.exists_in_hathitrust ? '' : ' disabled'),
-                  target: '_blank')
-        = link_to('View in Internet Archive', @item.internet_archive_url,
-                  class: 'btn btn-default btn-sm' + (@item.exists_in_internet_archive ? '' : ' disabled'),
-                  target: '_blank')
-        = link_to('View in Google', @item.google_url,
-                  class: 'btn btn-default btn-sm' + (@item.exists_in_google ? '' : ' disabled'),
-                  target: '_blank')
 
+  .col-sm-3
+    .btn-group{ role: 'group', style: 'float:right' }
+      .btn-group{ role: 'group' }
+        %button.btn.btn-default.dropdown-toggle{'type' => 'button', 'data-toggle' => 'dropdown', 'aria-expanded' => 'false' }
+          View In&hellip;
+          %span.caret
+        %ul.dropdown-menu{ role: 'menu' }
+          %li= link_to('UIUC Catalog', @item.uiuc_catalog_url, target: '_blank')
+          %li{ 'class' => @item.exists_in_hathitrust ? '' : 'disabled' }
+            =link_to('HathiTrust', @item.hathitrust_handle, target: '_blank')
+          %li{ 'class' => @item.exists_in_internet_archive ? '' : 'disabled' }
+            = link_to('Internet Archive', @item.internet_archive_url, target: '_blank')
+          %li{ 'class' => @item.exists_in_google ? '' : ' disabled' }
+            = link_to('Google Books', @item.google_url, target: '_blank')
+      = link_to(book_tracker_item_path(@item, format: :json),
+                    class: 'btn btn-default', target: '_blank') do
+        %span.glyphicon.glyphicon-new-window{ 'aria-hidden' => true } JSON
+
+.row
+  .col-sm-9
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Ingest
+      .panel-body#book-tracker-ingest-panel
+        %dl
+          %dt First Ingest
+          %dd= local_time(@item.created_at)
+          %dt Latest Update
+          %dd= local_time(@item.updated_at)
+          %dt Source Path
+          %dd= @item.source_path
   .col-sm-3
     .panel.panel-default
       .panel-heading
-        %h3.panel-title Identifiers
+        %h3.panel-title Info
       .panel-body
         %dl
           %dt Bib ID
@@ -39,6 +58,8 @@
           %dd= @item.id
           %dt OCLC Number
           %dd= @item.oclc_number
+          %dt HathiTrust Rights
+          %dd= @item.exists_in_hathitrust ? readable_hathitrust_rights(@item) : 'N/A'
 
 #accordion.panel-group
   .panel.panel-default

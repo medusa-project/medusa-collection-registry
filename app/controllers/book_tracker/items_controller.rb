@@ -38,7 +38,7 @@ module BookTracker
           @missing_bib_ids = ActiveRecord::Base.connection.execute(sql).
               map{ |r| r['id'] }
         else
-          q = "%#{params[:q]}%"
+          q = "%#{params[:q].strip}%"
           @items = @items.where('CAST(bib_id AS VARCHAR(10)) LIKE ? '\
           'OR oclc_number LIKE ? OR obj_id LIKE ? OR LOWER(title) LIKE LOWER(?) '\
           'OR LOWER(author) LIKE LOWER(?) OR LOWER(ia_identifier) LIKE LOWER(?)' \
@@ -94,6 +94,12 @@ module BookTracker
             @items = @items.paginate(page: params[:page],
                                      per_page: RESULTS_LIMIT)
           }
+          format.json {
+            @items = @items.paginate(page: params[:page],
+                                    per_page: RESULTS_LIMIT)
+            @items.each{ |item| item.url = url_for(item) }
+            render json: @items, except: :raw_marcxml
+          }
           format.csv {
             items_csv = @items.to_csv
             @missing_bib_ids.each do |id|
@@ -107,6 +113,10 @@ module BookTracker
 
     def show
       @item = Item.find(params[:id])
+      respond_to do |format|
+        format.html {}
+        format.json { render json: @item }
+      end
     end
 
   end
