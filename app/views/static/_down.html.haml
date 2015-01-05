@@ -1,0 +1,7 @@
+%h2 Scheduled Outage
+
+- message_file = File.join(Rails.root, 'tmp', 'down_message.txt')
+- if File.exist?(message_file)
+  %p= File.read(message_file)
+- else
+  %p Medusa is currently down for a scheduled outage.

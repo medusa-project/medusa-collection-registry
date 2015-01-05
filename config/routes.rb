@@ -1,6 +1,14 @@
 MedusaRails3::Application.routes.draw do
 
-  root to: 'static#page', page: 'landing'
+  match '/static/:page', to: 'static#page', as: :static, via: [:get, :post]
+
+  #This lets us start up in a mode where only a down page is shown
+  if ENV['MEDUSA_DOWN'] == 'true'
+    match '*path' => redirect('/static/down', status: 307), via: :all
+    root to: 'static#page', page: 'down'
+  else
+    root to: 'static#page', page: 'landing'
+  end
 
   resources :collections do
     collection do
@@ -65,7 +73,7 @@ MedusaRails3::Application.routes.draw do
   resources :access_systems
   resources :package_profiles
   resources :directories, only: :show
-  resources :files, only: :show, controller:"bit_files" do
+  resources :files, only: :show, controller: "bit_files" do
     member do
       get 'contents'
       get 'view_fits_xml'
@@ -116,7 +124,6 @@ MedusaRails3::Application.routes.draw do
   match '/logout', to: 'sessions#destroy', as: :logout, via: [:get, :post]
   match '/unauthorized', to: 'sessions#unauthorized', as: :unauthorized, via: [:get, :post]
   match '/unauthorized_net_id', to: 'sessions#unauthorized_net_id', as: :unauthorized_net_id, via: [:get, :post]
-  match '/static/:page', to: 'static#page', as: :static, via: [:get, :post]
   match '/dashboard', to: 'dashboard#show', as: :dashboard, via: [:get, :post]
 
   namespace :book_tracker do
