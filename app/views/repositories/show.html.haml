@@ -2,12 +2,12 @@
 
 .tabbable
   .btn-group.pull-right
-    = fa_icon_link_to 'Red Flags', 'flag', red_flags_repository_path(@repository), class: 'btn btn-default'
+    = red_flags_button(red_flags_repository_path(@repository))
     = link_to 'View events', events_repository_path(@repository), class: 'btn btn-default'
-    = link_to 'Back', repositories_path, class: 'btn btn-default'
-    = link_to 'Edit', edit_repository_path(@repository), class: 'btn btn-default'
+    = back_button(repositories_path)
+    = edit_button(edit_repository_path(@repository))
     -  if safe_can?(:delete, @repository)
-      = fa_icon_link_to 'Delete', 'trash-o', repository_path(@repository), method: :delete, data: { confirm: repository_confirm_message}, class: 'btn btn-danger'
+      = delete_button(repository_path(@repository), message: repository_confirm_message)
   = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: ['about', 'collection-list', 'assessment-list'], active_index: 1}
   - cache(@repository) do
     .tab-content

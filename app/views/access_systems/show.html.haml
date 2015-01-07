@@ -1,7 +1,7 @@
 .pull-right.btn-group
-  = link_to 'Index', access_systems_path, class: 'btn btn-default'
-  = link_to 'Edit', edit_access_system_path(@access_system), class: 'btn btn-default'
-  = fa_icon_link_to 'Delete', 'trash-o', @access_system, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-danger'
+  = index_button(access_systems_path)
+  = edit_button(edit_access_system_path(@access_system))
+  = delete_button(@access_system)
 
 = render layout: 'layouts/page_header' do
   Access System: #{@access_system.name}

@@ -6,11 +6,11 @@
     .btn-group.pull-right
       - if @collection.public?
         = link_to 'Public View', public_collection_path(@collection), class: 'btn btn-default'
-      = fa_icon_link_to 'Red Flags', 'flag', red_flags_collection_path(@collection), class: 'btn btn-default'
+      = red_flags_button(red_flags_collection_path(@collection))
       = link_to 'View events', events_collection_path(@collection), class: 'btn btn-default'
       = link_to 'Mods', collection_path(@collection, format: :xml), class: 'btn btn-default'
-      = link_to 'Edit', edit_collection_path(@collection), class: 'btn btn-default'
-      = fa_icon_link_to 'Delete', 'trash-o', collection_path(@collection), method: :delete, data: { confirm: collection_confirm_message}, class: 'btn btn-danger'
+      = edit_button(edit_collection_path(@collection))
+      = delete_button(@collection, message: collection_confirm_message)
     - if logged_in?
       = render 'show_tabs_logged_in'
     - else

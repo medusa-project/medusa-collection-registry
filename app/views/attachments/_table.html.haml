@@ -21,6 +21,6 @@
               %td #{attachment.attachment_content_type}
               %td #{attachment.author_email}
               %td
-                = link_to 'Download', download_attachment_path(attachment), class: 'btn btn-default btn-xs'
-                = link_to 'Update', edit_attachment_path(attachment), class: 'btn btn-default btn-xs'
-                = fa_icon_link_to 'Delete', 'trash-o', attachment, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-xs btn-danger'
+                = small_download_button(download_attachment_path(attachment))
+                = small_update_button(edit_attachment_path(attachment))
+                = small_delete_button(attachment)

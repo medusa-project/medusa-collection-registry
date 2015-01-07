@@ -1,7 +1,7 @@
 .pull-right
-  = link_to 'Index', package_profiles_path, class: 'btn btn-default'
-  = link_to 'Edit', edit_package_profile_path(@package_profile), class: 'btn btn-default'
-  = fa_icon_link_to 'Delete', 'trash-o', @package_profile, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-danger'
+  = index_button(package_profiles_path)
+  = edit_button(edit_package_profile_path(@package_profile))
+  = delete_button(@package_profile)
 
 = render layout: 'layouts/page_header' do
   Package Profile: #{@package_profile.name}
