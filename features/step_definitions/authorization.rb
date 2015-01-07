@@ -82,11 +82,11 @@ def perform_action(action, user_type, resource = nil)
     when :new
       [:get, self.send("new_#{base_path_method_name}")]
     when :create
-      [:post, self.send("#{resource.class.to_s.underscore}s_path")]
+      [:post, self.send("#{resource.class.to_s.underscore.pluralize}_path")]
     when :view
       [:get, self.send(base_path_method_name, resource)]
     when :view_index
-      [:get, self.send("#{resource.class.to_s.underscore}s_path")]
+      [:get, self.send("#{resource.class.to_s.underscore.pluralize}_path")]
     else
       method, act = parse_action(action)
       if resource.new_record?
