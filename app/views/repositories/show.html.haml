@@ -2,7 +2,8 @@
 
 .tabbable
   .btn-group.pull-right
-    = link_to 'Red Flags', red_flags_repository_path(@repository), class: 'btn btn-default'
+    = link_to red_flags_repository_path(@repository), class: 'btn btn-default', title: 'Red Flags' do
+      = fa_icon 'flag'
     = link_to 'View events', events_repository_path(@repository), class: 'btn btn-default'
     = link_to 'Back', repositories_path, class: 'btn btn-default'
     = link_to 'Edit', edit_repository_path(@repository), class: 'btn btn-default'
