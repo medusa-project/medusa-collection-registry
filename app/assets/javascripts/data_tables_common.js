@@ -19,7 +19,7 @@ function initialize_data_table(tableSelector) {
         return JSON.parse(localStorage.getItem('DataTables_' + window.location.pathname));
       },
       "language": {
-        "search": "Narrow: "
+        "search": "Filter results: "
       }
     })
   })

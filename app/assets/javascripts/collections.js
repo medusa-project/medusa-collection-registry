@@ -10,7 +10,7 @@ $(function () {
       [10, 25, 50, 100, "All"]
     ],
     "language": {
-      "search": "Narrow: "
+      "search": "Filter results: "
     }
   })
 });
@@ -32,7 +32,7 @@ $(function () {
       return JSON.parse(localStorage.getItem('DataTables_' + window.location.pathname));
     },
     "language": {
-      "search": "Narrow: "
+      "search": "Filter results: "
     }
   });
   if (table) {

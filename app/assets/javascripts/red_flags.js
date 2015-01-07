@@ -23,7 +23,7 @@ $(function () {
       [10, 25, 50, 100, "All"]
     ],
     "language": {
-      "search": "Narrow: "
+      "search": "Filter results: "
     }
   });
 });
