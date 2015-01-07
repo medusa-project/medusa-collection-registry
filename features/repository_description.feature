@@ -125,7 +125,7 @@ Feature: Repository description
     When I view the repository with title 'Sample 1'
     And I click on 'UIUC'
     Then I should be on the view page for the institution with name 'UIUC'
-    
+
   Scenario: Associate contact with repository
     Given I am logged in as an admin
     When I edit the repository with title 'Sample 1'
