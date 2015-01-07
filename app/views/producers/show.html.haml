@@ -18,7 +18,7 @@
   .btn-group
     = link_to 'Back', producers_path, class: 'btn btn-default'
     = link_to 'Edit', edit_producer_path(@producer), class: 'btn btn-default'
-    = link_to 'Delete Producer', @producer, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-danger'
+    = fa_icon_link_to 'Delete', 'trash-o', @producer, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-danger'
 
 .col-sm-9#content
   %a.toggles{href: '#', rel: 'tooltip', title: 'Hide or show the sidebar' }

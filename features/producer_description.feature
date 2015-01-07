@@ -87,7 +87,7 @@ Feature: Producer description
   Scenario: Delete producer from view page
     Given I am logged in as an admin
     When I view the producer with title 'Scanning'
-    And I click on 'Delete Producer'
+    And I click on 'Delete'
     Then I should be on the producer index page
     And I should not see 'Scanning'
 
@@ -102,13 +102,6 @@ Feature: Producer description
     When I go to the producer index page
     And I click on 'Edit' in the producers table
     Then I should be on the edit page for the producer with title 'Scanning'
-
-  Scenario: Delete from index page
-    Given I am logged in as an admin
-    When I go to the producer index page
-    And I click on 'Delete' in the producers table
-    Then I should be on the producer index page
-    And I should not see 'Scanning'
 
   Scenario: Create from index page
     Given I am logged in as an admin

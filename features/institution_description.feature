@@ -53,7 +53,7 @@ Feature: Institution description
   Scenario: As a medusa admin I can delete an individual institution
     Given I am logged in as a medusa admin
     When I view the institution with name 'UIUC'
-    And I click on 'Delete Institution'
+    And I click on 'Delete'
     Then I should be on the institution index page
     And there should be no institution with name 'UIUC'
 

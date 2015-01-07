@@ -17,8 +17,8 @@
         %td #{producer.administrator_email}
         %td #{link_to_external producer.url, producer.url}
         %td
+          = link_to 'View', producer, class: 'btn btn-default btn-xs'
           = link_to 'Edit', edit_producer_path(producer), class: 'btn btn-default btn-xs'
-          = link_to 'Delete', producer, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-xs btn-danger'
 
 %br
 

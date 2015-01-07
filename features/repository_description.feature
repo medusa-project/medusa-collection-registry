@@ -98,7 +98,7 @@ Feature: Repository description
   Scenario: Delete repository from view page
     Given I am logged in as an admin
     When I view the repository with title 'Sample 1'
-    And I click on 'Delete Repository'
+    And I click on 'Delete'
     Then I should not see 'Sample 1'
 
   Scenario: Navigate from index page to view page

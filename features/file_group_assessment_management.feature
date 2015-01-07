@@ -19,12 +19,6 @@ Feature: File Group Assessment Management
     When I view the file group with title 'Images'
     Then I should see an assessment table
 
-  Scenario: Delete assessment from a file group
-    When I view the file group with title 'Images'
-    And I click on 'Delete' in the assessments table
-    Then I should be on the view page for the file group with title 'Images'
-    And the collection with title 'Dogs' should have 0 assessments
-
   Scenario: Navigate to an assessment
     When I view the file group with title 'Images'
     And I click on 'Assessing'

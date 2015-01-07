@@ -50,12 +50,6 @@ Feature: Access Systems
     Then I should be on the access system index page
     And I should not see 'ContentDM'
 
-  Scenario: Delete from index page
-    When I go to the access system index page
-    And I click on 'Delete'
-    Then I should be on the access system index page
-    And I should not see 'ContentDM'
-
   Scenario: Create from index page
     When I go to the access system index page
     And I click on 'New Access System'
