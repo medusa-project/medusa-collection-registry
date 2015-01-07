@@ -1,6 +1,6 @@
 .pull-right
   = index_button(package_profiles_path)
-  = edit_button(edit_package_profile_path(@package_profile))
+  = edit_button(@package_profile)
   = delete_button(@package_profile)
 
 = render layout: 'layouts/page_header' do

@@ -22,5 +22,5 @@
             %td #{assessment.date}
             %td #{assessment.author_email}
             %td
-              = link_to 'View', assessment, class: 'btn btn-default btn-xs'
-              = link_to 'Edit', edit_assessment_path(assessment), class: 'btn btn-default btn-xs'
+              = small_view_button(assessment)
+              = small_edit_button(assessment)

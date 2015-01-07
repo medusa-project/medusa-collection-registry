@@ -15,4 +15,4 @@
           %td #{link_to_external repository.url, repository.url}
           %td #{repository.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
           %td
-            = link_to 'Edit', edit_repository_path(repository), class: 'btn btn-default btn-xs'
+            = small_edit_button(repository)

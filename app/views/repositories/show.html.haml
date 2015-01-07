@@ -5,7 +5,7 @@
     = red_flags_button(red_flags_repository_path(@repository))
     = link_to 'View events', events_repository_path(@repository), class: 'btn btn-default'
     = back_button(repositories_path)
-    = edit_button(edit_repository_path(@repository))
+    = edit_button(@repository)
     -  if safe_can?(:delete, @repository)
       = delete_button(repository_path(@repository), message: repository_confirm_message)
   = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: ['about', 'collection-list', 'assessment-list'], active_index: 1}

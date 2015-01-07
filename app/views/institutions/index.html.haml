@@ -10,7 +10,7 @@
     - @institutions.each do |institution|
       %tr
         %td= link_to(institution.name, institution)
-        %td= link_to 'Edit', edit_institution_path(institution), class: 'btn btn-default btn-xs'
+        %td= small_edit_button(institution)
 
 %br
 

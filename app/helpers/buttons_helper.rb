@@ -2,10 +2,12 @@
 module ButtonsHelper
 
   def edit_button(url, options = {})
+    url = edit_polymorphic_path(url) if url.is_a?(ActiveRecord::Base)
     fa_icon_link_to 'Edit', 'pencil-square-o', url, options.merge(class: 'btn btn-default')
   end
 
   def small_edit_button(url, options = {})
+    url = edit_polymorphic_path(url) if url.is_a?(ActiveRecord::Base)
     fa_icon_link_to 'Edit', 'pencil-square-o', url, options.merge(class: 'btn btn-default btn-xs')
   end
 

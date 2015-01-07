@@ -31,10 +31,8 @@
         %td= red_flag.created_at
         %td= red_flag.message
         %td
-          = link_to('View', red_flag_path(red_flag))
-          |
-          = link_to('Edit', edit_red_flag_path(red_flag))
+          = small_view_button(red_flag)
+          = small_edit_button(red_flag)
           - if red_flag.flagged?
             %span.unflag-link
-              |
-              = link_to('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true)
+              = link_to('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true, class: 'btn btn-default btn-xs')

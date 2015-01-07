@@ -17,7 +17,7 @@
     = show_field @producer, :notes_html, 'Notes'
   .btn-group
     = back_button(producers_path)
-    = edit_button(edit_producer_path(@producer))
+    = edit_button(@producer)
     = delete_button(@producer)
 
 .col-sm-9#content
