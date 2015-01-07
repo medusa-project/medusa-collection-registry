@@ -43,7 +43,6 @@
             %td #{collection.preservation_priority_name}
             %td
               = link_to t('.edit', default: t('helpers.links.edit')), edit_collection_path(collection), class: 'btn btn-default btn-xs'
-              = link_to t('.destroy', default: t('helpers.links.destroy')), collection_path(collection), method: :delete, data: {confirm: collection_confirm_message}, class: 'btn btn-xs btn-danger'
 
 %br
 
