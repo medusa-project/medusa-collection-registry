@@ -18,8 +18,7 @@
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
         %ul.nav.navbar-nav
           %li
-            = link_to dashboard_path, title: 'Dashboard' do
-              = fa_icon 'tachometer'
+            = fa_icon_link_to 'Dashboard', 'tachometer', dashboard_path
           %li= link_to 'Repositories', repositories_path
           %li= link_to 'Collections', collections_path
           %li.dropdown
