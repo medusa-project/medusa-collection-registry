@@ -1,4 +1,5 @@
 class ActiveRecord::Base
+  #TODO this can probably be expressed better as a concern
   #Use email_person_association to make a simple association in a model with a Person
   #Makes a belong_to association attr_name
   #to the person class, and makes accessors attr_name_email and attr_name_email=

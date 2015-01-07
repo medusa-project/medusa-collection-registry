@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141229194747) do
+ActiveRecord::Schema.define(version: 20150107151851) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,10 +29,10 @@ ActiveRecord::Schema.define(version: 20141229194747) do
 
   create_table "access_systems", force: :cascade do |t|
     t.string   "name",                limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "service_owner",       limit: 255
-    t.string   "application_manager", limit: 255
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "service_owner"
+    t.string   "application_manager"
   end
 
   add_index "access_systems", ["updated_at"], name: "index_access_systems_on_updated_at", using: :btree
@@ -55,8 +55,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.text     "preservation_risks"
     t.text     "notes"
     t.integer  "assessable_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.integer  "author_id"
     t.text     "notes_html"
     t.text     "preservation_risks_html"
@@ -87,8 +87,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.integer  "attachment_file_size"
     t.integer  "author_id"
     t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   add_index "attachments", ["updated_at"], name: "index_attachments_on_updated_at", using: :btree
@@ -177,8 +177,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.text     "description"
     t.string   "access_url",               limit: 255
     t.text     "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.integer  "contact_id"
     t.integer  "preservation_priority_id"
     t.text     "private_description"
@@ -211,8 +211,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.datetime "failed_at"
     t.string   "locked_by",  limit: 255
     t.string   "queue",      limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
@@ -222,8 +222,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.text     "note"
     t.integer  "eventable_id"
     t.string   "eventable_type", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.string   "actor_email",    limit: 255
     t.date     "date"
   end
@@ -238,8 +238,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.decimal  "total_file_size"
     t.integer  "total_files"
     t.integer  "collection_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "producer_id"
     t.text     "description"
     t.text     "provenance_note"
@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.string   "external_id",            limit: 255
     t.text     "private_description"
     t.string   "access_url",             limit: 255
+    t.integer  "contact_id"
   end
 
   add_index "file_groups", ["cfs_root"], name: "index_file_groups_on_cfs_root", unique: true, using: :btree
@@ -345,22 +346,22 @@ ActiveRecord::Schema.define(version: 20141229194747) do
   end
 
   add_index "medusa_uuids", ["uuid"], name: "index_medusa_uuids_on_uuid", unique: true, using: :btree
-  add_index "medusa_uuids", ["uuidable_id", "uuidable_type"], name: "index_medusa_uuids_on_uuidable_id_and_uuidable_type", using: :btree
+  add_index "medusa_uuids", ["uuidable_type", "uuidable_id"], name: "index_medusa_uuids_on_uuidable_type_and_uuidable_id", using: :btree
 
   create_table "package_profiles", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.string   "url",        limit: 255
     t.text     "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "package_profiles", ["updated_at"], name: "index_package_profiles_on_updated_at", using: :btree
 
   create_table "people", force: :cascade do |t|
     t.string   "email",      limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "people", ["email"], name: "index_people_on_email", using: :btree
@@ -369,8 +370,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
   create_table "preservation_priorities", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.float    "priority"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "preservation_priorities", ["updated_at"], name: "index_preservation_priorities_on_updated_at", using: :btree
@@ -386,8 +387,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.string   "email",             limit: 255
     t.string   "url",               limit: 255
     t.text     "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "administrator_id"
     t.text     "notes_html"
     t.date     "active_start_date"
@@ -401,8 +402,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.integer  "red_flaggable_id"
     t.string   "red_flaggable_type", limit: 255
     t.string   "message",            limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.text     "notes"
     t.string   "priority",           limit: 255
     t.string   "status",             limit: 255
@@ -418,8 +419,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.integer  "source_file_group_id"
     t.integer  "target_file_group_id"
     t.string   "note",                 limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   add_index "related_file_group_joins", ["source_file_group_id"], name: "index_related_file_group_joins_on_source_file_group_id", using: :btree
@@ -430,8 +431,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.string   "title",             limit: 255
     t.string   "url",               limit: 255
     t.text     "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.string   "address_1",         limit: 255
     t.string   "address_2",         limit: 255
     t.string   "city",              limit: 255
@@ -466,8 +467,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
 
   create_table "resource_types", force: :cascade do |t|
     t.string   "name",       limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "resource_types", ["updated_at"], name: "index_resource_types_on_updated_at", using: :btree
@@ -476,8 +477,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.integer  "rights_declarable_id"
     t.string   "rights_declarable_type", limit: 255
     t.string   "rights_basis",           limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "copyright_jurisdiction", limit: 255
     t.string   "copyright_statement",    limit: 255
     t.string   "access_restrictions",    limit: 255
@@ -494,8 +495,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
     t.integer  "scheduled_eventable_id"
     t.string   "scheduled_eventable_type", limit: 255
     t.text     "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   add_index "scheduled_events", ["actor_email"], name: "index_scheduled_events_on_actor_email", using: :btree
@@ -507,8 +508,8 @@ ActiveRecord::Schema.define(version: 20141229194747) do
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", limit: 255, null: false
     t.text     "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", using: :btree
@@ -516,16 +517,16 @@ ActiveRecord::Schema.define(version: 20141229194747) do
 
   create_table "storage_media", force: :cascade do |t|
     t.string   "name",       limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "storage_media", ["updated_at"], name: "index_storage_media_on_updated_at", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "uid",        limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.string   "email",      limit: 255
   end
 
