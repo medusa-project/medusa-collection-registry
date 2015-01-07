@@ -1,4 +1,5 @@
 = show_field @file_group, :external_id, 'External ID'
+= show_field @file_group, :contact_email
 = show_field @file_group, :uuid
 = show_value((link_to(@file_group.producer.title, @file_group.producer) if @file_group.producer), 'Producer')
 = show_field @file_group, :private_description

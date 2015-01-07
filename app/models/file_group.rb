@@ -1,3 +1,5 @@
+require 'email_person_associator'
+
 class FileGroup < ActiveRecord::Base
   include Eventable
   include ScheduledEventable
@@ -19,6 +21,8 @@ class FileGroup < ActiveRecord::Base
   has_many :source_file_group_joins, dependent: :destroy, class_name: 'RelatedFileGroupJoin', foreign_key: :target_file_group_id
   has_many :source_file_groups, through: :source_file_group_joins
   has_many :attachments, as: :attachable, dependent: :destroy
+
+  email_person_association(:contact)
 
   before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root
