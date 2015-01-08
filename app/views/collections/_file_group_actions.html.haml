@@ -1,15 +1,13 @@
 .event-actions
   %strong Events:
-  = link_to 'View All', events_file_group_path(file_group)
-  |
+  = small_view_button(events_file_group_path(file_group))
   = link_to 'Add New', "#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', role: 'button'
   |
   = link_to 'Schedule', "#add-scheduled-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', role: 'button'
 
 .assessment-actions
   %strong Assessments:
-  = link_to 'View All', file_group
-  |
+  = small_view_button(file_group)
   = link_to 'Add New', new_assessment_path(assessable_id: file_group.id, assessable_type: file_group.class.name)
 .related-file-group-actions
   %strong Related File groups:

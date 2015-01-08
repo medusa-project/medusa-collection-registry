@@ -8,9 +8,8 @@
 
 .row
   .col-sm-12
-    = link_to('Download', download_cfs_file_path(@file))
-    |
-    = link_to('View', view_cfs_file_path(@file))
+    = download_button(download_cfs_file_path(@file))
+    = view_button(view_cfs_file_path(@file))
 
 .row
   .col-sm-4

@@ -29,7 +29,7 @@ Feature: File Group Management
 
   Scenario: View file group events
     When I view the collection with title 'Dogs'
-    And I click on 'View All' in the event actions
+    And I click on 'View' in the event actions
     Then I should be viewing events for the file group with title 'images'
 
   Scenario: Add file group event
@@ -40,7 +40,7 @@ Feature: File Group Management
 
   Scenario: View file group assessments
     When I view the collection with title 'Dogs'
-    And I click on 'View All' in the assessment actions
+    And I click on 'View' in the assessment actions
     Then I should be on the view page for the file group with title 'images'
 
   Scenario: Create new assessment

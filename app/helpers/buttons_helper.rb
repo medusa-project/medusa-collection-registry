@@ -25,8 +25,16 @@ module ButtonsHelper
     link_to 'Index', url, class: 'btn btn-default'
   end
 
+  def view_button(url_or_object)
+    fa_icon_link_to 'View', 'eye', url_or_object, class: 'btn btn-default'
+  end
+
   def small_view_button(url_or_object)
-    link_to 'View', url_or_object, class: 'btn btn-default btn-xs'
+    fa_icon_link_to 'View', 'eye', url_or_object, class: 'btn btn-default btn-xs'
+  end
+
+  def download_button(url)
+    link_to 'Download', url, class: 'btn btn-default'
   end
 
   def small_download_button(url)

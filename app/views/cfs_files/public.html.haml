@@ -1,7 +1,6 @@
 - content_for :public_body do
-  = link_to('Download', public_download_cfs_file_path(@file))
-  |
-  = link_to('View', public_view_cfs_file_path(@file))
+  = small_download_button(public_download_cfs_file_path(@file))
+  = small_view_button(public_view_cfs_file_path(@file))
   %br
   = render "public_preview_viewer_#{@preview_viewer_type}"
 - content_for :public_metadata do
