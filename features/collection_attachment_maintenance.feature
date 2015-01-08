@@ -38,7 +38,7 @@ Feature: Collection attachment maintenance
 
   Scenario: Update attachment from collection
     When I view the collection with title 'Dogs'
-    And I click on 'Update' in the attachments section
+    And I click on 'Edit' in the attachments section
     And I fill in fields:
       | Description | New info for attachment |
     And I attach fixture file 'fits.xml' to 'Attachment'
@@ -50,7 +50,7 @@ Feature: Collection attachment maintenance
   Scenario: Update attachment from collection as a manager
     Given I relogin as a manager
     When I view the collection with title 'Dogs'
-    And I click on 'Update' in the attachments section
+    And I click on 'Edit' in the attachments section
     And I fill in fields:
       | Description | New info for attachment |
     And I attach fixture file 'fits.xml' to 'Attachment'

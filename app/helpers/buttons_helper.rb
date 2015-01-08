@@ -1,48 +1,44 @@
 #some helpers for producing links/buttons
 module ButtonsHelper
 
-  def edit_button(url, options = {})
-    url = edit_polymorphic_path(url) if url.is_a?(ActiveRecord::Base)
-    fa_icon_link_to 'Edit', 'pencil-square-o', url, options.merge(class: 'btn btn-default')
+  def edit_button(url_or_object, options = {})
+    url_or_object = edit_polymorphic_path(url_or_object) if url_or_object.is_a?(ActiveRecord::Base)
+    fa_icon_link_to 'Edit', 'pencil-square-o', url_or_object, options.merge(class: 'btn btn-default')
   end
 
-  def small_edit_button(url, options = {})
-    url = edit_polymorphic_path(url) if url.is_a?(ActiveRecord::Base)
-    fa_icon_link_to 'Edit', 'pencil-square-o', url, options.merge(class: 'btn btn-default btn-xs')
+  def small_edit_button(url_or_object, options = {})
+    url_or_object = edit_polymorphic_path(url_or_object) if url_or_object.is_a?(ActiveRecord::Base)
+    fa_icon_link_to 'Edit', 'pencil-square-o', url_or_object, options.merge(class: 'btn btn-default btn-xs')
   end
 
-  def delete_button(url, message: nil, options: {})
+  def delete_button(url_or_object, message: nil, options: {})
     message ||= generic_confirm_message
-    fa_icon_link_to 'Delete', 'trash-o', url, options.merge(method: :delete, data: {confirm: message}, class: 'btn btn-danger')
+    fa_icon_link_to 'Delete', 'trash-o', url_or_object, options.merge(method: :delete, data: {confirm: message}, class: 'btn btn-danger')
   end
 
-  def small_delete_button(url, message: nil, options: {})
+  def small_delete_button(url_or_object, message: nil, options: {})
     message ||= generic_confirm_message
-    fa_icon_link_to 'Delete', 'trash-o', url, options.merge(method: :delete, data: {confirm: message}, class: 'btn btn-danger btn-xs')
+    fa_icon_link_to 'Delete', 'trash-o', url_or_object, options.merge(method: :delete, data: {confirm: message}, class: 'btn btn-danger btn-xs')
   end
 
   def index_button(url)
     link_to 'Index', url, class: 'btn btn-default'
   end
 
-  def small_view_button(url)
-    link_to 'View', url, class: 'btn btn-default btn-xs'
+  def small_view_button(url_or_object)
+    link_to 'View', url_or_object, class: 'btn btn-default btn-xs'
   end
 
   def small_download_button(url)
     link_to 'Download', url, class: 'btn btn-default btn-xs'
   end
 
-  def small_update_button(url)
-    link_to 'Update', url, class: 'btn btn-default btn-xs'
-  end
-
   def red_flags_button(url)
     fa_icon_link_to 'Red Flags', 'flag', url, class: 'btn btn-default'
   end
 
-  def back_button(url)
-    link_to 'Back', url, class: 'btn btn-default'
+  def back_button(url_or_object)
+    link_to 'Back', url_or_object, class: 'btn btn-default'
   end
 
 end
