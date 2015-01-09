@@ -1,7 +1,7 @@
 - cache(@attachable) do
   %h2 Administrative Attachments
 
-  = link_to 'Add Attachment', new_attachment_path(attachable_id: @attachable.id, attachable_type: @attachable.class.name), class: 'btn btn-primary btn-xs'
+  = small_add_button(new_attachment_path(attachable_id: @attachable.id, attachable_type: @attachable.class.name), title: 'Add Attachment')
 
   - if @attachable.attachments.includes(:author).present?
     %table#attachments.table.table-striped

@@ -1,7 +1,7 @@
 %h2
   Collections
   %span.pull-right
-    = link_to 'Add Collection', new_collection_path(repository_id: @repository.id), class: 'btn btn-primary btn-xs'
+    = small_add_button(new_collection_path(repository_id: @repository.id), title: 'Add Collection')
     = link_to collections_repository_path(@repository, format: 'csv'), class: 'btn btn-default btn-xs' do
       %span.glyphicon.glyphicon-export
       Export as CSV

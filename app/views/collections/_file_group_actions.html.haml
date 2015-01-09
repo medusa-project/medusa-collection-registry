@@ -1,17 +1,16 @@
 .event-actions
   %strong Events:
   = small_view_button(events_file_group_path(file_group))
-  = link_to 'Add New', "#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', role: 'button'
-  |
+  = small_add_button("#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal')
   = link_to 'Schedule', "#add-scheduled-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', role: 'button'
 
 .assessment-actions
   %strong Assessments:
   = small_view_button(file_group)
-  = link_to 'Add New', new_assessment_path(assessable_id: file_group.id, assessable_type: file_group.class.name)
+  = small_add_button(new_assessment_path(assessable_id: file_group.id, assessable_type: file_group.class.name))
 .related-file-group-actions
   %strong Related File groups:
-  = link_to 'Add New', edit_polymorphic_path(file_group, active_tab: '#related-file-groups')
+  = small_add_button(edit_polymorphic_path(file_group, active_tab: '#related-file-groups'))
 - if file_group.is_a?(BitLevelFileGroup)
   .fits-actions
     %strong FITS

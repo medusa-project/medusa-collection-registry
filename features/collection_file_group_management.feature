@@ -34,7 +34,7 @@ Feature: File Group Management
 
   Scenario: Add file group event
     When I view the collection with title 'Dogs'
-    And I click on 'Add New' in the event actions
+    And I click on 'Add' in the event actions
     And I submit the new event form on the collection view page
     Then the file group with title 'images' should have 1 events
 
@@ -45,12 +45,12 @@ Feature: File Group Management
 
   Scenario: Create new assessment
     When I view the collection with title 'Dogs'
-    And I click on 'Add New' in the assessment actions
+    And I click on 'Add' in the assessment actions
     Then I should be on the new assessment page
 
   Scenario: Create related file group
     When I view the collection with title 'Dogs'
-    And I click on 'Add New' in the related-file-group actions
+    And I click on 'Add' in the related-file-group actions
     Then I should be on the edit page for the file group with title 'images'
 
   Scenario: See related file group
