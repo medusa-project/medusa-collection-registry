@@ -72,12 +72,12 @@ Feature: Viewing CFS file information and content
 
   Scenario: Create FITS for file
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And I click on 'Create XML'
+    And I click on 'Create'
     Then the file group titled 'Dogs' should have a cfs file for the path 'grass.jpg' with fits attached
     And I should be viewing the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
 
   Scenario: View FITS for file
     Given the cfs file at path 'grass.jpg' for the file group titled 'Dogs' has fits attached
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And I click on 'View XML'
+    And I click on 'View' in the cfs file metadata
     Then I should be on the fits info page for the cfs file at path 'grass.jpg' for the file group titled 'Dogs'

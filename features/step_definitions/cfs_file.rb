@@ -50,6 +50,12 @@ Then(/^I should have viewed a file '(.*)' with contents '(.*)'$/) do |name, cont
 end
 
 
+And(/^I click on '(.*)' in the cfs file metadata$/) do |string|
+  within('#cfs-file-metadata') do
+    click_on string
+  end
+end
+
 def fixture_file_content(name)
   File.binread(File.join(Rails.root,  'features', 'fixtures', name))
 end

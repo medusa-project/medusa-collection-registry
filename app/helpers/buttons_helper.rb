@@ -49,4 +49,7 @@ module ButtonsHelper
     link_to 'Back', url_or_object, class: 'btn btn-default'
   end
 
+  def small_create_button(url)
+    fa_icon_link_to 'Create', 'plus', url, class: 'btn btn-default btn-xs'
+  end
 end

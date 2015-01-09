@@ -20,7 +20,7 @@ Feature: View virus check
 
   Scenario: View results of a virus check as an admin
     And I view the collection with title 'Dogs'
-    And I click on 'View Latest' in the virus-scan actions and delayed jobs are run
+    And I click on 'View' in the virus-scan actions and delayed jobs are run
     Then I should see 'images'
     And I should see all of:
       | Infected files: 1 | Scanned files: 2 | dogs/images/clam.exe: ClamAV-Test-File FOUND |
@@ -28,7 +28,7 @@ Feature: View virus check
   Scenario: View results of a virus check as a manager
     When I relogin as a manager
     And I view the collection with title 'Dogs'
-    And I click on 'View Latest' in the virus-scan actions and delayed jobs are run
+    And I click on 'View' in the virus-scan actions and delayed jobs are run
     Then I should see 'images'
     And I should see all of:
       | Infected files: 1 | Scanned files: 2 | dogs/images/clam.exe: ClamAV-Test-File FOUND |
@@ -36,7 +36,7 @@ Feature: View virus check
   Scenario: View results of a virus check as a visitor
     When I relogin as a visitor
     And I view the collection with title 'Dogs'
-    And I click on 'View Latest' in the virus-scan actions and delayed jobs are run
+    And I click on 'View' in the virus-scan actions and delayed jobs are run
     Then I should see 'images'
     And I should see all of:
       | Infected files: 1 | Scanned files: 2 | dogs/images/clam.exe: ClamAV-Test-File FOUND |
