@@ -39,9 +39,9 @@
               %li= link_to 'Items', book_tracker_items_path
               - if safe_can?(:update, BookTracker::Item)
                 %li= link_to 'Tasks', book_tracker_tasks_path
+        %ul.nav.navbar-nav.navbar-right
           - if logged_in?
             = render partial: 'shared/filename_search'
-        %ul.nav.navbar-nav.navbar-right
           - if logged_in?
             %li= link_to('Logout', logout_path)
           - else
