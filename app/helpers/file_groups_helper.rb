@@ -21,7 +21,7 @@ module FileGroupsHelper
   end
 
   def file_group_show_tab_list
-    tabs = ['descriptive-metadata', 'administrative-metadata', 'rights-metadata', 'assessments', 'attachments']
+    tabs = ['descriptive-metadata', 'administrative-metadata', 'rights-metadata', 'assessments', ['attachments', 'Administrative Attachments', 'paperclip']]
     if @file_group.cfs_directory.present?
       tabs << 'amazon'
     end
