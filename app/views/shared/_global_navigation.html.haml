@@ -16,35 +16,37 @@
           Medusa
       / Collect the nav links, forms, and other content for toggling
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
-        %ul.nav.navbar-nav
-          %li
-            = fa_icon_link_to 'Dashboard', 'tachometer', dashboard_path
-          %li= link_to 'Repositories', repositories_path
-          %li= link_to 'Collections', collections_path
-          %li.dropdown
-            %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
-              Other
-              %span.caret
-            %ul.dropdown-menu{role: 'menu'}
-              - if safe_can?(:manage, Institution)
-                %li= link_to 'Institutions', institutions_path
-              %li= link_to 'Producers', producers_path
-              %li= link_to 'Access', access_systems_path
-              %li= link_to 'Packages', package_profiles_path
-          %li.dropdown
-            %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
-              Book Tracker
-              %span.caret
-            %ul.dropdown-menu{role: 'menu'}
-              %li= link_to 'Items', book_tracker_items_path
-              - if safe_can?(:update, BookTracker::Item)
-                %li= link_to 'Tasks', book_tracker_tasks_path
-          - if logged_in?
-            = render partial: 'shared/filename_search'
-        %ul.nav.navbar-nav.navbar-right
-          - if logged_in?
-            %li= link_to('Logout', logout_path)
-          - else
-            %li= link_to('Login', login_path)
-          %li= wiki_link('Wiki')
-          %li= link_to 'Help', '#'
+        .row
+          %ul.nav.navbar-nav.navbar-right
+            - if logged_in?
+              = render partial: 'shared/filename_search'
+            - if logged_in?
+              %li= link_to('Logout', logout_path)
+            - else
+              %li= link_to('Login', login_path)
+            %li= wiki_link('Wiki')
+            %li= link_to 'Help', '#'
+        .row
+          %ul.nav.navbar-nav
+            %li
+              = fa_icon_link_to 'Dashboard', 'tachometer', dashboard_path
+            %li= link_to 'Repositories', repositories_path
+            %li= link_to 'Collections', collections_path
+            %li.dropdown
+              %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+                Other
+                %span.caret
+              %ul.dropdown-menu{role: 'menu'}
+                - if safe_can?(:manage, Institution)
+                  %li= link_to 'Institutions', institutions_path
+                %li= link_to 'Producers', producers_path
+                %li= link_to 'Access Systems', access_systems_path
+                %li= link_to 'Packages', package_profiles_path
+            %li.dropdown
+              %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+                Books
+                %span.caret
+              %ul.dropdown-menu{role: 'menu'}
+                %li= link_to 'Items', book_tracker_items_path
+                - if safe_can?(:update, BookTracker::Item)
+                  %li= link_to 'Tasks', book_tracker_tasks_path
