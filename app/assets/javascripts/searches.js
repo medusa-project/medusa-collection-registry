@@ -1,1 +1,1 @@
-initialize_data_table("table#search_results");
+initialize_data_table("table#search_results", {});

@@ -1,1 +1,1 @@
-initialize_data_table("table#producers");
+initialize_data_table("table#producers", {});

@@ -1,5 +1,5 @@
-initialize_data_table("table#assessments");
-initialize_data_table("table#attachments");
+initialize_data_table("table#assessments", {});
+initialize_data_table("table#attachments", {});
 $(function () {
   $("table#file_groups").dataTable({
     "aaSorting": [
