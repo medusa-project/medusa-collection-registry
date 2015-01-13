@@ -43,3 +43,7 @@ label.checkbox {
   background-color: #d3d3d3;
   border-radius: 5px;
 }
+
+#filename_search {
+    min-width: 300px;
+}
