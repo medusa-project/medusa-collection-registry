@@ -26,8 +26,16 @@ var default_datatable_args = {
 //Make the table selected by the provided CSS selector into a dataTables table using the default_datatable_args with
 //the extra_args deep merged in.
 function initialize_data_table(tableSelector, extra_args) {
-  var args = $.extend(true, {}, default_datatable_args, extra_args)
+  var args = $.extend(true, {}, default_datatable_args, extra_args);
   $(function () {
-    $(tableSelector).dataTable(args)
+    $(tableSelector).dataTable(args);
+    add_back_to_top_button(tableSelector);
   })
 };
+
+//Add a back to top of page button to the datatable
+function add_back_to_top_button(tableSelector) {
+  var pagination_list = $(tableSelector).next('div').find('ul.pagination');
+  var up_button = '<li class="paginate_button"><a href="#global-navigation"><i class="fa fa-chevron-circle-up"></i></a></li>';
+  pagination_list.append(up_button);
+}
