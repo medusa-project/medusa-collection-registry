@@ -57,4 +57,8 @@ module ButtonsHelper
     fa_icon_link_to 'Add', 'plus', url, options.reverse_merge(class: 'btn btn-default btn-xs')
   end
 
+  def events_button(url)
+    fa_icon_link_to 'Events', 'thumbs-o-up', url, class: 'btn btn-default'
+  end
+
 end

@@ -9,7 +9,7 @@ Feature: Record events
   Scenario: Navigate from file group to events for file group
     Given I am logged in as an admin
     When I view the file group with title 'dog-files'
-    And I click on 'View events'
+    And I click on 'Events'
     Then I should be viewing events for the file group with title 'dog-files'
     And I should see the events table
     And I should see all of:
@@ -18,13 +18,13 @@ Feature: Record events
   Scenario: Navigate from file group to events for file group as a manager
     Given I am logged in as a manager
     When I view the file group with title 'dog-files'
-    And I click on 'View events'
+    And I click on 'Events'
     Then I should be viewing events for the file group with title 'dog-files'
 
   Scenario: Navigate from file group to events for file group as a visitor
     Given I am logged in as a visitor
     When I view the file group with title 'dog-files'
-    And I click on 'View events'
+    And I click on 'Events'
     Then I should be viewing events for the file group with title 'dog-files'
 
   Scenario: Delete an event
