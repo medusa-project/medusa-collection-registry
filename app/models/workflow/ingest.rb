@@ -30,9 +30,11 @@ class Workflow::Ingest < Job::Base
   end
 
   def perform_start
-    self.state = 'copying'
-    self.save!
-    self.put_in_queue
+    self.transaction do
+      self.state = 'copying'
+      self.save!
+      self.put_in_queue
+    end
   end
 
   def perform_copying
@@ -46,21 +48,25 @@ class Workflow::Ingest < Job::Base
         raise RuntimeError, message
       end
     end
-    cfs_directory = CfsDirectory.find_or_create_by(path: self.bit_level_file_group.expected_relative_cfs_root_directory)
-    bit_level_file_group.cfs_directory = cfs_directory
-    bit_level_file_group.save!
-    self.state = 'amazon_backup'
-    self.save!
-    self.put_in_queue
+    self.transaction do
+      cfs_directory = CfsDirectory.find_or_create_by(path: self.bit_level_file_group.expected_relative_cfs_root_directory)
+      bit_level_file_group.cfs_directory_id = cfs_directory.id
+      bit_level_file_group.save!
+      self.state = 'amazon_backup'
+      self.save!
+      self.put_in_queue
+    end
   end
 
   def perform_amazon_backup
-    self.amazon_backup = AmazonBackup.create(user_id: self.user.id, cfs_directory_id: self.bit_level_file_group.cfs_directory.id,
-                                             date: Date.today)
-    self.save!
-    Job::AmazonBackup.create_for(self.amazon_backup)
-    #stay in amazon backup state - AmazonBackup will take care of next transition when the glacier server sends the
-    #return message
+    self.transaction do
+      self.amazon_backup = AmazonBackup.create(user_id: self.user.id, cfs_directory_id: self.bit_level_file_group.cfs_directory.id,
+                                               date: Date.today)
+      self.save!
+      Job::AmazonBackup.create_for(self.amazon_backup)
+      #stay in amazon backup state - AmazonBackup will take care of next transition when the glacier server sends the
+      #return message
+    end
   end
 
   def perform_end
@@ -69,9 +75,11 @@ class Workflow::Ingest < Job::Base
   end
 
   def be_at_end
-    self.state = 'end'
-    self.save!
-    self.put_in_queue
+    self.transaction do
+      self.state = 'end'
+      self.save!
+      self.put_in_queue
+    end
   end
 
   def success(job)
