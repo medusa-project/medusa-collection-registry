@@ -96,6 +96,7 @@ class FileGroupsController < ApplicationController
 
   def events
     @eventable = FileGroup.find(params[:id])
+    @file_group = @eventable
     @events = @eventable.events
     @scheduled_eventable = @eventable
     @scheduled_events = @scheduled_eventable.scheduled_events
@@ -104,7 +105,6 @@ class FileGroupsController < ApplicationController
   def red_flags
     @red_flags = @file_group.all_red_flags
     @aggregator = @file_group
-    render 'shared/red_flags'
   end
 
   protected
