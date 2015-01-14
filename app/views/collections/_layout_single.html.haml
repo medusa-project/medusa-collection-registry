@@ -1,0 +1,17 @@
+.row
+  .col-xs-6
+    %div= breadcrumbs(@collection)
+  .col-xs-6
+    .btn-group.pull-right
+      - if @collection.public?
+        = link_to 'Public View', public_collection_path(@collection), class: 'btn btn-default'
+      = assessments_button(assessments_collection_path(@collection))
+      = events_button(events_collection_path(@collection))
+      = red_flags_button(red_flags_collection_path(@collection))
+      = attachments_button(attachments_collection_path(@collection))
+      = link_to 'Mods', collection_path(@collection, format: :xml), class: 'btn btn-default'
+      = delete_button(@collection, message: collection_confirm_message)
+      = edit_button(@collection)
+
+.row
+  = yield
