@@ -1,10 +1,6 @@
-= render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: ['about', 'file-manager', 'assessments',['attachments', 'Administrative Attachments', 'paperclip']], active_index: 1}
+= render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: ['about', 'file-manager'], active_index: 1}
 .tab-content
   #about.tab-pane
     = render 'show_about_tab'
   #file-manager.tab-pane.active
     = render 'file_groups_table'
-  #assessments.tab-pane
-    = render 'assessments/table'
-  #attachments.tab-pane
-    = render 'attachments_table' if logged_in?

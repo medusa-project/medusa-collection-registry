@@ -34,6 +34,7 @@ Feature: Assessment summary
 
   Scenario: View collection and go to summary of assessments
     When I view the collection with title 'Dogs'
+    And I click on 'Assessments'
     Then I should see all of:
       | toy assessment | hot assessment | dog assessment |
     And I should see none of:

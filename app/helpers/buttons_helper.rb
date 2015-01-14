@@ -61,4 +61,12 @@ module ButtonsHelper
     fa_icon_link_to 'Events', 'thumbs-o-up', url, class: 'btn btn-default'
   end
 
+  def assessments_button(url)
+    link_to 'Assessments', url, class: 'btn btn-default'
+  end
+
+  def attachments_button(url)
+    fa_icon_link_to 'Attachments', 'paperclip', url, class: 'btn btn-default'
+  end
+
 end

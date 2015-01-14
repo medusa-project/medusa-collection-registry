@@ -19,6 +19,8 @@ MedusaRails3::Application.routes.draw do
       get 'red_flags'
       get 'events'
       get 'public'
+      get 'assessments'
+      get 'attachments'
     end
   end
   resources :repositories do

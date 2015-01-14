@@ -14,9 +14,11 @@ Feature: Assessment Management
 
   Scenario: View assessments of a collection
     When I view the collection with title 'Dogs'
+    And I click on 'Assessments'
     Then I should see an assessment table
 
   Scenario: Navigate to assessment
     When I view the collection with title 'Dogs'
+    And I click on 'Assessments'
     And I click on 'Assessing'
     Then I should be on the view page for the assessment with date '2012-01-09'

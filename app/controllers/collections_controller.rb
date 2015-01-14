@@ -2,19 +2,26 @@ class CollectionsController < ApplicationController
 
   before_filter :require_logged_in, except: [:show, :public]
   before_filter :require_logged_in_or_basic_auth, only: [:show]
-  before_filter :find_collection_and_repository, only: [:show, :destroy, :edit, :update, :red_flags, :public]
+  before_filter :find_collection_and_repository, only: [:show, :destroy, :edit, :update, :red_flags, :public, :assessments, :attachments]
   layout 'public', only: [:public]
 
   include CollectionsToCsv
 
   def show
-    @assessable = @collection
-    @assessments = @assessable.recursive_assessments
     respond_to do |format|
       format.html
       format.xml { render xml: @collection.to_mods }
       format.json
     end
+  end
+
+  def attachments
+    @attachable = @collection
+  end
+
+  def assessments
+    @assessable = @collection
+    @assessments = @assessable.recursive_assessments
   end
 
   def public

@@ -72,7 +72,8 @@ Feature: Assessment description
   Scenario: Create a new assessment
     Given I am logged in as an admin
     When I view the collection with title 'Dogs'
-    And I click on 'Add Assessment'
+    And I click on 'Assessments'
+    And I click on 'Add'
     And I fill in fields:
       | Preservation risks  | There are corrupt files too |
       | Notes               | I like dogs                 |
@@ -96,7 +97,8 @@ Feature: Assessment description
   Scenario: Create a new assessment as a manager
     Given I am logged in as a manager
     When I view the collection with title 'Dogs'
-    And I click on 'Add Assessment'
+    And I click on 'Assessments'
+    And I click on 'Add'
     And I fill in fields:
       | Preservation risks  | There are corrupt files too |
       | Notes               | I like dogs                 |
@@ -120,7 +122,8 @@ Feature: Assessment description
   Scenario: Autofill user id for new assessment
     Given I am logged in as an admin
     When I view the collection with title 'Dogs'
-    And I click on 'Add Assessment'
+    And I click on 'Assessments'
+    And I click on 'Add'
     Then The field 'Author Email' should be filled in with 'admin@example.com'
 
   Scenario: Associate author with assessment
