@@ -2,14 +2,13 @@ class FileGroupsController < ApplicationController
 
   before_filter :require_logged_in, except: [:show, :public]
   before_filter :require_logged_in_or_basic_auth, only: [:show]
-  before_filter :find_file_group_and_collection, only: [:show, :destroy, :edit, :update,
-                                                        :create_cfs_fits, :create_virus_scan, :red_flags, :public]
+  before_filter :find_file_group_and_collection, only: [:show, :destroy, :edit, :update, :create_cfs_fits,
+                                                        :create_virus_scan, :red_flags, :public, :attachments,
+                                                        :assessments]
   layout 'public', only: [:public]
   respond_to :html, :js, :json
 
   def show
-    @assessable = @file_group
-    @assessments = @assessable.assessments.order('date DESC')
     respond_to do |format|
       format.html
       format.json
@@ -105,6 +104,15 @@ class FileGroupsController < ApplicationController
   def red_flags
     @red_flags = @file_group.all_red_flags
     @aggregator = @file_group
+  end
+
+  def attachments
+    @attachable = @file_group
+  end
+
+  def assessments
+    @assessable = @file_group
+    @assessments = @assessable.assessments.order('date DESC')
   end
 
   protected

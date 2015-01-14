@@ -54,6 +54,8 @@ MedusaRails3::Application.routes.draw do
         get 'events'
         get 'red_flags'
         get 'public'
+        get 'assessments'
+        get 'attachments'
         post 'create_virus_scan'
         post 'create_amazon_backup'
         post 'create_initial_cfs_assessment' if file_group_type == :bit_level_file_groups

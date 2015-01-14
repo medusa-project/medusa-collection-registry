@@ -13,10 +13,6 @@
           = render 'show_administrative_metadata'
         #rights-metadata.tab-pane
           = render partial: 'rights_declarations/show', locals: {rights_declaration: @file_group.rights_declaration}
-        #assessments.tab-pane
-          = render 'assessments/table'
-        #attachments.tab-pane
-          = render 'attachments_table' if logged_in?
         - if @file_group.cfs_directory.present?
           #amazon.tab-pane
             = render 'amazon_backups'

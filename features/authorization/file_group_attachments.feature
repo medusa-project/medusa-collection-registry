@@ -9,6 +9,7 @@ Feature: Attachment authorization
       | title |
       | Dogs |
     And I view the file group with title 'Dogs'
+    And I click on 'Attachments'
     And I click on 'Add Attachment'
     And I fill in fields:
       | Description | grass |

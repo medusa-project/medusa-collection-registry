@@ -17,15 +17,18 @@ Feature: File Group Assessment Management
 
   Scenario: View assessments of a file group
     When I view the file group with title 'Images'
+    And I click on 'Assessments'
     Then I should see an assessment table
 
   Scenario: Navigate to an assessment
     When I view the file group with title 'Images'
+    And I click on 'Assessments'
     And I click on 'Assessing'
     Then I should be on the view page for the assessment with date '2013-02-11'
 
   Scenario: Create a new assessment
     When I view the file group with title 'Images'
+    And I click on 'Assessments'
     And I click on 'Add Assessment'
     Then I should be on the new assessment page
 
