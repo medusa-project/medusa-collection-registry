@@ -41,7 +41,7 @@ Feature: Red Flag Summary
     And I click on 'Red Flags'
     Then I should see the red flags table
     And I should see all of:
-      | Bad toy picture | Bad checksum | Bad toy text | Toys | Bit level file group |
+      | Bad toy picture | Bad checksum | Bad toy text | Toys |
     And I should see none of:
       | Bad hot picture | Bad cool text |
 

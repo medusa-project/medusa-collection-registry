@@ -30,7 +30,7 @@ Feature: Record events
   Scenario: Delete an event
     Given I am logged in as a manager
     When I view events for the file group with title 'dog-files'
-    And I click on 'Delete'
+    And I click on 'Delete' in the events table
     Then I should be viewing events for the file group with title 'dog-files'
     And I should see none of:
       | FITS analysis performed | admin@example.com |
@@ -39,11 +39,12 @@ Feature: Record events
   Scenario: Update an event
     Given I am logged in as a manager
     When I view events for the file group with title 'dog-files'
-    And I click on 'Edit'
+    And I click on 'Edit' in the events table
     And I fill in fields:
       | Note | Added note |
-    And I click on 'Update Event'
-    Then I should be viewing events for the external file group with title 'dog-files'
+    And I click on 'Update'
+    And I click on 'Events'
+    Then I should be viewing events for the file group with title 'dog-files'
     And I should see all of:
       | FITS analysis performed | admin@example.com | Added note |
     And the file group with title 'dog-files' should have 1 event
