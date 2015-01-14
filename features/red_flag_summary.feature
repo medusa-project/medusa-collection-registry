@@ -10,11 +10,11 @@ Feature: Red Flag Summary
       | Cats  |
     And the collection with title 'Dogs' has child file groups with fields:
       | title | type              |
-      | Toys | BitLevelFileGroup |
-      | Hot  | BitLevelFileGroup |
+      | Toys  | BitLevelFileGroup |
+      | Hot   | BitLevelFileGroup |
     And the collection with title 'Cats' has child file groups with fields:
       | title | type              |
-      | Cool | BitLevelFileGroup |
+      | Cool  | BitLevelFileGroup |
     And there is a physical cfs directory 'dogs/toys'
     And there is a physical cfs directory 'dogs/hot'
     And there is a physical cfs directory 'cats/cool'
@@ -90,7 +90,7 @@ Feature: Red Flag Summary
     And I click on 'Red Flags'
     Then I should see the red flags table
     And I should see all of:
-      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals | Repository |
+      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals |
 
   Scenario: View red flags for repository as a manager
     Given I am logged in as a manager
@@ -98,7 +98,7 @@ Feature: Red Flag Summary
     And I click on 'Red Flags'
     Then I should see the red flags table
     And I should see all of:
-      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals | Repository |
+      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals |
 
   Scenario: View red flags for repository as a visitor
     Given I am logged in as a visitor
@@ -106,4 +106,4 @@ Feature: Red Flag Summary
     And I click on 'Red Flags'
     Then I should see the red flags table
     And I should see all of:
-      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals | Repository |
+      | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals |

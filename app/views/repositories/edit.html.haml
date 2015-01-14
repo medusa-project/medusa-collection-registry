@@ -1,8 +1,9 @@
-= render layout: 'layouts/edit_page_header' do
-  Edit Repository
+= render layout: 'layout_single' do
+  = render layout: 'layouts/edit_page_header' do
+    Edit Repository
 
-.col-sm-3
-  = render 'shared/definitions/repository'
+  .col-sm-3
+    = render 'shared/definitions/repository'
 
-.col-sm-9
-  = render 'form'
+  .col-sm-9
+    = render 'form'

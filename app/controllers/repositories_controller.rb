@@ -1,7 +1,7 @@
 class RepositoriesController < ApplicationController
 
   before_filter :require_logged_in
-  before_filter :find_repository, only: [:edit, :update, :destroy, :red_flags, :update_ldap_admin, :collections]
+  before_filter :find_repository, only: [:edit, :update, :destroy, :red_flags, :update_ldap_admin, :collections, :events]
   include CollectionsToCsv
   include RepositoriesToCsv
 
@@ -61,7 +61,6 @@ class RepositoriesController < ApplicationController
   def red_flags
     @red_flags = @repository.all_red_flags
     @aggregator = @repository
-    render 'shared/red_flags'
   end
 
   def events
