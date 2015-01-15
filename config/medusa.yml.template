@@ -32,6 +32,8 @@ development:
   book_tracker:
     import_path: ~/Projects/mbt_marcxml
     library_nuc_code: UIU
+  #controls whether public view buttons show up and whether controllers allow access to public views
+  public_view_on: true
 test:
   cfs:
     root: /home/hading/repos/medusa-rails3/tmp/cfs-root-test
@@ -45,6 +47,7 @@ test:
   amazon:
     outgoing_queue: medusa_to_glacier_test
     incoming_queue: glacier_to_medusa_test
+  public_view_on: true
 production:
   basic_auth: change_this_user:change_this_password
   medusa_users_group: Library Medusa Users
@@ -56,3 +59,4 @@ production:
   book_tracker:
     import_path: /mnt/cnfs-ro/root/813/1127
     library_nuc_code: UIU
+  public_view_on: true

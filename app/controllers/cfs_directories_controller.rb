@@ -1,5 +1,6 @@
 class CfsDirectoriesController < ApplicationController
 
+  before_filter :public_view_enabled?, only: [:public]
   before_filter :require_logged_in, except: [:show, :public]
   before_filter :require_logged_in_or_basic_auth, only: [:show]
   layout 'public', only: [:public]

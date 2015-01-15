@@ -3,7 +3,7 @@
     %div= breadcrumbs(@collection)
   .col-xs-6
     .btn-group.pull-right
-      - if @collection.public?
+      - if @collection.public? and public_view_on?
         = link_to 'Public View', public_collection_path(@collection), class: 'btn btn-default'
       = assessments_button(assessments_collection_path(@collection))
       = events_button(events_collection_path(@collection))

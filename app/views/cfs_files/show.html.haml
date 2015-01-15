@@ -3,7 +3,7 @@
     = breadcrumbs(@file)
   .col-xs-5
     .btn-group.pull-right
-      - if @file.public?
+      - if @file.public? and public_view_on?
         = link_to 'Public View', public_cfs_file_path(@file), class: 'btn btn-default'
       = download_button(download_cfs_file_path(@file))
       = view_button(view_cfs_file_path(@file))
