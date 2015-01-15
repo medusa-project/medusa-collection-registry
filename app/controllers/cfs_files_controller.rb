@@ -1,12 +1,13 @@
 class CfsFilesController < ApplicationController
 
-  before_filter :public_view_enabled?, only: [:public, :public_view, :public_download, :public_preview_image]
-  before_filter :require_logged_in, except: [:show, :public, :public_view, :public_download, :public_preview_image]
+  PUBLIC_ACTIONS = [:public, :public_view, :public_download, :public_preview_image]
+
+  before_filter :public_view_enabled?, only: PUBLIC_ACTIONS
+  before_filter :require_logged_in, except: [:show] + PUBLIC_ACTIONS
   before_filter :require_logged_in_or_basic_auth, only: [:show]
-  before_filter :find_file, only: [:show, :public, :create_fits_xml, :fits,
-                                   :download, :view, :public_download, :public_view,
-                                   :preview_image, :public_preview_image, :preview_video]
-  before_filter :require_public_file, only: [:public, :public_download, :public_view, :public_preview_image]
+  before_filter :find_file, only: [:show, :create_fits_xml, :fits, :download, :view,
+                                   :preview_image, :preview_video] + PUBLIC_ACTIONS
+  before_filter :require_public_file, only: PUBLIC_ACTIONS
   layout 'public', only: [:public]
 
   cattr_accessor :mime_type_viewers, :extension_viewers
