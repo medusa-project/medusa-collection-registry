@@ -81,7 +81,7 @@ class CollectionsController < ApplicationController
       format.csv { send_data collections_to_csv(@collections), type: 'text/csv', filename: 'collections.csv' }
     end
   end
-  
+
   def red_flags
     @red_flags = @collection.all_red_flags
     @aggregator = @collection
