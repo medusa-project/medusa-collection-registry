@@ -44,11 +44,7 @@ module ButtonsHelper
   def red_flags_button(url)
     fa_icon_link_to 'Red Flags', 'flag', url, class: 'btn btn-default'
   end
-
-  def back_button(url_or_object)
-    link_to 'Back', url_or_object, class: 'btn btn-default'
-  end
-
+  
   def small_create_button(url)
     fa_icon_link_to 'Create', 'plus', url, class: 'btn btn-default btn-xs'
   end
