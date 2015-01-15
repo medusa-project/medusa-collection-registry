@@ -81,17 +81,7 @@ class CollectionsController < ApplicationController
       format.csv { send_data collections_to_csv(@collections), type: 'text/csv', filename: 'collections.csv' }
     end
   end
-
-  def for_package_profile
-    package_profile = PackageProfile.find(params[:package_profile_id])
-    file_groups = package_profile.file_groups.includes(collection: :repository)
-    @collections = file_groups.collect do |file_group|
-      file_group.collection
-    end.uniq.sort_by(&:title)
-    @subheader = "For Package Profile: #{package_profile.name}"
-    render 'index'
-  end
-
+  
   def red_flags
     @red_flags = @collection.all_red_flags
     @aggregator = @collection
