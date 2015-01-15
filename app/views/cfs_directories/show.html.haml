@@ -1,12 +1,14 @@
-= breadcrumbs(@directory)
-
-.btn-group.pull-right
-  - if @directory.public?
-    = link_to 'Public View', public_cfs_directory_path(@directory), class: 'btn btn-default'
-  = link_to 'Create FITS for tree', create_fits_for_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
-  - if can? :export, @file_group
-    = link_to 'Download Files', export_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
-    = link_to 'Download Files and All Subdirectories', export_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
+.row
+  .col-xs-5
+    = breadcrumbs(@directory)
+  .col-xs-7
+    .btn-group.pull-right
+      - if @directory.public?
+        = link_to 'Public View', public_cfs_directory_path(@directory), class: 'btn btn-default'
+      = link_to 'Create FITS for tree', create_fits_for_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
+      - if can? :export, @file_group
+        = link_to 'Download Files', export_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
+        = link_to 'Download Files and All Subdirectories', export_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
 
 %br
 
