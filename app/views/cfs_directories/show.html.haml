@@ -1,6 +1,6 @@
-= render 'show_breadcrumbs'
+= breadcrumbs(@directory)
 
-.pull-right
+.btn-group.pull-right
   - if @directory.public?
     = link_to 'Public View', public_cfs_directory_path(@directory), class: 'btn btn-default'
   = link_to 'Create FITS for tree', create_fits_for_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
@@ -8,10 +8,10 @@
     = link_to 'Download Files', export_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
     = link_to 'Download Files and All Subdirectories', export_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
 
+%br
+
 %h3 Directory: #{@directory.path}
 %p UUID: #{@directory.uuid}
-- if @file_group
-  %h4 File Group: #{link_to @file_group.title, @file_group}
 
 %hr
 
