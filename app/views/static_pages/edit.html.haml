@@ -2,4 +2,4 @@
   .form-actions
     = f.button :submit, 'Update', class: 'btn btn-primary'
     = link_to 'Cancel', static_page_path(key: @static_page.key), class: 'btn btn-default'
-  = f.input :page_text
+  = f.input :page_text, as: :ckeditor, input_html: {ckeditor: {toolbar: 'Full'}}

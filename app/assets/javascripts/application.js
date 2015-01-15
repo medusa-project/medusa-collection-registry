@@ -20,4 +20,5 @@
 //= require autocomplete-rails
 //= require local_time
 //= require common
+//= require ckeditor/init
 //= require_tree .
