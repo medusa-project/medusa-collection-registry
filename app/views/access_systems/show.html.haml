@@ -1,13 +1,6 @@
-.pull-right.btn-group
-  = index_button(access_systems_path)
-  = edit_button(@access_system)
-  = delete_button(@access_system)
-
-= render layout: 'layouts/page_header' do
-  Access System: #{@access_system.name}
-
-.row
-  .col-sm-8
-    = show_field @access_system, :name
-    = show_field @access_system, :service_owner
-    = show_field @access_system, :application_manager
+= render layout: 'layout_single' do
+  .row
+    .col-sm-8
+      = show_field @access_system, :name
+      = show_field @access_system, :service_owner
+      = show_field @access_system, :application_manager
