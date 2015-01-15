@@ -1,5 +1,6 @@
 class FileGroupsController < ApplicationController
 
+  before_filter :public_view_enabled?, only: [:public]
   before_filter :require_logged_in, except: [:show, :public]
   before_filter :require_logged_in_or_basic_auth, only: [:show]
   before_filter :find_file_group_and_collection, only: [:show, :destroy, :edit, :update, :create_cfs_fits,

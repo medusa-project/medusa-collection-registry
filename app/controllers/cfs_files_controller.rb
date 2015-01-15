@@ -1,5 +1,6 @@
 class CfsFilesController < ApplicationController
 
+  before_filter :public_view_enabled?, only: [:public, :public_view, :public_download, :public_preview_image]
   before_filter :require_logged_in, except: [:show, :public, :public_view, :public_download, :public_preview_image]
   before_filter :require_logged_in_or_basic_auth, only: [:show]
   before_filter :find_file, only: [:show, :public, :create_fits_xml, :fits,

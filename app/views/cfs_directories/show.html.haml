@@ -3,7 +3,7 @@
     = breadcrumbs(@directory)
   .col-xs-7
     .btn-group.pull-right
-      - if @directory.public?
+      - if @directory.public? and public_view_on?
         = link_to 'Public View', public_cfs_directory_path(@directory), class: 'btn btn-default'
       = link_to 'Create FITS for tree', create_fits_for_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
       - if can? :export, @file_group
