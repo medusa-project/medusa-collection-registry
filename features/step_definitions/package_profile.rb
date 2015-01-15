@@ -1,5 +1,5 @@
-Then(/^I should be on the collection index page for collections with package profile 'book'$/) do
-  current_path.should == for_package_profile_collections_path
+Then(/^I should be on the collection index page for collections with package profile '(.*)'$/) do |name|
+  current_path.should == collections_package_profile_path(PackageProfile.find_by(name: name))
 end
 
 And(/^the file group titled '(.*)' has package profile named '(.*)'$/) do |title, package_profile_name|

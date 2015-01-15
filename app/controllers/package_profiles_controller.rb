@@ -1,7 +1,7 @@
 class PackageProfilesController < ApplicationController
 
   before_filter :require_logged_in, except: [:index]
-  before_filter :find_package_profile, only: [:show, :edit, :update, :destroy]
+  before_filter :find_package_profile, only: [:show, :edit, :update, :destroy, :collections]
 
   def show
 
@@ -43,6 +43,13 @@ class PackageProfilesController < ApplicationController
     authorize! :destroy, @package_profile
     @package_profile.destroy
     redirect_to package_profiles_path
+  end
+
+  def collections
+    file_groups = @package_profile.file_groups.includes(collection: :repository)
+    @collections = file_groups.collect do |file_group|
+      file_group.collection
+    end.uniq.sort_by(&:title)
   end
 
   protected

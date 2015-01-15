@@ -11,9 +11,6 @@ MedusaRails3::Application.routes.draw do
   end
 
   resources :collections do
-    collection do
-      get 'for_package_profile'
-    end
     member do
       get 'red_flags'
       get 'events'
@@ -78,7 +75,11 @@ MedusaRails3::Application.routes.draw do
       get 'collections'
     end
   end
-  resources :package_profiles
+  resources :package_profiles do
+    member do
+      get 'collections'
+    end
+  end
   resources :directories, only: :show
   resources :files, only: :show, controller: "bit_files" do
     member do

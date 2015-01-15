@@ -47,7 +47,6 @@ class AccessSystemsController < ApplicationController
 
   def collections
     @collections = @access_system.collections.order(:title).includes(:repository)
-    @subheader = "For Access system: #{@access_system.name}"
   end
 
   protected
