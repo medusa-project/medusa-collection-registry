@@ -12,7 +12,6 @@ MedusaRails3::Application.routes.draw do
 
   resources :collections do
     collection do
-      get 'for_access_system'
       get 'for_package_profile'
     end
     member do
@@ -74,7 +73,11 @@ MedusaRails3::Application.routes.draw do
   end
 
   resources :producers
-  resources :access_systems
+  resources :access_systems do
+    member do
+      get 'collections'
+    end
+  end
   resources :package_profiles
   resources :directories, only: :show
   resources :files, only: :show, controller: "bit_files" do

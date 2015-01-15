@@ -93,7 +93,7 @@ Feature: Access Systems
     When I go to the access system index page
     And I click on 'ContentDM'
     Then I should see all of:
-      | Dogs | Cats | For Access system: ContentDM |
+      | Dogs | Cats | Collections for ContentDM |
     And I should not see 'Bats'
 
   Scenario: View collections associated with an access system as a manager
@@ -107,7 +107,7 @@ Feature: Access Systems
     When I go to the access system index page
     And I click on 'ContentDM'
     Then I should see all of:
-      | Dogs | Cats | For Access system: ContentDM |
+      | Dogs | Cats | Collections for ContentDM |
     And I should not see 'Bats'
 
   Scenario: View collections associated with an access system as a visitor
@@ -121,5 +121,5 @@ Feature: Access Systems
     When I go to the access system index page
     And I click on 'ContentDM'
     Then I should see all of:
-      | Dogs | Cats | For Access system: ContentDM |
+      | Dogs | Cats | Collections for ContentDM |
     And I should not see 'Bats'

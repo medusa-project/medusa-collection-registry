@@ -1,7 +1,7 @@
 class AccessSystemsController < ApplicationController
 
   before_filter :require_logged_in, except: [:index, :show]
-  before_filter :find_access_system, only: [:show, :edit, :update, :destroy]
+  before_filter :find_access_system, only: [:show, :edit, :update, :destroy, :collections]
 
   def index
     @access_systems = AccessSystem.all
@@ -43,6 +43,11 @@ class AccessSystemsController < ApplicationController
     authorize! :destroy, @access_system
     @access_system.destroy
     redirect_to access_systems_path
+  end
+
+  def collections
+    @collections = @access_system.collections.order(:title).includes(:repository)
+    @subheader = "For Access system: #{@access_system.name}"
   end
 
   protected

@@ -10,7 +10,7 @@
   %tbody
     - @access_systems.each do |access_system|
       %tr
-        %td #{link_to access_system.name, for_access_system_collections_path(access_system_id: access_system.id)}
+        %td #{link_to access_system.name, collections_access_system_path(access_system)}
         %td #{access_system.service_owner}
         %td #{access_system.application_manager}
         %td

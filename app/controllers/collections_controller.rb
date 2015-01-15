@@ -81,13 +81,6 @@ class CollectionsController < ApplicationController
     end
   end
 
-  def for_access_system
-    access_system = AccessSystem.find(params[:access_system_id])
-    @collections = access_system.collections.order(:title).includes(:repository)
-    @subheader = "For Access system: #{access_system.name}"
-    render 'index'
-  end
-
   def for_package_profile
     package_profile = PackageProfile.find(params[:package_profile_id])
     file_groups = package_profile.file_groups.includes(collection: :repository)
