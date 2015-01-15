@@ -69,4 +69,8 @@ module ButtonsHelper
     fa_icon_link_to 'Attachments', 'paperclip', url, class: 'btn btn-default'
   end
 
+  def index_button(url)
+    link_to 'Index', url, class: 'btn btn-default'
+  end
+
 end
