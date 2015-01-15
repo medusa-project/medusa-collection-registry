@@ -113,7 +113,7 @@ Feature: Producer description
   Scenario: Navigate from view page to index page
     Given I am logged in as an admin
     When I view the producer with title 'Scanning'
-    And I click on 'Back'
+    And I click on 'Index'
     Then I should be on the producer index page
 
   Scenario: Navigate from view page to edit page
