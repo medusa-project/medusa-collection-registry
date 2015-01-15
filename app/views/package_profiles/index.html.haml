@@ -12,8 +12,9 @@
         %td= link_to(package_profile.name, collections_package_profile_path(package_profile))
         %td= link_to(package_profile.url, package_profile.url)
         %td
-          = small_view_button(package_profile)
-          = small_edit_button(package_profile)
+          .btn-group
+            = small_view_button(package_profile)
+            = small_edit_button(package_profile)
 
 %br
 

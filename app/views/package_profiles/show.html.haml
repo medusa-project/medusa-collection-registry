@@ -1,13 +1,7 @@
-.pull-right
-  = index_button(package_profiles_path)
-  = edit_button(@package_profile)
-  = delete_button(@package_profile)
+= render layout: 'layout_single' do
 
-= render layout: 'layouts/page_header' do
-  Package Profile: #{@package_profile.name}
-
-.row
-  .col-sm-8
-    = show_field @package_profile, :name
-    = show_field @package_profile, :url
-    = show_field @package_profile, :notes
+  .row
+    .col-sm-8
+      = show_field @package_profile, :name
+      = show_field @package_profile, :url
+      = show_field @package_profile, :notes

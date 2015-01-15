@@ -1,2 +1,3 @@
-%h1 Collections for #{@package_profile.name}
-= render 'collections/index_table'
+= render layout: 'layout_single' do
+  %h2 Collections
+  = render 'collections/index_table'
