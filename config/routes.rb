@@ -1,13 +1,13 @@
 MedusaRails3::Application.routes.draw do
 
-  match '/static/:page', to: 'static#page', as: :static, via: [:get, :post]
+  resources :static_pages, only: [:show, :edit, :update], param: :key
 
   #This lets us start up in a mode where only a down page is shown
   if ENV['MEDUSA_DOWN'] == 'true'
     match '*path' => redirect('/static/down', status: 307), via: :all
-    root to: 'static#page', page: 'down'
+    root to: 'static_pages#show', key: 'down'
   else
-    root to: 'static#page', page: 'landing'
+    root to: 'static_pages#show', key: 'landing'
   end
 
   resources :collections do

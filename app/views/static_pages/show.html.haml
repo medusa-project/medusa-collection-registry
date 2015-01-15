@@ -1,0 +1,10 @@
+- if safe_can?(:update, @static_page)
+  .row
+    = link_to 'Edit', edit_static_page_path(key: @static_page.key), class: 'btn btn-default'
+
+%br
+
+.row
+  #static-page-content
+    = @static_page.page_text
+

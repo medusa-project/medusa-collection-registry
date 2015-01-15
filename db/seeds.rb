@@ -41,18 +41,23 @@ ActiveRecord::Base.transaction do
 #Make sure every Collection has
 # - a preservation priority
 # - a uuid
-# - a registered handle
   Collection.all.each do |c|
     c.preservation_priority = PreservationPriority.default unless c.preservation_priority
     c.ensure_rights_declaration
     c.ensure_uuid
     c.save!
-    c.ensure_handle
+    #c.ensure_handle
   end
 
   FileGroup.all.each do |fg|
     fg.ensure_rights_declaration
     fg.save!
+  end
+
+  %w(help landing down).each do |key|
+    unless StaticPage.find_by(key: key)
+      StaticPage.create(key: key, page_text: "#{key.capitalize} page")
+    end
   end
 
 end
