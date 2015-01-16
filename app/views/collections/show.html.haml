@@ -1,8 +1,6 @@
 = render layout: 'layout_single' do
   - cache(@collection) do
     %h1.text-center= @collection.title
-    .tabbable
-      - if logged_in?
-        = render 'show_tabs_logged_in'
-      - else
-        = render 'show_tabs_not_logged_in'
+    - if logged_in?
+      = render 'file_groups_table'
+    = render 'show_about'
