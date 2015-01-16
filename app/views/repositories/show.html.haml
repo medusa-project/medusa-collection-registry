@@ -2,7 +2,7 @@
   %h1.text-center= @repository.title
 
   .tabbable
-    = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: ['about', 'collection-list', 'assessment-list'], active_index: 1}
+    = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: ['about', 'collection-list'], active_index: 1}
     - cache(@repository) do
       .tab-content
         #about.tab-pane
@@ -23,5 +23,4 @@
             = show_field @repository, :active_end_date, 'Active End Date'
         #collection-list.tab-pane.active
           = render 'collections_table'
-        #assessment-list.tab-pane
-          = render 'assessments/table'
+

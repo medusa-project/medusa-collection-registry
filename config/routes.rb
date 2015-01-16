@@ -26,6 +26,7 @@ MedusaRails3::Application.routes.draw do
     member do
       get 'red_flags'
       get 'events'
+      get 'assessments'
       put 'update_ldap_admin'
       get 'collections'
     end

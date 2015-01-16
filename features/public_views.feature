@@ -85,25 +85,25 @@ Feature: Public views
     And I click on 'View'
     Then I should be redirected to the unauthorized page
 
-  Scenario: Attempt to view internal collection info is redirected to public if available
-    When PENDING
-    When I view the collection with title 'Dogs'
-    Then I should be on the public view page for the collection with title 'Dogs'
-
-  Scenario: Attempt to view internal file group info is redirected to public if available
-    When PENDING
-    When I view the file group with title 'DogFiles'
-    Then I should be on the public view page for the file group with title 'DogFiles'
-
-  Scenario: Attempt to view internal cfs directory info is redirected to public if available
-    When PENDING
-    When I view the cfs directory for the file group titled 'DogFiles' for the path '.'
-    Then I should be public viewing the cfs directory for the file group titled 'Dogs' for the path '.'
-
-  Scenario: Attempt to view internal cfs file info is redirected to public if available
-    When PENDING
-    When I view the cfs file for the file group titled 'DogFiles' for the path 'intro.txt'
-    Then I should be public viewing the cfs file for the file group titled 'Dogs' for the path 'intro.txt'
+#  Scenario: Attempt to view internal collection info is redirected to public if available
+#    When PENDING
+#    When I view the collection with title 'Dogs'
+#    Then I should be on the public view page for the collection with title 'Dogs'
+#
+#  Scenario: Attempt to view internal file group info is redirected to public if available
+#    When PENDING
+#    When I view the file group with title 'DogFiles'
+#    Then I should be on the public view page for the file group with title 'DogFiles'
+#
+#  Scenario: Attempt to view internal cfs directory info is redirected to public if available
+#    When PENDING
+#    When I view the cfs directory for the file group titled 'DogFiles' for the path '.'
+#    Then I should be public viewing the cfs directory for the file group titled 'Dogs' for the path '.'
+#
+#  Scenario: Attempt to view internal cfs file info is redirected to public if available
+#    When PENDING
+#    When I view the cfs file for the file group titled 'DogFiles' for the path 'intro.txt'
+#    Then I should be public viewing the cfs file for the file group titled 'Dogs' for the path 'intro.txt'
 
   Scenario: Go from collection to file group
     When I public view the collection with title 'Dogs'

@@ -42,6 +42,7 @@ Feature: Assessment summary
 
   Scenario: View repository and go to summary of assessments
     When I view the repository with title 'Animals'
+    And I click on 'Assessments'
     Then I should see all of:
       | toy assessment | hot assessment | dog assessment | cat assessment |
     And I should see none of:
