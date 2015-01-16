@@ -1,26 +1,23 @@
 = render layout: 'layout_single' do
   %h1.text-center= @repository.title
 
-  .tabbable
-    = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: ['about', 'collection-list'], active_index: 1}
-    - cache(@repository) do
-      .tab-content
-        #about.tab-pane
-          .well
-            = show_value link_to(@repository.institution.name, @repository.institution), 'Institution'
-            = show_field @repository, :contact_email
-            = show_field @repository, :address_1
-            = show_field @repository, :address_2
-            = show_field @repository, :city
-            = show_field @repository, :state
-            = show_field @repository, :zip
-            = show_field @repository, :phone_number
-            = show_field @repository, :email
-            = show_value link_to_external(@repository.url, @repository.url), 'URL'
-            = show_field @repository, :notes_html, 'Notes'
-            = show_field @repository, :total_size, 'Total Size (GB)'
-            = show_field @repository, :active_start_date, 'Active Start Date'
-            = show_field @repository, :active_end_date, 'Active End Date'
-        #collection-list.tab-pane.active
-          = render 'collections_table'
-
+  - cache(@repository) do
+    .row
+      .col-sm-3#sidebar
+        .well
+          = show_value link_to(@repository.institution.name, @repository.institution), 'Institution'
+          = show_field @repository, :contact_email
+          = show_field @repository, :address_1
+          = show_field @repository, :address_2
+          = show_field @repository, :city
+          = show_field @repository, :state
+          = show_field @repository, :zip
+          = show_field @repository, :phone_number
+          = show_field @repository, :email
+          = show_value link_to_external(@repository.url, @repository.url), 'URL'
+          = show_field @repository, :notes_html, 'Notes'
+          = show_value @repository.total_size.to_formatted_s(:rounded, precision: 2), 'Total Size (GB)'
+          = show_field @repository, :active_start_date, 'Active Start Date'
+          = show_field @repository, :active_end_date, 'Active End Date'
+      .col-sm-9#collection-list
+        = render 'collections_table'
