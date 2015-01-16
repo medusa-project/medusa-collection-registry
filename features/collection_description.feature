@@ -24,7 +24,7 @@ Feature: Collection description
     Then I should see all of:
       | Dog stuff | private dog info | http://dogs.example.com |
     And I should see all of:
-      | Stuff about dogs | File Manager | external-dogs-id |
+      | Stuff about dogs | external-dogs-id |
 
   Scenario: View a collection as a manager
     Given I relogin as a manager
