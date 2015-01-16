@@ -3,8 +3,12 @@
     = link_to 'Public View', public_file_group_path(@file_group), class: 'btn btn-default'
   = assessments_button(assessments_file_group_path(@file_group))
   = events_button(events_file_group_path(@file_group))
-  = link_to  'Schedule Event', '#addScheduledEventModal', role: 'button', 'data-toggle' => 'modal', class: 'btn btn-default'
-  = link_to('Add Event', '#addEventModal', role: 'button', 'data-toggle' => 'modal', class: 'btn btn-default')
+  = link_to '#addScheduledEventModal', role: 'button', 'data-toggle' => 'modal', class: 'btn btn-default', title: 'Schedule Event' do
+    = fa_icon 'clock-o'
+    = fa_icon 'newspaper-o'
+  = link_to '#addEventModal', role: 'button', 'data-toggle' => 'modal', class: 'btn btn-default', title: 'Add Event' do
+    = fa_icon 'plus'
+    = fa_icon 'newspaper-o'
   - if @file_group.respond_to?(:all_red_flags)
     = red_flags_button(red_flags_file_group_path(@file_group))
   = attachments_button(attachments_file_group_path(@file_group))
