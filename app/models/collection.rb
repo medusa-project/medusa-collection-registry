@@ -8,6 +8,7 @@ class Collection < ActiveRecord::Base
   include RedFlagAggregator
   include Uuidable
   include Breadcrumb
+  include CascadedEventable
   include ResourceTypeable
 
   email_person_association(:contact)
@@ -45,6 +46,7 @@ class Collection < ActiveRecord::Base
 
   aggregates_red_flags collections: :file_groups, label_method: :title
   breadcrumbs parent: :repository
+  cascades_events parent: :repository
 
   def total_size
     self.file_groups.collect { |fg| fg.file_size }.sum
@@ -87,10 +89,6 @@ class Collection < ActiveRecord::Base
 
   def recursive_assessments
     (self.assessments + self.file_groups.collect { |file_group| file_group.assessments }.flatten)
-  end
-
-  def cascaded_events
-    self.file_groups.collect { |file_group| file_group.cascaded_events }.flatten
   end
 
   def all_scheduled_events

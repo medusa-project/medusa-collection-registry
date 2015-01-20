@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150120182658) do
+ActiveRecord::Schema.define(version: 20150120221842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,6 +132,17 @@ ActiveRecord::Schema.define(version: 20150120182658) do
     t.datetime "updated_at"
     t.datetime "completed_at"
   end
+
+  create_table "cascaded_event_joins", force: :cascade do |t|
+    t.integer  "cascaded_eventable_id"
+    t.string   "cascaded_eventable_type"
+    t.integer  "event_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "cascaded_event_joins", ["cascaded_eventable_type", "cascaded_eventable_id", "event_id"], name: "unique_cascaded_events", unique: true, using: :btree
+  add_index "cascaded_event_joins", ["event_id"], name: "index_cascaded_event_joins_on_event_id", using: :btree
 
   create_table "cfs_directories", force: :cascade do |t|
     t.text     "path"
@@ -581,5 +592,6 @@ ActiveRecord::Schema.define(version: 20150120182658) do
   add_index "workflow_ingests", ["updated_at"], name: "index_workflow_ingests_on_updated_at", using: :btree
   add_index "workflow_ingests", ["user_id"], name: "index_workflow_ingests_on_user_id", using: :btree
 
+  add_foreign_key "cascaded_event_joins", "events"
   add_foreign_key "job_fixity_checks", "users"
 end

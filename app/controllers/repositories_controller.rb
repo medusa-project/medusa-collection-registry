@@ -68,7 +68,7 @@ class RepositoriesController < ApplicationController
 
   def events
     @scheduled_eventable = @eventable = Repository.find(params[:id])
-    @events = @eventable.cascaded_events.sort_by(&:date).reverse
+    @events = @eventable.cascaded_events
     @scheduled_events = @scheduled_eventable.incomplete_scheduled_events.sort_by(&:action_date)
   end
 

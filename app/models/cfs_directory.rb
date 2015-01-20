@@ -2,6 +2,7 @@ require 'pathname'
 class CfsDirectory < ActiveRecord::Base
   include Uuidable
   include Breadcrumb
+  include CascadedEventable
 
   has_many :subdirectories, class_name: 'CfsDirectory', foreign_key: :parent_cfs_directory_id, dependent: :destroy
   has_many :cfs_files, dependent: :destroy
@@ -31,6 +32,7 @@ class CfsDirectory < ActiveRecord::Base
   after_save :handle_cfs_assessment
 
   breadcrumbs parent: :parent, label: :path
+  cascades_events parent: :parent
 
   def self.roots
     where('parent_cfs_directory_id IS NULL')
@@ -298,16 +300,6 @@ class CfsDirectory < ActiveRecord::Base
 
   def supported_event_hash
     @@supported_event_hash ||= read_event_hash(:cfs_directory)
-  end
-
-  #TODO this is a correct but not very efficient way of doing this. To do better we may need to write SQL; I'm not sure
-  #we can do it well with AREL because of the polymorphism.
-  def cascaded_events
-    directory_ids = self.recursive_subdirectory_ids
-    directory_events = Event.where(cascadable: true).where(eventable_type: 'CfsDirectory').where(eventable_id: directory_ids)
-    file_ids = CfsFile.where(cfs_directory_id: directory_ids).pluck(:id)
-    file_events = Event.where(cascadable:true).where(eventable_type: 'CfsFile').where(eventable_id: file_ids)
-    return directory_events + file_events
   end
 
   protected

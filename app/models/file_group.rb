@@ -3,6 +3,7 @@ require 'email_person_associator'
 class FileGroup < ActiveRecord::Base
   include Eventable
   include ScheduledEventable
+  include CascadedEventable
   include Uuidable
   include Breadcrumb
   include ResourceTypeable
@@ -34,6 +35,7 @@ class FileGroup < ActiveRecord::Base
   validates_presence_of :producer_id
 
   breadcrumbs parent: :collection
+  cascades_events parent: :collection
 
   STORAGE_LEVEL_HASH = {'external' => 'ExternalFileGroup',
                         'bit-level store' => 'BitLevelFileGroup',
@@ -154,10 +156,6 @@ class FileGroup < ActiveRecord::Base
 
   def public?
     self.rights_declaration.public?
-  end
-
-  def cascaded_events
-    self.events
   end
 
 end

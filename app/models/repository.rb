@@ -3,6 +3,7 @@ class Repository < ActiveRecord::Base
   include ActiveDateChecker
   include RedFlagAggregator
   include Breadcrumb
+  include CascadedEventable
 
   email_person_association(:contact)
   belongs_to :institution, touch: true
@@ -25,6 +26,7 @@ class Repository < ActiveRecord::Base
 
   aggregates_red_flags collections: :collections, label_method: :title
   breadcrumbs parent: nil
+  cascades_events parent: nil
 
   def total_size
     self.collections.collect { |c| c.total_size }.sum
@@ -41,10 +43,6 @@ class Repository < ActiveRecord::Base
 
   def label
     self.title
-  end
-
-  def cascaded_events
-    self.collections.collect { |collection| collection.cascaded_events }.flatten
   end
 
   def all_scheduled_events

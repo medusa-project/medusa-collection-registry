@@ -3,6 +3,7 @@ require 'digest/md5'
 
 class CfsFile < ActiveRecord::Base
   include Eventable
+  include CascadedEventable
   include Uuidable
   include Breadcrumb
 
@@ -22,6 +23,7 @@ class CfsFile < ActiveRecord::Base
   after_update :update_content_type_stats
 
   breadcrumbs parent: :cfs_directory, label: :name
+  cascades_events parent: :cfs_directory
 
   def repository
     self.cfs_directory.repository
