@@ -28,14 +28,25 @@ class BitLevelFileGroupsController < FileGroupsController
   def create_initial_cfs_assessment
     @file_group = BitLevelFileGroup.find(params[:id])
     authorize! :create_cfs_fits, @file_group
-    x = @file_group.is_currently_assessable?
-    y = Job::CfsInitialFileGroupAssessment.find_by(file_group_id: @file_group.id)
-    z = Job::CfsInitialDirectoryAssessment.find_by(file_group_id: @file_group.id)
     if @file_group.is_currently_assessable?
       @file_group.schedule_initial_cfs_assessment
       flash[:notice] = 'CFS simple assessment scheduled'
     else
       flash[:notice] = 'CFS simple assessment already underway for this file group. Please try again later.'
+    end
+    redirect_to @file_group
+  end
+
+  def fixity_check
+    @file_group = BitLevelFileGroup.find(params[:id])
+    @file_group.transaction do
+      @file_group.events.create(key: 'fixity_check_scheduled', date: Date.today, actor_email: current_user.email)
+      if Job::FixityCheck.find_by(fixity_checkable: @file_group)
+        flash[:notice] = "Fixity check already scheduled for file group id: #{@file_group.id} title: #{@file_group.title}"
+      else
+        Job::FixityCheck.create_for(@file_group, @file_group.cfs_directory, current_user)
+        flash[:notice] = 'Fixity check scheduled'
+      end
     end
     redirect_to @file_group
   end

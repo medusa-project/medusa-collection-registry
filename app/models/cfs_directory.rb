@@ -45,13 +45,13 @@ class CfsDirectory < ActiveRecord::Base
 
   #ensure there is a CfsFile object at the given path relative to this directory's path and return it
   def ensure_file_at_relative_path(path)
-    path_components = Pathname.new(path).split.collect(&:to_s)
+    path_components = fully_split_path(path)
     file_name = path_components.pop
     ensure_file_with_directory_components(file_name, path_components)
   end
 
   def ensure_directory_at_relative_path(path)
-    path_components = Pathname.new(path).split.collect(&:to_s)
+    path_components = fully_split_path(path)
     ensure_directory_with_directory_components(path_components)
   end
 
@@ -77,13 +77,13 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def find_file_at_relative_path(path)
-    path_components = Pathname.new(path).split.collect(&:to_s)
+    path_components = fully_split_path(path)
     file_name = path_components.pop
     find_file_with_directory_components(file_name, path_components)
   end
 
   def find_directory_at_relative_path(path)
-    path_components = Pathname.new(path).split.collect(&:to_s)
+    path_components = fully_split_path(path)
     find_directory_with_directory_components(path_components)
   end
 
@@ -296,6 +296,10 @@ class CfsDirectory < ActiveRecord::Base
     directories
   end
 
+  def supported_event_hash
+    @@supported_event_hash ||= read_event_hash(:cfs_directory)
+  end
+
   protected
 
   def find_file_with_directory_components(file_name, path_components)
@@ -349,6 +353,22 @@ class CfsDirectory < ActiveRecord::Base
                                                            parent_cfs_directory: self, root_cfs_directory: self.root_cfs_directory)
       subdirectory.ensure_directory_with_directory_components(path_components)
     end
+  end
+
+  #separate completely into components
+  def fully_split_pathname(pathname, accumulator = nil)
+    accumulator ||= Array.new
+    rest, last = pathname.split
+    accumulator << last.to_s
+    if rest.to_s == '.'
+      return accumulator.reverse
+    else
+      return fully_split_pathname(rest, accumulator)
+    end
+  end
+
+  def fully_split_path(path)
+    fully_split_pathname(Pathname.new(path))
   end
 
 end

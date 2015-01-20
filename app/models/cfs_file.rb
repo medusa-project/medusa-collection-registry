@@ -1,6 +1,8 @@
 require 'rest_client'
+require 'digest/md5'
 
 class CfsFile < ActiveRecord::Base
+  include Eventable
   include Uuidable
   include Breadcrumb
 
@@ -103,7 +105,6 @@ class CfsFile < ActiveRecord::Base
       self.red_flags.create(message: "Md5 Sum changed. Old: #{self}.md5_sum} New: #{new_md5_sum}}") unless self.md5_sum.blank?
       self.md5_sum = new_md5_sum
     end
-
   end
 
   def update_content_type_from_fits(new_content_type_name)
@@ -131,6 +132,14 @@ class CfsFile < ActiveRecord::Base
     else
       self.content_type = nil
     end
+  end
+
+  def supported_event_hash
+    @@supported_event_hash ||= read_event_hash(:cfs_file)
+  end
+
+  def file_system_md5_sum
+    Digest::MD5.file(self.absolute_path).hexdigest
   end
 
   protected

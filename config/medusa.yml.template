@@ -3,6 +3,7 @@ development:
   #but we use that name in order to distinguish from our internal bit file stuff for now.
   cfs:
     root: /home/hading/repos/medusa-rails3/tmp/cfs-root-dev
+    tmp: /Users/hding2/repos/medusa-rails3/tmp
     export_root: /home/hading/repos/medusa-rails3/tmp/cfs-export-root-dev
     export_autoclean: false
   staging_storage:
@@ -37,6 +38,7 @@ development:
 test:
   cfs:
     root: /home/hading/repos/medusa-rails3/tmp/cfs-root-test
+    tmp: /Users/hding2/repos/medusa-rails3/tmp
     export_root: /home/hading/repos/medusa-rails3/tmp/cfs-export-root-test
     export_autoclean: false
   #the tests assume the following
@@ -54,6 +56,7 @@ production:
   medusa_admins_group: Library Medusa Admins
   cfs:
     root: /path/to/cfs/root
+    tmp: /path/to/cfs/tmp
     export_root: /path/to/cfs/exports
     export_autoclean: true
   book_tracker:

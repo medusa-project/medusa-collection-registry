@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150115200721) do
+ActiveRecord::Schema.define(version: 20150120182658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(version: 20150115200721) do
   create_table "access_system_collection_joins", force: :cascade do |t|
     t.integer  "access_system_id"
     t.integer  "collection_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   add_index "access_system_collection_joins", ["access_system_id"], name: "index_access_system_collection_joins_on_access_system_id", using: :btree
@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(version: 20150115200721) do
     t.string   "name",                limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.string   "service_owner"
-    t.string   "application_manager"
+    t.string   "service_owner",       limit: 255
+    t.string   "application_manager", limit: 255
   end
 
   add_index "access_systems", ["updated_at"], name: "index_access_systems_on_updated_at", using: :btree
@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 20150115200721) do
     t.integer  "total_files"
   end
 
-  add_index "assessments", ["assessable_id"], name: "index_assessments_on_assessable_id", using: :btree
+  add_index "assessments", ["assessable_id"], name: "index_assessments_on_collection_id", using: :btree
   add_index "assessments", ["author_id"], name: "index_assessments_on_author_id", using: :btree
   add_index "assessments", ["updated_at"], name: "index_assessments_on_updated_at", using: :btree
 
@@ -156,14 +156,13 @@ ActiveRecord::Schema.define(version: 20150115200721) do
     t.text     "fits_xml"
     t.datetime "mtime"
     t.string   "md5_sum",          limit: 255
-    t.string   "content_type",     limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "content_type_id"
   end
 
   add_index "cfs_files", ["cfs_directory_id", "name"], name: "index_cfs_files_on_cfs_directory_id_and_name", unique: true, using: :btree
-  add_index "cfs_files", ["content_type"], name: "index_cfs_files_on_content_type", using: :btree
+  add_index "cfs_files", ["content_type_id"], name: "index_cfs_files_on_content_type_id", using: :btree
   add_index "cfs_files", ["mtime"], name: "index_cfs_files_on_mtime", using: :btree
   add_index "cfs_files", ["name"], name: "index_cfs_files_on_name", using: :btree
   add_index "cfs_files", ["size"], name: "index_cfs_files_on_size", using: :btree
@@ -222,13 +221,15 @@ ActiveRecord::Schema.define(version: 20150115200721) do
     t.text     "note"
     t.integer  "eventable_id"
     t.string   "eventable_type", limit: 255
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.string   "actor_email",    limit: 255
     t.date     "date"
+    t.boolean  "cascadable",                 default: true
   end
 
   add_index "events", ["actor_email"], name: "index_events_on_actor_email", using: :btree
+  add_index "events", ["cascadable"], name: "index_events_on_cascadable", using: :btree
   add_index "events", ["eventable_id"], name: "index_events_on_eventable_id", using: :btree
   add_index "events", ["updated_at"], name: "index_events_on_updated_at", using: :btree
 
@@ -311,14 +312,27 @@ ActiveRecord::Schema.define(version: 20150115200721) do
   add_index "job_fits_directories", ["file_group_id"], name: "index_job_fits_directories_on_file_group_id", using: :btree
 
   create_table "job_fits_directory_trees", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.integer  "cfs_directory_id"
     t.integer  "file_group_id"
   end
 
   add_index "job_fits_directory_trees", ["cfs_directory_id"], name: "index_job_fits_directory_trees_on_cfs_directory_id", using: :btree
   add_index "job_fits_directory_trees", ["file_group_id"], name: "index_job_fits_directory_trees_on_file_group_id", using: :btree
+
+  create_table "job_fixity_checks", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "fixity_checkable_id"
+    t.string   "fixity_checkable_type"
+    t.integer  "cfs_directory_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "job_fixity_checks", ["cfs_directory_id"], name: "index_job_fixity_checks_on_cfs_directory_id", using: :btree
+  add_index "job_fixity_checks", ["fixity_checkable_id", "fixity_checkable_type"], name: "fixity_object", unique: true, using: :btree
+  add_index "job_fixity_checks", ["user_id"], name: "index_job_fixity_checks_on_user_id", using: :btree
 
   create_table "job_ingest_staging_deletes", force: :cascade do |t|
     t.integer "external_file_group_id"
@@ -331,8 +345,8 @@ ActiveRecord::Schema.define(version: 20150115200721) do
 
   create_table "job_virus_scans", force: :cascade do |t|
     t.integer  "file_group_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "job_virus_scans", ["updated_at"], name: "index_job_virus_scans_on_updated_at", using: :btree
@@ -346,7 +360,7 @@ ActiveRecord::Schema.define(version: 20150115200721) do
   end
 
   add_index "medusa_uuids", ["uuid"], name: "index_medusa_uuids_on_uuid", unique: true, using: :btree
-  add_index "medusa_uuids", ["uuidable_type", "uuidable_id"], name: "index_medusa_uuids_on_uuidable_type_and_uuidable_id", using: :btree
+  add_index "medusa_uuids", ["uuidable_id", "uuidable_type"], name: "index_medusa_uuids_on_uuidable_id_and_uuidable_type", using: :btree
 
   create_table "package_profiles", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -395,7 +409,7 @@ ActiveRecord::Schema.define(version: 20150115200721) do
     t.date     "active_end_date"
   end
 
-  add_index "producers", ["administrator_id"], name: "index_producers_on_administrator_id", using: :btree
+  add_index "producers", ["administrator_id"], name: "index_production_units_on_administrator_id", using: :btree
   add_index "producers", ["updated_at"], name: "index_producers_on_updated_at", using: :btree
 
   create_table "red_flags", force: :cascade do |t|
@@ -456,8 +470,8 @@ ActiveRecord::Schema.define(version: 20150115200721) do
   create_table "resource_typeable_resource_type_joins", force: :cascade do |t|
     t.integer  "resource_typeable_id"
     t.integer  "resource_type_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "resource_typeable_type", limit: 255
   end
 
@@ -544,8 +558,8 @@ ActiveRecord::Schema.define(version: 20150115200721) do
   create_table "virus_scans", force: :cascade do |t|
     t.integer  "file_group_id"
     t.text     "scan_result"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "virus_scans", ["file_group_id"], name: "index_virus_scans_on_file_group_id", using: :btree
@@ -567,4 +581,5 @@ ActiveRecord::Schema.define(version: 20150115200721) do
   add_index "workflow_ingests", ["updated_at"], name: "index_workflow_ingests_on_updated_at", using: :btree
   add_index "workflow_ingests", ["user_id"], name: "index_workflow_ingests_on_user_id", using: :btree
 
+  add_foreign_key "job_fixity_checks", "users"
 end
