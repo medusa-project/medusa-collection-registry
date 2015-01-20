@@ -16,24 +16,24 @@ Feature: Events Summary
     And the collection with title 'Cats' has child file groups with fields:
       | title | type              |
       | Cool | BitLevelFileGroup |
-    And the file group titled 'Toys' has events with fields:
+    And the file group with title 'Toys' has events with fields:
       | note       |
       | toy note 1 |
       | toy note 2 |
-    And the file group titled 'Toys' has scheduled events with fields:
+    And the file group with title 'Toys' has scheduled events with fields:
       | key             | actor_email | action_date | state     |
       | external_to_bit | Buster@example.com      | 2012-02-02  | scheduled |
       | external_to_bit | Ruthie@example.com      | 2014-02-02  | completed |
-    And the file group titled 'Hot' has events with fields:
+    And the file group with title 'Hot' has events with fields:
       | note       |
       | hot note 1 |
-    And the file group titled 'Hot' has scheduled events with fields:
+    And the file group with title 'Hot' has scheduled events with fields:
       | key             | actor_email | action_date | state     |
       | external_to_bit | Oscar@example.com       | 2011-07-08  | scheduled |
-    And the file group titled 'Cool' has events with fields:
+    And the file group with title 'Cool' has events with fields:
       | note        |
       | cool note 1 |
-    And the file group titled 'Cool' has scheduled events with fields:
+    And the file group with title 'Cool' has scheduled events with fields:
       | key             | actor_email | action_date | state     |
       | external_to_bit | Coltrane@example.com    | 2011-09-10  | scheduled |
     And the repository with title 'Plants' has child collections with fields:
@@ -42,10 +42,10 @@ Feature: Events Summary
     And the collection with title 'Crops' has child file groups with fields:
       | title | type              |
       | Corn | BitLevelFileGroup |
-    And the file group titled 'Corn' has events with fields:
+    And the file group with title 'Corn' has events with fields:
       | note        |
       | corn note 1 |
-    And the file group titled 'Corn' has scheduled events with fields:
+    And the file group with title 'Corn' has scheduled events with fields:
       | key             | actor_email | action_date | state     |
       | external_to_bit | delmonte@example.com    | 2010-10-11  | scheduled |
 

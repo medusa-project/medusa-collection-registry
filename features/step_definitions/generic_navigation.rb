@@ -64,6 +64,10 @@ def find_object(object_type, key, value)
   klass.find_by(key.gsub(' ', '_') => value)
 end
 
+def find_or_create_object(object_type, key, value)
+  find_object(object_type, key,value) || FactoryGirl.create(object_type.gsub(' ', '_'), key => value)
+end
+
 #uses polymorphic path in conjunction with the object to find the path - will usually work, but not for non-standard prefixes
 def generic_object_path(object_type, key, value, prefix = nil)
   klass = class_for_object_type(object_type)

@@ -1,26 +1,26 @@
-Then(/^the file group titled '(.*)' should have a scheduled event with fields:$/) do |title, table|
-  file_group = FileGroup.find_by(title: title)
+Then(/^the (.*) with (.*) '(.*)' should have scheduled events with fields:$/) do |object_type, key, value, table|
+  object = find_object(object_type, key, value)
   table.hashes.each do |hash|
-    file_group.scheduled_events.where(hash).first.should be_truthy
+    object.scheduled_events.find_by(hash).should be_truthy
   end
 end
 
-Given(/^the file group titled '(.*)' has scheduled events with fields:$/) do |title, table|
-  file_group = FileGroup.find_by(title: title)
+Given(/^the (.*) with (.*) '(.*)' has scheduled events with fields:$/) do |object_type, key, value, table|
+  object = find_object(object_type, key, value)
   table.hashes.each do |hash|
-    file_group.scheduled_events.create(hash)
+    object.scheduled_events.create(hash)
   end
 end
 
 Then(/^I should on the edit page for the scheduled event with key '(.*)' and action date '(.*)'$/) do |key, date|
-  current_path.should == edit_scheduled_event_path(ScheduledEvent.where(key: key, action_date: date).first)
+  current_path.should == edit_scheduled_event_path(ScheduledEvent.find_by(key: key, action_date: date))
 end
 
 When(/^I edit the scheduled event with key '(.*)' and action date '(.*)'$/) do |key, date|
-  visit edit_scheduled_event_path(ScheduledEvent.where(key: key, action_date: date).first)
+  visit edit_scheduled_event_path(ScheduledEvent.find_by(key: key, action_date: date))
 end
 
 Then(/^there should be no scheduled event having key '(.*)' and action date '(.*)'$/) do |key, date|
-  ScheduledEvent.where(key: key, action_date: date).first.should == nil
+  ScheduledEvent.find_by(key: key, action_date: date).should == nil
 end
 

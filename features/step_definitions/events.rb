@@ -1,16 +1,16 @@
-And /^the file group titled '(.*)' has an event with key '(.*)' performed by '(.*)'$/ do |title, key, email|
-  file_group = FileGroup.find_by(title: title) || FactoryGirl.create(:file_group, title: title)
-  file_group.events.create(key: key, actor_email: email, date: Date.today)
+And /^the (.*) with (.*) '(.*)' has an event with key '(.*)' performed by '(.*)'$/ do |object_type, key, value, event_key, email|
+  object = find_or_create_object(object_type, key, value)
+  object.events.create(key: event_key, actor_email: email, date: Date.today)
 end
 
 Then /^the (.*) with (.*) '(.*)' should have an event with key '(.*)' performed by '(.*)'$/ do |object_type, key, value, event_key, email|
   find_object(object_type, key, value).events.find_by(key: event_key, actor_email: email).should be_truthy
 end
 
-And(/^the file group titled '(.*)' has events with fields:$/) do |title, table|
-  file_group = FileGroup.find_by(title: title) || FactoryGirl.create(:file_group, title: title)
+And(/^the (.*) with (.*) '(.*)' has events with fields:$/) do |object_type, key, value, table|
+  object = find_or_create_object(object_type, key, value)
   table.hashes.each do |hash|
-    FactoryGirl.create(:event, hash.merge(eventable: file_group))
+    FactoryGirl.create(:event, hash.merge(eventable: object))
   end
 end
 

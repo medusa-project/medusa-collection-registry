@@ -7,7 +7,7 @@ Feature: Scheduled event authorization
     Given the collection with title 'Dogs' has child file groups with fields:
       | title | type              |
       | Toys | BitLevelFileGroup |
-    And the file group titled 'Toys' has scheduled events with fields:
+    And the file group with title 'Toys' has scheduled events with fields:
       | key             | actor_email | action_date | state     |
       | external_to_bit | buster@example.com      | 2012-02-02  | scheduled |
 

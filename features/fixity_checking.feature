@@ -17,14 +17,16 @@ Feature: Fixity Checking
   Scenario: Fixity check against unchanged files from file group level
     When I view the file group with title 'Toys'
     And I click on 'Run fixity check'
-    Then the file group with title 'Toys' should have an event with key 'fixity_check' performed by 'admin@example.com'
+    Then the file group with title 'Toys' should have an event with key 'fixity_check_requested' performed by 'admin@example.com'
     When delayed jobs are run
     Then the cfs file with name 'picture.jpg' should have events with fields:
       | key           | note | cascadable |
       | fixity_result | OK   | false      |
-    Then the cfs file with name 'something.txt' should have events with fields:
+    And the cfs file with name 'something.txt' should have events with fields:
       | key           | note | cascadable |
       | fixity_result | OK   | false      |
+    And the file group with title 'Toys' should have an event with key 'fixity_check_completed' performed by 'admin@example.com'
+
 
   Scenario: Fixity check with changed file from file group level
     When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some changed text'
@@ -39,6 +41,7 @@ Feature: Fixity Checking
       | key           | note   | cascadable |
       | fixity_result | FAILED | true       |
     And the cfs file at path 'dogs/toy-dogs-yorkies/something.txt' for the file group titled 'Toys' should have 1 red flag
+    And the file group with title 'Toys' should have an event with key 'fixity_check_completed' performed by 'admin@example.com'
 
   Scenario: File group without cfs root doesn't have a fixity check link
     When I view the file group with title 'Workers'

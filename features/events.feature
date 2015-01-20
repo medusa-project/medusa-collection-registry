@@ -4,7 +4,7 @@ Feature: Record events
   I want to record import events that happen as we manage digital objects
 
   Background:
-    And the file group titled 'dog-files' has an event with key 'fits_performed' performed by 'admin@example.com'
+    And the file group with title 'dog-files' has an event with key 'fits_performed' performed by 'admin@example.com'
 
   Scenario: Navigate from file group to events for file group
     Given I am logged in as an admin

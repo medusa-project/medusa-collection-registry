@@ -5,10 +5,10 @@ Feature: Dashboard event list
 
   Background:
     Given I am logged in as an admin
-    And the file group titled 'Dogs' has events with fields:
+    And the file group with title 'Dogs' has events with fields:
       | note         |
       | Current Event |
-    And the file group titled 'Dogs' has events with fields:
+    And the file group with title 'Dogs' has events with fields:
       | note      | updated_at |
       | Old Event | 2010-01-01 |
 
