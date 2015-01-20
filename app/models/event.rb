@@ -5,8 +5,14 @@ class Event < ActiveRecord::Base
   validates :actor_email, email: true
   validates_presence_of :date
 
+  before_create :ensure_date
+
   def message
     self.eventable.event_message(self.key)
+  end
+
+  def ensure_date
+    self.date ||= Date.today
   end
 
 end

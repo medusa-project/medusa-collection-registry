@@ -21,6 +21,17 @@ Then(/^the (.*) with (.*) '(.*)' should have events with fields:$/) do |object_t
   end
 end
 
+Then(/^the (.*) with (.*) '(.*)' should have cascadable events with fields:$/) do |object_type, key, value, table|
+  object = find_object(object_type, key, value)
+  table.hashes.each do |hash|
+    object.all_events.detect do |event|
+        hash.keys.all? do |key|
+          event.send(key) == hash[key]
+        end
+    end.should be_truthy
+  end
+end
+
 When(/^I view events for the (.*) with (.*) '(.*)'$/) do |object_type, key, value|
   visit specific_object_path(object_type, key, value, 'events')
 end

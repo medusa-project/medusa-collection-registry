@@ -156,4 +156,8 @@ class FileGroup < ActiveRecord::Base
     self.rights_declaration.public?
   end
 
+  def all_events
+    self.events
+  end
+
 end

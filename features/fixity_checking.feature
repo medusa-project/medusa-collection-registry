@@ -39,10 +39,14 @@ Feature: Fixity Checking
     Then the cfs file with name 'something.txt' should have events with fields:
       | key           | note   | cascadable |
       | fixity_result | FAILED | true       |
+    And the file group with title 'Toys' should have cascadable events with fields:
+      | key           | note   |
+      | fixity_result | FAILED |
     And the file group titled 'Toys' has a cfs file for the path 'yorkies/something.txt' with red flags with fields:
-      | status  | priority| message|
-      | flagged | medium  |Md5 Sum changed. Recorded: 552e21cd4cd9918678e3c1a0df491bc3 Current: c9dbfcbc15a9126cadeeb7af719267a5|
+      | status  | priority | message                                                                                               |
+      | flagged | medium   | Md5 Sum changed. Recorded: 552e21cd4cd9918678e3c1a0df491bc3 Current: c9dbfcbc15a9126cadeeb7af719267a5 |
     And the file group with title 'Toys' should have an event with key 'fixity_check_completed' performed by 'admin@example.com'
+
 
   Scenario: File group without cfs root doesn't have a fixity check link
     When I view the file group with title 'Workers'
@@ -76,3 +80,5 @@ Feature: Fixity Checking
   Scenario: Incorrect fixity events for files are visible from directory events
     When PENDING
 
+  Scenario: File events are all visible at file level
+    When PENDING

@@ -300,6 +300,16 @@ class CfsDirectory < ActiveRecord::Base
     @@supported_event_hash ||= read_event_hash(:cfs_directory)
   end
 
+  #TODO this is a correct but not very efficient way of doing this. To do better we may need to write SQL; I'm not sure
+  #we can do it well with AREL because of the polymorphism.
+  def all_events
+    directory_ids = self.recursive_subdirectory_ids
+    directory_events = Event.where(cascadable: true).where(eventable_type: 'CfsDirectory').where(eventable_id: directory_ids)
+    file_ids = CfsFile.where(cfs_directory_id: directory_ids).pluck(:id)
+    file_events = Event.where(cascadable:true).where(eventable_type: 'CfsFile').where(eventable_id: file_ids)
+    return directory_events + file_events
+  end
+
   protected
 
   def find_file_with_directory_components(file_name, path_components)
