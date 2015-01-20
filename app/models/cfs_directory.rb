@@ -269,22 +269,34 @@ class CfsDirectory < ActiveRecord::Base
     self.destroy!
   end
 
-  protected
-
   #yield each CfsDirectory in the tree to the block.
   def each_directory_in_tree(include_self = true)
-    #for roots we can do this easily - for non roots we need to do it
-    #recursively
-    if self.file_group_root?
-      directories = CfsDirectory.where(root_cfs_directory_id: self.id)
-    else
-      directories = CfsDirectory.where(id: self.recursive_subdirectory_ids)
-    end
-    (directories = directories - [self]) unless include_self
-    directories.each do |directory|
+    self.directories_in_tree(include_self).each do |directory|
       yield directory
     end
   end
+
+  #yield each file in the tree to the block
+  def each_file_in_tree
+    self.directories_in_tree.find_all.each do |directory|
+      directory.cfs_files.each do |cfs_file|
+        yield cfs_file
+      end
+    end
+  end
+
+  def directories_in_tree(include_self = true)
+    #for roots we can do this easily - for non roots we need to do it recursively
+    directories = if self.file_group_root?
+                    CfsDirectory.where(root_cfs_directory_id: self.id)
+                  else
+                    CfsDirectory.where(id: self.recursive_subdirectory_ids)
+                  end
+    (directories = directories - [self]) unless include_self
+    directories
+  end
+
+  protected
 
   def find_file_with_directory_components(file_name, path_components)
     directory = self.subdirectory_with_directory_components(path_components)
