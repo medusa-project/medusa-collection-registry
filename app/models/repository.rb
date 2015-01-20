@@ -43,8 +43,8 @@ class Repository < ActiveRecord::Base
     self.title
   end
 
-  def all_events
-    self.collections.collect { |collection| collection.all_events }.flatten
+  def cascaded_events
+    self.collections.collect { |collection| collection.cascaded_events }.flatten
   end
 
   def all_scheduled_events

@@ -156,7 +156,7 @@ class FileGroup < ActiveRecord::Base
     self.rights_declaration.public?
   end
 
-  def all_events
+  def cascaded_events
     self.events
   end
 

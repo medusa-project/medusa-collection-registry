@@ -302,7 +302,7 @@ class CfsDirectory < ActiveRecord::Base
 
   #TODO this is a correct but not very efficient way of doing this. To do better we may need to write SQL; I'm not sure
   #we can do it well with AREL because of the polymorphism.
-  def all_events
+  def cascaded_events
     directory_ids = self.recursive_subdirectory_ids
     directory_events = Event.where(cascadable: true).where(eventable_type: 'CfsDirectory').where(eventable_id: directory_ids)
     file_ids = CfsFile.where(cfs_directory_id: directory_ids).pluck(:id)

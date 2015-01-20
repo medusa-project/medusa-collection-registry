@@ -89,7 +89,7 @@ class CollectionsController < ApplicationController
 
   def events
     @scheduled_eventable = @eventable = Collection.find(params[:id])
-    @events = @eventable.all_events.sort_by(&:date).reverse
+    @events = @eventable.cascaded_events.sort_by(&:date).reverse
     @scheduled_events = @scheduled_eventable.incomplete_scheduled_events.sort_by(&:action_date)
   end
 

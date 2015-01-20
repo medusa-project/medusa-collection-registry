@@ -160,9 +160,9 @@ class BitLevelFileGroup < FileGroup
     self.cfs_directory(true)
   end
 
-  def all_events
+  def cascaded_events
     directory_events = if self.cfs_directory
-      self.cfs_directory.all_events
+      self.cfs_directory.cascaded_events
     else
       []
     end

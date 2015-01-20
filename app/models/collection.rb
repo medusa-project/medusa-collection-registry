@@ -89,8 +89,8 @@ class Collection < ActiveRecord::Base
     (self.assessments + self.file_groups.collect { |file_group| file_group.assessments }.flatten)
   end
 
-  def all_events
-    self.file_groups.collect { |file_group| file_group.all_events }.flatten
+  def cascaded_events
+    self.file_groups.collect { |file_group| file_group.cascaded_events }.flatten
   end
 
   def all_scheduled_events
