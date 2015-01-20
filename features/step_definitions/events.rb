@@ -3,9 +3,8 @@ And /^the file group titled '(.*)' has an event with key '(.*)' performed by '(.
   file_group.events.create(key: key, actor_email: email, date: Date.today)
 end
 
-Then /^the file group titled '(.*)' should have an event with key '(.*)' performed by '(.*)'$/ do |title, key, email|
-  file_group = FileGroup.find_by(title: title)
-  file_group.events.where(key: key, actor_email: email).first.should be_truthy
+Then /^the (.*) with (.*) '(.*)' should have an event with key '(.*)' performed by '(.*)'$/ do |object_type, key, value, event_key, email|
+  find_object(object_type, key, value).events.find_by(key: event_key, actor_email: email).should be_truthy
 end
 
 And(/^the file group titled '(.*)' has events with fields:$/) do |title, table|
@@ -15,10 +14,10 @@ And(/^the file group titled '(.*)' has events with fields:$/) do |title, table|
   end
 end
 
-Then(/^the file group titled '(.*)' should have an event with fields:$/) do |title, table|
-  file_group = FileGroup.find_by(title: title)
+Then(/^the (.*) with (.*) '(.*)' should have events with fields:$/) do |object_type, key, value, table|
+  object = find_object(object_type, key, value)
   table.hashes.each do |hash|
-    file_group.events.where(hash).first.should be_truthy
+    object.events.find_by(hash).should be_truthy
   end
 end
 

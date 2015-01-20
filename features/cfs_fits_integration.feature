@@ -90,7 +90,7 @@ Feature: CFS FITS integration
     Then the file group titled 'Toys' should have a cfs file for the path 'text.txt' with fits attached
     And the file group titled 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
     And I should see 'Scheduling FITS creation for /dogs/toy-dogs'
-    And the file group titled 'Toys' should have an event with key 'cfs_fits_performed' performed by 'admin@example.com'
+    And the file group with title 'Toys' should have an event with key 'cfs_fits_performed' performed by 'admin@example.com'
 
   Scenario: Run fits on a file group as an admin as a manager
     Given I am logged in as a manager
@@ -99,4 +99,4 @@ Feature: CFS FITS integration
     Then the file group titled 'Toys' should have a cfs file for the path 'text.txt' with fits attached
     And the file group titled 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
     And I should see 'Scheduling FITS creation for /dogs/toy-dogs'
-    And the file group titled 'Toys' should have an event with key 'cfs_fits_performed' performed by 'manager@example.com'
+    And the file group with title 'Toys' should have an event with key 'cfs_fits_performed' performed by 'manager@example.com'
