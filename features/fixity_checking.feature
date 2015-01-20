@@ -15,10 +15,30 @@ Feature: Fixity Checking
     And the file group titled 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
 
   Scenario: Fixity check against unchanged files from file group level
-    When PENDING
+    When I view the file group with title 'Toys'
+    And I click on 'Run fixity check'
+    Then the file group titled 'Toys' should have an event with key 'fixity_check' performed by 'admin@example.com'
+    When delayed jobs are run
+    Then the cfs file with name 'picture.jpg' should have events with fields:
+      | key           | note | cascadable |
+      | fixity_result | OK   | false      |
+    Then the cfs file with name 'something.txt' should have events with fields:
+      | key           | note | cascadable |
+      | fixity_result | OK   | false      |
 
   Scenario: Fixity check with changed file from file group level
-    When PENDING
+    When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some changed text'
+    And I view the file group with title 'Toys'
+    And I click on 'Run fixity check'
+    Then the file group titled 'Toys' should have an event with key 'fixity_check' performed by 'admin@example.com'
+    When delayed jobs are run
+    Then the cfs file with name 'picture.jpg' should have events with fields:
+      | key           | note | cascadable |
+      | fixity_result | OK   | false      |
+    Then the cfs file with name 'something.txt' should have events with fields:
+      | key           | note   | cascadable |
+      | fixity_result | FAILED | true       |
+    And the cfs file at path 'dogs/toy-dogs-yorkies/something.txt' for the file group titled 'Toys' should have 1 red flag
 
   Scenario: File group without cfs root doesn't have a fixity check link
     When I view the file group with title 'Workers'
@@ -39,6 +59,7 @@ Feature: Fixity Checking
   Scenario: Visitors and public cannot order fixity checks
     When PENDING
 
+  #These might be better moved to a separate feature for cascadable events
   Scenario: Correct fixity events for files are not visible from file group events
     When PENDING
 
