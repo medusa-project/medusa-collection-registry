@@ -1,6 +1,11 @@
 MedusaRails3::Application.routes.draw do
 
   resources :static_pages, only: [:show, :edit, :update], param: :key
+  match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
+  match '/login', to: 'sessions#new', as: :login, via: [:get, :post]
+  match '/logout', to: 'sessions#destroy', as: :logout, via: [:get, :post]
+  match '/unauthorized', to: 'sessions#unauthorized', as: :unauthorized, via: [:get, :post]
+  match '/unauthorized_net_id', to: 'sessions#unauthorized_net_id', as: :unauthorized_net_id, via: [:get, :post]
 
   #This lets us start up in a mode where only a down page is shown
   if ENV['MEDUSA_DOWN'] == 'true'
@@ -129,11 +134,6 @@ MedusaRails3::Application.routes.draw do
 
   resources :uuids, only: [:show]
 
-  match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
-  match '/login', to: 'sessions#new', as: :login, via: [:get, :post]
-  match '/logout', to: 'sessions#destroy', as: :logout, via: [:get, :post]
-  match '/unauthorized', to: 'sessions#unauthorized', as: :unauthorized, via: [:get, :post]
-  match '/unauthorized_net_id', to: 'sessions#unauthorized_net_id', as: :unauthorized_net_id, via: [:get, :post]
   match '/dashboard', to: 'dashboard#show', as: :dashboard, via: [:get, :post]
 
   namespace :book_tracker do

@@ -36,4 +36,14 @@ module CascadedEventable
     end
   end
 
+  #this method is to give uncascaded events belonging directly to the object together with cascaded events
+  def combined_events
+    uncascaded_events = if self.respond_to?(:events)
+      self.events.where(cascadable: false)
+    else
+      Array.new
+    end
+    return (self.cascaded_events + uncascaded_events).sortby(:created_at).reverse
+  end
+
 end
