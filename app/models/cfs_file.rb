@@ -110,14 +110,16 @@ class CfsFile < ActiveRecord::Base
   end
 
   def update_content_type_from_fits(new_content_type_name)
+    #don't update something to a less specific content type
+    return if new_content_type_name == 'application/octet-stream' and self.content_type_name.present?
     if self.content_type_name != new_content_type_name
       #For this one we don't report a red flag if this is the first generation of
       #the fits xml overwriting the content type found by the 'file' command
       unless self.content_type.blank? or self.fits_xml_was.blank?
         self.red_flags.create(message: "Content Type changed. Old: #{self.content_type_name} New: #{new_content_type_name}")
       end
+      self.content_type_name = new_content_type_name
     end
-    self.content_type_name = new_content_type_name
   end
 
   def public?
