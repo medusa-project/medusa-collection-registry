@@ -103,7 +103,6 @@ class CfsFile < ActiveRecord::Base
       self.red_flags.create(message: "Md5 Sum changed. Old: #{self}.md5_sum} New: #{new_md5_sum}}") unless self.md5_sum.blank?
       self.md5_sum = new_md5_sum
     end
-
   end
 
   def update_content_type_from_fits(new_content_type_name)
