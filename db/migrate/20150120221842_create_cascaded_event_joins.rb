@@ -1,3 +1,4 @@
+#see concerns/cascaded_eventable
 class CreateCascadedEventJoins < ActiveRecord::Migration
   def change
     create_table :cascaded_event_joins do |t|

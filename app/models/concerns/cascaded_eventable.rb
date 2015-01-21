@@ -1,3 +1,8 @@
+#in conjunction with CascadedEventJoin this allows a simple way for Events from child objects to be associated to
+#their ancestors, as defined by the parent option of cascades_events. When an event that is cascadable is created for
+#an object then if that object includes CascadedEventable then a CascadedEventJoin is created between the event and that
+#object. As long as ancestors are found such entries are created for each ancestor as well. Then an ancestor can find
+#all of these events by using the cascaded_events association.
 require 'active_support/concern'
 
 module CascadedEventable

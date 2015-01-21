@@ -25,7 +25,7 @@ class Event < ActiveRecord::Base
 
   def self.rebuild_cascaded_event_cache
     CascadedEventJoin.find_each {|cascaded_event_join| cascaded_event_join.destroy}
-    self.find_each do |event|
+    self.where(cascadable: true).find_each do |event|
       event.maybe_cascade
     end
   end
