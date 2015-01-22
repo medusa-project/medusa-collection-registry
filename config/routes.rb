@@ -41,14 +41,10 @@ MedusaRails3::Application.routes.draw do
   [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
     resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy],
               concerns: %i(eventable red_flaggable public assessable attachable) do
-      member do
-        post 'create_cfs_fits'
-        post 'create_virus_scan'
-        post 'create_amazon_backup'
-        post 'create_initial_cfs_assessment' if file_group_type == :bit_level_file_groups
-        post 'ingest' if file_group_type == :external_file_groups
-        post 'fixity_check' if file_group_type == :bit_level_file_groups
-      end
+      %w(create_cfs_fits create_virus_scan create_amazon_backup fixity_check create_initial_cfs_assessment).each do |action|
+        post action, on: :member
+      end if file_group_type == :bit_level_file_groups
+      post 'ingest', on: :member if file_group_type == :external_file_groups
       post 'bulk_amazon_backup', on: :collection
     end
   end
@@ -62,28 +58,14 @@ MedusaRails3::Application.routes.draw do
   resources :package_profiles, concerns: :collection_indexer
   resources :virus_scans, only: :show
   resources :scheduled_events, only: [:edit, :update, :create, :destroy] do
-    post 'complete', on: :member
-    post 'cancel', on: :member
+    %w(complete cancel).each { |action| post action, on: :member }
   end
 
   resources :cfs_files, only: :show, concerns: %i(public downloadable eventable fixity_checkable) do
-    member do
-      get 'public_download'
-      get 'public_view'
-      get 'create_fits_xml'
-      get 'fits'
-      get 'view'
-      get 'preview_image'
-      get 'public_preview_image'
-      get 'preview_video'
-    end
+    %w(public_download public_view create_fits_xml fits view preview_image public_preview_image preview_video).each { |action| get action, on: :member }
   end
   resources :cfs_directories, only: :show, concerns: %i(public fixity_checkable eventable) do
-    member do
-      post 'create_fits_for_tree'
-      post 'export'
-      post 'export_tree'
-    end
+    %w(create_fits_for_tree export export_tree).each { |action| post action, on: :member }
   end
 
   resources :searches, only: [] do

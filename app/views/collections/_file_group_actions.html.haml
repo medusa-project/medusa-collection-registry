@@ -14,10 +14,10 @@
 - if file_group.is_a?(BitLevelFileGroup)
   .fits-actions
     %strong FITS
-    = link_to 'Run', create_cfs_fits_file_group_path(file_group), method: 'post', remote: 'true'
+    = small_run_button(create_cfs_fits_bit_level_file_group_path(file_group), remote: 'true')
   .virus-scan-actions
     %strong Virus Scan
     - if file_group.virus_scans.present?
       = small_view_button(virus_scan_path(file_group.virus_scans.order('created_at desc').first))
       |
-    = link_to 'Run', create_virus_scan_file_group_path(file_group, format: 'js'), method: 'post', remote: 'true'
+    = small_run_button(create_virus_scan_bit_level_file_group_path(file_group, format: 'js'), remote: 'true')

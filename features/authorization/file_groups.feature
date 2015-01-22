@@ -8,8 +8,8 @@ Feature: File group authorization
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | title  |
-      | images |
+      | title  | type              |
+      | images | BitLevelFileGroup |
 
   Scenario: Enforce permissions
     Then deny object permission on the file group with title 'images' to users for action with redirection:
