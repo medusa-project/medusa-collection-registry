@@ -15,125 +15,79 @@ MedusaRails3::Application.routes.draw do
     root to: 'static_pages#show', key: 'landing'
   end
 
-  resources :collections do
-    member do
-      get 'red_flags'
-      get 'events'
-      get 'public'
-      get 'assessments'
-      get 'attachments'
-    end
-  end
-  resources :repositories do
-    collection do
-      get 'edit_ldap_admins'
-    end
-    member do
-      get 'red_flags'
-      get 'events'
-      get 'assessments'
-      put 'update_ldap_admin'
-      get 'collections'
-    end
+  concern :eventable, Proc.new { member { get 'events' } }
+  concern :red_flaggable, Proc.new { member { get 'red_flags' } }
+  concern :public, Proc.new { member { get 'public' } }
+  concern :assessable, Proc.new { member { get 'assessments' } }
+  concern :attachable, Proc.new { member { get 'attachments' } }
+  concern :downloadable, Proc.new { member { get 'download' } }
+  concern :collection_indexer, Proc.new { member { get 'collections' } }
+  concern :fixity_checkable, Proc.new { member { post 'fixity_check' } }
+
+  resources :collections, concerns: %i(eventable red_flaggable public assessable attachable)
+
+  resources :repositories, concerns: %i(eventable red_flaggable assessable collection_indexer) do
+    get 'edit_ldap_admins', on: :collection
+    put 'update_ldap_admin', on: :member
   end
   resources :institutions
   resources :assessments, only: [:show, :edit, :update, :new, :create, :destroy]
-  resources :attachments, only: [:show, :edit, :update, :new, :create, :destroy] do
-    member do
-      get 'download'
-    end
-  end
+  resources :attachments, only: [:show, :edit, :update, :new, :create, :destroy], concerns: :downloadable
+
   resources :events do
-    collection do
-      get :autocomplete_user_email
-    end
+    get :autocomplete_user_email, on: :collection
   end
 
   [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
-    resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy] do
+    resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy],
+              concerns: %i(eventable red_flaggable public assessable attachable) do
       member do
         post 'create_cfs_fits'
-        get 'events'
-        get 'red_flags'
-        get 'public'
-        get 'assessments'
-        get 'attachments'
         post 'create_virus_scan'
         post 'create_amazon_backup'
         post 'create_initial_cfs_assessment' if file_group_type == :bit_level_file_groups
         post 'ingest' if file_group_type == :external_file_groups
         post 'fixity_check' if file_group_type == :bit_level_file_groups
       end
-      collection do
-        post 'bulk_amazon_backup'
-      end
+      post 'bulk_amazon_backup', on: :collection
     end
   end
 
   resources :red_flags, only: [:show, :edit, :update] do
-    member do
-      post 'unflag'
-    end
+    post 'unflag', on: :member
   end
 
   resources :producers
-  resources :access_systems do
-    member do
-      get 'collections'
-    end
-  end
-  resources :package_profiles do
-    member do
-      get 'collections'
-    end
-  end
-  resources :directories, only: :show
-  resources :files, only: :show, controller: "bit_files" do
-    member do
-      get 'contents'
-      get 'view_fits_xml'
-      get 'create_fits_xml'
-    end
-  end
+  resources :access_systems, concerns: :collection_indexer
+  resources :package_profiles, concerns: :collection_indexer
   resources :virus_scans, only: :show
   resources :scheduled_events, only: [:edit, :update, :create, :destroy] do
-    member do
-      post 'complete'
-      post 'cancel'
-    end
+    post 'complete', on: :member
+    post 'cancel', on: :member
   end
 
-  resources :cfs_files, only: :show do
+  resources :cfs_files, only: :show, concerns: %i(public downloadable eventable fixity_checkable) do
     member do
-      get 'public'
       get 'public_download'
       get 'public_view'
       get 'create_fits_xml'
       get 'fits'
-      get 'download'
       get 'view'
       get 'preview_image'
       get 'public_preview_image'
       get 'preview_video'
-      get 'events'
-      post 'fixity_check'
     end
   end
-  resources :cfs_directories, only: :show do
+  resources :cfs_directories, only: :show, concerns: %i(public fixity_checkable eventable) do
     member do
       post 'create_fits_for_tree'
       post 'export'
       post 'export_tree'
-      post 'fixity_check'
-      get 'public'
-      get 'events'
     end
   end
 
   resources :searches, only: [] do
-    collection do
-      post :filename
-    end
+    post :filename, on: :collection
   end
 
   resources :uuids, only: [:show]
