@@ -16,6 +16,6 @@
   - if @file_group.is_a?(ExternalFileGroup) and @file_group.ready_for_bit_level_ingest? and safe_can?(:ingest, @file_group)
     = link_to 'Approve for ingest', ingest_external_file_group_path(@file_group), method: :post, class: 'btn btn-default', data: {confirm: 'Are you sure?'}
   - if @file_group.is_a?(BitLevelFileGroup) and @file_group.cfs_directory.present? and safe_can?(:edit, @file_group)
-    = link_to 'Run fixity check', fixity_check_bit_level_file_group_path(@file_group), method: :post, class: 'btn btn-default', data: {confirm: 'Are you sure?'}
+    = fixity_check_button(fixity_check_bit_level_file_group_path(@file_group))
   = delete_button(@file_group)
   = edit_button(@file_group)

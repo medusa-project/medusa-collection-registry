@@ -1,0 +1,20 @@
+.row
+  .col-xs-5
+    = breadcrumbs(@directory)
+  .col-xs-7
+    .btn-group.pull-right
+      - if @directory.public? and public_view_on?
+        = link_to 'Public View', public_cfs_directory_path(@directory), class: 'btn btn-default'
+      = events_button(events_cfs_directory_path(@directory))
+      = link_to 'Create FITS for tree', create_fits_for_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
+      = fixity_check_button(fixity_check_cfs_directory_path(@directory))
+      - if can? :export, @file_group
+        = link_to 'Download Files', export_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
+        = link_to 'Download Files and All Subdirectories', export_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
+
+%br
+
+%h3 Directory: #{@directory.path}
+%p UUID: #{@directory.uuid}
+
+= yield

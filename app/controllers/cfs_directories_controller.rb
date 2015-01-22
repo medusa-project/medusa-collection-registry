@@ -42,4 +42,26 @@ class CfsDirectoriesController < ApplicationController
     Job::CfsDirectoryExport.create_for(@directory, current_user, true)
   end
 
+  def fixity_check
+    @directory = CfsDirectory.find(params[:id])
+    @file_group = @directory.owning_file_group
+    authorize! :update, @file_group
+    @directory.transaction do
+      @directory.events.create(key: 'fixity_check_scheduled', date: Date.today, actor_email: current_user.email)
+      if Job::FixityCheck.find_by(fixity_checkable: @directory)
+        flash[:notice] = "Fixity check already scheduled for this cfs directory"
+      else
+        Job::FixityCheck.create_for(@directory, @directory, current_user)
+        flash[:notice] = 'Fixity check scheduled'
+      end
+    end
+    redirect_to @directory
+  end
+
+  def events
+    @directory = CfsDirectory.find(params[:id])
+    @eventable = @directory
+    @events = @eventable.combined_events
+  end
+
 end

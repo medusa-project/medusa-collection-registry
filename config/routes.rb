@@ -122,7 +122,9 @@ MedusaRails3::Application.routes.draw do
       post 'create_fits_for_tree'
       post 'export'
       post 'export_tree'
+      post 'fixity_check'
       get 'public'
+      get 'events'
     end
   end
 

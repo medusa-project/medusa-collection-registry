@@ -43,7 +43,7 @@ module CascadedEventable
     else
       Array.new
     end
-    return (self.cascaded_events + uncascaded_events).sortby(:created_at).reverse
+    return (self.cascaded_events + uncascaded_events).sort{|a, b| b.created_at <=> a.created_at}
   end
 
 end

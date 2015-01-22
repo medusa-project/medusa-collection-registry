@@ -10,7 +10,7 @@ class Job::FixityCheck < ActiveRecord::Base
   validates_uniqueness_of :fixity_checkable_id, scope: :fixity_checkable_type
 
   def self.create_for(fixity_checkable, cfs_directory, user)
-    Delayed::Job.enqueue(self.create(fixity_checkable: fixity_checkable, cfs_directory: cfs_directory, user: user), priority: 50)
+    Delayed::Job.enqueue(self.create!(fixity_checkable: fixity_checkable, cfs_directory: cfs_directory, user: user), priority: 50)
   end
 
   def perform
@@ -18,7 +18,8 @@ class Job::FixityCheck < ActiveRecord::Base
     generate_results_file
     results = generate_results_hash
     interpret_results_hash(results)
-    self.fixity_checkable.events.create(key: 'fixity_check_completed', date: Date.today, actor_email: user.email)
+    self.fixity_checkable.events.create!(key: 'fixity_check_completed', date: Date.today, actor_email: user.email)
+    x = self.fixity_checkable.events(true).load
     delete_manifest_and_results_files
   end
 

@@ -2,6 +2,7 @@ require 'pathname'
 class CfsDirectory < ActiveRecord::Base
   include Uuidable
   include Breadcrumb
+  include Eventable
   include CascadedEventable
 
   has_many :subdirectories, class_name: 'CfsDirectory', foreign_key: :parent_cfs_directory_id, dependent: :destroy
@@ -300,6 +301,10 @@ class CfsDirectory < ActiveRecord::Base
 
   def supported_event_hash
     @@supported_event_hash ||= read_event_hash(:cfs_directory)
+  end
+
+  def label
+    self.path
   end
 
   protected

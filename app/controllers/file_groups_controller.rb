@@ -97,7 +97,7 @@ class FileGroupsController < ApplicationController
   def events
     @eventable = FileGroup.find(params[:id])
     @file_group = @eventable
-    @events = @eventable.events
+    @events = @eventable.combined_events
     @scheduled_eventable = @eventable
     @scheduled_events = @scheduled_eventable.scheduled_events
   end

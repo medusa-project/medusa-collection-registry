@@ -146,6 +146,10 @@ class CfsFile < ActiveRecord::Base
     Digest::MD5.file(self.absolute_path).hexdigest
   end
 
+  def parent
+    self.cfs_directory
+  end
+
   protected
 
   def add_cfs_directory_tree_stats
