@@ -1,3 +1,5 @@
+#For the loading to work correctly the base key has to be the class where Eventable is included.
+#So for STI like file group we can't have different events available for each type; it has to be the base class here
 file_group:
   external_staged: External file group staged
   staged_to_bit: Staged files ingested to bit-level store

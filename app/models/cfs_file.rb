@@ -3,7 +3,6 @@ require 'digest/md5'
 
 class CfsFile < ActiveRecord::Base
   include Eventable
-  initialize_event_hash(:cfs_file)
   include CascadedEventable
   include Uuidable
   include Breadcrumb

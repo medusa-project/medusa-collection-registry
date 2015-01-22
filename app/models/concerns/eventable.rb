@@ -6,6 +6,9 @@ module Eventable
   included do
     has_many :events, -> { order 'date DESC' }, as: :eventable, dependent: :destroy
     class_attribute :supported_event_hash
+    x = self
+    puts x.to_s
+    initialize_event_hash(self.to_s.underscore)
   end
 
   module ClassMethods

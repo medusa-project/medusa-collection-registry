@@ -2,9 +2,7 @@ require 'email_person_associator'
 
 class FileGroup < ActiveRecord::Base
   include Eventable
-  initialize_event_hash(:file_group)
   include ScheduledEventable
-  initialize_scheduled_event_hash(:file_group)
   include CascadedEventable
   include Uuidable
   include Breadcrumb

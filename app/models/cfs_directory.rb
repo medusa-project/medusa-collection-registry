@@ -4,7 +4,6 @@ class CfsDirectory < ActiveRecord::Base
   include Uuidable
   include Breadcrumb
   include Eventable
-  initialize_event_hash(:cfs_directory)
   include CascadedEventable
 
   has_many :subdirectories, class_name: 'CfsDirectory', foreign_key: :parent_cfs_directory_id, dependent: :destroy

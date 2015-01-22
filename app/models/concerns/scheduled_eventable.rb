@@ -5,6 +5,7 @@ module ScheduledEventable
   included do
     has_many :scheduled_events, -> { order 'action_date ASC' }, as: :scheduled_eventable, dependent: :destroy
     class_attribute :supported_scheduled_event_hash
+    initialize_scheduled_event_hash(self.to_s.underscore)
   end
 
   module ClassMethods
