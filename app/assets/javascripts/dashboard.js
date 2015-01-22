@@ -49,7 +49,7 @@ function initializeChart(storage) {
             sliced: false,
             selected: true
           },
-          ['Free space', storage["free"] / storage["total"] ],
+          ['Free space', storage["free"] / storage["total"] ]
         ]}
     ]})
 };

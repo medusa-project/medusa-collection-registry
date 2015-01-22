@@ -17,7 +17,7 @@ initialize_data_table('table#red-flags-table', {
     [3, "asc"],
     [2, "desc"]
   ]
-})
+});
 
 var red_flag_filter = {
   all: function () {

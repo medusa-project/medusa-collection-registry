@@ -23,7 +23,7 @@ $.extend($.fn.datepicker.defaults, {
 		}
     return a.getFullYear() + "-" + b + "-" + c;
 	}
-})
+});
 
 /**
  * Toggle collapse the sidebar

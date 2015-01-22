@@ -73,4 +73,8 @@ module ButtonsHelper
     link_to 'Run', url, options.reverse_merge(method: :post, class: 'btn btn-default btn-xs')
   end
 
+  def cancel_button(url_or_object)
+    link_to 'Cancel', url_or_object, class: 'btn btn-default'
+  end
+
 end
