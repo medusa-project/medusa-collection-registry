@@ -53,10 +53,47 @@ Feature: Fixity Checking
     Then I should not see 'Run fixity check'
 
   Scenario: Fixity check against unchanged files from directory level
-    When PENDING
+    When I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
+    And I click on 'Run fixity check'
+    Then the cfs directory with path 'yorkies' should have an event with key 'fixity_check_scheduled' performed by 'admin@example.com'
+    When delayed jobs are run
+    And the cfs file with name 'something.txt' should have events with fields:
+      | key           | note | cascadable |
+      | fixity_result | OK   | false      |
+    And the cfs file with name 'picture.jpg' should have 0 events
+    And the cfs directory with path 'yorkies' should have an event with key 'fixity_check_completed' performed by 'admin@example.com'
+    When I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
+    And I click on 'Events'
+    Then I should see all of:
+      | Fixity check scheduled | Fixity check completed |
+    And I should see none of:
+      | Fixity result | OK |
+    When I view the file group with title 'Toys'
+    And I click on 'Events'
+    Then I should see all of:
+      | Fixity check scheduled | Fixity check completed |
+    And I should see none of:
+      | Fixity result | OK |
 
   Scenario: Fixity check with changed file from directory level
-    When PENDING
+    When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some changed text'
+    And I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
+    And I click on 'Run fixity check'
+    Then the cfs directory with path 'yorkies' should have an event with key 'fixity_check_scheduled' performed by 'admin@example.com'
+    When delayed jobs are run
+    And the cfs file with name 'something.txt' should have events with fields:
+      | key           | note   | cascadable |
+      | fixity_result | FAILED | true       |
+    And the cfs file with name 'picture.jpg' should have 0 events
+    And the cfs directory with path 'yorkies' should have an event with key 'fixity_check_completed' performed by 'admin@example.com'
+    When I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
+    And I click on 'Events'
+    Then I should see all of:
+      | Fixity check scheduled | Fixity check completed | Fixity result | FAILED |
+    When I view the file group with title 'Toys'
+    And I click on 'Events'
+    Then I should see all of:
+      | Fixity check scheduled | Fixity check completed | Fixity result | FAILED |
 
   Scenario: Fixity check of unchanged file from file level
     When PENDING
@@ -65,19 +102,6 @@ Feature: Fixity Checking
     When PENDING
 
   Scenario: Visitors and public cannot order fixity checks
-    When PENDING
-
-  #These might be better moved to a separate feature for cascadable events
-  Scenario: Correct fixity events for files are not visible from file group events
-    When PENDING
-
-  Scenario: Incorrect fixity events for files are visible from file group events
-    When PENDING
-
-  Scenario: Correct fixity events for files are not visible from directory events
-    When PENDING
-
-  Scenario: Incorrect fixity events for files are visible from directory events
     When PENDING
 
   Scenario: File events are all visible at file level
