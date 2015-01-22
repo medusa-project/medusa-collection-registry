@@ -96,13 +96,42 @@ Feature: Fixity Checking
       | Fixity check scheduled | Fixity check completed | Fixity result | FAILED |
 
   Scenario: Fixity check of unchanged file from file level
-    When PENDING
+    When I view the cfs file for the file group titled 'Toys' for the path 'yorkies/something.txt'
+    And I click on 'Run fixity check'
+    And the cfs file with name 'something.txt' should have events with fields:
+      | key              | note | cascadable | actor_email       |
+      | fixity_check_run |      | false      | admin@example.com |
+      | fixity_result    | OK   | false      | admin@example.com |
+    When I view the cfs file for the file group titled 'Toys' for the path 'yorkies/something.txt'
+    And I click on 'Events'
+    Then I should see all of:
+      | Fixity check run | Fixity result | OK |
+    When I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
+    And I click on 'Events'
+    Then I should see none of:
+      | Fixity check run | Fixity result | OK |
 
   Scenario: Fixity check of changed file from file level
-    When PENDING
+    When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some changed text'
+    And I view the cfs file for the file group titled 'Toys' for the path 'yorkies/something.txt'
+    And I click on 'Run fixity check'
+    And the cfs file with name 'something.txt' should have events with fields:
+      | key              | note   | cascadable | actor_email       |
+      | fixity_check_run |        | false      | admin@example.com |
+      | fixity_result    | FAILED | true       | admin@example.com |
+    When I view the cfs file for the file group titled 'Toys' for the path 'yorkies/something.txt'
+    And I click on 'Events'
+    Then I should see all of:
+      | Fixity check run | Fixity result | FAILED |
+    When I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
+    And I click on 'Events'
+    Then I should see none of:
+      | Fixity check run |
+    And I should see all of:
+      | Fixity result | FAILED |
 
   Scenario: Visitors and public cannot order fixity checks
     When PENDING
 
-  Scenario: File events are all visible at file level
+  Scenario: Failed fixity events are visible all the way up to the repository level
     When PENDING

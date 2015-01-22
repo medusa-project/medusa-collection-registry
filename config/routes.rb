@@ -115,6 +115,8 @@ MedusaRails3::Application.routes.draw do
       get 'preview_image'
       get 'public_preview_image'
       get 'preview_video'
+      get 'events'
+      post 'fixity_check'
     end
   end
   resources :cfs_directories, only: :show do

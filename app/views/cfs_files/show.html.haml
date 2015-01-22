@@ -1,39 +1,30 @@
-.row
-  .col-xs-7
-    = breadcrumbs(@file)
-  .col-xs-5
-    .btn-group.pull-right
-      - if @file.public? and public_view_on?
-        = link_to 'Public View', public_cfs_file_path(@file), class: 'btn btn-default'
-      = download_button(download_cfs_file_path(@file))
-      = view_button(view_cfs_file_path(@file))
+= render layout: 'layout_single' do
+  %h1 File information
 
-%h1 File information
-
-.row
-  #cfs-file-metadata.col-sm-4
-    = show_value @file.name, 'File name'
-    = show_value 'bit-level', 'Storage level'
-    = show_value @file.md5_sum, 'MD5'
-    = show_value @file.uuid, 'UUID'
-    %p
-      %strong FITS:
-      - if @file.fits_xml
-        = small_view_button(fits_cfs_file_path(@file, format: :xml))
-      -else
-        = small_create_button(create_fits_xml_cfs_file_path(@file))
-    - if @file_group
+  .row
+    #cfs-file-metadata.col-sm-4
+      = show_value @file.name, 'File name'
+      = show_value 'bit-level', 'Storage level'
+      = show_value @file.md5_sum, 'MD5'
+      = show_value @file.uuid, 'UUID'
       %p
-        %strong Belongs to:
-        #{link_to(@file_group.title, @file_group)}
-    - if @file.size
-      = show_value @file.size.to_formatted_s(:human_size, precision: 3), 'File size'
-    = show_value @file.content_type_name, 'Mimetype'
-    - if @file.red_flags.present?
-      %div
-        Red flags:
-        %ul
-          - @file.red_flags.each do |red_flag|
-            %li= red_flag.message
-  .col-sm-8
-    = render "preview_viewer_#{@preview_viewer_type}"
+        %strong FITS:
+        - if @file.fits_xml
+          = small_view_button(fits_cfs_file_path(@file, format: :xml))
+        -else
+          = small_create_button(create_fits_xml_cfs_file_path(@file))
+      - if @file_group
+        %p
+          %strong Belongs to:
+          #{link_to(@file_group.title, @file_group)}
+      - if @file.size
+        = show_value @file.size.to_formatted_s(:human_size, precision: 3), 'File size'
+      = show_value @file.content_type_name, 'Mimetype'
+      - if @file.red_flags.present?
+        %div
+          Red flags:
+          %ul
+            - @file.red_flags.each do |red_flag|
+              %li= red_flag.message
+    .col-sm-8
+      = render "preview_viewer_#{@preview_viewer_type}"
