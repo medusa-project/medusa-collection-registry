@@ -21,7 +21,7 @@ class DashboardController < ApplicationController
         h[row[:type]] = {count: row[:count], size: row[:size]}
       end
     end
-    ['ExternalFileGroup', 'BitLevelFileGroup'].each do |type|
+    %w(ExternalFileGroup BitLevelFileGroup).each do |type|
       @full_storage_summary[type] ||= {count: 0, size: 0}
     end
     ingested_external_storage =
@@ -43,7 +43,7 @@ class DashboardController < ApplicationController
         h[row.repository_id][row.type] = {count: row.count, size: row.size}
       end
     end
-    ['ExternalFileGroup', 'BitLevelFileGroup'].each do |type|
+    %w(ExternalFileGroup BitLevelFileGroup).each do |type|
       @repository_storage_summary.each do |repository_id, summary|
         summary[type] ||= {count: 0, size: 0}
       end

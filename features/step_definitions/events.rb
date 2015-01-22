@@ -25,8 +25,8 @@ Then(/^the (.*) with (.*) '(.*)' should have cascadable events with fields:$/) d
   object = find_object(object_type, key, value)
   table.hashes.each do |hash|
     object.cascaded_events.detect do |event|
-        hash.keys.all? do |key|
-          event.send(key) == hash[key]
+        hash.keys.all? do |hash_key|
+          event.send(hash_key) == hash[hash_key]
         end
     end.should be_truthy
   end

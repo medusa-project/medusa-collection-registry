@@ -13,7 +13,7 @@ module CollectionsHelper
   end
 
   def collection_form_tab_list
-    ['descriptive-metadata', 'administrative-metadata', 'rights-metadata']
+    %w(descriptive-metadata administrative-metadata rights-metadata)
   end
 
 end

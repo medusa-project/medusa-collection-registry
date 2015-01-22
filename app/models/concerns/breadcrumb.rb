@@ -21,7 +21,7 @@ module Breadcrumb
 
   def breadcrumbs
     method = self.class.breadcrumb_parent_method
-    parents = if method and (direct_parent = self.send(method)) then
+    parents = if method and (direct_parent = self.send(method))
                 direct_parent.breadcrumbs
               else
                 Array.new

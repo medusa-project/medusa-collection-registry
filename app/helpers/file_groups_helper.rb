@@ -17,11 +17,11 @@ module FileGroupsHelper
   end
 
   def file_group_form_tab_list
-    ['descriptive-metadata', 'administrative-metadata', 'rights-metadata']
+    %w(descriptive-metadata administrative-metadata rights-metadata)
   end
 
   def file_group_show_tab_list
-    tabs = ['descriptive-metadata', 'administrative-metadata', 'rights-metadata']
+    tabs = %w(descriptive-metadata administrative-metadata rights-metadata)
     if @file_group.cfs_directory.present?
       tabs << 'amazon'
     end

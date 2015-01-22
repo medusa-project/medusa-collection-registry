@@ -10,7 +10,7 @@ module CascadedEventable
 
   included do
     has_many :cascaded_event_joins, as: :cascaded_eventable, dependent: :destroy
-    has_many :cascaded_events, -> {order "date DESC"},  through: :cascaded_event_joins, class_name: 'Event', source: :event
+    has_many :cascaded_events, -> { order 'date DESC' }, through: :cascaded_event_joins, class_name: 'Event', source: :event
     class_attribute :cascade_events_parent_method
   end
 
@@ -39,11 +39,11 @@ module CascadedEventable
   #this method is to give uncascaded events belonging directly to the object together with cascaded events
   def combined_events
     uncascaded_events = if self.respond_to?(:events)
-      self.events.where(cascadable: false)
-    else
-      Array.new
-    end
-    return (self.cascaded_events + uncascaded_events).sort{|a, b| b.created_at <=> a.created_at}
+                          self.events.where(cascadable: false)
+                        else
+                          Array.new
+                        end
+    return (self.cascaded_events + uncascaded_events).sort { |a, b| b.created_at <=> a.created_at }
   end
 
 end

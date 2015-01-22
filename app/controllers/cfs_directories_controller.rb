@@ -49,7 +49,7 @@ class CfsDirectoriesController < ApplicationController
     @directory.transaction do
       @directory.events.create(key: 'fixity_check_scheduled', date: Date.today, actor_email: current_user.email)
       if Job::FixityCheck.find_by(fixity_checkable: @directory)
-        flash[:notice] = "Fixity check already scheduled for this cfs directory"
+        flash[:notice] = 'Fixity check already scheduled for this cfs directory'
       else
         Job::FixityCheck.create_for(@directory, @directory, current_user)
         flash[:notice] = 'Fixity check scheduled'

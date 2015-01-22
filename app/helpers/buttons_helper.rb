@@ -21,10 +21,6 @@ module ButtonsHelper
     fa_icon_link_to 'Delete', 'trash-o', url_or_object, options.reverse_merge(method: :delete, data: {confirm: message}, class: 'btn btn-danger btn-xs')
   end
 
-  def index_button(url)
-    link_to 'Index', url, class: 'btn btn-default'
-  end
-
   def view_button(url_or_object)
     fa_icon_link_to 'View', 'eye', url_or_object, class: 'btn btn-default'
   end

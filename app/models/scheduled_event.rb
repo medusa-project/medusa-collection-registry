@@ -1,7 +1,7 @@
 class ScheduledEvent < ActiveRecord::Base
   belongs_to :scheduled_eventable, polymorphic: true, touch: true
 
-  STATES = ['scheduled', 'completed', 'cancelled']
+  STATES = %w(scheduled completed cancelled)
 
   validates_inclusion_of :key, in: lambda { |event| event.scheduled_eventable.supported_scheduled_event_keys }
   validates :actor_email, email: true

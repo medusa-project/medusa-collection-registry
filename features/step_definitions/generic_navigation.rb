@@ -47,7 +47,7 @@ Then /^I should be on the create (.*) page$/ do |object_type|
 end
 
 Given /^I am editing an? (.*)$/ do |object_type|
-  visit self.send("edit_polymorphic_path", FactoryGirl.create(object_type.gsub(' ', '_')))
+  visit self.send('edit_polymorphic_path', FactoryGirl.create(object_type.gsub(' ', '_')))
 end
 
 def generic_collection_path(object_type, prefix = nil)

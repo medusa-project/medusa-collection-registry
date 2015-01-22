@@ -43,7 +43,7 @@ end
 
 Given(/^the file group titled '(.*)' has cfs root '(.*)' and delayed jobs are run$/) do |title, path|
   step "the file group titled '#{title}' has cfs root '#{path}'"
-  step "delayed jobs are run"
+  step 'delayed jobs are run'
 end
 
 When(/^I set the cfs root of the file group titled '(.*)' to '(.*)'$/) do |title, path|
@@ -55,13 +55,13 @@ end
 
 When(/^I set the cfs root of the file group titled '(.*)' to '(.*)' and delayed jobs are run$/) do |name, path|
   step "I set the cfs root of the file group titled '#{name}' to '#{path}'"
-  step "delayed jobs are run"
+  step 'delayed jobs are run'
 end
 
 And(/^I run assessments on the the file group titled '(.*)'$/) do |title|
   file_group = BitLevelFileGroup.where(title: title).first
   file_group.schedule_initial_cfs_assessment
-  step "delayed jobs are run"
+  step 'delayed jobs are run'
 end
 
 When(/^I view fits for the cfs file '(.*)'$/) do |path|

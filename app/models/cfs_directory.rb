@@ -16,12 +16,12 @@ class CfsDirectory < ActiveRecord::Base
   validates_uniqueness_of :path, scope: :parent_cfs_directory_id, if: :parent_cfs_directory_id
   validate(unless: :parent_cfs_directory_id) do |cfs_directory|
     unless (CfsDirectory.where(path: cfs_directory.path).where('parent_cfs_directory_id IS NULL').all - [cfs_directory]).empty?
-      errors.add(:base, "Path must be unique for roots")
+      errors.add(:base, 'Path must be unique for roots')
     end
   end
   validate do |cfs_directory|
     if cfs_directory.parent_cfs_directory_id.present? and cfs_directory.file_group_id.present?
-      errors.add(:base, "Only root directories can be associated to a file group.")
+      errors.add(:base, 'Only root directories can be associated to a file group.')
     end
   end
   #two validations are needed because we can't set the root directory to self
@@ -132,6 +132,7 @@ class CfsDirectory < ActiveRecord::Base
 
   def make_initial_tree
     Dir.chdir(self.absolute_path) do
+      #TODO use Pathname here instead of directory glob
       #create the entire directory tree under this directory
       entries = ((Dir['*'] + Dir['.*']) - ['.', '..']).reject { |entry| File.symlink?(entry) }
       disk_directories = entries.select { |entry| File.directory?(entry) }.to_set
@@ -322,7 +323,7 @@ class CfsDirectory < ActiveRecord::Base
     if subdirectory
       return subdirectory.find_directory_with_directory_components(path_components)
     else
-      raise RuntimeError, "Path component not found"
+      raise RuntimeError, 'Path component not found'
     end
   end
 

@@ -10,7 +10,7 @@ class Repository < ActiveRecord::Base
   has_many :collections, dependent: :destroy
   has_many :assessments, as: :assessable, dependent: :destroy
 
-  LDAP_DOMAINS = ['uofi', 'uiuc']
+  LDAP_DOMAINS = %w(uofi uiuc)
 
   validates_uniqueness_of :title
   validates_presence_of :title

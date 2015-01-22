@@ -57,7 +57,7 @@
       %th File Group
       %th Status
   %tbody
-    - ['copying', 'amazon_backup'].each do |state|
+    - %w(copying amazon_backup).each do |state|
       - Workflow::Ingest.where(state: state).includes(:bit_level_file_group).each do |ingest|
         %tr
           %td= link_to ingest.most_advanced_file_group.title, ingest.most_advanced_file_group
