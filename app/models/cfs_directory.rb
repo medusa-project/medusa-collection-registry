@@ -1,8 +1,10 @@
 require 'pathname'
 class CfsDirectory < ActiveRecord::Base
+
   include Uuidable
   include Breadcrumb
   include Eventable
+  initialize_event_hash(:cfs_directory)
   include CascadedEventable
 
   has_many :subdirectories, class_name: 'CfsDirectory', foreign_key: :parent_cfs_directory_id, dependent: :destroy
@@ -298,10 +300,6 @@ class CfsDirectory < ActiveRecord::Base
                   end
     (directories = directories - [self]) unless include_self
     directories
-  end
-
-  def supported_event_hash
-    @@supported_event_hash ||= read_event_hash(:cfs_directory)
   end
 
   def label

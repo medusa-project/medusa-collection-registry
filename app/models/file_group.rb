@@ -2,7 +2,9 @@ require 'email_person_associator'
 
 class FileGroup < ActiveRecord::Base
   include Eventable
+  initialize_event_hash(:file_group)
   include ScheduledEventable
+  initialize_scheduled_event_hash(:file_group)
   include CascadedEventable
   include Uuidable
   include Breadcrumb
@@ -80,14 +82,6 @@ class FileGroup < ActiveRecord::Base
 
   def sibling_file_groups
     self.collection.file_groups.order(:title).all - [self]
-  end
-
-  def supported_event_hash
-    @@supported_event_hash ||= read_event_hash(:file_group)
-  end
-
-  def supported_scheduled_event_hash
-    @@supported_scheduled_event_hash ||= read_scheduled_event_hash(:file_group)
   end
 
   def canonicalize_cfs_root

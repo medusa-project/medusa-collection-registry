@@ -3,6 +3,7 @@ require 'digest/md5'
 
 class CfsFile < ActiveRecord::Base
   include Eventable
+  initialize_event_hash(:cfs_file)
   include CascadedEventable
   include Uuidable
   include Breadcrumb
@@ -136,10 +137,6 @@ class CfsFile < ActiveRecord::Base
     else
       self.content_type = nil
     end
-  end
-
-  def supported_event_hash
-    @@supported_event_hash ||= read_event_hash(:cfs_file)
   end
 
   def file_system_md5_sum
