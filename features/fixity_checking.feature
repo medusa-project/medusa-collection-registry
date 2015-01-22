@@ -8,6 +8,9 @@ Feature: Fixity Checking
     And I clear the cfs root directory
     And the physical cfs directory 'dogs/toy-dogs' has a file 'picture.jpg' with contents 'picture stuff'
     And the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some text'
+    And the repository with title 'Animals' has child collections with fields:
+      | title |
+      | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
       | title   | type              |
       | Toys    | BitLevelFileGroup |
@@ -130,8 +133,39 @@ Feature: Fixity Checking
     And I should see all of:
       | Fixity result | FAILED |
 
-  Scenario: Visitors and public cannot order fixity checks
-    When PENDING
+  Scenario: Visitors and public cannot order fixity checks. Public user cannot view events for cfs directory and cfs file.
+    Then deny object permission on the file group with title 'Toys' to users for action with redirection:
+      | public user | fixity_check(post) | authentication |
+      | visitor     | fixity_check(post) | unauthorized   |
+    Then deny object permission on the cfs directory with path 'yorkies' to users for action with redirection:
+      | public user | fixity_check(post), events | authentication |
+      | visitor     | fixity_check(post)         | unauthorized   |
+    Then deny object permission on the cfs file with name 'something.txt' to users for action with redirection:
+      | public user | fixity_check(post), events | authentication |
+      | visitor     | fixity_check(post)         | unauthorized   |
 
   Scenario: Failed fixity events are visible all the way up to the repository level
-    When PENDING
+    Given the cfs file with name 'something.txt' has events with fields:
+      | key           | note   | actor_email       | cascadable |
+      | fixity_result | FAILED | admin@example.com | true       |
+      | fixity_result | OK     | admin@example.com | false      |
+    When I view the cfs directory for the file group titled 'Toys' for the path '.'
+    And I click on 'Events'
+    Then I should see all of:
+      | Fixity result | FAILED | something.txt |
+    And I should not see 'OK'
+    When I view the file group with title 'Toys'
+    And I click on 'Events'
+    Then I should see all of:
+      | Fixity result | FAILED | something.txt |
+    And I should not see 'OK'
+    When I view the collection with title 'Dogs'
+    And I click on 'Events'
+    Then I should see all of:
+      | Fixity result | FAILED | something.txt |
+    And I should not see 'OK'
+    When I view the repository with title 'Animals'
+    And I click on 'Events'
+    Then I should see all of:
+      | Fixity result | FAILED | something.txt |
+    And I should not see 'OK'
