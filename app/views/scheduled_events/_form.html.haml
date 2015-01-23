@@ -9,7 +9,7 @@
           %h3#modalLabel New Event
         .modal-body
           = f.input :key, as: :select, include_blank: false, collection: eventable.scheduled_event_select_options, label: 'Scheduled event'
-          = f.input :actor_email, label: 'Actor Email', input_html: {value: current_user.try(:email), class: 'form-control'}, as: :autocomplete, url: autocomplete_user_email_events_path
+          = f.input :actor_email, label: 'Actor Email', input_html: {value: current_user.try(:email), class: 'form-control'}
           = f.input :action_date, as: :string, input_html: {class: 'datepicker', value: Date.today.to_s}
           = f.input :note, input_html: {class: 'col-sm-5'}
         .modal-footer

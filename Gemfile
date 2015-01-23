@@ -58,9 +58,6 @@ gem 'bunny'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-#TODO note that as of 1.0.14 at least this hits a deprecation of simple_form, using 'def input' instead of
-#'def input(wrapper_options)'.
-gem 'rails3-jquery-autocomplete'
 
 gem 'nokogiri'
 

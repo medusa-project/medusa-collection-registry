@@ -1,6 +1,5 @@
 class EventsController < ApplicationController
 
-  autocomplete :user, :email
   before_filter :require_logged_in
   before_filter :find_event, only: [:destroy, :edit, :update]
   helper_method :eventable_events_path
