@@ -51,7 +51,7 @@ class DashboardController < ApplicationController
   end
 
   def setup_events
-    @events = Event.order('date DESC').where('updated_at >= ?', Time.now - 7.days).includes(eventable: :parent)
+    @events = Event.order('date DESC').where('updated_at >= ?', Time.now - 7.days).where(cascadable: true)
     @scheduled_events = ScheduledEvent.incomplete.order('action_date ASC').includes(scheduled_eventable: :parent)
   end
 
