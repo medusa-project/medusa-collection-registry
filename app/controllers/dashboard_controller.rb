@@ -44,7 +44,7 @@ class DashboardController < ApplicationController
       end
     end
     %w(ExternalFileGroup BitLevelFileGroup).each do |type|
-      @repository_storage_summary.each do |repository_id, summary|
+      @repository_storage_summary.values.each do |summary|
         summary[type] ||= {count: 0, size: 0}
       end
     end

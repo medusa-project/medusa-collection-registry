@@ -34,7 +34,7 @@ class BitLevelFileGroupsController < FileGroupsController
     @file_group = BitLevelFileGroup.find(params[:id])
     authorize! :update, @file_group
     @file_group.transaction do
-      @file_group.events.create(key: 'fixity_check_scheduled', date: Date.today, actor_email: current_user.email)
+      @file_group.events.create!(key: 'fixity_check_scheduled', date: Date.today, actor_email: current_user.email)
       if Job::FixityCheck.find_by(fixity_checkable: @file_group)
         flash[:notice] = "Fixity check already scheduled for file group id: #{@file_group.id} title: #{@file_group.title}"
       else

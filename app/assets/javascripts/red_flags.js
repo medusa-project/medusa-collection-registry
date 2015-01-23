@@ -35,7 +35,7 @@ var red_flag_filter = {
   filter: function (filter_string) {
     $('#red-flags-table').dataTable().fnFilter(filter_string, 3, true);
   }
-}
+};
 
 var red_flag_sorter = {
   recent: function () {
@@ -50,5 +50,5 @@ var red_flag_sorter = {
       [2, "desc"]
     ]);
   }
-}
+};
 

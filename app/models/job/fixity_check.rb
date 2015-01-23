@@ -19,7 +19,6 @@ class Job::FixityCheck < ActiveRecord::Base
     results = generate_results_hash
     interpret_results_hash(results)
     self.fixity_checkable.events.create!(key: 'fixity_check_completed', date: Date.today, actor_email: user.email)
-    x = self.fixity_checkable.events(true).load
     delete_manifest_and_results_files
   end
 

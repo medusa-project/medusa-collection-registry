@@ -8,10 +8,6 @@ class BitLevelFileGroup < FileGroup
   has_many :job_fits_directories, class_name: 'Job::FitsDirectory', foreign_key: :file_group_id
   has_many :job_cfs_initial_directory_assessments, class_name: 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
 
-  def create_cfs_file_infos
-    #TODO nothing - exists to clear some delayed jobs, then delete this method
-  end
-
   def storage_level
     'bit-level store'
   end
