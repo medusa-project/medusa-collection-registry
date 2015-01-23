@@ -98,16 +98,17 @@ Repository Id: #{file_group.repository.id}
     self.part_count.present? and self.archive_ids.present? and (self.completed_part_count == self.part_count)
   end
 
-  def self.storage_root
-    MedusaRails3::Application.medusa_config['amazon']['bag_storage_root']
-  end
-
   def self.incoming_queue
     MedusaRails3::Application.medusa_config['amazon']['incoming_queue']
   end
 
   def self.outgoing_queue
     MedusaRails3::Application.medusa_config['amazon']['outgoing_queue']
+  end
+
+  def self.create_and_schedule(user, cfs_directory)
+    backup = self.create!(user_id: user.id, cfs_directory_id: cfs_directory.id, date: Date.today)
+    Job::AmazonBackup.create_for(backup)
   end
 
 end

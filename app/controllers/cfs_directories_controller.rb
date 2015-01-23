@@ -3,6 +3,7 @@ class CfsDirectoriesController < ApplicationController
   before_filter :public_view_enabled?, only: [:public]
   before_filter :require_logged_in, except: [:show, :public]
   before_filter :require_logged_in_or_basic_auth, only: [:show]
+  before_filter :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :fixity_check]
   layout 'public', only: [:public]
 
   def show
@@ -23,7 +24,6 @@ class CfsDirectoriesController < ApplicationController
   end
 
   def create_fits_for_tree
-    @directory = CfsDirectory.find(params[:id])
     authorize! :create_cfs_fits, @directory.owning_file_group
     Job::FitsDirectoryTree.create_for(@directory)
     flash[:notice] = "Scheduling FITS creation for /#{@directory.relative_path}"
@@ -31,19 +31,16 @@ class CfsDirectoriesController < ApplicationController
   end
 
   def export
-    @directory = CfsDirectory.find(params[:id])
     authorize! :export, @directory.owning_file_group
     Job::CfsDirectoryExport.create_for(@directory, current_user, false)
   end
 
   def export_tree
-    @directory = CfsDirectory.find(params[:id])
     authorize! :export, @directory.owning_file_group
     Job::CfsDirectoryExport.create_for(@directory, current_user, true)
   end
 
   def fixity_check
-    @directory = CfsDirectory.find(params[:id])
     @file_group = @directory.owning_file_group
     authorize! :update, @file_group
     @directory.transaction do
@@ -59,9 +56,14 @@ class CfsDirectoriesController < ApplicationController
   end
 
   def events
-    @directory = CfsDirectory.find(params[:id])
     @eventable = @directory
     @events = @eventable.combined_events
+  end
+
+  protected
+
+  def find_directory
+    @directory = CfsDirectory.find(params[:id])
   end
 
 end
