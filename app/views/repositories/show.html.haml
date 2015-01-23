@@ -7,13 +7,7 @@
         .well
           = show_value link_to(@repository.institution.name, @repository.institution), 'Institution'
           = show_field @repository, :contact_email
-          = show_field @repository, :address_1
-          = show_field @repository, :address_2
-          = show_field @repository, :city
-          = show_field @repository, :state
-          = show_field @repository, :zip
-          = show_field @repository, :phone_number
-          = show_field @repository, :email
+          = render partial: 'shared/contact_information', locals: {contact_object: @repository}
           = show_value link_to_external(@repository.url, @repository.url), 'URL'
           = show_field @repository, :notes_html, 'Notes'
           = show_value @repository.total_size.to_formatted_s(:rounded, precision: 2), 'Total Size (GB)'

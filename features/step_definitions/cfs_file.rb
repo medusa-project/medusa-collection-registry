@@ -1,54 +1,56 @@
+def ensuring_cfs_file_at_path_for_file_group_titled(path, title)
+  file_group = BitLevelFileGroup.find_by(title: title)
+  cfs_file = file_group.ensure_file_at_relative_path(path)
+  yield cfs_file if block_given?
+end
+
 And(/^the file group titled '(.*)' has a cfs file for the path '(.*)' with red flags with fields:$/) do |title, path, table|
-  file_group = FileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_directory.ensure_file_at_relative_path(path)
-  table.hashes.each do |h|
-    cfs_file.red_flags.create(h)
+  ensuring_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file|
+    table.hashes.each do |h|
+      cfs_file.red_flags.create(h)
+    end
   end
 end
 
 And(/^the file group titled '(.*)' has a cfs file for the path '(.*)'$/) do |title, path|
-  file_group = FileGroup.find_by(title: title)
-  file_group.cfs_directory.ensure_file_at_relative_path(path)
+  ensuring_cfs_file_at_path_for_file_group_titled(path, title)
 end
 
 And(/^the file group titled '(.*)' has a cfs file for the path '(.*)' with fields:$/) do |title, path, table|
-  file_group = FileGroup.find_by(title: title)
-  file = file_group.cfs_directory.ensure_file_at_relative_path(path)
-  file.update_attributes!(table.hashes.first)
+  ensuring_cfs_file_at_path_for_file_group_titled(path, title) do |file|
+    file.update_attributes!(table.hashes.first)
+  end
 end
 
 Then(/^the cfs file at path '(.*)' for the file group titled '(.*)' should have fields:$/) do |path, title, table|
-  file_group = FileGroup.find_by(title: title)
-  file = file_group.cfs_directory.ensure_file_at_relative_path(path)
-  table.hashes.first.each do |k, v|
-    expect(file.send(k).to_s).to eq(v)
+  ensuring_cfs_file_at_path_for_file_group_titled(path, title) do |file|
+    table.hashes.first.each do |k, v|
+      expect(file.send(k).to_s).to eq(v)
+    end
   end
 end
 
 Then(/^I should have downloaded the fixture file '(.*)'$/) do |name|
-  expect(page.response_headers['Content-Disposition']).to match('attachment')
-  expect(page.response_headers['Content-Disposition']).to match(name)
-  expect(page.source).to eq(fixture_file_content(name))
+  check_cfs_file_download('attachment', name, fixture_file_content(name))
 end
 
 Then(/^I should have viewed the fixture file '(.*)'$/) do |name|
-  expect(page.response_headers['Content-Disposition']).to match('inline')
-  expect(page.response_headers['Content-Disposition']).to match(name)
-  expect(page.source).to eq(fixture_file_content(name))
+  check_cfs_file_download('inline', name, fixture_file_content(name))
 end
 
 Then(/^I should have downloaded a file '(.*)' with contents '(.*)'$/) do |name, contents|
-  expect(page.response_headers['Content-Disposition']).to match('attachment')
-  expect(page.response_headers['Content-Disposition']).to match(name)
-  expect(page.source).to eq(contents)
+  check_cfs_file_download('attachment', name, contents)
 end
 
 Then(/^I should have viewed a file '(.*)' with contents '(.*)'$/) do |name, contents|
-  expect(page.response_headers['Content-Disposition']).to match('inline')
-  expect(page.response_headers['Content-Disposition']).to match(name)
-  expect(page.source).to eq(contents)
+  check_cfs_file_download('inline', name, contents)
 end
 
+def check_cfs_file_download(disposition, file_name, file_contents)
+  expect(page.response_headers['Content-Disposition']).to match(disposition)
+  expect(page.response_headers['Content-Disposition']).to match(file_name)
+  expect(page.source).to eq(file_contents)
+end
 
 And(/^I click on '(.*)' in the cfs file metadata$/) do |string|
   within('#cfs-file-metadata') do
@@ -57,44 +59,49 @@ And(/^I click on '(.*)' in the cfs file metadata$/) do |string|
 end
 
 def fixture_file_content(name)
-  File.binread(File.join(Rails.root,  'features', 'fixtures', name))
+  File.binread(File.join(Rails.root, 'features', 'fixtures', name))
+end
+
+def with_cfs_file_at_path_for_file_group_titled(path, title)
+  file_group = BitLevelFileGroup.find_by(title: title)
+  cfs_file = file_group.cfs_file_at_path(path)
+  yield cfs_file, file_group
 end
 
 When(/^I view the first red flag for the file group titled '(.*)' for the cfs file for the path '(.*)'$/) do |title, path|
-  file_group = FileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_directory.find_file_at_relative_path(path)
-  visit red_flag_path(cfs_file.red_flags.first)
+  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
+    visit red_flag_path(cfs_file.red_flags.first)
+  end
 end
 
 Then(/^I should be editing the first red flag for the file group titled '(.*)' for the path '(.*)'$/) do |title, path|
-  file_group = FileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_directory.find_file_at_relative_path(path)
-  expect(current_path).to eq(edit_red_flag_path(cfs_file.red_flags.first))
+  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
+    expect(current_path).to eq(edit_red_flag_path(cfs_file.red_flags.first))
+  end
 end
 
 Then(/^I should be viewing the first red flag for the file group titled '(.*)' for the path '(.*)'$/) do |title, path|
-  file_group = FileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_directory.find_file_at_relative_path(path)
-  expect(current_path).to eq(red_flag_path(cfs_file.red_flags.first))
+  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
+    expect(current_path).to eq(red_flag_path(cfs_file.red_flags.first))
+  end
 end
 
 Then(/^I should be viewing the cfs file for the file group titled '(.*)' for the path '(.*)'$/) do |title, path|
-  file_group = FileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_directory.find_file_at_relative_path(path)
-  expect(current_path).to eq(cfs_file_path(cfs_file))
+  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
+    expect(current_path).to eq(cfs_file_path(cfs_file))
+  end
 end
 
 Then(/^I should be public viewing the cfs file for the file group titled '(.*)' for the path '(.*)'$/) do |title, path|
-  file_group = FileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_directory.find_file_at_relative_path(path)
-  expect(current_path).to eq(public_cfs_file_path(cfs_file))
+  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
+    expect(current_path).to eq(public_cfs_file_path(cfs_file))
+  end
 end
 
-
 And(/^the cfs file at path '(.*)' for the file group titled '(.*)' should have (\d+) red flags?$/) do |path, title, count|
-  file_group = FileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_directory.find_file_at_relative_path(path)
-  expect(cfs_file.red_flags.count).to eq(count.to_i)
+  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
+    expect(cfs_file.red_flags.count).to eq(count.to_i)
+  end
 end
 
 When(/^I view the cfs file for the file group titled '(.*)' for the path '(.*)'$/) do |title, path|
@@ -112,11 +119,11 @@ When(/^I run an initial cfs file assessment on the file group titled '(.*)'$/) d
 end
 
 Then(/^the file group titled '(.*)' should have a cfs file for the path '(.*)' with results:$/) do |title, path, table|
-  file_group = BitLevelFileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_file_at_path(path)
-  expect(cfs_file).not_to be_nil
-  table.raw.each do |field, value|
-    expect(cfs_file.send(field).to_s).to eq(value)
+  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
+    expect(cfs_file).not_to be_nil
+    table.raw.each do |field, value|
+      expect(cfs_file.send(field).to_s).to eq(value)
+    end
   end
 end
 
@@ -130,38 +137,37 @@ Then(/^the file group titled '(.*)' should have a cfs directory$/) do |title|
 end
 
 Then(/^the file group titled '(.*)' should not have a cfs file for the path '(.*)'$/) do |title, path|
-  file_group = FileGroup.where(title: title).first
-  expect {file_group.cfs_file_at_path(path)}.to raise_error(RuntimeError)
+  file_group = FileGroup.find_by(title: title)
+  expect { file_group.cfs_file_at_path(path) }.to raise_error(RuntimeError)
 end
 
 Then(/^the file group titled '(.*)' should not have a cfs directory for the path '(.*)'$/) do |title, path|
-  file_group = FileGroup.where(title: title).first
-  expect {file_group.cfs_directory_at_path(path)}.to raise_error(RuntimeError)
+  file_group = FileGroup.find_by(title: title)
+  expect { file_group.cfs_directory_at_path(path) }.to raise_error(RuntimeError)
 end
 
-
 And(/^the file group titled '(.*)' should have a cfs file for the path '(.*)' with fits attached$/) do |title, path|
-  file_group = FileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_file_at_path(path)
-  expect(cfs_file.fits_xml).not_to be_blank
+  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
+    expect(cfs_file.fits_xml).not_to be_blank
+  end
 end
 
 Then(/^I should be on the fits info page for the cfs file at path '(.*)' for the file group titled '(.*)'$/) do |path, title|
-  file_group = FileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_file_at_path(path)
-  expect(current_path).to eql(fits_cfs_file_path(cfs_file, format: :xml))
+  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
+    expect(current_path).to eql(fits_cfs_file_path(cfs_file, format: :xml))
+  end
 end
 
 And(/^the cfs file at path '(.*)' for the file group titled '(.*)' has fits attached$/) do |path, title|
-  file_group = FileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_file_at_path(path)
-  cfs_file.ensure_fits_xml
+  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
+    cfs_file.ensure_fits_xml
+  end
 end
 
 And(/^the cfs file at path '(.*)' for the file group titled '(.*)' has fits rerun$/) do |path, title|
-  file_group = FileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_file_at_path(path)
-  cfs_file.update_fits_xml
+  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
+    cfs_file.update_fits_xml
+  end
 end
 
 And(/^there are cfs files with fields:$/) do |table|

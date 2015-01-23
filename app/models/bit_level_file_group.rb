@@ -38,6 +38,10 @@ class BitLevelFileGroup < FileGroup
     self.cfs_directory.ensure_file_at_absolute_path(path)
   end
 
+  def ensure_file_at_relative_path(path)
+    self.cfs_directory.ensure_file_at_relative_path(path)
+  end
+
   #Find the cfs directory at the path relative to the cfs directory root path for this file group
   #i.e. CfsRoot.path + self.cfs_directory.path
   def cfs_directory_at_path(path)

@@ -7,13 +7,7 @@
     .col-sm-3#sidebar
       .well
         = show_field @producer, :administrator_email
-        = show_field @producer, :address_1
-        = show_field @producer, :address_2
-        = show_field @producer, :city
-        = show_field @producer, :state
-        = show_field @producer, :zip
-        = show_field @producer, :phone_number
-        = show_field @producer, :email
+        = render partial: 'shared/contact_information', locals: {contact_object: @producer}
         = show_value link_to_external(@producer.url, @producer.url), 'URL'
         = show_field @producer, :active_start_date, 'Active Start Date'
         = show_field @producer, :active_end_date, 'Active End Date'
