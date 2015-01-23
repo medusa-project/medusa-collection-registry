@@ -9,6 +9,7 @@ class CfsFile < ActiveRecord::Base
 
   belongs_to :cfs_directory, touch: true
   belongs_to :content_type, touch: true
+  belongs_to :parent, class_name: 'CfsDirectory', foreign_key: 'cfs_directory_id'
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
 
@@ -140,10 +141,6 @@ class CfsFile < ActiveRecord::Base
 
   def file_system_md5_sum
     Digest::MD5.file(self.absolute_path).hexdigest
-  end
-
-  def parent
-    self.cfs_directory
   end
 
   protected

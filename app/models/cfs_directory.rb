@@ -253,6 +253,14 @@ class CfsDirectory < ActiveRecord::Base
     true
   end
 
+  #TODO: Maybe. It'd be useful in some places if this were an actual association (e.g. dashboard events preloading). To do that we'd need to add a parent_id
+  #and parent_type and make a polymorphic association that can go back to another cfs directory or a file group. This might
+  #enable us to remove some of the other code/columns that handles that kind of distinction. And of course we'd need
+  #a migration to handle all of the updates. Still it might be worth it - it seems conceptually cleaner. Oh, also
+  #we'd need to make the inverse associations work properly, etc. There'd be a lot to do. As a half-measure/transition
+  #we could add these and a way to update from our current scheme without ripping out the current scheme. But I don't
+  #really like that. Would replace parent_cfs_directory_id and file_group_id but not root_cfs_directory_id. Definitely work
+  #on a copy of your database if you try this.
   def parent
     self.parent_cfs_directory || self.file_group
   end
