@@ -262,8 +262,6 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.1)
       loofah (~> 2.0)
-    rails3-jquery-autocomplete (1.0.14)
-      rails (>= 3.0)
     railties (4.2.0)
       actionpack (= 4.2.0)
       activesupport (= 4.2.0)
@@ -403,7 +401,6 @@ DEPENDENCIES
   passenger
   pg
   rails (~> 4.1)
-  rails3-jquery-autocomplete
   responders (~> 2.0)
   rest-client
   rspec-rails
