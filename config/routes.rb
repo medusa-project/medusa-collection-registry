@@ -34,7 +34,9 @@ MedusaRails3::Application.routes.draw do
   resources :assessments, only: [:show, :edit, :update, :new, :create, :destroy]
   resources :attachments, only: [:show, :edit, :update, :new, :create, :destroy], concerns: :downloadable
 
-  resources :events
+  resources :events do
+    get :autocomplete_user_email, on: :collection
+  end
 
   [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
     resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy],

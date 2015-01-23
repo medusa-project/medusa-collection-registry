@@ -4,6 +4,8 @@ class EventsController < ApplicationController
   before_filter :find_event, only: [:destroy, :edit, :update]
   helper_method :eventable_events_path
 
+  autocomplete :user, :email
+
   def index
     @events = Event.order('updated_at desc').page(params[:page]).per_page(params[:per_page] || 25)
   end
