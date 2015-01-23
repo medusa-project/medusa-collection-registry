@@ -1,5 +1,5 @@
 -# Must pass in eventable (to which event will apply), remote (is this a remote form), dialog_id (used by bootstrap to handle dialog display)
-.modal.fade{id: dialog_id}
+.modal.fade.ui-front{id: dialog_id}
   = simple_form_for ScheduledEvent.new, url: scheduled_events_path(scheduled_eventable_id: eventable.id, scheduled_eventable_type: eventable.class.to_s),html: {class: 'form-search scheduled-event-form'}, remote: remote do |f|
     .modal-dialog
       .modal-content

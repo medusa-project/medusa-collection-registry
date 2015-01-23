@@ -1,6 +1,6 @@
 -# Must pass in eventable (to which event will apply), remote (is this a remote form), dialog_id (used by bootstrap to handle dialog display)
-.modal.fade{id: dialog_id}
-  = simple_form_for Event.new, url: events_path(eventable_id: eventable, eventable_type: eventable.class.to_s),html: {class: 'form-search ui-front'}, remote: remote do |f|
+.modal.fade.ui-front{id: dialog_id}
+  = simple_form_for Event.new, url: events_path(eventable_id: eventable, eventable_type: eventable.class.to_s),html: {class: 'form-search'}, remote: remote do |f|
     .modal-dialog
       .modal-content
         .modal-header
