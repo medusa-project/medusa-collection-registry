@@ -1,4 +1,3 @@
-require 'email_person_associator'
 require 'registers_handle'
 require 'mods_helper'
 
@@ -10,6 +9,7 @@ class Collection < ActiveRecord::Base
   include Breadcrumb
   include CascadedEventable
   include ResourceTypeable
+  include EmailPersonAssociator
 
   email_person_association(:contact)
 

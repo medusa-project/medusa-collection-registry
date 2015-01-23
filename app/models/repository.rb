@@ -1,9 +1,9 @@
-require 'email_person_associator'
 class Repository < ActiveRecord::Base
   include ActiveDateChecker
   include RedFlagAggregator
   include Breadcrumb
   include CascadedEventable
+  include EmailPersonAssociator
 
   email_person_association(:contact)
   belongs_to :institution, touch: true

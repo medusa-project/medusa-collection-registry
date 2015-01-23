@@ -1,7 +1,6 @@
-require 'email_person_associator'
 class Producer < ActiveRecord::Base
   include ActiveDateChecker
-
+  include EmailPersonAssociator
   email_person_association(:administrator)
 
   validates_presence_of :title

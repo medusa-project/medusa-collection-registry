@@ -19,8 +19,6 @@ module RedFlagAggregator
     class_attribute :red_flag_aggregator_label_method
   end
 
-  #TODO - I'm not sure how this will work with FileGroup STI, but at some point we may find out.
-  #If it doesn't work correctly then fix it.
   module ClassMethods
     def aggregates_red_flags(opts = {})
       self.red_flag_methods = Array.wrap(opts[:self] || [])

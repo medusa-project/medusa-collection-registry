@@ -1,5 +1,5 @@
-require 'email_person_associator'
 class Assessment < ActiveRecord::Base
+  include EmailPersonAssociator
   email_person_association(:author)
 
   belongs_to :assessable, polymorphic: true, touch: true

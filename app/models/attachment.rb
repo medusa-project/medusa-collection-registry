@@ -1,5 +1,5 @@
-require 'email_person_associator'
 class Attachment < ActiveRecord::Base
+  include EmailPersonAssociator
 	email_person_association(:author)
 
 	belongs_to :attachable, polymorphic: true, touch: true

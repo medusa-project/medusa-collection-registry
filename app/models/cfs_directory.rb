@@ -133,9 +133,8 @@ class CfsDirectory < ActiveRecord::Base
 
   def make_initial_tree
     Dir.chdir(self.absolute_path) do
-      #TODO use Pathname here instead of directory glob
       #create the entire directory tree under this directory
-      entries = ((Dir['*'] + Dir['.*']) - ['.', '..']).reject { |entry| File.symlink?(entry) }
+      entries = Pathname.new('.').children.reject {|entry| entry.symlink?}.collect {|entry| entry.to_s}
       disk_directories = entries.select { |entry| File.directory?(entry) }.to_set
       disk_directories.each do |entry|
         self.ensure_directory_at_relative_path(entry)

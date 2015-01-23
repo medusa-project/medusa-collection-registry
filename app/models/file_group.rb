@@ -1,5 +1,3 @@
-require 'email_person_associator'
-
 class FileGroup < ActiveRecord::Base
   include Eventable
   include ScheduledEventable
@@ -7,6 +5,7 @@ class FileGroup < ActiveRecord::Base
   include Uuidable
   include Breadcrumb
   include ResourceTypeable
+  include EmailPersonAssociator
 
   belongs_to :collection, touch: true
   #parent is a duplicate, but allows uniformity for events, i.e. we can do eventable.parent
