@@ -24,14 +24,14 @@ Feature: Attachment authorization
       | manager     | delete                               | unauthorized   |
 
   Scenario: Public user tries to start attachment
-    Then a public user is unauthorized to start an attachment for the file group titled 'Dogs'
+    Then a public user is unauthorized to start an attachment for the file group with title 'Dogs'
 
   Scenario: Public user tries to create attachment
-    Then a public user is unauthorized to create an attachment for the file group titled 'Dogs'
+    Then a public user is unauthorized to create an attachment for the file group with title 'Dogs'
 
   Scenario: Visitor tries to start attachment
-    Then a visitor is unauthorized to start an attachment for the file group titled 'Dogs'
+    Then a visitor is unauthorized to start an attachment for the file group with title 'Dogs'
 
   Scenario: Visitor tries to create attachment
-    Then a visitor is unauthorized to start an attachment for the file group titled 'Dogs'
+    Then a visitor is unauthorized to start an attachment for the file group with title 'Dogs'
 
