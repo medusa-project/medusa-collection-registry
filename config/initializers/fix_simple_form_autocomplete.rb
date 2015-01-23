@@ -11,4 +11,4 @@ class SimpleForm::Inputs::AutocompleteInput
         merge_wrapper_options(rewrite_autocomplete_option, wrapper_options)
     )
   end
-en
+end
