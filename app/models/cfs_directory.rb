@@ -141,7 +141,7 @@ class CfsDirectory < ActiveRecord::Base
       end
       self.subdirectories.reload.each do |directory|
         unless disk_directories.include?(directory.path)
-          directory.destroy
+          directory.destroy_tree_from_leaves
         end
       end
       self.subdirectories.reload.each do |directory|
