@@ -45,7 +45,7 @@ class AmazonBackup < ActiveRecord::Base
   end
 
   def glacier_description
-    file_group = self.cfs_directory.file_group
+    file_group = self.cfs_directory.owning_file_group
     description = %Q(Amazon Backup Id: #{self.id}
 Date: #{self.date}
 Cfs Directory Id: #{self.cfs_directory.id}
@@ -81,7 +81,7 @@ Repository Id: #{file_group.repository.id}
   end
 
   def create_backup_completion_event
-    file_group = self.cfs_directory.try(:file_group)
+    file_group = self.cfs_directory.owning_file_group
     if file_group
       event = Event.new(eventable: file_group, date: Date.today, actor_email: self.user.email)
       event.key = 'amazon_backup_completed'
