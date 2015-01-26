@@ -149,11 +149,11 @@ class BitLevelFileGroup < FileGroup
     return if old_cfs_directory == new_cfs_directory
     transaction do
       if new_cfs_directory
-        new_cfs_directory.file_group_id = self.id
+        new_cfs_directory.parent = self
         new_cfs_directory.save!
       end
       if old_cfs_directory
-        old_cfs_directory.file_group_id = nil
+        old_cfs_directory.parent = nil
         old_cfs_directory.save!
       end
     end

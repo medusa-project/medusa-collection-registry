@@ -14,7 +14,7 @@ class FileGroup < ActiveRecord::Base
   belongs_to :package_profile, touch: true
 
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
-  has_one :cfs_directory
+  has_one :cfs_directory, as: :parent
   has_many :assessments, as: :assessable, dependent: :destroy
   has_many :target_file_group_joins, dependent: :destroy, class_name: 'RelatedFileGroupJoin', foreign_key: :source_file_group_id
   has_many :target_file_groups, through: :target_file_group_joins
