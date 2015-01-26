@@ -27,12 +27,13 @@ class CfsDirectory < ActiveRecord::Base
   validates :root_cfs_directory_id, presence: true, unless: Proc.new {|record| record.parent_type == 'CfsDirectory'}, on: :update
   after_save :ensure_root
   after_save :handle_cfs_assessment
+  before_validation :normalize_file_group_parent
 
   breadcrumbs parent: :parent, label: :path
   cascades_events parent: :parent
 
   def self.roots
-    where("parent_type IS NULL OR parent_type = 'BitLevelFileGroup'")
+    where("parent_type IS NULL OR parent_type = 'FileGroup'")
   end
 
   def non_root?
@@ -231,7 +232,7 @@ class CfsDirectory < ActiveRecord::Base
 
     #If the cfs directory had a present value for file_group_id before saving
     #and it changed then cancel the jobs in the old assessment.
-    if parent_type_was == 'BitLevelFileGroup' and parent_id_changed?
+    if parent_type_was == 'FileGroup' and parent_id_changed?
       Job::CfsInitialFileGroupAssessment.where(file_group_id: parent_id_was).each do |assessment|
         assessment.destroy_queued_jobs_and_self
       end
@@ -240,7 +241,7 @@ class CfsDirectory < ActiveRecord::Base
       end
     end
     #If there is a new, present value for file_group_id then schedule the cfs assessment
-    if parent_type == 'BitLevelFileGroup' and parent_id_changed?
+    if parent_type == 'FileGroup' and parent_id_changed?
       self.parent.schedule_initial_cfs_assessment
     end
   end
@@ -362,6 +363,11 @@ class CfsDirectory < ActiveRecord::Base
 
   def fully_split_path(path)
     fully_split_pathname(Pathname.new(path))
+  end
+
+  #To get the associations to work out we need to do this.
+  def normalize_file_group_parent
+    self.parent_type = 'FileGroup' if self.parent_type == 'BitLevelFileGroup'
   end
 
 end

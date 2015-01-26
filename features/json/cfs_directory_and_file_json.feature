@@ -5,19 +5,19 @@ Feature: JSON data about a cfs directory
 
   Background:
     Given the collection with title 'Dogs' has child file groups with fields:
-      | external_file_location | title        | id | type              | cfs_directory_id |
-      | Grainger               | Engineering | 1  | BitLevelFileGroup | 20               |
+      | external_file_location | title       | id | type              |
+      | Grainger               | Engineering | 1  | BitLevelFileGroup |
     And every cfs directory with fields exists:
-      | id | path     | parent_cfs_directory_id | root_cfs_directory_id |
-      | 20 | dir/path |                         | 20                    |
-      | 40 | target   | 20                      | 20                    |
-      | 60 | child_1  | 40                      | 20                    |
-      | 80 | child_2  | 40                      | 20                    |
+      | id | path     | parent_id | root_cfs_directory_id | parent_type  |
+      | 20 | dir/path | 1         | 20                    | FileGroup    |
+      | 40 | target   | 20        | 20                    | CfsDirectory |
+      | 60 | child_1  | 40        | 20                    | CfsDirectory |
+      | 80 | child_2  | 40        | 20                    | CfsDirectory |
     And there are cfs files with fields:
       | id  | name        | cfs_directory_id | md5_sum                          | content_type_name | size  | mtime                |
-      | 100 | file.txt    | 40               |                                  |              |       |                      |
-      | 200 | picture.jpg | 40               | 33c25385888a2203c09493224fffda27 | image/jpeg   | 12345 | 2014-04-23T15:38:43Z |
-      | 300 | sound.aiff  | 40               |                                  |              |       |                      |
+      | 100 | file.txt    | 40               |                                  |                   |       |                      |
+      | 200 | picture.jpg | 40               | 33c25385888a2203c09493224fffda27 | image/jpeg        | 12345 | 2014-04-23T15:38:43Z |
+      | 300 | sound.aiff  | 40               |                                  |                   |       |                      |
 
   Scenario: Fetch JSON for a cfs directory for basic auth user
     Given I provide basic authentication

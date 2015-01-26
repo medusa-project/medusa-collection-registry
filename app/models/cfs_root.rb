@@ -23,15 +23,15 @@ class CfsRoot
     ActiveRecord::Base.transaction do
       physical_root_set = available_physical_root_set
       all_database_root_hash = Hash.new.tap do |h|
-        CfsDirectory.includes(:file_group).where(parent_cfs_directory_id: nil).each do |cfs_directory|
+        CfsDirectory.roots.includes(:parent).each do |cfs_directory|
           h[cfs_directory.path] = cfs_directory
         end
       end
       used_database_root_set = all_database_root_hash.select do |path, cfs_directory|
-        cfs_directory.file_group.present?
+        cfs_directory.parent.present?
       end.keys.to_set
       available_database_root_set = all_database_root_hash.select do |path, cfs_directory|
-        cfs_directory.file_group.blank?
+        cfs_directory.parent.blank?
       end.keys.to_set
       available_physical_root_set = physical_root_set - used_database_root_set
       (available_database_root_set - available_physical_root_set).each do |path|
