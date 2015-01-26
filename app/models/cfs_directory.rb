@@ -13,8 +13,8 @@ class CfsDirectory < ActiveRecord::Base
   belongs_to :parent, polymorphic: true, touch: true
 
   validates :path, presence: true
-  validates_uniqueness_of :path, scope: :parent_id, if: Proc.new {|record| record.parent_type == 'CfsDirectory'}
-  validate(unless: Proc.new {|record| record.parent_type == 'CfsDirectory'}) do |cfs_directory|
+  validates_uniqueness_of :path, scope: :parent_id, if: Proc.new { |record| record.parent_type == 'CfsDirectory' }
+  validate(unless: Proc.new { |record| record.parent_type == 'CfsDirectory' }) do |cfs_directory|
     unless (CfsDirectory.roots.where(path: cfs_directory.path).all - [cfs_directory]).empty?
       errors.add(:base, 'Path must be unique for roots')
     end
@@ -24,14 +24,19 @@ class CfsDirectory < ActiveRecord::Base
   #two validations are needed because we can't set the root directory to self
   #until after we've saved once. The after_save callback sets this by default
   #after the initial save
-  validates :root_cfs_directory_id, presence: true, if: Proc.new {|record| record.parent_type == 'CfsDirectory'}
-  validates :root_cfs_directory_id, presence: true, unless: Proc.new {|record| record.parent_type == 'CfsDirectory'}, on: :update
+  validates :root_cfs_directory_id, presence: true, if: Proc.new { |record| record.parent_type == 'CfsDirectory' }
+  validates :root_cfs_directory_id, presence: true, unless: Proc.new { |record| record.parent_type == 'CfsDirectory' }, on: :update
   after_save :ensure_root
   after_save :handle_cfs_assessment
-  before_validation :normalize_file_group_parent
 
   breadcrumbs parent: :parent, label: :path
   cascades_events parent: :parent
+
+  #ensures that for FileGroup subclasses that we use FileGroup so that STI/polymorphism combination works properly
+  def parent_type=(type)
+    type = type.to_s.classify.constantize.base_class.to_s if type.present?
+    super(type)
+  end
 
   def self.roots
     where("parent_type IS NULL OR parent_type = 'FileGroup'")
@@ -131,7 +136,7 @@ class CfsDirectory < ActiveRecord::Base
   def make_initial_tree
     Dir.chdir(self.absolute_path) do
       #create the entire directory tree under this directory
-      entries = Pathname.new('.').children.reject {|entry| entry.symlink?}.collect {|entry| entry.to_s}
+      entries = Pathname.new('.').children.reject { |entry| entry.symlink? }.collect { |entry| entry.to_s }
       disk_directories = entries.select { |entry| File.directory?(entry) }.to_set
       disk_directories.each do |entry|
         self.ensure_directory_at_relative_path(entry)
@@ -364,11 +369,6 @@ class CfsDirectory < ActiveRecord::Base
 
   def fully_split_path(path)
     fully_split_pathname(Pathname.new(path))
-  end
-
-  #To get the associations to work out we need to do this.
-  def normalize_file_group_parent
-    self.parent_type = 'FileGroup' if self.parent_type == 'BitLevelFileGroup'
   end
 
 end
