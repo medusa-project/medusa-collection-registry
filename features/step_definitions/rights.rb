@@ -23,7 +23,7 @@ And(/^the (.*) with (.*) '(.*)' has (.*) rights$/) do |object_type, key, value, 
       if instance.respond_to?('rights_declaration=')
         instance.rights_declaration
       elsif instance.respond_to?('owning_file_group')
-        instance.owning_file_group.rights_declaration
+        instance.file_group.rights_declaration
       end
   rights_declaration.access_restrictions =
       case rights_type

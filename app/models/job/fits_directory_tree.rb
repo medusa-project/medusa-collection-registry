@@ -4,7 +4,7 @@ class Job::FitsDirectoryTree < Job::Base
   belongs_to :cfs_directory, touch: true
 
   def self.create_for(cfs_directory)
-    Delayed::Job.enqueue(self.create(cfs_directory: cfs_directory, file_group: cfs_directory.owning_file_group),
+    Delayed::Job.enqueue(self.create(cfs_directory: cfs_directory, file_group: cfs_directory.file_group),
                          priority: 60)
   end
 

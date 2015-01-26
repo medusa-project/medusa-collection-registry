@@ -15,5 +15,5 @@ class Job::AmazonBackup < Job::Base
       self.amazon_backup.request_backup
     end
   end
-  
+
 end

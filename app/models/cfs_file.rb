@@ -47,11 +47,7 @@ class CfsFile < ActiveRecord::Base
   end
 
   def file_group
-    self.cfs_directory.owning_file_group
-  end
-
-  def owning_file_group
-    self.file_group
+    self.cfs_directory.file_group
   end
 
   def self.cfs_type

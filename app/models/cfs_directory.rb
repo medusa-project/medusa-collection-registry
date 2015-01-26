@@ -72,7 +72,7 @@ class CfsDirectory < ActiveRecord::Base
     self.root.parent.repository
   end
 
-  def owning_file_group
+  def file_group
     self.root.parent
   end
 
@@ -163,7 +163,7 @@ class CfsDirectory < ActiveRecord::Base
     #walk the directory tree under and including this directory and schedule an
     #initial assessment for each directory
     self.each_directory_in_tree(true) do |directory|
-      Job::CfsInitialDirectoryAssessment.create_for(directory, self.owning_file_group) unless directory.cfs_files.count == 0
+      Job::CfsInitialDirectoryAssessment.create_for(directory, self.file_group) unless directory.cfs_files.count == 0
     end
   end
 
@@ -194,7 +194,7 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def public?
-    self.owning_file_group.try(:public?)
+    self.file_group.try(:public?)
   end
 
   def update_tree_stats(count_difference, size_difference)
@@ -202,7 +202,7 @@ class CfsDirectory < ActiveRecord::Base
     self.tree_size += size_difference
     self.save!
     if self.root?
-      self.owning_file_group.refresh_file_stats if self.owning_file_group.present?
+      self.file_group.refresh_file_stats if self.file_group.present?
     else
       self.parent.update_tree_stats(count_difference, size_difference)
     end
@@ -213,7 +213,7 @@ class CfsDirectory < ActiveRecord::Base
     self.tree_count = self.subdirectories.sum(:tree_count) + self.cfs_files.count
     self.save!
     if self.root?
-      self.owning_file_group.refresh_file_stats if self.owning_file_group.present?
+      self.file_group.refresh_file_stats if self.file_group.present?
     else
       self.parent.update_tree_stats_from_db
     end
