@@ -20,7 +20,7 @@ And(/^the (.*) with (.*) '(.*)' has (.*) rights$/) do |object_type, key, value, 
   klass = class_for_object_type(object_type)
   instance = klass.find_by(key.gsub(' ', '_') => value)
   rights_declaration =
-      if instance.respond_to?(:rights_declaration=)
+      if instance.respond_to?(:rights_declaration)
         instance.rights_declaration
       elsif instance.respond_to?(:file_group)
         instance.file_group.rights_declaration
