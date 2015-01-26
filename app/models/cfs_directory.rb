@@ -6,30 +6,25 @@ class CfsDirectory < ActiveRecord::Base
   include Eventable
   include CascadedEventable
 
-  has_many :subdirectories, class_name: 'CfsDirectory', foreign_key: :parent_cfs_directory_id, dependent: :destroy
+  has_many :subdirectories, class_name: 'CfsDirectory', as: :parent, dependent: :destroy
   has_many :cfs_files, dependent: :destroy
-  belongs_to :parent_cfs_directory, class_name: 'CfsDirectory', touch: true
-  belongs_to :file_group, touch: true
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
   has_many :amazon_backups, -> { order 'date desc' }
+  belongs_to :parent, polymorphic: true, touch: true
 
   validates :path, presence: true
-  validates_uniqueness_of :path, scope: :parent_cfs_directory_id, if: :parent_cfs_directory_id
-  validate(unless: :parent_cfs_directory_id) do |cfs_directory|
-    unless (CfsDirectory.where(path: cfs_directory.path).where('parent_cfs_directory_id IS NULL').all - [cfs_directory]).empty?
+  validates_uniqueness_of :path, scope: :parent_id, if: Proc.new {|record| record.parent_type == 'CfsDirectory'}
+  validate(unless: Proc.new {|record| record.parent_type == 'CfsDirectory'}) do |cfs_directory|
+    unless (CfsDirectory.roots.where(path: cfs_directory.path).all - [cfs_directory]).empty?
       errors.add(:base, 'Path must be unique for roots')
     end
   end
-  validate do |cfs_directory|
-    if cfs_directory.parent_cfs_directory_id.present? and cfs_directory.file_group_id.present?
-      errors.add(:base, 'Only root directories can be associated to a file group.')
-    end
-  end
+
   #two validations are needed because we can't set the root directory to self
   #until after we've saved once. The after_save callback sets this by default
   #after the initial save
-  validates :root_cfs_directory_id, presence: true, if: :parent_cfs_directory_id
-  validates :root_cfs_directory_id, presence: true, unless: :parent_cfs_directory_id, on: :update
+  validates :root_cfs_directory_id, presence: true, if: Proc.new {|record| record.parent_type == 'CfsDirectory'}
+  validates :root_cfs_directory_id, presence: true, unless: Proc.new {|record| record.parent_type == 'CfsDirectory'}, on: :update
   after_save :ensure_root
   after_save :handle_cfs_assessment
 
@@ -37,7 +32,19 @@ class CfsDirectory < ActiveRecord::Base
   cascades_events parent: :parent
 
   def self.roots
-    where('parent_cfs_directory_id IS NULL')
+    where("parent_type IS NULL OR parent_type = 'BitLevelFileGroup'")
+  end
+
+  def non_root?
+    self.parent.is_a?(CfsDirectory)
+  end
+
+  def root?
+    !self.non_root?
+  end
+
+  def root
+    self.root_cfs_directory
   end
 
   #ensure there is a CfsFile object at the given absolute path and return it
@@ -60,20 +67,16 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def repository
-    self.file_group_root.file_group.repository
-  end
-
-  def file_group_root
-    self.root_cfs_directory
+    self.root.parent.repository
   end
 
   def owning_file_group
-    self.root_cfs_directory.file_group
+    self.root.parent
   end
 
   #If the directory doesn't have a parent then it is a root, and this will set it if needed
   def ensure_root
-    if self.parent_cfs_directory.blank? and self.root_cfs_directory.blank?
+    if self.root? and self.root_cfs_directory.blank?
       self.root_cfs_directory = self
       self.save!
     end
@@ -92,11 +95,7 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def relative_path
-    if self.parent_cfs_directory.blank?
-      self.path
-    else
-      File.join(self.parent_cfs_directory.relative_path, self.path)
-    end
+    self.root? ? self.path : File.join(self.parent.relative_path, self.path)
   end
 
   def absolute_path
@@ -110,21 +109,17 @@ class CfsDirectory < ActiveRecord::Base
 
   #list of all directories above this, excluding self
   def ancestors
-    self.file_group_root? ? [] : self.parent_cfs_directory.ancestors_and_self
-  end
-
-  def file_group_root?
-    self.parent_cfs_directory.blank?
+    self.root? ? [] : self.parent.ancestors_and_self
   end
 
   #a list of all subdirectory ids in the tree under and including this directory
   def recursive_subdirectory_ids
-    if self.file_group_root?
+    if self.root?
       CfsDirectory.where(root_cfs_directory_id: self.id).ids
     else
       ids = [self.id]
       while true
-        new_ids = (CfsDirectory.where(parent_cfs_directory_id: ids).ids << self.id).sort
+        new_ids = (CfsDirectory.where(parent_id: ids).where("parent_type = 'CfsDirectory'").ids << self.id).sort
         return new_ids if ids == new_ids
         ids = new_ids
       end
@@ -204,10 +199,10 @@ class CfsDirectory < ActiveRecord::Base
     self.tree_count += count_difference
     self.tree_size += size_difference
     self.save!
-    if self.file_group_root?
+    if self.root?
       self.owning_file_group.refresh_file_stats if self.owning_file_group.present?
     else
-      self.parent_cfs_directory.update_tree_stats(count_difference, size_difference)
+      self.parent.update_tree_stats(count_difference, size_difference)
     end
   end
 
@@ -215,22 +210,20 @@ class CfsDirectory < ActiveRecord::Base
     self.tree_size = self.subdirectories.sum(:tree_size) + self.cfs_files.sum(:size)
     self.tree_count = self.subdirectories.sum(:tree_count) + self.cfs_files.count
     self.save!
-    if self.file_group_root?
+    if self.root?
       self.owning_file_group.refresh_file_stats if self.owning_file_group.present?
     else
-      self.parent_cfs_directory.update_tree_stats_from_db
+      self.parent.update_tree_stats_from_db
     end
   end
 
   def update_all_tree_stats_from_db
-    root = self.root_cfs_directory
-    leaves = CfsDirectory.where(root_cfs_directory_id: root.id).all.select { |cfs_directory| cfs_directory.subdirectories.blank? }
+    leaves = CfsDirectory.where(root_cfs_directory_id: self.root.id).all.select { |cfs_directory| cfs_directory.subdirectories.blank? }
     leaves.each { |leaf| leaf.update_tree_stats_from_db }
   end
 
   def self.update_all_tree_stats_from_db
-    roots = self.where('parent_cfs_directory_id IS NULL')
-    roots.each { |root| root.update_all_tree_stats_from_db }
+    self.roots.each { |root| root.update_all_tree_stats_from_db }
   end
 
   def handle_cfs_assessment
@@ -238,32 +231,20 @@ class CfsDirectory < ActiveRecord::Base
 
     #If the cfs directory had a present value for file_group_id before saving
     #and it changed then cancel the jobs in the old assessment.
-    if file_group_id_was.present? and file_group_id_changed?
-      Job::CfsInitialFileGroupAssessment.where(file_group_id: file_group_id_was).each do |assessment|
+    if parent_type_was == 'BitLevelFileGroup' and parent_id_changed?
+      Job::CfsInitialFileGroupAssessment.where(file_group_id: parent_id_was).each do |assessment|
         assessment.destroy_queued_jobs_and_self
       end
-      Job::CfsInitialDirectoryAssessment.where(file_group_id: file_group_id_was, cfs_directory_id: self.id).each do |assessment|
+      Job::CfsInitialDirectoryAssessment.where(file_group_id: parent_id_was, cfs_directory_id: self.id).each do |assessment|
         assessment.destroy_queued_jobs_and_self
       end
     end
     #If there is a new, present value for file_group_id then schedule the cfs assessment
-    if file_group_id.present? and file_group_id_changed?
-      self.file_group.schedule_initial_cfs_assessment
+    if parent_type == 'BitLevelFileGroup' and parent_id_changed?
+      self.parent.schedule_initial_cfs_assessment
     end
-    true
   end
 
-  #TODO: Maybe. It'd be useful in some places if this were an actual association (e.g. dashboard events preloading). To do that we'd need to add a parent_id
-  #and parent_type and make a polymorphic association that can go back to another cfs directory or a file group. This might
-  #enable us to remove some of the other code/columns that handles that kind of distinction. And of course we'd need
-  #a migration to handle all of the updates. Still it might be worth it - it seems conceptually cleaner. Oh, also
-  #we'd need to make the inverse associations work properly, etc. There'd be a lot to do. As a half-measure/transition
-  #we could add these and a way to update from our current scheme without ripping out the current scheme. But I don't
-  #really like that. Would replace parent_cfs_directory_id and file_group_id but not root_cfs_directory_id. Definitely work
-  #on a copy of your database if you try this.
-  def parent
-    self.parent_cfs_directory || self.file_group
-  end
 
   #recursively destroy the tree (including this directory) in the database from the bottom up
   #this has the advantage of not creating a giant transaction like self.destroy would because of
@@ -299,7 +280,7 @@ class CfsDirectory < ActiveRecord::Base
 
   def directories_in_tree(include_self = true)
     #for roots we can do this easily - for non roots we need to do it recursively
-    directories = if self.file_group_root?
+    directories = if self.root?
                     CfsDirectory.where(root_cfs_directory_id: self.id)
                   else
                     CfsDirectory.where(id: self.recursive_subdirectory_ids)
@@ -348,7 +329,7 @@ class CfsDirectory < ActiveRecord::Base
         self.ensure_file_with_directory_components(file_name, path_components)
       else
         subdirectory = self.subdirectories.find_or_create_by(path: subdirectory_path,
-                                                             parent_cfs_directory: self, root_cfs_directory: self.root_cfs_directory)
+                                                             parent: self, root_cfs_directory: self.root_cfs_directory)
         subdirectory.ensure_file_with_directory_components(file_name, path_components)
       end
     end
@@ -362,7 +343,7 @@ class CfsDirectory < ActiveRecord::Base
       self.ensure_directory_with_directory_components(path_components)
     else
       subdirectory = self.subdirectories.find_or_create_by(path: subdirectory_path,
-                                                           parent_cfs_directory: self, root_cfs_directory: self.root_cfs_directory)
+                                                           parent: self, root_cfs_directory: self.root_cfs_directory)
       subdirectory.ensure_directory_with_directory_components(path_components)
     end
   end

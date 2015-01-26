@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150120221842) do
+ActiveRecord::Schema.define(version: 20150126153758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -146,16 +146,16 @@ ActiveRecord::Schema.define(version: 20150120221842) do
 
   create_table "cfs_directories", force: :cascade do |t|
     t.text     "path"
-    t.integer  "parent_cfs_directory_id"
     t.integer  "root_cfs_directory_id"
-    t.decimal  "tree_size",               default: 0.0
-    t.integer  "tree_count",              default: 0
-    t.integer  "file_group_id"
+    t.decimal  "tree_size",             default: 0.0
+    t.integer  "tree_count",            default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "parent_id"
+    t.string   "parent_type"
   end
 
-  add_index "cfs_directories", ["parent_cfs_directory_id", "path"], name: "index_cfs_directories_on_parent_cfs_directory_id_and_path", unique: true, using: :btree
+  add_index "cfs_directories", ["parent_type", "parent_id", "path"], name: "cfs_directory_parent_idx", unique: true, using: :btree
   add_index "cfs_directories", ["path"], name: "index_cfs_directories_on_path", using: :btree
   add_index "cfs_directories", ["root_cfs_directory_id"], name: "index_cfs_directories_on_root_cfs_directory_id", using: :btree
   add_index "cfs_directories", ["updated_at"], name: "index_cfs_directories_on_updated_at", using: :btree
