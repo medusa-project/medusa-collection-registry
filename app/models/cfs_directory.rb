@@ -278,8 +278,8 @@ class CfsDirectory < ActiveRecord::Base
 
   #yield each file in the tree to the block
   def each_file_in_tree
-    self.directories_in_tree.find_all.each do |directory|
-      directory.cfs_files.each do |cfs_file|
+    self.directories_in_tree.find_each do |directory|
+      directory.cfs_files.find_each do |cfs_file|
         yield cfs_file
       end
     end
@@ -292,7 +292,9 @@ class CfsDirectory < ActiveRecord::Base
                   else
                     CfsDirectory.where(id: self.recursive_subdirectory_ids)
                   end
-    (directories = directories - [self]) unless include_self
+    unless include_self
+      directories.where('id != ?', self.id)
+    end
     directories
   end
 
