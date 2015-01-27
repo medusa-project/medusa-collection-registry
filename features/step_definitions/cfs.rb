@@ -9,12 +9,6 @@ And(/^I clear the cfs root directory$/) do
   end
 end
 
-And(/^the cfs directory '(.*)' has files:$/) do |path, table|
-  table.headers.each do |file_name|
-    FileUtils.touch(cfs_local_path(path, file_name))
-  end
-end
-
 And(/^the physical cfs directory '(.*)' has a file '(.*)' with contents '(.*)'$/) do |directory, file, contents|
   step "there is a physical cfs directory '#{directory}'"
   File.open(cfs_local_path(directory, file), 'w') do |f|
