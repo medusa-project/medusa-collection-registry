@@ -13,5 +13,5 @@ And /^I should see the uuid of the (.*) with (.*) '(.*)'$/ do |object_type, key,
 end
 
 Then /^The (.*) with (.*) '(.*)' should have a valid uuid$/ do |object_type, key, value|
-  Utils::Luhn.verify(find_object(object_type, key, value)).should be_truthy
+  Utils::Luhn.verify(find_object(object_type, key, value).uuid).should be_truthy
 end
