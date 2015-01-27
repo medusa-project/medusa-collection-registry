@@ -13,13 +13,13 @@ Feature: Record structured rights data for collections and file groups
       | grainger | Grainger               |
 
   Scenario: Every collection should have rights attached
-    Then the collection titled 'Dogs' should have rights attached
+    Then the collection with title 'Dogs' should have rights attached
 
   Scenario: Every file group should have rights attached
-    Then The file group with location 'Grainger' for the collection titled 'Dogs' should have rights attached
+    Then the file group with title 'grainger' should have rights attached
 
   Scenario: A rights declaration created with the default parameters defaults to copyright
-    Then The rights declaration for the collection titled 'Dogs' should have rights basis 'copyright'
+    Then The rights declaration for the collection with title 'Dogs' should have rights basis 'copyright'
 
   Scenario: Viewing a collection I see rights declaration information
     When I view the collection with title 'Dogs'
