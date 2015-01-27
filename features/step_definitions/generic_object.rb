@@ -23,15 +23,11 @@ And /^the (.*) with (.*) '(.*)' has child (.*) with fields:$/ do |parent_object_
 end
 
 And /^the (.*) with (.*) '(.*)' should have (\d+) (.*) with (.*) '(.*)'$/ do |parent_object_type, parent_key, parent_value, count, child_object_type, child_key, child_value|
-  parent_klass = class_for_object_type(parent_object_type)
-  parent_klass.find_by(parent_key.gsub(' ', '_') => parent_value).send(child_object_type.gsub(' ', '_').pluralize)
-    .where(child_key.gsub(' ', '_') => child_value).count.should == count.to_i
+  find_object(parent_object_type, parent_key, parent_value).send(child_object_type.gsub(' ', '_').pluralize).where(child_key.gsub(' ', '_') => child_value).count.should == count.to_i
 end
 
 And /^the (.*) with (.*) '(.*)' should have (\d+) ([^']*)$/ do |parent_object_type, parent_key, parent_value, count, child_object_type|
-  parent_klass = class_for_object_type(parent_object_type)
-  parent_klass.find_by(parent_key.gsub(' ', '_') => parent_value).send(child_object_type.gsub(' ', '_').pluralize)
-    .count.should == count.to_i
+  find_object(parent_object_type, parent_key, parent_value).send(child_object_type.gsub(' ', '_').pluralize).count.should == count.to_i
 end
 
 
@@ -66,14 +62,11 @@ Then /^each (.*) with (.*) should exist:$/ do |object_type, key, table|
 end
 
 When(/^I destroy the (.*) with (.*) '(.*)'$/) do |object_type, key, value|
-  klass = class_for_object_type(object_type)
-  underscored_key = key.gsub(' ', '_')
-  klass.find_by(underscored_key => value).destroy
+  find_object(object_type, key, value).destroy
 end
 
 And(/^the uuid of the (.*) with (.*) '(.*)' is '(.*)'$/) do |object_type, key, value, uuid|
-  klass = class_for_object_type(object_type)
-  object = klass.find_by(key => value)
+  object = find_object(object_type, key, value)
   object.uuid = uuid
   object.save!
 end

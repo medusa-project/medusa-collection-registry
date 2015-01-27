@@ -109,7 +109,7 @@ Feature: Repository description
 
   Scenario: Navigate from index page to edit page
     Given I am logged in as an admin
-    When the repository titled 'Sample 2' has been deleted
+    When I destroy the repository with title 'Sample 2'
     And I go to the repository index page
     And I click on 'Edit'
     Then I should be on the edit page for the repository with title 'Sample 1'

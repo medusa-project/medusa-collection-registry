@@ -9,10 +9,6 @@ And /^the repository titled '(.*)' is managed by '(.*)'$/ do |title, email|
   FactoryGirl.create(:repository, contact: person, title: title)
 end
 
-When /^the repository titled '(.*)' has been deleted$/ do |title|
-  Repository.find_by(title: title).destroy
-end
-
 Then /^I should see all repository fields$/ do
   ['Title', 'URL', 'Notes', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Phone Number', 'Email'].each do |field|
     step "I should see '#{field}'"
