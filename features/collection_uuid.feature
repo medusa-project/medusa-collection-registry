@@ -8,9 +8,9 @@ Feature: Collection UUID
     And the collection with title 'Dogs' exists
 
   Scenario: Collection should have UUID
-    Then The collection titled 'Dogs' should have a valid UUID
+    Then The collection with title 'Dogs' should have a valid uuid
 
-  Scenario:
+  Scenario: Collection uuid should be shown in interface
     When I view the collection with title 'Dogs'
     Then I should see 'UUID'
-    And I should see the UUID of the collection titled 'Dogs'
+    And I should see the uuid of the collection with title 'Dogs'

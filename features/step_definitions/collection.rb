@@ -52,14 +52,6 @@ And /^The collection titled '(.*)' should have preservation priority '(.*)'$/ do
   Collection.find_by(title: title).preservation_priority.name.should == priority
 end
 
-And /^I should see the UUID of the collection titled '(.*)'$/ do |title|
-  steps "Then I should see '#{Collection.find_by(title: title).uuid}'"
-end
-
-Then /^The collection titled '(.*)' should have a valid UUID$/ do |title|
-  Utils::Luhn.verify(Collection.find_by(title: title).uuid).should be_truthy
-end
-
 And(/^I submit the new event form on the collection view page$/) do
   within('#event_forms') do
     click_on 'Create Event'

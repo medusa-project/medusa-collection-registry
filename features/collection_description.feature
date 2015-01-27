@@ -82,7 +82,7 @@ Feature: Collection description
     Then I should be on the view page for the collection with title 'reptiles'
     And I should see 'Reptile stuff'
     And I should see 'Snake farm'
-    And The collection titled 'reptiles' should have a valid UUID
+    And The collection with title 'reptiles' should have a valid uuid
     And the repository with title 'Sample Repo' should have 1 collection with title 'reptiles'
 
   Scenario: Create a new collection as a manager
@@ -96,7 +96,7 @@ Feature: Collection description
     Then I should be on the view page for the collection with title 'reptiles'
     And I should see 'Reptile stuff'
     And I should see 'Snake farm'
-    And The collection titled 'reptiles' should have a valid UUID
+    And The collection with title 'reptiles' should have a valid uuid
     And the repository with title 'Sample Repo' should have 1 collection with title 'reptiles'
 
   Scenario: Index of all collections

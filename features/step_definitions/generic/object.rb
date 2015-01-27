@@ -54,7 +54,6 @@ And /^every (.*) with fields exists:$/ do |object_type, table|
   end
 end
 
-
 Then /^each (.*) with (.*) should exist:$/ do |object_type, key, table|
   table.headers.each do |header|
     step "a #{object_type} with #{key} '#{header}' should exist"
@@ -65,12 +64,3 @@ When(/^I destroy the (.*) with (.*) '(.*)'$/) do |object_type, key, value|
   find_object(object_type, key, value).destroy
 end
 
-And(/^the uuid of the (.*) with (.*) '(.*)' is '(.*)'$/) do |object_type, key, value, uuid|
-  object = find_object(object_type, key, value)
-  object.uuid = uuid
-  object.save!
-end
-
-When(/^I visit the object with uuid '(.*)'$/) do |uuid|
-  visit uuid_path(uuid)
-end
