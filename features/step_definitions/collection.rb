@@ -58,7 +58,4 @@ And(/^I submit the new event form on the collection view page$/) do
   end
 end
 
-When(/^I view events for the collection titled '(.*)'$/) do |title|
-  visit events_collection_path(Collection.find_by(title: title))
-end
 

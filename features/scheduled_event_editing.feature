@@ -28,7 +28,7 @@ Feature: Editing scheduled events
     And I should be viewing events for the file group with title 'Toys'
 
   Scenario: Edit and update scheduled event from collection
-    When I view events for the collection titled 'Dogs'
+    When I view events for the collection with title 'Dogs'
     And I click on 'Edit' in the scheduled events table
     And I fill in fields:
       | Actor Email | Ruthie@example.com |
