@@ -176,10 +176,6 @@ And(/^there are cfs files with fields:$/) do |table|
   end
 end
 
-When(/^I request JSON for the cfs file with id '(\d+)'$/) do |id|
-  visit cfs_file_path(CfsFile.find(id), format: :json)
-end
-
 When(/^I update the cfs file with name '(.*)' with fields:$/) do |name, table|
   cfs_file = CfsFile.find_by(name: name)
   cfs_file.update_attributes!(table.hashes.first)

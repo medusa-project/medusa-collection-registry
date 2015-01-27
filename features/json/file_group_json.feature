@@ -14,7 +14,7 @@ Feature: JSON data about file group
 
   Scenario: Fetch JSON for a file group for basic auth user
     Given I provide basic authentication
-    When I request JSON for the file group with location 'Grainger'
+    When I view JSON for the file group with title 'Engineering'
     Then the JSON should have "id"
     And the JSON should have "collection_id"
     And the JSON at "external_file_location" should be "Grainger"

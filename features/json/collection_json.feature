@@ -11,7 +11,7 @@ Feature: JSON data about collection
 
   Scenario: Fetch JSON for a collection for basic auth user
     Given I provide basic authentication
-    When I request JSON for the collection titled 'Dogs'
+    When I view JSON for the collection with title 'Dogs'
     Then the JSON should have "id"
     And the JSON should have "uuid"
     And the JSON at "title" should be "Dogs"

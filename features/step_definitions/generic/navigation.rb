@@ -10,6 +10,10 @@ When /^I view the (.*) with (.*) '(.*)'$/ do |object_type, key, value|
   visit generic_object_path(object_type, key, value)
 end
 
+When /^I view JSON for the (.*) with (.*) '(.*)'$/ do |object_type, key, value|
+  visit generic_object_path(object_type, key, value, nil, 'json')
+end
+
 Given(/^I public view the (.*) with (.*) '(.*)'$/) do |object_type, key, value|
   visit specific_object_path(object_type, key, value, 'public')
 end
@@ -69,15 +73,13 @@ def find_or_create_object(object_type, key, value)
 end
 
 #uses polymorphic path in conjunction with the object to find the path - will usually work, but not for non-standard prefixes
-def generic_object_path(object_type, key, value, prefix = nil)
-  klass = class_for_object_type(object_type)
+def generic_object_path(object_type, key, value, prefix = nil, format = nil)
   path_prefix = prefix ? "#{prefix}_" : ''
-  self.send(:"#{path_prefix}polymorphic_path", klass.find_by(key.gsub(' ', '_') => value))
+  self.send(:"#{path_prefix}polymorphic_path", find_object(object_type, key, value), format: format)
 end
 
 #uses the actual object type to find the path, needed for some prefixes
 def specific_object_path(object_type, key, value, prefix = nil)
-  klass = class_for_object_type(object_type)
   path_prefix = prefix ? "#{prefix}_" : ''
-  self.send(:"#{path_prefix}#{object_type.gsub(' ', '_')}_path", klass.find_by(key.gsub(' ', '_') => value))
+  self.send(:"#{path_prefix}#{object_type.gsub(' ', '_')}_path", find_object(object_type, key, value))
 end

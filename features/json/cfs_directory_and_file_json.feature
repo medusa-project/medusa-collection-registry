@@ -21,7 +21,7 @@ Feature: JSON data about a cfs directory
 
   Scenario: Fetch JSON for a cfs directory for basic auth user
     Given I provide basic authentication
-    When I request JSON for the cfs directory with id '40'
+    When I view JSON for the cfs directory with id '40'
     Then the JSON at "id" should be 40
     And the JSON at "name" should be "target"
     And the JSON at "subdirectories" should be an array
@@ -40,7 +40,7 @@ Feature: JSON data about a cfs directory
 
   Scenario: Fetch JSON for a cfs file for basic auth user
     Given I provide basic authentication
-    When I request JSON for the cfs file with id '200'
+    When I view JSON for the cfs file with id '200'
     Then the JSON at "id" should be 200
     And the JSON at "name" should be "picture.jpg"
     And the JSON at "md5_sum" should be "33c25385888a2203c09493224fffda27"
