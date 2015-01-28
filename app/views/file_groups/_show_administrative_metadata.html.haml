@@ -4,6 +4,7 @@
 = show_value((link_to(@file_group.producer.title, @file_group.producer) if @file_group.producer), 'Producer')
 = show_field @file_group, :private_description
 = show_field @file_group, :provenance_note
+= show_field @file_group, :acquisition_method
 = show_field @file_group, :storage_level
 - if @file_group.source_file_groups.present?
   %p

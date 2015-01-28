@@ -33,6 +33,9 @@ class FileGroup < ActiveRecord::Base
   validates_presence_of :title, :total_files, :total_file_size
   validates_presence_of :producer_id
 
+  ACQUISITION_METHODS = ['internal digitization', 'vendor digitization', 'electronic records acquisition', 'external deposit']
+  validates_inclusion_of :acquisition_method, in: ACQUISITION_METHODS, allow_blank: true
+
   breadcrumbs parent: :collection
   cascades_events parent: :collection
 
@@ -46,6 +49,10 @@ class FileGroup < ActiveRecord::Base
 
   def self.storage_levels
     STORAGE_LEVEL_HASH.keys
+  end
+
+  def self.acquisition_methods
+    ACQUISITION_METHODS
   end
 
   def label

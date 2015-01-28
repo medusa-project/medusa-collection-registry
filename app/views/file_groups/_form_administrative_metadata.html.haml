@@ -7,6 +7,7 @@
   = f.input :cfs_directory_id, as: :select, include_blank: true, collection: cfs_file_group_root_select_collection(@file_group), label: 'Cfs root'
 = f.input :private_description
 = f.input :provenance_note, label: 'Provenance Note'
+= f.input :acquisition_method, label: 'Acquisition method', as: :select, include_blank: true, collection: FileGroup.acquisition_methods
 - if @file_group.new_record?
   = f.input :storage_level, as: :select, include_blank: false, collection: FileGroup.storage_levels, required: true
 - else
