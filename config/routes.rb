@@ -67,9 +67,12 @@ MedusaRails3::Application.routes.draw do
   resources :cfs_directories, only: :show, concerns: %i(public fixity_checkable eventable) do
     %w(create_fits_for_tree export export_tree).each { |action| post action, on: :member }
   end
-
+  resources :content_types, only: [] do
+    get :cfs_files, on: :member
+  end
   resources :searches, only: [] do
     post :filename, on: :collection
+    get :filename, on: :collection
   end
 
   resources :uuids, only: [:show]
