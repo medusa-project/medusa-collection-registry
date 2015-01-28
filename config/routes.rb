@@ -90,4 +90,6 @@ MedusaRails3::Application.routes.draw do
     match 'import', to: 'tasks#import', via: 'post'
   end
 
+  match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
+
 end
