@@ -11,12 +11,12 @@ Feature: Cfs files by content type
       | path   |
       | subdir |
     And there are cfs files of the cfs directory with path 'root' with fields:
-      | name      | content_type_name    |
-      | chihuahua | image/jpeg      |
-      | pit bull  | application/xml |
+      | name      | content_type_name |
+      | chihuahua | image/jpeg        |
+      | pit bull  | application/xml   |
     And there are cfs files of the cfs directory with path 'subdir' with fields:
       | name      | content_type_name |
-      | long_hair | image/jpeg   |
+      | long_hair | image/jpeg        |
 
   Scenario: Navigate from dashboard to view of cfs files with a given type
     Given I am logged in as an admin
@@ -30,6 +30,5 @@ Feature: Cfs files by content type
       | pit bull |
 
   Scenario: Public user cannot view cfs files via content type
-    When I am not logged in
-    And I view cfs files for the content type with name 'image/jpeg'
-    Then I should be on the login page
+    Then deny object permission on the content type with name 'image/jpeg' to users for action with redirection:
+      | public user | cfs_files | authentication |
