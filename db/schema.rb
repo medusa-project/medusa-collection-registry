@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150129212630) do
+ActiveRecord::Schema.define(version: 20150129225153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -270,6 +270,26 @@ ActiveRecord::Schema.define(version: 20150129212630) do
   end
 
   add_index "file_format_profiles", ["name"], name: "index_file_format_profiles_on_name", unique: true, using: :btree
+
+  create_table "file_format_profiles_content_types_joins", force: :cascade do |t|
+    t.integer  "file_format_profile_id"
+    t.integer  "content_type_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "file_format_profiles_content_types_joins", ["content_type_id"], name: "ffpctj_content_type_id_idx", using: :btree
+  add_index "file_format_profiles_content_types_joins", ["file_format_profile_id"], name: "ffpctj_file_format_profile_id_idx", using: :btree
+
+  create_table "file_format_profiles_file_extensions_joins", force: :cascade do |t|
+    t.integer  "file_format_profile_id"
+    t.integer  "file_extension_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "file_format_profiles_file_extensions_joins", ["file_extension_id"], name: "ffpfej_file_extension_id_idx", using: :btree
+  add_index "file_format_profiles_file_extensions_joins", ["file_format_profile_id"], name: "ffpfej_file_format_profile_id_idx", using: :btree
 
   create_table "file_groups", force: :cascade do |t|
     t.string   "external_file_location", limit: 255
@@ -624,5 +644,9 @@ ActiveRecord::Schema.define(version: 20150129212630) do
   add_foreign_key "cascaded_event_joins", "events"
   add_foreign_key "cfs_files", "content_types"
   add_foreign_key "cfs_files", "file_extensions"
+  add_foreign_key "file_format_profiles_content_types_joins", "content_types"
+  add_foreign_key "file_format_profiles_content_types_joins", "file_format_profiles"
+  add_foreign_key "file_format_profiles_file_extensions_joins", "file_extensions"
+  add_foreign_key "file_format_profiles_file_extensions_joins", "file_format_profiles"
   add_foreign_key "job_fixity_checks", "users"
 end

@@ -9,3 +9,5 @@
       = f.input :os_environment, label: 'OS environment'
       = f.input :os_version, label: 'OS version'
       = f.input :notes
+      = f.association :content_types, as: :check_boxes, label_method: :name
+      = f.association :file_extensions, as: :check_boxes, label_method: :extension

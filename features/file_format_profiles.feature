@@ -101,7 +101,7 @@ Feature: File Format Profiles
     And I click on 'Update'
     Then I should see 'image/jpeg'
     And I should not see 'application/xml'
-    
+
   Scenario: Associate with file extensions
     When I edit the file format profile with name 'images'
     And I check 'jpg'
