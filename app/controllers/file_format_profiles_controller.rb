@@ -1,6 +1,6 @@
 class FileFormatProfilesController < ApplicationController
   before_filter :require_logged_in
-  before_filter :find_file_format_profile, only: [:show, :edit]
+  before_filter :find_file_format_profile, only: [:show, :edit, :update]
 
   def index
     authorize! :read, FileFormatProfile
@@ -15,10 +15,23 @@ class FileFormatProfilesController < ApplicationController
     authorize! :update, @file_format_profile
   end
 
+  def update
+    authorize! :update, @file_format_profile
+    if @file_format_profile.update_attributes(allowed_params)
+      redirect_to @file_format_profile
+    else
+      render 'edit'
+    end
+  end
+
   protected
 
   def find_file_format_profile
     @file_format_profile = FileFormatProfile.find(params[:id])
+  end
+
+  def allowed_params
+    params[:file_format_profile].permit(:name, :software, :software_version, :os_environment, :os_version, :notes)
   end
 
 end

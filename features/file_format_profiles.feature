@@ -30,20 +30,33 @@ Feature: File Format Profiles
   Scenario: View file format profile
     When I view the file format profile with name 'images'
     Then I should see all of:
-      | images | Fotostore | 1.2.3            | Linux          | 3.2        | Photo manipulation |
+      | images | Fotostore | 1.2.3 | Linux | 3.2 | Photo manipulation |
 
   Scenario: Go from index of file format profiles to edit one
     When I go to the file format profiles index page
     And I click on 'Edit'
     Then I should be on the edit page for the file format profile with name 'images'
 
-  Scenario: Go from show of file format profile to edit
+  Scenario: Go from show of file format profile to edit|
     When I view the file format profile with name 'images'
     And I click on 'Edit'
     Then I should be on the edit page for the file format profile with name 'images'
 
   Scenario: Edit file format profile
-    Given PENDING
+    Given I edit the file format profile with name 'images'
+    And I fill in fields:
+      | Name             | pictures         |
+      | Software         | Picturemart      |
+      | Software version | 4.5              |
+      | OS environment   | Windows          |
+      | OS version       | XP2000           |
+      | Notes            | Picture changing |
+    And I click on 'Update'
+    Then I should be on the view page for the file format profile with name 'pictures'
+    Then I should see none of:
+      | images | Fotostore | 1.2.3 | Linux | 3.2 | Photo manipulation |
+    And I should see all of:
+      | pictures | Picturemart | 4.5 | Windows | XP2000 | Picture changing |
 
   Scenario: Delete file format profile from show view
     Given PENDING
