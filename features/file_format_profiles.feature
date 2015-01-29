@@ -17,6 +17,11 @@ Feature: File Format Profiles
       | long_hair.JPG | 4000 | image/jpeg        |
     And I am logged in as an admin
 
+  Scenario: Go to index from global nav
+    When I go to the dashboard
+    And I click on 'File Format Profiles'
+    Then I should be on the file format profiles index page
+
   Scenario: Index of file format profiles
     When I go to the file format profiles index page
     Then I should see all of:
