@@ -16,7 +16,7 @@ Feature: Cfs files by file extension
       | pit_bull.xml  | 789  |
     And there are cfs files of the cfs directory with path 'subdir' with fields:
       | name          | size |
-      | long_hair.jpg | 4000 |
+      | long_hair.JPG | 4000 |
 
   Scenario: Navigate from dashboard to view of cfs files with a extension
     Given I am logged in as an admin
@@ -25,7 +25,7 @@ Feature: Cfs files by file extension
     Then I should be on the cfs files page for the file extension with extension 'jpg'
     And I should see a table of cfs files with 2 rows
     And I should see all of:
-      | chihuahua.jpg | long_hair.jpg |
+      | chihuahua.jpg | long_hair.JPG |
     And I should see none of:
       | pit_bull.xml |
 
