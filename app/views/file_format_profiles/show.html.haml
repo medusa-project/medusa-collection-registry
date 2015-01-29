@@ -1,0 +1,12 @@
+= render layout: 'layout_single' do
+
+  = render layout: 'layouts/page_header' do
+    #{@file_format_profile.name}
+
+  .row
+    .col-xs-12
+      = show_field @file_format_profile, :software
+      = show_field @file_format_profile, :software_version
+      = show_field @file_format_profile, :os_environment
+      = show_field @file_format_profile, :os_version
+      = show_field @file_format_profile, :notes

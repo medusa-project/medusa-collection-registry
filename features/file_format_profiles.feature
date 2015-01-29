@@ -23,13 +23,24 @@ Feature: File Format Profiles
       | images | Fotostore | Linux | Photo manipulation |
 
   Scenario: Go from index of file format profiles to show view of one
-    Given PENDING
+    When I go to the file format profiles index page
+    And I click on 'images'
+    Then I should be on the view page for the file format profile with name 'images'
+
+  Scenario: View file format profile
+    When I view the file format profile with name 'images'
+    Then I should see all of:
+      | images | Fotostore | 1.2.3            | Linux          | 3.2        | Photo manipulation |
 
   Scenario: Go from index of file format profiles to edit one
-    Given PENDING
+    When I go to the file format profiles index page
+    And I click on 'Edit'
+    Then I should be on the edit page for the file format profile with name 'images'
 
   Scenario: Go from show of file format profile to edit
-    Given PENDING
+    When I view the file format profile with name 'images'
+    And I click on 'Edit'
+    Then I should be on the edit page for the file format profile with name 'images'
 
   Scenario: Edit file format profile
     Given PENDING
