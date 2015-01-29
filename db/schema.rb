@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150129164513) do
+ActiveRecord::Schema.define(version: 20150129212630) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -257,6 +257,19 @@ ActiveRecord::Schema.define(version: 20150129164513) do
   end
 
   add_index "file_extensions", ["extension"], name: "index_file_extensions_on_extension", unique: true, using: :btree
+
+  create_table "file_format_profiles", force: :cascade do |t|
+    t.string   "name",             null: false
+    t.string   "software"
+    t.string   "software_version"
+    t.string   "os_environment"
+    t.string   "os_version"
+    t.text     "notes"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "file_format_profiles", ["name"], name: "index_file_format_profiles_on_name", unique: true, using: :btree
 
   create_table "file_groups", force: :cascade do |t|
     t.string   "external_file_location", limit: 255

@@ -73,6 +73,7 @@ MedusaRails3::Application.routes.draw do
   resources :file_extensions, only: [] do
     get :cfs_files, on: :member
   end
+  resources :file_format_profiles
   resources :searches, only: [] do
     post :filename, on: :collection
     get :filename, on: :collection

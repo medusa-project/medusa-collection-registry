@@ -5,8 +5,8 @@ Feature: File Format Profiles
 
   Background:
     Given every file format profile with fields exists:
-      | name   | software | software_version | os_environment | os_version | notes              |
-      | images | Fotomart | 1.2.3            | Linux          | 3.2        | Photo manipulation |
+      | name   | software  | software_version | os_environment | os_version | notes              |
+      | images | Fotostore | 1.2.3            | Linux          | 3.2        | Photo manipulation |
     And there are cfs directories with fields:
       | path |
       | root |
@@ -15,9 +15,12 @@ Feature: File Format Profiles
       | chihuahua.jpg | 567  | image/jpeg        |
       | pit_bull.xml  | 789  | application/xml   |
       | long_hair.JPG | 4000 | image/jpeg        |
+    And I am logged in as an admin
 
   Scenario: Index of file format profiles
-    Given PENDING
+    When I go to the file format profiles index page
+    Then I should see all of:
+      | images | Fotostore | Linux | Photo manipulation |
 
   Scenario: Go from index of file format profiles to show view of one
     Given PENDING

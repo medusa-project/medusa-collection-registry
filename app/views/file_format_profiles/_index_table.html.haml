@@ -1,0 +1,18 @@
+%table#file_format_profiles.table.table-striped
+  %thead
+    %tr
+      %th Name
+      %th Software
+      %th OS
+      %th Notes
+      %th
+  - cache(cache_key_for_all(FileFormatProfile)) do
+    %tbody
+      - @file_format_profiles.find_each do |file_format_profile|
+        - cache(file_format_profile) do
+          %tr
+            %td= link_to(file_format_profile.name, file_format_profile)
+            %td= file_format_profile.software
+            %td= file_format_profile.os_environment
+            %td= truncate(file_format_profile.notes)
+            %td= small_edit_button(file_format_profile)
