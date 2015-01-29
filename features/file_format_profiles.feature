@@ -43,7 +43,7 @@ Feature: File Format Profiles
     Then I should be on the edit page for the file format profile with name 'images'
 
   Scenario: Edit file format profile
-    Given I edit the file format profile with name 'images'
+    When I edit the file format profile with name 'images'
     And I fill in fields:
       | Name             | pictures         |
       | Software         | Picturemart      |
@@ -96,15 +96,24 @@ Feature: File Format Profiles
       | pictures | Picturemart | 4.5 | Windows | XP2000 | Picture changing |
 
   Scenario: Associate with content types
-    Given PENDING
-
+    When I edit the file format profile with name 'images'
+    And I check 'image/jpeg'
+    And I click on 'Update'
+    Then I should see 'image/jpeg'
+    And I should not see 'application/xml'
+    
   Scenario: Associate with file extensions
-    Given PENDING
+    When I edit the file format profile with name 'images'
+    And I check 'jpg'
+    And I check 'xml'
+    And I click on 'Update'
+    Then I should see all of:
+      | jpg | xml |
 
   Scenario: Enforce permissions
     Then deny object permission on the file format profile with name 'images' to users for action with redirection:
       | public user      | view, edit, update, delete | authentication |
       | visitor, manager | view, edit, update, delete | unauthorized   |
     And deny permission on the file format profile collection to users for action with redirection:
-      | public user     | view_index, new, create | authentication |
-      | visitor, manager | view_index, new, create  | unauthorized   |
+      | public user      | view_index, new, create | authentication |
+      | visitor, manager | view_index, new, create | unauthorized   |
