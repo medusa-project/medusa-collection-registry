@@ -37,7 +37,7 @@ Feature: Cfs files by file extension
     Given I am logged in as an admin
     When I go to the dashboard
     Then I should see all of:
-      | 789 | 4567 | 1 | 2 |
+      | 789 Bytes| 4.46 KB | 1 | 2 |
 
   Scenario: Stats are collected
     Then the file extension with fields should exist:

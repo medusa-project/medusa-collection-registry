@@ -145,6 +145,21 @@ class CfsFile < ActiveRecord::Base
     Digest::MD5.file(self.absolute_path).hexdigest
   end
 
+  def ensure_current_file_extension
+    self.file_extension = FileExtension.ensure_for_name(self.name)
+  end
+
+  def self.ensure_all_file_extensions
+    count = CfsFile.where('file_extension_id is null').count
+    CfsFile.where('file_extension_id is null').find_each.with_index do |cfs_file, i|
+      if (i + 1) % 5000 == 0
+        puts "Ensuring file extension for #{i + 1} of #{count}"
+      end
+      cfs_file.ensure_current_file_extension
+      cfs_file.save!
+    end
+  end
+
   protected
 
   def add_cfs_directory_tree_stats
@@ -200,7 +215,7 @@ class CfsFile < ActiveRecord::Base
   def update_file_extension_stats
     if self.file_extension_id_changed?
       self.file_extension.update_stats(1, self.size || 0)
-      FileExtension.find(self.file_extension_id_was).update_stats(-1, -1 * (self.size_was || 0))
+      FileExtension.find(self.file_extension_id_was).update_stats(-1, -1 * (self.size_was || 0)) if self.file_extension_id_was
     else
       if self.size_changed?
         self.file_extension.update_stats(0, (self.size || 0) - (self.size_was || 0))
@@ -212,10 +227,6 @@ class CfsFile < ActiveRecord::Base
   def remove_file_extension_stats
     self.file_extension.update_stats(-1, -1 * (self.size || 0))
     true
-  end
-
-  def ensure_current_file_extension
-    self.file_extension = FileExtension.ensure_for_name(self.name)
   end
 
   def get_fits_xml

@@ -70,6 +70,9 @@ MedusaRails3::Application.routes.draw do
   resources :content_types, only: [] do
     get :cfs_files, on: :member
   end
+  resources :file_extensions, only: [] do
+    get :cfs_files, on: :member
+  end
   resources :searches, only: [] do
     post :filename, on: :collection
     get :filename, on: :collection

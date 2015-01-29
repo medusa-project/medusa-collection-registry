@@ -60,4 +60,7 @@ ActiveRecord::Base.transaction do
     end
   end
 
+  #Make sure that every cfs file has an associated file extension
+  CfsFile.ensure_all_file_extensions
+
 end

@@ -1,5 +1,5 @@
 TABLE_IDS = {'file groups' => 'file_groups', 'red flags' => 'red-flags-table',
-             'bit file stats' => 'file_stats_bits', 'object file stats' => 'file_stats_objects',
+             'file stats by content type' => 'file_stats_content_type', 'file stats by file extension' => 'file_stats_file_extension',
              'file stats summary' => 'file_stats_summary', 'running virus scans' => 'running_virus_scans',
              'running fits scans' => 'running_fits_scans', 'running initial assessment scans' => 'running_initial_assessment_scans',
              'running ingests' => 'running_ingests'}
