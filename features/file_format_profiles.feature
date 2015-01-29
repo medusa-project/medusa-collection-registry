@@ -81,10 +81,30 @@ Feature: File Format Profiles
     Then I should be on the file format profiles index page
 
   Scenario: Create file format profile from index
+    When I go to the file format profiles index page
+    And I click on 'Add File Format Profile'
+    And I fill in fields:
+      | Name             | pictures         |
+      | Software         | Picturemart      |
+      | Software version | 4.5              |
+      | OS environment   | Windows          |
+      | OS version       | XP2000           |
+      | Notes            | Picture changing |
+    And I click on 'Create'
+    Then I should be on the view page for the file format profile with name 'pictures'
+    And I should see all of:
+      | pictures | Picturemart | 4.5 | Windows | XP2000 | Picture changing |
+
+  Scenario: Associate with content types
     Given PENDING
 
-  Scenario: Associate with content type
+  Scenario: Associate with file extensions
     Given PENDING
 
-  Scenario: Associate with file extension
-    Given PENDING
+  Scenario: Enforce permissions
+    Then deny object permission on the file format profile with name 'images' to users for action with redirection:
+      | public user      | view, edit, update, delete | authentication |
+      | visitor, manager | view, edit, update, delete | unauthorized   |
+    And deny permission on the file format profile collection to users for action with redirection:
+      | public user     | view_index, new, create | authentication |
+      | visitor, manager | view_index, new, create  | unauthorized   |

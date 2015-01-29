@@ -24,6 +24,21 @@ class FileFormatProfilesController < ApplicationController
     end
   end
 
+  def new
+    authorize! :create, FileFormatProfile
+    @file_format_profile = FileFormatProfile.new
+  end
+
+  def create
+    authorize! :create, FileFormatProfile
+    @file_format_profile = FileFormatProfile.new(allowed_params)
+    if @file_format_profile.save
+      redirect_to @file_format_profile
+    else
+      render 'new'
+    end
+  end
+
   def destroy
     authorize! :destroy, @file_format_profile
     if @file_format_profile.destroy
