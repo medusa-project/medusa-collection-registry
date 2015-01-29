@@ -13,14 +13,14 @@
       - unless @file_format_profile.content_types.empty?
         %hr
         %div
-          Content types
+          %strong Content types:
           %ul
             - @file_format_profile.content_types.find_each do |content_type|
               %li= content_type.name
       - unless @file_format_profile.file_extensions.empty?
         %hr
         %div
-          File Extensions
+          %strong File Extensions:
           %ul
             - @file_format_profile.file_extensions.find_each do |extension|
               %li= extension.extension
