@@ -30,7 +30,7 @@ Feature: Cfs files by file extension
       | pit_bull.xml |
 
   Scenario: Public user cannot view cfs files via extension
-    Then deny object permission on the file extension with extension '.jpg' to users for action with redirection:
+    Then deny object permission on the file extension with extension 'jpg' to users for action with redirection:
       | public user | cfs_files | authentication |
 
   Scenario: See stats for file extensions on the dashboard

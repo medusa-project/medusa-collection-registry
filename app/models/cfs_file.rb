@@ -9,6 +9,7 @@ class CfsFile < ActiveRecord::Base
 
   belongs_to :cfs_directory, touch: true
   belongs_to :content_type, touch: true
+  belongs_to :file_extension, touch: true
   belongs_to :parent, class_name: 'CfsDirectory', foreign_key: 'cfs_directory_id'
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
@@ -22,6 +23,11 @@ class CfsFile < ActiveRecord::Base
   after_create :add_content_type_stats
   after_destroy :remove_content_type_stats
   after_update :update_content_type_stats
+
+  before_validation :ensure_current_file_extension
+  after_create :add_file_extension_stats
+  after_destroy :remove_file_extension_stats
+  after_update :update_file_extension_stats
 
   breadcrumbs parent: :cfs_directory, label: :name
   cascades_events parent: :cfs_directory
@@ -184,6 +190,32 @@ class CfsFile < ActiveRecord::Base
       self.content_type.update_stats(-1, -1 * (self.size || 0))
     end
     true
+  end
+
+  def add_file_extension_stats
+    self.file_extension.update_stats(1, self.size || 0)
+    true
+  end
+
+  def update_file_extension_stats
+    if self.file_extension_id_changed?
+      self.file_extension.update_stats(1, self.size || 0)
+      FileExtension.find(self.file_extension_id_was).update_stats(-1, -1 * (self.size_was || 0))
+    else
+      if self.size_changed?
+        self.file_extension.update_stats(0, (self.size || 0) - (self.size_was || 0))
+      end
+    end
+    true
+  end
+
+  def remove_file_extension_stats
+    self.file_extension.update_stats(-1, -1 * (self.size || 0))
+    true
+  end
+
+  def ensure_current_file_extension
+    self.file_extension = FileExtension.ensure_for_name(self.name)
   end
 
   def get_fits_xml
