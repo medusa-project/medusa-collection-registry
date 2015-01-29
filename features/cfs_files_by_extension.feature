@@ -7,15 +7,10 @@ Feature: Cfs files by file extension
     Given there are cfs directories with fields:
       | path |
       | root |
-    And there are cfs subdirectories of the cfs directory with path 'root' with fields:
-      | path   |
-      | subdir |
     And there are cfs files of the cfs directory with path 'root' with fields:
       | name          | size |
       | chihuahua.jpg | 567  |
       | pit_bull.xml  | 789  |
-    And there are cfs files of the cfs directory with path 'subdir' with fields:
-      | name          | size |
       | long_hair.JPG | 4000 |
 
   Scenario: Navigate from dashboard to view of cfs files with a extension
