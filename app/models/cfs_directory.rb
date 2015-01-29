@@ -211,6 +211,8 @@ class CfsDirectory < ActiveRecord::Base
     else
       self.parent.update_tree_stats(count_difference, size_difference)
     end
+    #return true to make this work well in model callbacks
+    true
   end
 
   def update_tree_stats_from_db

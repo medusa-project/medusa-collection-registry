@@ -163,70 +163,58 @@ class CfsFile < ActiveRecord::Base
   protected
 
   def add_cfs_directory_tree_stats
-    self.cfs_directory.update_tree_stats(1, self.size || 0)
-    true
+    self.cfs_directory.update_tree_stats(1, self.safe_size)
   end
 
   def update_cfs_directory_tree_stats
-    self.cfs_directory.update_tree_stats(0, (self.size || 0) - (self.size_was || 0)) if self.size_changed?
-    true
+    self.cfs_directory.update_tree_stats(0, self.safe_size - self.safe_size_was) if self.size_changed?
   end
 
   def remove_cfs_directory_tree_stats
-    self.cfs_directory.update_tree_stats(-1, -1 * self.size || 0)
-    true
+    self.cfs_directory.update_tree_stats(-1, -1 * self.safe_size_was)
   end
 
   def add_content_type_stats
-    if self.content_type.present?
-      self.content_type.update_stats(1, self.size || 0)
-    end
-    true
+    self.content_type.update_stats(1, self.safe_size) if self.content_type.present?
   end
 
   def update_content_type_stats
     if self.content_type_id_changed?
       if self.content_type.present?
-        self.content_type.update_stats(1, self.size || 0)
+        self.content_type.update_stats(1, self.safe_size)
       end
       if self.content_type_id_was.present?
-        ContentType.find(self.content_type_id_was).update_stats(-1, -1 * (self.size_was || 0))
+        ContentType.find(self.content_type_id_was).update_stats(-1, -1 * self.safe_size_was)
       end
     else
       if self.content_type.present? and self.size_changed?
-        self.content_type.update_stats(0, (self.size || 0) - (self.size_was || 0))
+        self.content_type.update_stats(0, (self.safe_size - self.safe_size_was))
       end
     end
-    true
   end
 
   def remove_content_type_stats
-    if self.content_type.present?
-      self.content_type.update_stats(-1, -1 * (self.size || 0))
-    end
-    true
+    self.content_type.update_stats(-1, -1 * self.safe_size) if self.content_type.present?
   end
 
   def add_file_extension_stats
-    self.file_extension.update_stats(1, self.size || 0)
+    self.file_extension.update_stats(1, self.safe_size)
     true
   end
 
   def update_file_extension_stats
     if self.file_extension_id_changed?
-      self.file_extension.update_stats(1, self.size || 0)
-      FileExtension.find(self.file_extension_id_was).update_stats(-1, -1 * (self.size_was || 0)) if self.file_extension_id_was
+      self.file_extension.update_stats(1, self.safe_size)
+      FileExtension.find(self.file_extension_id_was).update_stats(-1, -1 * self.safe_size_was) if self.file_extension_id_was
     else
       if self.size_changed?
-        self.file_extension.update_stats(0, (self.size || 0) - (self.size_was || 0))
+        self.file_extension.update_stats(0, self.safe_size - self.safe_size_was)
       end
     end
-    true
   end
 
   def remove_file_extension_stats
-    self.file_extension.update_stats(-1, -1 * (self.size || 0))
-    true
+    self.file_extension.update_stats(-1, -1 * self.safe_size)
   end
 
   def get_fits_xml
@@ -234,6 +222,14 @@ class CfsFile < ActiveRecord::Base
     resource = RestClient::Resource.new("http://localhost:4567/fits/file/#{file_path}")
     response = resource.get
     response.body
+  end
+
+  def safe_size
+    self.size || 0
+  end
+
+  def safe_size_was
+    self.size_was || 0
   end
 
 end

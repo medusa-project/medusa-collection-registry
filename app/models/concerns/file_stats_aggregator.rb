@@ -20,6 +20,8 @@ module FileStatsAggregator
     self.cfs_file_count += count_difference
     self.cfs_file_size += size_difference
     self.save!
+    #return true to make this work well in model callbacks
+    true
   end
 
   def update_stats_from_db
