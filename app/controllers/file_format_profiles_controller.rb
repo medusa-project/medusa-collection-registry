@@ -1,6 +1,6 @@
 class FileFormatProfilesController < ApplicationController
   before_filter :require_logged_in
-  before_filter :find_file_format_profile, only: [:show, :edit, :update]
+  before_filter :find_file_format_profile, only: [:show, :edit, :update, :destroy]
 
   def index
     authorize! :read, FileFormatProfile
@@ -21,6 +21,15 @@ class FileFormatProfilesController < ApplicationController
       redirect_to @file_format_profile
     else
       render 'edit'
+    end
+  end
+
+  def destroy
+    authorize! :destroy, @file_format_profile
+    if @file_format_profile.destroy
+      redirect_to file_format_profiles_path
+    else
+      redirect_to :back, alert: 'Unable to destroy this file format profile'
     end
   end
 

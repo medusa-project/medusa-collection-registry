@@ -59,16 +59,32 @@ Feature: File Format Profiles
       | pictures | Picturemart | 4.5 | Windows | XP2000 | Picture changing |
 
   Scenario: Delete file format profile from show view
-    Given PENDING
+    When I view the file format profile with name 'images'
+    And I click on 'Delete'
+    Then I should be on the file format profiles index page
+    And there should be no file format profile with name 'images'
 
   Scenario: Delete file format profile from edit view
-    Given PENDING
+    When I edit the file format profile with name 'images'
+    And I click on 'Delete'
+    Then I should be on the file format profiles index page
+    And there should be no file format profile with name 'images'
 
   Scenario: Go from show view back to index
-    Given PENDING
+    When I view the file format profile with name 'images'
+    And I click on 'Index'
+    Then I should be on the file format profiles index page
 
   Scenario: Go from edit view back to index
-    Given PENDING
+    When I edit the file format profile with name 'images'
+    And I click on 'Index'
+    Then I should be on the file format profiles index page
 
   Scenario: Create file format profile from index
+    Given PENDING
+
+  Scenario: Associate with content type
+    Given PENDING
+
+  Scenario: Associate with file extension
     Given PENDING
