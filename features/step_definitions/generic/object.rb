@@ -8,6 +8,13 @@ Then /^a (.*) with (.*) '(.*)' should exist$/ do |object_type, key, value|
   expect(klass.find_by(key.gsub(' ', '_') => value)).not_to be_nil
 end
 
+Then /^the (.*)s? with fields should exist:?$/ do |object_type, table|
+  klass = class_for_object_type(object_type)
+  table.hashes.each do |hash|
+    expect(klass.find_by(hash)).not_to be_nil
+  end
+end
+
 And /^the (.*) with (.*) '(.*)' has child (.*) with field (.*):$/ do |parent_object_type, parent_key, parent_value, child_object_type, child_key, table|
   parent = step "the #{parent_object_type} with #{parent_key} '#{parent_value}' exists"
   table.headers.each do |child_value|
