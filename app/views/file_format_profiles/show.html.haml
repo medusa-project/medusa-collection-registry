@@ -18,7 +18,7 @@
           %h4 Content types:
         - if @file_format_profile.content_types.present?
           %ul.list-group
-            - @file_format_profile.content_types.find_each do |content_type|
+            - @file_format_profile.content_types.each do |content_type|
               %li.list-group-item= content_type.name
         - else
           .panel-body None
@@ -28,7 +28,7 @@
           %h4 File Extensions:
         - if @file_format_profile.file_extensions.present?
           %ul.list-group
-            - @file_format_profile.file_extensions.find_each do |extension|
+            - @file_format_profile.file_extensions.order('extension asc').each do |extension|
               %li.list-group-item= extension.extension_label
         - else
           .panel-body None
