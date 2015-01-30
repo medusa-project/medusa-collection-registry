@@ -59,6 +59,3 @@ module MedusaRails3
 
   end
 end
-
-#solrizer-fedora still uses RAILS_ENV
-RAILS_ENV = Rails.env
