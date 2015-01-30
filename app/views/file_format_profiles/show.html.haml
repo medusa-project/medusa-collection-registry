@@ -11,25 +11,23 @@
       = show_field @file_format_profile, :os_version
       = show_field @file_format_profile, :notes
   .row
-    .col-xs-6
+    .col-xs-4
       .panel.panel-default
         .panel-heading
           %h4 Content types:
-        .panel-body
-          - if @file_format_profile.content_types.present?
-            %ul
-              - @file_format_profile.content_types.find_each do |content_type|
-                %li= content_type.name
-          - else
-            None
-    .col-xs-6
+        - if @file_format_profile.content_types.present?
+          %ul.list-group
+            - @file_format_profile.content_types.find_each do |content_type|
+              %li.list-group-item= content_type.name
+        - else
+          .panel-body None
+    .col-xs-4
       .panel.panel-default
         .panel-heading
           %h4 File Extensions:
-        .panel-body
-          - if @file_format_profile.file_extensions.present?
-            %ul
-              - @file_format_profile.file_extensions.find_each do |extension|
-                %li= extension.extension
-          - else
-            None
+        - if @file_format_profile.file_extensions.present?
+          %ul.list-group
+            - @file_format_profile.file_extensions.find_each do |extension|
+              %li.list-group-item= extension.extension
+        - else
+          .panel-body None
