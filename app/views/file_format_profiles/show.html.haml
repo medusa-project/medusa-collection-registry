@@ -29,6 +29,6 @@
         - if @file_format_profile.file_extensions.present?
           %ul.list-group
             - @file_format_profile.file_extensions.find_each do |extension|
-              %li.list-group-item= extension.extension
+              %li.list-group-item= extension.extension_label
         - else
           .panel-body None
