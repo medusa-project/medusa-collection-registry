@@ -1,0 +1,14 @@
+-# Must pass in title (for button and header of dialog), id (for modal dialog), and yield the body
+%a.btn.btn-primary{href: '#', 'data-toggle' => 'modal', 'data-target' => id} #{title}
+.modal.fade{role: 'dialog', 'aria-labelledby' => title, 'aria-hidden' => 'true', id: id}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %a.close{href: '#', type: 'button', 'data-dismiss' => 'modal', 'aria-label' => 'Close'}
+          %span{'aria-hidden' => 'true'}
+            &times;
+        %h4.modal-title= title
+      .modal-body
+        = yield
+      .modal-footer
+        %a.btn.btn-default{href: '#', type: 'button', 'data-dismiss' => 'modal'} Close
