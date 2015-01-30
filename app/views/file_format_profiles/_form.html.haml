@@ -9,19 +9,7 @@
       = f.input :os_environment, label: 'OS environment'
       = f.input :os_version, label: 'OS version'
       = f.input :notes
-      %a.btn.btn-primary{href: '#', 'data-toggle' => 'modal', 'data-target' => '#edit_content_type_list'} Edit Content Types
-      #edit_content_type_list.modal.fade{role: 'dialog', 'aria-labelledby' => 'Edit content type list', 'aria-hidden' => 'true'}
-        .modal-dialog
-          .modal-content
-            .modal-header
-              %a.close{href: '#', type: 'button', 'data-dismiss' => 'modal', 'aria-label' => 'Close'}
-                %span{'aria-hidden' => 'true'}
-                  &times;
-              %h4.modal-title
-                Edit Content Types
-            .modal-body
-              = f.association :content_types, as: :check_boxes, label_method: :name
-            .modal-footer
-              %a.btn.btn-default{href: '#', type: 'button', 'data-dismiss' => 'modal'} Close
-      #edit_file_extension_list
+      = render layout: 'layout_modal_edit', locals: {id: 'edit_content_type_list', title: 'Edit Content Types'} do
+        = f.association :content_types, as: :check_boxes, label_method: :name
+      = render layout: 'layout_modal_edit', locals: {id: 'edit_file_extension_list', title: 'Edit File Extensions'} do
         = f.association :file_extensions, as: :check_boxes, label_method: :extension_label
