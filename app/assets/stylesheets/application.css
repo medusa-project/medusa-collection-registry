@@ -47,3 +47,11 @@ label.checkbox {
 #filename_search {
     min-width: 300px;
 }
+
+#edit_content_type_list .modal-dialog {
+    min-width: 80%;
+}
+
+#edit_file_extension_list .modal-dialog {
+    min-width: 80%;
+}
