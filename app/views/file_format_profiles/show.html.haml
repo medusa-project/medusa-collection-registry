@@ -10,17 +10,22 @@
       = show_field @file_format_profile, :os_environment
       = show_field @file_format_profile, :os_version
       = show_field @file_format_profile, :notes
-      - unless @file_format_profile.content_types.empty?
-        %hr
-        %div
-          %strong Content types:
+  .row
+    .col-xs-6
+      %div
+        %strong Content types:
+        - if @file_format_profile.content_types.present?
           %ul
             - @file_format_profile.content_types.find_each do |content_type|
               %li= content_type.name
-      - unless @file_format_profile.file_extensions.empty?
-        %hr
-        %div
-          %strong File Extensions:
+        - else
+          None
+    .col-xs-6
+      %div
+        %strong File Extensions:
+        - if @file_format_profile.file_extensions.present?
           %ul
             - @file_format_profile.file_extensions.find_each do |extension|
               %li= extension.extension
+        - else
+          None
