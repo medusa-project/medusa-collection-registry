@@ -12,4 +12,8 @@ class FileExtension < ActiveRecord::Base
     File.extname(filename).sub(/^\./, '').downcase
   end
 
+  def extension_label
+    self.extension.if_blank('<no extension>')
+  end
+
 end
