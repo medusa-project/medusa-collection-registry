@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE rule-set PUBLIC "-//CARINGO//DTD 1.0 PORTALRULES//EN"
-    "file:/home/hading/repos/medusa-rails3/war-rules.dtd">
+    "file:/home/hading/repos/medusa-collection-registry/war-rules.dtd">
 <rule-set>
   <!-- Note: modifications to this publish element are disallowed -->
   <publish>

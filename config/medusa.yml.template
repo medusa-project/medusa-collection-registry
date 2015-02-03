@@ -2,17 +2,17 @@ development:
   #'cfs' staging file config. Note that this doesn't strictly need to be a dx/cfs file system,
   #but we use that name in order to distinguish from our internal bit file stuff for now.
   cfs:
-    root: /home/hading/repos/medusa-rails3/tmp/cfs-root-dev
-    tmp: /Users/hding2/repos/medusa-rails3/tmp
-    export_root: /home/hading/repos/medusa-rails3/tmp/cfs-export-root-dev
+    root: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-dev
+    tmp: /Users/hding2/repos/medusa-collection-registry/tmp
+    export_root: /home/hading/repos/medusa-collection-registry/tmp/cfs-export-root-dev
     export_autoclean: false
   staging_storage:
     #an array of hashes which have the local_path (i.e. as the medusa server sees it) and the remote_path
     #what will be recorded in the external file path)
     roots:
-      - local_path: /Users/hding2/repos/medusa-rails3/tmp/staging-root-1
+      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-root-1
         remote_path: /staging-root-1
-      - local_path: /Users/hding2/repos/medusa-rails3/tmp/staging-root-2
+      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-root-2
         remote_path: /staging-root-2
   #This opens a few actions to basic auth so that machine clients can use them
   basic_auth: machine_user:machine_password
@@ -37,9 +37,9 @@ development:
   public_view_on: true
 test:
   cfs:
-    root: /home/hading/repos/medusa-rails3/tmp/cfs-root-test
-    tmp: /Users/hding2/repos/medusa-rails3/tmp
-    export_root: /home/hading/repos/medusa-rails3/tmp/cfs-export-root-test
+    root: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-test
+    tmp: /Users/hding2/repos/medusa-collection-registry/tmp
+    export_root: /home/hading/repos/medusa-collection-registry/tmp/cfs-export-root-test
     export_autoclean: false
   #the tests assume the following
   basic_auth: machine_user:machine_password

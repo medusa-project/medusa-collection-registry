@@ -1,11 +1,11 @@
-This is a snapshot of how to install medusa-rails3. It may be stale, so if you are trying to follow it please update
+This is a snapshot of how to install medusa-collection-registry. It may be stale, so if you are trying to follow it please update
 it as necessary.
 
 #Set up RVM
 
 Install RVM to manage the ruby and gems. The git checkout will have its own .rvmrc.
 
-#Check out medusa-rails3
+#Check out medusa-collection-registry
 
 Git clone this project where you want to work with it. cd into the clone to pick up the .rvmrc and make sure
 you have the ruby you need and create the gemset.
