@@ -9,7 +9,7 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-module MedusaRails3
+module MedusaCollectionRegistry
   class Application < Rails::Application
     attr_accessor :shibboleth_host
     attr_accessor :handle_client, :medusa_host

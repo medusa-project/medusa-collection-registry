@@ -43,7 +43,7 @@ module RegistersHandle
   protected
 
   def with_handle_setup
-    client = MedusaRails3::Application.handle_client
+    client = MedusaCollectionRegistry::Application.handle_client
     if self.handle and client
       yield client
     end

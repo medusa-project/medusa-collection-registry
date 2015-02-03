@@ -8,7 +8,7 @@ class AmqpConnector < Object
   attr_accessor :connection
 
   def initialize
-    config = (MedusaRails3::Application.medusa_config['amqp'] || {}).symbolize_keys
+    config = (MedusaCollectionRegistry::Application.medusa_config['amqp'] || {}).symbolize_keys
     self.connection = Bunny.new(config)
     self.connection.start
   end

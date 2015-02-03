@@ -99,11 +99,11 @@ Repository Id: #{file_group.repository.id}
   end
 
   def self.incoming_queue
-    MedusaRails3::Application.medusa_config['amazon']['incoming_queue']
+    MedusaCollectionRegistry::Application.medusa_config['amazon']['incoming_queue']
   end
 
   def self.outgoing_queue
-    MedusaRails3::Application.medusa_config['amazon']['outgoing_queue']
+    MedusaCollectionRegistry::Application.medusa_config['amazon']['outgoing_queue']
   end
 
   def self.create_and_schedule(user, cfs_directory)

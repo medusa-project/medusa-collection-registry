@@ -7,4 +7,4 @@ if Rails.env.production?
     username == ENV['DJ_WEB_USER'] && password == ENV['DJ_WEB_PASSWORD'] and username.present? and password.present?
   end
 end
-run MedusaRails3::Application
+run MedusaCollectionRegistry::Application

@@ -29,7 +29,7 @@ module BookTracker
       puts task.name
 
       begin
-        path = MedusaRails3::Application.medusa_config['book_tracker']['import_path']
+        path = MedusaCollectionRegistry::Application.medusa_config['book_tracker']['import_path']
         path = File.expand_path(path.chomp('/'))
         raise "Import path (#{path}) does not exist." unless Dir.exist?(path)
 

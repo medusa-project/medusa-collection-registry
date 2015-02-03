@@ -1,4 +1,4 @@
-MedusaRails3::Application.routes.draw do
+MedusaCollectionRegistry::Application.routes.draw do
 
   resources :static_pages, only: [:show, :edit, :update], param: :key
   match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]

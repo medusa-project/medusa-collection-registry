@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
   def new
     session[:login_return_referer] = request.env['HTTP_REFERER']
     if Rails.env.production?
-      redirect_to(shibboleth_login_path(MedusaRails3::Application.shibboleth_host))
+      redirect_to(shibboleth_login_path(MedusaCollectionRegistry::Application.shibboleth_host))
     else
       redirect_to('/auth/developer')
     end

@@ -191,11 +191,11 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def self.export_root
-    MedusaRails3::Application.medusa_config['cfs']['export_root']
+    MedusaCollectionRegistry::Application.medusa_config['cfs']['export_root']
   end
 
   def self.export_autoclean
-    MedusaRails3::Application.medusa_config['cfs']['export_autoclean']
+    MedusaCollectionRegistry::Application.medusa_config['cfs']['export_autoclean']
   end
 
   def public?
