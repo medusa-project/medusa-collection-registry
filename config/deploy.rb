@@ -19,7 +19,7 @@ task :staging do
 end
 
 set :application, "Medusa"
-set :repository, "git://github.com/medusa-project/medusa-collection-registry.git"
+set :repository, "https://github.com/medusa-project/medusa-collection-registry.git"
 
 set :scm, :git
 set :deploy_via, :remote_cache
@@ -28,7 +28,7 @@ set :user, 'medusa'
 set :use_sudo, false
 
 set :home, "/services/medusa"
-set :deploy_to, "#{home}/medusa-collection-registry-capistrano"
+set :deploy_to, "#{home}/medusa-cr-capistrano"
 set :shared, "#{deploy_to}/shared"
 set :shared_config, "#{shared}/config"
 set :public, "#{current_path}/public"
