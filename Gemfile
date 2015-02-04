@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', "~> 4.1"
-gem 'responders', '~> 2.0'
+gem 'responders'
 
 gem 'pg'
 
@@ -40,22 +40,17 @@ gem 'mini_magick'
 #AMQP communication
 gem 'bunny'
 
-# Gems used only for assets and not required
-# in production environments by default.
-#group :assets do
-  gem 'sass-rails'
-  gem 'coffee-rails'
-  gem 'less-rails'
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'less-rails'
 
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer'
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem 'therubyracer'
 
-  gem 'uglifier'
+gem 'uglifier'
 
-  # The "bootstrap3" branch is no longer needed -- bootstrap 3.2 is the default
-  gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
-
-#end
+# The "bootstrap3" branch is no longer needed -- bootstrap 3.2 is the default
+gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
