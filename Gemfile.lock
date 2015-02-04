@@ -426,7 +426,7 @@ DEPENDENCIES
   paperclip!
   passenger
   pg
-  rails (~> 4.1)
+  rails (~> 4.2)
   rails3-jquery-autocomplete
   responders
   rest-client
