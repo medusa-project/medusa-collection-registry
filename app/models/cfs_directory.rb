@@ -232,7 +232,7 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def self.update_all_tree_stats_from_db
-    self.roots.each { |root| root.update_all_tree_stats_from_db }
+    self.roots.find_each { |root| root.update_all_tree_stats_from_db }
   end
 
   def handle_cfs_assessment
