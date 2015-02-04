@@ -2,7 +2,7 @@ class Job::CfsInitialFileGroupAssessment < Job::Base
   belongs_to :file_group, touch: true
 
   def self.create_for(file_group)
-    Delayed::Job.enqueue(self.create(file_group: file_group), priority: 60, queue: 'initial_assessment') unless self.find_by(file_group_id: file_group.id)
+    Delayed::Job.enqueue(self.create!(file_group: file_group), priority: 60, queue: 'initial_assessment') unless self.find_by(file_group_id: file_group.id)
   end
 
   def perform

@@ -45,4 +45,17 @@ class BitLevelFileGroupsController < FileGroupsController
     redirect_to @file_group
   end
 
+  def create_virus_scan
+    authorize! :create_virus_scan, @file_group
+    if @file_group.cfs_directory.present?
+      @alert = "Running virus scan on cfs directory #{@file_group.cfs_directory.path}."
+      Job::VirusScan.create_for(@file_group)
+    else
+      @alert = 'Selected File Group does not have a cfs root directory'
+    end
+    respond_to do |format|
+      format.js
+    end
+  end
+
 end

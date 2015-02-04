@@ -5,7 +5,7 @@ class Job::FitsDirectory < Job::Base
   has_many :job_fits_directories, :class_name => 'Job::FitsDirectory'
 
   def self.create_for(cfs_directory)
-    Delayed::Job.enqueue(self.create(cfs_directory: cfs_directory, file_group: cfs_directory.file_group,
+    Delayed::Job.enqueue(self.create!(cfs_directory: cfs_directory, file_group: cfs_directory.file_group,
                                      file_count: cfs_directory.cfs_files.count),
                          priority: 70)
   end
