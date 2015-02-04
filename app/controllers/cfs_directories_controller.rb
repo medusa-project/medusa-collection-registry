@@ -1,9 +1,9 @@
 class CfsDirectoriesController < ApplicationController
 
-  before_filter :public_view_enabled?, only: [:public]
-  before_filter :require_logged_in, except: [:show, :public]
-  before_filter :require_logged_in_or_basic_auth, only: [:show]
-  before_filter :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :fixity_check]
+  before_action :public_view_enabled?, only: [:public]
+  before_action :require_logged_in, except: [:show, :public]
+  before_action :require_logged_in_or_basic_auth, only: [:show]
+  before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :fixity_check]
   layout 'public', only: [:public]
 
   def show

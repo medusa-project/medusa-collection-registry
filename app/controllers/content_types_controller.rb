@@ -1,5 +1,5 @@
 class ContentTypesController < ApplicationController
-  before_filter :require_logged_in
+  before_action :require_logged_in
 
   def cfs_files
     @content_type = ContentType.find(params[:id])

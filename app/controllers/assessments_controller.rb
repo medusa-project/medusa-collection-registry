@@ -1,7 +1,7 @@
 class AssessmentsController < ApplicationController
 
-  before_filter :require_logged_in
-  before_filter :find_assessment_and_assessable, only: [:destroy, :show, :edit, :update]
+  before_action :require_logged_in
+  before_action :find_assessment_and_assessable, only: [:destroy, :show, :edit, :update]
   helper :assessments
 
   def destroy

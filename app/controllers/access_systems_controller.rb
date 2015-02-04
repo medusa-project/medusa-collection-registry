@@ -1,7 +1,7 @@
 class AccessSystemsController < ApplicationController
 
-  before_filter :require_logged_in, except: [:index, :show]
-  before_filter :find_access_system, only: [:show, :edit, :update, :destroy, :collections]
+  before_action :require_logged_in, except: [:index, :show]
+  before_action :find_access_system, only: [:show, :edit, :update, :destroy, :collections]
 
   def index
     @access_systems = AccessSystem.all

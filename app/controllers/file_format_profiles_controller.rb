@@ -1,6 +1,6 @@
 class FileFormatProfilesController < ApplicationController
-  before_filter :require_logged_in
-  before_filter :find_file_format_profile, only: [:show, :edit, :update, :destroy]
+  before_action :require_logged_in
+  before_action :find_file_format_profile, only: [:show, :edit, :update, :destroy]
 
   def index
     authorize! :read, FileFormatProfile

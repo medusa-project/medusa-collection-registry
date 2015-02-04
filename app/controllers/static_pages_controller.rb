@@ -1,6 +1,6 @@
 class StaticPagesController < ApplicationController
 
-  before_filter :find_static_page
+  before_action :find_static_page
 
   def show
 

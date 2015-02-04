@@ -1,7 +1,7 @@
 class RepositoriesController < ApplicationController
 
-  before_filter :require_logged_in
-  before_filter :find_repository, only: [:edit, :update, :destroy, :red_flags, :update_ldap_admin, :collections, :events, :assessments]
+  before_action :require_logged_in
+  before_action :find_repository, only: [:edit, :update, :destroy, :red_flags, :update_ldap_admin, :collections, :events, :assessments]
   include CollectionsToCsv
   include RepositoriesToCsv
 

@@ -1,9 +1,9 @@
 class CollectionsController < ApplicationController
 
-  before_filter :public_view_enabled?, only: [:public]
-  before_filter :require_logged_in, except: [:show, :public]
-  before_filter :require_logged_in_or_basic_auth, only: [:show]
-  before_filter :find_collection_and_repository, only: [:show, :destroy, :edit, :update, :red_flags, :public, :assessments, :attachments, :events]
+  before_action :public_view_enabled?, only: [:public]
+  before_action :require_logged_in, except: [:show, :public]
+  before_action :require_logged_in_or_basic_auth, only: [:show]
+  before_action :find_collection_and_repository, only: [:show, :destroy, :edit, :update, :red_flags, :public, :assessments, :attachments, :events]
   layout 'public', only: [:public]
 
   include CollectionsToCsv

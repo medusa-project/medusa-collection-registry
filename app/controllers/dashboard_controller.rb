@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
 
-  before_filter :require_logged_in
+  before_action :require_logged_in
 
   def show
     setup_full_storage_summary

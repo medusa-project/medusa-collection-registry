@@ -1,7 +1,7 @@
 class RedFlagsController < ApplicationController
 
-  before_filter :require_logged_in
-  before_filter :find_red_flag, only: [:show, :edit, :update, :unflag]
+  before_action :require_logged_in
+  before_action :find_red_flag, only: [:show, :edit, :update, :unflag]
 
   def show
   end
