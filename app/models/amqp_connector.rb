@@ -39,6 +39,12 @@ class AmqpConnector < Object
     end
   end
 
+  def ensure_queue(queue_name)
+    with_queue(queue_name) do |queue|
+      #no-op, just ensuring queue exists
+    end
+  end
+
   def with_message(queue_name)
     with_queue(queue_name) do |queue|
       delivery_info, properties, raw_payload = queue.pop
@@ -61,6 +67,7 @@ class AmqpConnector < Object
   end
 
   def send_message(queue_name, message)
+    ensure_queue(queue_name)
     with_exchange do |exchange|
       message = message.to_json if message.is_a?(Hash)
       exchange.publish(message, routing_key: queue_name, persistent: true)
