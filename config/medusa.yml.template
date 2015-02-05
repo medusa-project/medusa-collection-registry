@@ -32,6 +32,7 @@ development:
     #host: 127.0.0.1
     #user: user
     #password: pw
+    #vhost: medusa
   book_tracker:
     import_path: ~/Projects/mbt_marcxml
     library_nuc_code: UIU
