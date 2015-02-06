@@ -32,9 +32,9 @@ Feature: Record events
     When I view events for the file group with title 'dog-files'
     And I click on 'Delete' in the events table
     Then I should be viewing events for the file group with title 'dog-files'
-    And I should see none of:
-      | FITS analysis performed | admin@example.com |
     And the file group with title 'dog-files' should have 0 events
+    And I should see none of:
+      | admin@example.com |
 
   Scenario: Update an event
     Given I am logged in as a manager
