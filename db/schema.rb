@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150129225153) do
+ActiveRecord::Schema.define(version: 20150210220730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 20150129225153) do
     t.datetime "updated_at"
   end
 
-  add_index "amazon_backups", ["cfs_directory_id"], name: "index_amazon_backups_on_cfs_directory_id", using: :btree
+  add_index "amazon_backups", ["cfs_directory_id", "date"], name: "index_amazon_backups_on_cfs_directory_id_and_date", unique: true, using: :btree
   add_index "amazon_backups", ["updated_at"], name: "index_amazon_backups_on_updated_at", using: :btree
 
   create_table "assessments", force: :cascade do |t|
@@ -333,6 +333,8 @@ ActiveRecord::Schema.define(version: 20150129225153) do
   create_table "job_amazon_backups", force: :cascade do |t|
     t.integer "amazon_backup_id"
   end
+
+  add_index "job_amazon_backups", ["amazon_backup_id"], name: "index_job_amazon_backups_on_amazon_backup_id", unique: true, using: :btree
 
   create_table "job_cfs_directory_export_cleanups", force: :cascade do |t|
     t.string "directory", limit: 255
