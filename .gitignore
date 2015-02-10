@@ -27,3 +27,5 @@ coverage/
 
 public/system/
 solr/
+
+.capistrano
