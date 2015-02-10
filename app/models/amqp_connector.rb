@@ -1,14 +1,16 @@
 #Represent AMQP connection and provide convenience methods.
 #The amqp section of medusa.yml can contain any option appropriate for Bunny.new.
 require 'singleton'
+require 'set'
 
 class AmqpConnector < Object
   include Singleton
 
-  attr_accessor :connection
+  attr_accessor :connection, :known_queues
 
   def initialize
     config = (MedusaCollectionRegistry::Application.medusa_config['amqp'] || {}).symbolize_keys
+    self.known_queues = Set.new
     self.connection = Bunny.new(config)
     self.connection.start
   end
@@ -40,8 +42,11 @@ class AmqpConnector < Object
   end
 
   def ensure_queue(queue_name)
-    with_queue(queue_name) do |queue|
-      #no-op, just ensuring queue exists
+    unless self.known_queues.include?(queue_name)
+      with_queue(queue_name) do |queue|
+        #no-op, just ensuring queue exists
+      end
+      self.known_queues << queue_name
     end
   end
 
