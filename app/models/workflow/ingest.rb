@@ -49,9 +49,9 @@ class Workflow::Ingest < Job::Base
       end
     end
     self.transaction do
-      cfs_directory = CfsDirectory.find_or_create_by(path: self.bit_level_file_group.expected_relative_cfs_root_directory)
-      bit_level_file_group.cfs_directory_id = cfs_directory.id
-      bit_level_file_group.save!
+      cfs_directory = CfsDirectory.find_or_create_by!(path: self.bit_level_file_group.expected_relative_cfs_root_directory)
+      cfs_directory.parent = bit_level_file_group
+      cfs_directory.save!
       self.state = 'amazon_backup'
       self.save!
       self.put_in_queue
