@@ -25,7 +25,7 @@ Feature: File Format Profiles
   Scenario: Index of file format profiles
     When I go to the file format profiles index page
     Then I should see all of:
-      | images | Fotostore | Linux | Photo manipulation |
+      | images | Fotostore | (1.2.3) | Linux | (3.2) |
 
   Scenario: Go from index of file format profiles to show view of one
     When I go to the file format profiles index page
@@ -106,12 +106,17 @@ Feature: File Format Profiles
     And I click on 'Update'
     Then I should see 'image/jpeg'
     And I should not see 'application/xml'
+    When I go to the file format profiles index page
+    Then I should see 'image/jpeg'
 
   Scenario: Associate with file extensions
     When I edit the file format profile with name 'images'
     And I check 'jpg'
     And I check 'xml'
     And I click on 'Update'
+    Then I should see all of:
+      | jpg | xml |
+    When I go to the file format profiles index page
     Then I should see all of:
       | jpg | xml |
 
