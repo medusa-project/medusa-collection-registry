@@ -148,13 +148,13 @@ class BitLevelFileGroup < FileGroup
     return if new_cfs_directory.blank? and old_cfs_directory.blank?
     return if old_cfs_directory == new_cfs_directory
     transaction do
-      if new_cfs_directory
-        new_cfs_directory.parent = self
-        new_cfs_directory.save!
-      end
       if old_cfs_directory
         old_cfs_directory.parent = nil
         old_cfs_directory.save!
+      end
+      if new_cfs_directory
+        new_cfs_directory.parent = self
+        new_cfs_directory.save!
       end
     end
     self.cfs_directory(true)
