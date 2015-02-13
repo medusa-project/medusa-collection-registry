@@ -35,7 +35,6 @@ class FileGroupsController < ApplicationController
 
   def update
     authorize! :update, @file_group
-    normalize_parameters_for_subclasses!
     handle_related_file_groups do
       handle_nested_rights_declaration(params[:file_group]) do
         if @file_group.update_attributes(allowed_params)
@@ -56,7 +55,6 @@ class FileGroupsController < ApplicationController
   end
 
   def create
-    normalize_parameters_for_subclasses!
     handle_related_file_groups do
       @collection = Collection.find(params[:file_group][:collection_id])
       klass = determine_creation_class(params[:file_group])
@@ -166,15 +164,6 @@ class FileGroupsController < ApplicationController
           json.name directory.path
         end
       end
-    end
-  end
-
-  #Since we may get the parameters as any of :external_file_group, :bit_level_file_group, :object_level_file_group, or :file_group
-  #make sure they all go under :file_group
-  def normalize_parameters_for_subclasses!
-    params[:file_group] ||= Hash.new.with_indifferent_access
-    [:external_file_group, :bit_level_file_group, :object_level_file_group].each do |param_key|
-      params[:file_group].merge!(params[param_key]) if params[param_key]
     end
   end
 

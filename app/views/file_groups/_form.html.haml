@@ -1,4 +1,4 @@
-= simple_form_for @file_group, html: {class:'form-horizontal'}, defaults: {required: false} do |f|
+= simple_form_for @file_group, as: :file_group, html: {class:'form-horizontal'}, defaults: {required: false} do |f|
   .row
     = render partial: 'shared/form_sidebar', locals: {f: f, object: @file_group, cancel_return: (@collection if @file_group.new_record?)}
     .col-sm-9
