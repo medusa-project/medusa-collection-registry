@@ -1,6 +1,4 @@
-- url, method = @file_group.new_record? ? [file_groups_path(@file_group), :post] : [file_group_path(@file_group), :put]
--# we need to use :file_group instead of @file_group, but this also means that we need to handle the required fields manually
-= simple_form_for :file_group, url: url, method: method, html: {class:'form-horizontal'}, defaults: {required: false} do |f|
+= simple_form_for @file_group, html: {class:'form-horizontal'}, defaults: {required: false} do |f|
   .row
     = render partial: 'shared/form_sidebar', locals: {f: f, object: @file_group, cancel_return: (@collection if @file_group.new_record?)}
     .col-sm-9
