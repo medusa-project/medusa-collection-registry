@@ -9,7 +9,7 @@ class Job::IngestStagingDelete < Job::Base
     path = external_file_group.local_staged_file_location
     #check to make sure that this is a legitimate path for this file group
     unless path.match(/#{external_file_group.collection_id}\/#{external_file_group.id}$/)
-      raise RuntimeError, 'Can' 't schedule delete for staging ingest - path is invalid.'
+      raise RuntimeError, 'Can''t schedule delete for staging ingest - path is invalid.'
     end
     job = self.create!(external_file_group_id: external_file_group.id, path: path, user_id: user.id)
     options = {priority: 10}
