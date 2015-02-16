@@ -1,27 +1,47 @@
 @import 'colors.css.less';
 
+@navbar-object-border: solid 7px;
+
 #global-navigation {
   .global-nav-row:first-child {
     background-color: @navbar-background-color;
+    color: white;
+    a:visited, a:link {
+      color: white;
+    }
+    .dropdown-menu {
+      a:visited, a:link {
+       color: @navbar-text-color;
+      }
+    }
   }
   .global-nav-row {
     padding: 0 50px;
     background-color: white;
+    color: @navbar-text-color;
+    a:visited, a:link {
+      color: @navbar-link-color;
+    }
   }
   .navbar-institutions {
     background-color: @navbar-institutions-background-color;
+    border-bottom: @navbar-object-border @navbar-institutions-footer-color;
   }
   .navbar-repositories {
     background-color: @navbar-repositories-background-color;
+    border-bottom: @navbar-object-border @navbar-repositories-footer-color;
   }
   .navbar-collections {
     background-color: @navbar-collections-background-color;
+    border-bottom: @navbar-object-border @navbar-collections-footer-color;
   }
   .navbar-file-groups {
     background-color: @navbar-file-groups-background-color;
+    border-bottom: @navbar-object-border @navbar-file-groups-footer-color;
   }
   .navbar-files {
     background-color: @navbar-files-background-color;
+    border-bottom: @navbar-object-border @navbar-files-footer-color;
   }
 }
 

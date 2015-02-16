@@ -19,11 +19,11 @@
           - if logged_in?
             = render partial: 'shared/filename_search'
           - if logged_in?
-            %li= link_to('Logout', logout_path)
+            %li= fa_icon_and_text_link_to 'Logout', 'user', logout_path
           - else
-            %li= link_to('Login', login_path)
+            %li= fa_icon_and_text_link_to 'Login', 'user', login_path
           %li= wiki_link('Wiki')
-          %li= fa_icon_link_to 'Help', 'question', static_page_path(key: 'help')
+          %li= fa_icon_link_to 'Help', 'question-circle', static_page_path(key: 'help')
     .global-nav-row
       .collapse.navbar-collapse
         %ul.nav.navbar-nav.navbar-left
@@ -34,10 +34,9 @@
           %li.navbar-file-groups= fa_icon_and_text_link_to 'File Groups', 'folder-o','#'
           %li.navbar-files= fa_icon_and_text_link_to 'Files', 'file-o', '#'
         %ul.nav.navbar-nav.navbar-right
-          .navbar-text or View by:
           %li.dropdown
             %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
-              Other
+              or View by
               %span.caret
             %ul.dropdown-menu{role: 'menu'}
               %li= link_to 'Producers', producers_path
