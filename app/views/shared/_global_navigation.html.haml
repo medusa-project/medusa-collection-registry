@@ -31,8 +31,8 @@
           %li.navbar-institutions= fa_icon_and_text_link_to 'Institutions', 'university', institutions_path
           %li.navbar-repositories= fa_icon_and_text_link_to 'Repositories', 'building', repositories_path
           %li.navbar-collections= fa_icon_and_text_link_to 'Collections', 'archive', collections_path
-          %li.navbar-file-groups= fa_icon_and_text_link_to 'File Groups', 'folder-o','#'
-          %li.navbar-files= fa_icon_and_text_link_to 'Files', 'file-o', '#'
+          %li.navbar-file-groups.hidden= fa_icon_and_text_link_to 'File Groups', 'folder-o','#'
+          %li.navbar-files.hidden= fa_icon_and_text_link_to 'Files', 'file-o', '#'
         %ul.nav.navbar-nav.navbar-right
           %li.dropdown
             %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
