@@ -2,7 +2,8 @@
   %nav.navbar.navbar-default#global-navigation{role: 'navigation'}
     .global-nav-row
       #medusa-logo.pull-left
-        = image_tag('medusa_wordmark_50x250px.png', alt: 'Medusa logo')
+        %a{href: root_url}
+          = image_tag('medusa_wordmark_50x250px.png', alt: 'Medusa logo')
       .collapse.navbar-collapse
         %ul.nav.navbar-nav.navbar-left
           %li
