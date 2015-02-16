@@ -10,6 +10,12 @@ module ApplicationHelper
     end
   end
 
+  def fa_icon_and_text_link_to(title, icon, url, html_opts = {})
+    link_to url, html_opts.reverse_merge(title: title) do
+      fa_icon(icon) + ' ' + title
+    end
+  end
+
   #if url doesn't contain the protocol then add it here
   def external_url(url)
     if url.blank?

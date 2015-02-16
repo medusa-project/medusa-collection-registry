@@ -1,41 +1,15 @@
 - cache(current_user) do
   %nav.navbar.navbar-default#global-navigation{role: 'navigation'}
-    .container
-      / Brand and toggle get grouped for better mobile display
-      .navbar-header
-        %button.navbar-toggle{'data-target' => '#bs-example-navbar-collapse-1', 'data-toggle' => 'collapse', type: 'button'}
-          %span.sr-only Toggle navigation
-          %span.icon-bar
-          %span.icon-bar
-          %span.icon-bar
-        %a.navbar-brand{href: root_url}
-          - if logged_in?
-            %span.glyphicon.glyphicon-eye-open
-          - else
-            %span.glyphicon.glyphicon-eye-close
-          Medusa
-      / Collect the nav links, forms, and other content for toggling
-      #bs-example-navbar-collapse-1.collapse.navbar-collapse
-        %ul.nav.navbar-nav
+    .global-nav-row
+      #medusa-logo.pull-left
+        = image_tag('medusa_wordmark_50x250px.png', alt: 'Medusa logo')
+      .collapse.navbar-collapse
+        %ul.nav.navbar-nav.navbar-left
           %li
-            = fa_icon_link_to 'Dashboard', 'tachometer', dashboard_path
-          %li= link_to 'Repositories', repositories_path
-          %li= link_to 'Collections', collections_path
+            = link_to 'Dashboard', dashboard_path
           %li.dropdown
             %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
-              Other
-              %span.caret
-            %ul.dropdown-menu{role: 'menu'}
-              - if safe_can?(:manage, Institution)
-                %li= link_to 'Institutions', institutions_path
-              %li= link_to 'Producers', producers_path
-              %li= link_to 'Access Systems', access_systems_path
-              %li= link_to 'Packages', package_profiles_path
-              - if safe_can?(:read, FileFormatProfile)
-                %li= link_to 'File Format Profiles', file_format_profiles_path
-          %li.dropdown
-            %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
-              Books
+              Book Tracker
               %span.caret
             %ul.dropdown-menu{role: 'menu'}
               %li= link_to 'Items', book_tracker_items_path
@@ -50,3 +24,24 @@
             %li= link_to('Login', login_path)
           %li= wiki_link('Wiki')
           %li= fa_icon_link_to 'Help', 'question', static_page_path(key: 'help')
+    .global-nav-row
+      .collapse.navbar-collapse
+        %ul.nav.navbar-nav.navbar-left
+          .navbar-text View lists of:
+          %li.navbar-institutions= fa_icon_and_text_link_to 'Institutions', 'university', institutions_path
+          %li.navbar-repositories= fa_icon_and_text_link_to 'Repositories', 'building', repositories_path
+          %li.navbar-collections= fa_icon_and_text_link_to 'Collections', 'archive', collections_path
+          %li.navbar-file-groups= fa_icon_and_text_link_to 'File Groups', 'folder-o','#'
+          %li.navbar-files= fa_icon_and_text_link_to 'Files', 'file-o', '#'
+        %ul.nav.navbar-nav.navbar-right
+          .navbar-text or View by:
+          %li.dropdown
+            %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+              Other
+              %span.caret
+            %ul.dropdown-menu{role: 'menu'}
+              %li= link_to 'Producers', producers_path
+              %li= link_to 'Access Systems', access_systems_path
+              %li= link_to 'Packages', package_profiles_path
+              - if safe_can?(:read, FileFormatProfile)
+                %li= link_to 'File Format Profiles', file_format_profiles_path
