@@ -3,7 +3,9 @@ class StaticPagesController < ApplicationController
   before_action :find_static_page
 
   def show
-
+    @form_partial_name = "form_#{@static_page.key}"
+    y = template_exists?(@form_partial_name)
+    b = 1
   end
 
   def edit
