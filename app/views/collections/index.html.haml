@@ -6,7 +6,8 @@
   %span.glyphicon.glyphicon-export
   Export as CSV
 
-= render 'index_table'
+- cache(cache_key_for_all(Collection)) do
+  = render 'index_table'
 
 %br
 
