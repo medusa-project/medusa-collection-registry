@@ -4,10 +4,10 @@
 
 #global-navigation {
   .global-nav-row:first-child {
-    background-color: @navbar-background-color;
-    color: white;
+    background-color: @first-navbar-background-color;
+    color: @first-navbar-text-color;
     a:visited, a:link {
-      color: white;
+      color: @first-navbar-link-color;
     }
     .dropdown-menu {
       a:visited, a:link {
@@ -17,7 +17,7 @@
   }
   .global-nav-row {
     padding: 0 50px;
-    background-color: white;
+    background-color: @navbar-background-color;
     color: @navbar-text-color;
     a:visited, a:link {
       color: @navbar-link-color;
