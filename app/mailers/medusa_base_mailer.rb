@@ -9,7 +9,7 @@ class MedusaBaseMailer < ActionMailer::Base
   end
 
   def self.no_reply_address
-    MedusaCollectionRegistry::Application.medusa_confit['email']['noreply']
+    MedusaCollectionRegistry::Application.medusa_config['email']['noreply']
   end
 
   default from: self.no_reply_address
