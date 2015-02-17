@@ -1,5 +1,4 @@
-class ScheduledEventMailer < ActionMailer::Base
-  default from: "medusa-noreply@#{self.smtp_settings['domain'].if_blank('library.illinois.edu')}"
+class ScheduledEventMailer < MedusaBaseMailer
 
   def reminder(event)
     @event = event

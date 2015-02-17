@@ -1,5 +1,4 @@
-class AmazonMailer < ActionMailer::Base
-  default from: "medusa-noreply@#{self.smtp_settings['domain'].if_blank('library.illinois.edu')}"
+class AmazonMailer < MedusaBaseMailer
 
   def progress(amazon_backup)
     @amazon_backup = amazon_backup
