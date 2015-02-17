@@ -1,6 +1,12 @@
 MedusaCollectionRegistry::Application.routes.draw do
 
-  resources :static_pages, only: [:show, :edit, :update], param: :key
+  resources :static_pages, only: [:show, :edit, :update], param: :key do
+    member do
+      post :deposit_files
+      post :feedback
+      post :request_training
+    end
+  end
   match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   match '/login', to: 'sessions#new', as: :login, via: [:get, :post]
   match '/logout', to: 'sessions#destroy', as: :logout, via: [:get, :post]

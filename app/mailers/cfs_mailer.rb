@@ -1,5 +1,4 @@
-class CfsMailer < ActionMailer::Base
-  default from: "medusa-noreply@#{self.smtp_settings['domain'].if_blank('library.illinois.edu')}"
+class CfsMailer < MedusaBaseMailer
 
   def export_complete(job)
     @job = job

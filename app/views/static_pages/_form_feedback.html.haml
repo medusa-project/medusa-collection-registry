@@ -1,0 +1,6 @@
+- @feedback ||= StaticPageEmail::Feedback.new
+= simple_form_for @feedback, as: :feedback, method: :post, url: feedback_static_page_path(@static_page.key), html: {class: 'form-horizontal'}, wrapper: :horizontal_form  do |f|
+  = f.input :name, label: 'Your name'
+  = f.input :email, label: 'Your email address', as: :email
+  = f.input :feedback, label: 'Your Feedback', as: :text
+  = f.button :submit, class: 'btn btn-primary', value: 'Send'

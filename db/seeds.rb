@@ -54,7 +54,7 @@ ActiveRecord::Base.transaction do
     fg.save!
   end
 
-  %w(help landing down deposit_files request_training create_a_collection request_a_feature policies technology staff).each do |key|
+  %w(help landing down deposit_files request_training create_a_collection feedback policies technology staff).each do |key|
     unless StaticPage.find_by(key: key)
       StaticPage.create(key: key, page_text: "#{key.humanize} page")
     end
