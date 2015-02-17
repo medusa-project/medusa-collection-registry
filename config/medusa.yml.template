@@ -39,10 +39,12 @@ development:
   #controls whether public view buttons show up and whether controllers allow access to public views
   public_view_on: true
   #where certain types of email should go. It should work for these to be single emails or arrays, though
-  #a single email to a list is preferable for mass distribution
+  #a single email to a list is preferable for mass distribution. noreply is the address used for from when
+  #appropriate
   email:
     feedback: hding2@illinois.edu
     dev: hding2@illinois.edu
+    noreply: medusa-noreply@medusatest.library.illinois.edu
 test:
   cfs:
     root: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-test

@@ -1,5 +1,4 @@
 class MedusaBaseMailer < ActionMailer::Base
-  default from: "noreply@#{self.smtp_settings['domain'].if_blank('illinois.edu')}"
 
   def self.feedback_address
     MedusaCollectionRegistry::Application.medusa_config['email']['feedback']
@@ -8,6 +7,12 @@ class MedusaBaseMailer < ActionMailer::Base
   def self.dev_address
     MedusaCollectionRegistry::Application.medusa_config['email']['dev']
   end
+
+  def self.no_reply_address
+    MedusaCollectionRegistry::Application.medusa_confit['email']['noreply']
+  end
+
+  default from: self.no_reply_address
 
   protected
 

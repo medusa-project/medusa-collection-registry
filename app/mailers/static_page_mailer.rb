@@ -1,5 +1,5 @@
 class StaticPageMailer < MedusaBaseMailer
-  
+
   def deposit_files_confirmation(deposit_files)
     @deposit_files = deposit_files
     mail(to: deposit_files.email, subject: "Medusa ingest request confirmation")
