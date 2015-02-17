@@ -4,8 +4,22 @@ class StaticPagesController < ApplicationController
 
   def show
     @form_partial_name = "form_#{@static_page.key}"
-    y = template_exists?(@form_partial_name)
-    b = 1
+    @render_form = template_exists?(@form_partial_name, _prefixes, true)
+  end
+
+  def deposit_files
+    flash[:notice] = 'Your file deposit request has been submitted.'
+    redirect_to :back
+  end
+
+  def feedback
+    flash[:notice] = 'Your feedback has been submitted.'
+    redirect_to :back
+  end
+
+  def request_training
+    flash[:notice] = 'Your training request has been submitted'
+    redirect_to :back
   end
 
   def edit
