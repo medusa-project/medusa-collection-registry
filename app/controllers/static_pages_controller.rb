@@ -9,17 +9,41 @@ class StaticPagesController < ApplicationController
 
   def deposit_files
     flash[:notice] = 'Your file deposit request has been submitted.'
-    redirect_to :back
+    @deposit_files = StaticPageEmail::DepositFiles.new(params[:deposit_files])
+    if @deposit_files.valid?
+      @deposit_files.send_emails
+      redirect_to root_path
+    else
+      @form_partial_name = 'form_deposit_files'
+      @render_form = true
+      render 'show'
+    end
   end
 
   def feedback
     flash[:notice] = 'Your feedback has been submitted.'
-    redirect_to :back
+    @feedback = StaticPageEmail::Feedback.new(params[:feedback])
+    if @feedback.valid?
+      @feedback.send_emails
+      redirect_to root_path
+    else
+      @form_partial_name = 'form_feedback'
+      @render_form = true
+      render 'show'
+    end
   end
 
   def request_training
     flash[:notice] = 'Your training request has been submitted'
-    redirect_to :back
+    @request_training = StaticPageEmail::RequestTraining.new(params[:request_training])
+    if @request_training.valid?
+      @request_training.send_emails
+      redirect_to root_path
+    else
+      @form_partial_name = 'form_request_training'
+      @render_form = true
+      render 'show'
+    end
   end
 
   def edit

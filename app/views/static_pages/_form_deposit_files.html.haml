@@ -1,4 +1,5 @@
-= simple_form_for :deposit_files, method: :post, url: deposit_files_static_page_path(@static_page.key), html: {class: 'form-horizontal'}, wrapper: :horizontal_form  do |f|
+- @deposit_files ||= StaticPageEmail::DepositFiles.new
+=simple_form_for @deposit_files, as: :deposit_files, method: :post, url: deposit_files_static_page_path(@static_page.key), html: {class: 'form-horizontal'}, wrapper: :horizontal_form  do |f|
   = f.input :name, label: 'Your name'
   = f.input :email, label: 'Your email address', as: :email
   = f.input :department, label: 'Your department'
