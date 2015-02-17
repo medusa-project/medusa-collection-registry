@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150210220730) do
+ActiveRecord::Schema.define(version: 20150217225223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -639,7 +639,7 @@ ActiveRecord::Schema.define(version: 20150210220730) do
 
   add_index "workflow_ingests", ["amazon_backup_id"], name: "index_workflow_ingests_on_amazon_backup_id", using: :btree
   add_index "workflow_ingests", ["bit_level_file_group_id"], name: "index_workflow_ingests_on_bit_level_file_group_id", using: :btree
-  add_index "workflow_ingests", ["external_file_group_id"], name: "index_workflow_ingests_on_external_file_group_id", using: :btree
+  add_index "workflow_ingests", ["external_file_group_id"], name: "index_workflow_ingests_on_external_file_group_id", unique: true, using: :btree
   add_index "workflow_ingests", ["updated_at"], name: "index_workflow_ingests_on_updated_at", using: :btree
   add_index "workflow_ingests", ["user_id"], name: "index_workflow_ingests_on_user_id", using: :btree
 
