@@ -4,8 +4,7 @@ And(/^'(.*)' should receive an email with subject '(.*)'$/) do |address, subject
 end
 
 And(/^the feedback address should receive an email with subject \/(.*)\/ matching all of:$/) do |subject_regexp, table|
-  feedback_address = MedusaCollectionRegistry::Application.medusa_config['email']['feedback']
-  open_email(feedback_address)
+  open_email(MedusaBaseMailer.feedback_address)
   expect(current_emails.size).to eq(1)
   email = current_emails.first
   expect(email.subject).to match(subject_regexp)
