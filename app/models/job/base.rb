@@ -10,7 +10,13 @@ class Job::Base < ActiveRecord::Base
   end
 
   def delayed_jobs
-    Delayed::Job.where(handler: self.to_yaml).all
+    Delayed::Job.where("handler LIKE '#{self.delayed_job_handler_prefix}%'").all
+  end
+
+  #The way delayed job currently stores the handler we have to look it up with just the prefix
+  #of the YAML representation
+  def delayed_job_handler_prefix
+    self.to_yaml.lines[0..2].join
   end
 
   def success(job)
