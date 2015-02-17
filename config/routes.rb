@@ -3,7 +3,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :static_pages, only: [:show, :edit, :update], param: :key do
     member do
       post :deposit_files
-      post :request_a_feature
+      post :feedback
       post :request_training
     end
   end
