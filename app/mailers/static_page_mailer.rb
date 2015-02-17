@@ -1,6 +1,5 @@
 class StaticPageMailer < MedusaBaseMailer
-  default from: "medusa-noreply@#{self.smtp_settings['domain'].if_blank('library.illinois.edu')}"
-
+  
   def deposit_files_confirmation(deposit_files)
     @deposit_files = deposit_files
     mail(to: deposit_files.email, subject: "Medusa ingest request confirmation")
