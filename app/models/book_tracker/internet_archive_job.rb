@@ -6,7 +6,7 @@ module BookTracker
   #
   class InternetArchiveJob < Struct.new(:a)
 
-    QUEUE_NAME = 'book_tracker:internet_archive'
+    QUEUE_NAME = 'book_tracker'
 
     ##
     # For delayed_job

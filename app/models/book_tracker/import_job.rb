@@ -6,7 +6,7 @@ module BookTracker
   #
   class ImportJob < Struct.new(:a)
 
-    QUEUE_NAME = 'book_tracker:import'
+    QUEUE_NAME = 'book_tracker'
 
     ##
     # For delayed_job
