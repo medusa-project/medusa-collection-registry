@@ -16,7 +16,7 @@ class AmazonBackupServerResponse < Object
   end
 
   def error_message
-    self.payload['error_message']
+    self.payload['message']
   end
 
   def pass_through(field)
