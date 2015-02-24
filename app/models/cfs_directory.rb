@@ -250,7 +250,7 @@ class CfsDirectory < ActiveRecord::Base
     end
     #If there is a new, present value for file_group_id then schedule the cfs assessment
     if parent_type == 'FileGroup' and parent_id_changed?
-      self.parent.schedule_initial_cfs_assessment
+      self.parent(true).schedule_initial_cfs_assessment
     end
   end
 
