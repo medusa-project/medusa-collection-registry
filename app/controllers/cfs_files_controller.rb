@@ -150,12 +150,23 @@ class CfsFilesController < ApplicationController
 
   def common_preview_iiif_image
     if params[:iiif_parameters] == 'info' and params[:format] == 'json'
-      image_server_url = iiif_info_json_url(@file)
-      response_type = 'application/json'
+      common_preview_iiif_image_json
     else
-      image_server_url = iiif_url(@file, params[:iiif_parameters], params[:format])
-      response_type = 'image/jpeg'
+      common_preview_iiif_image_jpeg
     end
+  end
+
+  def common_preview_iiif_image_json
+    image_server_url = iiif_info_json_url(@file)
+    response_type = 'application/json'
+    image = Net::HTTP.get(URI.parse(image_server_url))
+    Rails.logger.debug image
+    send_data image, type: response_type, disposition: 'inline'
+  end
+
+  def common_preview_iiif_image_jpeg
+    image_server_url = iiif_url(@file, params[:iiif_parameters], params[:format])
+    response_type = 'image/jpeg'
     image = Net::HTTP.get(URI.parse(image_server_url))
     send_data image, type: response_type, disposition: 'inline'
   end
