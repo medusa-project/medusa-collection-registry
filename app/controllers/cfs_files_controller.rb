@@ -159,9 +159,16 @@ class CfsFilesController < ApplicationController
   def common_preview_iiif_image_json
     image_server_url = iiif_info_json_url(@file)
     response_type = 'application/json'
-    image = Net::HTTP.get(URI.parse(image_server_url))
-    Rails.logger.debug image
-    send_data image, type: response_type, disposition: 'inline'
+    json = Net::HTTP.get(URI.parse(image_server_url))
+    send_data fix_json_id(json, @file), type: response_type, disposition: 'inline'
+  end
+
+  def fix_json_id(json, file)
+    Rails.logger.error "ORIGINAL JSON: #{json}"
+    parsed_json = JSON.parse(json)
+    parsed_json['@id'] = iiif_base_url(file)
+    Rails.logger.error "FIXED JSON: #{json.to_s}"
+    json.to_s
   end
 
   def common_preview_iiif_image_jpeg
