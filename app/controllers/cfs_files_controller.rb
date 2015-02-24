@@ -174,7 +174,7 @@ class CfsFilesController < ApplicationController
   end
 
   def iiif_base_url(file)
-    image_server_config = MedusaRails3::Application.medusa_config['loris']
+    image_server_config = MedusaCollectionRegistry::Application.medusa_config['loris']
     image_server_base_url = "http://#{image_server_config['host'] || 'localhost'}:#{image_server_config['port'] || 3000}/#{image_server_config['root']}"
     "#{image_server_base_url}/#{file.relative_path}"
   end
