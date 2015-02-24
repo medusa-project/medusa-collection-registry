@@ -2,8 +2,8 @@ module BookTracker
 
   class TasksController < ApplicationController
 
-    before_filter :require_book_tracker_admin
-    before_filter :service_check_in_progress, except: :index
+    before_action :require_book_tracker_admin
+    before_action :service_check_in_progress, except: :index
 
     ##
     # Responds to POST /check-google

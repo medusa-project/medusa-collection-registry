@@ -1,125 +1,95 @@
-MedusaRails3::Application.routes.draw do
+MedusaCollectionRegistry::Application.routes.draw do
 
-  root to: 'static#page', page: 'landing'
-
-  resources :collections do
-    collection do
-      get 'for_access_system'
-      get 'for_package_profile'
-    end
+  resources :static_pages, only: [:show, :edit, :update], param: :key do
     member do
-      get 'red_flags'
-      get 'events'
-      get 'public'
+      post :deposit_files
+      post :feedback
+      post :request_training
     end
   end
-  resources :repositories do
-    collection do
-      get 'edit_ldap_admins'
-    end
-    member do
-      get 'red_flags'
-      get 'events'
-      put 'update_ldap_admin'
-      get 'collections'
-    end
-  end
-  resources :institutions
-  resources :assessments, only: [:show, :edit, :update, :new, :create, :destroy]
-  resources :attachments, only: [:show, :edit, :update, :new, :create, :destroy] do
-    member do
-      get 'download'
-    end
-  end
-  resources :events do
-    collection do
-      get :autocomplete_user_email
-    end
-  end
-
-  [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
-    resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy] do
-      member do
-        post 'create_cfs_fits'
-        get 'events'
-        get 'red_flags'
-        get 'public'
-        post 'create_virus_scan'
-        post 'create_amazon_backup'
-        post 'create_initial_cfs_assessment' if file_group_type == :bit_level_file_groups
-        post 'ingest' if file_group_type == :external_file_groups
-      end
-      collection do
-        post 'bulk_amazon_backup'
-      end
-    end
-  end
-
-  resources :red_flags, only: [:show, :edit, :update] do
-    member do
-      post 'unflag'
-    end
-  end
-
-  resources :producers
-  resources :access_systems
-  resources :package_profiles
-  resources :directories, only: :show
-  resources :files, only: :show, controller:"bit_files" do
-    member do
-      get 'contents'
-      get 'view_fits_xml'
-      get 'create_fits_xml'
-    end
-  end
-  resources :virus_scans, only: :show
-  resources :scheduled_events, only: [:edit, :update, :create, :destroy] do
-    member do
-      post 'complete'
-      post 'cancel'
-    end
-  end
-
-  resources :cfs_files, only: :show do
-    member do
-      get 'public'
-      get 'public_download'
-      get 'public_view'
-      get 'create_fits_xml'
-      get 'fits_xml'
-      get 'download'
-      get 'view'
-      get 'preview_image'
-      get 'public_preview_image'
-      get 'preview_video'
-    end
-  end
-  get 'cfs_files/:id/preview_iiif_image/*iiif_parameters', to: 'cfs_files#preview_iiif_image', as: 'preview_iiif_image_cfs_file'
-  get 'cfs_files/:id/public_preview_iiif_image/*iiif_parameters', to: 'cfs_files#public_preview_iiif_image', as: 'public_preview_iiif_image_cfs_file'
-
-  resources :cfs_directories, only: :show do
-    member do
-      post 'create_fits_for_tree'
-      post 'export'
-      post 'export_tree'
-      get 'public'
-    end
-  end
-
-  resources :searches, only: [] do
-    collection do
-      post :filename
-    end
-  end
-
-  resources :uuids, only: [:show]
-
   match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   match '/login', to: 'sessions#new', as: :login, via: [:get, :post]
   match '/logout', to: 'sessions#destroy', as: :logout, via: [:get, :post]
   match '/unauthorized', to: 'sessions#unauthorized', as: :unauthorized, via: [:get, :post]
   match '/unauthorized_net_id', to: 'sessions#unauthorized_net_id', as: :unauthorized_net_id, via: [:get, :post]
-  match '/static/:page', to: 'static#page', as: :static, via: [:get, :post]
+
+  #This lets us start up in a mode where only a down page is shown
+  if ENV['MEDUSA_DOWN'] == 'true'
+    match '*path' => redirect('/static_pages/down', status: 307), via: :all
+    root to: 'static_pages#show', key: 'down'
+  else
+    root to: 'static_pages#show', key: 'landing'
+  end
+
+  concern :eventable, Proc.new { member { get 'events' } }
+  concern :red_flaggable, Proc.new { member { get 'red_flags' } }
+  concern :public, Proc.new { member { get 'public' } }
+  concern :assessable, Proc.new { member { get 'assessments' } }
+  concern :attachable, Proc.new { member { get 'attachments' } }
+  concern :downloadable, Proc.new { member { get 'download' } }
+  concern :collection_indexer, Proc.new { member { get 'collections' } }
+  concern :fixity_checkable, Proc.new { member { post 'fixity_check' } }
+
+  resources :collections, concerns: %i(eventable red_flaggable public assessable attachable)
+
+  resources :repositories, concerns: %i(eventable red_flaggable assessable collection_indexer) do
+    get 'edit_ldap_admins', on: :collection
+    put 'update_ldap_admin', on: :member
+  end
+  resources :institutions
+  resources :assessments, only: [:show, :edit, :update, :new, :create, :destroy]
+  resources :attachments, only: [:show, :edit, :update, :new, :create, :destroy], concerns: :downloadable
+
+  resources :events do
+    get :autocomplete_user_email, on: :collection
+  end
+
+  [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
+    resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy],
+              concerns: %i(eventable red_flaggable public assessable attachable) do
+      %w(create_cfs_fits create_virus_scan create_amazon_backup fixity_check create_initial_cfs_assessment).each do |action|
+        post action, on: :member
+      end if file_group_type == :bit_level_file_groups
+      post 'ingest', on: :member if file_group_type == :external_file_groups
+      post 'bulk_amazon_backup', on: :collection
+    end
+  end
+
+  resources :red_flags, only: [:show, :edit, :update] do
+    post 'unflag', on: :member
+  end
+
+  resources :producers
+  resources :access_systems, concerns: :collection_indexer
+  resources :package_profiles, concerns: :collection_indexer
+  resources :virus_scans, only: :show
+  resources :scheduled_events, only: [:edit, :update, :create, :destroy] do
+    %w(complete cancel).each { |action| post action, on: :member }
+  end
+
+  resources :cfs_files, only: :show, concerns: %i(public downloadable eventable fixity_checkable) do
+    %w(public_download public_view create_fits_xml fits view preview_image public_preview_image preview_video).each { |action| get action, on: :member }
+  end
+  get 'cfs_files/:id/preview_iiif_image/*iiif_parameters', to: 'cfs_files#preview_iiif_image', as: 'preview_iiif_image_cfs_file'
+  get 'cfs_files/:id/public_preview_iiif_image/*iiif_parameters', to: 'cfs_files#public_preview_iiif_image', as: 'public_preview_iiif_image_cfs_file'
+
+  resources :cfs_directories, only: :show, concerns: %i(public fixity_checkable eventable) do
+    %w(create_fits_for_tree export export_tree).each { |action| post action, on: :member }
+  end
+  resources :content_types, only: [] do
+    get :cfs_files, on: :member
+  end
+  resources :file_extensions, only: [] do
+    get :cfs_files, on: :member
+  end
+  resources :file_format_profiles
+  resources :searches, only: [] do
+    post :filename, on: :collection
+    get :filename, on: :collection
+  end
+
+  resources :uuids, only: [:show]
+
   match '/dashboard', to: 'dashboard#show', as: :dashboard, via: [:get, :post]
 
   namespace :book_tracker do
@@ -135,5 +105,7 @@ MedusaRails3::Application.routes.draw do
           via: 'post', as: 'check_internet_archive'
     match 'import', to: 'tasks#import', via: 'post'
   end
+
+  match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
 
 end

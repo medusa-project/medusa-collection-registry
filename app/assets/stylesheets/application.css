@@ -17,7 +17,7 @@
 */
 
 .dataTables_wrapper {
-  padding: 5px 0px;
+  padding: 5px 0;
 }
 
 .table.dataTable {
@@ -42,4 +42,16 @@ label.checkbox {
   padding: 2px;
   background-color: #d3d3d3;
   border-radius: 5px;
+}
+
+#filename_search {
+    min-width: 300px;
+}
+
+#edit_content_type_list .modal-dialog {
+    min-width: 80%;
+}
+
+#edit_file_extension_list .modal-dialog {
+    min-width: 80%;
 }

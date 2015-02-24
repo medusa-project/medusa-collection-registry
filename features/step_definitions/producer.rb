@@ -5,8 +5,8 @@ Then /^I should see all producer fields$/ do
 end
 
 And /^The collection titled '(.*)' has (\d+) file groups? produced by '(.*)'$/ do |collection, count, producer|
-  collection = Collection.find_by_title(collection)
-  producer = Producer.find_by_title(producer)
+  collection = Collection.find_by(title: collection)
+  producer = Producer.find_by(title: producer)
   count.to_i.times do
     FactoryGirl.create(:file_group, collection: collection, producer: producer)
   end

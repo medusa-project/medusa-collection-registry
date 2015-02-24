@@ -1,4 +1,4 @@
-MedusaRails3::Application.configure do
+MedusaCollectionRegistry::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # In the development environment your application's code is reloaded on
@@ -25,7 +25,7 @@ MedusaRails3::Application.configure do
   config.assets.compress = false
 
   # Expands the lines which load the assets
-  config.assets.debug = false
+  config.assets.debug = true
   config.assets.logger = false
 
   config.eager_load = false

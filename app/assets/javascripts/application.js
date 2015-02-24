@@ -13,14 +13,15 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require autocomplete-rails-uncompressed
 //= require twitter/bootstrap
 //= require jquery.dataTables
 //= require dataTables.bootstrap
 //= require data_tables_common
-//= require autocomplete-rails
 //= require local_time
 //= require common
 //= require mootools
 //= require mootools_ujs
 //= require mootools-more
+//= require ckeditor/init
 //= require_tree .

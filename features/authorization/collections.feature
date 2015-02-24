@@ -10,9 +10,9 @@ Feature: Collection authorization
 
   Scenario: Enforce permissions
     Then deny object permission on the collection with title 'dogs' to users for action with redirection:
-      | public user | view, edit, update, delete, events, red_flags | authentication |
-      | visitor     | edit, update, delete                          | unauthorized   |
-      | manager     | delete                                        | unauthorized   |
+      | public user | view, edit, update, delete, events, red_flags, assessments, attachments | authentication |
+      | visitor     | edit, update, delete                                                    | unauthorized   |
+      | manager     | delete                                                                  | unauthorized   |
     And deny permission on the collection collection to users for action with redirection:
       | public user | view_index, new, create | authentication |
       | visitor     | new, create             | unauthorized   |

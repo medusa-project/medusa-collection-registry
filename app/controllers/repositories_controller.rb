@@ -1,7 +1,7 @@
 class RepositoriesController < ApplicationController
 
-  before_filter :require_logged_in
-  before_filter :find_repository, only: [:edit, :update, :destroy, :red_flags, :update_ldap_admin, :collections]
+  before_action :require_logged_in
+  before_action :find_repository, only: [:edit, :update, :destroy, :red_flags, :update_ldap_admin, :collections, :events, :assessments]
   include CollectionsToCsv
   include RepositoriesToCsv
 
@@ -25,6 +25,9 @@ class RepositoriesController < ApplicationController
   def show
     @repository = Repository.includes(collections: [:assessments, :contact, :preservation_priority,
                                                     {file_groups: [:cfs_directory, :assessments]}]).find(params[:id])
+  end
+
+  def assessments
     @assessable = @repository
     @assessments = @assessable.recursive_assessments
   end
@@ -61,12 +64,11 @@ class RepositoriesController < ApplicationController
   def red_flags
     @red_flags = @repository.all_red_flags
     @aggregator = @repository
-    render 'shared/red_flags'
   end
 
   def events
     @scheduled_eventable = @eventable = Repository.find(params[:id])
-    @events = @eventable.all_events.sort_by(&:date).reverse
+    @events = @eventable.cascaded_events
     @scheduled_events = @scheduled_eventable.incomplete_scheduled_events.sort_by(&:action_date)
   end
 

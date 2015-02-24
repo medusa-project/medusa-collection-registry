@@ -1,26 +1,23 @@
 .event-actions
   %strong Events:
-  = link_to 'View All', events_file_group_path(file_group)
-  |
-  = link_to 'Add New', "#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', role: 'button'
-  |
+  = small_view_button(events_file_group_path(file_group))
+  = small_add_button("#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal')
   = link_to 'Schedule', "#add-scheduled-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', role: 'button'
 
 .assessment-actions
   %strong Assessments:
-  = link_to 'View All', file_group
-  |
-  = link_to 'Add New', new_assessment_path(assessable_id: file_group.id, assessable_type: file_group.class.name)
+  = small_view_button(file_group)
+  = small_add_button(new_assessment_path(assessable_id: file_group.id, assessable_type: file_group.class.name))
 .related-file-group-actions
   %strong Related File groups:
-  = link_to 'Add New', edit_polymorphic_path(file_group, active_tab: '#related-file-groups')
+  = small_add_button(edit_polymorphic_path(file_group, active_tab: '#related-file-groups'))
 - if file_group.is_a?(BitLevelFileGroup)
   .fits-actions
     %strong FITS
-    = link_to 'Run', create_cfs_fits_file_group_path(file_group), method: 'post', remote: 'true'
+    = small_run_button(create_cfs_fits_bit_level_file_group_path(file_group), remote: 'true')
   .virus-scan-actions
     %strong Virus Scan
     - if file_group.virus_scans.present?
-      = link_to 'View Latest', virus_scan_path(file_group.virus_scans.order('created_at desc').first)
+      = small_view_button(virus_scan_path(file_group.virus_scans.order('created_at desc').first))
       |
-    = link_to 'Run', create_virus_scan_file_group_path(file_group, format: 'js'), method: 'post', remote: 'true'
+    = small_run_button(create_virus_scan_bit_level_file_group_path(file_group, format: 'js'), remote: 'true')

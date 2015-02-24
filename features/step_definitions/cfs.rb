@@ -9,12 +9,6 @@ And(/^I clear the cfs root directory$/) do
   end
 end
 
-And(/^the cfs directory '(.*)' has files:$/) do |path, table|
-  table.headers.each do |file_name|
-    FileUtils.touch(cfs_local_path(path, file_name))
-  end
-end
-
 And(/^the physical cfs directory '(.*)' has a file '(.*)' with contents '(.*)'$/) do |directory, file, contents|
   step "there is a physical cfs directory '#{directory}'"
   File.open(cfs_local_path(directory, file), 'w') do |f|
@@ -34,34 +28,34 @@ Then(/^I should be viewing the cfs file '(.*)'$/) do |path|
   current_path.should == cfs_show_path(path: path)
 end
 
-Given(/^the file group named '(.*)' has cfs root '(.*)'$/) do |name, path|
-  file_group = FileGroup.find_by_name(name)
+Given(/^the file group titled '(.*)' has cfs root '(.*)'$/) do |title, path|
+  file_group = FileGroup.find_by(title: title)
   root_directory = FactoryGirl.create(:cfs_directory, path: path)
   file_group.cfs_directory = root_directory
   file_group.save!
 end
 
-Given(/^the file group named '(.*)' has cfs root '(.*)' and delayed jobs are run$/) do |name, path|
-  step "the file group named '#{name}' has cfs root '#{path}'"
-  step "delayed jobs are run"
+Given(/^the file group titled '(.*)' has cfs root '(.*)' and delayed jobs are run$/) do |title, path|
+  step "the file group titled '#{title}' has cfs root '#{path}'"
+  step 'delayed jobs are run'
 end
 
-When(/^I set the cfs root of the file group named '(.*)' to '(.*)'$/) do |name, path|
-  file_group = FileGroup.find_by_name(name)
+When(/^I set the cfs root of the file group titled '(.*)' to '(.*)'$/) do |title, path|
+  file_group = FileGroup.find_by(title: title)
   new_root = CfsDirectory.find_by(path: path) || FactoryGirl.create(:cfs_directory, path: path)
   file_group.cfs_directory = new_root
   file_group.save!
 end
 
-When(/^I set the cfs root of the file group named '(.*)' to '(.*)' and delayed jobs are run$/) do |name, path|
-  step "I set the cfs root of the file group named '#{name}' to '#{path}'"
-  step "delayed jobs are run"
+When(/^I set the cfs root of the file group titled '(.*)' to '(.*)' and delayed jobs are run$/) do |name, path|
+  step "I set the cfs root of the file group titled '#{name}' to '#{path}'"
+  step 'delayed jobs are run'
 end
 
-And(/^I run assessments on the the file group named '(.*)'$/) do |name|
-  file_group = BitLevelFileGroup.where(name: name).first
+And(/^I run assessments on the the file group titled '(.*)'$/) do |title|
+  file_group = BitLevelFileGroup.where(title: title).first
   file_group.schedule_initial_cfs_assessment
-  step "delayed jobs are run"
+  step 'delayed jobs are run'
 end
 
 When(/^I view fits for the cfs file '(.*)'$/) do |path|

@@ -1,11 +1,11 @@
 class SessionsController < ApplicationController
 
-  skip_before_filter :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
 
   def new
     session[:login_return_referer] = request.env['HTTP_REFERER']
     if Rails.env.production?
-      redirect_to(OmniAuth::Strategies::Shibboleth.login_path(MedusaRails3::Application.shibboleth_host))
+      redirect_to(shibboleth_login_path(MedusaCollectionRegistry::Application.shibboleth_host))
     else
       redirect_to('/auth/developer')
     end
@@ -58,5 +58,9 @@ class SessionsController < ApplicationController
     reset_session
     return_url
   end
+
+  def shibboleth_login_path(host)
+  "/Shibboleth.sso/Login?target=https://#{host}/auth/shibboleth/callback"
+end
 
 end

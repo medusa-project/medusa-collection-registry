@@ -6,11 +6,12 @@ require 'pathname'
 class CfsRoot
   include Singleton
 
-  attr_accessor :path, :config
+  attr_accessor :path, :config, :tmp_path
 
   def initialize
-    self.config = MedusaRails3::Application.medusa_config['cfs']
+    self.config = MedusaCollectionRegistry::Application.medusa_config['cfs']
     self.path = config['root']
+    self.tmp_path = config['tmp'] || '/tmp'
   end
 
   #Return a list of roots from the file system that are not currently being
@@ -22,15 +23,15 @@ class CfsRoot
     ActiveRecord::Base.transaction do
       physical_root_set = available_physical_root_set
       all_database_root_hash = Hash.new.tap do |h|
-        CfsDirectory.includes(:file_group).where(parent_cfs_directory_id: nil).each do |cfs_directory|
+        CfsDirectory.roots.includes(:parent).each do |cfs_directory|
           h[cfs_directory.path] = cfs_directory
         end
       end
       used_database_root_set = all_database_root_hash.select do |path, cfs_directory|
-        cfs_directory.file_group.present?
+        cfs_directory.parent.present?
       end.keys.to_set
       available_database_root_set = all_database_root_hash.select do |path, cfs_directory|
-        cfs_directory.file_group.blank?
+        cfs_directory.parent.blank?
       end.keys.to_set
       available_physical_root_set = physical_root_set - used_database_root_set
       (available_database_root_set - available_physical_root_set).each do |path|
@@ -54,16 +55,20 @@ class CfsRoot
 
   def available_physical_root_set
     Timeout::timeout(20) do
-      root = Pathname.new(self.path)
-      children = root.children.select { |entry| entry.directory? }
-      grandchildren = children.collect { |child| child.children.select { |entry| entry.directory? } }.flatten
-      roots = grandchildren.collect { |grandchild| grandchild.relative_path_from(root).to_s }
-      roots.to_set.tap do |root_set|
+      roots = self.non_cached_physical_root_set
+      roots.tap do |root_set|
         Rails.cache.write(self.physical_root_set_cache_key, root_set)
       end
     end
   rescue Timeout::Error
     Rails.cache.read(self.physical_root_set_cache_key) || [].to_set
+  end
+
+  def non_cached_physical_root_set
+    root = Pathname.new(self.path)
+    children = root.children.select { |entry| entry.directory? }
+    grandchildren = children.collect { |child| child.children.select { |entry| entry.directory? } }.flatten
+    grandchildren.collect { |grandchild| grandchild.relative_path_from(root).to_s }.to_set
   end
 
   def physical_root_set_cache_key

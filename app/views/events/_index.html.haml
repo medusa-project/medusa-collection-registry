@@ -20,5 +20,5 @@
         %td= event.message
         %td= event.note
         %td
-          = link_to 'Edit', edit_event_path(event), class: 'btn btn-xs btn-default'
-          = link_to 'Delete', event_path(event), method: :delete, data: {confirm: event_confirm_message}, class: 'btn btn-xs btn-danger'
+          = small_edit_button(event)
+          = small_delete_button(event, message: event_confirm_message)

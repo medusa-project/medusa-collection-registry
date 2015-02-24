@@ -1,41 +1,30 @@
-= render 'show_breadcrumbs'
+= render layout: 'layout_single' do
+  %h1 File information
 
-.pull-right
-  - if @file.public?
-    = link_to 'Public View', public_cfs_file_path(@file), class: 'btn btn-default'
-
-%h1 File information
-
-.row
-  .col-sm-12
-    = link_to('Download', download_cfs_file_path(@file))
-    |
-    = link_to('View', view_cfs_file_path(@file))
-
-.row
-  .col-sm-4
-    = show_value @file.name, 'File name'
-    = show_value 'bit-level', 'Storage level'
-    = show_value @file.md5_sum, 'MD5'
-    = show_value @file.uuid, 'UUID'
-    %p
-      %strong FITS:
-      - if @file.fits_xml
-        = link_to('View XML', fits_xml_cfs_file_path(@file))
-      -else
-        = link_to('Create XML', create_fits_xml_cfs_file_path(@file))
-    - if @file_group
+  .row
+    #cfs-file-metadata.col-sm-4
+      = show_value @file.name, 'File name'
+      = show_value 'bit-level', 'Storage level'
+      = show_value @file.md5_sum, 'MD5'
+      = show_value @file.uuid, 'UUID'
       %p
-        %strong Belongs to:
-        #{link_to(@file_group.name, @file_group)}
-    - if @file.size
-      = show_value @file.size.to_formatted_s(:human_size, precision: 3), 'File size'
-    = show_value @file.content_type_name, 'Mimetype'
-    - if @file.red_flags.present?
-      %div
-        Red flags:
-        %ul
-          - @file.red_flags.each do |red_flag|
-            %li= red_flag.message
-  .col-sm-8
-    = render "preview_viewer_#{@preview_viewer_type}"
+        %strong FITS:
+        - if @file.fits_xml
+          = small_view_button(fits_cfs_file_path(@file, format: :xml))
+        -else
+          = small_create_button(create_fits_xml_cfs_file_path(@file))
+      - if @file_group
+        %p
+          %strong Belongs to:
+          #{link_to(@file_group.title, @file_group)}
+      - if @file.size
+        = show_value @file.size.to_formatted_s(:human_size, precision: 3), 'File size'
+      = show_value @file.content_type_name, 'Mimetype'
+      - if @file.red_flags.present?
+        %div
+          Red flags:
+          %ul
+            - @file.red_flags.each do |red_flag|
+              %li= red_flag.message
+    .col-sm-8
+      = render "preview_viewer_#{@preview_viewer_type}"

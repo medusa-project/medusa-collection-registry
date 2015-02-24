@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-MedusaRails3::Application.load_tasks
+MedusaCollectionRegistry::Application.load_tasks

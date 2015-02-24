@@ -1,0 +1,34 @@
+= render layout: 'layout_single' do
+
+  = render layout: 'layouts/page_header' do
+    #{@file_format_profile.name}
+
+  .row
+    .col-xs-12
+      .well
+        = show_field @file_format_profile, :software
+        = show_field @file_format_profile, :software_version
+        = show_field @file_format_profile, :os_environment
+        = show_field @file_format_profile, :os_version
+        = show_field @file_format_profile, :notes
+  .row
+    .col-xs-4
+      .panel.panel-default
+        .panel-heading
+          %h4 Content types:
+        - if @file_format_profile.content_types.present?
+          %ul.list-group
+            - @file_format_profile.content_types.each do |content_type|
+              %li.list-group-item= content_type.name
+        - else
+          .panel-body None
+    .col-xs-4
+      .panel.panel-default
+        .panel-heading
+          %h4 File Extensions:
+        - if @file_format_profile.file_extensions.present?
+          %ul.list-group
+            - @file_format_profile.file_extensions.order('extension asc').each do |extension|
+              %li.list-group-item= extension.extension_label
+        - else
+          .panel-body None

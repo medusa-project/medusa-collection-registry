@@ -1,20 +1,28 @@
 class CollectionsController < ApplicationController
 
-  before_filter :require_logged_in, except: [:show, :public]
-  before_filter :require_logged_in_or_basic_auth, only: [:show]
-  before_filter :find_collection_and_repository, only: [:show, :destroy, :edit, :update, :red_flags, :public]
+  before_action :public_view_enabled?, only: [:public]
+  before_action :require_logged_in, except: [:show, :public]
+  before_action :require_logged_in_or_basic_auth, only: [:show]
+  before_action :find_collection_and_repository, only: [:show, :destroy, :edit, :update, :red_flags, :public, :assessments, :attachments, :events]
   layout 'public', only: [:public]
 
   include CollectionsToCsv
 
   def show
-    @assessable = @collection
-    @assessments = @assessable.recursive_assessments
     respond_to do |format|
       format.html
       format.xml { render xml: @collection.to_mods }
       format.json
     end
+  end
+
+  def attachments
+    @attachable = @collection
+  end
+
+  def assessments
+    @assessable = @collection
+    @assessments = @assessable.recursive_assessments
   end
 
   def public
@@ -74,32 +82,14 @@ class CollectionsController < ApplicationController
     end
   end
 
-  def for_access_system
-    access_system = AccessSystem.find(params[:access_system_id])
-    @collections = access_system.collections.order(:title).includes(:repository)
-    @subheader = "For Access system: #{access_system.name}"
-    render 'index'
-  end
-
-  def for_package_profile
-    package_profile = PackageProfile.find(params[:package_profile_id])
-    file_groups = package_profile.file_groups.includes(collection: :repository)
-    @collections = file_groups.collect do |file_group|
-      file_group.collection
-    end.uniq.sort_by(&:title)
-    @subheader = "For Package Profile: #{package_profile.name}"
-    render 'index'
-  end
-
   def red_flags
     @red_flags = @collection.all_red_flags
     @aggregator = @collection
-    render 'shared/red_flags'
   end
 
   def events
     @scheduled_eventable = @eventable = Collection.find(params[:id])
-    @events = @eventable.all_events.sort_by(&:date).reverse
+    @events = @eventable.cascaded_events
     @scheduled_events = @scheduled_eventable.incomplete_scheduled_events.sort_by(&:action_date)
   end
 
@@ -112,7 +102,7 @@ class CollectionsController < ApplicationController
   end
 
   def allowed_params
-    params[:collection].permit(:access_url, :description, :private_description, :end_date, :file_package_summary, :notes,
+    params[:collection].permit(:access_url, :description, :private_description, :end_date, :notes,
                                :ongoing, :published, :repository_id, :start_date, :title,
                                :preservation_priority_id, :package_profile_id, :contact_email, :external_id,
                                rights_declaration_attributes: [:rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions],

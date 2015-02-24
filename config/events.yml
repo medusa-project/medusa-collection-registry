@@ -1,3 +1,5 @@
+#For the loading to work correctly the base key has to be the class where Eventable is included.
+#So for STI like file group we can't have different events available for each type; it has to be the base class here
 file_group:
   external_staged: External file group staged
   staged_to_bit: Staged files ingested to bit-level store
@@ -11,3 +13,11 @@ file_group:
   files_added: Accrual to existing file group
   amazon_backup_part_completed: Part of Amazon Glacier backup completed
   amazon_backup_completed: Amazon Glacier backup completed
+  fixity_check_scheduled: Fixity check scheduled
+  fixity_check_completed: Fixity check completed
+cfs_directory:
+  fixity_check_scheduled: Fixity check scheduled
+  fixity_check_completed: Fixity check completed
+cfs_file:
+  fixity_check_run: Fixity check run
+  fixity_result: Fixity result

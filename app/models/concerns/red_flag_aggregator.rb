@@ -13,25 +13,17 @@ require 'active_support/concern'
 module RedFlagAggregator
   extend ActiveSupport::Concern
 
-  #TODO - I'm not sure how this will work with FileGroup STI, but at some point we may find out.
-  #If it doesn't work correctly then fix it.
+  included do
+    class_attribute :red_flag_methods
+    class_attribute :red_flag_child_collections
+    class_attribute :red_flag_aggregator_label_method
+  end
+
   module ClassMethods
     def aggregates_red_flags(opts = {})
-      @red_flag_methods = Array.wrap(opts[:self] || [])
-      @red_flag_child_collections = Array.wrap(opts[:collections] || [])
-      @red_flag_aggregator_label_method = opts[:label_method]
-    end
-
-    def red_flag_methods
-      (@red_flag_methods || []) + self.superclass.method_value_or_default(:red_flag_methods, [])
-    end
-
-    def red_flag_child_collections
-      (@red_flag_child_collections || []) + self.superclass.method_value_or_default(:red_flag_child_collections, [])
-    end
-
-    def red_flag_aggregator_label_method
-      @red_flag_aggregator_label_method or super
+      self.red_flag_methods = Array.wrap(opts[:self] || [])
+      self.red_flag_child_collections = Array.wrap(opts[:collections] || [])
+      self.red_flag_aggregator_label_method = opts[:label_method]
     end
 
   end

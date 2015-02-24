@@ -1,8 +1,11 @@
 class FileGroup < ActiveRecord::Base
   include Eventable
   include ScheduledEventable
+  include CascadedEventable
   include Uuidable
   include Breadcrumb
+  include ResourceTypeable
+  include EmailPersonAssociator
 
   belongs_to :collection, touch: true
   #parent is a duplicate, but allows uniformity for events, i.e. we can do eventable.parent
@@ -11,7 +14,7 @@ class FileGroup < ActiveRecord::Base
   belongs_to :package_profile, touch: true
 
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
-  has_one :cfs_directory
+  has_one :cfs_directory, as: :parent
   has_many :assessments, as: :assessable, dependent: :destroy
   has_many :target_file_group_joins, dependent: :destroy, class_name: 'RelatedFileGroupJoin', foreign_key: :source_file_group_id
   has_many :target_file_groups, through: :target_file_group_joins
@@ -19,16 +22,22 @@ class FileGroup < ActiveRecord::Base
   has_many :source_file_groups, through: :source_file_group_joins
   has_many :attachments, as: :attachable, dependent: :destroy
 
+  email_person_association(:contact)
+
   before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root
   before_save :strip_fields
   before_validation :initialize_file_info
 
   validates_uniqueness_of :cfs_root, allow_blank: true
-  validates_presence_of :name, :total_files, :total_file_size
+  validates_presence_of :title, :total_files, :total_file_size
   validates_presence_of :producer_id
 
+  ACQUISITION_METHODS = ['internal digitization', 'vendor digitization', 'electronic records acquisition', 'external deposit']
+  validates_inclusion_of :acquisition_method, in: ACQUISITION_METHODS, allow_blank: true
+
   breadcrumbs parent: :collection
+  cascades_events parent: :collection
 
   STORAGE_LEVEL_HASH = {'external' => 'ExternalFileGroup',
                         'bit-level store' => 'BitLevelFileGroup',
@@ -42,8 +51,12 @@ class FileGroup < ActiveRecord::Base
     STORAGE_LEVEL_HASH.keys
   end
 
+  def self.acquisition_methods
+    ACQUISITION_METHODS
+  end
+
   def label
-    self.name
+    self.title
   end
 
   #subclasses should override appropriately - this is blank here to facilitate the form
@@ -72,15 +85,7 @@ class FileGroup < ActiveRecord::Base
   end
 
   def sibling_file_groups
-    self.collection.file_groups.order(:name).all - [self]
-  end
-
-  def supported_event_hash
-    @@supported_event_hash ||= read_event_hash(:file_group)
-  end
-
-  def supported_scheduled_event_hash
-    @@supported_scheduled_event_hash ||= read_scheduled_event_hash(:file_group)
+    self.collection.file_groups.order(:title).all - [self]
   end
 
   def canonicalize_cfs_root

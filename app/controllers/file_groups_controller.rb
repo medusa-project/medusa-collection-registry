@@ -1,15 +1,15 @@
 class FileGroupsController < ApplicationController
 
-  before_filter :require_logged_in, except: [:show, :public]
-  before_filter :require_logged_in_or_basic_auth, only: [:show]
-  before_filter :find_file_group_and_collection, only: [:show, :destroy, :edit, :update,
-                                                        :create_cfs_fits, :create_virus_scan, :red_flags, :public]
+  before_action :public_view_enabled?, only: [:public]
+  before_action :require_logged_in, except: [:show, :public]
+  before_action :require_logged_in_or_basic_auth, only: [:show]
+  before_action :find_file_group_and_collection, only: [:show, :destroy, :edit, :update, :create_cfs_fits,
+                                                        :create_virus_scan, :red_flags, :public, :attachments,
+                                                        :assessments]
   layout 'public', only: [:public]
   respond_to :html, :js, :json
 
   def show
-    @assessable = @file_group
-    @assessments = @assessable.assessments.order('date DESC')
     respond_to do |format|
       format.html
       format.json
@@ -36,7 +36,7 @@ class FileGroupsController < ApplicationController
   def update
     authorize! :update, @file_group
     handle_related_file_groups do
-      handling_nested_collection_and_rights_declaration(params[:file_group]) do
+      handle_nested_rights_declaration(params[:file_group]) do
         if @file_group.update_attributes(allowed_params)
           redirect_to @file_group
         else
@@ -58,7 +58,7 @@ class FileGroupsController < ApplicationController
     handle_related_file_groups do
       @collection = Collection.find(params[:file_group][:collection_id])
       klass = determine_creation_class(params[:file_group])
-      handling_nested_collection_and_rights_declaration(allowed_params) do
+      handle_nested_rights_declaration(allowed_params) do
         @file_group = klass.new(collection: @collection)
         authorize! :create, @file_group
         @file_group.update_attributes(allowed_params)
@@ -81,22 +81,10 @@ class FileGroupsController < ApplicationController
     end
   end
 
-  def create_virus_scan
-    authorize! :create_virus_scan, @file_group
-    if @file_group.cfs_directory.present?
-      @alert = "Running virus scan on cfs directory #{@file_group.cfs_directory.path}."
-      Delayed::Job.enqueue(Job::VirusScan.create(file_group_id: @file_group.id), priority: 20)
-    else
-      @alert = 'Selected File Group does not have a cfs root directory'
-    end
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def events
     @eventable = FileGroup.find(params[:id])
-    @events = @eventable.events
+    @file_group = @eventable
+    @events = @eventable.combined_events
     @scheduled_eventable = @eventable
     @scheduled_events = @scheduled_eventable.scheduled_events
   end
@@ -104,7 +92,15 @@ class FileGroupsController < ApplicationController
   def red_flags
     @red_flags = @file_group.all_red_flags
     @aggregator = @file_group
-    render 'shared/red_flags'
+  end
+
+  def attachments
+    @attachable = @file_group
+  end
+
+  def assessments
+    @assessable = @file_group
+    @assessments = @assessable.assessments.order('date DESC')
   end
 
   protected
@@ -117,13 +113,12 @@ class FileGroupsController < ApplicationController
   #Ideally we'd handle this with nested attributes, but I can't seem to get the combination of STI on the file group
   #and nested attributes to work correctly, so here we are. It's not too bad since the file group will already exist
   #and is guaranteed to have both a collection and rights declaration, making both of those just updates.
-  def handling_nested_collection_and_rights_declaration(params)
-    collection_params = params.delete(:collection)
-    rights_params = params.delete(:rights_declaration)
+  def handle_nested_rights_declaration(params)
+    rights_params = params.delete(:rights_declaration) || ActionController::Parameters.new
+    rights_params = rights_params.permit(:rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions)
     FileGroup.transaction do
       yield
-      @file_group.collection.update_attributes!(collection_params) if collection_params.present?
-      @file_group.rights_declaration.update_attributes!(rights_params) if rights_params.present?
+      @file_group.rights_declaration.update_attributes!(rights_params)
     end
   end
 
@@ -147,16 +142,17 @@ class FileGroupsController < ApplicationController
 
   def allowed_params
     params[:file_group].permit(:collection_id, :external_file_location,
-                               :producer_id, :summary, :provenance_note,
-                               :name, :external_id, :staged_file_location, :total_file_size,
+                               :producer_id, :description, :provenance_note, :acquisition_method, :contact_email,
+                               :title, :external_id, :staged_file_location, :total_file_size,
                                :file_format, :total_files, :related_file_group_ids, :cfs_root,
-                               :package_profile_id, :cfs_directory_id)
+                               :package_profile_id, :cfs_directory_id, :access_url, :private_description, :rights_declaration,
+                               resource_type_ids: [])
   end
 
   def show_json
     Jbuilder.encode do |json|
       json.id @file_group.id
-      json.name @file_group.name
+      json.title @file_group.title
       json.collection_id @collection.id
       json.external_file_location @file_group.external_file_location
       json.storage_level @file_group.json_storage_level

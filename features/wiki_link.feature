@@ -6,7 +6,6 @@ Feature: Link to wiki
   Background:
     Given I am logged in as an admin
 
-    Scenario: Link in navbar and home page body
+    Scenario: Link in navbar
       When I go to the site home
-      Then I should see a link to the wiki in the body
       And I should see a link to the wiki in the navbar

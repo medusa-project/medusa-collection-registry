@@ -1,7 +1,7 @@
 require 'uiuc_ldap'
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  helper_method :current_user, :logged_in?, :public_path
+  helper_method :current_user, :logged_in?, :public_path, :public_view_on?
 
   protected
 
@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user || User.find_by_id(session[:current_user_id])
+    @current_user || User.find_by(id: session[:current_user_id])
   end
 
   def current_user_uid
@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
   end
 
   def basic_auth?
-    ActionController::HttpAuthentication::Basic.decode_credentials(request) == MedusaRails3::Application.medusa_config['basic_auth']
+    ActionController::HttpAuthentication::Basic.decode_credentials(request) == MedusaCollectionRegistry::Application.medusa_config['basic_auth']
   rescue
     false
   end
@@ -101,11 +101,11 @@ class ApplicationController < ActionController::Base
   end
 
   def self.user_ad_group
-    MedusaRails3::Application.medusa_config['medusa_users_group']
+    MedusaCollectionRegistry::Application.medusa_config['medusa_users_group']
   end
 
   def self.admin_ad_group
-    MedusaRails3::Application.medusa_config['medusa_admins_group']
+    MedusaCollectionRegistry::Application.medusa_config['medusa_admins_group']
   end
 
   def reset_ldap_cache(user)
@@ -137,6 +137,14 @@ class ApplicationController < ActionController::Base
   def public_path(object)
     class_name = object.class.to_s.underscore
     self.send("public_#{class_name}_path", object)
+  end
+
+  def public_view_on?
+    MedusaCollectionRegistry::Application.medusa_config['public_view_on']
+  end
+
+  def public_view_enabled?
+    redirect_to(unauthorized_path) unless public_view_on?
   end
 
 end

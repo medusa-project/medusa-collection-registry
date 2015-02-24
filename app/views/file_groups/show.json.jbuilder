@@ -1,4 +1,4 @@
-json.(@file_group, :id, :name, :external_file_location)
+json.(@file_group, :id, :title, :external_file_location)
 json.collection_id @collection.id
 json.storage_level @file_group.json_storage_level
 if @file_group.cfs_directory.present?

@@ -14,13 +14,7 @@ Feature: Collection Management
     Then I should see the collections table
     And I should see 'Sample Collection'
     And I should see 'external_id'
-
-  Scenario: Delete collection from a repository
-    When I view the repository with title 'Sample Repo'
-    And I click on 'Delete' in the collections table
-    Then I should be on the view page for the repository with title 'Sample Repo'
-    And I should not see 'Sample Collection'
-
+    
   Scenario: Navigate to collection
     When I view the repository with title 'Sample Repo'
     And I click on 'Sample Collection'

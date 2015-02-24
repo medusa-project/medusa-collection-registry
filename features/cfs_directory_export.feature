@@ -9,13 +9,13 @@ Feature: Cfs directory export
     And the physical cfs directory 'dogs/pugs' has a file 'picture.jpg' with contents 'anything'
     And the physical cfs directory 'dogs/pugs' has a file 'description.txt' with contents 'anything'
     And the collection with title 'Animals' has child file groups with fields:
-      | name | type              |
+      | title | type              |
       | Dogs | BitLevelFileGroup |
-    And the file group named 'Dogs' has cfs root 'dogs' and delayed jobs are run
+    And the file group titled 'Dogs' has cfs root 'dogs' and delayed jobs are run
 
   Scenario: Request an export of a directory
     Given I am logged in as a manager
-    When I view the cfs directory for the file group named 'Dogs' for the path '.'
+    When I view the cfs directory for the file group titled 'Dogs' for the path '.'
     And I click on 'Download Files' and delayed jobs are run
     Then I should see 'Your directory has been scheduled for export. You will be notified by email when the export is complete.'
     And there should be an exported directory with paths:
@@ -24,7 +24,7 @@ Feature: Cfs directory export
 
   Scenario: Request an export of a directory tree
     Given I am logged in as a manager
-    When I view the cfs directory for the file group named 'Dogs' for the path '.'
+    When I view the cfs directory for the file group titled 'Dogs' for the path '.'
     And I click on 'Download Files and All Subdirectories' and delayed jobs are run
     Then I should see 'Your directory tree has been scheduled for export. You will be notified by email when the export is complete.'
     And there should be an exported directory with paths:

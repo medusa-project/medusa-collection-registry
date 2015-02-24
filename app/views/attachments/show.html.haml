@@ -1,6 +1,6 @@
 .pull-right
-  = link_to 'Edit', edit_attachment_path(@attachment), class: 'btn btn-default'
-  = link_to 'Delete', @attachment, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-danger'
+  = edit_button(@attachment)
+  = delete_button(@attachment)
 
 = render layout: 'layouts/page_header' do
   Attachment: #{@attachment.attachment_file_name}

@@ -1,11 +1,16 @@
 require 'rest_client'
+require 'digest/md5'
 
 class CfsFile < ActiveRecord::Base
+  include Eventable
+  include CascadedEventable
   include Uuidable
   include Breadcrumb
 
   belongs_to :cfs_directory, touch: true
   belongs_to :content_type, touch: true
+  belongs_to :file_extension, touch: true
+  belongs_to :parent, class_name: 'CfsDirectory', foreign_key: 'cfs_directory_id'
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
 
@@ -19,7 +24,13 @@ class CfsFile < ActiveRecord::Base
   after_destroy :remove_content_type_stats
   after_update :update_content_type_stats
 
+  before_validation :ensure_current_file_extension
+  after_create :add_file_extension_stats
+  after_destroy :remove_file_extension_stats
+  after_update :update_file_extension_stats
+
   breadcrumbs parent: :cfs_directory, label: :name
+  cascades_events parent: :cfs_directory
 
   def repository
     self.cfs_directory.repository
@@ -42,11 +53,7 @@ class CfsFile < ActiveRecord::Base
   end
 
   def file_group
-    self.cfs_directory.owning_file_group
-  end
-
-  def owning_file_group
-    self.file_group
+    self.cfs_directory.file_group
   end
 
   def self.cfs_type
@@ -103,14 +110,16 @@ class CfsFile < ActiveRecord::Base
       self.red_flags.create(message: "Md5 Sum changed. Old: #{self}.md5_sum} New: #{new_md5_sum}}") unless self.md5_sum.blank?
       self.md5_sum = new_md5_sum
     end
+  end
 
-    def update_content_type_from_fits(new_content_type_name)
-      if self.content_type_name != new_content_type_name
-        #For this one we don't report a red flag if this is the first generation of
-        #the fits xml overwriting the content type found by the 'file' command
-        unless self.content_type.blank? or self.fits_xml_was.blank?
-          self.red_flags.create(message: "Content Type changed. Old: #{self.content_type_name} New: #{new_content_type_name}")
-        end
+  def update_content_type_from_fits(new_content_type_name)
+    #don't update something to a less specific content type
+    return if new_content_type_name == 'application/octet-stream' and self.content_type_name.present?
+    if self.content_type_name != new_content_type_name
+      #For this one we don't report a red flag if this is the first generation of
+      #the fits xml overwriting the content type found by the 'file' command
+      unless self.content_type.blank? or self.fits_xml_was.blank?
+        self.red_flags.create(message: "Content Type changed. Old: #{self.content_type_name} New: #{new_content_type_name}")
       end
       self.content_type_name = new_content_type_name
     end
@@ -132,45 +141,80 @@ class CfsFile < ActiveRecord::Base
     end
   end
 
+  def file_system_md5_sum
+    Digest::MD5.file(self.absolute_path).hexdigest
+  end
+
+  def ensure_current_file_extension
+    self.file_extension = FileExtension.ensure_for_name(self.name)
+  end
+
+  def self.ensure_all_file_extensions
+    count = CfsFile.where('file_extension_id is null').count
+    CfsFile.where('file_extension_id is null').find_each.with_index do |cfs_file, i|
+      if (i + 1) % 5000 == 0
+        puts "Ensuring file extension for #{i + 1} of #{count}"
+      end
+      cfs_file.ensure_current_file_extension
+      cfs_file.save!
+    end
+  end
+
   protected
 
   def add_cfs_directory_tree_stats
-    self.cfs_directory.update_tree_stats(1, self.size || 0)
+    self.cfs_directory.update_tree_stats(1, self.safe_size)
   end
 
   def update_cfs_directory_tree_stats
-    self.cfs_directory.update_tree_stats(0, (self.size || 0) - (self.size_was || 0)) if self.size_changed?
+    self.cfs_directory.update_tree_stats(0, self.safe_size - self.safe_size_was) if self.size_changed?
   end
 
   def remove_cfs_directory_tree_stats
-    self.cfs_directory.update_tree_stats(-1, -1 * self.size || 0)
+    self.cfs_directory.update_tree_stats(-1, -1 * self.safe_size_was)
   end
 
   def add_content_type_stats
-    if self.content_type.present?
-      self.content_type.update_stats(1, self.size || 0)
-    end
+    self.content_type.update_stats(1, self.safe_size) if self.content_type.present?
   end
 
   def update_content_type_stats
     if self.content_type_id_changed?
       if self.content_type.present?
-        self.content_type.update_stats(1, self.size || 0)
+        self.content_type.update_stats(1, self.safe_size)
       end
       if self.content_type_id_was.present?
-        ContentType.find(self.content_type_id_was).update_stats(-1, -1 * (self.size_was || 0))
+        ContentType.find(self.content_type_id_was).update_stats(-1, -1 * self.safe_size_was)
       end
     else
       if self.content_type.present? and self.size_changed?
-        self.content_type.update_stats(0, (self.size || 0) - (self.size_was || 0))
+        self.content_type.update_stats(0, (self.safe_size - self.safe_size_was))
       end
     end
   end
 
   def remove_content_type_stats
-    if self.content_type.present?
-      self.content_type.update_stats(-1, -1 * (self.size || 0))
+    self.content_type.update_stats(-1, -1 * self.safe_size) if self.content_type.present?
+  end
+
+  def add_file_extension_stats
+    self.file_extension.update_stats(1, self.safe_size)
+    true
+  end
+
+  def update_file_extension_stats
+    if self.file_extension_id_changed?
+      self.file_extension.update_stats(1, self.safe_size)
+      FileExtension.find(self.file_extension_id_was).update_stats(-1, -1 * self.safe_size_was) if self.file_extension_id_was
+    else
+      if self.size_changed?
+        self.file_extension.update_stats(0, self.safe_size - self.safe_size_was)
+      end
     end
+  end
+
+  def remove_file_extension_stats
+    self.file_extension.update_stats(-1, -1 * self.safe_size)
   end
 
   def get_fits_xml
@@ -178,6 +222,14 @@ class CfsFile < ActiveRecord::Base
     resource = RestClient::Resource.new("http://localhost:4567/fits/file/#{file_path}")
     response = resource.get
     response.body
+  end
+
+  def safe_size
+    self.size || 0
+  end
+
+  def safe_size_was
+    self.size_was || 0
   end
 
 end

@@ -1,4 +1,3 @@
-require 'email_person_associator'
 require 'registers_handle'
 require 'mods_helper'
 
@@ -8,6 +7,9 @@ class Collection < ActiveRecord::Base
   include RedFlagAggregator
   include Uuidable
   include Breadcrumb
+  include CascadedEventable
+  include ResourceTypeable
+  include EmailPersonAssociator
 
   email_person_association(:contact)
 
@@ -18,8 +20,6 @@ class Collection < ActiveRecord::Base
   has_many :file_groups, dependent: :destroy
   has_many :access_system_collection_joins, dependent: :destroy
   has_many :access_systems, through: :access_system_collection_joins
-  has_many :collection_resource_type_joins, dependent: :destroy
-  has_many :resource_types, through: :collection_resource_type_joins
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
   has_many :attachments, as: :attachable, dependent: :destroy
 
@@ -34,9 +34,9 @@ class Collection < ActiveRecord::Base
 
   accepts_nested_attributes_for :rights_declaration
 
-  auto_strip_attributes :description, :private_description, :notes, :file_package_summary, nullify: false
+  auto_strip_attributes :description, :private_description, :notes, nullify: false
 
-  [:description, :private_description, :notes, :file_package_summary].each do |field|
+  [:description, :private_description, :notes].each do |field|
     auto_html_for field do
       html_escape
       link target: '_blank'
@@ -46,17 +46,14 @@ class Collection < ActiveRecord::Base
 
   aggregates_red_flags collections: :file_groups, label_method: :title
   breadcrumbs parent: :repository
+  cascades_events parent: :repository
 
   def total_size
     self.file_groups.collect { |fg| fg.file_size }.sum
   end
 
   def medusa_url
-    Rails.application.routes.url_helpers.collection_url(self, host: MedusaRails3::Application.medusa_host, protocol: 'https')
-  end
-
-  def resource_type_names
-    self.resource_types.collect(&:name).join('; ')
+    Rails.application.routes.url_helpers.collection_url(self, host: MedusaCollectionRegistry::Application.medusa_host, protocol: 'https')
   end
 
   def preservation_priority_name
@@ -75,9 +72,7 @@ class Collection < ActiveRecord::Base
       end
       xml.identifier(self.uuid, type: 'uuid')
       xml.identifier(self.handle, type: 'handle')
-      self.resource_types.each do |resource_type|
-        xml.typeOfResource(resource_type.name, collection: 'yes')
-      end
+      resource_types_to_mods(xml)
       xml.abstract self.description
       xml.location do
         xml.url(self.access_url || '', access: 'object in context', usage: 'primary')
@@ -94,10 +89,6 @@ class Collection < ActiveRecord::Base
 
   def recursive_assessments
     (self.assessments + self.file_groups.collect { |file_group| file_group.assessments }.flatten)
-  end
-
-  def all_events
-    self.file_groups.collect { |file_group| file_group.events }.flatten
   end
 
   def all_scheduled_events

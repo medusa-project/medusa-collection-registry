@@ -1,26 +1,13 @@
-- url, method = @file_group.new_record? ? [file_groups_path(@file_group), :post] : [file_group_path(@file_group), :put]
--# we need to use :file_group instead of @file_group, but this also means that we need to handle the required fields manually
-= simple_form_for :file_group, url: url, method: method, html: {class:'form-horizontal'}, defaults: {required: false} do |f|
+= simple_form_for @file_group, as: :file_group, html: {class:'form-horizontal'}, defaults: {required: false} do |f|
   .row
     = render partial: 'shared/form_sidebar', locals: {f: f, object: @file_group, cancel_return: (@collection if @file_group.new_record?)}
     .col-sm-9
       .tabbable
         = render partial: 'shared/tab_header', locals: {id: 'edit-tabs', tabs: file_group_form_tab_list}
         .tab-content
-          #essential-information.tab-pane.active
-            = render 'form_base_fields', f: f
-          #summary.tab-pane
-            = f.input :summary
-          #provenance-note.tab-pane
-            = f.input :provenance_note, label: 'Provenance Note'
-          #rights-declaration.tab-pane
+          #descriptive-metadata.tab-pane.active
+            = render partial: 'form_descriptive_metadata', locals: {f: f}
+          #administrative-metadata.tab-pane
+            = render partial: 'form_administrative_metadata', locals: {f: f}
+          #rights-metadata.tab-pane
             = render partial: 'rights_declarations/nested_form', locals: {containing_form: f, rights_declaration: @file_group.rights_declaration}
-          #collection-file-package-summary.tab-pane
-            = f.simple_fields_for :collection, @collection do |c|
-              = c.input :file_package_summary, label: 'Collection File Package Summary'
-          #related-file-groups.tab-pane
-            - if @file_group.new_record?
-              %p
-                Related file groups can only be defined for an already saved file group.
-            - else
-              = render partial: 'form_related_file_groups'

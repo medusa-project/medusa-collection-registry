@@ -1,7 +1,7 @@
 class AccessSystemsController < ApplicationController
 
-  before_filter :require_logged_in, except: [:index, :show]
-  before_filter :find_access_system, only: [:show, :edit, :update, :destroy]
+  before_action :require_logged_in, except: [:index, :show]
+  before_action :find_access_system, only: [:show, :edit, :update, :destroy, :collections]
 
   def index
     @access_systems = AccessSystem.all
@@ -45,6 +45,10 @@ class AccessSystemsController < ApplicationController
     redirect_to access_systems_path
   end
 
+  def collections
+    @collections = @access_system.collections.order(:title).includes(:repository)
+  end
+
   protected
 
   def find_access_system
@@ -52,7 +56,7 @@ class AccessSystemsController < ApplicationController
   end
 
   def allowed_params
-    params[:access_system].permit(:name)
+    params[:access_system].permit(:name, :service_owner, :application_manager)
   end
 
 end

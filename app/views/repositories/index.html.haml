@@ -3,6 +3,12 @@
 
 = render 'shared/definitions/repository'
 
+= link_to repositories_path(format: 'csv'), class: 'btn btn-default' do
+  %span.glyphicon.glyphicon-export
+  = 'Export as CSV'
+- if can? :update_ldap_admins, Repository
+  = link_to 'Edit Repository Admins', edit_ldap_admins_repositories_path, class: 'btn btn-primary'
+
 - cache(cache_key_for_all(Repository)) do
   = render 'table'
 
@@ -10,7 +16,3 @@
 
 %div Total Medusa Size: #{Repository.aggregate_size.round} GB
 
-%br
-
-- if can? :update_ldap_admins, Repository
-  = link_to 'Edit Repository Admins', edit_ldap_admins_repositories_path, class: 'btn btn-primary'

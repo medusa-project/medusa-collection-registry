@@ -98,7 +98,7 @@ Feature: Repository description
   Scenario: Delete repository from view page
     Given I am logged in as an admin
     When I view the repository with title 'Sample 1'
-    And I click on 'Delete Repository'
+    And I click on 'Delete'
     Then I should not see 'Sample 1'
 
   Scenario: Navigate from index page to view page
@@ -109,19 +109,10 @@ Feature: Repository description
 
   Scenario: Navigate from index page to edit page
     Given I am logged in as an admin
-    When the repository titled 'Sample 2' has been deleted
+    When I destroy the repository with title 'Sample 2'
     And I go to the repository index page
     And I click on 'Edit'
     Then I should be on the edit page for the repository with title 'Sample 1'
-
-  Scenario: Delete from index page
-    Given I am logged in as an admin
-    When I go to the repository index page
-    And I click on 'Delete'
-    And I click on 'Delete'
-    Then I should be on the repository index page
-    And I should not see 'Sample 1'
-    And I should not see 'Sample 2'
 
   Scenario: Navigate from view page to edit page
     Given I am logged in as an admin
@@ -134,7 +125,6 @@ Feature: Repository description
     When I view the repository with title 'Sample 1'
     And I click on 'UIUC'
     Then I should be on the view page for the institution with name 'UIUC'
-
 
   Scenario: Associate contact with repository
     Given I am logged in as an admin

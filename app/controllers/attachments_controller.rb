@@ -1,7 +1,7 @@
 class AttachmentsController < ApplicationController
 
-  before_filter :require_logged_in
-  before_filter :find_attachment_and_attachable, only: [:destroy, :show, :edit, :update, :download]
+  before_action :require_logged_in
+  before_action :find_attachment_and_attachable, only: [:destroy, :show, :edit, :update, :download]
 
   def destroy
     authorize! :destroy_attachment, @attachable

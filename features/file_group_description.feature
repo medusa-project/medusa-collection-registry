@@ -8,54 +8,58 @@ Feature: File Group description
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | summary          | provenance_note     | name   | staged_file_location | external_id              |
-      | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   | external-main-library-id |
-      | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | staging_dir/texts    |                          |
+      | external_file_location | file_format | total_file_size | total_files | description      | provenance_note     | title  | staged_file_location | external_id              | access_url                | private_description | contact_email      | acquisition_method   |
+      | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   | external-main-library-id | http://access.example.com | private summary     | ruth@example.com   | vendor digitization |
+      | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | staging_dir/texts    |                          |                           |                     | buster@example.com |                     |
     And every producer with fields exists:
       | title    |
       | Scanning |
 
   Scenario: View a file group
     Given I am logged in as an admin
-    And the uuid of the file group with name 'images' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
-    When I view the file group with name 'images'
+    And the uuid of the file group with title 'images' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
+    When I view the file group with title 'images'
     Then I should see all of:
-      | image/jpeg | 1,200 | main summary | main provenance | images | external | staging_dir/images | external-main-library-id |3da0fae0-e3fa-012f-ac10-005056b22849-8|
+      | image/jpeg | 1,200 | main summary | main provenance | images | external | staging_dir/images | external-main-library-id | 3da0fae0-e3fa-012f-ac10-005056b22849-8 | private summary | http://access.example.com | ruth@example.com |vendor digitization|
 
   Scenario: View a file group as a manager
     Given I am logged in as a manager
-    When I view the file group with name 'images'
-    Then I should be on the view page for the file group with name 'images'
+    When I view the file group with title 'images'
+    Then I should be on the view page for the file group with title 'images'
 
   Scenario: View a file group as a visitor
     Given I am logged in as a visitor
-    When I view the file group with name 'images'
-    Then I should be on the view page for the file group with name 'images'
+    When I view the file group with title 'images'
+    Then I should be on the view page for the file group with title 'images'
 
   Scenario: Edit a file group
     Given I am logged in as an admin
-    When I edit the file group with name 'images'
+    When I edit the file group with title 'images'
     And I fill in fields:
-      | Total files          | 1300               |
-      | Summary              | Changed summary    |
-      | Provenance Note      | Changed provenance |
-      | Name                 | pictures           |
-      | Staged file location | staging_dir/pics   |
-      | External ID          | external-dogs-id   |
+      | Total files          | 1300                          |
+      | Description          | Changed summary               |
+      | Provenance Note      | Changed provenance            |
+      | Title                | pictures                      |
+      | Staged file location | staging_dir/pics              |
+      | External ID          | external-dogs-id              |
+      | Access Url           | http://new-access.example.com |
+      | Private description  | changed secret description    |
+      | Contact Person Email | pearl@example.com             |
+    And I select 'external deposit' from 'Acquisition method'
     And I press 'Update'
-    Then I should be on the view page for the file group with name 'pictures'
+    Then I should be on the view page for the file group with title 'pictures'
     And I should see all of:
-      | 1,300 | Changed summary | Changed provenance | pictures | staging_dir/pics | external-dogs-id |
+      | 1,300 | Changed summary | Changed provenance | pictures | staging_dir/pics | external-dogs-id | http://new-access.example.com | changed secret description | pearl@example.com |external deposit|
     And I should see none of:
-      | 1,200 | main summary | main provenance | images | staging_dir/pictures | external-main-library-id |
+      | 1,200 | main summary | main provenance | images | staging_dir/pictures | external-main-library-id | http://access.example.com | private summary | ruth@example.com |vendor digitization|
 
   Scenario: Edit a file group as a manager
     Given I am logged in as a manager
-    When I edit the file group with name 'images'
+    When I edit the file group with title 'images'
     And I fill in fields:
       | Total files | 1300 |
     And I press 'Update'
-    Then I should be on the view page for the file group with name 'images'
+    Then I should be on the view page for the file group with title 'images'
     And I should see all of:
       | 1,300 |
     And I should see none of:
@@ -63,28 +67,28 @@ Feature: File Group description
 
   Scenario: Edit a file group and see owning repository and collection
     Given I am logged in as an admin
-    When I edit the file group with name 'images'
+    When I edit the file group with title 'images'
     Then I should see 'Dogs'
     And I should see 'Animals'
 
   Scenario: Navigate from the file group view page to owning collection
     Given I am logged in as an admin
-    When I view the file group with name 'images'
+    When I view the file group with title 'images'
     And I click on 'Dogs'
     Then I should be on the view page for the collection with title 'Dogs'
 
   Scenario: Navigate from file group view page to its edit page
     Given I am logged in as an admin
-    When I view the file group with name 'images'
+    When I view the file group with title 'images'
     And I click on 'Edit'
-    Then I should be on the edit page for the file group with name 'images'
+    Then I should be on the edit page for the file group with title 'images'
 
   Scenario: Delete file group from view page
     Given I am logged in as an admin
-    When I view the file group with name 'images'
+    When I view the file group with title 'images'
     And I click on 'Delete'
     Then I should be on the view page for the collection with title 'Dogs'
-    And the collection with title 'Dogs' should have 0 file groups with name 'images'
+    And the collection with title 'Dogs' should have 0 file groups with title 'images'
 
   Scenario: Create a new file group as an admin
     Given I am logged in as an admin
@@ -95,14 +99,14 @@ Feature: File Group description
       | File format            | image/tiff    |
       | Total file size        | 22            |
       | Total files            | 333           |
-      | Name                   | My file group |
+      | Title                  | My file group |
     And I select 'Scanning' from 'Producer'
     And I press 'Create'
-    Then I should be on the view page for the file group with name 'My file group'
+    Then I should be on the view page for the file group with title 'My file group'
     And I should see 'Undergrad'
     And I should see 'image/tiff'
-    And the collection with title 'Dogs' should have 1 file group with name 'My file group'
-    And the cfs root for the file group named 'My file group' should be nil
+    And the collection with title 'Dogs' should have 1 file group with title 'My file group'
+    And the cfs root for the file group titled 'My file group' should be nil
 
   Scenario: Create a new file group as a manager
     Given I am logged in as a manager
@@ -113,29 +117,29 @@ Feature: File Group description
       | File format            | image/tiff    |
       | Total file size        | 22            |
       | Total files            | 333           |
-      | Name                   | My file group |
+      | Title                  | My file group |
     And I select 'Scanning' from 'Producer'
     And I press 'Create'
-    Then I should be on the view page for the file group with name 'My file group'
+    Then I should be on the view page for the file group with title 'My file group'
     And I should see 'Undergrad'
     And I should see 'image/tiff'
-    And the collection with title 'Dogs' should have 1 file group with name 'My file group'
-    And the cfs root for the file group named 'My file group' should be nil
+    And the collection with title 'Dogs' should have 1 file group with title 'My file group'
+    And the cfs root for the file group titled 'My file group' should be nil
 
   Scenario: See package profile name and url in collection view
     Given I am logged in as an admin
     Given every package profile with fields exists:
       | name          | url                              |
       | image_profile | http://image_profile.example.com |
-    And the file group named 'images' has package profile named 'image_profile'
-    When I view the file group with name 'images'
+    And the file group titled 'images' has package profile named 'image_profile'
+    When I view the file group with title 'images'
     Then I should see all of:
       | image_profile | http://image_profile.example.com |
 
   Scenario: Navigate from file group view to corresponding package profile
     Given I am logged in as an admin
-    Given the file group named 'images' has package profile named 'image_profile'
-    When I view the file group with name 'images'
+    Given the file group titled 'images' has package profile named 'image_profile'
+    When I view the file group with title 'images'
     And I click on 'image_profile'
     Then I should be on the view page for the package profile with name 'image_profile'
 
@@ -145,8 +149,8 @@ Feature: File Group description
       | name          |
       | image_profile |
       | book_profile  |
-    And the file group named 'images' has package profile named 'image_profile'
-    When I edit the file group with name 'images'
+    And the file group titled 'images' has package profile named 'image_profile'
+    When I edit the file group with title 'images'
     And I select 'book_profile' from 'Package profile'
     And I click on 'Update'
-    Then the file group named 'images' should have package profile named 'book_profile'
+    Then the file group titled 'images' should have package profile named 'book_profile'

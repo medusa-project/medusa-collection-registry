@@ -13,13 +13,13 @@ Feature: Assessment summary
       | title |
       | Cacti |
     And the collection with title 'Dogs' has child file groups with fields:
-      | name |
+      | title |
       | Toy  |
       | Hot  |
-    And the assessable file group with name 'Toy' has assessments with fields:
+    And the assessable file group with title 'Toy' has assessments with fields:
       | name           |
       | toy assessment |
-    And the assessable file group with name 'Hot' has assessments with fields:
+    And the assessable file group with title 'Hot' has assessments with fields:
       | name           |
       | hot assessment |
     And the assessable collection with title 'Dogs' has assessments with fields:
@@ -34,6 +34,7 @@ Feature: Assessment summary
 
   Scenario: View collection and go to summary of assessments
     When I view the collection with title 'Dogs'
+    And I click on 'Assessments'
     Then I should see all of:
       | toy assessment | hot assessment | dog assessment |
     And I should see none of:
@@ -41,6 +42,7 @@ Feature: Assessment summary
 
   Scenario: View repository and go to summary of assessments
     When I view the repository with title 'Animals'
+    And I click on 'Assessments'
     Then I should see all of:
       | toy assessment | hot assessment | dog assessment | cat assessment |
     And I should see none of:

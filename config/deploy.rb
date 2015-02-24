@@ -1,90 +1,68 @@
-require 'bundler/capistrano'
-require 'rvm/capistrano'
-require 'auto_html/capistrano'
+# config valid only for current version of Capistrano
+lock '3.3.5'
 
-set :production_server, "medusa.library.illinois.edu"
-set :staging_server, "medusatest.library.illinois.edu"
-default_run_options[:shell] = '/bin/bash -l'
+set :application, 'medusa-collection-registry'
+set :repo_url, 'https://github.com/medusa-project/medusa-collection-registry.git'
 
-task :production do
-  role :web, production_server
-  role :app, production_server
-  role :db, production_server, primary: true
-end
+# Default branch is :master
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
-task :staging do
-  role :web, staging_server
-  role :app, staging_server
-  role :db, staging_server, primary: true
-end
+# Default deploy_to directory is /var/www/my_app_name
+set :home, '/services/medusa'
+set :deploy_to, "#{fetch(:home)}/medusa-cr-capistrano"
+set :bin, "#{fetch(:home)}/bin"
+set :rails_env, 'production'
 
-set :application, "Medusa"
-set :repository, "git://github.com/medusa-project/medusa-rails3.git"
+# Default value for :scm is :git
+# set :scm, :git
 
-set :scm, :git
-set :deploy_via, :remote_cache
+# Default value for :format is :pretty
+# set :format, :pretty
 
-set :user, 'medusa'
-set :use_sudo, false
+# Default value for :log_level is :debug
+# set :log_level, :debug
 
-set :home, "/services/medusa"
-set :deploy_to, "#{home}/medusa-rails3-capistrano"
-set :shared, "#{deploy_to}/shared"
-set :shared_config, "#{shared}/config"
-set :public, "#{current_path}/public"
+# Default value for :pty is false
+# set :pty, true
 
-set :local_root, File.expand_path('..', File.dirname(__FILE__))
+# Default value for :linked_files is []
+set :linked_files, %w(config/database.yml config/shibboleth.yml config/handle_client.yml config/fits_service.yml
+  config/medusa.yml config/smtp.yml)
+
+# Default value for linked_dirs is []
+set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
+
+# Default value for default_env is {}
+# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+
+# Default value for keep_releases is 5
+# set :keep_releases, 5
 
 namespace :deploy do
-  desc "link shared configuration"
-  task :link_config do
-    ['database.yml', 'fedora.yml', 'solr.yml', 'shibboleth.yml', 'handle_client.yml',
-     'dx.yml', 'fits_service.yml', 'medusa.yml', 'smtp.yml'].each do |file|
-      run "ln -nfs #{shared_config}/#{file} #{current_path}/config/#{file}"
+
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      # Here we can do anything such as:
+      # within release_path do
+      #   execute :rake, 'cache:clear'
+      # end
     end
   end
 
-  desc "Start rails"
-  task :start do
-    run "cd #{home}/bin ; ./start-rails"
-  end
-  desc "Stop rails"
-  task :stop do
-    run "cd #{home}/bin ; ./stop-rails || echo 'Passenger not currently running'"
-  end
-  desc "Restart rails"
-  task :restart, roles: :app, except: {no_release: true} do
-    ;
+  before :publishing, :stop_application
+
+  task :stop_application do
+    on roles(:app), in: :sequence, wait: 5 do
+      execute "cd #{fetch(:bin)} ; ./stop-rails"
+    end
   end
 
-  desc "seed database"
-  task :seed do
-    run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
+  task :start_application do
+    on roles(:app), in: :sequence, wait: 5 do
+      execute "cd #{fetch(:bin)} ; ./start-rails"
+    end
   end
 
-  desc "precompile rails assets"
-  task :precompile_assets do
-    run "cd #{current_path}; bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
-  end
-end
-
-namespace :medusa do
-
-  desc "start delayed_job"
-  task :start_delayed_job do
-    run "cd #{current_path}; bundle exec rake medusa:delayed_job:start RAILS_ENV=#{rails_env}"
-  end
-
-  desc "stop delayed_job"
-  task :stop_delayed_job do
-    run "cd #{current_path}; bundle exec rake medusa:delayed_job:stop RAILS_ENV=#{rails_env}"
-  end
+  after :publishing, :start_application
 
 end
-
-before 'deploy:create_symlink', 'deploy:stop'
-
-after 'deploy:create_symlink', 'deploy:link_config'
-after 'deploy:create_symlink', 'deploy:precompile_assets'
-after 'deploy:create_symlink', 'deploy:start'
-

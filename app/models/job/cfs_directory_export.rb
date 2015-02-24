@@ -4,7 +4,7 @@ class Job::CfsDirectoryExport < Job::Base
   belongs_to :cfs_directory, touch: true
 
   def self.create_for(cfs_directory, user, recursive)
-    Delayed::Job.enqueue(self.create(cfs_directory: cfs_directory, user: user, uuid: UUID.generate, recursive: recursive))
+    Delayed::Job.enqueue(self.create!(cfs_directory: cfs_directory, user: user, uuid: UUID.generate, recursive: recursive))
   end
 
   def perform
@@ -21,7 +21,7 @@ class Job::CfsDirectoryExport < Job::Base
   end
 
   def success(job)
-    CfsMailer.export_complete(self).deliver
+    CfsMailer.export_complete(self).deliver_now
     if CfsDirectory.export_autoclean
       Job::CfsDirectoryExportCleanup.create_for(self.export_directory)
     end
@@ -30,7 +30,7 @@ class Job::CfsDirectoryExport < Job::Base
 
   #TODO - make this more useful, but that needs to wait until we know better
   #how we're going to do the pickup
-  def pickup_path()
+  def pickup_path
     "\\\\storage.library.illinois.edu\\MedusaExports\\#{self.group_directory}\\#{self.uuid}"
   end
 

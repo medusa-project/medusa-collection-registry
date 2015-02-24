@@ -1,6 +1,6 @@
 class VirusScansController < ApplicationController
 
-  before_filter :require_logged_in
+  before_action :require_logged_in
 
   def show
     @virus_scan = VirusScan.find(params[:id])

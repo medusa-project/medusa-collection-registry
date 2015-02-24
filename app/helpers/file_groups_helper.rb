@@ -17,16 +17,15 @@ module FileGroupsHelper
   end
 
   def file_group_form_tab_list
-    ['essential-information', 'rights-declaration', 'summary', 'provenance-note',
-     'collection-file-package-summary', 'related-file-groups']
+    %w(descriptive-metadata administrative-metadata rights-metadata)
   end
 
   def file_group_show_tab_list
-    tabs = ['description', 'rights', 'assessments', 'attachments']
+    tabs = %w(descriptive-metadata administrative-metadata rights-metadata)
     if @file_group.cfs_directory.present?
       tabs << 'amazon'
     end
-    tabs.collect {|x| ["#{x}-tab", x.capitalize]}
+    tabs
   end
 
   def package_profile_select_collection

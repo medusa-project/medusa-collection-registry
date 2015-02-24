@@ -9,7 +9,7 @@ class ExternalFileGroup < FileGroup
   end
 
   def self.downstream_types
-    ['BitLevelFileGroup', 'ObjectLevelFileGroup']
+    %w(BitLevelFileGroup ObjectLevelFileGroup)
   end
 
   #check that the staged_file_location is okay - it must end in collection_id/file_group_id
@@ -33,7 +33,7 @@ class ExternalFileGroup < FileGroup
 
   def create_related_bit_level_file_group
     BitLevelFileGroup.new(self.attributes.slice('producer_id', 'package_profile_id',
-                                                'name', 'collection_id')).tap do |bit_level_file_group|
+                                                'title', 'collection_id')).tap do |bit_level_file_group|
       bit_level_file_group.save!
       self.target_file_group_joins.create(target_file_group_id: bit_level_file_group.id, note: 'Created by automatic ingest')
     end

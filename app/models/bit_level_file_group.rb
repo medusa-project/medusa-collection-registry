@@ -3,14 +3,10 @@ class BitLevelFileGroup < FileGroup
 
   has_many :virus_scans, dependent: :destroy, foreign_key: :file_group_id
 
-  aggregates_red_flags self: :cfs_red_flags, label_method: :name
+  aggregates_red_flags self: :cfs_red_flags, label_method: :title
 
   has_many :job_fits_directories, class_name: 'Job::FitsDirectory', foreign_key: :file_group_id
   has_many :job_cfs_initial_directory_assessments, class_name: 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
-
-  def create_cfs_file_infos
-    #TODO nothing - exists to clear some delayed jobs, then delete this method
-  end
 
   def storage_level
     'bit-level store'
@@ -40,6 +36,10 @@ class BitLevelFileGroup < FileGroup
   #make sure that there is a CfsFile object at the supplied absolute path and return it
   def ensure_file_at_absolute_path(path)
     self.cfs_directory.ensure_file_at_absolute_path(path)
+  end
+
+  def ensure_file_at_relative_path(path)
+    self.cfs_directory.ensure_file_at_relative_path(path)
   end
 
   #Find the cfs directory at the path relative to the cfs directory root path for this file group
@@ -80,22 +80,37 @@ class BitLevelFileGroup < FileGroup
 
   def file_size
     return 0 unless self.cfs_directory
+    self.refresh_file_size
+    return total_file_size
+  end
+
+  def refresh_file_size
+    return unless self.cfs_directory
     size = self.cfs_directory.tree_size / 1.gigabyte
     if self.total_file_size != size
       self.total_file_size = size
       self.save!
     end
-    return size
   end
 
   def file_count
     return 0 unless self.cfs_directory
+    refresh_file_count
+    return total_files
+  end
+
+  def refresh_file_count
+    return unless self.cfs_directory
     count = self.cfs_directory.tree_count
     if self.total_files != count
       self.total_files = count
       self.save!
     end
-    return count
+  end
+
+  def refresh_file_stats
+    self.refresh_file_size
+    self.refresh_file_count
   end
 
   def amazon_backups
@@ -133,13 +148,13 @@ class BitLevelFileGroup < FileGroup
     return if new_cfs_directory.blank? and old_cfs_directory.blank?
     return if old_cfs_directory == new_cfs_directory
     transaction do
-      if new_cfs_directory
-        new_cfs_directory.file_group_id = self.id
-        new_cfs_directory.save!
-      end
       if old_cfs_directory
-        old_cfs_directory.file_group_id = nil
+        old_cfs_directory.parent = nil
         old_cfs_directory.save!
+      end
+      if new_cfs_directory
+        new_cfs_directory.parent = self
+        new_cfs_directory.save!
       end
     end
     self.cfs_directory(true)

@@ -29,7 +29,7 @@ module BookTracker
 
       begin
         pathname = get_hathifile(task)
-        nuc_code = MedusaRails3::Application.medusa_config['book_tracker']['library_nuc_code']
+        nuc_code = MedusaCollectionRegistry::Application.medusa_config['book_tracker']['library_nuc_code']
 
         task.name = "Checking HathiTrust: Scanning the HathiFile for "\
         "#{nuc_code} records..."
@@ -44,8 +44,10 @@ module BookTracker
           if parts[5] == nuc_code
             item = Item.find_by_bib_id(parts[6])
             if item
-              if !item.exists_in_hathitrust
+              if !item.exists_in_hathitrust or
+                  item.hathitrust_rights != parts[2]
                 item.exists_in_hathitrust = true
+                item.hathitrust_rights = parts[2]
                 item.save!
               end
             end

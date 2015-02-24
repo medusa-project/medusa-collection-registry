@@ -3,10 +3,8 @@
 -#May pass cancel_return - object or path to go to if the form is cancelled. Default is to show obj.
 - cancel_return ||= object
 .col-sm-3
-  %div
-    %p= f.button :submit, class: 'btn btn-primary', value: (object.new_record? ? 'Create' : 'Update')
-  %div
-    %p
-      = link_to('Cancel', cancel_return, class: 'btn btn-default')
+  .btn-group
+    = f.button :submit, class: 'btn btn-primary', value: (object.new_record? ? 'Create' : 'Update')
+    = link_to('Cancel', cancel_return, class: 'btn btn-default')
   - if content_for?(:form_sidebar_extra)
     = content_for(:form_sidebar_extra)

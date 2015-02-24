@@ -6,7 +6,7 @@
 $.extend($.fn.datepicker.defaults, {
 	parse: function(a) {
 		var b;
-		if (b = a.match(/^(\d{2,2})\/(\d{2,2})\/(\d{4,4})$/)) {
+		if (b = a.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)) {
 			return new Date(b[3], b[1] - 1, b[2])
 		} else {
 			return null
@@ -23,7 +23,7 @@ $.extend($.fn.datepicker.defaults, {
 		}
     return a.getFullYear() + "-" + b + "-" + c;
 	}
-})
+});
 
 /**
  * Toggle collapse the sidebar
@@ -34,9 +34,8 @@ $('a.toggles').click(function() {
     $('#sidebar').animate({
         width: 'toggle'
     }, 0);
-    $('#content').toggleClass('span12 span9');
-    $('#content').toggleClass('no-sidebar');
-})
+    $('#content').toggleClass('span12 span9 no-sidebar');
+});
 
 /**
  * Tooltip placement for the toggle button

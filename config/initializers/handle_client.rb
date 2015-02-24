@@ -1,5 +1,5 @@
 config_file = File.join(Rails.root, 'config', 'handle_client.yml')
-app = MedusaRails3::Application
+app = MedusaCollectionRegistry::Application
 app.medusa_host = nil
 app.handle_client = nil
 if File.exists?(config_file)

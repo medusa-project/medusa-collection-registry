@@ -15,7 +15,7 @@
   %tbody
     - Job::VirusScan.includes(:file_group).each do |virus_scan_job|
       %tr
-        %td= link_to virus_scan_job.file_group.name, polymorphic_path(virus_scan_job.file_group)
+        %td= link_to virus_scan_job.file_group.title, polymorphic_path(virus_scan_job.file_group)
         %td= link_to virus_scan_job.created_at.to_date.to_s
 
 
@@ -31,7 +31,7 @@
       - if file_group.cfs_directory.present?
         %tr
           %td= file_group.cfs_directory.relative_path
-          %td= link_to(file_group.name, polymorphic_path(file_group))
+          %td= link_to(file_group.title, polymorphic_path(file_group))
           %td= file_group.running_fits_file_count
 
 
@@ -47,7 +47,7 @@
       - if file_group.cfs_directory.present?
         %tr
           %td= file_group.cfs_directory.relative_path
-          %td= link_to(file_group.name, polymorphic_path(file_group))
+          %td= link_to(file_group.title, polymorphic_path(file_group))
           %td= file_group.running_initial_assessments_file_count
 
 %table.table.table-striped.table-bordered.table-condensed#running_ingests
@@ -57,8 +57,8 @@
       %th File Group
       %th Status
   %tbody
-    - ['copying', 'amazon_backup'].each do |state|
+    - %w(copying amazon_backup).each do |state|
       - Workflow::Ingest.where(state: state).includes(:bit_level_file_group).each do |ingest|
         %tr
-          %td= link_to ingest.most_advanced_file_group.name, ingest.most_advanced_file_group
+          %td= link_to ingest.most_advanced_file_group.title, ingest.most_advanced_file_group
           %td= ingest_state_text(state)

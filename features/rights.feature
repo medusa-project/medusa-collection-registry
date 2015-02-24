@@ -9,17 +9,17 @@ Feature: Record structured rights data for collections and file groups
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | name     | external_file_location |
+      | title     | external_file_location |
       | grainger | Grainger               |
 
   Scenario: Every collection should have rights attached
-    Then the collection titled 'Dogs' should have rights attached
+    Then the collection with title 'Dogs' should have rights attached
 
   Scenario: Every file group should have rights attached
-    Then The file group with location 'Grainger' for the collection titled 'Dogs' should have rights attached
+    Then the file group with title 'grainger' should have rights attached
 
   Scenario: A rights declaration created with the default parameters defaults to copyright
-    Then The rights declaration for the collection titled 'Dogs' should have rights basis 'copyright'
+    Then The rights declaration for the collection with title 'Dogs' should have rights basis 'copyright'
 
   Scenario: Viewing a collection I see rights declaration information
     When I view the collection with title 'Dogs'
@@ -27,7 +27,7 @@ Feature: Record structured rights data for collections and file groups
     And I should see 'copyright'
 
   Scenario: Viewing a file group I see rights declaration information
-    When I view the file group with name 'grainger'
+    When I view the file group with title 'grainger'
     Then I should see the rights declaration section
     And I should see 'copyright'
 
@@ -41,7 +41,7 @@ Feature: Record structured rights data for collections and file groups
     Then I should see the rights declaration section
 
   Scenario: Editing a file group I see a section to edit the rights declaration
-    When I edit the file group with name 'grainger'
+    When I edit the file group with title 'grainger'
     Then I should see the rights declaration section
 
   Scenario: Creating a file group I see a section to edit the rights declaration
@@ -62,9 +62,9 @@ Feature: Record structured rights data for collections and file groups
       | statute | Canada | Public domain. | Access is open and unrestricted. |
 
   Scenario: Editing and changing rights information for a file group
-    When I edit the file group with name 'grainger'
+    When I edit the file group with title 'grainger'
     And I select 'license' from 'Rights basis'
     And I click on 'Update'
-    Then I should be on the view page for the file group with name 'grainger'
+    Then I should be on the view page for the file group with title 'grainger'
     And I should see 'license'
     And I should not see 'copyright'

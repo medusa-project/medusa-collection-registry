@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
 
-  before_filter :require_logged_in
+  before_action :require_logged_in
 
   def show
     setup_full_storage_summary
@@ -21,7 +21,7 @@ class DashboardController < ApplicationController
         h[row[:type]] = {count: row[:count], size: row[:size]}
       end
     end
-    ['ExternalFileGroup', 'BitLevelFileGroup'].each do |type|
+    %w(ExternalFileGroup BitLevelFileGroup).each do |type|
       @full_storage_summary[type] ||= {count: 0, size: 0}
     end
     ingested_external_storage =
@@ -43,15 +43,15 @@ class DashboardController < ApplicationController
         h[row.repository_id][row.type] = {count: row.count, size: row.size}
       end
     end
-    ['ExternalFileGroup', 'BitLevelFileGroup'].each do |type|
-      @repository_storage_summary.each do |repository_id, summary|
+    %w(ExternalFileGroup BitLevelFileGroup).each do |type|
+      @repository_storage_summary.values.each do |summary|
         summary[type] ||= {count: 0, size: 0}
       end
     end
   end
 
   def setup_events
-    @events = Event.order('date DESC').where('updated_at >= ?', Time.now - 7.days).includes(eventable: :parent)
+    @events = Event.order('date DESC').where('updated_at >= ?', Time.now - 7.days).where(cascadable: true).includes(eventable: :parent)
     @scheduled_events = ScheduledEvent.incomplete.order('action_date ASC').includes(scheduled_eventable: :parent)
   end
 

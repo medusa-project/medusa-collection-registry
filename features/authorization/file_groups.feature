@@ -8,13 +8,13 @@ Feature: File group authorization
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | name   |
-      | images |
+      | title  | type              |
+      | images | BitLevelFileGroup |
 
   Scenario: Enforce permissions
-    Then deny object permission on the file group with name 'images' to users for action with redirection:
-      | public user | view, edit, update, events, red_flags, create_cfs_fits(post), create_virus_scan(post) | authentication |
-      | visitor     | edit, update, create_cfs_fits(post), create_virus_scan(post)                          | unauthorized   |
+    Then deny object permission on the file group with title 'images' to users for action with redirection:
+      | public user | view, edit, update, events, red_flags, create_cfs_fits(post), create_virus_scan(post), attachments, assessments | authentication |
+      | visitor     | edit, update, create_cfs_fits(post), create_virus_scan(post)                                                    | unauthorized   |
     And deny permission on the file group collection to users for action with redirection:
       | public user | new, create | authentication |
 

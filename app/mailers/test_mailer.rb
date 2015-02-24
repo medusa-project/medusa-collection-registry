@@ -1,5 +1,4 @@
-class TestMailer < ActionMailer::Base
-  default from: "noreply@#{self.smtp_settings['domain'].if_blank('illinois.edu')}"
+class TestMailer < MedusaBaseMailer
 
   def test(address)
     mail(to: address, subject: 'test email subject')

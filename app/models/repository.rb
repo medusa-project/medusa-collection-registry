@@ -1,15 +1,16 @@
-require 'email_person_associator'
 class Repository < ActiveRecord::Base
   include ActiveDateChecker
   include RedFlagAggregator
   include Breadcrumb
+  include CascadedEventable
+  include EmailPersonAssociator
 
   email_person_association(:contact)
   belongs_to :institution, touch: true
   has_many :collections, dependent: :destroy
   has_many :assessments, as: :assessable, dependent: :destroy
 
-  LDAP_DOMAINS = ['uofi', 'uiuc']
+  LDAP_DOMAINS = %w(uofi uiuc)
 
   validates_uniqueness_of :title
   validates_presence_of :title
@@ -25,6 +26,7 @@ class Repository < ActiveRecord::Base
 
   aggregates_red_flags collections: :collections, label_method: :title
   breadcrumbs parent: nil
+  cascades_events parent: nil
 
   def total_size
     self.collections.collect { |c| c.total_size }.sum
@@ -41,10 +43,6 @@ class Repository < ActiveRecord::Base
 
   def label
     self.title
-  end
-
-  def all_events
-    self.collections.collect { |collection| collection.all_events }.flatten
   end
 
   def all_scheduled_events

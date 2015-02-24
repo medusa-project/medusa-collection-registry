@@ -9,12 +9,12 @@
   %tbody
     - @package_profiles.each do |package_profile|
       %tr
-        %td= link_to(package_profile.name, for_package_profile_collections_path(package_profile_id: package_profile.id))
+        %td= link_to(package_profile.name, collections_package_profile_path(package_profile))
         %td= link_to(package_profile.url, package_profile.url)
         %td
-          = link_to 'View', package_profile, class: 'btn btn-default btn-xs'
-          = link_to 'Edit', edit_package_profile_path(package_profile), class: 'btn btn-default btn-xs'
-          = link_to 'Delete', package_profile, method: :delete, data: {confirm: generic_confirm_message}, class: 'btn btn-xs btn-danger'
+          .btn-group
+            = small_view_button(package_profile)
+            = small_edit_button(package_profile)
 
 %br
 

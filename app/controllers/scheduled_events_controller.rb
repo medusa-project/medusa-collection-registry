@@ -1,7 +1,7 @@
 class ScheduledEventsController < ApplicationController
 
-  before_filter :require_logged_in
-  before_filter :find_scheduled_event, only: [:cancel, :complete, :edit, :update, :destroy]
+  before_action :require_logged_in
+  before_action :find_scheduled_event, only: [:cancel, :complete, :edit, :update, :destroy]
 
   def create
     authorize! :create, ScheduledEvent

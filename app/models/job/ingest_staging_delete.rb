@@ -11,7 +11,7 @@ class Job::IngestStagingDelete < Job::Base
     unless path.match(/#{external_file_group.collection_id}\/#{external_file_group.id}$/)
       raise RuntimeError, 'Can''t schedule delete for staging ingest - path is invalid.'
     end
-    job = self.create(external_file_group_id: external_file_group.id, path: path, user_id: user.id)
+    job = self.create!(external_file_group_id: external_file_group.id, path: path, user_id: user.id)
     options = {priority: 10}
     options[:run_at] = Time.now + (Rails.env.production? ? 30.days : 2.seconds)
     Delayed::Job.enqueue(job, options)
@@ -21,7 +21,7 @@ class Job::IngestStagingDelete < Job::Base
     if File.directory?(self.path)
       FileUtils.rm_rf(self.path)
     end
-    Workflow::IngestMailer.staging_delete_done(self.user, self.external_file_group).deliver
+    Workflow::IngestMailer.staging_delete_done(self.user, self.external_file_group).deliver_now
   end
 
 end

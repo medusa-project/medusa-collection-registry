@@ -1,0 +1,4 @@
+= render layout: 'layout_single' do
+  %h2 Collections
+  - cache(@collections) do
+    = render 'collections/index_table'

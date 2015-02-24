@@ -1,7 +1,7 @@
-= render layout: 'layouts/edit_page_header' do
-  Edit File Group
+= render layout: 'layout_single' do
+  = render layout: 'layouts/edit_page_header' do
+    Edit File Group
 
-= render 'collection_title'
-= render 'form'
+  = render 'form'
 
-= render 'shared/set_active_tabs'
+  = render 'shared/set_active_tabs'

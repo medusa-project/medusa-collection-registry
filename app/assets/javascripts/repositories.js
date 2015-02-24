@@ -1,1 +1,1 @@
-initialize_data_table("table#repositories")
+initialize_data_table("table#repositories", {});

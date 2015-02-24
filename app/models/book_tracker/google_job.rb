@@ -6,7 +6,7 @@ module BookTracker
   #
   class GoogleJob < Struct.new(:a)
 
-    QUEUE_NAME = 'book_tracker:google' # DelayedJob queue name
+    QUEUE_NAME = 'book_tracker' # DelayedJob queue name
 
     ##
     # For delayed_job

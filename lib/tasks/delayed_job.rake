@@ -1,4 +1,4 @@
-DJ_QUEUES = {default: 3, glacier: 1}
+DJ_QUEUES = {default: 2, glacier: 1, initial_assessment: 1, book_tracker: 1}
 
 namespace :medusa do
   namespace :delayed_job do

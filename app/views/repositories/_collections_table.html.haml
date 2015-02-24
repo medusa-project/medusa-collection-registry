@@ -1,7 +1,7 @@
 %h2
   Collections
   %span.pull-right
-    = link_to 'Add Collection', new_collection_path(repository_id: @repository.id), class: 'btn btn-primary btn-xs'
+    = small_add_button(new_collection_path(repository_id: @repository.id), title: 'Add Collection')
     = link_to collections_repository_path(@repository, format: 'csv'), class: 'btn btn-default btn-xs' do
       %span.glyphicon.glyphicon-export
       Export as CSV
@@ -26,5 +26,4 @@
             %td #{collection.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
             %td #{collection.preservation_priority_name}
             %td
-              = link_to 'Edit', edit_collection_path(collection), class: 'btn btn-default btn-xs'
-              = link_to 'Delete', collection, method: :delete, data: { confirm: collection_confirm_message}, class: 'btn btn-xs btn-danger'
+              = small_edit_button(collection)

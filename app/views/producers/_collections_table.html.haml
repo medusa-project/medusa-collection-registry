@@ -22,4 +22,4 @@
           %td #{collection.total_size}
           %td #{collection.preservation_priority_name}
           %td
-            = link_to 'Edit', edit_collection_path(collection), class: 'btn btn-default btn-xs'
+            = small_edit_button(collection)

@@ -10,12 +10,8 @@
   }
 }
 
-.mbt-view-buttons {
-  margin:1em auto;
-}
-
 div.well {
-  padding-bottom: 0px;
+  padding-bottom: 0;
 }
 
 .book-tracker-checks {
@@ -25,10 +21,14 @@ div.well {
   }
 }
 
+#book-tracker-ingest-panel {
+  overflow-x: scroll;
+}
+
 form.book-tracker-search {
   table {
     td, th {
-      border: 0px;
+      border: 0;
     }
     td {
       text-align:center;
@@ -43,7 +43,7 @@ form.book-tracker-search {
     }
   }
   textarea {
-    margin:0em 0em 1em 0em;
+    margin:0 0 1em 0;
   }
   button.mbt-clear, input[type=submit] {
     margin-bottom:1em;

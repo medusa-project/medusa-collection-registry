@@ -11,10 +11,10 @@ Feature: Repositories authorization
   Scenario: Enforce permissions
     Then deny object permission on the repository with title 'Sample 1' to users for action with redirection:
       | public user | view, edit, update, red_flags, events | authentication |
-#      | visitor     | edit, update, delete                  | unauthorized   |
-#      | manager     | delete                                | unauthorized   |
-#    And deny permission on the repository collection to users for action with redirection:
-#      | public user      | view_index, new, create | authentication |
-#      | visitor, manager | new, create             | unauthorized   |
+      | visitor     | edit, update, delete                  | unauthorized   |
+      | manager     | delete                                | unauthorized   |
+    And deny permission on the repository collection to users for action with redirection:
+      | public user      | view_index, new, create | authentication |
+      | visitor, manager | new, create             | unauthorized   |
 
 

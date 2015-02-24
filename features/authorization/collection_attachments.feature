@@ -7,7 +7,8 @@ Feature: Attachment authorization
     Given I am logged in as an admin
     And the collection with title 'Dogs' exists
     And I view the collection with title 'Dogs'
-    And I click on 'Add Attachment'
+    And I click on 'Attachments'
+    And I click on 'Add'
     And I fill in fields:
       | Description | grass |
     And I attach fixture file 'grass.jpg' to 'Attachment'
@@ -21,14 +22,14 @@ Feature: Attachment authorization
       | manager     | delete                               | unauthorized   |
 
   Scenario: Public user tries to start attachment
-    Then a public user is unauthorized to start an attachment for the collection titled 'Dogs'
+    Then a public user is unauthorized to start an attachment for the collection with title 'Dogs'
 
   Scenario: Public user tries to create attachment
-    Then a public user is unauthorized to create an attachment for the collection titled 'Dogs'
+    Then a public user is unauthorized to create an attachment for the collection with title 'Dogs'
 
   Scenario: Visitor tries to start attachment
-    Then a visitor is unauthorized to start an attachment for the collection titled 'Dogs'
+    Then a visitor is unauthorized to start an attachment for the collection with title 'Dogs'
 
   Scenario: Visitor tries to create attachment
-    Then a visitor is unauthorized to start an attachment for the collection titled 'Dogs'
+    Then a visitor is unauthorized to start an attachment for the collection with title 'Dogs'
 

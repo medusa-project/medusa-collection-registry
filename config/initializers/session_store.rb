@@ -1,8 +1,6 @@
 # Be sure to restart your server when you modify this file.
 
-#MedusaRails3::Application.config.session_store :cookie_store, key: '_medusa-rails3_session'
-
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information
 # (create the session table with "rails generate session_migration")
-MedusaRails3::Application.config.session_store ActionDispatch::Session::CacheStore, expire_after: 1.hour
+MedusaCollectionRegistry::Application.config.session_store ActionDispatch::Session::CacheStore, expire_after: 1.hour

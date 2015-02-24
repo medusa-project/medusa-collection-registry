@@ -28,11 +28,11 @@ Feature: Collection Registry Dashboard
       | Dogs  |
       | Cats  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | name   | total_files | total_file_size | type              |
+      | title   | total_files | total_file_size | type              |
       | Hounds | 1000        | 10              | ExternalFileGroup |
       | Toys   | 2000        | 20              | ExternalFileGroup |
     And the collection with title 'Cats' has child file groups with fields:
-      | name     | total_files | total_file_size | type              |
+      | title     | total_files | total_file_size | type              |
       | Wild     | 10000       | 100             | ExternalFileGroup |
       | Domestic | 20000       | 200             | ExternalFileGroup |
       | Musical  | 40000       | 400             | BitLevelFileGroup |
@@ -40,7 +40,7 @@ Feature: Collection Registry Dashboard
       | title   |
       | Laptops |
     And the collection with title 'Laptops' has child file groups with fields:
-      | name  | total_files | total_file_size | type              |
+      | title  | total_files | total_file_size | type              |
       | Dells | 500         | 50              | ExternalFileGroup |
     When I go to the dashboard
     Then I should see all of:

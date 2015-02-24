@@ -1,43 +1,14 @@
-initialize_data_table("table#assessments");
-initialize_data_table("table#attachments");
-$(function () {
-  $("table#file_groups").dataTable({
-    "aaSorting": [
-      [0, "desc"]
-    ],
-    "aLengthMenu": [
-      [10, 25, 50, 100, -1],
-      [10, 25, 50, 100, "All"]
-    ],
-    "language": {
-      "search": "Narrow: "
-    }
-  })
+initialize_data_table("table#assessments", {});
+initialize_data_table("table#attachments", {});
+initialize_data_table("table#file_groups", {
+  "aaSorting": [
+    [0, "desc"]
+  ]
 });
-$(function () {
-  var table = $('table#collections').dataTable({
-    "aaSorting": [
-      [3, "asc"]
-    ],
-    "iDisplayLength": 25,
-    "aLengthMenu": [
-      [10, 25, 50, 100, -1],
-      [10, 25, 50, 100, "All"]
-    ],
-    "bStateSave": "true",
-    "fnStateSave": function (oSettings, oData) {
-      localStorage.setItem('DataTables_' + window.location.pathname, JSON.stringify(oData));
-    },
-    "fnStateLoad": function (oSettings) {
-      return JSON.parse(localStorage.getItem('DataTables_' + window.location.pathname));
-    },
-    "language": {
-      "search": "Narrow: "
-    }
-  });
-  if (table) {
-    //table.fnSetColumnVis(1, true);
-  }
+initialize_data_table("table#collections", {
+  "aaSorting": [
+    [3, "asc"]
+  ]
 });
 
 function toggle_uuid() {

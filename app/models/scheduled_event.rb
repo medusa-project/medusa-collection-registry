@@ -1,7 +1,7 @@
 class ScheduledEvent < ActiveRecord::Base
   belongs_to :scheduled_eventable, polymorphic: true, touch: true
 
-  STATES = ['scheduled', 'completed', 'cancelled']
+  STATES = %w(scheduled completed cancelled)
 
   validates_inclusion_of :key, in: lambda { |event| event.scheduled_eventable.supported_scheduled_event_keys }
   validates :actor_email, email: true
@@ -31,7 +31,7 @@ class ScheduledEvent < ActiveRecord::Base
 
   def perform_scheduled
     #mail reminder
-    ScheduledEventMailer.reminder(self).deliver
+    ScheduledEventMailer.reminder(self).deliver_now
     #reschedule self - avoid endless loop in test system
     unless Rails.env.test?
       Delayed::Job.enqueue(self, run_at: Date.today + 7.days)

@@ -1,9 +1,10 @@
 class EventsController < ApplicationController
 
-  autocomplete :user, :email
-  before_filter :require_logged_in
-  before_filter :find_event, only: [:destroy, :edit, :update]
+  before_action :require_logged_in
+  before_action :find_event, only: [:destroy, :edit, :update]
   helper_method :eventable_events_path
+
+  autocomplete :user, :email
 
   def index
     @events = Event.order('updated_at desc').page(params[:page]).per_page(params[:per_page] || 25)

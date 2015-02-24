@@ -1,6 +1,6 @@
 class InstitutionsController < ApplicationController
-  before_filter :require_logged_in
-  before_filter :find_institution, only: [:show, :edit, :update, :destroy]
+  before_action :require_logged_in
+  before_action :find_institution, only: [:show, :edit, :update, :destroy]
 
   def index
     authorize! :read, Institution

@@ -3,40 +3,36 @@
   File Statistics (as of #{now})
 .row
   .col-sm-6
-    %table.table.table-striped.table-bordered.table-condensed#file_stats_bits
+    %table.table.table-striped.table-bordered.table-condensed#file_stats_content_type
       %thead
-        %tr
-          %th{colspan: 3}
-            Bits
         %tr
           %th File Format
           %th Number of Files
           %th Size
-      - cache(cache_key_for_all(FileGroup)) do
+      - cache(cache_key_for_all(ContentType)) do
         %tbody
           - ContentType.order(:name).each do |content_type|
-            %tr
-              %td= content_type.name
-              %td= content_type.cfs_file_count.to_formatted_s(:delimited)
-              %td{'data-order' => content_type.cfs_file_size}= content_type.cfs_file_size.to_formatted_s(:human_size, precision: 3)
+            = cache(content_type) do
+              %tr
+                %td= link_to content_type.name, cfs_files_content_type_path(content_type)
+                %td= content_type.cfs_file_count.to_formatted_s(:delimited)
+                %td{'data-order' => content_type.cfs_file_size}= content_type.cfs_file_size.to_formatted_s(:human_size, precision: 3)
 
   .col-sm-6
-    %table.table.table-striped.table-bordered.table-condensed#file_stats_objects
+    %table.table.table-striped.table-bordered.table-condensed#file_stats_file_extension
       %thead
         %tr
-          %th{colspan: 3}
-            Objects
-        %tr
-          %th File Format
+          %th File Extension
           %th Number of Files
           %th Size
-      %tbody
-        - list_of_object_file_formats.each do |content_type|
-          %tr
-            %td= content_type
-            %td= file_count_objects_type_format(content_type).to_formatted_s(:delimited)
-            -# This will need a data-order attribute when we implement it
-            %td= size_objects_type_format(content_type).to_formatted_s(:delimited)
+      - cache(cache_key_for_all(FileExtension)) do
+        %tbody
+          - FileExtension.order(:extension).each do |extension|
+            = cache(extension) do
+              %tr
+                %td= link_to extension.extension, cfs_files_file_extension_path(extension)
+                %td= extension.cfs_file_count.to_formatted_s(:delimited)
+                %td{'data-order' => extension.cfs_file_size}= extension.cfs_file_size.to_formatted_s(:human_size, precision: 3)
 
 .row
   .col-sm-12

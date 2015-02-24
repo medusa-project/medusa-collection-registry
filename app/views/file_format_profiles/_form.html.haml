@@ -1,0 +1,15 @@
+= simple_form_for @file_format_profile, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
+  .row
+    = render partial: 'shared/form_sidebar', locals: {f: f, object: @file_format_profile, cancel_return: (file_format_profiles_path if @file_format_profile.new_record?)}
+
+    .col-sm-9
+      = f.input :name
+      = f.input :software
+      = f.input :software_version
+      = f.input :os_environment, label: 'OS environment'
+      = f.input :os_version, label: 'OS version'
+      = f.input :notes
+      = render layout: 'layout_modal_edit', locals: {id: 'edit_content_type_list', title: 'Select Content Types'} do
+        = f.association :content_types, as: :check_boxes, label_method: :name, label: ''
+      = render layout: 'layout_modal_edit', locals: {id: 'edit_file_extension_list', title: 'Select File Extensions'} do
+        = f.association :file_extensions, as: :check_boxes, label_method: :extension_label, label: ''

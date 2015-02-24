@@ -1,7 +1,7 @@
 class ProducersController < ApplicationController
 
-  before_filter :require_logged_in
-  before_filter :find_producer, only: [:show, :destroy, :edit, :update]
+  before_action :require_logged_in
+  before_action :find_producer, only: [:show, :destroy, :edit, :update]
 
   def index
     @producers = Producer.all
@@ -42,7 +42,7 @@ class ProducersController < ApplicationController
   def update
     authorize! :update, Producer
     if @producer.update_attributes(allowed_params)
-      redirect_to producer_path(@producer)
+      redirect_to @producer
     else
       render 'edit'
     end

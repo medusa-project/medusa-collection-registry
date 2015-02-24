@@ -13,21 +13,18 @@ Feature: Repository Assessment Management
 
   Scenario: View assessments of a repository
     When I view the repository with title 'Animals'
+    And I click on 'Assessments'
     Then I should see an assessment table
-
-  Scenario: Delete assessment from a repository
-    When I view the repository with title 'Animals'
-    And I click on 'Delete' in the assessments table
-    Then I should be on the view page for the repository with title 'Animals'
-    And the repository with title 'Animals' should have 0 assessments
 
   Scenario: Navigate to an assessment
     When I view the repository with title 'Animals'
+    And I click on 'Assessments'
     And I click on 'Evaluation'
     Then I should be on the view page for the assessment with name 'Evaluation'
 
   Scenario: Create a new assessment
     When I view the repository with title 'Animals'
+    And I click on 'Assessments'
     And I click on 'Add Assessment'
     Then I should be on the new assessment page
 

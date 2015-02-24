@@ -6,7 +6,7 @@ module BookTracker
   #
   class HathitrustJob < Struct.new(:a)
 
-    QUEUE_NAME = 'book_tracker:hathitrust'
+    QUEUE_NAME = 'book_tracker'
 
     ##
     # For delayed_job

@@ -1,17 +1,6 @@
-%div #{link_to @collection.repository.title, @collection.repository} > #{@collection.title}
-%br
-- cache(@collection) do
-  %h1.text-center= @collection.title
-  .tabbable
-    .btn-group.pull-right
-      - if @collection.public?
-        = link_to 'Public View', public_collection_path(@collection), class: 'btn btn-default'
-      = link_to 'Red Flags', red_flags_collection_path(@collection), class: 'btn btn-default'
-      = link_to 'View events', events_collection_path(@collection), class: 'btn btn-default'
-      = link_to 'Mods', collection_path(@collection, format: :xml), class: 'btn btn-default'
-      = link_to 'Edit', edit_collection_path(@collection), class: 'btn btn-default'
-      = link_to 'Delete Collection', collection_path(@collection), method: 'delete', data: { confirm: collection_confirm_message}, class: 'btn btn-danger'
+= render layout: 'layout_single' do
+  - cache(@collection) do
+    %h1.text-center= @collection.title
     - if logged_in?
-      = render 'show_tabs_logged_in'
-    - else
-      = render 'show_tabs_not_logged_in'
+      = render 'file_groups_table'
+    = render 'show_about'
