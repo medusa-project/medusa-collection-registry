@@ -166,7 +166,7 @@ class CfsFilesController < ApplicationController
   def fix_json_id(json, file)
     Rails.logger.error "ORIGINAL JSON: #{json}"
     parsed_json = JSON.parse(json)
-    parsed_json['@id'] = iiif_base_url(file)
+    parsed_json['@id'] = "https://medusatest.library.illinois.edu/cfs_file/#{file.id}/preview_iiif_image"
     Rails.logger.error "FIXED JSON: #{parsed_json.to_s}"
     parsed_json.to_s
   end
