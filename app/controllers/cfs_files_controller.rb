@@ -163,10 +163,13 @@ class CfsFilesController < ApplicationController
     send_data fix_json_id(json, @file), type: response_type, disposition: 'inline'
   end
 
+  #The IIIF server returns @id in the JSON with _it's_ url information, but for seadragon to proxy properly
+  #we need it to refer back to our medusa URL. This fixes that.
   def fix_json_id(json, file)
     Rails.logger.error "ORIGINAL JSON: #{json}"
     parsed_json = JSON.parse(json)
-    parsed_json['@id'] = "https://medusatest.library.illinois.edu/cfs_files/#{file.id}/preview_iiif_image"
+    #parsed_json['@id'] = "https://medusatest.library.illinois.edu/cfs_files/#{file.id}/preview_iiif_image"
+    parsed_json['@id'] = "/cfs_files/#{file.id}/preview_iiif_image"
     Rails.logger.error "FIXED JSON: #{parsed_json.to_json}"
     parsed_json.to_json
   end
