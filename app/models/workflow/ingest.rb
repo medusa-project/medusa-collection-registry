@@ -60,12 +60,14 @@ class Workflow::Ingest < Job::Base
 
   def perform_amazon_backup
     self.transaction do
-      self.amazon_backup = AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: self.bit_level_file_group.cfs_directory.id,
-                                               date: Date.today)
-      self.save!
-      Job::AmazonBackup.create_for(self.amazon_backup)
-      #stay in amazon backup state - AmazonBackup will take care of next transition when the glacier server sends the
-      #return message
+      unless AmazonBackup.find_by(user_id: self.user.id, cfs_directory_id: self.bit_level_file_group.cfs_directory.id, date: Date.today)
+        self.amazon_backup = AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: self.bit_level_file_group.cfs_directory.id,
+                                                  date: Date.today)
+        self.save!
+        Job::AmazonBackup.create_for(self.amazon_backup)
+        #stay in amazon backup state - AmazonBackup will take care of next transition when the glacier server sends the
+        #return message
+      end
     end
   end
 
