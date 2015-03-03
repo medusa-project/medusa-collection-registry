@@ -1,23 +1,26 @@
-.event-actions
-  %strong Events:
-  = small_view_button(events_file_group_path(file_group))
-  = small_add_button("#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal')
-  = link_to 'Schedule', "#add-scheduled-event-file-group-#{file_group.id}", 'data-toggle' => 'modal', role: 'button'
-
-.assessment-actions
-  %strong Assessments:
-  = small_view_button(file_group)
-  = small_add_button(new_assessment_path(assessable_id: file_group.id, assessable_type: file_group.class.name))
-.related-file-group-actions
-  %strong Related File groups:
-  = small_add_button(edit_polymorphic_path(file_group, active_tab: '#related-file-groups'))
-- if file_group.is_a?(BitLevelFileGroup)
-  .fits-actions
-    %strong FITS
-    = small_run_button(create_cfs_fits_bit_level_file_group_path(file_group), remote: 'true')
-  .virus-scan-actions
-    %strong Virus Scan
-    - if file_group.virus_scans.present?
-      = small_view_button(virus_scan_path(file_group.virus_scans.order('created_at desc').first))
-      |
-    = small_run_button(create_virus_scan_bit_level_file_group_path(file_group, format: 'js'), remote: 'true')
+%td.dropdown
+  %a.btn.btn-default.btn-small.dropdown-toggle{type: 'button', 'data-toggle' => 'dropdown', 'aria-expanded' => false, href: '#'}
+    Actions
+    %span.caret
+  %ul.dropdown-menu{role: 'menu'}
+    %li.dropdown-header.event-actions{role: 'presentation'} Events
+    %li{role: 'presentation'}= link_to 'View', events_file_group_path(file_group)
+    %li{role: 'presentation'}= link_to 'Add', "#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal'
+    %li{role: 'presentation'}= link_to 'Schedule', "#add-scheduled-event-file-group-#{file_group.id}", 'data-toggle' => 'modal'
+    %li.divider
+    %li.dropdown-header.assessment-actions{role: 'presentation'} Assessments
+    %li{role: 'presentation'}= link_to 'View', file_group
+    %li{role: 'presentation'}= link_to 'Add', new_assessment_path(assessable_id: file_group.id, assessable_type: file_group.class.name)
+    %li.divider
+    %li.dropdown-header.related-file-group-actions{role: 'presentation'} Related File Groups
+    %li{role: 'presentation'}= link_to 'Add', edit_polymorphic_path(file_group, active_tab: '#related-file-groups')
+    %li.divider
+    - if file_group.is_a?(BitLevelFileGroup)
+      %li.dropdown-header.fits-actions{role: 'presentation'} FITS
+      %li{role: 'presentation'}= link_to 'Run', create_cfs_fits_bit_level_file_group_path(file_group), remote: 'true'
+      %li.divider
+      %li.dropdown-header.virus-scan-actions{role: 'presentation'} Virus Scan
+      - if file_group.virus_scans.present?
+        %li{role: 'presentation'}= link_to 'View', virus_scan_path(file_group.virus_scans.order('created_at desc').first)
+        |
+      %li{role: 'presentation'}= link_to 'Run', create_virus_scan_bit_level_file_group_path(file_group, format: 'js'), remote: 'true'

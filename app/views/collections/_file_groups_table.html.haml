@@ -16,7 +16,7 @@
         %th Total files
         %th Total file size (GB)
         %th Related File Groups
-        %th Actions
+        %th
     %tbody
       - @collection.file_groups.order('created_at').each do |file_group|
         - cache([file_group, file_group.producer, file_group.package_profile]) do
@@ -40,9 +40,8 @@
                 %div
                   Ingested to: #{'File group'.pluralize(file_group.target_file_groups.count)}
                   #{file_group.target_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}
-            %td
-              - cache(['file_group_actions', file_group]) do
-                = render 'file_group_actions', file_group: file_group
+            - cache(['file_group_actions', file_group]) do
+              = render 'file_group_actions', file_group: file_group
 
 -# TODO Consider rendering one of each of these forms and adapting to the appropriate file group
 -# rather than rendering a form for each one, hidden though they may be.
