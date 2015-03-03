@@ -1,10 +1,17 @@
 .row
+  %div= breadcrumbs(@file_group)
+
+.row.vertical-align
   .col-xs-5
-    %div= breadcrumbs(@file_group)
+    = render layout: 'layouts/page_header' do
+      - if content_for?(:title)
+        = yield(:title)
+      - else
+        File Group:
+      %small #{@file_group.title}
   .col-xs-7
     = render 'actions'
 
-%br
 = yield
 
 = render partial: 'events/modal_form', locals: {eventable: @file_group, remote: false, dialog_id: :addEventModal}
