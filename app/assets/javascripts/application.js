@@ -20,8 +20,5 @@
 //= require data_tables_common
 //= require local_time
 //= require common
-//= require mootools
-//= require mootools_ujs
-//= require mootools-more
 //= require ckeditor/init
 //= require_tree .

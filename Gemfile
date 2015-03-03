@@ -57,8 +57,6 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'rails3-jquery-autocomplete'
 
-gem 'mootools-rails'
-
 gem 'nokogiri'
 
 gem 'omniauth'
