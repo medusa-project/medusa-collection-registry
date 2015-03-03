@@ -1,8 +1,8 @@
 %td.dropdown
-  %a.btn.btn-default.btn-small.dropdown-toggle{type: 'button', 'data-toggle' => 'dropdown', 'aria-expanded' => false, href: '#'}
+  %a.btn.btn-default.btn-xs.dropdown-toggle{type: 'button', 'data-toggle' => 'dropdown', 'aria-expanded' => false, href: '#'}
     Actions
     %span.caret
-  %ul.dropdown-menu{role: 'menu'}
+  %ul.dropdown-menu.dropdown-menu-right{role: 'menu'}
     %li.dropdown-header{role: 'presentation'} Events
     %li.event-action{role: 'presentation'}= link_to 'View', events_file_group_path(file_group)
     %li.event-action{role: 'presentation'}= link_to 'Add', "#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal'
