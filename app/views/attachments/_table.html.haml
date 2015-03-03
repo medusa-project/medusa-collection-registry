@@ -1,26 +1,28 @@
 - cache(@attachable) do
-  %h2 Administrative Attachments
 
-  = small_add_button(new_attachment_path(attachable_id: @attachable.id, attachable_type: @attachable.class.name), title: 'Add Attachment')
+  .row
+    .pull-left
+      = small_add_button(new_attachment_path(attachable_id: @attachable.id, attachable_type: @attachable.class.name), class: 'btn btn-primary btn-xs pull-right', title: 'Add Attachment')
 
-  - if @attachable.attachments.includes(:author).present?
-    %table#attachments.table.table-striped
-      %thead
-        %tr
-          %th Filename
-          %th Description
-          %th Content Type
-          %th Author
-          %th
-      %tbody
-        - @attachable.attachments.each do |attachment|
-          - cache(attachment, attachment.author) do
-            %tr
-              %td #{link_to attachment.attachment_file_name, attachment}
-              %td #{attachment.description}
-              %td #{attachment.attachment_content_type}
-              %td #{attachment.author_email}
-              %td
-                = small_download_button(download_attachment_path(attachment))
-                = small_edit_button(attachment)
-                = small_delete_button(attachment)
+  .row
+    - if @attachable.attachments.includes(:author).present?
+      %table#attachments.table.table-striped
+        %thead
+          %tr
+            %th Filename
+            %th Description
+            %th Content Type
+            %th Author
+            %th
+        %tbody
+          - @attachable.attachments.each do |attachment|
+            - cache(attachment, attachment.author) do
+              %tr
+                %td #{link_to attachment.attachment_file_name, attachment}
+                %td #{attachment.description}
+                %td #{attachment.attachment_content_type}
+                %td #{attachment.author_email}
+                %td
+                  = small_download_button(download_attachment_path(attachment))
+                  = small_edit_button(attachment)
+                  = small_delete_button(attachment)

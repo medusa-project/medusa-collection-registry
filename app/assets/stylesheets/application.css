@@ -55,3 +55,8 @@ label.checkbox {
 #edit_file_extension_list .modal-dialog {
     min-width: 80%;
 }
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}

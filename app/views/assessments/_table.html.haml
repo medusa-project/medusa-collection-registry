@@ -1,26 +1,27 @@
-%h2
-  Assessments
-  = small_add_button(new_assessment_path(assessable_id: @assessable.id, assessable_type: @assessable.class.name), class: 'btn btn-primary btn-xs pull-right', title: 'Add Assessment')
+.row
+  .pull-left
+    = small_add_button(new_assessment_path(assessable_id: @assessable.id, assessable_type: @assessable.class.name), class: 'btn btn-primary btn-xs pull-right', title: 'Add Assessment')
 
-- if @assessments.present?
-  %table#assessments.table.table-striped
-    %thead
-      %tr
-        %th Name
-        %th For
-        %th Type
-        %th Date
-        %th Author
-        %th
-    %tbody
-      - @assessments.each do |assessment|
-        - cache([assessment, assessment.assessable]) do
-          %tr
-            %td #{link_to assessment.name, assessment}
-            %td #{link_to assessment.assessable.label, assessment.assessable}
-            %td #{assessment.assessable.class.to_s.underscore.humanize}
-            %td #{assessment.date}
-            %td #{assessment.author_email}
-            %td
-              = small_view_button(assessment)
-              = small_edit_button(assessment)
+.row
+  - if @assessments.present?
+    %table#assessments.table.table-striped
+      %thead
+        %tr
+          %th Name
+          %th For
+          %th Type
+          %th Date
+          %th Author
+          %th
+      %tbody
+        - @assessments.each do |assessment|
+          - cache([assessment, assessment.assessable]) do
+            %tr
+              %td #{link_to assessment.name, assessment}
+              %td #{link_to assessment.assessable.label, assessment.assessable}
+              %td #{assessment.assessable.class.to_s.underscore.humanize}
+              %td #{assessment.date}
+              %td #{assessment.author_email}
+              %td
+                = small_view_button(assessment)
+                = small_edit_button(assessment)

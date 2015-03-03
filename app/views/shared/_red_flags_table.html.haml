@@ -1,5 +1,4 @@
-%h3 Red Flags
-%div
+.row
   Filter:
   = link_to 'All', '#', onclick: 'red_flag_filter.all(); return false;'
   |
@@ -11,28 +10,29 @@
   = link_to 'Most Recent', '#', onclick: 'red_flag_sorter.recent(); return false;'
   |
   = link_to 'Most Important', '#', onclick: 'red_flag_sorter.priority(); return false;'
-%table#red-flags-table.table.table-striped.table-condensed
-  %thead
-    %tr
-      %th Type
-      %th Label
-      %th Priority
-      %th Status
-      %th Time
-      %th Message
-      %th Actions
-  %tbody
-    - @red_flags.each do |red_flag|
-      %tr{id: "red-flag-#{red_flag.id}"}
-        %td= red_flag.red_flaggable.class.cfs_type
-        %td= red_flag.red_flaggable.cfs_label
-        %td= red_flag.priority
-        %td.status= red_flag.status
-        %td= red_flag.created_at
-        %td= red_flag.message
-        %td
-          = small_view_button(red_flag)
-          = small_edit_button(red_flag)
-          - if red_flag.flagged?
-            %span.unflag-link
-              = link_to('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true, class: 'btn btn-default btn-xs')
+.row
+  %table#red-flags-table.table.table-striped.table-condensed
+    %thead
+      %tr
+        %th Type
+        %th Label
+        %th Priority
+        %th Status
+        %th Time
+        %th Message
+        %th Actions
+    %tbody
+      - @red_flags.each do |red_flag|
+        %tr{id: "red-flag-#{red_flag.id}"}
+          %td= red_flag.red_flaggable.class.cfs_type
+          %td= red_flag.red_flaggable.cfs_label
+          %td= red_flag.priority
+          %td.status= red_flag.status
+          %td= red_flag.created_at
+          %td= red_flag.message
+          %td
+            = small_view_button(red_flag)
+            = small_edit_button(red_flag)
+            - if red_flag.flagged?
+              %span.unflag-link
+                = link_to('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true, class: 'btn btn-default btn-xs')

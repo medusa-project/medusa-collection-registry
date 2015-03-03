@@ -1,6 +1,7 @@
 = render layout: 'layout_single' do
   - cache(@collection) do
-    %h1.text-center= @collection.title
     - if logged_in?
-      = render 'file_groups_table'
-    = render 'show_about'
+      .row
+        = render 'file_groups_table'
+    .row
+      = render 'show_about'
