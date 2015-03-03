@@ -83,9 +83,9 @@ Feature: File Group description
     And I click on 'Edit'
     Then I should be on the edit page for the file group with title 'images'
 
-  Scenario: Delete file group from view page
+  Scenario: Delete file group from edit page
     Given I am logged in as an admin
-    When I view the file group with title 'images'
+    When I edit the file group with title 'images'
     And I click on 'Delete'
     Then I should be on the view page for the collection with title 'Dogs'
     And the collection with title 'Dogs' should have 0 file groups with title 'images'

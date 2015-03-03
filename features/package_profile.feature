@@ -89,9 +89,9 @@ Feature: Package Profiles
     And I click on 'Index'
     Then I should be on the package profile index page
 
-  Scenario: Delete package profile from show
+  Scenario: Delete package profile from edit view
     Given I am logged in as an admin
-    When I view the package profile with name 'book'
+    When I edit the package profile with name 'book'
     And I click on 'Delete'
     Then I should be on the package profile index page
     And I should see 'image'

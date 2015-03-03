@@ -95,9 +95,9 @@ Feature: Repository description
     When I edit the repository with title 'Sample 1'
     Then I should see the repository definition
 
-  Scenario: Delete repository from view page
+  Scenario: Delete repository from edit page
     Given I am logged in as an admin
-    When I view the repository with title 'Sample 1'
+    When I edit the repository with title 'Sample 1'
     And I click on 'Delete'
     Then I should not see 'Sample 1'
 

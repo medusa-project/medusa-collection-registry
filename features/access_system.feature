@@ -44,8 +44,8 @@ Feature: Access Systems
     Then I should be on the update page for the access system with name 'ContentDM'
     And I should see 'can't be blank'
 
-  Scenario: Delete access system from view page
-    When I view the access system with name 'ContentDM'
+  Scenario: Delete access system from edit page
+    When I edit the access system with name 'ContentDM'
     And I click on 'Delete'
     Then I should be on the access system index page
     And I should not see 'ContentDM'

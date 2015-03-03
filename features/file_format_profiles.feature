@@ -63,8 +63,8 @@ Feature: File Format Profiles
     And I should see all of:
       | pictures | Picturemart | 4.5 | Windows | XP2000 | Picture changing |
 
-  Scenario: Delete file format profile from show view
-    When I view the file format profile with name 'images'
+  Scenario: Delete file format profile from edit view
+    When I edit the file format profile with name 'images'
     And I click on 'Delete'
     Then I should be on the file format profiles index page
     And there should be no file format profile with name 'images'

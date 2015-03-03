@@ -84,9 +84,9 @@ Feature: Producer description
     When I edit the producer with title 'Scanning'
     Then I should see the producer definition
 
-  Scenario: Delete producer from view page
+  Scenario: Delete producer from edit page
     Given I am logged in as an admin
-    When I view the producer with title 'Scanning'
+    When I edit the producer with title 'Scanning'
     And I click on 'Delete'
     Then I should be on the producer index page
     And I should not see 'Scanning'

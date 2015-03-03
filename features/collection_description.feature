@@ -66,8 +66,8 @@ Feature: Collection description
     And I click on 'Edit'
     Then I should be on the edit page for the collection with title 'dogs'
 
-  Scenario: Delete a collection from its view page
-    When I view the collection with title 'dogs'
+  Scenario: Delete a collection from its edit page
+    When I edit the collection with title 'dogs'
     And I click on 'Delete'
     Then I should be on the view page for the repository with title 'Sample Repo'
     And I should not see 'dogs'
