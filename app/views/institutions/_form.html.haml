@@ -5,3 +5,5 @@
     .form-actions.col-sm-12
       = f.button :submit, class: 'btn btn-primary'
       = link_to 'Cancel', institutions_path, class: 'btn btn-default'
+      - unless @institution.new_record?
+        = delete_button(@institution)

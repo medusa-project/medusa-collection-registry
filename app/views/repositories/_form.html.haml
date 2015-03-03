@@ -20,3 +20,6 @@
     .form-actions.col-sm-12
       = f.button :submit, class: 'btn btn-primary'
       = cancel_button(repositories_path)
+      -  if @repository.persisted? and safe_can?(:delete, @repository)
+        = delete_button(repository_path(@repository), message: repository_confirm_message)
+

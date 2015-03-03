@@ -2,7 +2,6 @@
   .btn-group.pull-right
     = link_to 'Create Repository', new_repository_path(institution_id: @institution.id), class: 'btn btn-primary'
     = edit_button(@institution)
-    = delete_button(@institution, message: institution_confirm_message)
 
   %h1.text_center= @institution.name
 

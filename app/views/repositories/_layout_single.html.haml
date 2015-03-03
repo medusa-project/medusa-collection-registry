@@ -7,8 +7,6 @@
       = events_button(events_repository_path(@repository))
       = red_flags_button(red_flags_repository_path(@repository))
       = edit_button(@repository)
-      -  if safe_can?(:delete, @repository)
-        = delete_button(repository_path(@repository), message: repository_confirm_message)
 
 .row
   = yield
