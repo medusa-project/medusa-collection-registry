@@ -1,7 +1,11 @@
-.row
+.row.vertical-align
   .col-xs-8
     = render layout: 'layouts/page_header' do
-      #{@package_profile.name}
+      - if content_for?(:title)
+        = yield(:title)
+      - else
+        Package Profile:
+      %small #{@package_profile.name}
 
   .col-xs-4
     .btn-group.pull-right

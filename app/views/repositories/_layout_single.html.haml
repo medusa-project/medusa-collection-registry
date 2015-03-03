@@ -1,6 +1,14 @@
 .row
+  %div= breadcrumbs(@repository)
+
+.row
   .col-xs-6
-    %div= breadcrumbs(@repository)
+    = render layout: 'layouts/page_header' do
+      - if content_for?(:title)
+        = yield(:title)
+      - else
+        Repository:
+      %small #{@repository.title}
   .col-xs-6
     .btn-group.pull-right
       = assessments_button(assessments_repository_path(@repository))
@@ -8,5 +16,4 @@
       = red_flags_button(red_flags_repository_path(@repository))
       = edit_button(@repository)
 
-.row
-  = yield
+= yield

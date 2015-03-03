@@ -1,6 +1,14 @@
-.row
-  .btn-group.pull-right
-    = index_button(producers_path)
-    = edit_button(@producer)
+.row.vertical-align
+  .col-xs-8
+    = render layout: 'layouts/page_header' do
+    - if content_for?(:title)
+      = yield(:title)
+    - else
+      Producer:
+    %small #{@producer.title}
+  .col-xs-4
+    .btn-group.pull-right
+      = index_button(producers_path)
+      = edit_button(@producer)
 
 = yield
