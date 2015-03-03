@@ -30,7 +30,7 @@ Feature: producers for File Groups
   Scenario: Deleting a producer should fail if it has file groups
     When I edit the producer with title 'Scanning'
     And I click on 'Delete'
-    Then I should be on the view page for the producer with title 'Scanning'
+    Then I should be on the edit page for the producer with title 'Scanning'
     And I should see 'Producers with associated file groups cannot be deleted.'
 
 
