@@ -1,6 +1,4 @@
 .page-header
   %h1
-    - if local_assigns.has_key?(:is_edit_page) and is_edit_page
-      %span.glyphicon.glyphicon-pencil
     = yield
   = content_for(:page_header_extra) if content_for?(:page_header_extra)

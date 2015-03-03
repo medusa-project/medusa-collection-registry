@@ -1,7 +1,11 @@
-.row
+.row.vertical-align
   .col-xs-6
     = render layout: 'layouts/page_header' do
-      #{@access_system.name}
+      - if content_for?(:title)
+        = yield(:title)
+      - else
+        Access System:
+      %small #{@access_system.name}
   .col-xs-6
     .pull-right.btn-group
       = index_button(access_systems_path)
