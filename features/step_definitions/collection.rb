@@ -7,7 +7,8 @@ When(/^I click on '(.*)' in the attachments section$/) do |button|
 end
 
 When(/^I click on '(.*)' in the (.*) actions$/) do |link, section|
-  within(".#{section}-actions") do
+  within(:xpath, "//li[@class = '#{section}-action'][contains(., '#{link}')]") do
+  #within(".#{section}-actions") do
     click_on(link)
   end
 end

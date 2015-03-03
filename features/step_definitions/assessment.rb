@@ -33,6 +33,10 @@ Then /^a visitor is unauthorized to create an assessment for the collection titl
   expect(last_response.location).to match(/#{unauthorized_path}$/)
 end
 
+Then /^I should be viewing assessments for the (.*) with (.*) '(.*)'$/ do |object_type, key, value|
+  expect(current_path).to eq(specific_object_path(object_type, key, value, 'assessments'))
+end
+
 private
 
 def find_assessment(date, collection_title)

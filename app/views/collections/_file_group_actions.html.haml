@@ -3,24 +3,24 @@
     Actions
     %span.caret
   %ul.dropdown-menu{role: 'menu'}
-    %li.dropdown-header.event-actions{role: 'presentation'} Events
-    %li{role: 'presentation'}= link_to 'View', events_file_group_path(file_group)
-    %li{role: 'presentation'}= link_to 'Add', "#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal'
-    %li{role: 'presentation'}= link_to 'Schedule', "#add-scheduled-event-file-group-#{file_group.id}", 'data-toggle' => 'modal'
+    %li.dropdown-header{role: 'presentation'} Events
+    %li.event-action{role: 'presentation'}= link_to 'View', events_file_group_path(file_group)
+    %li.event-action{role: 'presentation'}= link_to 'Add', "#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal'
+    %li.event-action{role: 'presentation'}= link_to 'Schedule', "#add-scheduled-event-file-group-#{file_group.id}", 'data-toggle' => 'modal'
     %li.divider
-    %li.dropdown-header.assessment-actions{role: 'presentation'} Assessments
-    %li{role: 'presentation'}= link_to 'View', file_group
-    %li{role: 'presentation'}= link_to 'Add', new_assessment_path(assessable_id: file_group.id, assessable_type: file_group.class.name)
+    %li.assessment-action.dropdown-header{role: 'presentation'} Assessments
+    %li.assessment-action{role: 'presentation'}= link_to 'View', assessments_file_group_path(file_group)
+    %li.assessment-action{role: 'presentation'}= link_to 'Add', new_assessment_path(assessable_id: file_group.id, assessable_type: file_group.class.name)
     %li.divider
-    %li.dropdown-header.related-file-group-actions{role: 'presentation'} Related File Groups
-    %li{role: 'presentation'}= link_to 'Add', edit_polymorphic_path(file_group, active_tab: '#related-file-groups')
+    %li.dropdown-header{role: 'presentation'} Related File Groups
+    %li.related-file-group-action{role: 'presentation'}= link_to 'Add', edit_polymorphic_path(file_group, active_tab: '#related-file-groups')
     %li.divider
     - if file_group.is_a?(BitLevelFileGroup)
-      %li.dropdown-header.fits-actions{role: 'presentation'} FITS
-      %li{role: 'presentation'}= link_to 'Run', create_cfs_fits_bit_level_file_group_path(file_group), remote: 'true'
+      %li.dropdown-header{role: 'presentation'} FITS
+      %li.fits-action{role: 'presentation'}= link_to 'Run', create_cfs_fits_bit_level_file_group_path(file_group), remote: 'true', method: :post
       %li.divider
-      %li.dropdown-header.virus-scan-actions{role: 'presentation'} Virus Scan
+      %li.dropdown-header{role: 'presentation'} Virus Scan
       - if file_group.virus_scans.present?
-        %li{role: 'presentation'}= link_to 'View', virus_scan_path(file_group.virus_scans.order('created_at desc').first)
+        %li.virus-scan-action{role: 'presentation'}= link_to 'View', virus_scan_path(file_group.virus_scans.order('created_at desc').first)
         |
-      %li{role: 'presentation'}= link_to 'Run', create_virus_scan_bit_level_file_group_path(file_group, format: 'js'), remote: 'true'
+      %li.virus-scan-action{role: 'presentation'}= link_to 'Run', create_virus_scan_bit_level_file_group_path(file_group, format: 'js'), remote: 'true', method: :post
