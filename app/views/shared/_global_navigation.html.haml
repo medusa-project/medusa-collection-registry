@@ -41,20 +41,38 @@
                 %h4.modal-title More actions
               .modal-body
                 .row
-                  .col-md-3
-                    Hi
-                  .col-md-3
-                    There
-                  .col-md-3
+                  .col-sm-4
                     %strong View by:
-                    %ul.list-group
-                      %li.list-group-item= link_to 'Producers', producers_path
-                      %li.list-group-item= link_to 'Access Systems', access_systems_path
-                      %li.list-group-item= link_to 'Packages', package_profiles_path
+                    %ul
+                      %li= link_to 'Producers', producers_path
+                      %li= link_to 'Access Systems', access_systems_path
+                      %li= link_to 'Packages', package_profiles_path
                       - if safe_can?(:read, FileFormatProfile)
-                        %li.list-group-item= link_to 'File Format Profiles', file_format_profiles_path
+                        %li= link_to 'File Format Profiles', file_format_profiles_path
                     %strong Book Tracker:
-                    %ul.list-group
-                      %li.list-group-item= link_to 'Items', book_tracker_items_path
+                    %ul
+                      %li= link_to 'Items', book_tracker_items_path
                       - if safe_can?(:update, BookTracker::Item)
-                        %li.list-group-item= link_to 'Tasks', book_tracker_tasks_path
+                        %li= link_to 'Tasks', book_tracker_tasks_path
+                  .col-sm-4
+                    %strong Quick Links:
+                    %ul
+                      %li= link_to 'Deposit Files', '#'
+                      %li= link_to 'Create a Collection', '#'
+                      %li= link_to 'Request Training', '#'
+                      %li= link_to 'Feedback', '#'
+                    %strong Learn More:
+                    %ul
+                      %li= link_to 'Policies', '#'
+                      %li= link_to 'Technology', '#'
+                      %li= link_to 'Staff', '#'
+                      %li= link_to 'Wiki', '#'
+                      %li= link_to 'Help', '#'
+                      %li= link_to 'FAQ', 'https://wiki.cites.illinois.edu/wiki/display/LibraryDigitalPreservation/Medusa+FAQ'
+                  .col-sm-4
+                    %strong Frequently Visited Collections:
+                    %ul
+                      %li= link_to 'IDEALS', repository_path(42)
+                      %li= link_to 'RBML', repository_path(23)
+                      %li= link_to 'Sousa Archives'.html_safe, repository_path(31)
+                      %li= link_to 'University Archives'.html_safe, repository_path(22)
