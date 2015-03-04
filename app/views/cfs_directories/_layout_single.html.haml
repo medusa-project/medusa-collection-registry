@@ -1,6 +1,10 @@
-.row
+.row.vertical-align
   .col-xs-5
-    = breadcrumbs(@directory)
+    = render layout: 'layouts/page_header' do
+      Directory:
+      %small #{@directory.path}
+      = content_for :page_header_extra do
+        UUID: #{@directory.uuid}
   .col-xs-7
     .btn-group.pull-right
       - if @directory.public? and public_view_on?
@@ -11,10 +15,5 @@
       - if can? :export, @file_group
         = link_to 'Download Files', export_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
         = link_to 'Download Files and All Subdirectories', export_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
-
-%br
-
-%h3 Directory: #{@directory.path}
-%p UUID: #{@directory.uuid}
 
 = yield

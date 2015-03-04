@@ -1,6 +1,11 @@
-.row
+.row.vertical-align
   .col-xs-7
-    = breadcrumbs(@file)
+    = render layout: 'layouts/page_header' do
+      - if content_for?(:title)
+        = yield(:title)
+      - else
+        File:
+      %small #{@file.name}
   .col-xs-5
     .btn-group.pull-right
       - if @file.public? and public_view_on?
