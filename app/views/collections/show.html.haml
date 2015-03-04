@@ -1,7 +1,11 @@
+- content_for :extra_links do
+  %a.btn.btn-default{'data-toggle' => 'collapse', href: '#metadata', 'aria-expanded' => 'false', 'aria-controls' => 'metadata'}
+    Metadata
+    %span.caret
 = render layout: 'layout_single' do
   - cache(@collection) do
+    .row
+      = render 'show_about'
     - if logged_in?
       .row
         = render 'file_groups_table'
-    .row
-      = render 'show_about'

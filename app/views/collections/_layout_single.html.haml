@@ -16,5 +16,6 @@
       = attachments_button(attachments_collection_path(@collection))
       = link_to 'Mods', collection_path(@collection, format: :xml), class: 'btn btn-default'
       = edit_button(@collection)
-
+      - if content_for?(:extra_links)
+        = yield(:extra_links)
 = yield
