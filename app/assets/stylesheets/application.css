@@ -63,6 +63,6 @@ label.checkbox {
     align-items: center;
 }
 
-.vertical-align div {
-
+#more-actions {
+    min-height: 400px;
 }

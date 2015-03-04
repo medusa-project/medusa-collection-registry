@@ -27,19 +27,34 @@
           %li.navbar-file-groups.hidden= fa_icon_and_text_link_to 'File Groups', 'folder-o','#'
           %li.navbar-files.hidden= fa_icon_and_text_link_to 'Files', 'file-o', '#'
         %ul.nav.navbar-nav.navbar-right
-          %li.dropdown
-            %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+          %li
+            %a{href: '#', 'data-toggle' => 'modal', 'data-target' => '#more-actions'}
               More
               %span.caret
-            %ul.dropdown-menu{role: 'menu'}
-              %li.dropdown-header View by
-              %li= link_to 'Producers', producers_path
-              %li= link_to 'Access Systems', access_systems_path
-              %li= link_to 'Packages', package_profiles_path
-              - if safe_can?(:read, FileFormatProfile)
-                %li= link_to 'File Format Profiles', file_format_profiles_path
-              %li.divider
-              %li.dropdown-header Book Tracker
-              %li= link_to 'Items', book_tracker_items_path
-              - if safe_can?(:update, BookTracker::Item)
-                %li= link_to 'Tasks', book_tracker_tasks_path
+        #more-actions.modal.fade
+          .modal-dialog
+            .modal-content
+              .modal-header
+                %a.close{'data-dismiss' => 'modal', 'aria-label' => 'Close'}
+                  %span{'aria-hidden' => true}
+                    &times;
+                %h4.modal-title More actions
+              .modal-body
+                .row
+                  .col-md-3
+                    Hi
+                  .col-md-3
+                    There
+                  .col-md-3
+                    %strong View by:
+                    %ul.list-group
+                      %li.list-group-item= link_to 'Producers', producers_path
+                      %li.list-group-item= link_to 'Access Systems', access_systems_path
+                      %li.list-group-item= link_to 'Packages', package_profiles_path
+                      - if safe_can?(:read, FileFormatProfile)
+                        %li.list-group-item= link_to 'File Format Profiles', file_format_profiles_path
+                    %strong Book Tracker:
+                    %ul.list-group
+                      %li.list-group-item= link_to 'Items', book_tracker_items_path
+                      - if safe_can?(:update, BookTracker::Item)
+                        %li.list-group-item= link_to 'Tasks', book_tracker_tasks_path
