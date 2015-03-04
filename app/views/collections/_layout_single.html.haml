@@ -1,21 +1,29 @@
 .row.vertical-align
-  .col-xs-8
+  .col-xs-7
     = render layout: 'layouts/page_header' do
       - if content_for?(:title)
         = yield(:title)
       - else
         Collection:
       %small #{@collection.title}
-  .col-xs-4
-    .btn-group.pull-right
-      - if @collection.public? and public_view_on?
-        = link_to 'Public View', public_collection_path(@collection), class: 'btn btn-default'
-      = assessments_button(assessments_collection_path(@collection))
-      = events_button(events_collection_path(@collection))
-      = red_flags_button(red_flags_collection_path(@collection))
-      = attachments_button(attachments_collection_path(@collection))
-      = link_to 'Mods', collection_path(@collection, format: :xml), class: 'btn btn-default'
-      = edit_button(@collection)
+  .col-xs-5
+    .btn-toolbar
       - if content_for?(:extra_links)
-        = yield(:extra_links)
+        .btn-group.pull-right
+          = yield(:extra_links)
+      .btn-group.pull-right
+        - if @collection.public? and public_view_on?
+          = link_to 'Public View', public_collection_path(@collection), class: 'btn btn-default'
+        = assessments_button(assessments_collection_path(@collection))
+        = events_button(events_collection_path(@collection))
+        = red_flags_button(red_flags_collection_path(@collection))
+        = attachments_button(attachments_collection_path(@collection))
+        .btn-group
+          %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}
+            Export
+            %span.caret
+          %ul.dropdown-menu
+            %li= link_to 'XML (MODS)', collection_path(@collection, format: :xml)
+            %li= link_to 'JSON', collection_path(@collection, format: :json)
+        = edit_button(@collection)
 = yield
