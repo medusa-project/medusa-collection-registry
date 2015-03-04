@@ -8,6 +8,7 @@ class CfsDirectoriesController < ApplicationController
 
   def show
     @directory = CfsDirectory.includes(:subdirectories, :cfs_files).find(params[:id])
+    @breadcrumbable = @directory
     @file_group = @directory.file_group
     respond_to do |format|
       format.html
@@ -64,6 +65,7 @@ class CfsDirectoriesController < ApplicationController
 
   def find_directory
     @directory = CfsDirectory.find(params[:id])
+    @breadcrumbable = @directory
   end
 
 end

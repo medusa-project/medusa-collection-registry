@@ -97,6 +97,7 @@ class RepositoriesController < ApplicationController
 
   def find_repository
     @repository = Repository.find(params[:id])
+    @breadcrumbable = @repository
   end
 
   def allowed_params

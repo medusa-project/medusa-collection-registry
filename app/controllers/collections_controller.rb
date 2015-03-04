@@ -98,6 +98,7 @@ class CollectionsController < ApplicationController
   def find_collection_and_repository
     @collection = Collection.find(params[:id])
     @collection.build_contact unless @collection.contact
+    @breadcrumbable = @collection
     @repository = @collection.repository
   end
 

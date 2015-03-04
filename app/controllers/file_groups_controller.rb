@@ -107,6 +107,7 @@ class FileGroupsController < ApplicationController
 
   def find_file_group_and_collection
     @file_group = FileGroup.find(params[:id])
+    @breadcrumbable = @file_group
     @collection = @file_group.collection
   end
 

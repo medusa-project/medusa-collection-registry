@@ -112,6 +112,7 @@ class CfsFilesController < ApplicationController
 
   def find_file
     @file = CfsFile.find(params[:id])
+    @breadcrumbable = @file
   end
 
   #return a symbol that will be used to select the right viewer
