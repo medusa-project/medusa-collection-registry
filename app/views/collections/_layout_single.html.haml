@@ -7,11 +7,8 @@
         Collection:
       %small #{@collection.title}
   .col-xs-5
-    .btn-toolbar
-      - if content_for?(:extra_links)
-        .btn-group.pull-right
-          = yield(:extra_links)
-      .btn-group.pull-right
+    .btn-toolbar.pull-right
+      .btn-group
         - if @collection.public? and public_view_on?
           = link_to 'Public View', public_collection_path(@collection), class: 'btn btn-default'
         = assessments_button(assessments_collection_path(@collection))
@@ -26,4 +23,8 @@
             %li= link_to 'XML (MODS)', collection_path(@collection, format: :xml)
             %li= link_to 'JSON', collection_path(@collection, format: :json)
         = edit_button(@collection)
+      - if content_for?(:extra_links)
+        .btn-group
+          = yield(:extra_links)
+
 = yield
