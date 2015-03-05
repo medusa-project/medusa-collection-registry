@@ -180,6 +180,7 @@ class CfsFilesController < ApplicationController
   end
 
   def is_iiif_compatible?(file)
+    return false if image_server_config['disabled'].present?
     result = Net::HTTP.get_response(URI.parse(iiif_info_json_url(file)))
     result.code == '200' && result.body.index('http://iiif.io/api/image/2/level2.json')
   end
@@ -193,13 +194,16 @@ class CfsFilesController < ApplicationController
   end
 
   def iiif_base_url(file)
-    image_server_config = MedusaCollectionRegistry::Application.medusa_config['loris']
     image_server_base_url = "http://#{image_server_config['host'] || 'localhost'}:#{image_server_config['port'] || 3000}/#{image_server_config['root']}"
     "#{image_server_base_url}/#{file.relative_path}"
   end
 
   def require_public_file
     redirect_to unauthorized_path unless @file.public?
+  end
+
+  def image_server_config
+    MedusaCollectionRegistry::Application.medusa_config['loris']
   end
 
 end
