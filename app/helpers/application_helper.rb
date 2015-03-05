@@ -49,7 +49,15 @@ module ApplicationHelper
   end
 
   def wiki_link(label)
-    fa_icon_link_to label, 'group', 'https://wiki.cites.uiuc.edu/wiki/display/LibraryDigitalPreservation/Home', target: '_blank'
+    fa_icon_link_to label, 'group', wiki_url, target: '_blank'
+  end
+
+  def wiki_url
+    'https://wiki.cites.uiuc.edu/wiki/display/LibraryDigitalPreservation/Home'
+  end
+
+  def faq_url
+    'https://wiki.cites.illinois.edu/wiki/display/LibraryDigitalPreservation/Medusa+FAQ'
   end
 
   def date_picker_options(extra_opts = {})
