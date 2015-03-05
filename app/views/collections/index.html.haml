@@ -1,14 +1,19 @@
-= render layout: 'layouts/page_header' do
-  Collections
+.row.vertical-align
+  .col-md-4
+    = render layout: 'layouts/page_header' do
+      Collections
+  .col-md-8
+    .btn-group.pull-right
+      = link_to 'Add Collection', new_collection_path, class: 'btn btn-primary'
+      .btn-group
+        %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}
+          Export
+          %span.caret
+        %ul.dropdown-menu
+          %li= link_to 'CSV', collections_path(format: 'csv')
 
-= link_to 'Add Collection', new_collection_path, class: 'btn btn-primary'
-= link_to(collections_path(format: 'csv'), class: 'btn btn-default') do
-  %span.glyphicon.glyphicon-export
-  Export as CSV
-
-- cache(cache_key_for_all(Collection)) do
-  = render 'index_table'
-
-%br
-
-= link_to 'Add Collection', new_collection_path, class: 'btn btn-primary'
+.row
+  - cache(cache_key_for_all(Collection)) do
+    = render 'index_table'
+  %br
+  = link_to 'Add Collection', new_collection_path, class: 'btn btn-primary'
