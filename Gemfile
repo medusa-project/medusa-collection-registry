@@ -71,6 +71,9 @@ gem 'capistrano-bundler'
 gem 'capistrano-rvm'
 gem 'capistrano-passenger'
 
+#memory/active record usage monitoring
+gem 'oink'
+
 # Medusa Book Tracker compatibility
 gem 'local_time'
 gem 'will_paginate'
