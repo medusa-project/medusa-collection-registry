@@ -13,7 +13,12 @@
       = link_to 'Create FITS for tree', create_fits_for_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
       = fixity_check_button(fixity_check_cfs_directory_path(@directory))
       - if can? :export, @file_group
-        = link_to 'Download Files', export_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
-        = link_to 'Download Files and All Subdirectories', export_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
+        .btn-group
+          %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Download'}
+            = fa_icon('download')
+            %span.caret
+          %ul.dropdown-menu.dropdown-menu-right
+            %li= link_to 'Download Files', export_cfs_directory_path(@directory), method: :post
+            %li= link_to 'Download Files and All Subdirectories', export_tree_cfs_directory_path(@directory), method: :post
 
 = yield
