@@ -52,7 +52,7 @@ Feature: Repository description
   Scenario: Get CSV list of all repositories
     Given I am logged in as a visitor
     When I go to the repository index page
-    And I click on 'Export as CSV'
+    And I click on 'CSV'
     Then I should receive a file 'repositories.csv' of type 'text/csv' matching:
       | Sample 1 | Some notes | Sample 2 | Some other notes. http://animals.example.com. More notes. |
 

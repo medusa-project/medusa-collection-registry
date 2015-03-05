@@ -45,6 +45,10 @@ module ButtonsHelper
     fa_icon_link_to 'Create', 'plus', url, class: 'btn btn-default btn-xs'
   end
 
+  def add_button(url, options = {})
+    fa_icon_link_to 'Add', 'plus', url, options.reverse_merge(class: 'btn btn-default')
+  end
+
   def small_add_button(url, options = {})
     fa_icon_link_to 'Add', 'plus', url, options.reverse_merge(class: 'btn btn-default btn-xs')
   end

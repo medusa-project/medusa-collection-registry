@@ -1,15 +1,18 @@
+- content_for :extra_links do
+  %a.btn.btn-default{'data-toggle' => 'collapse', href: '#metadata', 'aria-expanded' => 'false', 'aria-controls' => 'metadata'}
+    Metadata
+    %span.caret
 = render layout: 'layout_single' do
   - cache(@repository) do
+    #metadata.row.collapse
+      .well
+        = show_value link_to(@repository.institution.name, @repository.institution), 'Institution'
+        = show_field @repository, :contact_email
+        = render partial: 'shared/contact_information', locals: {contact_object: @repository}
+        = show_value link_to_external(@repository.url, @repository.url), 'URL'
+        = show_field @repository, :notes_html, 'Notes'
+        = show_value @repository.total_size.to_formatted_s(:rounded, precision: 2), 'Total Size (GB)'
+        = show_field @repository, :active_start_date, 'Active Start Date'
+        = show_field @repository, :active_end_date, 'Active End Date'
     .row
-      .col-sm-3#sidebar
-        .well
-          = show_value link_to(@repository.institution.name, @repository.institution), 'Institution'
-          = show_field @repository, :contact_email
-          = render partial: 'shared/contact_information', locals: {contact_object: @repository}
-          = show_value link_to_external(@repository.url, @repository.url), 'URL'
-          = show_field @repository, :notes_html, 'Notes'
-          = show_value @repository.total_size.to_formatted_s(:rounded, precision: 2), 'Total Size (GB)'
-          = show_field @repository, :active_start_date, 'Active Start Date'
-          = show_field @repository, :active_end_date, 'Active End Date'
-      .col-sm-9#collection-list
-        = render 'collections_table'
+      = render 'collections_table'

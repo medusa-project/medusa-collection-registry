@@ -15,10 +15,9 @@
 .row
   = render 'shared/definitions/repository'
 
-- cache(cache_key_for_all(Repository)) do
-  = render 'table'
-
-%br
-
-%div Total Medusa Size: #{Repository.aggregate_size.round} GB
+.row
+  - cache(cache_key_for_all(Repository)) do
+    = render 'table'
+  %br
+  %div Total Medusa Size: #{Repository.aggregate_size.round} GB
 

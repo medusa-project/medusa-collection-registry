@@ -123,7 +123,7 @@ Feature: Collection description
 
   Scenario: Get CSV dump of a repository's collections
     When I view the repository with title 'Sample Repo'
-    And I click on 'Export as CSV'
+    And I click on 'CSV'
     Then I should receive a file 'collections.csv' of type 'text/csv' matching:
       | Dog stuff | Stuff about dogs | external-dogs-id | Cat stuff | Stuff about cats. https://notes.example.com | Sample Repo |
 
