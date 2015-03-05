@@ -1,13 +1,19 @@
-= render layout: 'layouts/page_header' do
-  Repository
-
-= render 'shared/definitions/repository'
-
-= link_to repositories_path(format: 'csv'), class: 'btn btn-default' do
-  %span.glyphicon.glyphicon-export
-  = 'Export as CSV'
-- if can? :update_ldap_admins, Repository
-  = link_to 'Edit Repository Admins', edit_ldap_admins_repositories_path, class: 'btn btn-primary'
+.row.vertical-align
+  .col-md-8
+    = render layout: 'layouts/page_header' do
+      Repository
+  .col-md-4
+    .btn-group.pull-right
+      - if can? :update_ldap_admins, Repository
+        = link_to 'Edit Repository Admins', edit_ldap_admins_repositories_path, class: 'btn btn-primary'
+      .btn-group
+        %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}
+          Export
+          %span.caret
+        %ul.dropdown-menu
+          %li= link_to 'CSV', repositories_path(format: 'csv')
+.row
+  = render 'shared/definitions/repository'
 
 - cache(cache_key_for_all(Repository)) do
   = render 'table'

@@ -117,7 +117,7 @@ Feature: Collection description
 
   Scenario: Get CSV dump of all collections
     When I go to the collection index page
-    And I click on 'Export as CSV'
+    And I click on 'CSV'
     Then I should receive a file 'collections.csv' of type 'text/csv' matching:
       | Dog stuff | Stuff about dogs | external-dogs-id | Cat stuff | Stuff about cats. https://notes.example.com | Sample Repo |
 
