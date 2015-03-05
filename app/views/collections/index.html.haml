@@ -12,8 +12,9 @@
         %ul.dropdown-menu
           %li= link_to 'CSV', collections_path(format: 'csv')
 
+
+- cache(cache_key_for_all(Collection)) do
+  = render 'index_table'
+
 .row
-  - cache(cache_key_for_all(Collection)) do
-    = render 'index_table'
-  %br
   = link_to 'Add Collection', new_collection_path, class: 'btn btn-primary'
