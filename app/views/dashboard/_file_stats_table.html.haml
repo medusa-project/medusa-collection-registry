@@ -11,12 +11,12 @@
           %th Size
       - cache(cache_key_for_all(ContentType)) do
         %tbody
-          - ContentType.order(:name).each do |content_type|
-            = cache(content_type) do
+          - @content_type_hashes.each do |info|
+            = cache(info) do
               %tr
-                %td= link_to content_type.name, cfs_files_content_type_path(content_type)
-                %td= content_type.cfs_file_count.to_formatted_s(:delimited)
-                %td{'data-order' => content_type.cfs_file_size}= content_type.cfs_file_size.to_formatted_s(:human_size, precision: 3)
+                %td= link_to info['name'], cfs_files_content_type_path(info['id'])
+                %td= info['cfs_file_count'].to_i.to_formatted_s(:delimited)
+                %td{'data-order' => info['cfs_file_size'].to_d}= info['cfs_file_size'].to_d.to_formatted_s(:human_size, precision: 3)
 
   .col-sm-6
     %table.table.table-striped.table-bordered.table-condensed#file_stats_file_extension
@@ -27,12 +27,12 @@
           %th Size
       - cache(cache_key_for_all(FileExtension)) do
         %tbody
-          - FileExtension.order(:extension).each do |extension|
-            = cache(extension) do
+          - @file_extension_hashes.each do |info|
+            = cache(info) do
               %tr
-                %td= link_to extension.extension, cfs_files_file_extension_path(extension)
-                %td= extension.cfs_file_count.to_formatted_s(:delimited)
-                %td{'data-order' => extension.cfs_file_size}= extension.cfs_file_size.to_formatted_s(:human_size, precision: 3)
+                %td= link_to info['extension'], cfs_files_file_extension_path(info['id'])
+                %td= info['cfs_file_count'].to_i.to_formatted_s(:delimited)
+                %td{'data-order' => info['cfs_file_size'].to_d}= info['cfs_file_size'].to_d.to_formatted_s(:human_size, precision: 3)
 
 .row
   .col-sm-12

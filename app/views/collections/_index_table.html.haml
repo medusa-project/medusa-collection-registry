@@ -9,7 +9,7 @@
       %th Ingest&nbsp;Need
       %th
   %tbody
-    - collection_sizes = FileGroup.collection_size_hash
+    - collection_sizes = collection_size_hash
     - @collections.each do |collection|
       - cache([collection, collection.repository]) do
         %tr

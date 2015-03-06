@@ -16,7 +16,7 @@
           %th Backup
       %tbody
         - cache(cache_key_for_all(BitLevelFileGroup)) do
-          - BitLevelFileGroup.dashboard_amazon_info.each do |id, info|
+          - @amazon_info.each do |id, info|
             - cache hash do
               %tr
                 %td= id
