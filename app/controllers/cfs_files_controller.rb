@@ -144,8 +144,8 @@ class CfsFilesController < ApplicationController
 
   def common_image_preview
     image = MiniMagick::Image.read(StringIO.new(File.open(@file.absolute_path, 'rb') { |f| f.read }))
-    image.format 'jpg'
     image.resize '300x300>'
+    image.format 'jpg'
     send_data image.to_blob, type: 'image/jpeg', disposition: 'inline'
   end
 
