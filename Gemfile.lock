@@ -228,7 +228,6 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mime-types (2.4.3)
-    mini_magick (4.1.0)
     mini_portile (0.6.2)
     minitest (5.5.1)
     multi_json (1.10.1)
@@ -318,6 +317,7 @@ GEM
     rspec-support (3.2.2)
     rsync (1.0.9)
     ruby-filemagic (0.6.3)
+    ruby-vips (0.3.9)
     ruby_parser (3.6.4)
       sexp_processor (~> 4.1)
     sass (3.4.12)
@@ -421,7 +421,6 @@ DEPENDENCIES
   less-rails
   local_time
   logger
-  mini_magick
   net-http-digest_auth!
   newrelic_rpm
   nokogiri
@@ -438,6 +437,7 @@ DEPENDENCIES
   rspec-rails
   rsync
   ruby-filemagic
+  ruby-vips
   sass-rails
   shoulda-matchers
   simple_form
