@@ -79,13 +79,11 @@ class BitLevelFileGroup < FileGroup
   end
 
   def file_size
-    return 0 unless self.cfs_directory
-    self.refresh_file_size
     return total_file_size
   end
 
   def refresh_file_size
-    return unless self.cfs_directory
+    return unless self.cfs_directory(true)
     size = self.cfs_directory.tree_size / 1.gigabyte
     if self.total_file_size != size
       self.total_file_size = size
@@ -94,13 +92,11 @@ class BitLevelFileGroup < FileGroup
   end
 
   def file_count
-    return 0 unless self.cfs_directory
-    refresh_file_count
     return total_files
   end
 
   def refresh_file_count
-    return unless self.cfs_directory
+    return unless self.cfs_directory(true)
     count = self.cfs_directory.tree_count
     if self.total_files != count
       self.total_files = count
@@ -127,8 +123,7 @@ class BitLevelFileGroup < FileGroup
 
   def self.update_cached_file_stats
     self.all.each do |file_group|
-      file_group.file_count
-      file_group.file_size
+      file_group.refresh_file_stats
     end
   end
 

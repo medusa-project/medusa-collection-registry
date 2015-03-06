@@ -20,13 +20,11 @@ Feature: Collection File Size
 
   Scenario: Collection index should show file size
     When I go to the collection index page
-    Then I should see 'Total Size (GB)'
     And I should see '56'
     And I should see '500'
 
   Scenario: Collection view page should show file size
     When I view the collection with title 'Dogs'
-    Then I should see 'Total Size (GB)'
     And I should see '56'
 
   Scenario: Repository view page should show file size of collections
@@ -37,12 +35,10 @@ Feature: Collection File Size
 
   Scenario: Repository view page should show file size over all collections
     When I view the repository with title 'Animals'
-    Then I should see 'Total Size (GB)'
     And I should see '556'
 
   Scenario: Repository index page shows file size of repositories.
     When I go to the repository index page
-    Then I should see 'Total Size (GB)'
     And I should see '556'
 
 

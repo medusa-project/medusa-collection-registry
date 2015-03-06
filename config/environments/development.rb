@@ -23,9 +23,12 @@ MedusaCollectionRegistry::Application.configure do
 
   # Do not compress assets
   config.assets.compress = false
+  #config.assets.compress = true
 
   # Expands the lines which load the assets
-  config.assets.debug = true
+  #Use config.assets.debug = false to use newrelic, etc. where we don't want all those individual requests
+  #config.assets.debug = true
+  config.assets.debug = false
   config.assets.logger = false
 
   config.eager_load = false

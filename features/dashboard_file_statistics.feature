@@ -30,7 +30,6 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
       | application/xml | 1 | 2.89 KB |
 
   Scenario: View bit & object preservation summary table
-    Given The bit level file group statistics cache is up to date
     When I go to the dashboard
     And I click on 'File Statistics'
     Then I should see the file stats by content type table

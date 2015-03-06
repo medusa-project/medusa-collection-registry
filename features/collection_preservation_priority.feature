@@ -17,10 +17,8 @@ Feature: Preservation Priority
 
   Scenario: See preservation priority in collection index
     When I go to the collection index page
-    Then I should see 'Preservation Priority'
-    And I should see 'low'
+    Then I should see 'low'
 
   Scenario: See preservation priority in repository show page
     When I view the repository having a collection titled 'Dogs'
-    Then I should see 'Preservation Priority'
-    And I should see 'low'
+    Then I should see 'low'

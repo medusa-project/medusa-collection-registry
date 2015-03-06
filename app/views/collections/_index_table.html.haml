@@ -1,24 +1,23 @@
 %table#collections.table.table-striped
   %thead
     %tr
-      %th External ID
-      %th UUID
+      %th External&nbsp;ID
       %th Title
       %th Repository
       %th Contact
-      %th Total Size (GB)
-      %th Preservation Priority
+      %th GB
+      %th Ingest&nbsp;Need
       %th
   %tbody
+    - collection_sizes = FileGroup.collection_size_hash
     - @collections.each do |collection|
       - cache([collection, collection.repository]) do
         %tr
           %td #{collection.external_id}
-          %td #{collection.uuid}
           %td #{link_to collection.title, collection}
           %td #{link_to collection.repository.title, collection.repository}
           %td #{collection.contact_email}
-          %td #{number_with_precision(collection.total_size, precision: 3)}
+          %td #{number_with_precision(collection_sizes[collection.id], precision: 3)}
           %td #{collection.preservation_priority_name}
           %td
             = small_edit_button(collection)

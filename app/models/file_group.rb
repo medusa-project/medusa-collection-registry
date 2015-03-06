@@ -156,4 +156,15 @@ class FileGroup < ActiveRecord::Base
     self.rights_declaration.public?
   end
 
+  #map collection id to total size
+  #TODO at some point we may want to account for when we have related file groups
+  def self.collection_size_hash
+    sizes = connection.select_rows('SELECT collection_id, sum(total_file_size) as size FROM file_groups GROUP BY collection_id')
+    Hash.new.tap do |hash|
+      sizes.each do |id, size|
+        hash[id.to_i] = size.to_f
+      end
+    end
+  end
+
 end
