@@ -5,11 +5,7 @@
         #medusa-logo.pull-left
           %a{href: root_path}
             = image_tag('medusa_wordmark_50x250px.png', alt: 'Medusa logo')
-        %button.navbar-toggle{type: 'button', 'data-target' => '#global-nav-row-1', 'data-toggle' => 'collapse'}
-          %span.sr-only Toggle navigation
-          %span.icon-bar
-          %span.icon-bar
-          %span.icon-bar
+        = render partial: 'shared/navbar_toggle', locals: {id: '#global-nav-row-1'}
       #global-nav-row-1.collapse.navbar-collapse
         %ul.nav.navbar-nav.navbar-left
           %li
@@ -26,11 +22,7 @@
     .global-nav-row
       .navbar-header
         .navbar-text.pull-left View lists of:
-        %button.navbar-toggle{type: 'button', 'data-target' => '#global-nav-row-2', 'data-toggle' => 'collapse'}
-          %span.sr-only Toggle navigation
-          %span.icon-bar
-          %span.icon-bar
-          %span.icon-bar
+        = render partial: 'shared/navbar_toggle', locals: {id: '#global-nav-row-2'}
       #global-nav-row-2.collapse.navbar-collapse
         %ul.nav.navbar-nav.navbar-left
           %li.navbar-institutions= fa_icon_and_text_link_to 'Institutions', 'university', institutions_path
