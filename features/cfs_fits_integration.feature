@@ -16,70 +16,68 @@ Feature: CFS FITS integration
 
   Scenario: Run fits on a file
     Given I am logged in as an admin
-    When I view the cfs directory for the file group titled 'Toys' for the path '.'
+    When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And I click on 'Create'
-    Then I should be viewing the cfs root directory for the file group titled 'Toys'
-    And the file group titled 'Toys' should have a cfs file for the path 'text.txt' with fits attached
+    Then I should be viewing the cfs directory for the file group titled 'Toys' for the path 'pictures'
+    And the file group titled 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
 
   Scenario: Run fits on a file as a manager
     Given I am logged in as a manager
-    When I view the cfs directory for the file group titled 'Toys' for the path '.'
+    When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And I click on 'Create'
-    Then I should be viewing the cfs root directory for the file group titled 'Toys'
-    And the file group titled 'Toys' should have a cfs file for the path 'text.txt' with fits attached
+    Then I should be viewing the cfs directory for the file group titled 'Toys' for the path 'pictures'
+    And the file group titled 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
 
   Scenario: Run fits on a file as a visitor
     Given I am logged in as a visitor
-    When I view the cfs directory for the file group titled 'Toys' for the path '.'
+    When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And I click on 'Create'
     Then I should be unauthorized
 
   Scenario: View fits on a file as an admin
     Given I am logged in as an admin
-    And the cfs file at path 'text.txt' for the file group titled 'Toys' has fits attached
-    When I view the cfs directory for the file group titled 'Toys' for the path '.'
+    And the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys' has fits attached
+    When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And I click on 'View'
-    Then I should be on the fits info page for the cfs file at path 'text.txt' for the file group titled 'Toys'
+    Then I should be on the fits info page for the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys'
 
   Scenario: View fits on a file as a manager
     Given I am logged in as a manager
-    And the cfs file at path 'text.txt' for the file group titled 'Toys' has fits attached
-    When I view the cfs directory for the file group titled 'Toys' for the path '.'
+    And the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys' has fits attached
+    When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And I click on 'View'
-    Then I should be on the fits info page for the cfs file at path 'text.txt' for the file group titled 'Toys'
+    Then I should be on the fits info page for the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys'
 
   Scenario: View fits on a file as a visitor
     Given I am logged in as a visitor
-    And the cfs file at path 'text.txt' for the file group titled 'Toys' has fits attached
-    When I view the cfs directory for the file group titled 'Toys' for the path '.'
+    And the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys' has fits attached
+    When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And I click on 'View'
-    Then I should be on the fits info page for the cfs file at path 'text.txt' for the file group titled 'Toys'
+    Then I should be on the fits info page for the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys'
 
   Scenario: View fits on a file as a public user
     Given I am not logged in
-    And the cfs file at path 'text.txt' for the file group titled 'Toys' has fits attached
-    When I view the cfs directory for the file group titled 'Toys' for the path '.'
+    And the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys' has fits attached
+    When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     Then I should be on the login page
 
   Scenario: Run fits on a whole directory tree
     Given I am logged in as an admin
-    When I view the cfs directory for the file group titled 'Toys' for the path '.'
+    When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And I click on 'Create FITS' and delayed jobs are run
-    And the file group titled 'Toys' should have a cfs file for the path 'text.txt' with fits attached
     And the file group titled 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
     And I should see 'Scheduling FITS creation for /dogs/toy-dogs'
 
   Scenario: Run fits on a whole directory tree as manager
     Given I am logged in as a manager
-    When I view the cfs directory for the file group titled 'Toys' for the path '.'
+    When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And I click on 'Create FITS' and delayed jobs are run
-    And the file group titled 'Toys' should have a cfs file for the path 'text.txt' with fits attached
     And the file group titled 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
     And I should see 'Scheduling FITS creation for /dogs/toy-dogs'
 
   Scenario: Run fits on a directory tree as a visitor
     Given I am logged in as a visitor
-    When I view the cfs directory for the file group titled 'Toys' for the path '.'
+    When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And I click on 'Create FITS'
     Then I should be unauthorized
 

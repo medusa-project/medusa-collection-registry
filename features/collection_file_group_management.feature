@@ -62,17 +62,6 @@ Feature: File Group Management
     Then I should see all of:
       | Ingested from | Ingested to |
 
-  Scenario: Navigate to files of a bit level file group
-    Given the collection with title 'Dogs' has child file groups with fields:
-      | title | type              |
-      | bit  | BitLevelFileGroup |
-    And there is a physical cfs directory 'bit/path'
-    And the file group titled 'bit' has cfs root 'bit/path'
-    When I view the collection with title 'Dogs'
-    And I click on 'View files'
-    Then I should be viewing the cfs root directory for the file group titled 'bit'
-    #Then I should be viewing the cfs directory 'bit/path'
-
   Scenario: See the package profile of a file group in the file groups table
     Given the file group titled 'images' has package profile named 'image_package'
     When I view the collection with title 'Dogs'

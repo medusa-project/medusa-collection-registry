@@ -10,17 +10,14 @@ Feature: CFS file group integration
     And the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'also irrelevant'
     And the collection with title 'Dogs' has child file groups with fields:
       | title | type              |
-      | Toys | BitLevelFileGroup |
+      | Toys  | BitLevelFileGroup |
     And the file group titled 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
 
-  Scenario: See file group's cfs root when viewing it
+  Scenario: See file group's cfs root directory contents when viewing file group
     When I view the file group with title 'Toys'
-    Then I should see 'toy-dogs'
-
-  Scenario: Navigate from file group to its cfs root
-    When I view the file group with title 'Toys'
-    And I click on 'toy-dogs'
-    Then I should be viewing the cfs root directory for the file group titled 'Toys'
+    Then I should see the files table
+    And I should see all of:
+      | picture.jpg | yorkies |
 
   Scenario: Set file group's cfs root from file group edit view
     Given there is a physical cfs directory 'englishmen/yorkies'
@@ -34,8 +31,12 @@ Feature: CFS file group integration
     Then I should see 'Toys'
 
   Scenario: Navigate from a cfs directory to the owning file group
-    When I view the cfs directory for the file group titled 'Toys' for the path '.'
+    When I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
     And I click on 'Toys'
+    Then I should be on the view page for the file group with title 'Toys'
+
+  Scenario: Redirect from root cfs directory to file group if present
+    When I view the cfs directory for the file group titled 'Toys' for the path '.'
     Then I should be on the view page for the file group with title 'Toys'
 
   Scenario: Navigate from a cfs file to the owning file group

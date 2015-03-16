@@ -313,8 +313,9 @@ class CfsDirectory < ActiveRecord::Base
 
   def find_directory_with_directory_components(path_components)
     return self if path_components.blank?
-    current_component = path_components.pop
+    current_component = path_components.shift
     return self.find_directory_with_directory_components(path_components) if (current_component.blank? or (current_component == '.'))
+    x = self.subdirectories.all.to_a
     subdirectory = self.subdirectories.find_by(path: current_component)
     if subdirectory
       return subdirectory.find_directory_with_directory_components(path_components)

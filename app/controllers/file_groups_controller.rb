@@ -10,6 +10,7 @@ class FileGroupsController < ApplicationController
   respond_to :html, :js, :json
 
   def show
+    @directory = @file_group.cfs_directory
     respond_to do |format|
       format.html
       format.json

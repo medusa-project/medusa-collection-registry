@@ -8,17 +8,18 @@ Feature: CFS integration
     And the physical cfs directory 'dogs' has a file 'intro.txt' with contents 'anything'
     And the physical cfs directory 'dogs/pugs' has a file 'picture.jpg' with contents 'anything'
     And the physical cfs directory 'dogs/pugs' has a file 'description.txt' with contents 'anything'
+    And the physical cfs directory 'dogs/pugs/toys' has a file 'something.txt' with contents 'anything'
     And the collection with title 'Animals' has child file groups with fields:
       | title | type              |
-      | Dogs | BitLevelFileGroup |
+      | Dogs  | BitLevelFileGroup |
     And the file group titled 'Dogs' has cfs root 'dogs' and delayed jobs are run
 
   Scenario: View CFS directory as an admin
     Given I am logged in as an admin
-    And the uuid of the cfs directory with path 'dogs' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
-    When I view the cfs directory for the file group titled 'Dogs' for the path '.'
+    And the uuid of the cfs directory with path 'pugs' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
+    When I view the cfs directory for the file group titled 'Dogs' for the path 'pugs'
     Then I should see all of:
-      | intro.txt | pugs |3da0fae0-e3fa-012f-ac10-005056b22849-8|
+      | picture.jpg | description.txt | toys | 3da0fae0-e3fa-012f-ac10-005056b22849-8 |
 
   Scenario: View CFS directory as a manager
     Given I am logged in as a manager
@@ -45,9 +46,9 @@ Feature: CFS integration
 
   Scenario: Navigate CFS directory up
     Given I am logged in as an admin
-    When I view the cfs directory for the file group titled 'Dogs' for the path 'pugs'
-    And I click on 'dogs'
-    Then I should be viewing the cfs directory for the file group titled 'Dogs' for the path '.'
+    When I view the cfs directory for the file group titled 'Dogs' for the path 'pugs/toys'
+    And I click on 'pugs'
+    Then I should be viewing the cfs directory for the file group titled 'Dogs' for the path 'pugs'
 
   Scenario: View a file as an admin
     Given I am logged in as an admin

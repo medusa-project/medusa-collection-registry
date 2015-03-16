@@ -1,19 +1,29 @@
+- content_for :extra_links do
+  %a.btn.btn-default{'data-toggle' => 'collapse', href: '#metadata', 'aria-expanded' => 'false', 'aria-controls' => 'metadata'}
+    Metadata
+    %span.caret
+  - if @directory.present?
+    %a.btn.btn-default{'data-toggle' => 'collapse', href: '#amazon', 'aria-expanded' => 'false', 'aria-controls' => 'metadata'}
+      Amazon
+      %span.caret
+
 = render layout: 'layout_single' do
-  .row
-    .page_header
-      = render 'show_header'
 
-  .row
-    .tabbable
-      = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: file_group_show_tab_list}
-      .tab-content
-        #descriptive-metadata.tab-pane.active
-          = render 'show_descriptive_metadata'
-        #administrative-metadata.tab-pane
-          = render 'show_administrative_metadata'
-        #rights-metadata.tab-pane
-          = render partial: 'rights_declarations/show', locals: {rights_declaration: @file_group.rights_declaration}
-        - if @file_group.cfs_directory.present?
-          #amazon.tab-pane
-            = render 'amazon_backups'
-
+  .row#metadata.collapse{class: ('in' unless @file_group.is_a?(BitLevelFileGroup))}
+    .col-md-4#descriptive-metadata
+      .well
+        = render 'show_descriptive_metadata'
+    .col-md-4#administrative-metadata
+      .well
+        = render 'show_administrative_metadata'
+    .col-md-4#rights-metadata
+      .well
+        = render partial: 'rights_declarations/show', locals: {rights_declaration: @file_group.rights_declaration}
+  - if @directory.present?
+    .row#amazon.collapse
+      %hr
+      = render 'amazon_backups'
+  - if @directory.present?
+    .row
+      %hr
+      = render 'cfs_directories/directory_contents_table'

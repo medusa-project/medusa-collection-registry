@@ -7,7 +7,12 @@
         File Group:
       %small #{@file_group.title}
   .col-xs-7
-    = render 'actions'
+    .btn-toolbar.pull-right
+      = render 'actions'
+      - if content_for?(:extra_links)
+        .btn-group
+          = yield(:extra_links)
+
 
 = yield
 

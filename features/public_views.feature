@@ -147,12 +147,6 @@ Feature: Public views
     And I click on 'Public View'
     Then I should be on the public view page for the file group with title 'DogFiles'
 
-  Scenario: Go from private cfs directory to public
-    Given I am logged in as an admin
-    When I view the cfs directory for the file group titled 'DogFiles' for the path '.'
-    And I click on 'Public View'
-    Then I should be public viewing the cfs directory for the file group titled 'DogFiles' for the path '.'
-    
   Scenario: Go from private cfs file to public
     Given I am logged in as an admin
     When I view the cfs file for the file group titled 'DogFiles' for the path 'intro.txt'

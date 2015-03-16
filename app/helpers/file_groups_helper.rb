@@ -20,14 +20,6 @@ module FileGroupsHelper
     %w(descriptive-metadata administrative-metadata rights-metadata)
   end
 
-  def file_group_show_tab_list
-    tabs = %w(descriptive-metadata administrative-metadata rights-metadata)
-    if @file_group.cfs_directory.present?
-      tabs << 'amazon'
-    end
-    tabs
-  end
-
   def package_profile_select_collection
     PackageProfile.order('name ASC').load.collect {|profile| [profile.name, profile.id]}
   end
