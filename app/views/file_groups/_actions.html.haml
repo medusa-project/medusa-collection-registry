@@ -20,7 +20,7 @@
       - if @file_group.is_a?(BitLevelFileGroup) and @file_group.cfs_directory.present? and safe_can?(:update, @file_group)
         %li= link_to 'Create FITS', create_cfs_fits_bit_level_file_group_path(@file_group), method: 'post'
       - if @file_group.is_a?(BitLevelFileGroup) and @file_group.cfs_directory.present? and safe_can?(:update, @file_group)
-        %li= link_to 'Fixity Check', fixity_check_bit_level_file_group_path(@file_group), method: :post
+        %li= link_to 'Fixity check', fixity_check_bit_level_file_group_path(@file_group), method: :post
       - if @file_group.is_a?(BitLevelFileGroup) and @file_group.is_currently_assessable?
         %li= link_to 'Run Simple Assessment', create_initial_cfs_assessment_bit_level_file_group_path(@file_group), method: :post
       - if @file_group.is_a?(ExternalFileGroup) and @file_group.ready_for_bit_level_ingest? and safe_can?(:ingest, @file_group)
