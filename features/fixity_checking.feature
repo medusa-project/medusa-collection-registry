@@ -57,7 +57,7 @@ Feature: Fixity Checking
 
   Scenario: Fixity check against unchanged files from directory level
     When I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
-    And I click on 'Run fixity check'
+    And I click on 'Fixity check'
     Then the cfs directory with path 'yorkies' should have an event with key 'fixity_check_scheduled' performed by 'admin@example.com'
     When delayed jobs are run
     And the cfs file with name 'something.txt' should have events with fields:
@@ -81,7 +81,7 @@ Feature: Fixity Checking
   Scenario: Fixity check with changed file from directory level
     When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some changed text'
     And I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
-    And I click on 'Run fixity check'
+    And I click on 'Fixity check'
     Then the cfs directory with path 'yorkies' should have an event with key 'fixity_check_scheduled' performed by 'admin@example.com'
     When delayed jobs are run
     And the cfs file with name 'something.txt' should have events with fields:

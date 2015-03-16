@@ -64,7 +64,7 @@ Feature: CFS FITS integration
   Scenario: Run fits on a whole directory tree
     Given I am logged in as an admin
     When I view the cfs directory for the file group titled 'Toys' for the path '.'
-    And I click on 'Create FITS for tree' and delayed jobs are run
+    And I click on 'Create FITS' and delayed jobs are run
     And the file group titled 'Toys' should have a cfs file for the path 'text.txt' with fits attached
     And the file group titled 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
     And I should see 'Scheduling FITS creation for /dogs/toy-dogs'
@@ -72,7 +72,7 @@ Feature: CFS FITS integration
   Scenario: Run fits on a whole directory tree as manager
     Given I am logged in as a manager
     When I view the cfs directory for the file group titled 'Toys' for the path '.'
-    And I click on 'Create FITS for tree' and delayed jobs are run
+    And I click on 'Create FITS' and delayed jobs are run
     And the file group titled 'Toys' should have a cfs file for the path 'text.txt' with fits attached
     And the file group titled 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
     And I should see 'Scheduling FITS creation for /dogs/toy-dogs'
@@ -80,7 +80,7 @@ Feature: CFS FITS integration
   Scenario: Run fits on a directory tree as a visitor
     Given I am logged in as a visitor
     When I view the cfs directory for the file group titled 'Toys' for the path '.'
-    And I click on 'Create FITS for tree'
+    And I click on 'Create FITS'
     Then I should be unauthorized
 
   Scenario: Run fits on a file group as an admin

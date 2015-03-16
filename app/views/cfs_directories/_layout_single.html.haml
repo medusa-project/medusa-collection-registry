@@ -10,8 +10,13 @@
       - if @directory.public? and public_view_on?
         = link_to 'Public View', public_cfs_directory_path(@directory), class: 'btn btn-default'
       = events_button(events_cfs_directory_path(@directory))
-      = link_to 'Create FITS for tree', create_fits_for_tree_cfs_directory_path(@directory), method: :post, class: 'btn btn-default'
-      = fixity_check_button(fixity_check_cfs_directory_path(@directory))
+      .btn-group
+        %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Run'}
+          = fa_icon('cog')
+          %span.caret
+        %ul.dropdown-menu.dropdown-menu-right
+          %li= link_to 'Create FITS', create_fits_for_tree_cfs_directory_path(@directory), method: :post
+          %li= link_to 'Fixity check', fixity_check_cfs_directory_path(@directory), method: :post
       - if can? :export, @file_group
         .btn-group
           %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Download'}
