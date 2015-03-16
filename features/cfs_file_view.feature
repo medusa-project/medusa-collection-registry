@@ -72,7 +72,7 @@ Feature: Viewing CFS file information and content
 
   Scenario: Create FITS for file
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And I click on 'Create'
+    And I click on 'Create FITS'
     Then the file group titled 'Dogs' should have a cfs file for the path 'grass.jpg' with fits attached
     And I should be viewing the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
 

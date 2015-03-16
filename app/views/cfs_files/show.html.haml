@@ -6,12 +6,11 @@
       = show_value 'bit-level', 'Storage level'
       = show_value @file.md5_sum, 'MD5'
       = show_value @file.uuid, 'UUID'
-      %p
-        %strong FITS:
-        - if @file.fits_xml
+      - if @file.fits_xml
+        %p
+          %strong
+            FITS:
           = small_view_button(fits_cfs_file_path(@file, format: :xml))
-        -else
-          = small_create_button(create_fits_xml_cfs_file_path(@file))
       - if @file_group
         %p
           %strong Belongs to:

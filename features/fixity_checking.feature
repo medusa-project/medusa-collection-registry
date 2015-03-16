@@ -19,7 +19,7 @@ Feature: Fixity Checking
 
   Scenario: Fixity check against unchanged files from file group level
     When I view the file group with title 'Toys'
-    And I click on 'Run fixity check'
+    And I click on 'Fixity check'
     Then the file group with title 'Toys' should have an event with key 'fixity_check_scheduled' performed by 'admin@example.com'
     When delayed jobs are run
     Then the cfs file with name 'picture.jpg' should have events with fields:
@@ -33,7 +33,7 @@ Feature: Fixity Checking
   Scenario: Fixity check with changed file from file group level
     When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some changed text'
     And I view the file group with title 'Toys'
-    And I click on 'Run fixity check'
+    And I click on 'Fixity check'
     Then the file group with title 'Toys' should have an event with key 'fixity_check_scheduled' performed by 'admin@example.com'
     When delayed jobs are run
     Then the cfs file with name 'picture.jpg' should have events with fields:
@@ -100,7 +100,7 @@ Feature: Fixity Checking
 
   Scenario: Fixity check of unchanged file from file level
     When I view the cfs file for the file group titled 'Toys' for the path 'yorkies/something.txt'
-    And I click on 'Run fixity check'
+    And I click on 'Fixity check'
     And the cfs file with name 'something.txt' should have events with fields:
       | key              | note | cascadable | actor_email       |
       | fixity_check_run |      | false      | admin@example.com |
@@ -117,7 +117,7 @@ Feature: Fixity Checking
   Scenario: Fixity check of changed file from file level
     When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some changed text'
     And I view the cfs file for the file group titled 'Toys' for the path 'yorkies/something.txt'
-    And I click on 'Run fixity check'
+    And I click on 'Fixity check'
     And the cfs file with name 'something.txt' should have events with fields:
       | key              | note   | cascadable | actor_email       |
       | fixity_check_run |        | false      | admin@example.com |

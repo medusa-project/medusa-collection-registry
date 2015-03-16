@@ -1,8 +1,4 @@
-- if @file_group.is_a?(BitLevelFileGroup)
+- if @file_group.is_a?(BitLevelFileGroup) and @file_group.cfs_directory.present?
   %div
-    - if @file_group.cfs_directory
-      = link_to "CFS Root: #{@file_group.cfs_directory.path}", cfs_directory_path(@file_group.cfs_directory), class: 'btn btn-default'
-      = link_to 'Create FITS for CFS tree', create_cfs_fits_bit_level_file_group_path(@file_group), method: 'post', class: 'btn btn-default'
-    - if @file_group.is_currently_assessable?
-      = link_to 'Run Simple Assessment', create_initial_cfs_assessment_bit_level_file_group_path(@file_group), method: :post, class: 'btn btn-default'
+    = link_to "CFS Root: #{@file_group.cfs_directory.path}", cfs_directory_path(@file_group.cfs_directory), class: 'btn btn-default'
   %br
