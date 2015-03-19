@@ -52,6 +52,9 @@ class Workflow::Ingest < Job::Base
       cfs_directory = CfsDirectory.find_or_create_by!(path: self.bit_level_file_group.expected_relative_cfs_root_directory)
       cfs_directory.parent = bit_level_file_group
       cfs_directory.save!
+      collection = self.bit_level_file_group.collection
+      collection.preservation_priority = PreservationPriority.find_by(name: 'ingested')
+      collection.save!
       self.state = 'amazon_backup'
       self.save!
       self.put_in_queue

@@ -5,8 +5,9 @@ And(/^the external file group with title '(.*)' is already being ingested$/) do 
   FactoryGirl.create(:workflow_ingest, external_file_group_id: external_file_group.id)
 end
 
-Given(/^an external file group with title '(.*)' is staged with bag data '(.*)'$/) do |title, bag_name|
-  external_file_group = FactoryGirl.create(:external_file_group, title: title)
+Given(/^an external file group with title '(.*)' in collection '(.*)' is staged with bag data '(.*)'$/) do |file_group_title, collection_title, bag_name|
+  collection = FactoryGirl.create(:collection, title: collection_title)
+  external_file_group = FactoryGirl.create(:external_file_group, title: file_group_title, collection_id: collection.id)
   staging_root = StagingStorage.instance.roots.to_a.sample
   local_staging_target = File.join(staging_root.local_path, external_file_group.collection.id.to_s)
   FileUtils.mkdir_p(local_staging_target)
