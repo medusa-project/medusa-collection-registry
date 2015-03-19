@@ -1,4 +1,4 @@
-Given /^I am logged in as '(.*)'$/ do |uid|
+Given /^I am logged in as '([^']*)'$/ do |uid|
   login_user(uid: uid)
 end
 

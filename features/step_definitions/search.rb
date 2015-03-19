@@ -13,7 +13,7 @@ Then(/^there is no filename search box$/) do
   expect(page).not_to have_css('#filename_search')
 end
 
-And(/^I do a filename search for '(.*)'$/) do |search_string|
+And(/^I do a filename search for '([^']*)'$/) do |search_string|
   within('#filename_search') do
     fill_in('Search file name', with: search_string)
     click_on('filename_search_submit')

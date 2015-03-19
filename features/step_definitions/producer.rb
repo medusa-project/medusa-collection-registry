@@ -4,7 +4,7 @@ Then /^I should see all producer fields$/ do
   end
 end
 
-And /^The collection titled '(.*)' has (\d+) file groups? produced by '(.*)'$/ do |collection, count, producer|
+And /^The collection titled '([^']*)' has (\d+) file groups? produced by '([^']*)'$/ do |collection, count, producer|
   collection = Collection.find_by(title: collection)
   producer = Producer.find_by(title: producer)
   count.to_i.times do

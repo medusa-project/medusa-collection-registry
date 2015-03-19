@@ -17,7 +17,7 @@ end
 #Similarly, something like a simple get of an index should be testable via Capybara directly; it's really
 #the new and create actions on the collection level that may be problematic.
 
-Then /^trying to (.*) the (.*) with (.*) '(.*)' as (.*) should (.*)$/ do |action, resource_type, unique_field, field_value, user_type, result|
+Then /^trying to (.*) the (.*) with (.*) '([^']*)' as (.*) should (.*)$/ do |action, resource_type, unique_field, field_value, user_type, result|
   underscored_resource_type = resource_type.gsub(' ', '_')
   resource_class = Kernel.const_get(underscored_resource_type.camelcase)
   resource = resource_class.where(unique_field => field_value).first
@@ -32,13 +32,13 @@ Then /^trying to do (.*) with the (.*) collection as (.*) should (.*)$/ do |acti
   check_result(result)
 end
 
-Then(/^deny object permission on the (.*) with (.*) '(.*)' to users for action with redirection:$/) do |resource_type, unique_field, field_value, table|
+Then(/^deny object permission on the (.*) with (.*) '([^']*)' to users for action with redirection:$/) do |resource_type, unique_field, field_value, table|
   with_user_action_result_table(table) do |user_type, action, redirection_type|
     step "trying to #{action.strip} the #{resource_type} with #{unique_field} '#{field_value}' as a #{user_type.strip} should redirect to #{redirection_type}"
   end
 end
 
-Then /^trying to do (.*) with the path '(.*)' as (.*) should (.*)$/ do |action, path_function, user_type, result|
+Then /^trying to do (.*) with the path '([^']*)' as (.*) should (.*)$/ do |action, path_function, user_type, result|
   rack_login(user_type)
   self.send(action, self.send(path_function))
   check_result(result)

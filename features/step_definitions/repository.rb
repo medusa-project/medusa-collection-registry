@@ -4,7 +4,7 @@ And /^I have repositories with fields:$/ do |table|
   end
 end
 
-And /^the repository titled '(.*)' is managed by '(.*)'$/ do |title, email|
+And /^the repository titled '([^']*)' is managed by '([^']*)'$/ do |title, email|
   person = FactoryGirl.create(:person, email: email,)
   FactoryGirl.create(:repository, contact: person, title: title)
 end
@@ -15,7 +15,7 @@ Then /^I should see all repository fields$/ do
   end
 end
 
-When /^I view the repository having a collection titled '(.*)'$/ do |title|
+When /^I view the repository having a collection titled '([^']*)'$/ do |title|
   collection = Collection.find_by(title: title)
   visit repository_path(collection.repository)
 end

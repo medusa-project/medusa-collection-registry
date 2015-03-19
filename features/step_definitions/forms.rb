@@ -8,12 +8,12 @@ And(/^I fill in fields for a scheduled event:$/) do |table|
   end
 end
 
-Then /^The field '(.*)' should be filled in with '(.*)'$/ do |field, value|
+Then /^The field '([^']*)' should be filled in with '([^']*)'$/ do |field, value|
   find_field(field).value.should == value
 end
 
 
-When /^I press '(.*)'$/ do |button_name|
+When /^I press '([^']*)'$/ do |button_name|
   click_button(button_name)
 end
 
@@ -21,7 +21,7 @@ Then /^I should see '(.*)'$/ do |text|
   page.should have_content(text)
 end
 
-Then /^I should not see '(.*)'$/ do |text|
+Then /^I should not see '([^']*)'$/ do |text|
   page.should_not have_content(text)
 end
 
@@ -37,28 +37,28 @@ And /^I should see none of:$/ do |table|
   end
 end
 
-And /^I click on '(.*)'$/ do |link_name|
+And /^I click on '([^']*)'$/ do |link_name|
   click_on(link_name)
 end
 
-And /^I click on '(.*)' and delayed jobs are run$/ do |link_name|
+And /^I click on '([^']*)' and delayed jobs are run$/ do |link_name|
   step "I click on '#{link_name}'"
   step 'delayed jobs are run'
 end
 
-And /^I select '(.*)' from '(.*)'$/ do |value, label|
+And /^I select '([^']*)' from '([^']*)'$/ do |value, label|
   select(value, from: label)
 end
 
-And /^I check '(.*)'$/ do |string|
+And /^I check '([^']*)'$/ do |string|
   check(string)
 end
 
-And /^I uncheck '(.*)'$/ do |string|
+And /^I uncheck '([^']*)'$/ do |string|
   uncheck(string)
 end
 
-And(/^I attach fixture file '(.*)' to '(.*)'$/) do |file, field|
+And(/^I attach fixture file '([^']*)' to '([^']*)'$/) do |file, field|
   attach_file(field, File.join(Rails.root, 'features', 'fixtures', file))
 end
 

@@ -19,7 +19,7 @@ Then(/^the (.*) table should have (\d+) rows?$/) do |key, count|
   end
 end
 
-And(/^I click on '(.*)' in the ([^']*) table$/) do |link, key|
+And(/^I click on '([^']*)' in the ([^']*) table$/) do |link, key|
   within(table_selector(key)) do
     click_on(link)
   end

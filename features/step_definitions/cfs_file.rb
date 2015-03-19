@@ -4,7 +4,7 @@ def ensuring_cfs_file_at_path_for_file_group_titled(path, title)
   yield cfs_file if block_given?
 end
 
-And(/^the file group titled '(.*)' has a cfs file for the path '(.*)' with red flags with fields:$/) do |title, path, table|
+And(/^the file group titled '([^']*)' has a cfs file for the path '([^']*)' with red flags with fields:$/) do |title, path, table|
   ensuring_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file|
     table.hashes.each do |h|
       cfs_file.red_flags.create(h)
@@ -12,17 +12,17 @@ And(/^the file group titled '(.*)' has a cfs file for the path '(.*)' with red f
   end
 end
 
-And(/^the file group titled '(.*)' has a cfs file for the path '(.*)'$/) do |title, path|
+And(/^the file group titled '([^']*)' has a cfs file for the path '([^']*)'$/) do |title, path|
   ensuring_cfs_file_at_path_for_file_group_titled(path, title)
 end
 
-And(/^the file group titled '(.*)' has a cfs file for the path '(.*)' with fields:$/) do |title, path, table|
+And(/^the file group titled '([^']*)' has a cfs file for the path '([^']*)' with fields:$/) do |title, path, table|
   ensuring_cfs_file_at_path_for_file_group_titled(path, title) do |file|
     file.update_attributes!(table.hashes.first)
   end
 end
 
-Then(/^the cfs file at path '(.*)' for the file group titled '(.*)' should have fields:$/) do |path, title, table|
+Then(/^the cfs file at path '([^']*)' for the file group titled '([^']*)' should have fields:$/) do |path, title, table|
   ensuring_cfs_file_at_path_for_file_group_titled(path, title) do |file|
     table.hashes.first.each do |k, v|
       expect(file.send(k).to_s).to eq(v)
@@ -30,19 +30,19 @@ Then(/^the cfs file at path '(.*)' for the file group titled '(.*)' should have 
   end
 end
 
-Then(/^I should have downloaded the fixture file '(.*)'$/) do |name|
+Then(/^I should have downloaded the fixture file '([^']*)'$/) do |name|
   check_cfs_file_download('attachment', name, fixture_file_content(name))
 end
 
-Then(/^I should have viewed the fixture file '(.*)'$/) do |name|
+Then(/^I should have viewed the fixture file '([^']*)'$/) do |name|
   check_cfs_file_download('inline', name, fixture_file_content(name))
 end
 
-Then(/^I should have downloaded a file '(.*)' with contents '(.*)'$/) do |name, contents|
+Then(/^I should have downloaded a file '([^']*)' with contents '([^']*)'$/) do |name, contents|
   check_cfs_file_download('attachment', name, contents)
 end
 
-Then(/^I should have viewed a file '(.*)' with contents '(.*)'$/) do |name, contents|
+Then(/^I should have viewed a file '([^']*)' with contents '([^']*)'$/) do |name, contents|
   check_cfs_file_download('inline', name, contents)
 end
 
@@ -52,7 +52,7 @@ def check_cfs_file_download(disposition, file_name, file_contents)
   expect(page.source).to eq(file_contents)
 end
 
-And(/^I click on '(.*)' in the cfs file metadata$/) do |string|
+And(/^I click on '([^']*)' in the cfs file metadata$/) do |string|
   within('#cfs-file-metadata') do
     click_on string
   end
@@ -68,57 +68,57 @@ def with_cfs_file_at_path_for_file_group_titled(path, title)
   yield cfs_file, file_group
 end
 
-When(/^I view the first red flag for the file group titled '(.*)' for the cfs file for the path '(.*)'$/) do |title, path|
+When(/^I view the first red flag for the file group titled '([^']*)' for the cfs file for the path '([^']*)'$/) do |title, path|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     visit red_flag_path(cfs_file.red_flags.first)
   end
 end
 
-Then(/^I should be editing the first red flag for the file group titled '(.*)' for the path '(.*)'$/) do |title, path|
+Then(/^I should be editing the first red flag for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     expect(current_path).to eq(edit_red_flag_path(cfs_file.red_flags.first))
   end
 end
 
-Then(/^I should be viewing the first red flag for the file group titled '(.*)' for the path '(.*)'$/) do |title, path|
+Then(/^I should be viewing the first red flag for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     expect(current_path).to eq(red_flag_path(cfs_file.red_flags.first))
   end
 end
 
-Then(/^I should be viewing the cfs file for the file group titled '(.*)' for the path '(.*)'$/) do |title, path|
+Then(/^I should be viewing the cfs file for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     expect(current_path).to eq(cfs_file_path(cfs_file))
   end
 end
 
-Then(/^I should be public viewing the cfs file for the file group titled '(.*)' for the path '(.*)'$/) do |title, path|
+Then(/^I should be public viewing the cfs file for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     expect(current_path).to eq(public_cfs_file_path(cfs_file))
   end
 end
 
-And(/^the cfs file at path '(.*)' for the file group titled '(.*)' should have (\d+) red flags?$/) do |path, title, count|
+And(/^the cfs file at path '([^']*)' for the file group titled '([^']*)' should have (\d+) red flags?$/) do |path, title, count|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     expect(cfs_file.red_flags.count).to eq(count.to_i)
   end
 end
 
-When(/^I view the cfs file for the file group titled '(.*)' for the path '(.*)'$/) do |title, path|
+When(/^I view the cfs file for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
   visit cfs_file_path(file_group.cfs_file_at_path(path))
 end
 
-Given(/^I public view the cfs file for the file group titled '(.*)' for the path '(.*)'$/) do |title, path|
+Given(/^I public view the cfs file for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
   visit public_cfs_file_path(file_group.cfs_file_at_path(path))
 end
 
-When(/^I run an initial cfs file assessment on the file group titled '(.*)'$/) do |title|
+When(/^I run an initial cfs file assessment on the file group titled '([^']*)'$/) do |title|
   FileGroup.find_by(title: title).schedule_initial_cfs_assessment
 end
 
-Then(/^the file group titled '(.*)' should have a cfs file for the path '(.*)' with results:$/) do |title, path, table|
+Then(/^the file group titled '([^']*)' should have a cfs file for the path '([^']*)' with results:$/) do |title, path, table|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     expect(cfs_file).not_to be_nil
     table.raw.each do |field, value|
@@ -127,44 +127,44 @@ Then(/^the file group titled '(.*)' should have a cfs file for the path '(.*)' w
   end
 end
 
-Then(/^the file group titled '(.*)' should have a cfs directory for the path '(.*)'$/) do |title, path|
+Then(/^the file group titled '([^']*)' should have a cfs directory for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.where(title: title).first
   expect(file_group.cfs_directory_at_path(path)).to be_a(CfsDirectory)
 end
 
-Then(/^the file group titled '(.*)' should have a cfs directory$/) do |title|
+Then(/^the file group titled '([^']*)' should have a cfs directory$/) do |title|
   expect(BitLevelFileGroup.find_by(title: title).cfs_directory).to be_a(CfsDirectory)
 end
 
-Then(/^the file group titled '(.*)' should not have a cfs file for the path '(.*)'$/) do |title, path|
+Then(/^the file group titled '([^']*)' should not have a cfs file for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
   expect { file_group.cfs_file_at_path(path) }.to raise_error(RuntimeError)
 end
 
-Then(/^the file group titled '(.*)' should not have a cfs directory for the path '(.*)'$/) do |title, path|
+Then(/^the file group titled '([^']*)' should not have a cfs directory for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
   expect { file_group.cfs_directory_at_path(path) }.to raise_error(RuntimeError)
 end
 
-And(/^the file group titled '(.*)' should have a cfs file for the path '(.*)' with fits attached$/) do |title, path|
+And(/^the file group titled '([^']*)' should have a cfs file for the path '([^']*)' with fits attached$/) do |title, path|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     expect(cfs_file.fits_xml).not_to be_blank
   end
 end
 
-Then(/^I should be on the fits info page for the cfs file at path '(.*)' for the file group titled '(.*)'$/) do |path, title|
+Then(/^I should be on the fits info page for the cfs file at path '([^']*)' for the file group titled '([^']*)'$/) do |path, title|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     expect(current_path).to eql(fits_cfs_file_path(cfs_file, format: :xml))
   end
 end
 
-And(/^the cfs file at path '(.*)' for the file group titled '(.*)' has fits attached$/) do |path, title|
+And(/^the cfs file at path '([^']*)' for the file group titled '([^']*)' has fits attached$/) do |path, title|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     cfs_file.ensure_fits_xml
   end
 end
 
-And(/^the cfs file at path '(.*)' for the file group titled '(.*)' has fits rerun$/) do |path, title|
+And(/^the cfs file at path '([^']*)' for the file group titled '([^']*)' has fits rerun$/) do |path, title|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     cfs_file.update_fits_xml
   end
@@ -176,7 +176,7 @@ And(/^there are cfs files with fields:$/) do |table|
   end
 end
 
-When(/^I update the cfs file with name '(.*)' with fields:$/) do |name, table|
+When(/^I update the cfs file with name '([^']*)' with fields:$/) do |name, table|
   cfs_file = CfsFile.find_by(name: name)
   cfs_file.update_attributes!(table.hashes.first)
 end

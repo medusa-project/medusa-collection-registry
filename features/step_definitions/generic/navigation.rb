@@ -6,35 +6,35 @@ Then /^I should be on the (.*) index page$/ do |object_type|
   expect(current_path).to eq(generic_collection_path(object_type))
 end
 
-When /^I view the (.*) with (.*) '(.*)'$/ do |object_type, key, value|
+When /^I view the (.*) with (.*) '([^']*)'$/ do |object_type, key, value|
   visit generic_object_path(object_type, key, value)
 end
 
-When /^I view JSON for the (.*) with (.*) '(.*)'$/ do |object_type, key, value|
+When /^I view JSON for the (.*) with (.*) '([^']*)'$/ do |object_type, key, value|
   visit generic_object_path(object_type, key, value, nil, 'json')
 end
 
-Given(/^I public view the (.*) with (.*) '(.*)'$/) do |object_type, key, value|
+Given(/^I public view the (.*) with (.*) '([^']*)'$/) do |object_type, key, value|
   visit specific_object_path(object_type, key, value, 'public')
 end
 
-Then /^I should be on the view page for the (.*) with (.*) '(.*)'$/ do |object_type, key, value|
+Then /^I should be on the view page for the (.*) with (.*) '([^']*)'$/ do |object_type, key, value|
   expect(current_path).to eq(generic_object_path(object_type, key, value))
 end
 
-Then /^I should be on the public view page for the (.*) with (.*) '(.*)'$/ do |object_type, key, value|
+Then /^I should be on the public view page for the (.*) with (.*) '([^']*)'$/ do |object_type, key, value|
   expect(current_path).to eq(specific_object_path(object_type, key, value, 'public'))
 end
 
-When /^I edit the (.*) with (.*) '(.*)'$/ do |object_type, key, value|
+When /^I edit the (.*) with (.*) '([^']*)'$/ do |object_type, key, value|
   visit generic_object_path(object_type, key, value, 'edit')
 end
 
-Then /^I should be on the edit page for the (.*) with (.*) '(.*)'$/ do |object_type, key, value|
+Then /^I should be on the edit page for the (.*) with (.*) '([^']*)'$/ do |object_type, key, value|
   expect(current_path).to eq(generic_object_path(object_type, key, value, 'edit'))
 end
 
-Then /^I should be on the update page for the (.*) with (.*) '(.*)'$/ do |object_type, key, value|
+Then /^I should be on the update page for the (.*) with (.*) '([^']*)'$/ do |object_type, key, value|
   expect(current_path).to eq(generic_object_path(object_type, key, value))
 end
 

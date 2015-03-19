@@ -1,15 +1,15 @@
-And /^the assessable (.*) with (.*) '(.*)' has assessments with fields:$/ do |object_type, key, value, table|
+And /^the assessable (.*) with (.*) '([^']*)' has assessments with fields:$/ do |object_type, key, value, table|
   assessable = step "the #{object_type} with #{key} '#{value}' exists"
   table.hashes.each do |hash|
     FactoryGirl.create(:assessment, hash.merge(assessable: assessable))
   end
 end
 
-And /^The collection titled '(.*)' should not have an assessment with date '(.*)'$/ do |title, date|
+And /^The collection titled '([^']*)' should not have an assessment with date '([^']*)'$/ do |title, date|
   find_assessment(date, title).should be_nil
 end
 
-And /^The collection titled '(.*)' should have an assessment with date '(.*)'$/ do |title, date|
+And /^The collection titled '([^']*)' should have an assessment with date '([^']*)'$/ do |title, date|
   find_assessment(date, title).should_not be_nil
 end
 
@@ -17,7 +17,7 @@ Then /^I should see an assessment table$/ do
   page.should have_selector('table#assessments')
 end
 
-Then /^a visitor is unauthorized to start an assessment for the collection titled '(.*)'$/ do |title|
+Then /^a visitor is unauthorized to start an assessment for the collection titled '([^']*)'$/ do |title|
   rack_login('a visitor')
   get new_assessment_path(assessable_type: 'Collection',
                           assessable_id: Collection.where(title: title).first.id)
@@ -25,7 +25,7 @@ Then /^a visitor is unauthorized to start an assessment for the collection title
   expect(last_response.location).to match(/#{unauthorized_path}$/)
 end
 
-Then /^a visitor is unauthorized to create an assessment for the collection titled '(.*)'$/ do |title|
+Then /^a visitor is unauthorized to create an assessment for the collection titled '([^']*)'$/ do |title|
   rack_login('a visitor')
   post assessments_path(assessment: {assessable_type: 'Collection',
                                         assessable_id: Collection.where(title: title).first.id})
@@ -33,7 +33,7 @@ Then /^a visitor is unauthorized to create an assessment for the collection titl
   expect(last_response.location).to match(/#{unauthorized_path}$/)
 end
 
-Then /^I should be viewing assessments for the (.*) with (.*) '(.*)'$/ do |object_type, key, value|
+Then /^I should be viewing assessments for the (.*) with (.*) '([^']*)'$/ do |object_type, key, value|
   expect(current_path).to eq(specific_object_path(object_type, key, value, 'assessments'))
 end
 
