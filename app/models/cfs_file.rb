@@ -96,6 +96,9 @@ class CfsFile < ActiveRecord::Base
     update_size_from_fits(doc.at_css('fits fileinfo size').text.to_d)
     update_md5_sum_from_fits(doc.at_css('fits fileinfo md5checksum').text)
     update_content_type_from_fits(doc.at_css('fits identification identity')['mimetype'])
+  rescue Exception
+    Rails.logger.error("Couldn't update cfs file #{self.id} from FITS: #{self.fits_xml}")
+    raise
   end
 
   def update_size_from_fits(new_size)
@@ -218,10 +221,14 @@ class CfsFile < ActiveRecord::Base
   end
 
   def get_fits_xml
-    file_path = URI.encode(self.absolute_path.gsub(/^\/+/, ''))
+    file_path = CGI.escape(self.absolute_path.gsub(/^\/+/, ''))
     resource = RestClient::Resource.new("http://localhost:4567/fits/file/#{file_path}")
     response = resource.get
-    response.body
+    if response.code == 200
+      response.body
+    else
+      raise RuntimeError, "Bad response from FITS server: Code #{response.code}. Body: #{response.body}"
+    end
   end
 
   def safe_size
