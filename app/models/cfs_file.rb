@@ -221,9 +221,8 @@ class CfsFile < ActiveRecord::Base
   end
 
   def get_fits_xml
-    file_path = CGI.escape(self.absolute_path.gsub(/^\/+/, ''))
-    resource = RestClient::Resource.new("http://localhost:4567/fits/file/#{file_path}")
-    response = resource.get
+    resource = RestClient::Resource.new("http://localhost:4567/fits/file")
+    response = resource.get(params: {path: self.absolute_path.gsub(/^\/+/, '')})
     case response.code
       when 200
         response.body
