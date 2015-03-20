@@ -97,7 +97,7 @@ class CfsFile < ActiveRecord::Base
     update_md5_sum_from_fits(doc.at_css('fits fileinfo md5checksum').text)
     update_content_type_from_fits(doc.at_css('fits identification identity')['mimetype'])
   rescue Exception
-    Rails.logger.error("Couldn't update cfs file #{self.id} from FITS: #{self.fits_xml}")
+    Rails.logger.error("*********** Couldn't update cfs file #{self.id} from FITS: #{self.fits_xml}")
     raise
   end
 
@@ -224,10 +224,13 @@ class CfsFile < ActiveRecord::Base
     file_path = CGI.escape(self.absolute_path.gsub(/^\/+/, ''))
     resource = RestClient::Resource.new("http://localhost:4567/fits/file/#{file_path}")
     response = resource.get
-    if response.code == 200
-      response.body
-    else
-      raise RuntimeError, "Bad response from FITS server: Code #{response.code}. Body: #{response.body}"
+    case response.code
+      when 200
+        response.body
+      when 404
+        raise RuntimeError, "File not found for FITS: #{self.absolute_path}"
+      else
+        raise RuntimeError, "Bad response from FITS server: Code #{response.code}. Body: #{response.body}"
     end
   end
 
