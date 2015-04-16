@@ -23,9 +23,10 @@
         %th Actions
     %tbody
       - @red_flags.each do |red_flag|
+        - red_flaggable = red_flag.red_flaggable.decorate
         %tr{id: "red-flag-#{red_flag.id}"}
-          %td= red_flag.red_flaggable.class.cfs_type
-          %td= red_flag.red_flaggable.decorate.cfs_label
+          %td= red_flaggable.cfs_type
+          %td= red_flaggable.cfs_label
           %td= red_flag.priority
           %td.status= red_flag.status
           %td= red_flag.created_at

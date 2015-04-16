@@ -52,6 +52,10 @@ class CfsFile < ActiveRecord::Base
     'CFS File'
   end
 
+  def cfs_type
+    self.class.cfs_type
+  end
+
   #the directories leading up to the file
   def ancestors
     self.cfs_directory.ancestors_and_self

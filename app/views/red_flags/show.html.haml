@@ -3,8 +3,9 @@
 
 .page_header
   %h2
-    Red Flag for #{@red_flag.red_flaggable.class.to_s.underscore.humanize}:
-    = link_to @red_flag.red_flaggable.decorate.label, @red_flag.red_flaggable
+    - red_flaggable = @red_flag.red_flaggable.decorate
+    Red Flag for #{red_flaggable.decorated_class_human}:
+    = link_to red_flaggable.label, red_flaggable
 
 .row
   .col-sm-8

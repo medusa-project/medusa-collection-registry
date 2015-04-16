@@ -11,12 +11,14 @@
       %td Actions
   %tbody
     - @scheduled_events.each do |event|
+      - eventable = event.scheduled_eventable.decorate
+      - parent = eventable.parent.decorate
       %tr
         %td= event.action_date
         %td= event.state
-        %td= event.scheduled_eventable.decorate.label
-        %td= event.scheduled_eventable.class.to_s.underscore.humanize
-        %td= link_to(event.scheduled_eventable.parent.decorate.label, event.scheduled_eventable.parent)
+        %td= eventable.label
+        %td= eventable.decorated_class_human
+        %td= link_to(parent.label, parent)
         %td= event.actor_email
         %td= event.message
         %td
