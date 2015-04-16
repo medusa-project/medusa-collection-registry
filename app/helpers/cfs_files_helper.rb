@@ -1,4 +1,0 @@
-module CfsFilesHelper
-
-
-end

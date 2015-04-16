@@ -14,15 +14,11 @@
         %td
         %td
         %td
-    - @directory.cfs_files.each do |file|
+    - @directory.cfs_files.decorate.each do |file|
       %tr
         %td{'data-sort' => "b-#{file.name}"}
           = fa_icon 'file'
           = link_to file.name, cfs_file_path(file)
         %td= file.size
         %td= file.mtime
-        %td
-          - if file.fits_xml
-            = small_view_button(fits_cfs_file_path(file, format: :xml))
-          - else
-            = small_create_button(create_fits_xml_cfs_file_path(file, method: :post))
+        %td= file.fits_button
