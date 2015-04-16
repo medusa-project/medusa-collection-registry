@@ -18,7 +18,7 @@
           - cache([assessment, assessment.assessable]) do
             %tr
               %td #{link_to assessment.name, assessment}
-              %td #{link_to assessment.assessable.label, assessment.assessable}
+              %td #{link_to assessment.assessable.decorate.label, assessment.assessable}
               %td #{assessment.assessable.class.to_s.underscore.humanize}
               %td #{assessment.date}
               %td #{assessment.author_email}

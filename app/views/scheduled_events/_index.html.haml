@@ -14,9 +14,9 @@
       %tr
         %td= event.action_date
         %td= event.state
-        %td= event.scheduled_eventable.label
+        %td= event.scheduled_eventable.decorate.label
         %td= event.scheduled_eventable.class.to_s.underscore.humanize
-        %td= link_to(event.scheduled_eventable.parent.label, event.scheduled_eventable.parent)
+        %td= link_to(event.scheduled_eventable.parent.decorate.label, event.scheduled_eventable.parent)
         %td= event.actor_email
         %td= event.message
         %td

@@ -36,14 +36,6 @@ class CfsFile < ActiveRecord::Base
     self.cfs_directory.repository
   end
 
-  def label
-    self.relative_path
-  end
-
-  def cfs_label
-    self.relative_path
-  end
-
   def relative_path
     File.join(self.cfs_directory.relative_path, self.name)
   end

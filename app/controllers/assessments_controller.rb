@@ -3,6 +3,7 @@ class AssessmentsController < ApplicationController
   before_action :require_logged_in
   before_action :find_assessment_and_assessable, only: [:destroy, :show, :edit, :update]
   helper :assessments
+  decorates_assigned :assessable
 
   def destroy
     authorize! :destroy_assessment, @assessable

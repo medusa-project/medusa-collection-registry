@@ -25,7 +25,7 @@ class Repository < ActiveRecord::Base
   end
 
   aggregates_red_flags collections: :collections, label_method: :title
-  breadcrumbs parent: nil
+  breadcrumbs parent: nil, label: :title
   cascades_events parent: nil
 
   def total_size
@@ -39,10 +39,6 @@ class Repository < ActiveRecord::Base
 
   def recursive_assessments
     self.assessments + self.collections.collect { |collection| collection.recursive_assessments }.flatten
-  end
-
-  def label
-    self.title
   end
 
   def all_scheduled_events

@@ -45,7 +45,7 @@ class Collection < ActiveRecord::Base
   end
 
   aggregates_red_flags collections: :file_groups, label_method: :title
-  breadcrumbs parent: :repository
+  breadcrumbs parent: :repository, label: :title
   cascades_events parent: :repository
 
   def total_size
@@ -81,10 +81,6 @@ class Collection < ActiveRecord::Base
         xml.publisher(self.repository.title)
       end
     end
-  end
-
-  def label
-    self.title
   end
 
   def recursive_assessments

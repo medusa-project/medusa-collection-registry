@@ -13,9 +13,9 @@
     - @events.each do |event|
       %tr
         %td= event.date
-        %td= link_to event.eventable.label, event.eventable
+        %td= link_to event.eventable.decorate.label, event.eventable
         %td= event.eventable.class.to_s.underscore.humanize
-        %td= link_to(event.eventable.parent.label, event.eventable.parent)
+        %td= link_to(event.eventable.parent.decorate.label, event.eventable.parent)
         %td= event.actor_email
         %td= event.message
         %td= event.note

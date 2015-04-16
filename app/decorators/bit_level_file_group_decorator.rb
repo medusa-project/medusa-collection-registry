@@ -1,0 +1,3 @@
+class BitLevelFileGroupDecorator < FileGroupDecorator
+
+end

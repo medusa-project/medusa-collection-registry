@@ -1,0 +1,3 @@
+class ExternalFileGroupDecorator < FileGroupDecorator
+
+end

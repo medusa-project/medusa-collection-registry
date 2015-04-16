@@ -300,10 +300,6 @@ class CfsDirectory < ActiveRecord::Base
     directories
   end
 
-  def label
-    self.path
-  end
-
   protected
 
   def find_file_with_directory_components(file_name, path_components)

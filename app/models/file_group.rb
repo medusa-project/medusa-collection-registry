@@ -36,7 +36,7 @@ class FileGroup < ActiveRecord::Base
   ACQUISITION_METHODS = ['internal digitization', 'vendor digitization', 'electronic records acquisition', 'external deposit']
   validates_inclusion_of :acquisition_method, in: ACQUISITION_METHODS, allow_blank: true
 
-  breadcrumbs parent: :collection
+  breadcrumbs parent: :collection, label: :title
   cascades_events parent: :collection
 
   STORAGE_LEVEL_HASH = {'external' => 'ExternalFileGroup',
@@ -53,10 +53,6 @@ class FileGroup < ActiveRecord::Base
 
   def self.acquisition_methods
     ACQUISITION_METHODS
-  end
-
-  def label
-    self.title
   end
 
   #subclasses should override appropriately - this is blank here to facilitate the form

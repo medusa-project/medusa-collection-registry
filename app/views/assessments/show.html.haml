@@ -3,7 +3,7 @@
   = delete_button(@assessment)
 
 - content_for(:page_header_extra) do
-  %p.lead #{@assessable.class.name}: #{link_to(@assessable.label, @assessable)}
+  %p.lead #{@assessable.class.name}: #{link_to(assessable.label, @assessable)}
 = render layout: 'layouts/page_header' do
   Assessment: #{@assessment.date}
 
