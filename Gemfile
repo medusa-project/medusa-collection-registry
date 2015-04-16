@@ -76,8 +76,10 @@ gem 'oink'
 
 # Medusa Book Tracker compatibility
 gem 'local_time'
+
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
+gem 'draper'
 
 gem 'uuid'
 gem 'paperclip', git: 'git://github.com/thoughtbot/paperclip.git'
