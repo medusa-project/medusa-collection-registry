@@ -8,4 +8,8 @@ class CfsFileDecorator < BaseDecorator
     object.relative_path
   end
 
+  def cfs_type
+    'CFS File'
+  end
+
 end
