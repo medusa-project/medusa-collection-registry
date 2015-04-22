@@ -43,7 +43,7 @@ Feature: Record events
     And I fill in fields:
       | Note | Added note |
     And I click on 'Update'
-    And I click on 'Events'
+    And I click on 'View Events'
     Then I should be viewing events for the file group with title 'dog-files'
     And I should see all of:
       | FITS analysis performed | admin@example.com | Added note |
