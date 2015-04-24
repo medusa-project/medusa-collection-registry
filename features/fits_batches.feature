@@ -1,0 +1,62 @@
+Feature: FITS batch processing
+  As a librarian
+  In order to learn about the files that we have
+  I want to be able to run FITS on batches of files
+
+  Background:
+    Given I am logged in as an admin
+    And I clear the cfs root directory
+    And the physical cfs directory 'dogs/toy-dogs' has a file 'joe.txt' with contents 'joe'
+    And the physical cfs directory 'dogs/toy-dogs' has a file 'pete.txt' with contents 'pete'
+    And the physical cfs directory 'dogs/toy-dogs' has a file 'bob.txt' with contents 'bob'
+    And the physical cfs directory 'dogs/toy-dogs' has a file 'fred.xml' with contents '<?xml version="1.0"?><fred/>'
+    And the collection with title 'Dogs' has child file groups with fields:
+      | title   | type              |
+      | Toys    | BitLevelFileGroup |
+    And the file group titled 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
+
+  Scenario: Run batch of FITS on files by extension
+    When I go to the dashboard
+    And I click on 'txt'
+    And I click on 'Run FITS batch'
+    And delayed jobs are run
+    Then 3 cfs files should have fits attached
+
+  Scenario: Run batch of FITS on files by mime type
+    When I go to the dashboard
+    And I click on 'text/plain'
+    And I click on 'Run FITS batch'
+    And delayed jobs are run
+    Then 3 cfs files should have fits attached
+
+  Scenario: Only one delayed job may be active for an extension at a time
+    When I go to the dashboard
+    And I click on 'xml'
+    And I click on 'Run FITS batch'
+    And I go to the dashboard
+    And I click on 'xml'
+    And I click on 'Run FITS batch'
+    Then I should see 'There is already a FITS batch running for extension ''xml'''
+
+  Scenario: Only one delayed job may be active for an extension at a time
+    When I go to the dashboard
+    And I click on 'application/xml'
+    And I click on 'Run FITS batch'
+    And I go to the dashboard
+    And I click on 'application/xml'
+    And I click on 'Run FITS batch'
+    Then I should see 'There is already a FITS batch running for mime type ''application/xml'''
+
+  Scenario: Only admins may run FITS batch jobs by mime type
+    When I relogin as a manager
+    And I go to the dashboard
+    And I click on 'application/xml'
+    And I click on 'Run FITS batch'
+    Then I should be unauthorized
+
+  Scenario: Only admins may run FITS batch jobs by extension
+    When I relogin as a manager
+    And I go to the dashboard
+    And I click on 'xml'
+    And I click on 'Run FITS batch'
+    Then I should be unauthorized

@@ -181,3 +181,6 @@ When(/^I update the cfs file with name '([^']*)' with fields:$/) do |name, table
   cfs_file.update_attributes!(table.hashes.first)
 end
 
+Then(/^(\d+) cfs files should have fits attached$/) do |count|
+  expect(CfsFile.where('fits_xml IS NOT NULL').count).to eql(count.to_i)
+end
