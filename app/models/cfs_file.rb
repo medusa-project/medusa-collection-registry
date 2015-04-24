@@ -44,6 +44,10 @@ class CfsFile < ActiveRecord::Base
     File.join(CfsRoot.instance.path, self.relative_path)
   end
 
+  def exists_on_filesystem?
+    File.exists?(self.absolute_path)
+  end
+
   def file_group
     self.cfs_directory.file_group
   end
