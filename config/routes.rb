@@ -78,9 +78,11 @@ MedusaCollectionRegistry::Application.routes.draw do
   end
   resources :content_types, only: [] do
     get :cfs_files, on: :member
+    post :fits_batch, on: :member
   end
   resources :file_extensions, only: [] do
     get :cfs_files, on: :member
+    post :fits_batch, on: :member
   end
   resources :file_format_profiles
   resources :searches, only: [] do

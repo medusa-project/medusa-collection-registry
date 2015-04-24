@@ -1,2 +1,11 @@
-= render 'cfs_files/table'
-= will_paginate @cfs_files, renderer: BootstrapPagination::Rails
+.row.vertical-align
+  .col-md-4
+    = render layout: 'layouts/page_header' do
+      Content Types
+  .col-md-8
+    .btn-toolbar.pull-right
+      = link_to 'Run FITS batch', fits_batch_content_type_path(@content_type), class: 'btn btn-default', method: :post
+
+.row
+  = render 'cfs_files/table'
+  = will_paginate @cfs_files, renderer: BootstrapPagination::Rails
