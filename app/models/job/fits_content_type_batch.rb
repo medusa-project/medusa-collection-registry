@@ -11,7 +11,7 @@ class Job::FitsContentTypeBatch < ActiveRecord::Base
     if self.find_by(content_type_id: content_type.id)
       nil
     else
-      Delayed::Job.enqueue(self.create!(user: user, content_type: content_type), priority: 90)
+      Delayed::Job.enqueue(self.create!(user: user, content_type: content_type), priority: 90, queue: 'initial_assessment')
     end
   end
 

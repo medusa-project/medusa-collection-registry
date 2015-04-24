@@ -11,7 +11,7 @@ class Job::FitsFileExtensionBatch < ActiveRecord::Base
     if self.find_by(file_extension_id: file_extension.id)
       nil
     else
-      Delayed::Job.enqueue(self.create!(user: user, file_extension: file_extension), priority: 90)
+      Delayed::Job.enqueue(self.create!(user: user, file_extension: file_extension), priority: 90, queue: 'initial_assessment')
     end
   end
 
