@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217225223) do
+ActiveRecord::Schema.define(version: 20150424212501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -248,6 +248,12 @@ ActiveRecord::Schema.define(version: 20150217225223) do
   add_index "events", ["eventable_id"], name: "index_events_on_eventable_id", using: :btree
   add_index "events", ["updated_at"], name: "index_events_on_updated_at", using: :btree
 
+  create_table "fedora_roots", force: :cascade do |t|
+    t.string   "url_prefix"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "file_extensions", force: :cascade do |t|
     t.string   "extension",                    null: false
     t.decimal  "cfs_file_size",  default: 0.0
@@ -362,6 +368,16 @@ ActiveRecord::Schema.define(version: 20150217225223) do
 
   add_index "job_cfs_initial_file_group_assessments", ["file_group_id"], name: "index_job_cfs_initial_file_group_assessments_on_file_group_id", using: :btree
 
+  create_table "job_fits_content_type_batches", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "content_type_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "job_fits_content_type_batches", ["content_type_id"], name: "index_job_fits_content_type_batches_on_content_type_id", unique: true, using: :btree
+  add_index "job_fits_content_type_batches", ["user_id"], name: "index_job_fits_content_type_batches_on_user_id", using: :btree
+
   create_table "job_fits_directories", force: :cascade do |t|
     t.integer  "cfs_directory_id"
     t.integer  "file_group_id"
@@ -382,6 +398,16 @@ ActiveRecord::Schema.define(version: 20150217225223) do
 
   add_index "job_fits_directory_trees", ["cfs_directory_id"], name: "index_job_fits_directory_trees_on_cfs_directory_id", using: :btree
   add_index "job_fits_directory_trees", ["file_group_id"], name: "index_job_fits_directory_trees_on_file_group_id", using: :btree
+
+  create_table "job_fits_file_extension_batches", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "file_extension_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "job_fits_file_extension_batches", ["file_extension_id"], name: "index_job_fits_file_extension_batches_on_file_extension_id", unique: true, using: :btree
+  add_index "job_fits_file_extension_batches", ["user_id"], name: "index_job_fits_file_extension_batches_on_user_id", using: :btree
 
   create_table "job_fixity_checks", force: :cascade do |t|
     t.integer  "user_id"
@@ -650,5 +676,9 @@ ActiveRecord::Schema.define(version: 20150217225223) do
   add_foreign_key "file_format_profiles_content_types_joins", "file_format_profiles"
   add_foreign_key "file_format_profiles_file_extensions_joins", "file_extensions"
   add_foreign_key "file_format_profiles_file_extensions_joins", "file_format_profiles"
+  add_foreign_key "job_fits_content_type_batches", "content_types"
+  add_foreign_key "job_fits_content_type_batches", "users"
+  add_foreign_key "job_fits_file_extension_batches", "file_extensions"
+  add_foreign_key "job_fits_file_extension_batches", "users"
   add_foreign_key "job_fixity_checks", "users"
 end
