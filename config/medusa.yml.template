@@ -51,6 +51,7 @@ development:
     feedback: hding2@illinois.edu
     dev: hding2@illinois.edu
     noreply: medusa-noreply@medusatest.library.illinois.edu
+  fits_batch_size: 1000
 test:
   cfs:
     root: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-test
@@ -70,6 +71,7 @@ test:
     port: 3000
     root: test
   public_view_on: true
+  fits_batch_size: 1000
 production:
   basic_auth: change_this_user:change_this_password
   medusa_users_group: Library Medusa Users
@@ -82,10 +84,8 @@ production:
   book_tracker:
     import_path: /mnt/cnfs-ro/root/813/1127
     library_nuc_code: UIU
-<<<<<<< HEAD
+  fits_batch_size: 1000
   loris:
     host: localhost
     port: 3000
-=======
   public_view_on: true
->>>>>>> master

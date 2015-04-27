@@ -5,7 +5,7 @@ class Job::FitsContentTypeBatch < ActiveRecord::Base
   validates_uniqueness_of :content_type_id, allow_blank: nil
   validates_presence_of :user_id
 
-  BATCH_MAX_SIZE = 100
+  BATCH_MAX_SIZE = 1000
 
   def self.create_for(user, content_type)
     if self.find_by(content_type_id: content_type.id)
@@ -16,7 +16,8 @@ class Job::FitsContentTypeBatch < ActiveRecord::Base
   end
 
   def perform
-    cfs_files = content_type.cfs_files.where('fits_xml IS NULL').limit(BATCH_MAX_SIZE)
+    size = MedusaCollectionRegistry::Application.medusa_config['fits_batch_size'] || BATCH_MAX_SIZE
+    cfs_files = content_type.cfs_files.where('fits_xml IS NULL').limit(size)
     missing_files = Array.new
     already_done_files = Array.new
     analyzed_files = Array.new
