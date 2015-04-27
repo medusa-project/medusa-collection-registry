@@ -18,13 +18,21 @@ class Job::FitsContentTypeBatch < ActiveRecord::Base
   def perform
     cfs_files = content_type.cfs_files.where('fits_xml IS NULL').limit(BATCH_MAX_SIZE)
     missing_files = Array.new
+    already_done_files = Array.new
+    analyzed_files = Array.new
     cfs_files.each do |cfs_file|
       unless cfs_file.exists_on_filesystem?
         missing_files << cfs_file
         next
       end
+      if cfs_file.fits_xml.present?
+        already_done_files << cfs_file
+        next
+      end
       cfs_file.ensure_fits_xml
+      analyzed_files << cfs_file
     end
+    FitsMailer.success(self.user, "Mime type: #{self.content_type.name}", missing_files, already_done_files, analyzed_files).deliver_now
   end
 
 end

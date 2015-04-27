@@ -1,0 +1,24 @@
+%p
+  Medusa has completed your FITS batch for #{@target}.
+  #{@missing_files.count + @already_analyzed_files.count + @currently_analyzed_files.count} files were examined.
+
+- if @missing_files.count > 0
+  %p
+    #{@missing_files.count} file(s) were not found on the file system:
+    %ul
+      - @missing_files.each do |file|
+        %li= file.relative_path
+
+- if @already_analyzed_files.count > 0
+  %p
+    #{@already_analyzed_files.count} file(s) already had FITS data:
+    %ul
+      - @already_analyzed_files.each do |file|
+        %li= file.relative_path
+
+- if @currently_analyzed_files.count > 0
+  %p
+    #{@currently_analyzed_files.count} file(s) got new FITS data:
+    %ul
+      - @currently_analyzed_files.each do |file|
+        %li= "#{file.relative_path}: #{file.content_type.name}"

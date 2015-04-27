@@ -1,5 +1,6 @@
 And(/^'([^']*)' should receive an email with subject '([^']*)'$/) do |address, subject|
   open_email(address)
+  y = current_emails
   expect(current_emails.detect {|email| email.subject == subject}).to be_truthy
 end
 

@@ -23,6 +23,8 @@ Feature: FITS batch processing
     And I should see 'FITS batch scheduled for extension 'txt''
     When delayed jobs are run
     Then 3 cfs files should have fits attached
+    And delayed jobs are run
+    And 'admin@example.com' should receive an email with subject 'FITS batch completed'
 
   Scenario: Run batch of FITS on files by mime type
     When I go to the dashboard
@@ -32,6 +34,7 @@ Feature: FITS batch processing
     And I should see 'FITS batch scheduled for mime type 'text/plain''
     And delayed jobs are run
     Then 3 cfs files should have fits attached
+    And 'admin@example.com' should receive an email with subject 'FITS batch completed'
 
   Scenario: Only one delayed job may be active for an extension at a time
     When I go to the dashboard
