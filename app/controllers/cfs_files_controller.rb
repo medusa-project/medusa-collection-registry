@@ -183,6 +183,9 @@ class CfsFilesController < ApplicationController
     return false if image_server_config['disabled'].present?
     result = Net::HTTP.get_response(URI.parse(iiif_info_json_url(file)))
     result.code == '200' && result.body.index('http://iiif.io/api/image/2/level2.json')
+  rescue Exception => e
+    Rails.logger.error "Problem determining iiif compatibility for cfs file: #{file.id}.\n #{e}."
+    return false
   end
 
   def iiif_url(file, iiif_parameters, format)
