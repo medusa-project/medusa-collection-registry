@@ -198,7 +198,7 @@ class CfsFilesController < ApplicationController
 
   def iiif_base_url(file)
     image_server_base_url = "http://#{image_server_config['host'] || 'localhost'}:#{image_server_config['port'] || 3000}/#{image_server_config['root']}"
-    "#{image_server_base_url}/#{file.relative_path}"
+    "#{image_server_base_url}/#{file.relative_path.gsub(' ', '%20')}"
   end
 
   def require_public_file
