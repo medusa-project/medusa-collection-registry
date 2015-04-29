@@ -59,6 +59,7 @@
   %tbody
     - %w(copying amazon_backup).each do |state|
       - Workflow::Ingest.where(state: state).includes(:bit_level_file_group).each do |ingest|
-        %tr
-          %td= link_to ingest.most_advanced_file_group.title, ingest.most_advanced_file_group
-          %td= ingest_state_text(state)
+        - if ingest.most_advanced_file_group.present?
+          %tr
+            %td= link_to ingest.most_advanced_file_group, ingest.most_advanced_file_group
+            %td= ingest_state_text(state)

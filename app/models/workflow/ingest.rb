@@ -26,6 +26,9 @@ class Workflow::Ingest < Job::Base
   end
 
   def perform
+    unless external_file_group.present? and bit_level_file_group.present?
+      raise RuntimeError, "File group missing for Workflow::Ingest: #{id}"
+    end
     self.send("perform_#{self.state}")
   end
 
