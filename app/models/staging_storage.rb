@@ -10,6 +10,10 @@ class StagingStorage < Object
     @roots = config_roots.collect {|root_hash| StagingStorageRoot.new(root_hash)}
   end
 
+  def root_named(name)
+    roots.detect {|root| root.name == name}
+  end
+
   #return the path with all '\' changed to '/', any multiples condensed to one, and any trailing '/' removed
   def self.normalize_path(path)
     path.tr('\\', '/').gsub(/\/+/, '/').gsub(/\/+$/, '')

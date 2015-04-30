@@ -19,29 +19,29 @@ Feature: File accrual
   Scenario: There is no accrual button nor form on a file group without cfs directory
     Given I am logged in as an admin
     When I view the bit level file group with title 'Cats'
-    Then I should not see 'Add Files'
-    And I should not see the accrual form
+    Then I should not see 'Add files'
+    And I should not see the accrual form and dialog
 
   Scenario: There is an accrual button and form on a file group with cfs directory
     Given I am logged in as an admin
     When I view the bit level file group with title 'Dogs'
-    Then I should see 'Add Files'
-    And I should see the accrual form
+    Then I should see 'Add files'
+    And I should see the accrual form and dialog
 
   Scenario: There is an accrual button and form on a cfs directory
     Given I am logged in as an admin
-    When I view the cfs directory for the file group titled 'Dogs' for the path 'dogs/pugs'
-    Then I should see 'Add Files'
-    And I should see the accrual form
+    When I view the cfs directory for the file group titled 'Dogs' for the path 'pugs'
+    Then I should see 'Add files'
+    And I should see the accrual form and dialog
 
   Scenario: There is no accrual button nor form on a file group for a non medusa admin
     Given I am logged in as a manager
     When I view the bit level file group with title 'Dogs'
-    Then I should not see 'Add Files'
-    And I should not see the accrual form
+    Then I should not see 'Add files'
+    And I should not see the accrual form and dialog
 
   Scenario: There is no accrual button nor form on a cfs directory for a non medusa admin
     Given I am logged in as a manager
-    When I view the cfs directory for the file group titled 'Dogs' for the path 'dogs/pugs'
-    Then I should not see 'Add Files'
-    And I should not see the accrual form
+    When I view the cfs directory for the file group titled 'Dogs' for the path 'pugs'
+    Then I should not see 'Add files'
+    And I should not see the accrual form and dialog

@@ -101,17 +101,15 @@
 #items_list
   = render partial: 'items', locals: { items: @items, next_page_url: @next_page_url }
 
-#bib-ids-modal.modal.fade
-  .modal-dialog
-    .modal-content
-      .modal-header
-        %button.close{ 'type' => 'button', 'data-dismiss' => 'modal' }
-          %span{'aria-hidden' => 'true'}
-            &times;
-          %span.sr-only
-            Close
-        %h4.modal-title
-          Missing bib IDs
-      .modal-body
-        %ul
-          = raw(@missing_bib_ids.uniq.map{ |id| "<li>#{id}</li>" }.join)
+= render layout: 'layouts/bootstrap_modal', locals: {id: 'bib-ids-modal'} do
+  .modal-header
+    %button.close{ 'type' => 'button', 'data-dismiss' => 'modal' }
+      %span{'aria-hidden' => 'true'}
+        &times;
+      %span.sr-only
+        Close
+    %h4.modal-title
+      Missing bib IDs
+  .modal-body
+    %ul
+      = raw(@missing_bib_ids.uniq.map{ |id| "<li>#{id}</li>" }.join)

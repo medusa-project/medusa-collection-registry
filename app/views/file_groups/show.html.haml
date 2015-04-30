@@ -27,3 +27,5 @@
     .row
       %hr
       = render 'cfs_directories/directory_contents_table'
+  - if @directory.present? and safe_can?(:accrue, @directory)
+    = render 'cfs_directories/accrual_dialog'
