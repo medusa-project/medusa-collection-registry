@@ -74,6 +74,15 @@ test:
     root: test
   public_view_on: true
   fits_batch_size: 1000
+  #some of the tests may depend on a root named 'staging-1' being present, though the locations shouldn't matter.
+  staging_storage:
+    roots:
+      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
+        remote_path: /test-staging-root-1
+        name: staging-1
+      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-2
+        remote_path: /test-staging-root-2
+        name: staging-2
 production:
   basic_auth: change_this_user:change_this_password
   medusa_users_group: Library Medusa Users
