@@ -1,0 +1,6 @@
+- if @accrual.at_root?
+  %ul
+    - StagingStorage.instance.roots.each do |root|
+      %li= link_to root.name, update_display_accrual_path(cfs_directory_id: @accrual.cfs_directory_id, staging_path: @accrual.path_down(root.name)), remote: true
+- else
+  %p= @accrual.staging_path

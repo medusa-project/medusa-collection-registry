@@ -11,6 +11,7 @@ class FileGroupsController < ApplicationController
 
   def show
     @directory = @file_group.cfs_directory
+    create_accrual
     respond_to do |format|
       format.html
       format.json
@@ -167,6 +168,10 @@ class FileGroupsController < ApplicationController
         end
       end
     end
+  end
+
+  def create_accrual
+    @accrual = Accrual.new(cfs_directory: @directory) if @directory.present?
   end
 
 end

@@ -1,5 +1,5 @@
 = render layout: 'layout_single' do
   %hr
   = render 'directory_contents_table'
-  - if safe_can?(:accrue, @directory)
+  - if @accrual.present? and safe_can?(:accrue, @directory)
     = render 'accrual_dialog'

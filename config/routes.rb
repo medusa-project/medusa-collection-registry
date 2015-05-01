@@ -89,7 +89,9 @@ MedusaCollectionRegistry::Application.routes.draw do
     post :filename, on: :collection
     get :filename, on: :collection
   end
-
+  resources :accruals, only: [] do
+    get :update_display, on: :member
+  end
   resources :uuids, only: [:show]
 
   match '/dashboard', to: 'dashboard#show', as: :dashboard, via: [:get, :post]

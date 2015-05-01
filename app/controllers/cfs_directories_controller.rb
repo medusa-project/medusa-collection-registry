@@ -8,6 +8,7 @@ class CfsDirectoriesController < ApplicationController
 
   def show
     @directory = CfsDirectory.includes(:subdirectories, :cfs_files).find(params[:id])
+    @accrual = Accrual.new(cfs_directory: @directory)
     @breadcrumbable = @directory
     @file_group = @directory.file_group
     redirect_to @file_group and return if @directory.root? and @file_group.present?
