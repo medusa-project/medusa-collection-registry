@@ -8,7 +8,7 @@
     Directories:
     %ul
       - @accrual.directories.each do |directory|
-        %li= directory
+        %li= link_to(directory, @accrual.child_display_path(directory), remote: true)
   %p
     Files:
     %ul

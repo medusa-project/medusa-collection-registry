@@ -1,9 +1,8 @@
 //update hidden value of staging path to reflect the current value in @accrual
 $("#accrual_staging_path").val("#{escape_javascript(@accrual.staging_path)}");
 //update link for 'Up' button
-//alert($("#add-files-up-link").attr("href"));
-$("#add-files-up-link").prop("href", "#{escape_javascript(@accrual.parent_display_path)}");
-//alert($("#add-files-up-link").attr("href"));
+//The kludge here is to get the query parameters right - there may be a better way to handle this
+$("#add-files-up-link").prop("href", $('<textarea />').html("#{j @accrual.parent_display_path}").text());
 //update directory listing - make partials for each and render them as appropriate, or just make that whole thing
 - listing = render 'cfs_directories/accrual_listing'
 $("#add-files-listing").html("#{escape_javascript(listing)}");
