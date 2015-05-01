@@ -6,11 +6,7 @@
   %p= @accrual.staging_path
   %p
     Directories:
-    %ul
-      - @accrual.directories.each do |directory|
-        %li= link_to(directory, @accrual.child_display_path(directory), remote: true)
+    = collection_check_boxes(:accrual, :accrual_directories, @accrual.directories, :itself, Proc.new {|directory| link_to(directory, @accrual.child_display_path(directory), remote: true)})
   %p
     Files:
-    %ul
-      - @accrual.files.each do |file|
-        %li= file
+    = collection_check_boxes(:accrual, :accrual_files, @accrual.files, :itself, :itself)

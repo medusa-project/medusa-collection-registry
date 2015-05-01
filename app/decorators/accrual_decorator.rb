@@ -8,4 +8,12 @@ class AccrualDecorator < BaseDecorator
     h.update_display_accrual_path(cfs_directory_id: cfs_directory_id, staging_path: path_down(child_name))
   end
 
+  def accrual_directories
+    nil
+  end
+
+  def accrual_files
+    nil
+  end
+
 end
