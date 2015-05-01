@@ -2,8 +2,7 @@
 $("#accrual_staging_path").val("#{escape_javascript(@accrual.staging_path)}");
 //update link for 'Up' button
 //alert($("#add-files-up-link").attr("href"));
-- up_path = update_display_accrual_path(cfs_directory_id: @accrual.cfs_directory_id, staging_path: @accrual.path_up)
-$("#add-files-up-link").prop("href", "#{escape_javascript(up_path)}");
+$("#add-files-up-link").prop("href", "#{escape_javascript(@accrual.parent_display_path)}");
 //alert($("#add-files-up-link").attr("href"));
 //update directory listing - make partials for each and render them as appropriate, or just make that whole thing
 - listing = render 'cfs_directories/accrual_listing'

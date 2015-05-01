@@ -8,7 +8,6 @@
       #add-files-listing
         = render 'cfs_directories/accrual_listing'
       .btn-group
-        - up_path = update_display_accrual_path(cfs_directory_id: @accrual.cfs_directory_id, staging_path: @accrual.path_up)
-        = link_to 'Up', up_path, class: "btn btn-default", id: 'add-files-up-link', remote: true
+        = link_to 'Up', @accrual.parent_display_path, class: "btn btn-default", id: 'add-files-up-link', remote: true
         = f.button :submit, class: 'btn btn-primary', value: 'Ingest'
         = link_to 'Cancel', '#', class: 'btn btn-default', 'data-toggle' => 'modal', 'data-target' => '#add-files-dialog'

@@ -1,4 +1,6 @@
 class Accrual
+  include Draper::Decoratable
+
   attr_accessor :cfs_directory, :staging_path
 
   def initialize(args = {})
