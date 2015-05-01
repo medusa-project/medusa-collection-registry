@@ -25,4 +25,26 @@ class Accrual
     self.staging_path + directory + '/'
   end
 
+  def staging_root
+    StagingStorage.instance.root_named(staging_root_name)
+  end
+
+  def staging_root_name
+    staging_path.split('/').drop(1).first
+  end
+
+  def path_from_staging_root
+    staging_path.split('/').drop(2).join('/')
+  end
+
+  def directories
+    return Array.new if at_root?
+    staging_root.directories_at(path_from_staging_root).collect {|pathname| pathname.basename.to_s}.sort
+  end
+
+  def files
+    return Array.new if at_root?
+    staging_root.files_at(path_from_staging_root).collect {|pathname| pathname.basename.to_s}.sort
+  end
+
 end
