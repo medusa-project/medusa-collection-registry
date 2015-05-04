@@ -160,7 +160,7 @@ class CfsFilesController < ApplicationController
   def common_preview_iiif_image_json
     image_server_url = iiif_info_json_url(@file)
     response_type = 'application/json'
-    json = Net::HTTP.get(image_server_url)
+    json = Net::HTTP.get(URI.parse(image_server_url))
     send_data fix_json_id(json, @file), type: response_type, disposition: 'inline'
   end
 
@@ -175,13 +175,13 @@ class CfsFilesController < ApplicationController
   def common_preview_iiif_image_jpeg
     image_server_url = iiif_url(@file, params[:iiif_parameters], params[:format])
     response_type = 'image/jpeg'
-    image = Net::HTTP.get(image_server_url)
+    image = Net::HTTP.get(URI.parse(image_server_url))
     send_data image, type: response_type, disposition: 'inline'
   end
 
   def is_iiif_compatible?(file)
     return false if image_server_config['disabled'].present?
-    result = Net::HTTP.get_response(iiif_info_json_url(file))
+    result = Net::HTTP.get_response(URI.parse(iiif_info_json_url(file)))
     result.code == '200' && result.body.index('http://iiif.io/api/image/2/level2.json')
   rescue Exception => e
     Rails.logger.error "Problem determining iiif compatibility for cfs file: #{file.id}.\n #{e}."
@@ -189,16 +189,16 @@ class CfsFilesController < ApplicationController
   end
 
   def iiif_url(file, iiif_parameters, format)
-    iiif_base_url(file).merge("/#{iiif_parameters}.#{format}")
+    "#{iiif_base_url(file)}/#{iiif_parameters}.#{format}"
   end
 
   def iiif_info_json_url(file)
-    iiif_base_url(file).merge("/info.json")
+    "#{iiif_base_url(file)}/info.json"
   end
 
   def iiif_base_url(file)
-    image_server_base_url = URI.parse("http://#{image_server_config['host'] || 'localhost'}:#{image_server_config['port'] || 3000}/#{image_server_config['root']}")
-    image_server_base_url.merge("/#{URI::encode(file.relative_path)}")
+    image_server_base_url = "http://#{image_server_config['host'] || 'localhost'}:#{image_server_config['port'] || 3000}/#{image_server_config['root']}"
+    "#{image_server_base_url}/#{URI::encode(file.relative_path)}"
   end
 
   def require_public_file
