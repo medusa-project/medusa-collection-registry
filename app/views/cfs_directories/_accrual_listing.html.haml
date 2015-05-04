@@ -3,10 +3,12 @@
     - StagingStorage.instance.roots.each do |root|
       %li= link_to root.name, @accrual.child_display_path(root.name), remote: true
 - else
-  %p= @accrual.staging_path
-  %p
+  %div
     Directories:
-    = collection_check_boxes(:accrual, :accrual_directories, @accrual.directories, :itself, Proc.new {|directory| link_to(directory, @accrual.child_display_path(directory), remote: true)})
-  %p
+    %div
+      = @accrual.directory_checkboxes
+  %div
     Files:
-    = collection_check_boxes(:accrual, :accrual_files, @accrual.files, :itself, :itself)
+    %div
+      = @accrual.file_checkboxes
+

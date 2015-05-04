@@ -3,6 +3,9 @@
     Add files
   .modal-body
     = simple_form_for :accrual, html: {id: 'add-files-form'} do |f|
+      .btn-group
+        = link_to 'Toggle Directories', '#', onclick: 'toggle_accrual_directories();', class: 'btn btn-default'
+        = link_to 'Toggle Files', '#', onclick: 'toggle_accrual_files();', class: 'btn btn-default'
       = f.input :cfs_directory_id, as: :hidden
       = f.input :staging_path, as: :hidden
       #add-files-listing
