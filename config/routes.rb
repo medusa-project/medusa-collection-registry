@@ -91,6 +91,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   end
   resources :accruals, only: [] do
     get :update_display, on: :member
+    get :submit, on: :collection
   end
   resources :uuids, only: [:show]
 

@@ -2,6 +2,8 @@
 $("#accrual_staging_path").val("#{escape_javascript(@accrual.staging_path)}");
 //update link for 'Up' button
 //The kludge here is to get the query parameters right - there may be a better way to handle this
+//It also occurs to me that this might be a problem if there is an ampersand in the actual path - we may
+//want to to check that we only do this in the query path of
 $("#add-files-up-link").prop("href", $('<textarea />').html("#{j @accrual.parent_display_path}").text());
 //update directory listing - make partials for each and render them as appropriate, or just make that whole thing
 - listing = render 'cfs_directories/accrual_listing'

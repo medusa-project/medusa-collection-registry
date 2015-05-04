@@ -2,7 +2,7 @@
   .modal-header
     Add files
   .modal-body
-    = simple_form_for :accrual, html: {id: 'add-files-form'} do |f|
+    = simple_form_for :accrual, url: submit_accruals_path, html: {id: 'add-files-form'} do |f|
       .btn-group
         = link_to 'Toggle Directories', '#', onclick: 'toggle_accrual_directories();', class: 'btn btn-default'
         = link_to 'Toggle Files', '#', onclick: 'toggle_accrual_files();', class: 'btn btn-default'
