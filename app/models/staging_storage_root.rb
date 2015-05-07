@@ -16,8 +16,11 @@ class StagingStorageRoot < Object
   end
 
   def entries_at(path)
-    pathname = Pathname.new(File.join(local_path, path))
-    pathname.children
+    full_local_path_to(path).children
+  end
+
+  def full_local_path_to(relative_path)
+    Pathname.new(File.join(local_path, relative_path))
   end
 
 end

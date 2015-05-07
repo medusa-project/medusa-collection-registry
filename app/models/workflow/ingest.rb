@@ -5,7 +5,7 @@
 
 require 'fileutils'
 
-class Workflow::Ingest < Job::Base
+class Workflow::Ingest < Workflow::Base
   belongs_to :external_file_group, touch: true
   belongs_to :bit_level_file_group, touch: true
   belongs_to :user, touch: true
@@ -16,28 +16,22 @@ class Workflow::Ingest < Job::Base
   STATES = %w(start copying amazon_backup end)
 
   def self.create_for(user, external_file_group, bit_level_file_group)
-    workflow = self.create!(user: user, external_file_group: external_file_group,
-                            bit_level_file_group: bit_level_file_group, state: 'start')
-    workflow.put_in_queue
+    transaction do
+      workflow = self.create!(user: user, external_file_group: external_file_group,
+                              bit_level_file_group: bit_level_file_group, state: 'start')
+      workflow.put_in_queue
+    end
   end
 
-  def put_in_queue
-    Delayed::Job.enqueue(self, priority: 30)
-  end
-
-  def perform
+  def runnable?
     unless external_file_group.present? and bit_level_file_group.present?
       raise RuntimeError, "File group missing for Workflow::Ingest: #{id}"
     end
-    self.send("perform_#{self.state}")
+    super
   end
 
   def perform_start
-    self.transaction do
-      self.state = 'copying'
-      self.save!
-      self.put_in_queue
-    end
+    be_in_state_and_requeue('copying')
   end
 
   def perform_copying
@@ -58,9 +52,7 @@ class Workflow::Ingest < Job::Base
       collection = self.bit_level_file_group.collection
       collection.preservation_priority = PreservationPriority.find_by(name: 'ingested')
       collection.save!
-      self.state = 'amazon_backup'
-      self.save!
-      self.put_in_queue
+      be_in_state_and_requeue('amazon_backup')
     end
   end
 
@@ -83,11 +75,7 @@ class Workflow::Ingest < Job::Base
   end
 
   def be_at_end
-    self.transaction do
-      self.state = 'end'
-      self.save!
-      self.put_in_queue
-    end
+    be_in_state_and_requeue('end')
   end
 
   def success(job)
