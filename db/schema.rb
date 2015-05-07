@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150424212501) do
+ActiveRecord::Schema.define(version: 20150507193738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -653,6 +653,39 @@ ActiveRecord::Schema.define(version: 20150424212501) do
   add_index "virus_scans", ["file_group_id"], name: "index_virus_scans_on_file_group_id", using: :btree
   add_index "virus_scans", ["updated_at"], name: "index_virus_scans_on_updated_at", using: :btree
 
+  create_table "workflow_accrual_directories", force: :cascade do |t|
+    t.integer  "workflow_accrual_job_id"
+    t.string   "name"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "workflow_accrual_directories", ["workflow_accrual_job_id", "name"], name: "wfad_job_and_name_idx", unique: true, using: :btree
+  add_index "workflow_accrual_directories", ["workflow_accrual_job_id"], name: "index_workflow_accrual_directories_on_workflow_accrual_job_id", using: :btree
+
+  create_table "workflow_accrual_files", force: :cascade do |t|
+    t.integer  "workflow_accrual_job_id"
+    t.string   "name"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "workflow_accrual_files", ["workflow_accrual_job_id", "name"], name: "wfaf_job_and_name_idx", unique: true, using: :btree
+  add_index "workflow_accrual_files", ["workflow_accrual_job_id"], name: "index_workflow_accrual_files_on_workflow_accrual_job_id", using: :btree
+
+  create_table "workflow_accrual_jobs", force: :cascade do |t|
+    t.integer  "cfs_directory_id"
+    t.text     "staging_path"
+    t.string   "state"
+    t.integer  "user_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "workflow_accrual_jobs", ["cfs_directory_id", "staging_path"], name: "wfaj_cfs_dir_id_and_staging_path_idx", unique: true, using: :btree
+  add_index "workflow_accrual_jobs", ["cfs_directory_id"], name: "index_workflow_accrual_jobs_on_cfs_directory_id", using: :btree
+  add_index "workflow_accrual_jobs", ["user_id"], name: "index_workflow_accrual_jobs_on_user_id", using: :btree
+
   create_table "workflow_ingests", force: :cascade do |t|
     t.string   "state",                   limit: 255
     t.integer  "external_file_group_id"
@@ -681,4 +714,8 @@ ActiveRecord::Schema.define(version: 20150424212501) do
   add_foreign_key "job_fits_file_extension_batches", "file_extensions"
   add_foreign_key "job_fits_file_extension_batches", "users"
   add_foreign_key "job_fixity_checks", "users"
+  add_foreign_key "workflow_accrual_directories", "workflow_accrual_jobs"
+  add_foreign_key "workflow_accrual_files", "workflow_accrual_jobs"
+  add_foreign_key "workflow_accrual_jobs", "cfs_directories"
+  add_foreign_key "workflow_accrual_jobs", "users"
 end
