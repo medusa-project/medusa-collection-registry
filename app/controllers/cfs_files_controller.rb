@@ -143,10 +143,14 @@ class CfsFilesController < ApplicationController
   end
 
   def common_image_preview
-    image = MiniMagick::Image.read(StringIO.new(File.open(@file.absolute_path, 'rb') { |f| f.read }))
-    image.format 'jpg'
-    image.resize '300x300>'
-    send_data image.to_blob, type: 'image/jpeg', disposition: 'inline'
+    image = VIPS::Image.new(@file.absolute_path)
+    width = image.x_size
+    height = image.y_size
+    if width > 300 or height > 300
+      factor = ([height, width].max / 300.0).ceil
+      image = image.shrink(factor)
+    end
+    send_data image.jpeg.to_memory, type: 'image/jpeg', disposition: 'inline'
   end
 
   def common_preview_iiif_image
