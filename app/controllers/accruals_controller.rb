@@ -9,7 +9,7 @@ class AccrualsController < ApplicationController
         format.js
       end
     else
-      #TODO redirect appropriately
+      #TODO redirect appropriately and modify redirect targets to do the right thing when that happens
     end
   end
 
@@ -19,7 +19,7 @@ class AccrualsController < ApplicationController
     staging_path = params[:accrual][:staging_path]
     accrual_directories = params[:accrual][:accrual_directories].select {|d| d.present?}
     accrual_files = params[:accrual][:accrual_files].select {|f| f.present?}
-    #make accrual job with above information
+    #make and start accrual job with above information
     flash[:notice] = "Accrual to #{cfs_directory.relative_path} accepted. #{accrual_directories.count} #{'directory'.pluralize(accrual_directories.count)} and #{accrual_files.count} #{'file'.pluralize(accrual_files.count)} to be ingested."
     redirect_to cfs_directory
   end
