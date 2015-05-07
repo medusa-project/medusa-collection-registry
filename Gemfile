@@ -36,7 +36,7 @@ gem 'delayed_job_web', '1.2.5'
 gem 'daemons'
 
 #image processing for file previews
-gem 'mini_magick'
+gem 'ruby-vips', require: 'vips'
 
 #AMQP communication
 gem 'bunny'
