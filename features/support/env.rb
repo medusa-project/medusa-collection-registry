@@ -6,6 +6,7 @@
 
 require 'cucumber/rails'
 require 'json_spec/cucumber'
+require 'capybara/poltergeist'
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd
@@ -15,6 +16,10 @@ Capybara.default_selector = :css
 
 #This preserves compatibility with Capybara 1.x, under which we started developing
 Capybara.match = :prefer_exact
+
+#set drivers
+Capybara.javascript_driver = :poltergeist
+Capybara.default_driver = :rack_test
 
 # By default, any exception happening in your Rails application will bubble up
 # to Cucumber so that your scenario will fail. This is a different from how
@@ -44,12 +49,13 @@ end
 # You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.
 # See the DatabaseCleaner documentation for details. Example:
 #
-#   Before('@no-txn,@selenium,@culerity,@celerity,@javascript') do
-#     # { except: [:widgets] } may not do what you expect here
-#     # as tCucumber::Rails::Database.javascript_strategy overrides
-#     # this setting.
-#     DatabaseCleaner.strategy = :truncation
-#   end
+Before('@no-txn,@selenium,@culerity,@celerity,@javascript') do
+  # { except: [:widgets] } may not do what you expect here
+  # as tCucumber::Rails::Database.javascript_strategy overrides
+  # this setting.
+  DatabaseCleaner.strategy = :truncation
+end
+
 #
 #   Before('~@no-txn', '~@selenium', '~@culerity', '~@celerity', '~@javascript') do
 #     DatabaseCleaner.strategy = :transaction

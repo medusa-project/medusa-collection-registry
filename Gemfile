@@ -102,4 +102,6 @@ group :test do
   gem 'capybara'
   gem 'capybara-email'
   gem 'launchy'
+  #testing with javascript - requires phantomjs to be installed on the test machine
+  gem 'poltergeist'
 end
