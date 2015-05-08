@@ -81,6 +81,8 @@ class Workflow::AccrualJob < Workflow::Base
     #TODO figure out how this should work, given that the Amazon Backup stuff currently will only expect to find a Workflow::Ingest
     #May have to add associated AmazonBackup to this, then it will check the various kinds of things that it might be
     #assigned to to see how to proceed instead of just Workflow::Ingest
+    #It'd just be adding another call when the backup succeeds to try to move this along (no harm if the backup is attached to something else
+    # - see the on_amazon_backup_succeeded_message)
     #For now, just skip to the next step
     be_in_state_and_requeue('mail')
   end
