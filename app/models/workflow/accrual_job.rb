@@ -49,20 +49,30 @@ class Workflow::AccrualJob < Workflow::Base
 
   def perform_copying
     staging_root, relative_path = staging_root_and_relative_path
-    base_path = staging_root.full_local_path_to(relative_path)
+    source_path = staging_root.full_local_path_to(relative_path)
+    target_path = cfs_directory.absolute_path
     workflow_accrual_files.each do |file|
-      #TODO check if it exists in the CFS directory
-      #if not copy it
+      target_file = File.join(target_path, file.name)
+      copy_entry(file, source_path, target_path) unless File.exists?(target_file)
       file.destroy!
     end
     workflow_accrual_directories.each do |directory|
-      #TODO for each directory
-      #rsync it to CFS directory
+      copy_entry(directory, source_path, target_path)
       directory.destroy!
     end
     transaction do
       cfs_directory.schedule_initial_assessments
       be_in_state_and_requeue('amazon_backup')
+    end
+  end
+
+  def copy_entry(entry, source_path, target_path)
+    Rsync.run(File.join(source_path, entry.name), target_path, '-a --ignore-existing') do |result|
+      unless result.success?
+        message = "Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}. Rescheduling."
+        Rails.logger.error message
+        raise RuntimeError, message
+      end
     end
   end
 
@@ -75,7 +85,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_mail
-    #TODO email that this is done
+    Workflow::AccrualMailer.done(self).deliver_now
     be_in_state_and_requeue('end')
   end
 
