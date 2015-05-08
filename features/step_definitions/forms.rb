@@ -41,6 +41,14 @@ And /^I click on '([^']*)'$/ do |link_name|
   click_on(link_name)
 end
 
+And /^I click link with (.*) '(.*)'$/ do |attribute, value|
+  find("a[#{attribute}='#{value}']").trigger('click')
+end
+
+And /^within '(.*)' I click on '(.*)'$/ do |locator, link_name|
+  within(locator) {click_on(link_name)}
+end
+
 And /^I click on '([^']*)' and delayed jobs are run$/ do |link_name|
   step "I click on '#{link_name}'"
   step 'delayed jobs are run'

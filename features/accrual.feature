@@ -40,9 +40,23 @@ Feature: File accrual
     Then I should not see 'Add files'
     And I should not see the accrual form and dialog
 
-  @javascript
   Scenario: There is no accrual button nor form on a cfs directory for a non medusa admin
     Given I am logged in as a manager
     When I view the cfs directory for the file group titled 'Dogs' for the path 'pugs'
     Then I should not see 'Add files'
     And I should not see the accrual form and dialog
+
+  @javascript
+  Scenario: I can navigate the staging storage
+    Given I am logged in as an admin
+    When I view the bit level file group with title 'Dogs'
+    And I click link with title 'Run'
+    And I click on 'Add files'
+    And I click on 'staging-1'
+    And I click on 'dogs'
+    And within '#add-files-form' I click on 'data'
+    Then I should see all of:
+      | joe.txt | pete.txt | stuff |
+    And I should see none of:
+      | more.txt |
+  
