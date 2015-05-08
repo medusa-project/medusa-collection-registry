@@ -10,21 +10,20 @@ class Workflow::AccrualJob < Workflow::Base
 
   STATES = %w(start copying amazon_backup mail end)
 
-  def self.create_for(user, cfs_directory, staging_path)
+  def self.create_for(user, cfs_directory, staging_path, requested_files, requested_directories)
     transaction do
       workflow = self.create!(cfs_directory: cfs_directory, user: user, staging_path: staging_path, state: 'start')
-      workflow.create_accrual_requests
+      workflow.create_accrual_requests(requested_files, requested_directories)
       workflow.put_in_queue
     end
   end
 
-  def create_accrual_requests
-    files, directories = staged_files_and_directories
-    files.each do |file|
-      workflow_accrual_files.create!(name: file.basename.to_s)
+  def create_accrual_requests(requested_files, requested_directories)
+    requested_files.each do |file|
+      workflow_accrual_files.create!(name: file)
     end
-    directories.each do |directory|
-      workflow_accrual_directories.create!(name: directory.basename.to_s)
+    requested_directories.each do |directory|
+      workflow_accrual_directories.create!(name: directory)
     end
   end
 
@@ -67,7 +66,9 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def copy_entry(entry, source_path, target_path)
-    Rsync.run(File.join(source_path, entry.name), target_path, '-a --ignore-existing') do |result|
+    source_entry = File.join(source_path, entry.name)
+    return unless File.exists?(source_entry)
+    Rsync.run(source_entry, target_path, '-a --ignore-existing') do |result|
       unless result.success?
         message = "Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}. Rescheduling."
         Rails.logger.error message

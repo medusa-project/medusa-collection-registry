@@ -19,7 +19,7 @@ class AccrualsController < ApplicationController
     staging_path = params[:accrual][:staging_path]
     accrual_directories = params[:accrual][:accrual_directories].select {|d| d.present?}
     accrual_files = params[:accrual][:accrual_files].select {|f| f.present?}
-    Workflow::AccrualJob.create_for(current_user, cfs_directory, staging_path)
+    Workflow::AccrualJob.create_for(current_user, cfs_directory, staging_path, accrual_files, accrual_directories)
     flash[:notice] = "Accrual to #{cfs_directory.relative_path} accepted. #{accrual_directories.count} #{'directory'.pluralize(accrual_directories.count)} and #{accrual_files.count} #{'file'.pluralize(accrual_files.count)} to be ingested."
     redirect_to cfs_directory
   end
