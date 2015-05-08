@@ -27,4 +27,8 @@ class Workflow::Base < Job::Base
     end
   end
 
+  def be_at_end
+    be_in_state_and_requeue('end')
+  end
+
 end

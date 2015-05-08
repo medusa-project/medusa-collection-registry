@@ -74,10 +74,6 @@ class Workflow::Ingest < Workflow::Base
     Job::IngestStagingDelete.create_for(self.external_file_group, self.user)
   end
 
-  def be_at_end
-    be_in_state_and_requeue('end')
-  end
-
   def success(job)
     if self.state == 'end'
       self.destroy_queued_jobs_and_self

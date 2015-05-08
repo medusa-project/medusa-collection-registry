@@ -1,6 +1,7 @@
 class Workflow::AccrualJob < Workflow::Base
   belongs_to :cfs_directory, touch: true
   belongs_to :user, touch: true
+  belongs_to :amazon_backup, touch: true
 
   has_many :workflow_accrual_directories, :class_name => 'Workflow::AccrualDirectory', dependent: :destroy
   has_many :workflow_accrual_files, :class_name => 'Workflow::AccrualFile', dependent: :destroy
@@ -8,7 +9,7 @@ class Workflow::AccrualJob < Workflow::Base
   validates_presence_of :cfs_directory_id, :user_id
   validates_uniqueness_of :staging_path, scope: :cfs_directory_id
 
-  STATES = %w(start copying amazon_backup mail end)
+  STATES = %w(start copying amazon_backup end)
 
   def self.create_for(user, cfs_directory, staging_path, requested_files, requested_directories)
     transaction do
@@ -78,22 +79,22 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_amazon_backup
-    #TODO figure out how this should work, given that the Amazon Backup stuff currently will only expect to find a Workflow::Ingest
-    #May have to add associated AmazonBackup to this, then it will check the various kinds of things that it might be
-    #assigned to to see how to proceed instead of just Workflow::Ingest
-    #It'd just be adding another call when the backup succeeds to try to move this along (no harm if the backup is attached to something else
-    # - see the on_amazon_backup_succeeded_message)
-    #For now, just skip to the next step
-    be_in_state_and_requeue('mail')
-  end
-
-  def perform_mail
-    Workflow::AccrualMailer.done(self).deliver_now
-    be_in_state_and_requeue('end')
+    file_group = cfs_directory.file_group
+    return if file_group.blank?
+    root_cfs_directory = file_group.cfs_directory
+    transaction do
+      unless AmazonBackup.find_by(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: Date.today)
+        self.amazon_backup = AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: Date.today)
+        self.save!
+        Job::AmazonBackup.create_for(self.amazon_backup)
+      end
+    end
+    #Stay in amazon_backup state - Amazon Backup will do the transition when it receives a reply from the glacier server
   end
 
   def perform_end
-    true
+    Workflow::AccrualMailer.done(self).deliver_now
+    #TODO - perhaps delete staged content, perhaps not
   end
 
   def success(job)

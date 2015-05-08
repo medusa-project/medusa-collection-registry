@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150507193738) do
+ActiveRecord::Schema.define(version: 20150508191123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -680,8 +680,10 @@ ActiveRecord::Schema.define(version: 20150507193738) do
     t.integer  "user_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.integer  "amazon_backup_id"
   end
 
+  add_index "workflow_accrual_jobs", ["amazon_backup_id"], name: "index_workflow_accrual_jobs_on_amazon_backup_id", using: :btree
   add_index "workflow_accrual_jobs", ["cfs_directory_id", "staging_path"], name: "wfaj_cfs_dir_id_and_staging_path_idx", unique: true, using: :btree
   add_index "workflow_accrual_jobs", ["cfs_directory_id"], name: "index_workflow_accrual_jobs_on_cfs_directory_id", using: :btree
   add_index "workflow_accrual_jobs", ["user_id"], name: "index_workflow_accrual_jobs_on_user_id", using: :btree
@@ -716,6 +718,7 @@ ActiveRecord::Schema.define(version: 20150507193738) do
   add_foreign_key "job_fixity_checks", "users"
   add_foreign_key "workflow_accrual_directories", "workflow_accrual_jobs"
   add_foreign_key "workflow_accrual_files", "workflow_accrual_jobs"
+  add_foreign_key "workflow_accrual_jobs", "amazon_backups"
   add_foreign_key "workflow_accrual_jobs", "cfs_directories"
   add_foreign_key "workflow_accrual_jobs", "users"
 end
