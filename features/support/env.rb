@@ -38,15 +38,15 @@ Capybara.default_driver = :rack_test
 #
 ActionController::Base.allow_rescue = false
 
+#make sure database is seeded before loading test code - this is necessary because some of the factories, etc. assume
+#that the seeded stuff is there
+require File.join(Rails.root, 'db', 'seeds.rb')
+
 #make sure database is seeded before each test - because we need to truncate for some of the tests (javascript) this
 #is necessary. This should also be possible by using except: with the truncation strategy, but I couldn't get that to work
 Before do
   load File.join(Rails.root, 'db', 'seeds.rb') if StaticPage.count == 0
 end
-
-#make sure database is seeded before loading test code - this is necessary because some of the factories, etc. assume
-#that the seeded stuff is there
-require File.join(Rails.root, 'db', 'seeds.rb')
 
 # You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.
 # See the DatabaseCleaner documentation for details. Example:
