@@ -38,13 +38,15 @@ Capybara.default_driver = :rack_test
 #
 ActionController::Base.allow_rescue = false
 
-# Remove/comment out the lines below if your app doesn't have a database.
-# For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
-begin
-  DatabaseCleaner.strategy = :transaction
-rescue NameError
-  raise 'You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it.'
+#make sure database is seeded before each test - because we need to truncate for some of the tests (javascript) this
+#is necessary. This should also be possible by using except: with the truncation strategy, but I couldn't get that to work
+Before do
+  load File.join(Rails.root, 'db', 'seeds.rb') if StaticPage.count == 0
 end
+
+#make sure database is seeded before loading test code - this is necessary because some of the factories, etc. assume
+#that the seeded stuff is there
+require File.join(Rails.root, 'db', 'seeds.rb')
 
 # You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.
 # See the DatabaseCleaner documentation for details. Example:
@@ -56,19 +58,15 @@ Before('@no-txn,@selenium,@culerity,@celerity,@javascript') do
   DatabaseCleaner.strategy = :truncation
 end
 
-#
-#   Before('~@no-txn', '~@selenium', '~@culerity', '~@celerity', '~@javascript') do
-#     DatabaseCleaner.strategy = :transaction
-#   end
-#
+Before('~@no-txn', '~@selenium', '~@culerity', '~@celerity', '~@javascript') do
+  DatabaseCleaner.strategy = :transaction
+end
+
 
 # Possible values are :truncation and :transaction
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
-
-#make sure database is seeded
-require File.join(Rails.root, 'db', 'seeds')
 
 def last_json
   page.source

@@ -3,8 +3,8 @@ class Workflow::AccrualJob < Workflow::Base
   belongs_to :user, touch: true
   belongs_to :amazon_backup, touch: true
 
-  has_many :workflow_accrual_directories, :class_name => 'Workflow::AccrualDirectory', dependent: :destroy
-  has_many :workflow_accrual_files, :class_name => 'Workflow::AccrualFile', dependent: :destroy
+  has_many :workflow_accrual_directories, class_name: 'Workflow::AccrualDirectory', dependent: :destroy, foreign_key: 'workflow_accrual_job_id'
+  has_many :workflow_accrual_files, class_name: 'Workflow::AccrualFile', dependent: :destroy, foreign_key: 'workflow_accrual_job_id'
 
   validates_presence_of :cfs_directory_id, :user_id
   validates_uniqueness_of :staging_path, scope: :cfs_directory_id
@@ -21,10 +21,10 @@ class Workflow::AccrualJob < Workflow::Base
 
   def create_accrual_requests(requested_files, requested_directories)
     requested_files.each do |file|
-      workflow_accrual_files.create!(name: file)
+      Workflow::AccrualFile.create!(name: file, workflow_accrual_job: self)
     end
     requested_directories.each do |directory|
-      workflow_accrual_directories.create!(name: directory)
+      Workflow::AccrualDirectory.create!(name: directory, workflow_accrual_job: self)
     end
   end
 
@@ -61,6 +61,7 @@ class Workflow::AccrualJob < Workflow::Base
       directory.destroy!
     end
     transaction do
+      cfs_directory.make_initial_tree
       cfs_directory.schedule_initial_assessments
       be_in_state_and_requeue('amazon_backup')
     end

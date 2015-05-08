@@ -59,4 +59,29 @@ Feature: File accrual
       | joe.txt | pete.txt | stuff |
     And I should see none of:
       | more.txt |
-  
+
+  @javascript
+  Scenario: Complete accrual
+    Given I am logged in as an admin
+    When I view the bit level file group with title 'Dogs'
+    And I click link with title 'Run'
+    And I click on 'Add files'
+    And I click on 'staging-1'
+    And I click on 'dogs'
+    And within '#add-files-form' I click on 'data'
+    And I check 'joe.txt'
+    And I check 'stuff'
+    And I click on 'Ingest'
+    Then the cfs directory with path 'dogs' should have an accrual job with 1 file and 1 directory
+    When delayed jobs are run
+    Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
+    Then the file group titled 'Dogs' should have a cfs directory for the path 'stuff'
+    And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
+    And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
+    And the file group titled 'Dogs' should not have a cfs file for the path 'pete.txt'
+    And there should be 1 amazon backup delayed job
+    When amazon backup runs successfully
+    Then the file group titled 'Dogs' should have a completed Amazon backup
+    And 'admin@example.com' should receive an email with subject 'Amazon backup progress'
+    When delayed jobs are run
+    Then 'admin@example.com' should receive an email with subject 'Medusa accrual completed'
