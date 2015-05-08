@@ -40,6 +40,7 @@ Feature: File accrual
     Then I should not see 'Add files'
     And I should not see the accrual form and dialog
 
+  @javascript
   Scenario: There is no accrual button nor form on a cfs directory for a non medusa admin
     Given I am logged in as a manager
     When I view the cfs directory for the file group titled 'Dogs' for the path 'pugs'
