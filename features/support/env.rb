@@ -40,33 +40,20 @@ ActionController::Base.allow_rescue = false
 
 #make sure database is seeded before loading test code - this is necessary because some of the factories, etc. assume
 #that the seeded stuff is there
-require File.join(Rails.root, 'db', 'seeds.rb')
-
-#make sure database is seeded before each test - because we need to truncate for some of the tests (javascript) this
-#is necessary. This should also be possible by using except: with the truncation strategy, but I couldn't get that to work
-Before do
-  load File.join(Rails.root, 'db', 'seeds.rb') if StaticPage.count == 0
+def ensure_db_is_seeded
+  if StaticPage.count == 0
+    load File.join(Rails.root, 'db', 'seeds.rb')
+  end
 end
 
-# You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.
-# See the DatabaseCleaner documentation for details. Example:
-#
-Before('@no-txn,@selenium,@culerity,@celerity,@javascript') do
-  # { except: [:widgets] } may not do what you expect here
-  # as tCucumber::Rails::Database.javascript_strategy overrides
-  # this setting.
-  DatabaseCleaner.strategy = :truncation
-end
+ensure_db_is_seeded
 
-Before('~@no-txn', '~@selenium', '~@culerity', '~@celerity', '~@javascript') do
-  DatabaseCleaner.strategy = :transaction
-end
-
-
+DatabaseCleaner.strategy = :transaction
 # Possible values are :truncation and :transaction
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
-Cucumber::Rails::Database.javascript_strategy = :truncation
+#Cucumber::Rails::Database.javascript_strategy = :truncation, {:except => %w[storage_media resource_types preservation_priorities static_pages]}
+Cucumber::Rails::Database.javascript_strategy = :transaction
 
 def last_json
   page.source
