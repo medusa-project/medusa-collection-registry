@@ -28,13 +28,6 @@ class Workflow::AccrualJob < Workflow::Base
     end
   end
 
-  def staged_files_and_directories
-    staging_root, relative_path = staging_root_and_relative_path
-    files = staging_root.files_at(relative_path)
-    directories = staging_root.directories_at(relative_path)
-    return files, directories
-  end
-
   def staging_root_and_relative_path
     path_components = staging_path.split('/').drop(1)
     staging_root_name = path_components.shift
