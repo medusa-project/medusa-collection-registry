@@ -1,11 +1,11 @@
 require 'rake'
 
-namespace :amazon do
-  desc 'Handle and incoming messages from the medusa-glacier server'
-  task handle_responses: :environment do
-    AmazonBackupServerResponse.handle_responses
-  end
-end
+# namespace :amazon do
+#   desc 'Handle and incoming messages from the medusa-glacier server'
+#   task handle_responses: :environment do
+#     AmazonBackupServerResponse.handle_responses
+#   end
+# end
 
 # def initialize
 #     self.connection = Bunny.new

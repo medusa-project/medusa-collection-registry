@@ -154,6 +154,9 @@ GEM
       rails (>= 3, < 5)
     daemon_controller (1.2.0)
     daemons (1.1.9)
+    daemons-rails (1.2.1)
+      daemons
+      multi_json (~> 1.0)
     dalli (2.7.2)
     database_cleaner (1.4.0)
     delayed_job (4.0.6)
@@ -418,6 +421,7 @@ DEPENDENCIES
   coffee-rails
   cucumber-rails
   daemons
+  daemons-rails
   dalli
   database_cleaner
   delayed_job_active_record!
