@@ -72,13 +72,31 @@ class Workflow::AccrualJob < Workflow::Base
     end
   end
 
+  #We have to be a little careful here, as we want to make sure the backup happens, but at the same time it may
+  #be the case that there is already a backup scheduled or ongoing, and in light of the fact that we only allow a single
+  #backup per file group / date pair we may need to latch on to an existing backup or schedule a backup in the future.
+  #How we proceed: If there is already a backup scheduled for after today then make that the amazon backup for this, but
+  #don't create another job to run it. If not and there is a job scheduled for today then make a job for tomorrow and
+  #run it. If not then make a job for today and run it. Let errors propagate.
+  #In addition to this we need to make the association to AmazonBackup one to many and the message receiving method
+  #must reflect that.
   def perform_amazon_backup
     file_group = cfs_directory.file_group
     return if file_group.blank?
     root_cfs_directory = file_group.cfs_directory
+    today = Date.today
+    future_backup = AmazonBackup.find_by(cfs_directory_id: root_cfs_directory.id, date: today + 1)
+    current_backup = AmazonBackup.find_by(cfs_directory_id: root_cfs_directory.id, date: today)
     transaction do
-      unless AmazonBackup.find_by(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: Date.today)
-        self.amazon_backup = AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: Date.today)
+      if future_backup
+        self.amazon_backup = future_backup
+        self.save!
+      elsif current_backup
+        self.amazon_backup = AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: today + 1)
+        self.save!
+        Job::AmazonBackup.create_for(self.amazon_backup, run_at: today + 1.day + 1.hour)
+      else
+        self.amazon_backup = AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: today)
         self.save!
         Job::AmazonBackup.create_for(self.amazon_backup)
       end

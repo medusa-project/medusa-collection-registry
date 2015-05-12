@@ -10,7 +10,7 @@ class AmazonBackup < ActiveRecord::Base
 
   has_one :job_amazon_backup, class_name: 'Job::AmazonBackup', dependent: :destroy
   has_one :workflow_ingest, class_name: 'Workflow::Ingest'
-  has_one :workflow_accrual_job, :class_name => 'Workflow::AccrualJob'
+  has_many :workflow_accrual_jobs, :class_name => 'Workflow::AccrualJob'
 
   #Only allow one backup per day for a file group
   validates_uniqueness_of :date, scope: :cfs_directory_id
@@ -70,7 +70,7 @@ Repository Id: #{file_group.repository.id}
     if self.completed?
       self.job_amazon_backup.try(:destroy)
       self.workflow_ingest.try(:be_at_end)
-      self.workflow_accrual_job.try(:be_at_end)
+      self.workflow_accrual_jobs.each {|job| job.try(:be_at_end)}
     end
   end
 
