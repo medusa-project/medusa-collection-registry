@@ -1,3 +1,5 @@
+require 'find'
+
 class Workflow::AccrualJob < Workflow::Base
   belongs_to :cfs_directory, touch: true
   belongs_to :user, touch: true
@@ -9,7 +11,7 @@ class Workflow::AccrualJob < Workflow::Base
   validates_presence_of :cfs_directory_id, :user_id
   validates_uniqueness_of :staging_path, scope: :cfs_directory_id
 
-  STATES = %w(start copying amazon_backup end)
+  STATES = %w(start check copying amazon_backup end)
 
   def self.create_for(user, cfs_directory, staging_path, requested_files, requested_directories)
     transaction do
@@ -37,12 +39,39 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_start
-    be_in_state_and_requeue('copying')
+    be_in_state_and_requeue('check')
+  end
+
+  def perform_check
+    existing_files = Set.new.tap do |existing_files|
+      Dir.chdir(cfs_directory.absolute_path) do
+        x = cfs_directory.absolute_path
+        Find.find('.') do |entry|
+          existing_files << entry.sub(/\.\//, '') if File.file?(entry)
+        end
+      end
+    end
+    requested_files = Set.new.tap do |requested_files|
+      self.workflow_accrual_files.each {|file| requested_files << file.name}
+      Dir.chdir(staging_source_path) do
+        self.workflow_accrual_directories.each do |directory|
+          Find.find(directory.name) do |entry|
+            requested_files << entry if File.file?(entry)
+          end
+        end
+      end
+    end
+    duplicate_files = existing_files.intersection(requested_files)
+    if duplicate_files.empty?
+      be_in_state_and_requeue('copying')
+    else
+      Workflow::AccrualMailer.duplicates(self, duplicate_files).deliver_now
+      destroy_queued_jobs_and_self
+    end
   end
 
   def perform_copying
-    staging_root, relative_path = staging_root_and_relative_path
-    source_path = staging_root.full_local_path_to(relative_path)
+    source_path = staging_source_path
     target_path = cfs_directory.absolute_path
     workflow_accrual_files.each do |file|
       target_file = File.join(target_path, file.name)
@@ -58,6 +87,11 @@ class Workflow::AccrualJob < Workflow::Base
       cfs_directory.schedule_initial_assessments
       be_in_state_and_requeue('amazon_backup')
     end
+  end
+
+  def staging_source_path
+    staging_root, relative_path = staging_root_and_relative_path
+    staging_root.full_local_path_to(relative_path)
   end
 
   def copy_entry(entry, source_path, target_path)

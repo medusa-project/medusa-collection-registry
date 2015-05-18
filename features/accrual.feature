@@ -85,3 +85,37 @@ Feature: File accrual
     And 'admin@example.com' should receive an email with subject 'Amazon backup progress'
     When delayed jobs are run
     Then 'admin@example.com' should receive an email with subject 'Medusa accrual completed'
+
+  @javascript
+  Scenario: Abort accrual before copying if there is a file that we are requesting to be overwritten in the root directory
+    When the physical cfs directory 'dogs' has a file 'joe.txt' with contents 'anything'
+    And I am logged in as an admin
+    When I view the bit level file group with title 'Dogs'
+    And I click link with title 'Run'
+    And I click on 'Add files'
+    And I click on 'staging-1'
+    And I click on 'dogs'
+    And within '#add-files-form' I click on 'data'
+    And I check 'joe.txt'
+    And I click on 'Ingest'
+    When delayed jobs are run
+    Then the cfs directory with path 'dogs' should not have an accrual job
+    And there should be 0 amazon backup delayed jobs
+    And 'admin@example.com' should receive an email with subject 'Medusa accrual aborted'
+
+  @javascript
+  Scenario: Abort accrual before copying if there is a file that we are requesting to be overwritten in a subdirectory
+    When the physical cfs directory 'dogs/stuff' has a file 'more.txt' with contents 'anything'
+    And I am logged in as an admin
+    When I view the bit level file group with title 'Dogs'
+    And I click link with title 'Run'
+    And I click on 'Add files'
+    And I click on 'staging-1'
+    And I click on 'dogs'
+    And within '#add-files-form' I click on 'data'
+    And I check 'stuff'
+    And I click on 'Ingest'
+    When delayed jobs are run
+    Then the cfs directory with path 'dogs' should not have an accrual job
+    And there should be 0 amazon backup delayed jobs
+    And 'admin@example.com' should receive an email with subject 'Medusa accrual aborted'
