@@ -43,6 +43,9 @@ class Ability
     can :update, Repository do |repository|
       repository_manager?(user, repository)
     end
+    can :accrue, CfsDirectory do |directory|
+      repository_manager?(user, directory)
+    end
   end
 
 
