@@ -1,0 +1,4 @@
+efb99e4eb8c4890e2eff43b1eb8a463b data/intro.txt
+ac42471d47109d477f1d25d294cc8bda data/pugs/description.txt
+b720f00791ce5643ade679f36ac7a55d data/pugs/picture.txt
+ef702fa380d6eaea446a412ebc8ea1f1 data/pugs/toys/something.txt

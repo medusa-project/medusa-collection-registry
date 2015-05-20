@@ -1,0 +1,4 @@
+5dc08a90ff0903ee0d1ffa3da2ac16df manifest-md5.txt
+feb8531128c47b85ec530acbb009c28a manifest-sha1.txt
+0a6aacb3ea753d3c5011988c529ee259 bag-info.txt
+9e5ad981e0d29adc278f6a294b8c2aca bagit.txt
