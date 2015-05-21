@@ -73,7 +73,7 @@ Feature: File accrual
     Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
     When delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
-    And the cfs directory with path 'dogs' should have an accrual job with 0 conflicts
+    And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
     When I go to the dashboard
     And I click on 'Accruals'
@@ -111,7 +111,7 @@ Feature: File accrual
     Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
     When delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
-    And the cfs directory with path 'dogs' should have an accrual job with 0 conflicts
+    And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
     When I go to the dashboard
     And I click on 'Accruals'
@@ -146,7 +146,7 @@ Feature: File accrual
     Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
     When delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
-    And the cfs directory with path 'dogs' should have an accrual job with 2 conflicts
+    And the cfs directory with path 'dogs' should have an accrual job with 2 minor conflicts and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     When I go to the dashboard
@@ -186,7 +186,7 @@ Feature: File accrual
     Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
     When delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
-    And the cfs directory with path 'dogs' should have an accrual job with 2 conflicts
+    And the cfs directory with path 'dogs' should have an accrual job with 2 minor conflicts and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     When I go to the dashboard
