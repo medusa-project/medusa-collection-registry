@@ -9,6 +9,7 @@ class DashboardController < ApplicationController
     setup_file_stats
     setup_amazon
     setup_events
+    setup_accrual_jobs
   end
 
   protected
@@ -118,5 +119,9 @@ SQL
     end
   end
 
+
+  def setup_accrual_jobs
+    @accrual_jobs = current_user.workflow_accrual_jobs.order('created_at asc').decorate
+  end
 
 end

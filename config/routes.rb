@@ -111,6 +111,12 @@ MedusaCollectionRegistry::Application.routes.draw do
     match 'import', to: 'tasks#import', via: 'post'
   end
 
+  namespace :workflow do
+    resources 'accrual_jobs', only: [] do
+      post :proceed, on: :member
+    end
+  end
+
   match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
 
 end

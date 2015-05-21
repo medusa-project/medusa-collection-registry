@@ -31,4 +31,8 @@ class Workflow::Base < Job::Base
     be_in_state_and_requeue('end')
   end
 
+  def unrunnable_state
+    raise RuntimeError, "Job cannot be run from state #{self.state}. The state must be changed externally."
+  end
+
 end

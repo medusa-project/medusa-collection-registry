@@ -11,7 +11,11 @@ class Workflow::AccrualJob < Workflow::Base
   validates_presence_of :cfs_directory_id, :user_id
   validates_uniqueness_of :staging_path, scope: :cfs_directory_id
 
-  STATES = %w(start check copying amazon_backup end)
+  STATE_HASH = {'start' => 'Start', 'check' => 'Checking for existing files',
+                'initial_approval' => 'Awaiting approval', 'copying' => 'Copying',
+                'overwrite_approval' => 'Awaiting admin approval', 'amazon_backup' => 'Amazon backup',
+                'end' => 'Ending'}
+  STATES = STATE_HASH.keys
 
   def self.create_for(user, cfs_directory, staging_path, requested_files, requested_directories)
     transaction do
@@ -52,7 +56,7 @@ class Workflow::AccrualJob < Workflow::Base
       end
     end
     requested_files = Set.new.tap do |requested_files|
-      self.workflow_accrual_files.each {|file| requested_files << file.name}
+      self.workflow_accrual_files.each { |file| requested_files << file.name }
       Dir.chdir(staging_source_path) do
         self.workflow_accrual_directories.each do |directory|
           Find.find(directory.name) do |entry|
@@ -63,11 +67,21 @@ class Workflow::AccrualJob < Workflow::Base
     end
     duplicate_files = existing_files.intersection(requested_files)
     if duplicate_files.empty?
-      be_in_state_and_requeue('copying')
+      self.state = 'initial_approval'
+      self.save!
     else
       Workflow::AccrualMailer.duplicates(self, duplicate_files).deliver_now
       destroy_queued_jobs_and_self
     end
+    Workflow::AccrualMailer.initial_approval(self).deliver_now
+  end
+
+  def perform_intial_approval
+    unrunnable_state
+  end
+
+  def perform_overwrite_approval
+    unrunnable_state
   end
 
   def perform_copying
@@ -146,6 +160,34 @@ class Workflow::AccrualJob < Workflow::Base
   def success(job)
     if self.state == 'end'
       self.destroy_queued_jobs_and_self
+    end
+  end
+
+  #TODO - this will soon be replaced by an association
+  def workflow_accrual_conflicts
+    []
+  end
+
+  def file_group
+    self.cfs_directory.file_group
+  end
+
+  def collection
+    self.file_group.collection
+  end
+
+  def status_label
+    STATE_HASH[self.state]
+  end
+
+  def approve_and_proceed
+    case state
+      when 'initial_approval'
+        be_in_state_and_requeue('copying')
+      when 'overwrite_approval'
+        be_in_state_and_requeue('copying')
+      else
+        raise RuntimeError, 'Job approved from unallowed initial state'
     end
   end
 

@@ -2,7 +2,9 @@ module DashboardHelper
   include ActionView::Helpers::NumberHelper
 
   def dashboard_tab_list
-    ['storage-overview', 'running-processes', 'file-statistics', 'red-flags', ['combined-events-tab', 'Events', 'newspaper-o'], 'amazon']
+    tabs = ['storage-overview', 'running-processes', 'file-statistics', 'red-flags', ['combined-events-tab', 'Events', 'newspaper-o'], 'amazon']
+    tabs << 'accruals' if @accrual_jobs.present?
+    tabs
   end
 
   # File stats for objects preservation

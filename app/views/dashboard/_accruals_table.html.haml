@@ -1,0 +1,28 @@
+%table#accruals_table.table.table_striped
+  %thead
+    %tr
+      %th Ingest ID
+      %th Date submitted
+      %th File Group
+      %th Collection
+      %th Submitted by
+      %th Pre-ingest report
+      %th Status
+      %th Actions
+  %tbody
+    - @accrual_jobs.each do |accrual_job|
+      %tr
+        %td= accrual_job.id
+        %td= accrual_job.created_at.to_date
+        %td= accrual_job.file_group.title
+        %td= accrual_job.collection.title
+        %td= accrual_job.user.net_id
+        %td= #status report or link to it will go here
+        %td= accrual_job.status_label
+        %td.dropdown{id: "accrual_actions_#{accrual_job.id}"}
+          - if accrual_job.approvable_by?(current_user)
+            %a.btn.btn-default.btn-xs.dropdown-toggle{type: 'button', 'data-toggle' => 'dropdown', 'aria-expanded' => false, href: '#'}
+              Actions
+              %span.caret
+            %ul.dropdown-menu.dropdown-menu-right{role: 'menu'}
+              %li{role: 'presentation'}= link_to 'Proceed', proceed_workflow_accrual_job_path(accrual_job), method: :post, remote: true

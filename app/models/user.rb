@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
 
   validates_uniqueness_of :uid, allow_blank: false
   validates :email, allow_blank: false, uniqueness: true, email: true
+  has_many :workflow_accrual_jobs, :class_name => 'Workflow::AccrualJob'
 
   def netid
     self.uid.split('@').first

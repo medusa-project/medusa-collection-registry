@@ -19,9 +19,14 @@ end
 Then(/^the cfs directory with path '(.*)' should have an accrual job with (\d+) files? and (\d+) director(?:y|ies)$/) do |path, file_count, directory_count|
   cfs_directory = CfsDirectory.find_by(path: path)
   accrual_job = Workflow::AccrualJob.find_by(cfs_directory_id: cfs_directory.id)
-  expect(accrual_job).to be_truthy
   expect(accrual_job.workflow_accrual_files.count).to eql(file_count.to_i)
   expect(accrual_job.workflow_accrual_directories.count).to eql(directory_count.to_i)
+end
+
+And(/^the cfs directory with path '(.*)' should have an accrual job with (\d+) conflicts?$/) do |path, conflict_count|
+  cfs_directory = CfsDirectory.find_by(path: path)
+  accrual_job = Workflow::AccrualJob.find_by(cfs_directory_id: cfs_directory.id)
+  expect(accrual_job.workflow_accrual_conflicts.count).to eql(conflict_count.to_i)
 end
 
 Then(/^the cfs directory with path '(.*)' should not have an accrual job$/) do |path|

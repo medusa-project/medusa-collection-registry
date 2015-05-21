@@ -1,0 +1,11 @@
+%p
+  The automated accrual of the staging path #{@workflow_accrual.staging_path} to
+  the cfs directory #{@workflow_accrual.cfs_directory.relative_path} is pending.
+
+- if file_group = @workflow_accrual.cfs_directory.file_group
+  %p
+    This belongs to the file group #{file_group.title}, collection #{file_group.collection.title}
+    and repository #{file_group.repository.title}.
+
+%p
+  You may proceed or abort the accrual from the medusa dashboard.
