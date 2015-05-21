@@ -79,7 +79,7 @@ class Workflow::AccrualJob < Workflow::Base
   def file_changed?(file, source_path)
     old_md5 = cfs_directory.find_file_at_relative_path(file).md5_sum
     new_md5 = Digest::MD5.file(File.join(source_path, file)).to_s
-    old_md5 == new_md5
+    old_md5 != new_md5
   end
 
   def perform_intial_approval
