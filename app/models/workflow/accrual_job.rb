@@ -48,6 +48,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_check
+    source_path = staging_source_path
     existing_files = Set.new.tap do |existing_files|
       Dir.chdir(cfs_directory.absolute_path) do
         Find.find('.') do |entry|
@@ -57,7 +58,7 @@ class Workflow::AccrualJob < Workflow::Base
     end
     requested_files = Set.new.tap do |requested_files|
       self.workflow_accrual_files.each { |file| requested_files << file.name }
-      Dir.chdir(staging_source_path) do
+      Dir.chdir(source_path) do
         self.workflow_accrual_directories.each do |directory|
           Find.find(directory.name) do |entry|
             requested_files << entry if File.file?(entry)
@@ -67,11 +68,18 @@ class Workflow::AccrualJob < Workflow::Base
     end
     duplicate_files = existing_files.intersection(requested_files)
     duplicate_files.each do |duplicate_file|
-      workflow_accrual_conflicts.create!(path: duplicate_file, different: false)
+      file_changed = file_changed?(duplicate_file, source_path)
+      workflow_accrual_conflicts.create!(path: duplicate_file, different: file_changed)
     end
     self.state = 'initial_approval'
     self.save!
     Workflow::AccrualMailer.initial_approval(self).deliver_now
+  end
+
+  def file_changed?(file, source_path)
+    old_md5 = cfs_directory.find_file_at_relative_path(file).md5_sum
+    new_md5 = Digest::MD5.file(File.join(source_path, file)).to_s
+    old_md5 == new_md5
   end
 
   def perform_intial_approval
