@@ -152,13 +152,18 @@ class Workflow::AccrualJob < Workflow::Base
     #Stay in amazon_backup state - Amazon Backup will do the transition when it receives a reply from the glacier server
   end
 
+  def perform_aborting
+    self.destroy_queued_jobs_and_self
+    Workflow::AccrualMailer.aborted(self).deliver_now
+  end
+
   def perform_end
     Workflow::AccrualMailer.done(self).deliver_now
     #TODO - perhaps delete staged content, perhaps not
   end
 
   def success(job)
-    if self.state == 'end'
+    if self.state.in('end', 'aborting')
       self.destroy_queued_jobs_and_self
     end
   end

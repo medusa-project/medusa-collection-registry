@@ -17,4 +17,9 @@ class Workflow::AccrualMailer < ActionMailer::Base
     mail(to: @workflow_accrual.user.email, subject: 'Medusa accrual pending')
   end
 
+  def aborted(workflow_accrual)
+    @workflow_accrual = workflow_accrual
+    mail(to: @workflow_accrual.user.email, subject: 'Medusa accrual aborted')
+  end
+
 end
