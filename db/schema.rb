@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150508191123) do
+ActiveRecord::Schema.define(version: 20150521173040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -653,6 +653,17 @@ ActiveRecord::Schema.define(version: 20150508191123) do
   add_index "virus_scans", ["file_group_id"], name: "index_virus_scans_on_file_group_id", using: :btree
   add_index "virus_scans", ["updated_at"], name: "index_virus_scans_on_updated_at", using: :btree
 
+  create_table "workflow_accrual_conflicts", force: :cascade do |t|
+    t.integer  "workflow_accrual_job_id"
+    t.text     "path"
+    t.boolean  "different"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "workflow_accrual_conflicts", ["different"], name: "index_workflow_accrual_conflicts_on_different", using: :btree
+  add_index "workflow_accrual_conflicts", ["workflow_accrual_job_id"], name: "index_workflow_accrual_conflicts_on_workflow_accrual_job_id", using: :btree
+
   create_table "workflow_accrual_directories", force: :cascade do |t|
     t.integer  "workflow_accrual_job_id"
     t.string   "name"
@@ -716,6 +727,7 @@ ActiveRecord::Schema.define(version: 20150508191123) do
   add_foreign_key "job_fits_file_extension_batches", "file_extensions"
   add_foreign_key "job_fits_file_extension_batches", "users"
   add_foreign_key "job_fixity_checks", "users"
+  add_foreign_key "workflow_accrual_conflicts", "workflow_accrual_jobs"
   add_foreign_key "workflow_accrual_directories", "workflow_accrual_jobs"
   add_foreign_key "workflow_accrual_files", "workflow_accrual_jobs"
   add_foreign_key "workflow_accrual_jobs", "amazon_backups"

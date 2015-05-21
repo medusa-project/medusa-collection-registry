@@ -5,8 +5,9 @@ class Workflow::AccrualJob < Workflow::Base
   belongs_to :user, touch: true
   belongs_to :amazon_backup, touch: true
 
-  has_many :workflow_accrual_directories, class_name: 'Workflow::AccrualDirectory', dependent: :destroy, foreign_key: 'workflow_accrual_job_id'
-  has_many :workflow_accrual_files, class_name: 'Workflow::AccrualFile', dependent: :destroy, foreign_key: 'workflow_accrual_job_id'
+  has_many :workflow_accrual_directories, class_name: 'Workflow::AccrualDirectory', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
+  has_many :workflow_accrual_files, class_name: 'Workflow::AccrualFile', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
+  has_many :workflow_accrual_conflicts, class_name: 'Workflow::AccrualConflict', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
 
   validates_presence_of :cfs_directory_id, :user_id
   validates_uniqueness_of :staging_path, scope: :cfs_directory_id
@@ -49,7 +50,6 @@ class Workflow::AccrualJob < Workflow::Base
   def perform_check
     existing_files = Set.new.tap do |existing_files|
       Dir.chdir(cfs_directory.absolute_path) do
-        x = cfs_directory.absolute_path
         Find.find('.') do |entry|
           existing_files << entry.sub(/\.\//, '') if File.file?(entry)
         end
@@ -66,13 +66,11 @@ class Workflow::AccrualJob < Workflow::Base
       end
     end
     duplicate_files = existing_files.intersection(requested_files)
-    if duplicate_files.empty?
-      self.state = 'initial_approval'
-      self.save!
-    else
-      Workflow::AccrualMailer.duplicates(self, duplicate_files).deliver_now
-      destroy_queued_jobs_and_self
+    duplicate_files.each do |duplicate_file|
+      workflow_accrual_conflicts.create!(path: duplicate_file, different: false)
     end
+    self.state = 'initial_approval'
+    self.save!
     Workflow::AccrualMailer.initial_approval(self).deliver_now
   end
 
@@ -166,11 +164,6 @@ class Workflow::AccrualJob < Workflow::Base
     if self.state.in('end', 'aborting')
       self.destroy_queued_jobs_and_self
     end
-  end
-
-  #TODO - this will soon be replaced by an association
-  def workflow_accrual_conflicts
-    []
   end
 
   def file_group
