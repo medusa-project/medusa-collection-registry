@@ -114,6 +114,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   namespace :workflow do
     resources 'accrual_jobs', only: [] do
       post :proceed, on: :member
+      post :abort, on: :member
     end
   end
 

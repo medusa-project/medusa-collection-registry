@@ -57,7 +57,7 @@ Feature: File accrual
     And I should see none of:
       | more.txt |
 
-  @javascript
+  @javascript @current
   Scenario: No conflict accrual, accepted
     When the bag 'accrual-disjoint-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
@@ -95,11 +95,37 @@ Feature: File accrual
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
-
-  @javascript
+  @javascript @current
   Scenario: No conflict accrual, aborted
-    And the bag 'accrual-disjoint-bag' is staged in the root named 'staging-1' at path 'dogs'
-    When PENDING
+    When the bag 'accrual-disjoint-bag' is staged in the root named 'staging-1' at path 'dogs'
+    And I am logged in as a manager
+    And I view the bit level file group with title 'Dogs'
+    And I click link with title 'Run'
+    And I click on 'Add files'
+    And I click on 'staging-1'
+    And I click on 'dogs'
+    And within '#add-files-form' I click on 'data'
+    And I check 'joe.txt'
+    And I check 'stuff'
+    And I click on 'Ingest'
+    Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
+    When delayed jobs are run
+    Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
+    And the cfs directory with path 'dogs' should have an accrual job with 0 conflicts
+    And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
+    When I go to the dashboard
+    And I click on 'Accruals'
+    Then I should see all of:
+      | Awaiting approval | manager | Animals | Dogs |
+    And within '#accruals' I click on 'Actions'
+    And within '#accruals' I click on 'Abort'
+    Then I should not see 'Abort'
+    When delayed jobs are run
+    Then the cfs directory with path 'dogs' should not have an accrual job
+    And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
+    And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
+    And there should be 0 amazon backup delayed jobs
+    Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
   @javascript
   Scenario: Harmless conflict accrual, accepted

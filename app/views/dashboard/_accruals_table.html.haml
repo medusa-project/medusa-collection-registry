@@ -26,3 +26,4 @@
               %span.caret
             %ul.dropdown-menu.dropdown-menu-right{role: 'menu'}
               %li{role: 'presentation'}= link_to 'Proceed', proceed_workflow_accrual_job_path(accrual_job), method: :post, remote: true
+              %li{role: 'presentation'}= link_to 'Abort', abort_workflow_accrual_job_path(accrual_job), method: :post, remote: true

@@ -14,7 +14,7 @@ class Workflow::AccrualJob < Workflow::Base
   STATE_HASH = {'start' => 'Start', 'check' => 'Checking for existing files',
                 'initial_approval' => 'Awaiting approval', 'copying' => 'Copying',
                 'overwrite_approval' => 'Awaiting admin approval', 'amazon_backup' => 'Amazon backup',
-                'end' => 'Ending'}
+                'aborting' => 'Aborting', 'end' => 'Ending'}
   STATES = STATE_HASH.keys
 
   def self.create_for(user, cfs_directory, staging_path, requested_files, requested_directories)
@@ -189,6 +189,10 @@ class Workflow::AccrualJob < Workflow::Base
       else
         raise RuntimeError, 'Job approved from unallowed initial state'
     end
+  end
+
+  def abort_and_proceed
+    be_in_state_and_requeue('aborting')
   end
 
 end
