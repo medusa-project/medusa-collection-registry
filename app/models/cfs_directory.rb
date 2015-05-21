@@ -74,7 +74,7 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def repository
-    self.root.parent.repository
+    self.root.parent.try(:repository)
   end
 
   def file_group
