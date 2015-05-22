@@ -35,3 +35,13 @@ Then(/^the cfs directory with path '(.*)' should not have an accrual job$/) do |
   accrual_job = Workflow::AccrualJob.find_by(cfs_directory_id: cfs_directory.id)
   expect(accrual_job).to be_nil
 end
+
+When /^I select accrual action '(.*)'$/ do |action|
+  steps %Q(
+    When I go to the dashboard
+    And I click on 'Accruals'
+    And within '#accruals' I click on 'Actions'
+    And within '#accruals' I click on '#{action}'
+    And I wait 1 second
+    Then I should not see '#{action}')
+end

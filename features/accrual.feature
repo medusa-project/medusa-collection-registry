@@ -58,27 +58,25 @@ Feature: File accrual
     And the bag 'small-bag' is staged in the root named 'staging-1' at path 'dogs'
     When I view the bit level file group with title 'Dogs'
     And I click link with title 'Run'
-    And I click on 'Add files'
-    And I click on 'staging-1'
-    And I click on 'dogs'
+    And I click consecutively on:
+      | Add files | staging-1 | dogs |
     And within '#add-files-form' I click on 'data'
     Then I should see all of:
       | joe.txt | pete.txt | stuff |
     And I should see none of:
       | more.txt |
 
-  @javascript 
+  @javascript
   Scenario: No conflict accrual, accepted
     When the bag 'accrual-disjoint-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
     And I view the bit level file group with title 'Dogs'
     And I click link with title 'Run'
-    And I click on 'Add files'
-    And I click on 'staging-1'
-    And I click on 'dogs'
+    And I click consecutively on:
+      | Add files | staging-1 | dogs |
     And within '#add-files-form' I click on 'data'
-    And I check 'joe.txt'
-    And I check 'stuff'
+    And I check all of:
+      | joe.txt | stuff |
     And I click on 'Ingest'
     Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
     When delayed jobs are run
@@ -105,18 +103,17 @@ Feature: File accrual
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
-  @javascript 
+  @javascript
   Scenario: No conflict accrual, aborted
     When the bag 'accrual-disjoint-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
     And I view the bit level file group with title 'Dogs'
     And I click link with title 'Run'
-    And I click on 'Add files'
-    And I click on 'staging-1'
-    And I click on 'dogs'
+    And I click consecutively on:
+      | Add files | staging-1 | dogs |
     And within '#add-files-form' I click on 'data'
-    And I check 'joe.txt'
-    And I check 'stuff'
+    And I check all of:
+      | joe.txt | stuff |
     And I click on 'Ingest'
     Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
     When delayed jobs are run
@@ -124,12 +121,7 @@ Feature: File accrual
     And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
     When I go to the dashboard
-    And I click on 'Accruals'
-    Then I should see all of:
-      | Awaiting approval | manager | Animals | Dogs |
-    And within '#accruals' I click on 'Actions'
-    And within '#accruals' I click on 'Abort'
-    Then I should not see 'Abort'
+    And I select accrual action 'Abort'
     When delayed jobs are run
     Then the cfs directory with path 'dogs' should not have an accrual job
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
@@ -138,7 +130,7 @@ Feature: File accrual
     And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
-  @javascript 
+  @javascript
   Scenario: Harmless conflict accrual, accepted
     And the bag 'accrual-duplicate-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
@@ -149,10 +141,8 @@ Feature: File accrual
     And I wait 1 second
     And I click on 'dogs'
     And within '#add-files-form' I click on 'data'
-    And I check 'joe.txt'
-    And I check 'intro.txt'
-    And I check 'stuff'
-    And I check 'pugs'
+    And I check all of:
+      | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
     Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
     When delayed jobs are run
@@ -160,13 +150,7 @@ Feature: File accrual
     And the cfs directory with path 'dogs' should have an accrual job with 2 minor conflicts and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
-    When I go to the dashboard
-    And I click on 'Accruals'
-    Then I should see all of:
-      | Awaiting approval | manager | Animals | Dogs |
-    And within '#accruals' I click on 'Actions'
-    And within '#accruals' I click on 'Proceed'
-    Then I should not see 'Proceed'
+    And I select accrual action 'Proceed'
     When delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
     Then the file group titled 'Dogs' should have a cfs directory for the path 'stuff'
@@ -179,20 +163,17 @@ Feature: File accrual
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
-  @javascript 
+  @javascript
   Scenario: Harmless conflict accrual, aborted
     And the bag 'accrual-duplicate-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
     And I view the bit level file group with title 'Dogs'
     And I click link with title 'Run'
-    And I click on 'Add files'
-    And I click on 'staging-1'
-    And I click on 'dogs'
+    And I click consecutively on:
+      | Add files | staging-1 | dogs |
     And within '#add-files-form' I click on 'data'
-    And I check 'joe.txt'
-    And I check 'intro.txt'
-    And I check 'stuff'
-    And I check 'pugs'
+    And I check all of:
+      | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
     Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
     When delayed jobs are run
@@ -200,11 +181,7 @@ Feature: File accrual
     And the cfs directory with path 'dogs' should have an accrual job with 2 minor conflicts and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
-    When I go to the dashboard
-    And I click on 'Accruals'
-    And within '#accruals' I click on 'Actions'
-    And within '#accruals' I click on 'Abort'
-    Then I should not see 'Abort'
+    And I select accrual action 'Abort'
     When delayed jobs are run
     Then the cfs directory with path 'dogs' should not have an accrual job
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
@@ -213,20 +190,17 @@ Feature: File accrual
     And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
-  @javascript 
+  @javascript
   Scenario: Changed conflict accrual, aborted by repository manager
     And the bag 'accrual-changed-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
     And I view the bit level file group with title 'Dogs'
     And I click link with title 'Run'
-    And I click on 'Add files'
-    And I click on 'staging-1'
-    And I click on 'dogs'
+    And I click consecutively on:
+      | Add files | staging-1 | dogs |
     And within '#add-files-form' I click on 'data'
-    And I check 'joe.txt'
-    And I check 'intro.txt'
-    And I check 'stuff'
-    And I check 'pugs'
+    And I check all of:
+      | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
     Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
     When delayed jobs are run
@@ -234,13 +208,7 @@ Feature: File accrual
     And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 2 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
-    When I go to the dashboard
-    And I click on 'Accruals'
-    Then I should see all of:
-      | Awaiting approval | manager | Animals | Dogs |
-    And within '#accruals' I click on 'Actions'
-    And within '#accruals' I click on 'Abort'
-    Then I should not see 'Abort'
+    When I select accrual action 'Abort'
     When delayed jobs are run
     Then the cfs directory with path 'dogs' should not have an accrual job
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
@@ -249,20 +217,17 @@ Feature: File accrual
     And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
-  @javascript 
+  @javascript
   Scenario: Changed conflict accrual, aborted by preservation manager
     And the bag 'accrual-changed-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
     And I view the bit level file group with title 'Dogs'
     And I click link with title 'Run'
-    And I click on 'Add files'
-    And I click on 'staging-1'
-    And I click on 'dogs'
+    And I click consecutively on:
+      | Add files | staging-1 | dogs |
     And within '#add-files-form' I click on 'data'
-    And I check 'joe.txt'
-    And I check 'intro.txt'
-    And I check 'stuff'
-    And I check 'pugs'
+    And I check all of:
+      | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
     Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
     When delayed jobs are run
@@ -270,15 +235,9 @@ Feature: File accrual
     And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 2 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
-    When I go to the dashboard
-    And I click on 'Accruals'
-    And within '#accruals' I click on 'Actions'
-    And within '#accruals' I click on 'Proceed'
+    When I select accrual action 'Proceed'
     When I relogin as an admin
-    And I go to the dashboard
-    And I click on 'Accruals'
-    And within '#accruals' I click on 'Actions'
-    And within '#accruals' I click on 'Abort'
+    When I select accrual action 'Abort'
     And I wait 1 seconds
     When delayed jobs are run
     Then the cfs directory with path 'dogs' should not have an accrual job
@@ -288,20 +247,17 @@ Feature: File accrual
     And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
-  @javascript 
+  @javascript
   Scenario: Changed conflict accrual, accepted by preservation manager
     And the bag 'accrual-changed-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
     And I view the bit level file group with title 'Dogs'
     And I click link with title 'Run'
-    And I click on 'Add files'
-    And I click on 'staging-1'
-    And I click on 'dogs'
+    And I click consecutively on:
+      | Add files | staging-1 | dogs |
     And within '#add-files-form' I click on 'data'
-    And I check 'joe.txt'
-    And I check 'intro.txt'
-    And I check 'stuff'
-    And I check 'pugs'
+    And I check all of:
+      | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
     Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
     When delayed jobs are run
@@ -309,16 +265,9 @@ Feature: File accrual
     And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 2 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
-    When I go to the dashboard
-    And I click on 'Accruals'
-    And within '#accruals' I click on 'Actions'
-    And within '#accruals' I click on 'Proceed'
+    When I select accrual action 'Proceed'
     And I relogin as an admin
-    And I go to the dashboard
-    And I click on 'Accruals'
-    And within '#accruals' I click on 'Actions'
-    And within '#accruals' I click on 'Proceed'
-    And I wait 1 second
+    And I select accrual action 'Proceed'
     When delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
     And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
@@ -332,13 +281,10 @@ Feature: File accrual
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
-  @javascript 
+  @javascript
   Scenario: Harmless conflict accrual, view report
     When PENDING
 
-  @javascript 
+  @javascript
   Scenario: Changed conflict accrual, view report
     When PENDING
-
-
-

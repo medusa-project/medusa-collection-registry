@@ -41,6 +41,10 @@ And /^I click on '([^']*)'$/ do |link_name|
   click_on(link_name)
 end
 
+And /^I click consecutively on:$/ do |table|
+  table.headers.each {|header| click_on(header)}
+end
+
 And /^I click link with (.*) '(.*)'$/ do |attribute, value|
   find("a[#{attribute}='#{value}']").trigger('click')
 end
@@ -60,6 +64,10 @@ end
 
 And /^I check '([^']*)'$/ do |string|
   check(string)
+end
+
+And /^I check all of:$/ do |table|
+  table.headers.each {|header| check(header)}
 end
 
 And /^I uncheck '([^']*)'$/ do |string|
