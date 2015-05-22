@@ -43,7 +43,8 @@ When /^I select accrual action '(.*)'$/ do |action|
     And within '#accruals' I click on 'Actions'
     And within '#accruals' I click on '#{action}'
     And I wait 1 second
-    Then I should not see '#{action}')
+    Then I should not see '#{action}'
+    When delayed jobs are run)
 end
 
 Then /^accrual amazon backup for file group '(.*)' and user '(.*)' should happen$/ do |title, user|

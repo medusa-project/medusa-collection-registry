@@ -75,7 +75,6 @@ Feature: File accrual
     Then accrual assessment for the cfs directory with path 'dogs' has 1 files, 1 directories, 0 minor conflicts, and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
     When I select accrual action 'Proceed'
-    And delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
     Then the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
@@ -95,7 +94,6 @@ Feature: File accrual
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
     When I go to the dashboard
     And I select accrual action 'Abort'
-    When delayed jobs are run
     Then the cfs directory with path 'dogs' should not have an accrual job
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
@@ -114,7 +112,6 @@ Feature: File accrual
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     And I select accrual action 'Proceed'
-    When delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
     Then the file group titled 'Dogs' should have a cfs directory for the path 'stuff'
     And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
@@ -134,7 +131,6 @@ Feature: File accrual
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     And I select accrual action 'Abort'
-    When delayed jobs are run
     Then the cfs directory with path 'dogs' should not have an accrual job
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
@@ -153,7 +149,6 @@ Feature: File accrual
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     When I select accrual action 'Abort'
-    When delayed jobs are run
     Then the cfs directory with path 'dogs' should not have an accrual job
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
@@ -175,7 +170,6 @@ Feature: File accrual
     When I relogin as an admin
     When I select accrual action 'Abort'
     And I wait 1 seconds
-    When delayed jobs are run
     Then the cfs directory with path 'dogs' should not have an accrual job
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
@@ -196,7 +190,6 @@ Feature: File accrual
     When I select accrual action 'Proceed'
     And I relogin as an admin
     And I select accrual action 'Proceed'
-    When delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
     And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
