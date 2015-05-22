@@ -12,6 +12,10 @@ Feature: File accrual
   #off a little bit.
   #If any fail, try running them alone and/or putting in a sleep around the failure
   #point.
+  #Note there is also funniness with clicking on stuff (thus the uncommon variations
+  #on that in this file).
+  #Note also that some of the compound steps do things like run delayed job behind
+  #the scenes, the price for making these tests a little more concise in this file.
 
   Background:
     Given I clear the cfs root directory
@@ -55,12 +59,7 @@ Feature: File accrual
   @javascript
   Scenario: I can navigate the staging storage
     Given I am logged in as an admin
-    And the bag 'small-bag' is staged in the root named 'staging-1' at path 'dogs'
-    When I view the bit level file group with title 'Dogs'
-    And I click link with title 'Run'
-    And I click consecutively on:
-      | Add files | staging-1 | dogs |
-    And within '#add-files-form' I click on 'data'
+    And I navigate to my accrual data for bag 'small-bag' at path 'dogs'
     Then I should see all of:
       | joe.txt | pete.txt | stuff |
     And I should see none of:
@@ -68,13 +67,8 @@ Feature: File accrual
 
   @javascript
   Scenario: No conflict accrual, accepted
-    When the bag 'accrual-disjoint-bag' is staged in the root named 'staging-1' at path 'dogs'
-    And I am logged in as a manager
-    And I view the bit level file group with title 'Dogs'
-    And I click link with title 'Run'
-    And I click consecutively on:
-      | Add files | staging-1 | dogs |
-    And within '#add-files-form' I click on 'data'
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-disjoint-bag' at path 'dogs'
     And I check all of:
       | joe.txt | stuff |
     And I click on 'Ingest'
@@ -83,8 +77,7 @@ Feature: File accrual
     When I select accrual action 'Proceed'
     And delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
-    Then the file group titled 'Dogs' should have a cfs directory for the path 'stuff'
-    And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
+    Then the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'pete.txt'
     And accrual amazon backup for file group 'Dogs' and user 'manager@example.com' should happen
@@ -93,13 +86,8 @@ Feature: File accrual
 
   @javascript
   Scenario: No conflict accrual, aborted
-    When the bag 'accrual-disjoint-bag' is staged in the root named 'staging-1' at path 'dogs'
-    And I am logged in as a manager
-    And I view the bit level file group with title 'Dogs'
-    And I click link with title 'Run'
-    And I click consecutively on:
-      | Add files | staging-1 | dogs |
-    And within '#add-files-form' I click on 'data'
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-disjoint-bag' at path 'dogs'
     And I check all of:
       | joe.txt | stuff |
     And I click on 'Ingest'
@@ -117,15 +105,8 @@ Feature: File accrual
 
   @javascript
   Scenario: Harmless conflict accrual, accepted
-    And the bag 'accrual-duplicate-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
-    And I am logged in as a manager
-    And I view the bit level file group with title 'Dogs'
-    And I click link with title 'Run'
-    And I click on 'Add files'
-    And I click on 'staging-1'
-    And I wait 1 second
-    And I click on 'dogs'
-    And within '#add-files-form' I click on 'data'
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-duplicate-overlap-bag' at path 'dogs'
     And I check all of:
       | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
@@ -144,13 +125,8 @@ Feature: File accrual
 
   @javascript
   Scenario: Harmless conflict accrual, aborted
-    And the bag 'accrual-duplicate-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
-    And I am logged in as a manager
-    And I view the bit level file group with title 'Dogs'
-    And I click link with title 'Run'
-    And I click consecutively on:
-      | Add files | staging-1 | dogs |
-    And within '#add-files-form' I click on 'data'
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-duplicate-overlap-bag' at path 'dogs'
     And I check all of:
       | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
@@ -168,13 +144,8 @@ Feature: File accrual
 
   @javascript
   Scenario: Changed conflict accrual, aborted by repository manager
-    And the bag 'accrual-changed-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
-    And I am logged in as a manager
-    And I view the bit level file group with title 'Dogs'
-    And I click link with title 'Run'
-    And I click consecutively on:
-      | Add files | staging-1 | dogs |
-    And within '#add-files-form' I click on 'data'
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
     And I check all of:
       | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
@@ -192,13 +163,8 @@ Feature: File accrual
 
   @javascript
   Scenario: Changed conflict accrual, aborted by preservation manager
-    And the bag 'accrual-changed-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
-    And I am logged in as a manager
-    And I view the bit level file group with title 'Dogs'
-    And I click link with title 'Run'
-    And I click consecutively on:
-      | Add files | staging-1 | dogs |
-    And within '#add-files-form' I click on 'data'
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
     And I check all of:
       | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
@@ -219,13 +185,8 @@ Feature: File accrual
 
   @javascript
   Scenario: Changed conflict accrual, accepted by preservation manager
-    And the bag 'accrual-changed-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
-    And I am logged in as a manager
-    And I view the bit level file group with title 'Dogs'
-    And I click link with title 'Run'
-    And I click consecutively on:
-      | Add files | staging-1 | dogs |
-    And within '#add-files-form' I click on 'data'
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
     And I check all of:
       | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'

@@ -61,3 +61,13 @@ Then /^accrual assessment for the cfs directory with path '(.*)' has (\d+) files
     Then the cfs directory with path '#{path}' should have an accrual job with #{file_count} files and #{directory_count} directories
     And the cfs directory with path '#{path}' should have an accrual job with #{minor_conflict_count} minor conflicts and #{serious_conflict_count} serious conflicts)
 end
+
+When /^I navigate to my accrual data for bag '(.*)' at path '(.*)'$/ do |bag_name, path|
+  steps %Q(
+  When the bag '#{bag_name}' is staged in the root named 'staging-1' at path '#{path}'
+  And I view the bit level file group with title 'Dogs'
+  And I click link with title 'Run'
+  And I click consecutively on:
+    | Add files | staging-1 | dogs |
+  And within '#add-files-form' I click on 'data')
+end
