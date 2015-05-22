@@ -241,7 +241,7 @@ Feature: File accrual
   @javascript @current
   Scenario: Changed conflict accrual, aborted by preservation manager
     And the bag 'accrual-changed-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
-    And I am logged in as an admin
+    And I am logged in as a manager
     And I view the bit level file group with title 'Dogs'
     And I click link with title 'Run'
     And I click on 'Add files'
@@ -257,12 +257,13 @@ Feature: File accrual
     When delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
     And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 2 serious conflicts
-    And 'admin@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
+    And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     When I go to the dashboard
     And I click on 'Accruals'
     And within '#accruals' I click on 'Actions'
     And within '#accruals' I click on 'Proceed'
+    When I relogin as an admin
     And I go to the dashboard
     And I click on 'Accruals'
     And within '#accruals' I click on 'Actions'
@@ -274,7 +275,7 @@ Feature: File accrual
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
     And there should be 0 amazon backup delayed jobs
-    Then 'admin@example.com' should receive an email with subject 'Medusa accrual aborted'
+    Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
   @javascript @current
   Scenario: Changed conflict accrual, accepted by preservation manager
