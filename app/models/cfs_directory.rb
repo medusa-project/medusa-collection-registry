@@ -77,6 +77,10 @@ class CfsDirectory < ActiveRecord::Base
     self.root.parent.try(:repository)
   end
 
+  def collection
+    self.root.parent.try(:collection)
+  end
+
   def file_group
     self.root.parent
   end

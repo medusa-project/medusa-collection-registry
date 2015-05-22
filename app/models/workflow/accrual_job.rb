@@ -9,6 +9,8 @@ class Workflow::AccrualJob < Workflow::Base
   has_many :workflow_accrual_files, class_name: 'Workflow::AccrualFile', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
   has_many :workflow_accrual_conflicts, class_name: 'Workflow::AccrualConflict', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
 
+  delegate :file_group, :root_cfs_directory, :collection, to: :cfs_directory
+
   validates_presence_of :cfs_directory_id, :user_id
   validates_uniqueness_of :staging_path, scope: :cfs_directory_id
 
@@ -190,19 +192,7 @@ class Workflow::AccrualJob < Workflow::Base
       self.destroy_queued_jobs_and_self
     end
   end
-
-  def file_group
-    self.cfs_directory.file_group
-  end
-
-  def root_cfs_directory
-    file_group.cfs_directory
-  end
-
-  def collection
-    self.file_group.collection
-  end
-
+  
   def status_label
     STATE_HASH[self.state]
   end
