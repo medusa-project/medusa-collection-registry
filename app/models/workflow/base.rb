@@ -20,10 +20,17 @@ class Workflow::Base < Job::Base
   end
 
   def be_in_state_and_requeue(state)
-    self.transaction do
+    transaction do
       self.state = state
       save!
       put_in_queue
+    end
+  end
+
+  def be_in_state(state)
+    transaction do
+      self.state = state
+      save!
     end
   end
 
