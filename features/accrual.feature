@@ -3,6 +3,13 @@ Feature: File accrual
   As a medusa admin
   I want to be able to browse staging and start jobs to copy files from staging to bit storage
 
+  #Note that these are long tests with Javascript involved and because of the way
+  #that works with capybara they can be a bit finicky. There may be timing/db issues
+  #that wouldn't appear in the real system. E.g there are some sleeps in the tests
+  #that have no systematic reason; it just appears that at these points the test
+  #may bog down and need to wait because the javascript engine and Rails are
+  #off a little bit.
+
   Background:
     Given I clear the cfs root directory
     And the physical cfs directory 'dogs' has the data of bag 'accrual-initial-bag'
@@ -136,6 +143,7 @@ Feature: File accrual
     And I click link with title 'Run'
     And I click on 'Add files'
     And I click on 'staging-1'
+    And I wait 1 second
     And I click on 'dogs'
     And within '#add-files-form' I click on 'data'
     And I check 'joe.txt'
@@ -279,9 +287,8 @@ Feature: File accrual
 
   @javascript @current
   Scenario: Changed conflict accrual, accepted by preservation manager
-    When PENDING
     And the bag 'accrual-changed-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
-    And I am logged in as an admin
+    And I am logged in as a manager
     And I view the bit level file group with title 'Dogs'
     And I click link with title 'Run'
     And I click on 'Add files'
@@ -297,21 +304,30 @@ Feature: File accrual
     When delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
     And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 2 serious conflicts
-    And 'admin@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
+    And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     When I go to the dashboard
     And I click on 'Accruals'
     And within '#accruals' I click on 'Actions'
     And within '#accruals' I click on 'Proceed'
+    And I relogin as an admin
     And I go to the dashboard
     And I click on 'Accruals'
     And within '#accruals' I click on 'Actions'
     And within '#accruals' I click on 'Proceed'
-    And I wait 1 seconds
+    And I wait 1 second
     When delayed jobs are run
-    #New files should be ingested
-    #Old files should have been overwritten
-    #Amazon backup should have happened
+    Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
+    And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
+    And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
+    And the file group titled 'Dogs' should have a cfs file for the path 'pugs/description.txt' matching 'Changed Description text.'
+    And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt' matching 'Changed Intro text.'
+    And there should be 1 amazon backup delayed job
+    When amazon backup runs successfully
+    Then the file group titled 'Dogs' should have a completed Amazon backup
+    And 'manager@example.com' should receive an email with subject 'Amazon backup progress'
+    When delayed jobs are run
+    Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
   @javascript @current
   Scenario: Harmless conflict accrual, view report
