@@ -153,27 +153,26 @@ class Workflow::AccrualJob < Workflow::Base
   #In addition to this we need to make the association to AmazonBackup one to many and the message receiving method
   #must reflect that.
   def perform_amazon_backup
-    file_group = cfs_directory.file_group
     return if file_group.blank?
-    root_cfs_directory = file_group.cfs_directory
     today = Date.today
-    future_backup = AmazonBackup.find_by(cfs_directory_id: root_cfs_directory.id, date: today + 1)
-    current_backup = AmazonBackup.find_by(cfs_directory_id: root_cfs_directory.id, date: today)
     transaction do
-      if future_backup
-        self.amazon_backup = future_backup
-        self.save!
-      elsif current_backup
-        self.amazon_backup = AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: today + 1)
-        self.save!
-        Job::AmazonBackup.create_for(self.amazon_backup, run_at: today + 1.day + 1.hour)
+      if future_backup = AmazonBackup.find_by(cfs_directory_id: root_cfs_directory.id, date: today + 1)
+        assign_amazon_backup(future_backup, run_backup: false)
+      elsif AmazonBackup.find_by(cfs_directory_id: root_cfs_directory.id, date: today)
+        assign_amazon_backup(AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: today + 1),
+                             run_backup: true, backup_options: {run_at: today + 1.day + 1.hour})
       else
-        self.amazon_backup = AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: today)
-        self.save!
-        Job::AmazonBackup.create_for(self.amazon_backup)
+        assign_amazon_backup(AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: today),
+                             run_backup: true)
       end
     end
     #Stay in amazon_backup state - Amazon Backup will do the transition when it receives a reply from the glacier server
+  end
+
+  def assign_amazon_backup(backup, run_backup: false, backup_options: {})
+    self.amazon_backup = backup
+    self.save!
+    Job::AmazonBackup.create_for(backup, backup_options) if run_backup
   end
 
   def perform_aborting
@@ -194,6 +193,10 @@ class Workflow::AccrualJob < Workflow::Base
 
   def file_group
     self.cfs_directory.file_group
+  end
+
+  def root_cfs_directory
+    file_group.cfs_directory
   end
 
   def collection
