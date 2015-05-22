@@ -53,3 +53,11 @@ Then /^accrual amazon backup for file group '(.*)' and user '(.*)' should happen
     Then the file group titled '#{title}' should have a completed Amazon backup
     And '#{user}' should receive an email with subject 'Amazon backup progress')
 end
+
+Then /^accrual assessment for the cfs directory with path '(.*)' has (\d+) files?, (\d+) director(?:y|ies), (\d+) minor conflicts?, and (\d+) serious conflicts?$/ do |path, file_count, directory_count, minor_conflict_count, serious_conflict_count|
+  steps %Q(
+    Then the cfs directory with path '#{path}' should have an accrual job with #{file_count} files and #{directory_count} directories
+    When delayed jobs are run
+    Then the cfs directory with path '#{path}' should have an accrual job with #{file_count} files and #{directory_count} directories
+    And the cfs directory with path '#{path}' should have an accrual job with #{minor_conflict_count} minor conflicts and #{serious_conflict_count} serious conflicts)
+end

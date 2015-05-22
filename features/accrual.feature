@@ -78,10 +78,7 @@ Feature: File accrual
     And I check all of:
       | joe.txt | stuff |
     And I click on 'Ingest'
-    Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
-    When delayed jobs are run
-    Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
-    And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 0 serious conflicts
+    Then accrual assessment for the cfs directory with path 'dogs' has 1 files, 1 directories, 0 minor conflicts, and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
     When I select accrual action 'Proceed'
     And delayed jobs are run
@@ -106,10 +103,7 @@ Feature: File accrual
     And I check all of:
       | joe.txt | stuff |
     And I click on 'Ingest'
-    Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
-    When delayed jobs are run
-    Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
-    And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 0 serious conflicts
+    Then accrual assessment for the cfs directory with path 'dogs' has 1 files, 1 directories, 0 minor conflicts, and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
     When I go to the dashboard
     And I select accrual action 'Abort'
@@ -135,10 +129,7 @@ Feature: File accrual
     And I check all of:
       | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
-    Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
-    When delayed jobs are run
-    Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
-    And the cfs directory with path 'dogs' should have an accrual job with 2 minor conflicts and 0 serious conflicts
+    Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 2 minor conflicts, and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     And I select accrual action 'Proceed'
@@ -163,10 +154,7 @@ Feature: File accrual
     And I check all of:
       | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
-    Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
-    When delayed jobs are run
-    Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
-    And the cfs directory with path 'dogs' should have an accrual job with 2 minor conflicts and 0 serious conflicts
+    Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 2 minor conflicts, and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     And I select accrual action 'Abort'
@@ -190,10 +178,7 @@ Feature: File accrual
     And I check all of:
       | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
-    Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
-    When delayed jobs are run
-    Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
-    And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 2 serious conflicts
+    Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 0 minor conflicts, and 2 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     When I select accrual action 'Abort'
@@ -217,10 +202,7 @@ Feature: File accrual
     And I check all of:
       | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
-    Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
-    When delayed jobs are run
-    Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
-    And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 2 serious conflicts
+    Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 0 minor conflicts, and 2 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     When I select accrual action 'Proceed'
@@ -247,10 +229,7 @@ Feature: File accrual
     And I check all of:
       | joe.txt | intro.txt | stuff | pugs |
     And I click on 'Ingest'
-    Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
-    When delayed jobs are run
-    Then the cfs directory with path 'dogs' should have an accrual job with 2 files and 2 directories
-    And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 2 serious conflicts
+    Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 0 minor conflicts, and 2 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     When I select accrual action 'Proceed'
