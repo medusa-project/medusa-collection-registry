@@ -192,7 +192,7 @@ class Workflow::AccrualJob < Workflow::Base
       self.destroy_queued_jobs_and_self
     end
   end
-  
+
   def status_label
     STATE_HASH[self.state]
   end

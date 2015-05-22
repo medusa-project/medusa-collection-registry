@@ -29,6 +29,8 @@ class FileGroup < ActiveRecord::Base
   before_save :strip_fields
   before_validation :initialize_file_info
 
+  delegate :repository, to: :collection
+
   validates_uniqueness_of :cfs_root, allow_blank: true
   validates_presence_of :title, :total_files, :total_file_size
   validates_presence_of :producer_id
@@ -126,10 +128,6 @@ class FileGroup < ActiveRecord::Base
 
   def source_relation_note(file_group)
     self.source_file_group_joins.where(source_file_group_id: file_group.id).first.try(:note)
-  end
-
-  def repository
-    self.collection.repository
   end
 
   #override this as needed for subclasses. Size should be in GB. Should use this method rather than the db column to

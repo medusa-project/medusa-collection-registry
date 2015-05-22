@@ -14,6 +14,8 @@ class CfsFile < ActiveRecord::Base
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
 
+  delegate :repository, :file_group, :public?, to: :cfs_directory
+
   validates_uniqueness_of :name, scope: :cfs_directory_id, allow_blank: false
 
   after_create :add_cfs_directory_tree_stats
@@ -32,10 +34,6 @@ class CfsFile < ActiveRecord::Base
   breadcrumbs parent: :cfs_directory, label: :name
   cascades_events parent: :cfs_directory
 
-  def repository
-    self.cfs_directory.repository
-  end
-
   def relative_path
     File.join(self.cfs_directory.relative_path, self.name)
   end
@@ -46,10 +44,6 @@ class CfsFile < ActiveRecord::Base
 
   def exists_on_filesystem?
     File.exists?(self.absolute_path)
-  end
-
-  def file_group
-    self.cfs_directory.file_group
   end
 
   #the directories leading up to the file
@@ -72,9 +66,7 @@ class CfsFile < ActiveRecord::Base
   end
 
   def ensure_fits_xml
-    if self.fits_xml.blank?
-      self.update_fits_xml
-    end
+    self.update_fits_xml if self.fits_xml.blank?
   end
 
   def update_fits_xml
@@ -118,10 +110,6 @@ class CfsFile < ActiveRecord::Base
       end
       self.content_type_name = new_content_type_name
     end
-  end
-
-  def public?
-    self.cfs_directory.public?
   end
 
   def content_type_name
