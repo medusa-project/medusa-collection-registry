@@ -91,17 +91,11 @@ class Workflow::AccrualJob < Workflow::Base
     unrunnable_state
   end
 
-  def perform_copying
+  def internal_perform_copying(overwrite: false)
     source_path = staging_source_path
     target_path = cfs_directory.absolute_path
-    workflow_accrual_files.each do |file|
-      copy_entry(file, source_path, target_path, overwrite: false)
-      file.destroy!
-    end
-    workflow_accrual_directories.each do |directory|
-      copy_entry(directory, source_path, target_path, overwrite: false)
-      directory.destroy!
-    end
+    copy_entries_and_remove(workflow_accrual_files, source_path, target_path, overwrite: overwrite)
+    copy_entries_and_remove(workflow_accrual_directories, source_path, target_path, overwrite: overwrite)
     transaction do
       cfs_directory.make_initial_tree
       cfs_directory.schedule_initial_assessments
@@ -109,27 +103,24 @@ class Workflow::AccrualJob < Workflow::Base
     end
   end
 
+  def perform_copying
+    internal_perform_copying(overwrite: false)
+  end
+
   def perform_copying_with_overwrite
-    source_path = staging_source_path
-    target_path = cfs_directory.absolute_path
-    workflow_accrual_files.each do |file|
-      copy_entry(file, source_path, target_path, overwrite: true)
-      file.destroy!
-    end
-    workflow_accrual_directories.each do |directory|
-      copy_entry(directory, source_path, target_path, overwrite: true)
-      directory.destroy!
-    end
-    transaction do
-      cfs_directory.make_initial_tree
-      cfs_directory.schedule_initial_assessments
-      be_in_state_and_requeue('amazon_backup')
-    end
+    internal_perform_copying(overwrite: true)
   end
 
   def staging_source_path
     staging_root, relative_path = staging_root_and_relative_path
     staging_root.full_local_path_to(relative_path)
+  end
+
+  def copy_entries_and_remove(entries, source_path, target_path, overwrite: false)
+    entries.each do |entry|
+      copy_entry(entry, source_path, target_path, overwrite: overwrite)
+      entry.destroy!
+    end
   end
 
   def copy_entry(entry, source_path, target_path, overwrite: false)
