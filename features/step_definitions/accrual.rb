@@ -45,3 +45,11 @@ When /^I select accrual action '(.*)'$/ do |action|
     And I wait 1 second
     Then I should not see '#{action}')
 end
+
+Then /^accrual amazon backup for file group '(.*)' and user '(.*)' should happen$/ do |title, user|
+  steps %Q(
+    Then there should be 1 amazon backup delayed job
+    When amazon backup runs successfully
+    Then the file group titled '#{title}' should have a completed Amazon backup
+    And '#{user}' should receive an email with subject 'Amazon backup progress')
+end

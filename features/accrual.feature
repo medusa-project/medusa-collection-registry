@@ -83,23 +83,14 @@ Feature: File accrual
     Then the cfs directory with path 'dogs' should have an accrual job with 1 files and 1 directory
     And the cfs directory with path 'dogs' should have an accrual job with 0 minor conflicts and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
-    When I go to the dashboard
-    And I click on 'Accruals'
-    Then I should see all of:
-      | Awaiting approval | manager | Animals | Dogs |
-    And within '#accruals' I click on 'Actions'
-    And within '#accruals' I click on 'Proceed'
-    Then I should not see 'Proceed'
-    When delayed jobs are run
+    When I select accrual action 'Proceed'
+    And delayed jobs are run
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
     Then the file group titled 'Dogs' should have a cfs directory for the path 'stuff'
     And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'pete.txt'
-    And there should be 1 amazon backup delayed job
-    When amazon backup runs successfully
-    Then the file group titled 'Dogs' should have a completed Amazon backup
-    And 'manager@example.com' should receive an email with subject 'Amazon backup progress'
+    And accrual amazon backup for file group 'Dogs' and user 'manager@example.com' should happen
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
@@ -156,10 +147,7 @@ Feature: File accrual
     Then the file group titled 'Dogs' should have a cfs directory for the path 'stuff'
     And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
-    And there should be 1 amazon backup delayed job
-    When amazon backup runs successfully
-    Then the file group titled 'Dogs' should have a completed Amazon backup
-    And 'manager@example.com' should receive an email with subject 'Amazon backup progress'
+    And accrual amazon backup for file group 'Dogs' and user 'manager@example.com' should happen
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
@@ -274,10 +262,7 @@ Feature: File accrual
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'pugs/description.txt' matching 'Changed Description text.'
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt' matching 'Changed Intro text.'
-    And there should be 1 amazon backup delayed job
-    When amazon backup runs successfully
-    Then the file group titled 'Dogs' should have a completed Amazon backup
-    And 'manager@example.com' should receive an email with subject 'Amazon backup progress'
+    And accrual amazon backup for file group 'Dogs' and user 'manager@example.com' should happen
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
