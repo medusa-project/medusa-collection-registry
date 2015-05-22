@@ -23,6 +23,10 @@ class Collection < ActiveRecord::Base
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
   has_many :attachments, as: :attachable, dependent: :destroy
 
+  delegate :public?, to: :rights_declaration
+  delegate :title, to: :repository, prefix: true
+  delegate :name, to: :preservation_priority, prefix: true, allow_nil: true
+
   validates_presence_of :title
   validates_uniqueness_of :title, scope: :repository_id
   validates_presence_of :repository_id
@@ -54,10 +58,6 @@ class Collection < ActiveRecord::Base
 
   def medusa_url
     Rails.application.routes.url_helpers.collection_url(self, host: MedusaCollectionRegistry::Application.medusa_host, protocol: 'https')
-  end
-
-  def preservation_priority_name
-    self.preservation_priority.try(:name)
   end
 
   def ensure_rights_declaration
@@ -95,13 +95,6 @@ class Collection < ActiveRecord::Base
     self.file_groups.collect { |file_group| file_group.incomplete_scheduled_events }.flatten
   end
 
-  def repository_title
-    self.repository.title
-  end
-
-  def public?
-    self.rights_declaration.public?
-  end
 
 end
 

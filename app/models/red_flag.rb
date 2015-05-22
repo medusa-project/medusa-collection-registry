@@ -1,6 +1,8 @@
 class RedFlag < ActiveRecord::Base
   belongs_to :red_flaggable, polymorphic: true, touch: true
 
+  delegate :repository, to: :red_flaggable
+
   PRIORITIES = %w(high medium low)
   STATUSES = %w(flagged unflagged)
 
@@ -24,10 +26,6 @@ class RedFlag < ActiveRecord::Base
   def unflag!
     self.status = 'unflagged'
     self.save!
-  end
-
-  def repository
-    self.red_flaggable.repository
   end
 
 end

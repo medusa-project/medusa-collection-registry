@@ -15,6 +15,7 @@ class CfsFile < ActiveRecord::Base
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
 
   delegate :repository, :file_group, :public?, to: :cfs_directory
+  delegate :name, to: :content_type, prefix: true, allow_nil: true
 
   validates_uniqueness_of :name, scope: :cfs_directory_id, allow_blank: false
 
@@ -110,10 +111,6 @@ class CfsFile < ActiveRecord::Base
       end
       self.content_type_name = new_content_type_name
     end
-  end
-
-  def content_type_name
-    self.content_type.try(:name)
   end
 
   def content_type_name=(name)

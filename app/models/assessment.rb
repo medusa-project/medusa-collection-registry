@@ -5,6 +5,8 @@ class Assessment < ActiveRecord::Base
   belongs_to :assessable, polymorphic: true, touch: true
   belongs_to :storage_medium, touch: true
 
+  delegate :name, to: :storage_medium, prefix: true, allow_nil: true
+
   validates_inclusion_of :assessable_type, in: %w(Collection FileGroup Repository)
   validates_presence_of :name
 
@@ -20,10 +22,6 @@ class Assessment < ActiveRecord::Base
       link target: '_blank'
       simple_format
     end
-  end
-
-  def storage_medium_name
-    self.storage_medium.try(:name)
   end
 
 end

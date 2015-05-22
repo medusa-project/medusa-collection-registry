@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   end
 
   def person
-    Person.find_or_create_by(email: self.email)
+    Person.find_or_create_by!(email: self.email)
   end
 
 end
