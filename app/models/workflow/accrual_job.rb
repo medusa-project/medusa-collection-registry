@@ -95,12 +95,11 @@ class Workflow::AccrualJob < Workflow::Base
     source_path = staging_source_path
     target_path = cfs_directory.absolute_path
     workflow_accrual_files.each do |file|
-      target_file = File.join(target_path, file.name)
-      copy_entry(file, source_path, target_path)
+      copy_entry(file, source_path, target_path, overwrite: false)
       file.destroy!
     end
     workflow_accrual_directories.each do |directory|
-      copy_entry(directory, source_path, target_path)
+      copy_entry(directory, source_path, target_path, overwrite: false)
       directory.destroy!
     end
     transaction do
@@ -114,12 +113,11 @@ class Workflow::AccrualJob < Workflow::Base
     source_path = staging_source_path
     target_path = cfs_directory.absolute_path
     workflow_accrual_files.each do |file|
-      target_file = File.join(target_path, file.name)
-      copy_entry_with_overwrite(file, source_path, target_path)
+      copy_entry(file, source_path, target_path, overwrite: true)
       file.destroy!
     end
     workflow_accrual_directories.each do |directory|
-      copy_entry_with_overwrite(directory, source_path, target_path)
+      copy_entry(directory, source_path, target_path, overwrite: true)
       directory.destroy!
     end
     transaction do
@@ -134,22 +132,11 @@ class Workflow::AccrualJob < Workflow::Base
     staging_root.full_local_path_to(relative_path)
   end
 
-  def copy_entry(entry, source_path, target_path)
+  def copy_entry(entry, source_path, target_path, overwrite: false)
+    opts = overwrite ? '-a --ignore-times' : '-a --ignore-times --ignore-existing'
     source_entry = File.join(source_path, entry.name)
     return unless File.exists?(source_entry)
-    Rsync.run(source_entry, target_path, '-a --ignore-times --ignore-existing') do |result|
-      unless result.success?
-        message = "Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}. Rescheduling."
-        Rails.logger.error message
-        raise RuntimeError, message
-      end
-    end
-  end
-
-  def copy_entry_with_overwrite(entry, source_path, target_path)
-    source_entry = File.join(source_path, entry.name)
-    return unless File.exists?(source_entry)
-    Rsync.run(source_entry, target_path, '-a --ignore-times') do |result|
+    Rsync.run(source_entry, target_path, opts) do |result|
       unless result.success?
         message = "Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}. Rescheduling."
         Rails.logger.error message

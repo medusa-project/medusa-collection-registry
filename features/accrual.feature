@@ -1,3 +1,4 @@
+@current
 Feature: File accrual
   In order to add files to already existing file groups
   As a medusa admin
@@ -9,6 +10,8 @@ Feature: File accrual
   #that have no systematic reason; it just appears that at these points the test
   #may bog down and need to wait because the javascript engine and Rails are
   #off a little bit.
+  #If any fail, try running them alone and/or putting in a sleep around the failure
+  #point.
 
   Background:
     Given I clear the cfs root directory
@@ -64,7 +67,7 @@ Feature: File accrual
     And I should see none of:
       | more.txt |
 
-  @javascript @current
+  @javascript 
   Scenario: No conflict accrual, accepted
     When the bag 'accrual-disjoint-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
@@ -102,7 +105,7 @@ Feature: File accrual
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
-  @javascript @current
+  @javascript 
   Scenario: No conflict accrual, aborted
     When the bag 'accrual-disjoint-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
@@ -135,7 +138,7 @@ Feature: File accrual
     And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
-  @javascript @current
+  @javascript 
   Scenario: Harmless conflict accrual, accepted
     And the bag 'accrual-duplicate-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
@@ -176,7 +179,7 @@ Feature: File accrual
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
-  @javascript @current
+  @javascript 
   Scenario: Harmless conflict accrual, aborted
     And the bag 'accrual-duplicate-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
@@ -210,7 +213,7 @@ Feature: File accrual
     And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
-  @javascript @current
+  @javascript 
   Scenario: Changed conflict accrual, aborted by repository manager
     And the bag 'accrual-changed-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
@@ -246,7 +249,7 @@ Feature: File accrual
     And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
-  @javascript @current
+  @javascript 
   Scenario: Changed conflict accrual, aborted by preservation manager
     And the bag 'accrual-changed-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
@@ -285,7 +288,7 @@ Feature: File accrual
     And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
-  @javascript @current
+  @javascript 
   Scenario: Changed conflict accrual, accepted by preservation manager
     And the bag 'accrual-changed-overlap-bag' is staged in the root named 'staging-1' at path 'dogs'
     And I am logged in as a manager
@@ -329,11 +332,11 @@ Feature: File accrual
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
-  @javascript @current
+  @javascript 
   Scenario: Harmless conflict accrual, view report
     When PENDING
 
-  @javascript @current
+  @javascript 
   Scenario: Changed conflict accrual, view report
     When PENDING
 
