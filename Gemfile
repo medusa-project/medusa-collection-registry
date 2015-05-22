@@ -92,6 +92,9 @@ group :development, :test do
   gem 'factory_girl'
   gem 'shoulda-matchers'
   gem 'thin'
+end
+
+group :development do
   gem 'newrelic_rpm'
 end
 
@@ -105,4 +108,5 @@ group :test do
   gem 'launchy'
   #testing with javascript - requires phantomjs to be installed on the test machine
   gem 'poltergeist'
+  gem 'selenium-webdriver'
 end

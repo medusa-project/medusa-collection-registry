@@ -189,7 +189,12 @@ class Workflow::AccrualJob < Workflow::Base
   def approve_and_proceed
     case state
       when 'initial_approval'
-        be_in_state_and_requeue('copying')
+        if self.workflow_accrual_conflicts.serious.count > 0
+          self.state = 'overwrite_approval'
+          self.save!
+        else
+          be_in_state_and_requeue('copying')
+        end
       when 'overwrite_approval'
         be_in_state_and_requeue('copying')
       else

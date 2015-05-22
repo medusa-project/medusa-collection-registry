@@ -6,7 +6,7 @@ Given /^Nothing$/ do
   #do nothing - just to explicitly say that no Given is really required
 end
 
-When /^I wait (\d+) seconds$/ do |seconds|
+When /^I wait (\d+) seconds?$/ do |seconds|
   sleep seconds.to_i
 end
 
