@@ -10,21 +10,4 @@
 %p
   You may proceed or abort the accrual from the medusa dashboard.
 
-- serious_conflicts = @workflow_accrual.workflow_accrual_conflicts.serious
-- if serious_conflicts.present?
-  %p
-    You have the following duplicated files where the checksums disagree. From the Medusa
-    dashboard you may either abort the ingest or refer it to a Medusa admin
-    for evaluation if you wish to overwrite the affected files.
-  %ul
-    - serious_conflicts.each do |conflict|
-      %li= conflict.path
-
-- nonserious_conflicts = @workflow_accrual.workflow_accrual_conflicts.not_serious
-- if nonserious_conflicts.present?
-  %p
-    You have the following duplicated files where the checksums agree. These are not
-    considered serious and if there are no other conflicts you may proceed normally.
-  %ul
-    - nonserious_conflicts.each do |conflict|
-      %li= conflict.path
+= render partial: 'conflicts'

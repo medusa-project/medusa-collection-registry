@@ -1,0 +1,3 @@
+- report = render 'workflow/accrual_mailer/conflicts'
+$("#accrual_report_text").html("#{escape_javascript(report)}");
+$("#accrual_report").modal('show');

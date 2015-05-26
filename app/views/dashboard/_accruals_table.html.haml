@@ -17,7 +17,7 @@
         %td= accrual_job.file_group.title
         %td= accrual_job.collection.title
         %td= accrual_job.user.net_id
-        %td= #status report or link to it will go here
+        %td= link_to('View Report', view_report_workflow_accrual_job_path(accrual_job), remote: true) if accrual_job.has_conflicts?
         %td= accrual_job.status_label
         %td.dropdown{id: "accrual_actions_#{accrual_job.id}"}
           - if accrual_job.approvable_by?(current_user)

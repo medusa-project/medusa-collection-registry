@@ -216,4 +216,8 @@ class Workflow::AccrualJob < Workflow::Base
     be_in_state_and_requeue('aborting')
   end
 
+  def has_conflicts?
+    workflow_accrual_conflicts.count > 0
+  end
+
 end

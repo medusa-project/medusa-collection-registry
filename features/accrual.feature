@@ -201,8 +201,28 @@ Feature: File accrual
 
   @javascript
   Scenario: Harmless conflict accrual, view report
-    When PENDING
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-duplicate-overlap-bag' at path 'dogs'
+    And I check all of:
+      | joe.txt | intro.txt | stuff | pugs |
+    And I click on 'Ingest'
+    And delayed jobs are run
+    And I go to the dashboard
+    And I click on 'Accruals'
+    And I click on 'View Report'
+    Then I should see all of:
+      | intro.txt | pugs/description.txt |
 
   @javascript
   Scenario: Changed conflict accrual, view report
-    When PENDING
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
+    And I check all of:
+      | joe.txt | intro.txt | stuff | pugs |
+    And I click on 'Ingest'
+    And delayed jobs are run
+    And I go to the dashboard
+    And I click on 'Accruals'
+    And I click on 'View Report'
+    Then I should see all of:
+      | intro.txt | pugs/description.txt |

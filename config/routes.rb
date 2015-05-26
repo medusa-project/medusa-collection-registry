@@ -115,6 +115,7 @@ MedusaCollectionRegistry::Application.routes.draw do
     resources 'accrual_jobs', only: [] do
       post :proceed, on: :member
       post :abort, on: :member
+      get :view_report, on: :member
     end
   end
 
