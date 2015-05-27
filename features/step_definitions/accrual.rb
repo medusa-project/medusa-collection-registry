@@ -36,7 +36,7 @@ Then(/^the cfs directory with path '(.*)' should not have an accrual job$/) do |
   expect(accrual_job).to be_nil
 end
 
-When /^I select accrual action '(.*)'$/ do |action|
+When /^I select accrual action '([^']*)'$/ do |action|
   steps %Q(
     When I go to the dashboard
     And I click on 'Accruals'
@@ -46,6 +46,20 @@ When /^I select accrual action '(.*)'$/ do |action|
     Then I should not see '#{action}'
     When delayed jobs are run)
 end
+
+When /^I select accrual action '([^']*)' with comment '([^']*)'$/ do |action, comment|
+  steps %Q(
+    When I go to the dashboard
+    And I click on 'Accruals'
+    And within '#accruals' I click on 'Actions'
+    And within '#accruals' I click on '#{action}'
+    And I wait 1 second
+    And I fill in fields:
+      | Comment | #{comment} |
+    And within '#accruals_action_form' I click on 'Submit'
+    When delayed jobs are run)
+end
+
 
 Then /^accrual amazon backup for file group '(.*)' and user '(.*)' should happen$/ do |title, user|
   steps %Q(
@@ -68,6 +82,7 @@ When /^I navigate to my accrual data for bag '(.*)' at path '(.*)'$/ do |bag_nam
   When the bag '#{bag_name}' is staged in the root named 'staging-1' at path '#{path}'
   And I view the bit level file group with title 'Dogs'
   And I click link with title 'Run'
+  And I wait 1 second
   And I click consecutively on:
     | Add files | staging-1 | dogs |
   And within '#add-files-form' I click on 'data')

@@ -1,0 +1,17 @@
+-# must pass in accrual job. Factored this out because it's a little
+-# complicated, depending on whether there are conflicts and what state the job is in.
+%ul.dropdown-menu.dropdown-menu-right{role: 'menu'}
+  - if !accrual_job.has_serious_conflicts?
+    %li{role: 'presentation'}= link_to 'Proceed', proceed_workflow_accrual_job_path(accrual_job), method: :post, remote: true
+    %li{role: 'presentation'}= link_to 'Abort', abort_workflow_accrual_job_path(accrual_job), method: :post, remote: true
+  - else
+    - if accrual_job.state == 'initial_approval'
+      -#TODO Proceed should display form for submission
+      %li{role: 'presentation'}= link_to 'Proceed', proceed_form_workflow_accrual_job_path(accrual_job), remote: true
+      %li{role: 'presentation'}= link_to 'Abort', abort_workflow_accrual_job_path(accrual_job), method: :post, remote: true
+    - elsif accrual_job.state == 'overwrite_approval'
+      -#TODO Both should display form for submission
+      %li{role: 'presentation'}= link_to 'Proceed', proceed_form_workflow_accrual_job_path(accrual_job), remote: true
+      %li{role: 'presentation'}= link_to 'Abort', abort_form_workflow_accrual_job_path(accrual_job), remote: true
+    - else
+      - raise RuntimeError, 'Unexpected job state'

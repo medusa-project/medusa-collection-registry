@@ -220,4 +220,8 @@ class Workflow::AccrualJob < Workflow::Base
     workflow_accrual_conflicts.count > 0
   end
 
+  def has_serious_conflicts?
+    workflow_accrual_conflicts.serious.count > 0
+  end
+
 end

@@ -166,9 +166,9 @@ Feature: File accrual
     Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 0 minor conflicts, and 2 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
-    When I select accrual action 'Proceed'
+    When I select accrual action 'Proceed' with comment 'Request comment'
     When I relogin as an admin
-    When I select accrual action 'Abort'
+    When I select accrual action 'Abort' with comment 'Abort comment'
     And I wait 1 seconds
     Then the cfs directory with path 'dogs' should not have an accrual job
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
@@ -187,9 +187,9 @@ Feature: File accrual
     Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 0 minor conflicts, and 2 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
-    When I select accrual action 'Proceed'
+    When I select accrual action 'Proceed' with comment 'Request comment'
     And I relogin as an admin
-    And I select accrual action 'Proceed'
+    And I select accrual action 'Proceed' with comment 'Approval comment'
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
     And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'

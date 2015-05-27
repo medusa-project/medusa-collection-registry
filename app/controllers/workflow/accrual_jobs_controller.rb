@@ -1,7 +1,8 @@
 class Workflow::AccrualJobsController < ApplicationController
 
   before_action :require_logged_in
-  before_action :get_accrual_job_and_authorize, only: [:proceed, :abort, :view_report]
+  before_action :get_accrual_job_and_authorize,
+                only: [:proceed, :proceed_form, :abort, :abort_form, :view_report]
 
   def proceed
     @accrual_job.approve_and_proceed
@@ -13,6 +14,10 @@ class Workflow::AccrualJobsController < ApplicationController
     end
   end
 
+  def proceed_form
+
+  end
+
   def abort
     @accrual_job.abort_and_proceed
     respond_to do |format|
@@ -21,6 +26,10 @@ class Workflow::AccrualJobsController < ApplicationController
         redirect_to :back
       end
     end
+  end
+
+  def abort_form
+
   end
 
   def view_report
