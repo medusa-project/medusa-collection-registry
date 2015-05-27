@@ -21,8 +21,7 @@ class Workflow::Base < Job::Base
 
   def be_in_state_and_requeue(state)
     transaction do
-      self.state = state
-      save!
+      be_in_state(state)
       put_in_queue
     end
   end

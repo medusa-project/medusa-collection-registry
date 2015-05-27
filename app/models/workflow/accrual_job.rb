@@ -188,7 +188,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def success(job)
-    if self.state.in('end', 'aborting')
+    if self.state.in?(['end', 'aborting'])
       self.destroy_queued_jobs_and_self
     end
   end
