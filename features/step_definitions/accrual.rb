@@ -52,14 +52,13 @@ When /^I select accrual action '([^']*)' with comment '([^']*)'$/ do |action, co
     When I go to the dashboard
     And I click on 'Accruals'
     And within '#accruals' I click on 'Actions'
-    And within '#accruals' I click on '#{action}')
-  expect(page).to have_selector('.edit_workflow_accrual_job')
-  steps %Q(
-    And I screenshot to 'z-#{action}.png'
+    And within '#accruals' I click on '#{action}'
     And I fill in fields:
       | Comment | #{comment} |
     And within '#accrual_comment_form' I click on 'Submit'
-    When delayed jobs are run)
+    And I wait 1 second
+    When delayed jobs are run
+    And I wait 1 second)
 end
 
 

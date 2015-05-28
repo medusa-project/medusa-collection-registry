@@ -158,26 +158,26 @@ Feature: File accrual
     And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
-#  @javascript
-#  Scenario: Changed conflict accrual, aborted by preservation manager
-#    When I am logged in as a manager
-#    And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
-#    And I check all of:
-#      | joe.txt | intro.txt | stuff | pugs |
-#    And I click on 'Ingest'
-#    Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 0 minor conflicts, and 2 serious conflicts
-#    And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
-#      | intro.txt | pugs/description.txt |
-#    When I select accrual action 'Proceed' with comment 'Request comment'
-#    When I relogin as an admin
-#    When I select accrual action 'Abort' with comment 'Abort comment'
-#    And I wait 1 seconds
-#    Then the cfs directory with path 'dogs' should not have an accrual job
-#    And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
-#    And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
-#    And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
-#    And there should be 0 amazon backup delayed jobs
-#    Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
+  @javascript
+  Scenario: Changed conflict accrual, aborted by preservation manager
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
+    And I check all of:
+      | joe.txt | intro.txt | stuff | pugs |
+    And I click on 'Ingest'
+    Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 0 minor conflicts, and 2 serious conflicts
+    And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
+      | intro.txt | pugs/description.txt |
+    When I select accrual action 'Proceed' with comment 'Request comment'
+    When I relogin as an admin
+    When I select accrual action 'Abort' with comment 'Abort comment'
+    And I wait 1 seconds
+    Then the cfs directory with path 'dogs' should not have an accrual job
+    And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
+    And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
+    And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
+    And there should be 0 amazon backup delayed jobs
+    Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
 #  @javascript
 #  Scenario: Changed conflict accrual, accepted by preservation manager
