@@ -45,10 +45,6 @@ And /^I click consecutively on:$/ do |table|
   table.headers.each {|header| click_on(header)}
 end
 
-And /^I click link with (.*) '(.*)'$/ do |attribute, value|
-  find("a[#{attribute}='#{value}']").trigger('click')
-end
-
 And /^within '(.*)' I click on '(.*)'$/ do |locator, link_name|
   within(locator) {click_on(link_name)}
 end

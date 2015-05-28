@@ -83,7 +83,7 @@ When /^I navigate to my accrual data for bag '(.*)' at path '(.*)'$/ do |bag_nam
   steps %Q(
   When the bag '#{bag_name}' is staged in the root named 'staging-1' at path '#{path}'
   And I view the bit level file group with title 'Dogs'
-  And I click link with title 'Run'
+  And I click on 'Run'
   And I wait 1 second
   And I click consecutively on:
     | Add files | staging-1 | dogs |

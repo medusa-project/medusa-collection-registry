@@ -3,7 +3,7 @@
     = link_to 'Public View', public_file_group_path(@file_group), class: 'btn btn-default'
   = assessments_button(assessments_file_group_path(@file_group))
   .btn-group
-    %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Events'}
+    %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Events', href: '#'}
       = fa_icon('newspaper-o')
       %span.caret
     %ul.dropdown-menu.dropdown-menu-right
@@ -14,7 +14,7 @@
     = red_flags_button(red_flags_file_group_path(@file_group))
   = attachments_button(attachments_file_group_path(@file_group))
   .btn-group
-    %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Run', value: 'Run'}
+    %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Run', value: 'Run', href: '#'}
       = fa_icon('cog')
       %span.caret
     %ul.dropdown-menu.dropdown-menu-right
@@ -30,7 +30,7 @@
         %li= link_to 'Add files', '#', 'data-toggle' => 'modal', 'data-target' => '#add-files-dialog'
   - if @directory.present? and can?(:export, @file_group)
     .btn-group
-      %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Download'}
+      %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Download', href: '#'}
         = fa_icon('download')
         %span.caret
       %ul.dropdown-menu.dropdown-menu-right

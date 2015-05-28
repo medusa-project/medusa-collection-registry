@@ -108,5 +108,7 @@ group :test do
   gem 'launchy'
   #testing with javascript - requires phantomjs to be installed on the test machine
   gem 'poltergeist'
+  #other js testing options
   gem 'selenium-webdriver'
+  gem 'capybara-webkit'
 end

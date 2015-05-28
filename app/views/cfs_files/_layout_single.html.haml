@@ -12,7 +12,7 @@
         = link_to 'Public View', public_cfs_file_path(@file), class: 'btn btn-default'
       = events_button(events_cfs_file_path(@file))
       .btn-group
-        %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Run'}
+        %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Run', href: '#'}
           = fa_icon('cog')
           %span.caret
         %ul.dropdown-menu.dropdown-menu-right
@@ -20,7 +20,7 @@
             %li= link_to 'Create FITS', create_fits_xml_cfs_file_path(@file)
           %li= link_to 'Fixity check', fixity_check_cfs_file_path(@file), method: :post
       .btn-group
-        %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Download'}
+        %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Download', href: '#'}
           = fa_icon('download')
           %span.caret
         %ul.dropdown-menu.dropdown-menu-right

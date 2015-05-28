@@ -5,7 +5,7 @@
       %span.caret
   = render layout: 'layouts/bootstrap_modal', locals: {id: 'more-actions'} do
     .modal-header
-      %a.close{'data-dismiss' => 'modal', 'aria-label' => 'Close'}
+      %a.close{'data-dismiss' => 'modal', 'aria-label' => 'Close', href: '#'}
         %span{'aria-hidden' => true}
           &times;
       %h4.modal-title More actions

@@ -15,7 +15,7 @@
         = edit_button(@repository)
         = add_button(new_collection_path(repository_id: @repository.id), title: 'Add Collection')
         .btn-group
-          %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}
+          %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
             Export
             %span.caret
           %ul.dropdown-menu.dropdown-menu-right
