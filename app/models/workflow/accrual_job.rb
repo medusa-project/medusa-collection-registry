@@ -1,6 +1,9 @@
 require 'find'
 
 class Workflow::AccrualJob < Workflow::Base
+
+  attr_accessor :comment
+
   belongs_to :cfs_directory, touch: true
   belongs_to :user, touch: true
   belongs_to :amazon_backup, touch: true

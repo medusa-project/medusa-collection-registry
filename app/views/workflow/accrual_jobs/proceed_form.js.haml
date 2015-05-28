@@ -1,2 +1,3 @@
--#render form
--#display in modal on server
+- form = render partial: 'workflow/accrual_jobs/comment_form', locals: {url: proceed_workflow_accrual_job_path(@accrual_job)}
+$("#accrual_comment_form").html("#{escape_javascript(form)}");
+$("#accrual_comment_modal").modal('show');
