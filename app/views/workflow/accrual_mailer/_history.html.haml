@@ -1,8 +1,8 @@
-%h3 History
+%h4 History
 
 - if @workflow_accrual.workflow_accrual_comments.present?
   - @workflow_accrual.workflow_accrual_comments.each do |comment|
-    %h4 #{comment.user.net_id} - #{comment.created_at}
+    %h5 #{comment.user.net_id} - #{comment.created_at}
     %p #{comment.body}
 - else
   %p No comments
