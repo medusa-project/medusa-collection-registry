@@ -229,4 +229,8 @@ class Workflow::AccrualJob < Workflow::Base
     Workflow::AccrualMailer.notify_admin_of_incoming_request(self).deliver_now
   end
 
+  def has_report?
+    !self.state.in?(%w(start check))
+  end
+
 end
