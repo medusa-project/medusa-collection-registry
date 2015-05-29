@@ -126,7 +126,8 @@ Feature: File accrual
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
     And there should be 0 amazon backup delayed jobs
-    Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
+    Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted' containing all of:
+      | Abort message |
 
   @javascript
   Scenario: Harmless conflict accrual, accepted
@@ -189,7 +190,32 @@ Feature: File accrual
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
     And there should be 0 amazon backup delayed jobs
-    Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
+    Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted' containing all of:
+      | Abort message |
+
+  @javascript
+  Scenario: Changed conflict accrual, accepted
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
+    And I check all of:
+      | joe.txt | intro.txt | stuff | pugs |
+    And I click on 'Ingest'
+    Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 0 minor conflicts, and 2 serious conflicts
+    And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
+      | intro.txt | pugs/description.txt |
+    When I select accrual action 'Proceed' with comment 'Request comment'
+    Then 'medusa-admin@example.com' should receive an email with subject 'Medusa accrual requested' containing all of:
+      | intro.txt | pugs/description.txt | Request comment |
+    And I relogin as an admin
+    And I select accrual action 'Proceed' with comment 'Approval comment'
+    Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
+    And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
+    And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
+    And the file group titled 'Dogs' should have a cfs file for the path 'pugs/description.txt' matching 'Changed Description text.'
+    And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt' matching 'Changed Intro text.'
+    And accrual amazon backup for file group 'Dogs' and user 'manager@example.com' should happen
+    When delayed jobs are run
+    Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
   @javascript
   Scenario: Changed conflict accrual, aborted by repository manager
@@ -229,31 +255,8 @@ Feature: File accrual
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
     And there should be 0 amazon backup delayed jobs
-    Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
-
-  @javascript
-  Scenario: Changed conflict accrual, accepted
-    When I am logged in as a manager
-    And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
-    And I check all of:
-      | joe.txt | intro.txt | stuff | pugs |
-    And I click on 'Ingest'
-    Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 0 minor conflicts, and 2 serious conflicts
-    And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
-      | intro.txt | pugs/description.txt |
-    When I select accrual action 'Proceed' with comment 'Request comment'
-    Then 'medusa-admin@example.com' should receive an email with subject 'Medusa accrual requested' containing all of:
-      | intro.txt | pugs/description.txt | Request comment |
-    And I relogin as an admin
-    And I select accrual action 'Proceed' with comment 'Approval comment'
-    Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
-    And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
-    And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
-    And the file group titled 'Dogs' should have a cfs file for the path 'pugs/description.txt' matching 'Changed Description text.'
-    And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt' matching 'Changed Intro text.'
-    And accrual amazon backup for file group 'Dogs' and user 'manager@example.com' should happen
-    When delayed jobs are run
-    Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
+    Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted' containing all of:
+      | Request comment | Abort comment |
 
   @javascript
   Scenario: Harmless conflict accrual, view report

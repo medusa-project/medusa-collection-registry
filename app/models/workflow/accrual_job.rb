@@ -181,7 +181,6 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_aborting
-    self.destroy_queued_jobs_and_self
     Workflow::AccrualMailer.aborted(self).deliver_now
   end
 
@@ -191,9 +190,11 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def success(job)
-    if self.state.in?(['end', 'aborting'])
-      self.destroy_queued_jobs_and_self
-    end
+    self.destroy_queued_jobs_and_self if in_terminal_state?
+  end
+
+  def in_terminal_state?
+    self.state.in?(['end', 'aborting'])
   end
 
   def status_label
