@@ -1,2 +1,3 @@
 $("#accrual_actions_#{@accrual_job.id}").html('');
+$("#accrual_status_#{@accrual_job.id}").text("#{@accrual_job.status_label}")
 $("#accrual_comment_modal").modal('hide');
