@@ -77,6 +77,7 @@ Feature: File accrual
     Then accrual assessment for the cfs directory with path 'dogs' has 1 files, 1 directories, 0 minor conflicts, and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
     When I select accrual action 'Proceed'
+    Then 'medusa-admin@example.com' should receive an email with subject 'Medusa accrual requested'
     And I relogin as an admin
     And I select accrual action 'Proceed'
     And I wait 1 second
@@ -117,6 +118,7 @@ Feature: File accrual
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
     When I go to the dashboard
     And I select accrual action 'Proceed'
+    Then 'medusa-admin@example.com' should receive an email with subject 'Medusa accrual requested'
     And I relogin as an admin
     And I select accrual action 'Abort' with comment 'Abort message'
     Then the cfs directory with path 'dogs' should not have an accrual job
@@ -137,6 +139,8 @@ Feature: File accrual
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     And I select accrual action 'Proceed'
+    Then 'medusa-admin@example.com' should receive an email with subject 'Medusa accrual requested' containing all of:
+      | intro.txt | pugs/description.txt |
     And I relogin as an admin
     And I select accrual action 'Proceed'
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
@@ -176,6 +180,8 @@ Feature: File accrual
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     And I select accrual action 'Proceed'
+    Then 'medusa-admin@example.com' should receive an email with subject 'Medusa accrual requested' containing all of:
+      | intro.txt | pugs/description.txt |
     And I relogin as an admin
     And I select accrual action 'Abort' with comment 'Abort message'
     Then the cfs directory with path 'dogs' should not have an accrual job
@@ -214,6 +220,8 @@ Feature: File accrual
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     When I select accrual action 'Proceed' with comment 'Request comment'
+    Then 'medusa-admin@example.com' should receive an email with subject 'Medusa accrual requested' containing all of:
+      | intro.txt | pugs/description.txt | Request comment |
     When I relogin as an admin
     When I select accrual action 'Abort' with comment 'Abort comment'
     Then the cfs directory with path 'dogs' should not have an accrual job
@@ -224,7 +232,7 @@ Feature: File accrual
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
 
   @javascript
-  Scenario: Changed conflict accrual, accepted by preservation manager
+  Scenario: Changed conflict accrual, accepted
     When I am logged in as a manager
     And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
     And I check all of:
@@ -234,6 +242,8 @@ Feature: File accrual
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     When I select accrual action 'Proceed' with comment 'Request comment'
+    Then 'medusa-admin@example.com' should receive an email with subject 'Medusa accrual requested' containing all of:
+      | intro.txt | pugs/description.txt | Request comment |
     And I relogin as an admin
     And I select accrual action 'Proceed' with comment 'Approval comment'
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
