@@ -11,6 +11,7 @@ class Workflow::AccrualJob < Workflow::Base
   has_many :workflow_accrual_directories, class_name: 'Workflow::AccrualDirectory', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
   has_many :workflow_accrual_files, class_name: 'Workflow::AccrualFile', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
   has_many :workflow_accrual_conflicts, class_name: 'Workflow::AccrualConflict', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
+  has_many :workflow_accrual_comments, -> {order 'created_at desc'},  class_name: 'Workflow::AccrualComment', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
 
   delegate :file_group, :root_cfs_directory, :collection, to: :cfs_directory
 
@@ -203,6 +204,7 @@ class Workflow::AccrualJob < Workflow::Base
     case state
       when 'initial_approval'
         be_in_state('admin_approval')
+        notify_admin_of_request
       when 'admin_approval'
         be_in_state_and_requeue('copying')
       else
@@ -220,6 +222,10 @@ class Workflow::AccrualJob < Workflow::Base
 
   def has_serious_conflicts?
     workflow_accrual_conflicts.serious.count > 0
+  end
+
+  def notify_admin_of_request
+    Workflow::AccrualMailer.notify_admin_of_incoming_request(self).deliver_now
   end
 
 end

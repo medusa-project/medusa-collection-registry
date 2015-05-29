@@ -1,5 +1,7 @@
 class MedusaBaseMailer < ActionMailer::Base
 
+  delegate :feedback_address, :dev_address, :no_reply_address, :admin_address, to: :class
+
   def self.feedback_address
     MedusaCollectionRegistry::Application.medusa_config['email']['feedback']
   end
@@ -12,16 +14,10 @@ class MedusaBaseMailer < ActionMailer::Base
     MedusaCollectionRegistry::Application.medusa_config['email']['noreply']
   end
 
+  def self.admin_address
+    MedusaCollectionRegistry::Application.medusa_config['email']['admin']
+  end
+
   default from: self.no_reply_address
-
-  protected
-
-  def feedback_address
-    self.class.feedback_address
-  end
-
-  def dev_address
-    self.class.dev_address
-  end
 
 end

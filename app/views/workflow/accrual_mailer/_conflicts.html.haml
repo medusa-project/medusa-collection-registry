@@ -1,3 +1,5 @@
+%h3 Conflict report
+
 - serious_conflicts = @workflow_accrual.workflow_accrual_conflicts.serious
 - if serious_conflicts.present?
   %p
@@ -7,6 +9,9 @@
   %ul
     - serious_conflicts.each do |conflict|
       %li= conflict.path
+- else
+  %p
+    There were no conflicts where the checksums disagreed.
 
 - nonserious_conflicts = @workflow_accrual.workflow_accrual_conflicts.not_serious
 - if nonserious_conflicts.present?
@@ -16,3 +21,6 @@
   %ul
     - nonserious_conflicts.each do |conflict|
       %li= conflict.path
+- else
+  %p
+    There were no conflicts where the checksums agreed.

@@ -1,4 +1,4 @@
-class Workflow::IngestMailer < ActionMailer::Base
+class Workflow::IngestMailer < MedusaBaseMailer
   default from: "medusa-noreply@#{self.smtp_settings['domain'].if_blank('library.illinois.edu')}"
 
   def done(workflow_ingest)

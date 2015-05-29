@@ -3,6 +3,7 @@ class Workflow::AccrualJobsController < ApplicationController
   before_action :require_logged_in
   before_action :get_accrual_job_and_authorize,
                 only: [:proceed, :proceed_form, :abort, :abort_form, :view_report]
+  before_action :record_comment, only: [:proceed, :abort]
 
   def proceed
     @accrual_job.approve_and_proceed
@@ -55,6 +56,14 @@ class Workflow::AccrualJobsController < ApplicationController
   def get_accrual_job_and_authorize
     @accrual_job = Workflow::AccrualJob.find(params[:id])
     check_authorization(@accrual_job)
+  end
+
+  def record_comment
+    comment = params[:workflow_accrual_job].try(:fetch, :comment)
+    if comment.present?
+      @accrual_job.workflow_accrual_comments.create!(user: current_user,
+                                                     body: comment)
+    end
   end
 
 end
