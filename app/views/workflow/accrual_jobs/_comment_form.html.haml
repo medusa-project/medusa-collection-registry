@@ -1,3 +1,5 @@
+-# must pass in title
+%h4 #{title}
 -# must pass url to which to submit form
 = simple_form_for @accrual_job, url: url, method: :post, remote: true do |f|
   = f.input :comment, as: :text

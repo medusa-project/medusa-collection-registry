@@ -17,8 +17,8 @@
         %td= accrual_job.file_group.try(:title)
         %td= accrual_job.collection.try(:title)
         %td= accrual_job.user.net_id
-        %td= link_to('View Report', view_report_workflow_accrual_job_path(accrual_job), remote: true) if accrual_job.has_conflicts?
-        %td= accrual_job.status_label
+        %td= link_to(fa_icon('eye'), view_report_workflow_accrual_job_path(accrual_job), remote: true, title: 'View Report', class: 'btn btn-default btn-xs') if accrual_job.has_report?
+        %td{id: "accrual_status_#{accrual_job.id}"}= accrual_job.status_label
         %td.dropdown{id: "accrual_actions_#{accrual_job.id}"}
           - if accrual_job.approvable_by?(current_user)
             %a.btn.btn-default.btn-xs.dropdown-toggle{type: 'button', 'data-toggle' => 'dropdown', 'aria-expanded' => false, href: '#', title: 'Actions'}

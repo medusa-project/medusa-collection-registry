@@ -1,2 +1,5 @@
 $("#accrual_actions_#{@accrual_job.id}").html('');
+$("#accrual_status_#{@accrual_job.id}").hide();
+$("#accrual_status_#{@accrual_job.id}").text("#{@accrual_job.status_label}");
+$("#accrual_status_#{@accrual_job.id}").show("highlight", null, 1000);
 $("#accrual_comment_modal").modal('hide');
