@@ -45,8 +45,8 @@ class Workflow::AccrualJobsController < ApplicationController
     case job.state
       when 'initial_approval'
         authorize! :accrue, job.cfs_directory
-      when 'overwrite_approval'
-        authorize! :accrue_overwrite, job.cfs_directory
+      when 'admin_approval'
+        authorize! :accrue_admin, job.cfs_directory
       else
         authorize! :manage, job.cfs_directory
     end

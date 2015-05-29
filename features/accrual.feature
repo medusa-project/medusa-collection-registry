@@ -77,6 +77,9 @@ Feature: File accrual
     Then accrual assessment for the cfs directory with path 'dogs' has 1 files, 1 directories, 0 minor conflicts, and 0 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
     When I select accrual action 'Proceed'
+    And I relogin as an admin
+    And I select accrual action 'Proceed'
+    And I wait 1 second
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
     Then the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
@@ -86,7 +89,7 @@ Feature: File accrual
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
   @javascript
-  Scenario: No conflict accrual, aborted
+  Scenario: No conflict accrual, aborted by repository admin
     When I am logged in as a manager
     And I navigate to my accrual data for bag 'accrual-disjoint-bag' at path 'dogs'
     And I check all of:
@@ -96,6 +99,26 @@ Feature: File accrual
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
     When I go to the dashboard
     And I select accrual action 'Abort'
+    Then the cfs directory with path 'dogs' should not have an accrual job
+    And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
+    And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
+    And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
+    And there should be 0 amazon backup delayed jobs
+    Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
+
+  @javascript
+  Scenario: No conflict accrual, aborted by preservation admin
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-disjoint-bag' at path 'dogs'
+    And I check all of:
+      | joe.txt | stuff |
+    And I click on 'Ingest'
+    Then accrual assessment for the cfs directory with path 'dogs' has 1 files, 1 directories, 0 minor conflicts, and 0 serious conflicts
+    And 'manager@example.com' should receive an email with subject 'Medusa accrual pending'
+    When I go to the dashboard
+    And I select accrual action 'Proceed'
+    And I relogin as an admin
+    And I select accrual action 'Abort' with comment 'Abort message'
     Then the cfs directory with path 'dogs' should not have an accrual job
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
@@ -114,6 +137,8 @@ Feature: File accrual
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     And I select accrual action 'Proceed'
+    And I relogin as an admin
+    And I select accrual action 'Proceed'
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
     Then the file group titled 'Dogs' should have a cfs directory for the path 'stuff'
     And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
@@ -123,7 +148,7 @@ Feature: File accrual
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
   @javascript
-  Scenario: Harmless conflict accrual, aborted
+  Scenario: Harmless conflict accrual, aborted by repository admin
     When I am logged in as a manager
     And I navigate to my accrual data for bag 'accrual-duplicate-overlap-bag' at path 'dogs'
     And I check all of:
@@ -133,6 +158,26 @@ Feature: File accrual
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
       | intro.txt | pugs/description.txt |
     And I select accrual action 'Abort'
+    Then the cfs directory with path 'dogs' should not have an accrual job
+    And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
+    And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
+    And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
+    And there should be 0 amazon backup delayed jobs
+    Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
+
+  @javascript
+  Scenario: Harmless conflict accrual, aborted by preservation admin
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-duplicate-overlap-bag' at path 'dogs'
+    And I check all of:
+      | joe.txt | intro.txt | stuff | pugs |
+    And I click on 'Ingest'
+    Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 2 minor conflicts, and 0 serious conflicts
+    And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
+      | intro.txt | pugs/description.txt |
+    And I select accrual action 'Proceed'
+    And I relogin as an admin
+    And I select accrual action 'Abort' with comment 'Abort message'
     Then the cfs directory with path 'dogs' should not have an accrual job
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'

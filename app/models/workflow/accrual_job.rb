@@ -19,8 +19,7 @@ class Workflow::AccrualJob < Workflow::Base
 
   STATE_HASH = {'start' => 'Start', 'check' => 'Checking for existing files',
                 'initial_approval' => 'Awaiting approval',
-                'copying' => 'Copying', 'copying_with_overwrite' => 'Copying with overwrite',
-                'overwrite_approval' => 'Awaiting admin approval', 'amazon_backup' => 'Amazon backup',
+                'copying' => 'Copying', 'admin_approval' => 'Awaiting admin approval', 'amazon_backup' => 'Amazon backup',
                 'aborting' => 'Aborting', 'end' => 'Ending'}
   STATES = STATE_HASH.keys
 
@@ -96,11 +95,11 @@ class Workflow::AccrualJob < Workflow::Base
     old_md5 != new_md5
   end
 
-  def perform_intial_approval
+  def perform_initial_approval
     unrunnable_state
   end
 
-  def perform_overwrite_approval
+  def perform_admin_approval
     unrunnable_state
   end
 
@@ -117,11 +116,11 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_copying
-    internal_perform_copying(overwrite: false)
-  end
-
-  def perform_copying_with_overwrite
-    internal_perform_copying(overwrite: true)
+    if has_serious_conflicts?
+      internal_perform_copying(overwrite: true)
+    else
+      internal_perform_copying(overwrite: false)
+    end
   end
 
   def staging_source_path
@@ -203,13 +202,9 @@ class Workflow::AccrualJob < Workflow::Base
   def approve_and_proceed
     case state
       when 'initial_approval'
-        if self.workflow_accrual_conflicts.serious.count > 0
-          be_in_state('overwrite_approval')
-        else
-          be_in_state_and_requeue('copying')
-        end
-      when 'overwrite_approval'
-        be_in_state_and_requeue('copying_with_overwrite')
+        be_in_state('admin_approval')
+      when 'admin_approval'
+        be_in_state_and_requeue('copying')
       else
         raise RuntimeError, 'Job approved from unallowed initial state'
     end

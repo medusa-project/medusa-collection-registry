@@ -6,7 +6,7 @@ class Workflow::AccrualJobDecorator < BaseDecorator
     case state
       when 'initial_approval'
         h.safe_can?(:accrue, cfs_directory)
-      when 'overwrite_approval'
+      when 'admin_approval'
         h.safe_can?(:accrue_overwrite, cfs_directory)
       else
         false
