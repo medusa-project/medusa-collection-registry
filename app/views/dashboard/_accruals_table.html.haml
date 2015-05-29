@@ -14,8 +14,8 @@
       %tr
         %td= accrual_job.id
         %td= accrual_job.created_at.to_date
-        %td= accrual_job.file_group.title
-        %td= accrual_job.collection.title
+        %td= accrual_job.file_group.try(:title)
+        %td= accrual_job.collection.try(:title)
         %td= accrual_job.user.net_id
         %td= link_to('View Report', view_report_workflow_accrual_job_path(accrual_job), remote: true) if accrual_job.has_conflicts?
         %td= accrual_job.status_label
