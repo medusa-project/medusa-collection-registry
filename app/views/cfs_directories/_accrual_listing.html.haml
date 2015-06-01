@@ -1,9 +1,9 @@
 - if @accrual.at_root?
   %div
     %h5 Roots:
-    %ul
+    %ul.list-group
       - StagingStorage.instance.roots.each do |root|
-        %li= link_to root.name, @accrual.child_display_path(root.name), remote: true
+        %li.list-group-item= link_to root.name, @accrual.child_display_path(root.name), remote: true
 - else
   %div
     %h5 Directories:
