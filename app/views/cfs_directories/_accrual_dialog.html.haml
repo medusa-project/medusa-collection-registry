@@ -1,6 +1,6 @@
 = render layout: 'layouts/bootstrap_modal', locals: {id: 'add-files-dialog'} do
   .modal-header
-    Add files
+    %h4 Add files
   .modal-body
     = simple_form_for :accrual, url: submit_accruals_path, html: {id: 'add-files-form'} do |f|
       .btn-group
