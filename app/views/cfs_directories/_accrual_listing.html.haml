@@ -1,7 +1,9 @@
 - if @accrual.at_root?
-  %ul
-    - StagingStorage.instance.roots.each do |root|
-      %li= link_to root.name, @accrual.child_display_path(root.name), remote: true
+  %div
+    Roots:
+    %ul
+      - StagingStorage.instance.roots.each do |root|
+        %li= link_to root.name, @accrual.child_display_path(root.name), remote: true
 - else
   %div
     Directories:
