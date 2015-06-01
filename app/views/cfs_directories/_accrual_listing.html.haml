@@ -1,16 +1,16 @@
 - if @accrual.at_root?
   %div
-    Roots:
+    %h5 Roots:
     %ul
       - StagingStorage.instance.roots.each do |root|
         %li= link_to root.name, @accrual.child_display_path(root.name), remote: true
 - else
   %div
-    Directories:
+    %h5 Directories:
     %div
       = @accrual.directory_checkboxes
   %div
-    Files:
+    %h5 Files:
     %div
       = @accrual.file_checkboxes
 
