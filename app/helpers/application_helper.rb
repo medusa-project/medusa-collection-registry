@@ -76,4 +76,10 @@ module ApplicationHelper
     "#{klass.to_s.pluralize.underscore}/all-#{count}-#{max_updated_at}"
   end
 
+  #TODO Obviously this could be much more general in the future
+  def has_notifications?
+    current_user and ApplicationController.is_ad_admin?(current_user) and
+        Workflow::AccrualJob.awaiting_admin.present?
+  end
+
 end

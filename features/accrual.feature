@@ -285,3 +285,9 @@ Feature: File accrual
     And I click on 'View Report'
     Then I should see all of:
       | intro.txt | pugs/description.txt |
+
+  Scenario: When there is a job awaiting admin approval there is an extra icon for admins
+    Given there is an accrual workflow job awaiting admin approval
+    When I am logged in as an admin
+    And I go to the dashboard
+    Then there should be a notification icon

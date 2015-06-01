@@ -25,3 +25,7 @@ end
 And(/^the http status should be '(\d+)'$/) do |status_code|
   expect(page.status_code.to_s).to eq(status_code)
 end
+
+Then(/^there should be a notification icon$/) do
+  page.should have_selector('.dashboard-notification')
+end

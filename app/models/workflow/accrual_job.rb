@@ -32,6 +32,10 @@ class Workflow::AccrualJob < Workflow::Base
     end
   end
 
+  def self.awaiting_admin
+    where(state: 'admin_approval')
+  end
+
   def create_accrual_requests(requested_files, requested_directories)
     requested_files.each do |file|
       Workflow::AccrualFile.create!(name: file, workflow_accrual_job: self)
