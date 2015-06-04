@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'sass'
 gem 'rails', "~> 4.2"
 gem 'responders'
 
