@@ -42,7 +42,7 @@ module BookTracker
         File.open(pathname).each_with_index do |line, index|
           parts = line.split("\t")
           if parts[5] == nuc_code
-            item = Item.find_by_bib_id(parts[6])
+            item = Item.find_by_obj_id(parts[0].split('.').last)
             if item
               if !item.exists_in_hathitrust or
                   item.hathitrust_rights != parts[2]
