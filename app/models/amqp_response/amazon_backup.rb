@@ -1,5 +1,5 @@
 #Receive a response from the amazon backup server.
-class AmazonBackupServerResponse < AmqpServerResponse
+class AmqpResponse::AmazonBackup < AmqpResponse::Base
 
   def archive_ids
     self.parameter_field('archive_ids')

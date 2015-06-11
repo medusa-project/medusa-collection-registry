@@ -18,8 +18,8 @@ end
 #various types and perhaps from various queues. Maybe just run each type of message in its own thread so as not to
 #have to spawn a lot of these daemons?
 while ($running) do
-  AmazonBackupServerResponse.handle_responses
-  FixityServerResponse.handle_responses
+  AmqpResponse::AmazonBackup.handle_responses
+  AmqpResponse::Fixity.handle_responses
   sleep 60
 end
 

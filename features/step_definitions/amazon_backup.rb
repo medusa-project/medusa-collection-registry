@@ -23,5 +23,5 @@ end
 
 When(/^amazon backup runs successfully$/) do
   Test::AmazonGlacierServer.instance.import_succeed
-  AmazonBackupServerResponse.handle_responses
+  AmqpResponse::AmazonBackup.handle_responses
 end

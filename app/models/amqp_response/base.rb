@@ -2,7 +2,7 @@
 #implement the indicated methods in a subclass, the handlers in the
 #class that will handle the response, and then call the class
 #method handle_responses to take messages off the queue and handle them.
-class AmqpServerResponse < Object
+class AmqpResponse::Base < Object
 
   attr_accessor :payload
 

@@ -1,4 +1,4 @@
-class FixityServerResponse < AmqpServerResponse
+class AmqpResponse::Fixity < AmqpResponse::Base
 
   def pass_through_id_key
     :cfs_file_id
