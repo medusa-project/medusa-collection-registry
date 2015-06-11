@@ -7,7 +7,7 @@ class CfsFile < ActiveRecord::Base
   include Uuidable
   include Breadcrumb
   include CfsFileAmqp
-  
+
   belongs_to :cfs_directory, touch: true
   belongs_to :content_type, touch: true
   belongs_to :file_extension, touch: true

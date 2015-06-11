@@ -19,6 +19,7 @@ end
 #have to spawn a lot of these daemons?
 while ($running) do
   AmazonBackupServerResponse.handle_responses
+  FixityServerResponse.handle_responses
   sleep 60
 end
 
