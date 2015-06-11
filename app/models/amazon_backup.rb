@@ -1,5 +1,6 @@
 require 'fileutils'
 class AmazonBackup < ActiveRecord::Base
+  include AmazonBackupAmqp
 
   serialize :archive_ids
   before_create :initialize_archive_ids_and_date
@@ -11,8 +12,6 @@ class AmazonBackup < ActiveRecord::Base
   has_one :job_amazon_backup, class_name: 'Job::AmazonBackup', dependent: :destroy
   has_one :workflow_ingest, class_name: 'Workflow::Ingest'
   has_many :workflow_accrual_jobs, :class_name => 'Workflow::AccrualJob'
-
-  delegate :incoming_queue, :outgoing_queue, to: :class
 
   #Only allow one backup per day for a file group
   validates_uniqueness_of :date, scope: :cfs_directory_id
@@ -36,17 +35,6 @@ class AmazonBackup < ActiveRecord::Base
     self.send_backup_request_message
   end
 
-  def send_backup_request_message
-    date = self.previous_backup.try(:date)
-    AmqpConnector.instance.send_message(self.outgoing_queue, create_backup_request_message(date))
-  end
-
-  def create_backup_request_message(date)
-    {action: 'upload_directory',
-     parameters: {directory: self.cfs_directory.path, description: self.glacier_description, date: date},
-     pass_through: {backup_job_class: self.class.to_s, backup_job_id: self.id, directory: self.cfs_directory.path}}
-  end
-
   def glacier_description
     file_group = self.cfs_directory.file_group
     description = %Q(Amazon Backup Id: #{self.id}
@@ -61,27 +49,6 @@ Repository Id: #{file_group.repository.id}
       )
     end
     return description
-  end
-
-  def on_amazon_backup_succeeded_message(response)
-    self.archive_ids = response.archive_ids
-    self.part_count = self.archive_ids.length
-    self.save!
-    AmazonMailer.progress(self).deliver_now
-    create_backup_completion_event
-    if self.completed?
-      self.job_amazon_backup.try(:destroy)
-      self.workflow_ingest.try(:be_at_end)
-      self.workflow_accrual_jobs.each {|job| job.try(:be_at_end)}
-    end
-  end
-
-  def on_amazon_backup_failed_message(response)
-    AmazonMailer.failure(self, response.error_message).deliver
-  end
-
-  def on_amazon_backup_unrecognized_message(response)
-    AmazonMailer.failure.deliver(self, 'Unrecognized status code in AMQP response')
   end
 
   def create_backup_completion_event
@@ -100,14 +67,6 @@ Repository Id: #{file_group.repository.id}
 
   def completed?
     self.part_count.present? and self.archive_ids.present? and (self.completed_part_count == self.part_count)
-  end
-
-  def self.incoming_queue
-    MedusaCollectionRegistry::Application.medusa_config['amazon']['incoming_queue']
-  end
-
-  def self.outgoing_queue
-    MedusaCollectionRegistry::Application.medusa_config['amazon']['outgoing_queue']
   end
 
   def self.create_and_schedule(user, cfs_directory)
