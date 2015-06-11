@@ -14,7 +14,7 @@ class AmqpResponse::AmazonBackup < AmqpResponse::Base
   end
 
   def self.incoming_queue
-    AmazonBackup.incoming_queue
+    ::AmazonBackup.incoming_queue
   end
 
   def success_method

@@ -9,7 +9,7 @@ class AmqpResponse::Fixity < AmqpResponse::Base
   end
 
   def self.incoming_queue
-    CfsFile.incoming_queue
+    ::CfsFile.incoming_queue
   end
 
   def success_method
