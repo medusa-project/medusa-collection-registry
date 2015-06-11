@@ -26,6 +26,10 @@ development:
     #AMQP queues to communicate with glacier server
     outgoing_queue: medusa_to_glacier
     incoming_queue: glacier_to_medusa
+  fixity_server:
+    #AMQP queues to communicate with fixity server
+    outgoing_queue: medusa_to_fixity
+    incoming_queue: fixity_to_medusa
   #You can set anything here that you might pass to Bunny.new. Anything you don't set just gets the Bunny default.
   #Typical fields needed for our setup are shown below.
   amqp:

@@ -6,6 +6,7 @@ class CfsFile < ActiveRecord::Base
   include CascadedEventable
   include Uuidable
   include Breadcrumb
+  include CfsFileAmqp
 
   belongs_to :cfs_directory, touch: true
   belongs_to :content_type, touch: true

@@ -12,6 +12,8 @@ class AmazonBackup < ActiveRecord::Base
   has_one :workflow_ingest, class_name: 'Workflow::Ingest'
   has_many :workflow_accrual_jobs, :class_name => 'Workflow::AccrualJob'
 
+  delegate :incoming_queue, :outgoing_queue, to: :class
+
   #Only allow one backup per day for a file group
   validates_uniqueness_of :date, scope: :cfs_directory_id
 
@@ -36,7 +38,7 @@ class AmazonBackup < ActiveRecord::Base
 
   def send_backup_request_message
     date = self.previous_backup.try(:date)
-    AmqpConnector.instance.send_message(self.class.outgoing_queue, create_backup_request_message(date))
+    AmqpConnector.instance.send_message(self.outgoing_queue, create_backup_request_message(date))
   end
 
   def create_backup_request_message(date)
