@@ -11,7 +11,7 @@ class Workflow::AccrualJob < Workflow::Base
   has_many :workflow_accrual_directories, class_name: 'Workflow::AccrualDirectory', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
   has_many :workflow_accrual_files, class_name: 'Workflow::AccrualFile', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
   has_many :workflow_accrual_conflicts, class_name: 'Workflow::AccrualConflict', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
-  has_many :workflow_accrual_comments, -> {order 'created_at desc'},  class_name: 'Workflow::AccrualComment', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
+  has_many :workflow_accrual_comments, -> { order 'created_at desc' }, class_name: 'Workflow::AccrualComment', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
 
   delegate :file_group, :root_cfs_directory, :collection, to: :cfs_directory
 
@@ -145,12 +145,18 @@ class Workflow::AccrualJob < Workflow::Base
     opts << '--ignore-existing' unless overwrite
     source_entry = File.join(source_path, entry.name)
     return unless File.exists?(source_entry)
-    Rsync.run(opts, source_entry, target_path) do |result|
-      unless result.success?
-        message = "Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}.\nRaw rsync output: #{result.instance_variable_get('@raw')}\n Rescheduling."
-        Rails.logger.error message
-        raise RuntimeError, message
-      end
+    # Rsync.run(opts, source_entry, target_path) do |result|
+    #   unless result.success?
+    #     message = "Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}.\nRaw rsync output: #{result.instance_variable_get('@raw')}\n Rescheduling."
+    #     Rails.logger.error message
+    #     raise RuntimeError, message
+    #   end
+    # end
+    result = system('rsync', *opts, source_entry, target_path)
+    unless result
+      message = "Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}.\nRescheduling.\n"
+      Rails.logger.error message
+      raise RuntimeError, message
     end
   end
 
