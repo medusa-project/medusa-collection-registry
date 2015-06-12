@@ -1,4 +1,5 @@
 require 'find'
+require 'open3'
 
 class Workflow::AccrualJob < Workflow::Base
 
@@ -145,16 +146,14 @@ class Workflow::AccrualJob < Workflow::Base
     opts << '--ignore-existing' unless overwrite
     source_entry = File.join(source_path, entry.name)
     return unless File.exists?(source_entry)
-    # Rsync.run(opts, source_entry, target_path) do |result|
-    #   unless result.success?
-    #     message = "Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}.\nRaw rsync output: #{result.instance_variable_get('@raw')}\n Rescheduling."
-    #     Rails.logger.error message
-    #     raise RuntimeError, message
-    #   end
-    # end
-    result = system('rsync', *opts, source_entry, target_path)
-    unless result
-      message = "Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}.\nRescheduling.\n"
+    out, err, status = Open3.capture3('rsync', *opts, source_entry, target_path)
+    unless status.success?
+      message = <<MESSAGE
+Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}.
+STDOUT: #{out}
+STDERR: #{err}
+Rescheduling.
+MESSAGE
       Rails.logger.error message
       raise RuntimeError, message
     end
