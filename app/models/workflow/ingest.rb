@@ -37,8 +37,9 @@ class Workflow::Ingest < Workflow::Base
   def perform_copying
     FileUtils.mkdir_p(self.bit_level_file_group.expected_absolute_cfs_root_directory)
     #copy files from staged location to cfs storage
-    Rsync.run(self.external_file_group.local_staged_file_location + '/', self.bit_level_file_group.expected_absolute_cfs_root_directory,
-              '-a') do |result|
+    Rsync.run('-a',
+              self.external_file_group.local_staged_file_location + '/',
+              self.bit_level_file_group.expected_absolute_cfs_root_directory) do |result|
       unless result.success?
         message = "Error doing rsync for ingest job #{self.id}. Rescheduling"
         Rails.logger.error message
