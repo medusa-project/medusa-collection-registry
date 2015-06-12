@@ -141,12 +141,13 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def copy_entry(entry, source_path, target_path, overwrite: false)
-    opts = overwrite ? '-a --ignore-times' : '-a --ignore-times --ignore-existing'
+    opts = %w(-a --ignore-times)
+    opts << '--ignore-existing' unless overwrite
     source_entry = File.join(source_path, entry.name)
     return unless File.exists?(source_entry)
     Rsync.run(source_entry, target_path, opts) do |result|
       unless result.success?
-        message = "Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}. Rescheduling."
+        message = "Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}.\nRaw rsync output: #{result.instance_variable_get('@raw')}\n Rescheduling."
         Rails.logger.error message
         raise RuntimeError, message
       end
