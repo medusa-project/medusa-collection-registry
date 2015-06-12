@@ -20,7 +20,7 @@ namespace :medusa do
     task stop: :environment do
       ENV['RAILS_ENV'] = Rails.env
       DJ_QUEUES.each do |queue, count|
-        stop_jobs(queue)
+        stop_jobs(queue, count)
       end
     end
 
@@ -31,8 +31,8 @@ def start_jobs(queue, count)
   sh "script/delayed_job -p #{Rails.env} --pid-dir=#{delayed_job_pid_dir(queue)} -n #{count} --queue=#{queue} start"
 end
 
-def stop_jobs(queue)
-  sh "script/delayed_job -p #{Rails.env} --pid-dir=#{delayed_job_pid_dir(queue)} stop"
+def stop_jobs(queue, count)
+  sh "script/delayed_job -p #{Rails.env} --pid-dir=#{delayed_job_pid_dir(queue)} -n #{count} stop"
 end
 
 def delayed_job_pid_dir(queue)
