@@ -20,8 +20,17 @@ class AccrualsController < ApplicationController
     accrual_directories = params[:accrual][:accrual_directories].select {|d| d.present?}
     accrual_files = params[:accrual][:accrual_files].select {|f| f.present?}
     Workflow::AccrualJob.create_for(current_user, cfs_directory, staging_path, accrual_files, accrual_directories)
-    flash[:notice] = "Your ingest request has been submitted to a Medusa Administrator and is pending approval."
+    flash[:notice] = submission_notice
     redirect_to cfs_directory
+  end
+
+  protected
+
+  def submission_notice
+    %Q(Your ingest request has been submitted to a your Repository Administrator and
+       is pending approval. Prior to approval, a pre-ingest report will be made available
+       in the #{view_context.link_to('Medusa Dashboard', dashboard_path)} with a technical analysis of your
+       deposit.).html_safe
   end
 
 end

@@ -1,4 +1,5 @@
 - flash.each do |name, msg|
   %div{class: name == :notice ? 'alert alert-success' : 'alert alert-error'}
-    %a.close{'data-dismiss' => 'alert', href: '#'} x
-    = msg
+    .row
+      .col-md-10= msg
+      %a.close.col-md-2.pull-right{'data-dismiss' => 'alert', href: '#'} x

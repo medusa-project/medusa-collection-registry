@@ -18,6 +18,7 @@ file_group:
 cfs_directory:
   fixity_check_scheduled: Fixity check scheduled
   fixity_check_completed: Fixity check completed
+  deposit_completed: Deposit completed
 cfs_file:
   fixity_check_run: Fixity check run
   fixity_result: Fixity result

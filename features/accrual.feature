@@ -1,4 +1,3 @@
-@current
 Feature: File accrual
   In order to add files to already existing file groups
   As a medusa admin
@@ -85,9 +84,11 @@ Feature: File accrual
     Then the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'pete.txt'
+    And the cfs directory with path 'dogs' should have an event with key 'deposit_completed' performed by 'manager@example.com'
     And accrual amazon backup for file group 'Dogs' and user 'manager@example.com' should happen
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
+    And the file group with title 'Dogs' should have an event with key 'amazon_backup_completed' performed by 'manager@example.com'
 
   @javascript
   Scenario: No conflict accrual, aborted by repository admin

@@ -127,6 +127,8 @@ class Workflow::AccrualJob < Workflow::Base
     else
       internal_perform_copying(overwrite: false)
     end
+    cfs_directory.events.create!(key: 'deposit_completed', cascadable: true,
+                                 note: "Accrual from #{staging_path}", actor_email: user.email)
   end
 
   def staging_source_path
