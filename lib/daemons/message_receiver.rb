@@ -14,6 +14,8 @@ Signal.trap("TERM") do
   $running = false
 end
 
+$consecutive_errors = 0
+
 #TODO - ultimately make the whole message receiving system more generic. It should be able to take in responses of
 #various types and perhaps from various queues. Maybe just run each type of message in its own thread so as not to
 #have to spawn a lot of these daemons?
@@ -22,10 +24,15 @@ while ($running) do
     AmqpConnector.instance.reinitialize
     AmqpResponse::AmazonBackup.handle_responses
     AmqpResponse::Fixity.handle_responses
+    $consecutive_errors = 0
     sleep 60
   rescue Exception => e
     Rails.logger.error "MESSAGE RECEIVER ERROR:"
     Rails.logger.error e.to_s
+    $consecutive_errors += 1
+    if $consecutive_errors == 10
+      MessageReceiverErrorMailer.error().deliver_now
+    end
     sleep 10
   end
 end
