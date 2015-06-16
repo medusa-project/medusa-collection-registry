@@ -29,6 +29,8 @@ module CfsFileAmqp
   end
 
   def on_amqp_fixity_success(response)
+    #TODO - check against existing fixity of file and do as in Job::FixityCheck
+    #Perhaps do the below if the fixity is _not_ present yet!
     if response.md5.present?
       self.md5_sum = response.md5
       self.save!
