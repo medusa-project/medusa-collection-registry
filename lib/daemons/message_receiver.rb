@@ -18,9 +18,15 @@ end
 #various types and perhaps from various queues. Maybe just run each type of message in its own thread so as not to
 #have to spawn a lot of these daemons?
 while ($running) do
-  AmqpConnector.instance.initialize
-  AmqpResponse::AmazonBackup.handle_responses
-  AmqpResponse::Fixity.handle_responses
-  sleep 60
+  begin
+    AmqpConnector.instance.initialize
+    AmqpResponse::AmazonBackup.handle_responses
+    AmqpResponse::Fixity.handle_responses
+    sleep 60
+  rescue Exception => e
+    Rails.logger.error "MESSAGE RECEIVER ERROR:"
+    Rails.logger.error e.to_s
+    sleep 10
+  end
 end
 
