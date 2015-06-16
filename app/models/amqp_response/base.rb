@@ -14,6 +14,10 @@ class AmqpResponse::Base < Object
     self.payload['status']
   end
 
+  def action
+    self.payload['action']
+  end
+
   def error_message
     self.payload['message']
   end

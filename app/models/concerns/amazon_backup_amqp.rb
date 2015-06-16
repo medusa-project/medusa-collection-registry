@@ -29,25 +29,50 @@ module AmazonBackupAmqp
      pass_through: {backup_job_class: self.class.to_s, backup_job_id: self.id, directory: self.cfs_directory.path}}
   end
 
-  def on_amazon_backup_succeeded_message(response)
-    self.archive_ids = response.archive_ids
-    self.part_count = self.archive_ids.length
-    self.save!
-    AmazonMailer.progress(self).deliver_now
-    create_backup_completion_event
-    if self.completed?
-      self.job_amazon_backup.try(:destroy)
-      self.workflow_ingest.try(:be_at_end)
-      self.workflow_accrual_jobs.each {|job| job.try(:be_at_end)}
+  def on_amazon_glacier_succeeded_message(response)
+    case response.action
+      when 'upload_directory'
+        self.archive_ids = response.archive_ids
+        self.part_count = self.archive_ids.length
+        self.save!
+        AmazonMailer.progress(self).deliver_now
+        create_backup_completion_event
+        if self.completed?
+          self.job_amazon_backup.try(:destroy)
+          self.workflow_ingest.try(:be_at_end)
+          self.workflow_accrual_jobs.each { |job| job.try(:be_at_end) }
+        end
+      when 'delete_archive'
+        Rails.logger.info "Deleted Amazon Glacier archive #{response.parameter_field(:archive_id)}"
+      else
+        raise RuntimeError, "Unrecognized AMQP action #{response.action} for amazon backup"
     end
   end
 
-  def on_amazon_backup_failed_message(response)
+  def on_amazon_glacier_failed_message(response)
     AmazonMailer.failure(self, response.error_message).deliver
   end
 
-  def on_amazon_backup_unrecognized_message(response)
+  def on_amazon_glacier_unrecognized_message(response)
     AmazonMailer.failure.deliver(self, 'Unrecognized status code in AMQP response')
+  end
+
+  def delete_archives
+    if self.archive_ids.present?
+      self.archive_ids.each do |archive_id|
+        self.send_delete_request_message(archive_id)
+      end
+    end
+  end
+
+  def create_delete_request_message(archive_id)
+    {action: 'delete_archive',
+     parameters: {archive_id: archive_id},
+     pass_through: {backup_job_class: self.class.to_s, backup_job_id: self.id}}
+  end
+
+  def send_delete_request_message(archive_id)
+    AmqpConnector.instance.send_message(self.outgoing_queue, create_delete_request_message(archive_id))
   end
 
 end

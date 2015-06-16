@@ -18,15 +18,15 @@ class AmqpResponse::AmazonBackup < AmqpResponse::Base
   end
 
   def success_method
-    :on_amazon_backup_succeeded_message
+    :on_amazon_glacier_succeeded_message
   end
 
   def failure_method
-    :on_amazon_backup_failed_message
+    :on_amazon_glacier_failed_message
   end
 
   def unrecognized_method
-    :on_amazon_backup_unrecognized_message
+    :on_amazon_glacier_unrecognized_message
   end
 
 end
