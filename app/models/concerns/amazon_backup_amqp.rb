@@ -43,7 +43,14 @@ module AmazonBackupAmqp
           self.workflow_accrual_jobs.each { |job| job.try(:be_at_end) }
         end
       when 'delete_archive'
-        Rails.logger.info "Deleted Amazon Glacier archive #{response.parameter_field(:archive_id)}"
+        archive_id = response.parameter_field(:archive_id)
+        Rails.logger.info "Deleted Amazon Glacier archive #{archive_id}"
+        self.archive_ids.delete(archive_id)
+        self.save!
+        if self.archive_ids.blank?
+          Rails.logger.info "Deleteing Amazon Backup #{self.id}. All corresponding archives have been deleted."
+          self.destroy!
+        end
       else
         raise RuntimeError, "Unrecognized AMQP action #{response.action} for amazon backup"
     end
@@ -57,7 +64,7 @@ module AmazonBackupAmqp
     AmazonMailer.failure.deliver(self, 'Unrecognized status code in AMQP response')
   end
 
-  def delete_archives
+  def delete_archives_and_self
     if self.archive_ids.present?
       self.archive_ids.each do |archive_id|
         self.send_delete_request_message(archive_id)

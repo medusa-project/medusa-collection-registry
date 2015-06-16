@@ -21,14 +21,14 @@ module Test
     def import_succeed
       AmqpConnector.instance.with_parsed_message(self.incoming_queue) do |message|
         return_message = {pass_through: message['pass_through'], status: 'success',
-                          parameters: {archive_ids: [UUID.generate]}}
+                          parameters: {archive_ids: [UUID.generate]}, action: 'upload_directory'}
         AmqpConnector.instance.send_message(self.outgoing_queue, return_message)
       end
     end
 
     def import_fail
       AmqpConnector.instance.with_parsed_message(self.incoming_queue) do |message|
-        return_message = {pass_through: message['pass_through'], status: 'failure', error_message: 'test_error'}
+        return_message = {pass_through: message['pass_through'], status: 'failure', error_message: 'test_error', action: 'upload_directory'}
         AmqpConnector.instance.send_message(self.outgoing_queue, return_message)
       end
     end
