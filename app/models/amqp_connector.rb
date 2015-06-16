@@ -9,6 +9,10 @@ class AmqpConnector < Object
   attr_accessor :connection, :known_queues
 
   def initialize
+    self.reinitialize
+  end
+
+  def reinitialize
     config = (MedusaCollectionRegistry::Application.medusa_config['amqp'] || {}).symbolize_keys
     config.merge!(recover_from_connection_close: true)
     self.known_queues = Set.new
