@@ -19,7 +19,7 @@ end
 #have to spawn a lot of these daemons?
 while ($running) do
   begin
-    AmqpConnector.instance.initialize
+    AmqpConnector.instance.reinitialize
     AmqpResponse::AmazonBackup.handle_responses
     AmqpResponse::Fixity.handle_responses
     sleep 60
