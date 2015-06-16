@@ -48,7 +48,7 @@ module AmazonBackupAmqp
         self.archive_ids.delete(archive_id)
         self.save!
         if self.archive_ids.blank?
-          Rails.logger.info "Deleteing Amazon Backup #{self.id}. All corresponding archives have been deleted."
+          Rails.logger.info "Deleting Amazon Backup #{self.id}. All corresponding archives have been deleted."
           self.destroy!
         end
       else
