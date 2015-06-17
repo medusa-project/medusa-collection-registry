@@ -29,30 +29,16 @@ class Job::FixityCheck < ActiveRecord::Base
 
   def interpret_results_hash(results)
     self.cfs_directory.each_file_in_tree do |cfs_file|
-      event_parameters = case results[cfs_file.relative_path]
-                           when 'OK'
-                             {cascadable: false, note: 'OK'}
-                           when 'FAILED'
-                             {cascadable: true, note: 'FAILED'}
-                           when nil
-                             {cascadable: true, note: 'NOT_FOUND'}
-                           else
-                             raise RuntimeError, 'Unexpected result for fixity check job'
-                         end
-      event_parameters.merge!(key: 'fixity_result', actor_email: self.user.email, date: Date.today)
-      cfs_file.events.create!(event_parameters)
-      case event_parameters[:note]
-        when 'FAILED'
-          cfs_file.red_flags.create!(message: "Md5 Sum changed. Recorded: #{cfs_file.md5_sum} Current: #{cfs_file.file_system_md5_sum}")
-          cfs_file.set_fixity_status_bad
-        when 'NOT_FOUND'
-          cfs_file.set_fixity_status_not_found
+      case results[cfs_file.relative_path]
         when 'OK'
-          cfs_file.set_fixity_status_ok
+          cfs_file.update_fixity_status_ok_with_event(self.user.email)
+        when 'FAILED'
+          cfs_file.update_fixity_status_bad_with_event(self.user.email)
+        when 'NOT_FOUND'
+          cfs_file.update_fixity_status_not_found_with_event(self.user.email)
         else
-          raise RuntimeError, "Unexpected fixity result."
+          raise RuntimeError, "Unexpected result for fixity check job. Cfs File Id: #{cfs_file.id}"
       end
-      cfs_file.save!
     end
   end
 
