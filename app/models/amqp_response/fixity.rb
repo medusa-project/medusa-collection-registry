@@ -36,4 +36,8 @@ class AmqpResponse::Fixity < AmqpResponse::Base
     self.checksums['sha1']
   end
 
+  def found?
+    self.parameter_field('found')
+  end
+
 end

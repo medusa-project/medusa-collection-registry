@@ -102,14 +102,14 @@ class CfsFile < ActiveRecord::Base
     self.fixity_check_time = Time.now
   end
 
-  def update_fixity_status_ok_with_event(actor_email)
+  def update_fixity_status_ok_with_event(actor_email: nil)
     actor_email ||= MedusaBaseMailer.admin_address
     create_fixity_event(cascadable: false, note: 'OK', actor_email: actor_email)
     set_fixity_status_ok
     save!
   end
 
-  def update_fixity_status_bad_with_event(actor_email)
+  def update_fixity_status_bad_with_event(actor_email: nil)
     actor_email ||= MedusaBaseMailer.admin_address
     create_fixity_event(cascadable: true, note: 'FAILED', actor_email: actor_email)
     red_flags.create!(message: "Md5 Sum changed. Recorded: #{md5_sum} Current: #{file_system_md5_sum}. Cfs File Id: #{self.id}")
@@ -117,7 +117,7 @@ class CfsFile < ActiveRecord::Base
     save!
   end
 
-  def update_fixity_status_not_found_with_event(actor_email)
+  def update_fixity_status_not_found_with_event(actor_email: nil)
     actor_email ||= MedusaBaseMailer.admin_address
     create_fixity_event(cascadable: true, note: 'NOT_FOUND', actor_email: actor_email)
     red_flags.create!(message: "File not found for fixity check. Cfs File Id: #{self.id}")
