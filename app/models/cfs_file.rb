@@ -77,14 +77,28 @@ class CfsFile < ActiveRecord::Base
   def set_fixity(md5sum)
     if self.md5_sum.present?
       if self.md5_sum == md5sum
-        self.fixity_check_status = 'ok'
+        set_fixity_status_ok
       else
-        self.fixity_check_status = 'bad'
+        set_fixity_status_bad
       end
     else
       self.md5_sum = md5sum
-      self.fixity_check_status = 'ok'
+      set_fixity_status_ok
     end
+  end
+
+  def set_fixity_status_ok
+    self.fixity_check_status = 'ok'
+    self.fixity_check_time = Time.now
+  end
+
+  def set_fixity_status_bad
+    self.fixity_check_status = 'bad'
+    self.fixity_check_time = Time.now
+  end
+
+  def set_fixity_status_not_found
+    self.fixity_check_status = 'nf'
     self.fixity_check_time = Time.now
   end
 

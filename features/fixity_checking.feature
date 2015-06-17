@@ -25,6 +25,8 @@ Feature: Fixity Checking
     Then the cfs file with name 'picture.jpg' should have events with fields:
       | key           | note | cascadable |
       | fixity_result | OK   | false      |
+    And the file group titled 'Toys' should have a cfs file for the path 'picture.jpg' with results:
+      | fixity_check_status | ok |
     And the cfs file with name 'something.txt' should have events with fields:
       | key           | note | cascadable |
       | fixity_result | OK   | false      |
@@ -48,6 +50,8 @@ Feature: Fixity Checking
     And the file group titled 'Toys' has a cfs file for the path 'yorkies/something.txt' with red flags with fields:
       | status  | priority | message                                                                                               |
       | flagged | medium   | Md5 Sum changed. Recorded: 552e21cd4cd9918678e3c1a0df491bc3 Current: c9dbfcbc15a9126cadeeb7af719267a5 |
+    And the file group titled 'Toys' should have a cfs file for the path 'yorkies/something.txt' with results:
+      | fixity_check_status | bad |
     And the file group with title 'Toys' should have an event with key 'fixity_check_completed' performed by 'admin@example.com'
 
 
@@ -87,6 +91,8 @@ Feature: Fixity Checking
     And the cfs file with name 'something.txt' should have events with fields:
       | key           | note   | cascadable |
       | fixity_result | FAILED | true       |
+    And the file group titled 'Toys' should have a cfs file for the path 'yorkies/something.txt' with results:
+      | fixity_check_status | bad |
     And the cfs file with name 'picture.jpg' should have 0 events
     And the cfs directory with path 'yorkies' should have an event with key 'fixity_check_completed' performed by 'admin@example.com'
     When I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'

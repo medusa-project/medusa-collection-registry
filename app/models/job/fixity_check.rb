@@ -41,9 +41,18 @@ class Job::FixityCheck < ActiveRecord::Base
                          end
       event_parameters.merge!(key: 'fixity_result', actor_email: self.user.email, date: Date.today)
       cfs_file.events.create!(event_parameters)
-      if event_parameters[:note] == 'FAILED'
-        cfs_file.red_flags.create!(message: "Md5 Sum changed. Recorded: #{cfs_file.md5_sum} Current: #{cfs_file.file_system_md5_sum}")
+      case event_parameters[:note]
+        when 'FAILED'
+          cfs_file.red_flags.create!(message: "Md5 Sum changed. Recorded: #{cfs_file.md5_sum} Current: #{cfs_file.file_system_md5_sum}")
+          cfs_file.set_fixity_status_bad
+        when 'NOT_FOUND'
+          cfs_file.set_fixity_status_not_found
+        when 'OK'
+          cfs_file.set_fixity_status_ok
+        else
+          raise RuntimeError, "Unexpected fixity result."
       end
+      cfs_file.save!
     end
   end
 
