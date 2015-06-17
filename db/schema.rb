@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150529171424) do
+ActiveRecord::Schema.define(version: 20150617154451) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,20 +162,24 @@ ActiveRecord::Schema.define(version: 20150529171424) do
 
   create_table "cfs_files", force: :cascade do |t|
     t.integer  "cfs_directory_id"
-    t.string   "name",              limit: 255
+    t.string   "name",                limit: 255
     t.decimal  "size"
     t.text     "fits_xml"
     t.datetime "mtime"
-    t.string   "md5_sum",           limit: 255
+    t.string   "md5_sum",             limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "content_type_id"
     t.integer  "file_extension_id"
+    t.datetime "fixity_check_time"
+    t.string   "fixity_check_status"
   end
 
   add_index "cfs_files", ["cfs_directory_id", "name"], name: "index_cfs_files_on_cfs_directory_id_and_name", unique: true, using: :btree
   add_index "cfs_files", ["content_type_id", "name"], name: "index_cfs_files_on_content_type_id_and_name", using: :btree
   add_index "cfs_files", ["file_extension_id", "name"], name: "index_cfs_files_on_file_extension_id_and_name", using: :btree
+  add_index "cfs_files", ["fixity_check_status"], name: "index_cfs_files_on_fixity_check_status", using: :btree
+  add_index "cfs_files", ["fixity_check_time"], name: "index_cfs_files_on_fixity_check_time", using: :btree
   add_index "cfs_files", ["mtime"], name: "index_cfs_files_on_mtime", using: :btree
   add_index "cfs_files", ["name"], name: "index_cfs_files_on_name", using: :btree
   add_index "cfs_files", ["size"], name: "index_cfs_files_on_size", using: :btree

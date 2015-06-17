@@ -20,6 +20,12 @@ class CfsFile < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: :cfs_directory_id, allow_blank: false
 
+  #last fixity check was ok, not ok, or the file was not found. Nil value indicates
+  #that no fixity check (after possibly the initial generation of the checksum) has been run -
+  #this may be the case while bootstrapping this.
+  FIXITY_STATUSES = %w(ok bad nf)
+  validates_inclusion_of :fixity_check_status, in: FIXITY_STATUSES, allow_nil: true
+
   after_create :add_cfs_directory_tree_stats
   after_destroy :remove_cfs_directory_tree_stats
   after_update :update_cfs_directory_tree_stats
@@ -62,9 +68,24 @@ class CfsFile < ActiveRecord::Base
       self.size = file_info.size
       self.mtime = file_info.mtime
       self.content_type_name = (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream')
-      self.md5_sum = Digest::MD5.file(self.absolute_path).to_s
+      self.set_fixity(self.file_system_md5_sum)
       self.save!
     end
+  end
+
+  #Does not save, only sets in memory
+  def set_fixity(md5sum)
+    if self.md5_sum.present?
+      if self.md5_sum == md5sum
+        self.fixity_check_status = 'ok'
+      else
+        self.fixity_check_status = 'bad'
+      end
+    else
+      self.md5_sum = md5sum
+      self.fixity_check_status = 'ok'
+    end
+    self.fixity_check_time = Time.now
   end
 
   def ensure_fits_xml
