@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'set'
 class BitLevelFileGroup < FileGroup
   include RedFlagAggregator
 
@@ -10,6 +11,7 @@ class BitLevelFileGroup < FileGroup
   has_many :job_cfs_initial_directory_assessments, class_name: 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
 
   after_create :ensure_cfs_directory
+  after_destroy :maybe_destroy_cfs_directories
 
   def ensure_cfs_directory
     physical_cfs_directory_path = expected_absolute_cfs_root_directory
@@ -21,6 +23,18 @@ class BitLevelFileGroup < FileGroup
       cfs_directory = CfsDirectory.create!(path: expected_relative_cfs_root_directory)
       self.cfs_directory_id = cfs_directory.id unless self.cfs_directory_id
       self.save!
+    end
+  end
+
+  #Destroy the physical cfs directory and/or CfsDirectory corresponding to this
+  #ONLY IF they are empty
+  def maybe_destroy_cfs_directories
+    physical_cfs_directory_path = expected_absolute_cfs_root_directory
+    if Dir.entries(physical_cfs_directory_path).to_set == %w(. ..).to_set
+      Dir.unlink(physical_cfs_directory_path) rescue nil
+    end
+    if cfs_directory.try(:is_empty?)
+      cfs_directory.destroy
     end
   end
 

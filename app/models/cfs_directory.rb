@@ -50,6 +50,10 @@ class CfsDirectory < ActiveRecord::Base
     !self.non_root?
   end
 
+  def is_empty?
+    self.cfs_files.blank? and self.subdirectories.blank?
+  end
+
   def root
     self.root_cfs_directory
   end
