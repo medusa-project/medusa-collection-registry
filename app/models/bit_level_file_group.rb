@@ -1,3 +1,4 @@
+require 'fileutils'
 class BitLevelFileGroup < FileGroup
   include RedFlagAggregator
 
@@ -7,6 +8,21 @@ class BitLevelFileGroup < FileGroup
 
   has_many :job_fits_directories, class_name: 'Job::FitsDirectory', foreign_key: :file_group_id
   has_many :job_cfs_initial_directory_assessments, class_name: 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
+
+  after_create :ensure_cfs_directory
+
+  def ensure_cfs_directory
+    physical_cfs_directory_path = expected_absolute_cfs_root_directory
+    FileUtils.mkdir_p(physical_cfs_directory_path) unless Dir.exists?(physical_cfs_directory_path)
+    if cfs_directory = CfsDirectory.find_by(path: expected_relative_cfs_root_directory)
+      self.cfs_directory_id = cfs_directory.id unless self.cfs_directory_id
+      self.save!
+    else
+      cfs_directory = CfsDirectory.create!(path: expected_relative_cfs_root_directory)
+      self.cfs_directory_id = cfs_directory.id unless self.cfs_directory_id
+      self.save!
+    end
+  end
 
   def storage_level
     'bit-level store'
