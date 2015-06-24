@@ -72,7 +72,8 @@ class ApplicationController < ActionController::Base
   #We define this differently for production and development/test for convenience
   if Rails.env.production?
     def self.internal_is_member_of?(group, net_id, domain)
-      UiucLdap.is_member_of?(group, net_id, domain)
+      LdapQuery.new.is_member_of?(group, net_id)
+      #UiucLdap.is_member_of?(group, net_id, domain)
     end
   else
     #To make development/test easier

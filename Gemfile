@@ -66,6 +66,7 @@ gem 'omniauth-shibboleth'
 gem 'cancan'
 gem 'handle-server', '~> 1.0.1', git: 'git://github.com/medusa-project/handle-server.git'
 gem 'rest-client'
+gem 'net-ldap'
 
 # Deploy with Capistrano
 gem 'capistrano-rails'
