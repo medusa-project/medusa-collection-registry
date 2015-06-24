@@ -37,7 +37,7 @@ class LdapQuery < Object
   end
 
   def cached_groups(net_id)
-    Rails.cache.fetch(ldap_cache_key(net_id)) do
+    Rails.cache.fetch(ldap_cache_key(net_id), expires_in: 1.day, race_condition_ttl: 10.seconds) do
       groups(net_id)
     end
   end
