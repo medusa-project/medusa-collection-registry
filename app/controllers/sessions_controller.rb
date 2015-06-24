@@ -60,7 +60,7 @@ class SessionsController < ApplicationController
   end
 
   def shibboleth_login_path(host)
-  "/Shibboleth.sso/Login?target=https://#{host}/auth/shibboleth/callback"
-end
+    "/Shibboleth.sso/Login?target=https://#{host}/auth/shibboleth/callback"
+  end
 
 end
