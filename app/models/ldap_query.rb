@@ -37,10 +37,8 @@ class LdapQuery < Object
   end
 
   def cached_groups(net_id)
-    cache = Rails.cache.read(ldap_cache_key(net_id))
-    return cache if cache.present?
-    groups(net_id).tap do |memberships|
-      Rails.cache.write(ldap_cache_key(net_id), memberships)
+    Rails.cache.fetch(ldap_cache_key(net_id)) do
+      groups(net_id)
     end
   end
 
