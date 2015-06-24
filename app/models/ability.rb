@@ -1,4 +1,3 @@
-require 'uiuc_ldap' #we may not need this here, but this will ensure it is available for anything  that needs it
 class Ability
   include CanCan::Ability
 

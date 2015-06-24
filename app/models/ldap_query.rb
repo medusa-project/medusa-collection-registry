@@ -42,8 +42,16 @@ class LdapQuery < Object
     end
   end
 
-  def ldap_cache_key(net_id)
+  def self.ldap_cache_key(net_id)
     "ldap_groups_#{net_id}"
+  end
+
+  def ldap_cache_key(net_id)
+    self.class.ldap_cache_key(net_id)
+  end
+
+  def self.reset_cache(net_id)
+    Rails.cache.delete(ldap_cache_key(net_id))
   end
 
   def connect

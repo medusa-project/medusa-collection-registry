@@ -1,4 +1,3 @@
-require 'uiuc_ldap'
 class ApplicationController < ActionController::Base
   protect_from_forgery
   helper_method :current_user, :logged_in?, :public_path, :public_view_on?
@@ -55,25 +54,15 @@ class ApplicationController < ActionController::Base
     eventable.events.create(actor_email: user.email, key: key, date: Date.today)
   end
 
-
-  #We cache the results in sessions. Since these are stored server
-  #side I don't think there will be a problem.
   def self.is_member_of?(group, user, domain = nil)
-    domain = 'uofi' if domain.blank?
-    #check cache
-    cached_value = self.cached_ldap_value(user, group, domain)
-    return cached_value unless cached_value.nil?
-    #if not in cache then lookup, cache, and return
-    self.internal_is_member_of?(group, user.net_id, domain).tap do |permitted|
-      self.cache_ldap_value(user, group, domain, permitted)
-    end
+    domain ||= 'uofi'
+    self.internal_is_member_of?(group, user.net_id, domain)
   end
 
   #We define this differently for production and development/test for convenience
   if Rails.env.production?
     def self.internal_is_member_of?(group, net_id, domain)
       LdapQuery.new.is_member_of?(group, net_id)
-      #UiucLdap.is_member_of?(group, net_id, domain)
     end
   else
     #To make development/test easier
@@ -109,32 +98,6 @@ class ApplicationController < ActionController::Base
     MedusaCollectionRegistry::Application.medusa_config['medusa_admins_group']
   end
 
-  def reset_ldap_cache(user)
-    user ||= current_user
-    if user
-      Rails.cache.write(ldap_cache_key(user), Hash.new)
-    end
-  end
-
-  def self.cached_ldap_value(user, group, domain)
-    hash = Rails.cache.read(ldap_cache_key(user)) || Hash.new
-    hash[[group, domain]]
-  end
-
-  def self.cache_ldap_value(user, group, domain, permitted)
-    hash = Rails.cache.read(ldap_cache_key(user)) || Hash.new
-    hash[[group, domain]] = permitted
-    Rails.cache.write(ldap_cache_key(user), hash, expires_in: 2.hours)
-  end
-
-  def self.ldap_cache_key(user)
-    "ldap_#{user.id}"
-  end
-
-  def ldap_cache_key(user)
-    self.class.ldap_cache_key(user)
-  end
-
   def public_path(object)
     class_name = object.class.to_s.underscore
     self.send("public_#{class_name}_path", object)
@@ -146,6 +109,11 @@ class ApplicationController < ActionController::Base
 
   def public_view_enabled?
     redirect_to(unauthorized_path) unless public_view_on?
+  end
+
+  def reset_ldap_cache(user)
+    user ||= current_user
+    LdapQuery.reset_cache(user.net_id) if user.present?
   end
 
 end

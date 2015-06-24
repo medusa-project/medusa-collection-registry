@@ -58,6 +58,15 @@ development:
     dev: hding2@illinois.edu
     noreply: medusa-noreply@medusatest.library.illinois.edu
   fits_batch_size: 1000
+  ldap:
+    host: ad.uillinois.edu
+    port: 389
+    protocol: tls
+    user: your_ldap_user
+    passwd: your_password
+    base: DC=ad,DC=uillinois,DC=edu
+    search: ^CN=([^,]+),((CN|OU)=[^,]+,)*DC=ad,DC=uillinois,DC=edu$
+
 test:
   cfs:
     root: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-test
