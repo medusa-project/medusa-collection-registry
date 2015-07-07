@@ -31,6 +31,10 @@ class ExternalFileGroup < FileGroup
         !self.workflow_ingest
   end
 
+  def lacks_related_bit_level_file_group?
+    self.target_file_groups.blank?
+  end
+
   def create_related_bit_level_file_group
     BitLevelFileGroup.new(self.attributes.slice('producer_id', 'package_profile_id',
                                                 'title', 'collection_id')).tap do |bit_level_file_group|

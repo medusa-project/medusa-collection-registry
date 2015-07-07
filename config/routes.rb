@@ -50,7 +50,10 @@ MedusaCollectionRegistry::Application.routes.draw do
       %w(create_cfs_fits create_virus_scan create_amazon_backup fixity_check create_initial_cfs_assessment).each do |action|
         post action, on: :member
       end if file_group_type == :bit_level_file_groups
-      post 'ingest', on: :member if file_group_type == :external_file_groups
+      if file_group_type == :external_file_groups
+        post 'ingest', on: :member
+        post 'create_bit_level', on: :member
+      end
       post 'bulk_amazon_backup', on: :collection
     end
   end
