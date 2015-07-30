@@ -2,6 +2,10 @@ module BookTracker
 
   class Item < ActiveRecord::Base
 
+    CSV_HEADER = ['Bib ID', 'Medusa ID', 'OCLC Number', 'Object ID', 'Title',
+                  'Author', 'Volume', 'Date', 'IA Identifier',
+                  'Exists in HathiTrust', 'Exists in IA', 'Exists in Google']
+
     # Used by self.insert_or_update!
     INSERTED = 0
     # Used by self.insert_or_update!
@@ -11,10 +15,6 @@ module BookTracker
     before_save :truncate_values
 
     self.table_name = 'book_tracker_items'
-
-    def as_json(options = { })
-      super((options || { }).merge({methods: [:url] }))
-    end
 
     ##
     # Static method that either inserts a new item, or updates an existing item,
@@ -97,21 +97,8 @@ module BookTracker
       item_params
     end
 
-    def self.to_csv(options = {})
-      # If moving bib ID out of position 0, also need to change the respond_to
-      # format.xls block in ItemsController.index()
-      headings = ['Bib ID', 'Medusa ID', 'OCLC Number', 'Object ID',
-          'Title', 'Author', 'Volume', 'Date', 'IA Identifier',
-          'Exists in HathiTrust', 'Exists in IA', 'Exists in Google']
-      columns = %w(bib_id id oclc_number obj_id title author volume date
-          ia_identifier exists_in_hathitrust exists_in_internet_archive
-          exists_in_google)
-      CSV.generate(options) do |csv|
-        csv << headings
-        all.each do |item|
-          csv << item.attributes.values_at(*columns)
-        end
-      end
+    def as_json(options = { })
+      super((options || { }).merge({methods: [:url] }))
     end
 
     ##
@@ -169,6 +156,16 @@ module BookTracker
         # It's a Google record if the object ID is a barcode. Barcodes are 14
         # digits and start with number 3.
         Service::GOOGLE
+      end
+    end
+
+    def to_csv(options = {})
+      # this must be kept in sync with CSV_HEADER
+      columns = %w(bib_id id oclc_number obj_id title author volume date
+          ia_identifier exists_in_hathitrust exists_in_internet_archive
+          exists_in_google)
+      CSV.generate(options) do |csv|
+        csv << self.attributes.values_at(*columns)
       end
     end
 

@@ -90,23 +90,28 @@ module BookTracker
                                                next_page_url: @next_page_url }
       else
         respond_to do |format|
-          format.html {
+          format.html do
             @items = @items.paginate(page: params[:page],
                                      per_page: RESULTS_LIMIT)
-          }
-          format.json {
+          end
+          format.json do
             @items = @items.paginate(page: params[:page],
                                     per_page: RESULTS_LIMIT)
             @items.each{ |item| item.url = url_for(item) }
             render json: @items, except: :raw_marcxml
-          }
-          format.csv {
-            items_csv = @items.to_csv
-            @missing_bib_ids.each do |id|
-              items_csv << id
+          end
+          format.csv do
+            # Use Enumerator in conjunction with some custom headers to
+            # stream the results, as an alternative to send_data
+            # which would require them to be loaded into memory first.
+            enumerator = Enumerator.new do |y|
+              y << Item::CSV_HEADER.to_csv
+              # Item.uncached disables ActiveRecord caching that would prevent
+              # previous find_each batches from being garbage-collected.
+              Item.uncached { @items.find_each { |item| y << item.to_csv } }
             end
-            send_data(items_csv)
-          }
+            stream(enumerator, 'items.csv')
+          end
         end
       end
     end
@@ -117,6 +122,21 @@ module BookTracker
         format.html {}
         format.json { render json: @item }
       end
+    end
+
+    private
+
+    ##
+    # Sends an Enumerable in chunks as an attachment. Streaming requires a
+    # web server capable of it (not WEBrick or Thin).
+    #
+    def stream(enumerable, filename)
+      self.response.headers['X-Accel-Buffering'] = 'no'
+      self.response.headers['Cache-Control'] ||= 'no-cache'
+      self.response.headers['Content-Disposition'] = "attachment; filename=#{filename}"
+      self.response.headers['Content-Type'] = 'text/csv'
+      self.response.headers.delete('Content-Length')
+      self.response_body = enumerable
     end
 
   end
