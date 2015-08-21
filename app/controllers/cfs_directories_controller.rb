@@ -11,9 +11,10 @@ class CfsDirectoriesController < ApplicationController
     @accrual = Accrual.new(cfs_directory: @directory).decorate
     @breadcrumbable = @directory
     @file_group = @directory.file_group
-    redirect_to @file_group and return if @directory.root? and @file_group.present?
     respond_to do |format|
-      format.html
+      format.html do
+        redirect_to @file_group and return if @directory.root? and @file_group.present?
+      end
       format.json
     end
   end
