@@ -16,6 +16,7 @@ class AmqpConnector < Object
     config = (MedusaCollectionRegistry::Application.medusa_config['amqp'] || {}).symbolize_keys
     config.merge!(recover_from_connection_close: true)
     self.known_queues = Set.new
+    self.connection.close if self.connection
     self.connection = Bunny.new(config)
     self.connection.start
   end
