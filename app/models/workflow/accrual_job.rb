@@ -170,6 +170,9 @@ MESSAGE
   #In addition to this we need to make the association to AmazonBackup one to many and the message receiving method
   #must reflect that.
   def perform_amazon_backup
+    #TODO this return doesn't get us out of this state - may need to do
+    #something else instead. If the file group isn't present what does that
+    #mean?
     return if file_group.blank?
     today = Date.today
     transaction do
