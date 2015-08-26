@@ -394,6 +394,8 @@ GEM
       rails (>= 3)
       sunspot (= 2.2.0)
     sunspot_solr (2.2.0)
+    sunspot_test (0.4.0)
+      sunspot_rails (>= 1.2.1)
     systemu (2.6.5)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
@@ -497,6 +499,7 @@ DEPENDENCIES
   simplecov
   sunspot_rails
   sunspot_solr
+  sunspot_test
   therubyracer
   thin
   twitter-bootstrap-rails!

@@ -7,6 +7,7 @@
 require 'cucumber/rails'
 require 'json_spec/cucumber'
 require 'capybara/poltergeist'
+require 'sunspot_test/cucumber'
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd

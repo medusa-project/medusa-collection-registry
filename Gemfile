@@ -117,4 +117,5 @@ group :test do
   #other js testing options
   gem 'selenium-webdriver'
   gem 'capybara-webkit'
+  gem 'sunspot_test'
 end
