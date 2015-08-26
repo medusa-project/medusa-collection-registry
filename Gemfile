@@ -98,6 +98,11 @@ group :development, :test do
   gem 'factory_girl'
   gem 'shoulda-matchers'
   gem 'thin'
+  #The default 2.2.0 sunspot_solr will work for dev/testing. If you
+  #want something newer (2.2.0 still uses solr 4; master has solr 5, and
+  #you might want it to consult the schema.xml, etc.) then clone the
+  #sunspot repo and build and install sunspot_solr manually (it is
+  #in a subdir, and I don't know a way to automatically get and use it)
   gem 'sunspot_solr'
 end
 
