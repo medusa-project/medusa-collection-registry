@@ -89,11 +89,15 @@ gem 'paperclip', git: 'git://github.com/thoughtbot/paperclip.git'
 
 gem 'font-awesome-rails'
 
+#search
+gem 'sunspot_rails'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl'
   gem 'shoulda-matchers'
   gem 'thin'
+  gem 'sunspot_solr'
 end
 
 group :development do
