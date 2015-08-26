@@ -1,3 +1,4 @@
+@search
 Feature: Search CFS Files
   In order to quickly locate files in which I have interest
   As a user
