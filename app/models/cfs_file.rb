@@ -42,6 +42,10 @@ class CfsFile < ActiveRecord::Base
   breadcrumbs parent: :cfs_directory, label: :name
   cascades_events parent: :cfs_directory
 
+  searchable do
+    text :name
+  end
+
   def relative_path
     File.join(self.cfs_directory.relative_path, self.name)
   end

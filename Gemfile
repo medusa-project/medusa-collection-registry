@@ -91,6 +91,7 @@ gem 'font-awesome-rails'
 
 #search
 gem 'sunspot_rails'
+gem 'progress_bar'
 
 group :development, :test do
   gem 'rspec-rails'
