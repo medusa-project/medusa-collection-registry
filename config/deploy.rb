@@ -70,9 +70,17 @@ end
 namespace :sunspot do
 
   task :reindex do
-    within release_path do
-      execute :rake, 'sunspot:reindex'
-    end
+    execute_rake 'sunspot:reindex'
   end
 
+end
+
+def execute_rake(task)
+  on roles(:app) do
+    within release_path do
+      with rails_env: fetch(:rails_env) do
+        execute :rake, task
+      end
+    end
+  end
 end
