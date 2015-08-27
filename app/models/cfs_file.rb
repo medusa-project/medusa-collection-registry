@@ -43,7 +43,8 @@ class CfsFile < ActiveRecord::Base
   cascades_events parent: :cfs_directory
 
   searchable do
-    text :name, stored: true
+    text :name
+    string :name, stored: true
   end
 
   def relative_path

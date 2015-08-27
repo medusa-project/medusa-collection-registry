@@ -8,6 +8,7 @@ class SearchesController < ApplicationController
     @solr_search = CfsFile.search do
       fulltext search_string
       paginate page: (params[:page] || 1), per_page: (params[:per_page] || 25)
+      order_by :name, :asc
     end
     @cfs_files = @solr_search.results
   end
