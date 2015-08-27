@@ -66,3 +66,13 @@ namespace :deploy do
   after :publishing, :start_application
 
 end
+
+namespace :sunspot do
+
+  task :reindex do
+    within release_path do
+      execute :rake, 'sunspot:reindex'
+    end
+  end
+
+end
