@@ -100,6 +100,8 @@ namespace :check_dirs do
     puts "No problems found" unless found_problem
   end
 
+  #This actually shouldn't happen very much - I think there is code that checks
+  #for this in the main application that creates them when it is run.
   desc 'Check for root dirs on disk which don''t have CfsDirectory in db'
   task :roots_not_in_db => :environment do
     db_root_paths = CfsDirectory.where("path like '%/%'").pluck(:path).to_set
