@@ -80,3 +80,20 @@ namespace :check do
   end
 
 end
+
+namespace :check_dirs do
+  desc 'Check specified range of CfsDirectories (by default all) for files/dirs on disk vs. in the database. Print a report.'
+  task :run, [:min_id, :max_id] => :environment do |t, args|
+    min_id = args[:min_id] || 1
+    max_id = args[:max_id] || 10 ** 12
+    found_problem = false
+    CfsDirectory.where('id >= ?', min_id).where('id <= ?', max_id).find_each do |cfs_directory|
+      report = cfs_directory.compare_to_disk
+      if report.out_of_sync?
+        report.print_report
+        found_problem = true
+      end
+    end
+    puts "No problems found" unless found_problem
+  end
+end
