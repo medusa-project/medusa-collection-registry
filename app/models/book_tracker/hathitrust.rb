@@ -92,12 +92,12 @@ module BookTracker
       task.save!
       puts task.name
 
-      uri = URI.parse('http://www.hathitrust.org/hathifiles')
+      uri = URI.parse('https://www.hathitrust.org/hathifiles')
       response = Net::HTTP.get_response(uri)
       page = Nokogiri::HTML(response.body)
 
       # Scrape the URI of the latest HathiFile out of the index
-      node = page.css('table#filebrowser-file-listing td a').
+      node = page.css('div#content-area table.sticky-enabled a').
           select{ |h| h.text.start_with?('hathi_full_') }.
           sort{ |x,y| x.text <=> y.text }.reverse[0]
       uri = node['href']
