@@ -21,7 +21,7 @@ class CfsDirectoryDiskComparison < Object
   def disk_directory_missing?
     self.disk_directory_missing
   end
-  
+
   def print_disk_directory_missing
     puts "#{self.cfs_directory.id}:#{self.cfs_directory.absolute_path}"
     puts "MISSING ON DISK"
