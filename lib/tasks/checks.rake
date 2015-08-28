@@ -83,7 +83,7 @@ end
 
 namespace :check_dirs do
   desc 'Check specified range of CfsDirectories (by default all) for files/dirs on disk vs. in the database. Print a report.'
-  task :run, [:min_id, :max_id] => :environment do |t, args|
+  task :sync_test, [:min_id, :max_id] => :environment do |t, args|
     min_id = args[:min_id] || 1
     max_id = args[:max_id] || 10 ** 12
     found_problem = false
@@ -99,4 +99,22 @@ namespace :check_dirs do
     end
     puts "No problems found" unless found_problem
   end
+
+  desc 'Check for root dirs on disk which don''t have CfsDirectory in db'
+  task :roots_not_in_db => :environment do
+    db_root_paths = CfsDirectory.where("path like '%/%'").pluck(:path).to_set
+    disk_root_paths = Dir.chdir(CfsRoot.instance.path) do
+      root = Pathname.new('.')
+      children = root.children.select {|child| child.directory?}
+      grandchildren = children.collect {|child| child.children(true).select {|grandchild| grandchild.directory? }}.flatten
+      grandchildren.collect(&:to_s).to_set
+    end
+    disk_only_paths = disk_root_paths.difference(db_root_paths)
+    if disk_only_paths.present?
+      disk_only_paths.each {|path| puts path}
+    else
+      puts "All paths on the disk have corresponding CFS directory"
+    end
+  end
+
 end
