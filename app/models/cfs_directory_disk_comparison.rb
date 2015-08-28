@@ -3,7 +3,7 @@
 class CfsDirectoryDiskComparison < Object
 
   attr_accessor :cfs_directory, :files_db_only, :files_disk_only,
-                :directories_db_only, :directories_disk_only
+                :directories_db_only, :directories_disk_only, :disk_directory_missing
 
   def initialize(args = {})
     self.cfs_directory = args[:cfs_directory]
@@ -11,10 +11,20 @@ class CfsDirectoryDiskComparison < Object
     self.files_disk_only = args[:files_disk_only]
     self.directories_db_only = args[:directories_db_only]
     self.directories_disk_only = args[:directories_disk_only]
+    self.disk_directory_missing = args[:disk_directory_missing]
   end
 
   def out_of_sync?
     [files_db_only, files_disk_only, directories_db_only, directories_disk_only].detect {|collection| collection.present?}
+  end
+
+  def disk_directory_missing?
+    self.disk_directory_missing
+  end
+  
+  def print_disk_directory_missing
+    puts "#{self.cfs_directory.id}:#{self.cfs_directory.absolute_path}"
+    puts "MISSING ON DISK"
   end
 
   def print_report

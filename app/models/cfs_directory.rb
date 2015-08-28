@@ -312,16 +312,21 @@ class CfsDirectory < ActiveRecord::Base
   #This is to have a way to compare to the files/directories on disk
   #Should show no differences, of course, but there are occasional problems
   def compare_to_disk
-    db_file_names = cfs_files.pluck(:name).to_set
-    db_directory_paths = subdirectories.pluck(:path).to_set
-    children = Pathname.new(absolute_path).children
-    disk_file_names = children.select(&:file?).collect { |f| f.basename.to_s }.to_set
-    disk_directory_paths = children.select(&:directory?).collect { |d| d.basename.to_s }.to_set
-    CfsDirectoryDiskComparison.new(cfs_directory: self,
-                                   files_db_only: db_file_names.difference(disk_file_names),
-                                   files_disk_only: disk_file_names.difference(db_file_names),
-                                   directories_db_only: db_directory_paths.difference(disk_directory_paths),
-                                   directories_disk_only: disk_directory_paths.difference(db_directory_paths))
+    if File.directory?(self.absolute_path)
+      db_file_names = cfs_files.pluck(:name).to_set
+      db_directory_paths = subdirectories.pluck(:path).to_set
+      children = Pathname.new(absolute_path).children
+      disk_file_names = children.select(&:file?).collect { |f| f.basename.to_s }.to_set
+      disk_directory_paths = children.select(&:directory?).collect { |d| d.basename.to_s }.to_set
+      CfsDirectoryDiskComparison.new(cfs_directory: self,
+                                     files_db_only: db_file_names.difference(disk_file_names),
+                                     files_disk_only: disk_file_names.difference(db_file_names),
+                                     directories_db_only: db_directory_paths.difference(disk_directory_paths),
+                                     directories_disk_only: disk_directory_paths.difference(db_directory_paths))
+    else
+      CfsDirectoryDiskComparison.new(cfs_directory: self,
+                                     disk_directory_missing: true)
+    end
   end
 
   protected
