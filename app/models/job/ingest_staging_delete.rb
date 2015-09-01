@@ -19,7 +19,11 @@ class Job::IngestStagingDelete < Job::Base
 
   def perform
     if File.directory?(self.path)
-      FileUtils.rm_rf(self.path)
+      if File.writable?(self.path)
+        FileUtils.rm_rf(self.path)
+      else
+        raise RuntimeError, "IngestStagingDelete: Medusa does not have permission to delete #{self.path}."
+      end
     end
     if self.external_file_group.present?
       Workflow::IngestMailer.staging_delete_done(self.user, self.external_file_group).deliver_now
