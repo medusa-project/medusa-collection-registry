@@ -55,6 +55,20 @@ class CfsDirectory < ActiveRecord::Base
     self.cfs_files.blank? and self.subdirectories.blank?
   end
 
+  def is_empty_or_missing_on_disk?
+    !is_present_and_populated_on_disk?
+  end
+
+  def is_present_and_populated_on_disk?
+    path = Pathname.new(absolute_path)
+    path.directory? and path.children.present?
+  end
+
+  #By all means think of a better name for this
+  def pristine?
+    self.is_empty? and self.is_empty_or_missing_on_disk?
+  end
+
   def root
     self.root_cfs_directory
   end

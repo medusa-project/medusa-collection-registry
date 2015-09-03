@@ -185,4 +185,9 @@ class BitLevelFileGroup < FileGroup
     self.cfs_directory(true)
   end
 
+  def accrual_unstarted?
+    events.where(key: 'files_added').blank? and
+    (cfs_directory.blank? or cfs_directory.pristine?)
+  end
+
 end
