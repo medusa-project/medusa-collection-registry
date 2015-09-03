@@ -14,6 +14,7 @@ Feature: Automatic creation of bit level file group associated with external fil
     And I click on 'Create Bit Level File Group'
     Then a bit level file group with title 'Dogs' should exist
     And I should be on the view page for the bit level file group with title 'Dogs'
+    And the bit level file group with title 'Dogs' should have an event with key 'created' performed by 'manager@example.com'
 
   Scenario: There is not a button if there is already a related bit level file group
     Given the external file group with title 'Dogs' has a related bit level file group

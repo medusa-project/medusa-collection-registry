@@ -106,6 +106,7 @@ Feature: File Group description
     And I should see 'Undergrad'
     And I should see 'image/tiff'
     And the collection with title 'Dogs' should have 1 file group with title 'My file group'
+    And the file group with title 'My file group' should have an event with key 'created' performed by 'admin@example.com'
     And the cfs root for the file group titled 'My file group' should be nil
 
   Scenario: Create a new file group as a manager

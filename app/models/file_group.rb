@@ -147,5 +147,8 @@ class FileGroup < ActiveRecord::Base
     self.total_file_size ||= 0
   end
 
+  def record_creation_event(user)
+    events.create(key: :created, actor_email: user.email, cascadable: true)
+  end
 
 end

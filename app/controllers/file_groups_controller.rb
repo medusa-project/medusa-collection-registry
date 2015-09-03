@@ -65,6 +65,7 @@ class FileGroupsController < ApplicationController
         authorize! :create, @file_group
         @file_group.update_attributes(allowed_params)
         if @file_group.save
+          @file_group.record_creation_event(current_user)
           redirect_to @file_group
         else
           render 'new'
