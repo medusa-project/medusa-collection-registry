@@ -52,7 +52,11 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def is_empty?
-    self.cfs_files.blank? and self.subdirectories.blank?
+    self.cfs_files.blank? and leaf?
+  end
+
+  def leaf?
+    self.subdirectories.blank?
   end
 
   def is_empty_or_missing_on_disk?
@@ -250,12 +254,14 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def update_all_tree_stats_from_db
-    leaves = CfsDirectory.where(root_cfs_directory_id: self.root.id).all.select { |cfs_directory| cfs_directory.subdirectories.blank? }
-    leaves.each { |leaf| leaf.update_tree_stats_from_db }
+    CfsDirectory.where(root_cfs_directory_id: self.root.id).find_each(batch_size: 100) do |cfs_directory|
+      cfs_directory.update_tree_stats_from_db if cfs_directory.leaf?
+      cfs_directory.subdirectories.reset
+    end
   end
 
   def self.update_all_tree_stats_from_db
-    self.roots.find_each { |root| root.update_all_tree_stats_from_db }
+    self.roots.find_each(batch_size: 1) { |root| root.update_all_tree_stats_from_db }
   end
 
   def handle_cfs_assessment
