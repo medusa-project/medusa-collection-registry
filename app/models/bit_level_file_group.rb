@@ -20,7 +20,7 @@ class BitLevelFileGroup < FileGroup
       self.cfs_directory_id = cfs_directory.id unless self.cfs_directory_id
       self.save!
     else
-      cfs_directory = CfsDirectory.create!(path: expected_relative_cfs_root_directory)
+      cfs_directory = CfsDirectory.create!(path: expected_relative_cfs_root_directory, skip_assessment: true)
       self.cfs_directory_id = cfs_directory.id unless self.cfs_directory_id
       self.save!
     end
