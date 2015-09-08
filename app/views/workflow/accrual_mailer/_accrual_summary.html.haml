@@ -19,13 +19,11 @@
   %li
     #{@workflow_accrual.relative_target_path}
     %ul
-      %li Folders:
       - @workflow_accrual.workflow_accrual_directories.order('name asc').limit(5).each do |directory|
-        %li #{directory.name}
+        %li [folder] #{directory.name}
       - if @workflow_accrual.workflow_accrual_directories.count > 5
         %li ([#{@workflow_accrual.workflow_accrual_directories.count - 5}] more sibling folders in ingest)
     %ul
-      %li Top level files:
       - @workflow_accrual.workflow_accrual_files.order('name asc').limit(5).each do |file|
         %li [file] #{file.name}
       - if @workflow_accrual.workflow_accrual_files.count > 5
