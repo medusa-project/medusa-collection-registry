@@ -15,16 +15,22 @@
   An abbreviated view of the new file structure, to verify this ingest
   will arrive at the right place, would be:
 
-%pre
-  #{@workflow_accrual.relative_target_path}
-  - @workflow_accrual.workflow_accrual_directories.order('name asc').limit(5).each do |directory|
-    * [folder] #{directory.name}
-  - if @workflow_accrual.workflow_accrual_directories.count > 5
-    * ([#{@workflow_accrual.workflow_accrual_directories.count - 5}] more sibling folders in ingest)
-  - @workflow_accrual.workflow_accrual_files.order('name asc').limit(5).each do |file|
-    * [file] #{file.name}
-  - if @workflow_accrual.workflow_accrual_files.count > 5
-    * ([#{@workflow_accrual.workflow_accrual_files.count - 5}] more sibling files in ingest)
+%ul
+  %li #{@workflow_accrual.relative_target_path}
+  %li
+    Folders:
+    %ul
+      - @workflow_accrual.workflow_accrual_directories.order('name asc').limit(5).each do |directory|
+        %li #{directory.name}
+      - if @workflow_accrual.workflow_accrual_directories.count > 5
+        %li ([#{@workflow_accrual.workflow_accrual_directories.count - 5}] more sibling folders in ingest)
+  %li
+    Top level files:
+    %ul
+      - @workflow_accrual.workflow_accrual_files.order('name asc').limit(5).each do |file|
+        %li [file] #{file.name}
+      - if @workflow_accrual.workflow_accrual_files.count > 5
+        %li ([#{@workflow_accrual.workflow_accrual_files.count - 5}] more sibling files in ingest)
 
 %p
   If this seems incorrect, please take a close look at source and
