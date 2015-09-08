@@ -59,6 +59,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_check
+    add_stats
     source_path = staging_source_path
     duplicate_files(source_path).each do |duplicate_file|
       file_changed = file_changed?(duplicate_file, source_path)
@@ -66,6 +67,27 @@ class Workflow::AccrualJob < Workflow::Base
     end
     be_in_state('initial_approval')
     Workflow::AccrualMailer.initial_approval(self).deliver_now
+  end
+
+  def add_stats
+    source_path = staging_source_path
+    workflow_accrual_files.each do |file|
+      file.size = File.size(File.join(source_path, file.name))
+      file.save!
+    end
+    workflow_accrual_directories.each do |directory|
+      Dir.chdir(File.join(source_path, directory.name)) do
+        count = 0
+        size = 0
+        Find.find('.') do |entry|
+          count += 1
+          size += File.size(entry)
+        end
+        directory.count = count
+        directory.size = size
+        directory.save!
+      end
+    end
   end
 
   def duplicate_files(source_path)
@@ -247,5 +269,34 @@ MESSAGE
   def has_report?
     !self.state.in?(%w(start check))
   end
+
+  def file_group
+    cfs_directory.file_group
+  end
+
+  def file_group_title
+    file_group.try(:title) rescue '[UNKNOWN]'
+  end
+
+  def relative_target_path
+    cfs_directory.relative_path
+  end
+
+  def directory_count
+    workflow_accrual_directories.count
+  end
+
+  def top_level_file_count
+    workflow_accrual_files.count
+  end
+
+  def total_file_count
+    top_level_file_count + workflow_accrual_directories.sum(:count)
+  end
+
+  def size
+    workflow_accrual_directories.sum(:size) + workflow_accrual_files.sum(:size)
+  end
+
 
 end

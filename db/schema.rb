@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150617154451) do
+ActiveRecord::Schema.define(version: 20150908195139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -682,8 +682,10 @@ ActiveRecord::Schema.define(version: 20150617154451) do
   create_table "workflow_accrual_directories", force: :cascade do |t|
     t.integer  "workflow_accrual_job_id"
     t.string   "name"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.decimal  "size",                    default: 0.0
+    t.integer  "count",                   default: 0
   end
 
   add_index "workflow_accrual_directories", ["workflow_accrual_job_id", "name"], name: "wfad_job_and_name_idx", unique: true, using: :btree
@@ -692,8 +694,9 @@ ActiveRecord::Schema.define(version: 20150617154451) do
   create_table "workflow_accrual_files", force: :cascade do |t|
     t.integer  "workflow_accrual_job_id"
     t.string   "name"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.decimal  "size",                    default: 0.0
   end
 
   add_index "workflow_accrual_files", ["workflow_accrual_job_id", "name"], name: "wfaf_job_and_name_idx", unique: true, using: :btree

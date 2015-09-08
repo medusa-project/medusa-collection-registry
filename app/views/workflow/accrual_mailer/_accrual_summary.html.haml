@@ -1,9 +1,46 @@
 %p
-  An automated accrual of the staging path #{@workflow_accrual.staging_path} to
-  the cfs directory #{@workflow_accrual.cfs_directory.relative_path} has been requested
-  by #{@workflow_accrual.user.net_id}.
+  The pending request for ingest is to transfer all content from the
+  source directory #{@workflow_accrual.staging_source_path}
+  to Medusa File Group '#{@workflow_accrual.file_group_title}' at the destination
+  file path #{@workflow_accrual.relative_target_path}.
 
-- if file_group = @workflow_accrual.cfs_directory.file_group
-  %p
-    This belongs to the file group #{file_group.title}, collection #{file_group.collection.title},
-    and repository #{file_group.repository.title}.
+%p
+  If approved, #{@workflow_accrual.directory_count} folders and
+  #{@workflow_accrual.top_level_file_count} top level files
+  containing a total of #{@workflow_accrual.total_file_count} files
+  (#{number_to_human_size(@workflow_accrual.size)})
+  would transfer to the destination path above.
+
+%p
+  An abbreviated view of the new file structure, to verify this ingest
+  will arrive at the right place, would be:
+
+%pre
+  #{@workflow_accrual.relative_target_path}
+  - @workflow_accrual.workflow_accrual_directories.order('name asc').limit(5).each do |directory|
+    * [folder] #{directory.name}
+  - if @workflow_accrual.workflow_accrual_directories.count > 5
+    * ([#{@workflow_accrual.workflow_accrual_directories.count - 5}] more sibling folders in ingest)
+  - @workflow_accrual.workflow_accrual_files.order('name asc').limit(5).each do |file|
+    * [file] #{file.name}
+  - if @workflow_accrual.workflow_accrual_files.count > 5
+    * ([#{@workflow_accrual.workflow_accrual_files.count - 5}] more sibling files in ingest)
+
+%p
+  If this seems incorrect, please take a close look at source and
+  destination files before proceeding.
+
+%p
+  Medusa’s pre-ingest scan detects #{@workflow_accrual.workflow_accrual_conflicts.serious.count}
+  md5 conflicts in this request.
+
+-#%p
+-#  An automated accrual of the staging path #{@workflow_accrual.staging_path} to
+-#  the cfs directory #{@workflow_accrual.cfs_directory.relative_path} has been requested
+-#  by #{@workflow_accrual.user.net_id}.
+-#
+-#- if file_group = @workflow_accrual.cfs_directory.file_group
+-#  %p
+-#    This belongs to the file group #{file_group.title}, collection #{file_group.collection.title},
+-#    and repository #{file_group.repository.title}.
+-#

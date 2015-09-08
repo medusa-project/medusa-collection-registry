@@ -271,7 +271,7 @@ Feature: File accrual
     And I click on 'Accruals'
     And I click on 'View Report'
     Then I should see all of:
-      | intro.txt | pugs/description.txt |
+      | intro.txt | 0 md5 conflicts |
 
   @javascript
   Scenario: Changed conflict accrual, view report
@@ -285,7 +285,7 @@ Feature: File accrual
     And I click on 'Accruals'
     And I click on 'View Report'
     Then I should see all of:
-      | intro.txt | pugs/description.txt |
+      | intro.txt | 2 md5 conflicts |
 
   Scenario: When there is a job awaiting admin approval there is an extra icon for admins
     Given there is an accrual workflow job awaiting admin approval
