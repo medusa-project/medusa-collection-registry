@@ -16,7 +16,8 @@
   will arrive at the right place, would be:
 
 %ul
-  %li #{@workflow_accrual.relative_target_path}
+  %li
+    #{@workflow_accrual.relative_target_path}
     %ul
       %li Folders:
       - @workflow_accrual.workflow_accrual_directories.order('name asc').limit(5).each do |directory|
