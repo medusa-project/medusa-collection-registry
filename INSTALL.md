@@ -14,7 +14,12 @@ and make sure you have the ruby you need and create the gemset.
 
 We need at least libmagic and postgres (with development packages). So install those, most likely using your
 distribution's package manager. Memcached is used for sessions and other caching and will need to be installed (also libmemcached).
-RabbitMQ is used for AMQP messaging and should either be installed locally or a remote server configured.
+RabbitMQ is used for AMQP messaging and should either be installed locally or a remote server configured. ClamAV is used for 
+virus scanning. VIPS is used for image processing (and any subdependencies you want to install). 
+In development PhantomJS is needed for some tests. Postgresql is used as the database.
+
+Solr and FITS are also used, but for development purposes the Solr installed by sunspot should suffice, and FITS is 
+installed by a git submodule.
 
 Then bundle install
 

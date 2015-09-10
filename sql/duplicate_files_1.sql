@@ -1,6 +1,6 @@
 -- it's unclear what the best way to do this will be
 -- this one detects duplicate files that are in more than one file
--- group and orders by their size
+-- group  (via the max/min trick) and orders by their size
 SELECT F.name, F.md5_sum, F.size, max(FTFG.file_group_id) AS max,
 min(FTFG.file_group_id) AS min, count(*) as count
 FROM cfs_files F
