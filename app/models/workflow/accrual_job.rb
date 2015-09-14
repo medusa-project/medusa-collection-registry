@@ -118,6 +118,8 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def file_changed?(file, source_path)
+    #if the initial assessment hasn't been done yet this can error out, i.e. if the db and file system views of the
+    #existing content are different
     old_md5 = cfs_directory.find_file_at_relative_path(file).md5_sum
     new_md5 = Digest::MD5.file(File.join(source_path, file)).to_s
     old_md5 != new_md5
@@ -158,6 +160,7 @@ class Workflow::AccrualJob < Workflow::Base
     staging_root.full_local_path_to(relative_path)
   end
 
+  #note that this means remove the db model from the accrual job, not the files from the source filesystem
   def copy_entries_and_remove(entries, source_path, target_path, overwrite: false)
     entries.each do |entry|
       copy_entry(entry, source_path, target_path, overwrite: overwrite)
