@@ -1,0 +1,15 @@
+-# must pass in accrual_job as a local
+%tr{id: "accrual_job_#{accrual_job.id}"}
+  %td= accrual_job.id
+  %td= accrual_job.created_at.to_date
+  %td= accrual_job.file_group.try(:title)
+  %td= accrual_job.collection.try(:title)
+  %td= accrual_job.user.net_id
+  %td= link_to(fa_icon('eye'), view_report_workflow_accrual_job_path(accrual_job), remote: true, title: 'View Report', class: 'btn btn-default btn-xs') if accrual_job.has_report?
+  %td{id: "accrual_status_#{accrual_job.id}"}= accrual_job.status_label
+  %td.dropdown{id: "accrual_actions_#{accrual_job.id}"}
+    - if accrual_job.approvable_by?(current_user)
+      %a.btn.btn-default.btn-xs.dropdown-toggle{type: 'button', 'data-toggle' => 'dropdown', 'aria-expanded' => false, href: '#', title: 'Actions'}
+        = fa_icon('cog')
+        %span.caret
+      = render partial: 'accrual_workflow_actions', locals: {accrual_job: accrual_job}
