@@ -8,15 +8,20 @@ class Job::CfsDirectoryExport < Job::Base
   end
 
   def perform
-    FileUtils.rm_rf(self.export_directory)
     FileUtils.mkdir_p(self.export_directory)
-    self.cfs_directory.cfs_files.each do |file|
-      FileUtils.copy(file.absolute_path, File.join(self.export_directory, file.name))
-    end
-    if self.recursive
-      self.cfs_directory.subdirectories.each do |subdirectory|
-        FileUtils.cp_r(subdirectory.absolute_path, File.join(self.export_directory))
-      end
+    opts = %w(-a)
+    opts += %w(--exclude */) unless self.recursive
+    out, err, status = Open3.capture3('rsync', *opts,
+                                      cfs_directory.absolute_path + '/', self.export_directory)
+    unless status.success?
+      message = <<MESSAGE
+Error doing rsync for export job #{self.id}.
+STDOUT: #{out}
+STDERR: #{err}
+Rescheduling.
+MESSAGE
+      Rails.logger.error message
+      raise RuntimeError, message
     end
   end
 
