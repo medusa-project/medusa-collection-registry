@@ -24,7 +24,21 @@ Feature: Project description
       | Scanning specs | Image specs | Scanning summary | Image summary |
 
   Scenario: Create project
-    When PENDING
+    Given I am logged in as an admin
+    When I go to the projects index page
+    And I click on 'Add Project'
+    And I fill in fields:
+      | Title          | Audio                            |
+      | Manager email  | audioman@example.com             |
+      | Owner email    | audioowner@example.com           |
+      | Start date     | 2015-09-15                       |
+      | Specifications | Audio conversion specs           |
+      | Summary        | Audio conversion project summary |
+    And I select 'inactive' from 'Status'
+    And I click on 'Create'
+    And I should be on the view page for the project with title 'Audio'
+    And I should see all of:
+      | Audio | audioman@example.com | audioowner@example.com | 2015-09-15 | inactive | Audio conversion specs | Audio conversion project summary |
 
   Scenario: Edit and update project
     When PENDING
