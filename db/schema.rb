@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150908195139) do
+ActiveRecord::Schema.define(version: 20150916152553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -503,6 +503,16 @@ ActiveRecord::Schema.define(version: 20150908195139) do
 
   add_index "producers", ["administrator_id"], name: "index_production_units_on_administrator_id", using: :btree
   add_index "producers", ["updated_at"], name: "index_producers_on_updated_at", using: :btree
+
+  create_table "projects", force: :cascade do |t|
+    t.integer "manager_id",     null: false
+    t.integer "owner_id",       null: false
+    t.date    "start_date",     null: false
+    t.string  "status",         null: false
+    t.string  "title",          null: false
+    t.text    "specifications"
+    t.text    "summary"
+  end
 
   create_table "red_flags", force: :cascade do |t|
     t.integer  "red_flaggable_id"
