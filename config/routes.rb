@@ -62,6 +62,7 @@ MedusaCollectionRegistry::Application.routes.draw do
     post 'unflag', on: :member
   end
 
+  resources :projects
   resources :producers
   resources :access_systems, concerns: :collection_indexer
   resources :package_profiles, concerns: :collection_indexer

@@ -8,6 +8,7 @@ class CreateProjects < ActiveRecord::Migration
       t.string :title, null: false
       t.text :specifications
       t.text :summary
+      t.timestamps null: false
     end
   end
 end
