@@ -6,7 +6,7 @@ class CollectionsController < ApplicationController
   before_action :find_collection_and_repository, only: [:show, :destroy, :edit, :update, :red_flags, :public, :assessments, :attachments, :events]
   layout 'public', only: [:public]
 
-  include CollectionsToCsv
+  include ModelsToCsv
 
   def show
     respond_to do |format|
