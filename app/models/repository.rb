@@ -3,6 +3,7 @@ class Repository < ActiveRecord::Base
   include RedFlagAggregator
   include Breadcrumb
   include CascadedEventable
+  include MedusaAutoHtml
   include EmailPersonAssociator
 
   email_person_association(:contact)
@@ -18,11 +19,7 @@ class Repository < ActiveRecord::Base
   validate :check_active_dates
   validates_inclusion_of :ldap_admin_domain, in: LDAP_DOMAINS, allow_blank: true
 
-  auto_html_for :notes do
-    html_escape
-    link target: '_blank'
-    simple_format
-  end
+  standard_auto_html(:notes)
 
   aggregates_red_flags collections: :collections, label_method: :title
   breadcrumbs parent: nil, label: :title

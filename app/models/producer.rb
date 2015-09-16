@@ -1,6 +1,8 @@
 class Producer < ActiveRecord::Base
   include ActiveDateChecker
   include EmailPersonAssociator
+  include MedusaAutoHtml
+
   email_person_association(:administrator)
 
   validates_presence_of :title
@@ -10,11 +12,7 @@ class Producer < ActiveRecord::Base
   has_many :file_groups
   before_destroy :destroyable?
 
-  auto_html_for :notes do
-    html_escape
-    link target: '_blank'
-    simple_format
-  end
+  standard_auto_html :notes
 
   def destroyable?
     self.file_groups.count == 0

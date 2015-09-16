@@ -2,6 +2,7 @@ require 'registers_handle'
 require 'mods_helper'
 
 class Collection < ActiveRecord::Base
+  include MedusaAutoHtml
   include RegistersHandle
   include ModsHelper
   include RedFlagAggregator
@@ -40,13 +41,7 @@ class Collection < ActiveRecord::Base
 
   auto_strip_attributes :description, :private_description, :notes, nullify: false
 
-  [:description, :private_description, :notes].each do |field|
-    auto_html_for field do
-      html_escape
-      link target: '_blank'
-      simple_format
-    end
-  end
+  standard_auto_html(:description, :private_description, :notes)
 
   aggregates_red_flags collections: :file_groups, label_method: :title
   breadcrumbs parent: :repository, label: :title
