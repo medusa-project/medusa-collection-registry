@@ -5,7 +5,7 @@ Feature: Project description
 
   Background:
     Given every project with fields exists:
-      | title            | manager             | owner               | start_date | status   | specifications | summary          |
+      | title            | manager_email       | owner_email         | start_date | status   | specifications | summary          |
       | Book Scanning    | scanman@example.com | scanown@example.com | 2015-09-16 | active   | Scanning specs | Scanning summary |
       | Image Conversion | convman@example.com | convown@example.com | 2015-06-29 | inactive | Image specs    | Image summary    |
 
