@@ -5,15 +5,23 @@ Feature: Project description
 
   Background:
     Given every project with fields exists:
-      | title            | manager_email       | owner_email         | start_date | status   | specifications | summary          |
-      | Book Scanning    | scanman@example.com | scanown@example.com | 2015-09-16 | active   | Scanning specs | Scanning summary |
-      | Image Conversion | convman@example.com | convown@example.com | 2015-06-29 | inactive | Image specs    | Image summary    |
+      | title            | manager_email       | owner_email         | start_date | status    | specifications | summary          |
+      | Book Scanning    | scanman@example.com | scanown@example.com | 2015-09-16 | active    | Scanning specs | Scanning summary |
+      | Image Conversion | convman@example.com | convown@example.com | 2015-06-29 | completed | Image specs    | Image summary    |
 
-  Scenario: Navigate to project index from dashboard
-    When PENDING
+  Scenario: Navigate to project index from header links
+    Given I am logged in as a visitor
+    When I go to the site home
+    And I click on 'Projects'
+    Then I should be on the projects index page
 
   Scenario: View index of projects
-    When PENDING
+    Given I am logged in as a visitor
+    When I go to the projects index page
+    Then I should see all of:
+      | scanman@example.com | scanown@example.com | convman@example.com | convown@example.com | 2015-09-16 | 2015-06-29 | active | completed |
+    And I should see none of:
+      | Scanning specs | Image specs | Scanning summary | Image summary |
 
   Scenario: Create project
     When PENDING

@@ -505,13 +505,15 @@ ActiveRecord::Schema.define(version: 20150916152553) do
   add_index "producers", ["updated_at"], name: "index_producers_on_updated_at", using: :btree
 
   create_table "projects", force: :cascade do |t|
-    t.integer "manager_id",     null: false
-    t.integer "owner_id",       null: false
-    t.date    "start_date",     null: false
-    t.string  "status",         null: false
-    t.string  "title",          null: false
-    t.text    "specifications"
-    t.text    "summary"
+    t.integer  "manager_id",     null: false
+    t.integer  "owner_id",       null: false
+    t.date     "start_date",     null: false
+    t.string   "status",         null: false
+    t.string   "title",          null: false
+    t.text     "specifications"
+    t.text     "summary"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "red_flags", force: :cascade do |t|
