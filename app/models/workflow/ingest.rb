@@ -14,7 +14,7 @@ class Workflow::Ingest < Workflow::Base
 
   validates_uniqueness_of :external_file_group_id, allow_blank: false
 
-  STATES = %w(start copying amazon_backup end)
+  STATES = %w(start copying amazon_backup amazon_backup_completed finishing end)
 
   def self.create_for(user, external_file_group, bit_level_file_group)
     transaction do
@@ -75,15 +75,14 @@ MESSAGE
     end
   end
 
-  def perform_end
-    Workflow::IngestMailer.done(self).deliver_now
-    Job::IngestStagingDelete.create_for(self.external_file_group, self.user)
+  def perform_amazon_backup_completed
+    be_in_state_and_requeue('finishing')
   end
 
-  def success(job)
-    if self.state == 'end'
-      self.destroy_queued_jobs_and_self
-    end
+  def perform_finishing
+    Workflow::IngestMailer.done(self).deliver_now
+    Job::IngestStagingDelete.create_for(self.external_file_group, self.user)
+    be_in_state_and_requeue('end')
   end
 
   def most_advanced_file_group

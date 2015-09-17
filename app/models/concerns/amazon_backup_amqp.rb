@@ -39,8 +39,8 @@ module AmazonBackupAmqp
         create_backup_completion_event
         if self.completed?
           self.job_amazon_backup.try(:destroy)
-          self.workflow_ingest.try(:be_at_end)
-          self.workflow_accrual_jobs.each { |job| job.try(:be_at_end) }
+          self.workflow_ingest.try(:complete_current_action)
+          self.workflow_accrual_jobs.each { |job| job.try(:complete_current_action) }
         end
       when 'delete_archive'
         archive_id = response.parameter_field(:archive_id)

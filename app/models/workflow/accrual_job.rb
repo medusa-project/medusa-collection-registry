@@ -21,7 +21,9 @@ class Workflow::AccrualJob < Workflow::Base
 
   STATE_HASH = {'start' => 'Start', 'check' => 'Checking for existing files',
                 'initial_approval' => 'Awaiting approval',
-                'copying' => 'Copying', 'admin_approval' => 'Awaiting admin approval', 'amazon_backup' => 'Amazon backup',
+                'copying' => 'Copying', 'admin_approval' => 'Awaiting admin approval',
+                'amazon_backup' => 'Amazon backup', 'amazon_backup_completed' => 'Amazon backup completed',
+                'updating_stats' => 'Updating stats', 'email_done' => "Emailing completion",
                 'aborting' => 'Aborting', 'end' => 'Ending'}
   STATES = STATE_HASH.keys
 
@@ -222,25 +224,26 @@ MESSAGE
 
   def perform_aborting
     Workflow::AccrualMailer.aborted(self).deliver_now
+    be_in_state_and_requeue('end')
   end
 
-  def perform_end
+  def perform_amazon_backup_completed
+    be_in_state_and_requeue('updating_stats')
+  end
+
+  def perform_updating_stats
     if self.has_outstanding_assessments?
       put_in_queue(run_at: Time.now + 1.hour)
     else
       self.cfs_directory.update_all_tree_stats_from_db
-      Workflow::AccrualMailer.done(self).deliver_now
-      #TODO - perhaps delete staged content, perhaps not
+      be_in_state_and_requeue('email_done')
     end
-
   end
 
-  def success(job)
-    self.destroy_queued_jobs_and_self if in_terminal_state?
-  end
-
-  def in_terminal_state?
-    self.state.in?(['end', 'aborting'])
+  def perform_email_done
+    Workflow::AccrualMailer.done(self).deliver_now
+    be_in_state_and_requeue('end')
+    #TODO - perhaps delete staged content, perhaps not
   end
 
   def has_outstanding_assessments?
