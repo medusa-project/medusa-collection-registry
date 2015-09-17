@@ -109,34 +109,11 @@ class BitLevelFileGroup < FileGroup
   end
 
   def file_size
-    return total_file_size
-  end
-
-  def refresh_file_size
-    return unless self.cfs_directory(true)
-    size = self.cfs_directory.tree_size / 1.gigabyte
-    if self.total_file_size != size
-      self.total_file_size = size
-      self.save!
-    end
+    return total_file_size / 1.gigabyte
   end
 
   def file_count
     return total_files
-  end
-
-  def refresh_file_count
-    return unless self.cfs_directory(true)
-    count = self.cfs_directory.tree_count
-    if self.total_files != count
-      self.total_files = count
-      self.save!
-    end
-  end
-
-  def refresh_file_stats
-    self.refresh_file_size
-    self.refresh_file_count
   end
 
   def amazon_backups
@@ -149,12 +126,6 @@ class BitLevelFileGroup < FileGroup
 
   def last_amazon_backup
     self.amazon_backups.first
-  end
-
-  def self.update_cached_file_stats
-    self.all.each do |file_group|
-      file_group.refresh_file_stats
-    end
   end
 
   def is_currently_assessable?

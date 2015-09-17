@@ -231,41 +231,6 @@ class CfsDirectory < ActiveRecord::Base
     self.file_group.try(:public?)
   end
 
-  def update_tree_stats(count_difference, size_difference)
-    self.tree_count += count_difference
-    self.tree_size += size_difference
-    self.save!
-    if self.root?
-      self.file_group.refresh_file_stats if self.file_group.present?
-    else
-      self.parent.update_tree_stats(count_difference, size_difference)
-    end
-    #return true to make this work well in model callbacks
-    true
-  end
-
-  def update_tree_stats_from_db
-    self.tree_size = self.subdirectories.sum(:tree_size) + self.cfs_files.sum(:size)
-    self.tree_count = self.subdirectories.sum(:tree_count) + self.cfs_files.count
-    self.save!
-    if self.root?
-      self.file_group.refresh_file_stats if self.file_group.present?
-    else
-      self.parent.update_tree_stats_from_db
-    end
-  end
-
-  def update_all_tree_stats_from_db
-    CfsDirectory.where(root_cfs_directory_id: self.root.id).find_each(batch_size: 100) do |cfs_directory|
-      cfs_directory.update_tree_stats_from_db if cfs_directory.leaf?
-      cfs_directory.subdirectories.reset
-    end
-  end
-
-  def self.update_all_tree_stats_from_db
-    self.roots.find_each(batch_size: 1) { |root| root.update_all_tree_stats_from_db }
-  end
-
   def handle_cfs_assessment
     #It is important to do the following in order
 

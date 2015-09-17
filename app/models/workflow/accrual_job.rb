@@ -23,7 +23,7 @@ class Workflow::AccrualJob < Workflow::Base
                 'initial_approval' => 'Awaiting approval',
                 'copying' => 'Copying', 'admin_approval' => 'Awaiting admin approval',
                 'amazon_backup' => 'Amazon backup', 'amazon_backup_completed' => 'Amazon backup completed',
-                'updating_stats' => 'Updating stats', 'email_done' => "Emailing completion",
+                'email_done' => "Emailing completion",
                 'aborting' => 'Aborting', 'end' => 'Ending'}
   STATES = STATE_HASH.keys
 
@@ -228,16 +228,7 @@ MESSAGE
   end
 
   def perform_amazon_backup_completed
-    be_in_state_and_requeue('updating_stats')
-  end
-
-  def perform_updating_stats
-    if self.has_outstanding_assessments?
-      put_in_queue(run_at: Time.now + 1.hour)
-    else
-      self.cfs_directory.update_all_tree_stats_from_db
-      be_in_state_and_requeue('email_done')
-    end
+    be_in_state_and_requeue('email_done')
   end
 
   def perform_email_done

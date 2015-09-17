@@ -26,10 +26,6 @@ class CfsFile < ActiveRecord::Base
   FIXITY_STATUSES = %w(ok bad nf)
   validates_inclusion_of :fixity_check_status, in: FIXITY_STATUSES, allow_nil: true
 
-  after_create :add_cfs_directory_tree_stats
-  after_destroy :remove_cfs_directory_tree_stats
-  after_update :update_cfs_directory_tree_stats
-
   after_create :add_content_type_stats
   after_destroy :remove_content_type_stats
   after_update :update_content_type_stats
@@ -210,18 +206,6 @@ class CfsFile < ActiveRecord::Base
   end
 
   protected
-
-  def add_cfs_directory_tree_stats
-    self.cfs_directory.update_tree_stats(1, self.safe_size)
-  end
-
-  def update_cfs_directory_tree_stats
-    self.cfs_directory.update_tree_stats(0, self.safe_size - self.safe_size_was) if self.size_changed?
-  end
-
-  def remove_cfs_directory_tree_stats
-    self.cfs_directory.update_tree_stats(-1, -1 * self.safe_size_was)
-  end
 
   def add_content_type_stats
     self.content_type.update_stats(1, self.safe_size) if self.content_type.present?
