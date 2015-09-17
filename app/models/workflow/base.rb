@@ -2,8 +2,8 @@ class Workflow::Base < Job::Base
 
   self.abstract_class = true
 
-  def put_in_queue
-    Delayed::Job.enqueue(self, priority: 30)
+  def put_in_queue(opts = {})
+    Delayed::Job.enqueue(self, opts.reverse_merge(priority: 30))
   end
 
   def perform
@@ -19,10 +19,10 @@ class Workflow::Base < Job::Base
     true
   end
 
-  def be_in_state_and_requeue(state)
+  def be_in_state_and_requeue(state, opts = {})
     transaction do
       be_in_state(state)
-      put_in_queue
+      put_in_queue(opts)
     end
   end
 

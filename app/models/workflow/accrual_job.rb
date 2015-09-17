@@ -225,8 +225,14 @@ MESSAGE
   end
 
   def perform_end
-    Workflow::AccrualMailer.done(self).deliver_now
-    #TODO - perhaps delete staged content, perhaps not
+    if self.has_outstanding_assessments?
+      put_in_queue(run_at: Time.now + 1.hour)
+    else
+      self.cfs_directory.update_all_tree_stats_from_db
+      Workflow::AccrualMailer.done(self).deliver_now
+      #TODO - perhaps delete staged content, perhaps not
+    end
+
   end
 
   def success(job)
@@ -235,6 +241,11 @@ MESSAGE
 
   def in_terminal_state?
     self.state.in?(['end', 'aborting'])
+  end
+
+  def has_outstanding_assessments?
+    Job::CfsInitialDirectoryAssessment.where(file_group_id: self.file_group.id).present? or
+        Job::CfsInitialFileGroupAssessment.where(file_group_id: self.file_group.id).present?
   end
 
   def status_label
