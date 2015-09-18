@@ -24,7 +24,7 @@ class AddPostgresTriggersForCaching < ActiveRecord::Migration
     BitLevelFileGroup.find_each do |fg|
       if cfs_directory = fg.cfs_directory
         fg.total_files = cfs_directory.tree_count
-        fg.total_file_size = cfs_directory.tree_size / 1.gigabtye
+        fg.total_file_size = cfs_directory.tree_size / 1.gigabyte
         fg.save!
       end
     end
