@@ -69,89 +69,61 @@ SQL
 
   #When a CFS file is updated then it needs to update its owning directory
   #Note that we need to work around the fact that size is allowed to be null for cfs_files
+  #Uses the update templates below to condense this a bit.
   def cfs_file_update_cfs_directory_and_extension_and_content_type_function_sql
     <<SQL
 CREATE OR REPLACE FUNCTION cfs_file_update_cfs_directory_and_extension_and_content_type() RETURNS trigger AS $$
   BEGIN
     IF (TG_OP = 'INSERT') THEN
-      UPDATE cfs_directories
-      SET tree_count = tree_count + 1,
-          tree_size = tree_size + COALESCE(NEW.size, 0)
-      WHERE id = NEW.cfs_directory_id;
-      UPDATE content_types
-      SET cfs_file_count = cfs_file_count + 1,
-          cfs_file_size = cfs_file_size + COALESCE(NEW.size, 0)
-      WHERE id = NEW.content_type_id;
-      UPDATE file_extensions
-      SET cfs_file_count = cfs_file_count + 1,
-          cfs_file_size = cfs_file_size + COALESCE(NEW.size, 0)
-      WHERE id = NEW.file_extension_id;
+      #{update_increment_statement(:cfs_directory, :tree_count, :tree_size, :+, :NEW, :size)};
+      #{update_increment_statement(:content_type, :cfs_file_count, :cfs_file_size, :+, :NEW, :size)};
+      #{update_increment_statement(:file_extension, :cfs_file_count, :cfs_file_size, :+, :NEW, :size)};
     ELSIF (TG_OP = 'UPDATE') THEN
       IF (NEW.cfs_directory_id = OLD.cfs_directory_id) THEN
-        IF (COALESCE(NEW.size,0) != COALESCE(OLD.size,0)) THEN
-          UPDATE cfs_directories
-          SET tree_size = tree_size + (COALESCE(NEW.size,0) - COALESCE(OLD.size,0))
-          WHERE id = NEW.cfs_directory_id;
-        END IF;
+        #{update_size_only_statement(:cfs_directory, :tree_size, :size)};
       ELSE
-        UPDATE cfs_directories
-        SET tree_count = tree_count + 1,
-            tree_size = tree_size + COALESCE(NEW.size, 0)
-        WHERE id = NEW.cfs_directory_id;
-        UPDATE cfs_directories
-        SET tree_count = tree_count - 1,
-            tree_size = tree_size - COALESCE(OLD.size, 0)
-        WHERE id = OLD.cfs_directory_id;
+        #{update_increment_statement(:cfs_directory, :tree_count, :tree_size, :+, :NEW, :size)};
+        #{update_increment_statement(:cfs_directory, :tree_count, :tree_size, :-, :OLD, :size)};
       END IF;
       IF (NEW.content_type_id = OLD.content_type_id) THEN
-        IF (COALESCE(NEW.size,0) != COALESCE(OLD.size,0)) THEN
-          UPDATE content_types
-          SET cfs_file_size = cfs_file_size + (COALESCE(NEW.size,0) - COALESCE(OLD.size,0))
-          WHERE id = NEW.content_type_id;
-        END IF;
+        #{update_size_only_statement(:content_type, :cfs_file_size, :size)};
       ELSE
-        UPDATE content_types
-        SET cfs_file_count = cfs_file_count + 1,
-            cfs_file_size = cfs_file_size + COALESCE(NEW.size, 0)
-        WHERE id = NEW.content_type_id;
-        UPDATE content_types
-        SET cfs_file_count = cfs_file_count - 1,
-            cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
-        WHERE id = OLD.content_type_id;
+        #{update_increment_statement(:content_type, :cfs_file_count, :cfs_file_size, :+, :NEW, :size)};
+        #{update_increment_statement(:content_type, :cfs_file_count, :cfs_file_size, :-, :OLD, :size)};
       END IF;
       IF (NEW.file_extension_id = OLD.file_extension_id) THEN
-        IF (COALESCE(NEW.size,0) != COALESCE(OLD.size,0)) THEN
-          UPDATE file_extensions
-          SET cfs_file_size = cfs_file_size + (COALESCE(NEW.size,0) - COALESCE(OLD.size,0))
-          WHERE id = NEW.cfs_directory_id;
-        END IF;
+        #{update_size_only_statement(:file_extension, :cfs_file_size, :size)};
       ELSE
-        UPDATE file_extensions
-        SET cfs_file_count = cfs_file_count + 1,
-            cfs_file_size = cfs_file_size + COALESCE(NEW.size, 0)
-        WHERE id = NEW.file_extension_id;
-        UPDATE file_extensions
-        SET cfs_file_count = cfs_file_count - 1,
-            cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
-        WHERE id = OLD.file_extension_id;
+        #{update_increment_statement(:file_extension, :cfs_file_count, :cfs_file_size, :+, :NEW, :size)};
+        #{update_increment_statement(:file_extension, :cfs_file_count, :cfs_file_size, :-, :OLD, :size)};
       END IF;
     ELSIF (TG_OP = 'DELETE') THEN
-      UPDATE cfs_directories
-      SET tree_count = tree_count - 1,
-          tree_size = tree_size - COALESCE(OLD.size,0)
-      WHERE id = OLD.cfs_directory_id;
-      UPDATE content_types
-      SET cfs_file_count = cfs_file_count - 1,
-          cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
-      WHERE id = OLD.content_type_id;
-      UPDATE file_extensions
-      SET cfs_file_count = cfs_file_count - 1,
-          cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
-      WHERE id = OLD.file_extension_id;
+      #{update_increment_statement(:cfs_directory, :tree_count, :tree_size, :-, :OLD, :size)};
+      #{update_increment_statement(:content_type, :cfs_file_count, :cfs_file_size, :-, :OLD, :size)};
+      #{update_increment_statement(:file_extension, :cfs_file_count, :cfs_file_size, :-, :OLD, :size)};
     END IF;
     RETURN NULL;
   END;
 $$ LANGUAGE plpgsql;
+SQL
+  end
+
+  def update_size_only_statement(model, size_field, trigger_size_field)
+    <<SQL
+IF (COALESCE(NEW.#{trigger_size_field},0) != COALESCE(OLD.#{trigger_size_field},0)) THEN
+  UPDATE #{model.to_s.pluralize}
+  SET #{size_field} = #{size_field} + (COALESCE(NEW.#{trigger_size_field},0) - COALESCE(OLD.#{trigger_size_field},0))
+  WHERE id = NEW.#{model}_id;
+END IF
+SQL
+  end
+
+  def update_increment_statement(model, count_field, size_field, op, trigger_row, trigger_size_field)
+    <<SQL
+    UPDATE #{model.to_s.pluralize}
+    SET #{count_field} = #{count_field} #{op} 1,
+        #{size_field} = #{size_field} #{op} COALESCE(#{trigger_row}.#{trigger_size_field}, 0)
+    WHERE id = #{trigger_row}.#{model}_id
 SQL
   end
 

@@ -130,80 +130,95 @@ CREATE FUNCTION cfs_file_update_cfs_directory_and_extension_and_content_type() R
     AS $$
   BEGIN
     IF (TG_OP = 'INSERT') THEN
-      UPDATE cfs_directories
-      SET tree_count = tree_count + 1,
-          tree_size = tree_size + COALESCE(NEW.size, 0)
-      WHERE id = NEW.cfs_directory_id;
-      UPDATE content_types
-      SET cfs_file_count = cfs_file_count + 1,
-          cfs_file_size = cfs_file_size + COALESCE(NEW.size, 0)
-      WHERE id = NEW.content_type_id;
-      UPDATE file_extensions
-      SET cfs_file_count = cfs_file_count + 1,
-          cfs_file_size = cfs_file_size + COALESCE(NEW.size, 0)
-      WHERE id = NEW.file_extension_id;
+          UPDATE cfs_directories
+    SET tree_count = tree_count + 1,
+        tree_size = tree_size + COALESCE(NEW.size, 0)
+    WHERE id = NEW.cfs_directory_id
+;
+          UPDATE content_types
+    SET cfs_file_count = cfs_file_count + 1,
+        cfs_file_size = cfs_file_size + COALESCE(NEW.size, 0)
+    WHERE id = NEW.content_type_id
+;
+          UPDATE file_extensions
+    SET cfs_file_count = cfs_file_count + 1,
+        cfs_file_size = cfs_file_size + COALESCE(NEW.size, 0)
+    WHERE id = NEW.file_extension_id
+;
     ELSIF (TG_OP = 'UPDATE') THEN
       IF (NEW.cfs_directory_id = OLD.cfs_directory_id) THEN
         IF (COALESCE(NEW.size,0) != COALESCE(OLD.size,0)) THEN
-          UPDATE cfs_directories
-          SET tree_size = tree_size + (COALESCE(NEW.size,0) - COALESCE(OLD.size,0))
-          WHERE id = NEW.cfs_directory_id;
-        END IF;
+  UPDATE cfs_directories
+  SET tree_size = tree_size + (COALESCE(NEW.size,0) - COALESCE(OLD.size,0))
+  WHERE id = NEW.cfs_directory_id;
+END IF
+;
       ELSE
-        UPDATE cfs_directories
-        SET tree_count = tree_count + 1,
-            tree_size = tree_size + COALESCE(NEW.size, 0)
-        WHERE id = NEW.cfs_directory_id;
-        UPDATE cfs_directories
-        SET tree_count = tree_count - 1,
-            tree_size = tree_size - COALESCE(OLD.size, 0)
-        WHERE id = OLD.cfs_directory_id;
+            UPDATE cfs_directories
+    SET tree_count = tree_count + 1,
+        tree_size = tree_size + COALESCE(NEW.size, 0)
+    WHERE id = NEW.cfs_directory_id
+;
+            UPDATE cfs_directories
+    SET tree_count = tree_count - 1,
+        tree_size = tree_size - COALESCE(OLD.size, 0)
+    WHERE id = OLD.cfs_directory_id
+;
       END IF;
       IF (NEW.content_type_id = OLD.content_type_id) THEN
         IF (COALESCE(NEW.size,0) != COALESCE(OLD.size,0)) THEN
-          UPDATE content_types
-          SET cfs_file_size = cfs_file_size + (COALESCE(NEW.size,0) - COALESCE(OLD.size,0))
-          WHERE id = NEW.content_type_id;
-        END IF;
+  UPDATE content_types
+  SET cfs_file_size = cfs_file_size + (COALESCE(NEW.size,0) - COALESCE(OLD.size,0))
+  WHERE id = NEW.content_type_id;
+END IF
+;
       ELSE
-        UPDATE content_types
-        SET cfs_file_count = cfs_file_count + 1,
-            cfs_file_size = cfs_file_size + COALESCE(NEW.size, 0)
-        WHERE id = NEW.content_type_id;
-        UPDATE content_types
-        SET cfs_file_count = cfs_file_count - 1,
-            cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
-        WHERE id = OLD.content_type_id;
+            UPDATE content_types
+    SET cfs_file_count = cfs_file_count + 1,
+        cfs_file_size = cfs_file_size + COALESCE(NEW.size, 0)
+    WHERE id = NEW.content_type_id
+;
+            UPDATE content_types
+    SET cfs_file_count = cfs_file_count - 1,
+        cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
+    WHERE id = OLD.content_type_id
+;
       END IF;
       IF (NEW.file_extension_id = OLD.file_extension_id) THEN
         IF (COALESCE(NEW.size,0) != COALESCE(OLD.size,0)) THEN
-          UPDATE file_extensions
-          SET cfs_file_size = cfs_file_size + (COALESCE(NEW.size,0) - COALESCE(OLD.size,0))
-          WHERE id = NEW.cfs_directory_id;
-        END IF;
+  UPDATE file_extensions
+  SET cfs_file_size = cfs_file_size + (COALESCE(NEW.size,0) - COALESCE(OLD.size,0))
+  WHERE id = NEW.file_extension_id;
+END IF
+;
       ELSE
-        UPDATE file_extensions
-        SET cfs_file_count = cfs_file_count + 1,
-            cfs_file_size = cfs_file_size + COALESCE(NEW.size, 0)
-        WHERE id = NEW.file_extension_id;
-        UPDATE file_extensions
-        SET cfs_file_count = cfs_file_count - 1,
-            cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
-        WHERE id = OLD.file_extension_id;
+            UPDATE file_extensions
+    SET cfs_file_count = cfs_file_count + 1,
+        cfs_file_size = cfs_file_size + COALESCE(NEW.size, 0)
+    WHERE id = NEW.file_extension_id
+;
+            UPDATE file_extensions
+    SET cfs_file_count = cfs_file_count - 1,
+        cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
+    WHERE id = OLD.file_extension_id
+;
       END IF;
     ELSIF (TG_OP = 'DELETE') THEN
-      UPDATE cfs_directories
-      SET tree_count = tree_count - 1,
-          tree_size = tree_size - COALESCE(OLD.size,0)
-      WHERE id = OLD.cfs_directory_id;
-      UPDATE content_types
-      SET cfs_file_count = cfs_file_count - 1,
-          cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
-      WHERE id = OLD.content_type_id;
-      UPDATE file_extensions
-      SET cfs_file_count = cfs_file_count - 1,
-          cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
-      WHERE id = OLD.file_extension_id;
+          UPDATE cfs_directories
+    SET tree_count = tree_count - 1,
+        tree_size = tree_size - COALESCE(OLD.size, 0)
+    WHERE id = OLD.cfs_directory_id
+;
+          UPDATE content_types
+    SET cfs_file_count = cfs_file_count - 1,
+        cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
+    WHERE id = OLD.content_type_id
+;
+          UPDATE file_extensions
+    SET cfs_file_count = cfs_file_count - 1,
+        cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
+    WHERE id = OLD.file_extension_id
+;
     END IF;
     RETURN NULL;
   END;
