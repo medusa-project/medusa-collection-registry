@@ -121,6 +121,47 @@ CREATE FUNCTION cfs_file_update_cfs_directory() RETURNS trigger
 $$;
 
 
+--
+-- Name: cfs_file_update_cfs_directory_and_extension_and_content_type(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION cfs_file_update_cfs_directory_and_extension_and_content_type() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      UPDATE cfs_directories
+      SET tree_count = tree_count + 1,
+          tree_size = tree_size + COALESCE(NEW.size, 0)
+      WHERE id = NEW.cfs_directory_id;
+    ELSIF (TG_OP = 'UPDATE') THEN
+      IF (NEW.cfs_directory_id = OLD.cfs_directory_id) THEN
+        IF (COALESCE(NEW.size,0) != COALESCE(OLD.size,0)) THEN
+          UPDATE cfs_directories
+          SET tree_size = tree_size + (COALESCE(NEW.size,0) - COALESCE(OLD.size,0))
+          WHERE id = NEW.cfs_directory_id;
+        END IF;
+      ELSE
+        UPDATE cfs_directories
+        SET tree_count = tree_count + 1,
+            tree_size = tree_size + COALESCE(NEW.size, 0)
+        WHERE id = NEW.cfs_directory_id;
+        UPDATE cfs_directories
+        SET tree_count = tree_count - 1,
+            tree_size = tree_size - COALESCE(OLD.size, 0)
+        WHERE id = OLD.cfs_directory_id;
+      END IF;
+    ELSIF (TG_OP = 'DELETE') THEN
+      UPDATE cfs_directories
+      SET tree_count = tree_count - 1,
+          tree_size = tree_size - COALESCE(OLD.size,0)
+      WHERE id = OLD.cfs_directory_id;
+    END IF;
+    RETURN NULL;
+  END;
+$$;
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -3892,27 +3933,6 @@ CREATE UNIQUE INDEX wfaj_cfs_dir_id_and_staging_path_idx ON workflow_accrual_job
 
 
 --
--- Name: cfs_dir_update_bit_level_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER cfs_dir_update_bit_level_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON cfs_directories FOR EACH ROW EXECUTE PROCEDURE cfs_dir_update_bit_level_file_group();
-
-
---
--- Name: cfs_dir_update_cfs_dir_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER cfs_dir_update_cfs_dir_trigger AFTER INSERT OR DELETE OR UPDATE ON cfs_directories FOR EACH ROW EXECUTE PROCEDURE cfs_dir_update_cfs_dir();
-
-
---
--- Name: cfs_file_update_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER cfs_file_update_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON cfs_files FOR EACH ROW EXECUTE PROCEDURE cfs_file_update_cfs_directory();
-
-
---
 -- Name: fk_rails_07ebf5783f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4421,6 +4441,4 @@ INSERT INTO schema_migrations (version) VALUES ('20150617154451');
 INSERT INTO schema_migrations (version) VALUES ('20150908195139');
 
 INSERT INTO schema_migrations (version) VALUES ('20150916152553');
-
-INSERT INTO schema_migrations (version) VALUES ('20150917221307');
 
