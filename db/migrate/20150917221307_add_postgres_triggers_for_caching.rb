@@ -142,11 +142,11 @@ CREATE OR REPLACE FUNCTION cfs_file_update_cfs_directory_and_extension_and_conte
       WHERE id = OLD.cfs_directory_id;
       UPDATE content_types
       SET cfs_file_count = cfs_file_count - 1,
-          cfs_file_size = cfs_file_size + COALESCE(OLD.size, 0)
+          cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
       WHERE id = OLD.content_type_id;
       UPDATE file_extensions
       SET cfs_file_count = cfs_file_count - 1,
-          cfs_file_size = cfs_file_size + COALESCE(OLD.size, 0)
+          cfs_file_size = cfs_file_size - COALESCE(OLD.size, 0)
       WHERE id = OLD.file_extension_id;
     END IF;
     RETURN NULL;
