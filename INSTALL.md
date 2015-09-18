@@ -16,7 +16,8 @@ We need at least libmagic and postgres (with development packages). So install t
 distribution's package manager. Memcached is used for sessions and other caching and will need to be installed (also libmemcached).
 RabbitMQ is used for AMQP messaging and should either be installed locally or a remote server configured. ClamAV is used for 
 virus scanning. VIPS is used for image processing (and any subdependencies you want to install). 
-In development PhantomJS is needed for some tests. Postgresql is used as the database.
+In development PhantomJS is needed for some tests. Postgresql is used as the database and postgres specific functionality
+is used (plpgsql language triggers, etc.), so it would be work to port to a different database.
 
 Solr and FITS are also used, but for development purposes the Solr installed by sunspot should suffice, and FITS is 
 installed by a git submodule.
