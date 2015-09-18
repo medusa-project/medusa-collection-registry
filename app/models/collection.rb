@@ -13,8 +13,8 @@ class Collection < ActiveRecord::Base
 
   email_person_association(:contact)
 
-  belongs_to :repository, touch: true
-  belongs_to :preservation_priority, touch: true
+  belongs_to :repository
+  belongs_to :preservation_priority
 
   has_many :assessments, dependent: :destroy, as: :assessable
   has_many :file_groups, dependent: :destroy

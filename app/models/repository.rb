@@ -6,7 +6,7 @@ class Repository < ActiveRecord::Base
   include EmailPersonAssociator
 
   email_person_association(:contact)
-  belongs_to :institution, touch: true
+  belongs_to :institution
   has_many :collections, dependent: :destroy
   has_many :assessments, as: :assessable, dependent: :destroy
 

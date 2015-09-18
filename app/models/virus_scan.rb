@@ -1,7 +1,7 @@
 require 'open3'
 
 class VirusScan < ActiveRecord::Base
-  belongs_to :file_group, touch: true
+  belongs_to :file_group
 
   def self.check_file_group(file_group)
     return unless file_group.cfs_directory.present?

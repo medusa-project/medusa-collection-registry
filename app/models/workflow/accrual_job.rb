@@ -5,9 +5,9 @@ class Workflow::AccrualJob < Workflow::Base
 
   attr_accessor :comment
 
-  belongs_to :cfs_directory, touch: true
-  belongs_to :user, touch: true
-  belongs_to :amazon_backup, touch: true
+  belongs_to :cfs_directory
+  belongs_to :user
+  belongs_to :amazon_backup
 
   has_many :workflow_accrual_directories, class_name: 'Workflow::AccrualDirectory', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
   has_many :workflow_accrual_files, class_name: 'Workflow::AccrualFile', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'

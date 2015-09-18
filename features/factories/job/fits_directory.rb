@@ -4,4 +4,5 @@ FactoryGirl.define do
     file_group
     file_count 1
   end
+  factory :job_fits_directory, parent: :fits_directory_job
 end

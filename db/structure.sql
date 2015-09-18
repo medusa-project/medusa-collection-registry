@@ -26,6 +26,116 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 SET search_path = public, pg_catalog;
 
 --
+-- Name: access_system_collection_joins_touch_access_systems(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION access_system_collection_joins_touch_access_systems() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE access_systems
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.access_system_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE access_systems
+        SET updated_at = localtimestamp
+        WHERE id = OLD.access_system_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: access_system_collection_joins_touch_collections(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION access_system_collection_joins_touch_collections() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE collections
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.collection_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE collections
+        SET updated_at = localtimestamp
+        WHERE id = OLD.collection_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: amazon_backups_touch_cfs_directories(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION amazon_backups_touch_cfs_directories() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE cfs_directories
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.cfs_directory_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE cfs_directories
+        SET updated_at = localtimestamp
+        WHERE id = OLD.cfs_directory_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: amazon_backups_touch_users(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION amazon_backups_touch_users() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE users
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.user_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE users
+        SET updated_at = localtimestamp
+        WHERE id = OLD.user_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: assessments_touch_storage_media(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION assessments_touch_storage_media() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE storage_media
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.storage_medium_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE storage_media
+        SET updated_at = localtimestamp
+        WHERE id = OLD.storage_medium_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
 -- Name: cfs_dir_update_bit_level_file_group(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -222,6 +332,622 @@ END IF
     END IF;
     RETURN NULL;
   END;
+$$;
+
+
+--
+-- Name: cfs_files_touch_cfs_directories(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION cfs_files_touch_cfs_directories() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE cfs_directories
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.cfs_directory_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE cfs_directories
+        SET updated_at = localtimestamp
+        WHERE id = OLD.cfs_directory_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: cfs_files_touch_content_types(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION cfs_files_touch_content_types() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE content_types
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.content_type_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE content_types
+        SET updated_at = localtimestamp
+        WHERE id = OLD.content_type_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: cfs_files_touch_file_extensions(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION cfs_files_touch_file_extensions() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE file_extensions
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.file_extension_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE file_extensions
+        SET updated_at = localtimestamp
+        WHERE id = OLD.file_extension_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: collections_touch_preservation_priorities(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION collections_touch_preservation_priorities() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE preservation_priorities
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.preservation_priority_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE preservation_priorities
+        SET updated_at = localtimestamp
+        WHERE id = OLD.preservation_priority_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: collections_touch_repositories(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION collections_touch_repositories() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE repositories
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.repository_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE repositories
+        SET updated_at = localtimestamp
+        WHERE id = OLD.repository_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: file_groups_touch_collections(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION file_groups_touch_collections() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE collections
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.collection_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE collections
+        SET updated_at = localtimestamp
+        WHERE id = OLD.collection_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: file_groups_touch_package_profiles(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION file_groups_touch_package_profiles() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE package_profiles
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.package_profile_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE package_profiles
+        SET updated_at = localtimestamp
+        WHERE id = OLD.package_profile_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: file_groups_touch_producers(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION file_groups_touch_producers() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE producers
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.producer_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE producers
+        SET updated_at = localtimestamp
+        WHERE id = OLD.producer_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: job_cfs_directory_exports_touch_cfs_directories(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION job_cfs_directory_exports_touch_cfs_directories() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE cfs_directories
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.cfs_directory_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE cfs_directories
+        SET updated_at = localtimestamp
+        WHERE id = OLD.cfs_directory_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: job_cfs_directory_exports_touch_users(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION job_cfs_directory_exports_touch_users() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE users
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.user_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE users
+        SET updated_at = localtimestamp
+        WHERE id = OLD.user_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: job_cfs_initial_file_group_assessments_touch_file_groups(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION job_cfs_initial_file_group_assessments_touch_file_groups() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.file_group_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE file_groups
+        SET updated_at = localtimestamp
+        WHERE id = OLD.file_group_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: job_fits_directories_touch_cfs_directories(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION job_fits_directories_touch_cfs_directories() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE cfs_directories
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.cfs_directory_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE cfs_directories
+        SET updated_at = localtimestamp
+        WHERE id = OLD.cfs_directory_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: job_fits_directories_touch_file_groups(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION job_fits_directories_touch_file_groups() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.file_group_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE file_groups
+        SET updated_at = localtimestamp
+        WHERE id = OLD.file_group_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: job_fits_directory_trees_touch_cfs_directories(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION job_fits_directory_trees_touch_cfs_directories() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE cfs_directories
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.cfs_directory_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE cfs_directories
+        SET updated_at = localtimestamp
+        WHERE id = OLD.cfs_directory_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: job_fits_directory_trees_touch_file_groups(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION job_fits_directory_trees_touch_file_groups() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.file_group_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE file_groups
+        SET updated_at = localtimestamp
+        WHERE id = OLD.file_group_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: job_ingest_staging_deletes_touch_external_file_groups(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION job_ingest_staging_deletes_touch_external_file_groups() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE external_file_groups
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.external_file_group_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE external_file_groups
+        SET updated_at = localtimestamp
+        WHERE id = OLD.external_file_group_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: job_ingest_staging_deletes_touch_users(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION job_ingest_staging_deletes_touch_users() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE users
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.user_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE users
+        SET updated_at = localtimestamp
+        WHERE id = OLD.user_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: job_virus_scans_touch_file_groups(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION job_virus_scans_touch_file_groups() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.file_group_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE file_groups
+        SET updated_at = localtimestamp
+        WHERE id = OLD.file_group_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: repositories_touch_institutions(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION repositories_touch_institutions() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE institutions
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.institution_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE institutions
+        SET updated_at = localtimestamp
+        WHERE id = OLD.institution_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: resource_typeable_resource_type_joins_touch_resource_types(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION resource_typeable_resource_type_joins_touch_resource_types() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE resource_types
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.resource_type_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE resource_types
+        SET updated_at = localtimestamp
+        WHERE id = OLD.resource_type_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: virus_scans_touch_file_groups(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION virus_scans_touch_file_groups() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.file_group_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE file_groups
+        SET updated_at = localtimestamp
+        WHERE id = OLD.file_group_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: workflow_accrual_jobs_touch_amazon_backups(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION workflow_accrual_jobs_touch_amazon_backups() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE amazon_backups
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.amazon_backup_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE amazon_backups
+        SET updated_at = localtimestamp
+        WHERE id = OLD.amazon_backup_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: workflow_accrual_jobs_touch_cfs_directories(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION workflow_accrual_jobs_touch_cfs_directories() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE cfs_directories
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.cfs_directory_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE cfs_directories
+        SET updated_at = localtimestamp
+        WHERE id = OLD.cfs_directory_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: workflow_accrual_jobs_touch_users(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION workflow_accrual_jobs_touch_users() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE users
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.user_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE users
+        SET updated_at = localtimestamp
+        WHERE id = OLD.user_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: workflow_ingests_touch_amazon_backups(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION workflow_ingests_touch_amazon_backups() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE amazon_backups
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.amazon_backup_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE amazon_backups
+        SET updated_at = localtimestamp
+        WHERE id = OLD.amazon_backup_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: workflow_ingests_touch_bit_level_file_groups(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION workflow_ingests_touch_bit_level_file_groups() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE bit_level_file_groups
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.bit_level_file_group_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE bit_level_file_groups
+        SET updated_at = localtimestamp
+        WHERE id = OLD.bit_level_file_group_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: workflow_ingests_touch_external_file_groups(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION workflow_ingests_touch_external_file_groups() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE external_file_groups
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.external_file_group_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE external_file_groups
+        SET updated_at = localtimestamp
+        WHERE id = OLD.external_file_group_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: workflow_ingests_touch_users(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION workflow_ingests_touch_users() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE users
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.user_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE users
+        SET updated_at = localtimestamp
+        WHERE id = OLD.user_id;
+      END IF;
+      RETURN NULL;
+    END;
 $$;
 
 
@@ -1067,7 +1793,9 @@ CREATE TABLE job_cfs_directory_exports (
     user_id integer,
     cfs_directory_id integer,
     uuid character varying(255),
-    recursive boolean
+    recursive boolean,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -1127,7 +1855,9 @@ ALTER SEQUENCE job_cfs_initial_directory_assessments_id_seq OWNED BY job_cfs_ini
 
 CREATE TABLE job_cfs_initial_file_group_assessments (
     id integer NOT NULL,
-    file_group_id integer
+    file_group_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -1321,7 +2051,9 @@ CREATE TABLE job_ingest_staging_deletes (
     id integer NOT NULL,
     external_file_group_id integer,
     user_id integer,
-    path text
+    path text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -3996,6 +4728,41 @@ CREATE UNIQUE INDEX wfaj_cfs_dir_id_and_staging_path_idx ON workflow_accrual_job
 
 
 --
+-- Name: access_system_collection_joins_touch_access_systems_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER access_system_collection_joins_touch_access_systems_trigger AFTER INSERT OR DELETE OR UPDATE ON access_system_collection_joins FOR EACH ROW EXECUTE PROCEDURE access_system_collection_joins_touch_access_systems();
+
+
+--
+-- Name: access_system_collection_joins_touch_collections_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER access_system_collection_joins_touch_collections_trigger AFTER INSERT OR DELETE OR UPDATE ON access_system_collection_joins FOR EACH ROW EXECUTE PROCEDURE access_system_collection_joins_touch_collections();
+
+
+--
+-- Name: amazon_backups_touch_cfs_directories_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER amazon_backups_touch_cfs_directories_trigger AFTER INSERT OR DELETE OR UPDATE ON amazon_backups FOR EACH ROW EXECUTE PROCEDURE amazon_backups_touch_cfs_directories();
+
+
+--
+-- Name: amazon_backups_touch_users_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER amazon_backups_touch_users_trigger AFTER INSERT OR DELETE OR UPDATE ON amazon_backups FOR EACH ROW EXECUTE PROCEDURE amazon_backups_touch_users();
+
+
+--
+-- Name: assessments_touch_storage_media_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER assessments_touch_storage_media_trigger AFTER INSERT OR DELETE OR UPDATE ON assessments FOR EACH ROW EXECUTE PROCEDURE assessments_touch_storage_media();
+
+
+--
 -- Name: cfs_dir_update_bit_level_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -4014,6 +4781,181 @@ CREATE TRIGGER cfs_dir_update_cfs_dir_trigger AFTER INSERT OR DELETE OR UPDATE O
 --
 
 CREATE TRIGGER cfs_file_update_cfs_directory_and_extension_and_content_type_tr AFTER INSERT OR DELETE OR UPDATE ON cfs_files FOR EACH ROW EXECUTE PROCEDURE cfs_file_update_cfs_directory_and_extension_and_content_type();
+
+
+--
+-- Name: cfs_files_touch_cfs_directories_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER cfs_files_touch_cfs_directories_trigger AFTER INSERT OR DELETE OR UPDATE ON cfs_files FOR EACH ROW EXECUTE PROCEDURE cfs_files_touch_cfs_directories();
+
+
+--
+-- Name: cfs_files_touch_content_types_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER cfs_files_touch_content_types_trigger AFTER INSERT OR DELETE OR UPDATE ON cfs_files FOR EACH ROW EXECUTE PROCEDURE cfs_files_touch_content_types();
+
+
+--
+-- Name: cfs_files_touch_file_extensions_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER cfs_files_touch_file_extensions_trigger AFTER INSERT OR DELETE OR UPDATE ON cfs_files FOR EACH ROW EXECUTE PROCEDURE cfs_files_touch_file_extensions();
+
+
+--
+-- Name: collections_touch_preservation_priorities_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER collections_touch_preservation_priorities_trigger AFTER INSERT OR DELETE OR UPDATE ON collections FOR EACH ROW EXECUTE PROCEDURE collections_touch_preservation_priorities();
+
+
+--
+-- Name: collections_touch_repositories_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER collections_touch_repositories_trigger AFTER INSERT OR DELETE OR UPDATE ON collections FOR EACH ROW EXECUTE PROCEDURE collections_touch_repositories();
+
+
+--
+-- Name: file_groups_touch_collections_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER file_groups_touch_collections_trigger AFTER INSERT OR DELETE OR UPDATE ON file_groups FOR EACH ROW EXECUTE PROCEDURE file_groups_touch_collections();
+
+
+--
+-- Name: file_groups_touch_package_profiles_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER file_groups_touch_package_profiles_trigger AFTER INSERT OR DELETE OR UPDATE ON file_groups FOR EACH ROW EXECUTE PROCEDURE file_groups_touch_package_profiles();
+
+
+--
+-- Name: file_groups_touch_producers_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER file_groups_touch_producers_trigger AFTER INSERT OR DELETE OR UPDATE ON file_groups FOR EACH ROW EXECUTE PROCEDURE file_groups_touch_producers();
+
+
+--
+-- Name: job_cfs_directory_exports_touch_cfs_directories_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER job_cfs_directory_exports_touch_cfs_directories_trigger AFTER INSERT OR DELETE OR UPDATE ON job_cfs_directory_exports FOR EACH ROW EXECUTE PROCEDURE job_cfs_directory_exports_touch_cfs_directories();
+
+
+--
+-- Name: job_cfs_directory_exports_touch_users_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER job_cfs_directory_exports_touch_users_trigger AFTER INSERT OR DELETE OR UPDATE ON job_cfs_directory_exports FOR EACH ROW EXECUTE PROCEDURE job_cfs_directory_exports_touch_users();
+
+
+--
+-- Name: job_cfs_initial_file_group_assessments_touch_file_groups_trigge; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER job_cfs_initial_file_group_assessments_touch_file_groups_trigge AFTER INSERT OR DELETE OR UPDATE ON job_cfs_initial_file_group_assessments FOR EACH ROW EXECUTE PROCEDURE job_cfs_initial_file_group_assessments_touch_file_groups();
+
+
+--
+-- Name: job_fits_directories_touch_cfs_directories_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER job_fits_directories_touch_cfs_directories_trigger AFTER INSERT OR DELETE OR UPDATE ON job_fits_directories FOR EACH ROW EXECUTE PROCEDURE job_fits_directories_touch_cfs_directories();
+
+
+--
+-- Name: job_fits_directories_touch_file_groups_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER job_fits_directories_touch_file_groups_trigger AFTER INSERT OR DELETE OR UPDATE ON job_fits_directories FOR EACH ROW EXECUTE PROCEDURE job_fits_directories_touch_file_groups();
+
+
+--
+-- Name: job_fits_directory_trees_touch_cfs_directories_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER job_fits_directory_trees_touch_cfs_directories_trigger AFTER INSERT OR DELETE OR UPDATE ON job_fits_directory_trees FOR EACH ROW EXECUTE PROCEDURE job_fits_directory_trees_touch_cfs_directories();
+
+
+--
+-- Name: job_fits_directory_trees_touch_file_groups_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER job_fits_directory_trees_touch_file_groups_trigger AFTER INSERT OR DELETE OR UPDATE ON job_fits_directory_trees FOR EACH ROW EXECUTE PROCEDURE job_fits_directory_trees_touch_file_groups();
+
+
+--
+-- Name: job_ingest_staging_deletes_touch_users_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER job_ingest_staging_deletes_touch_users_trigger AFTER INSERT OR DELETE OR UPDATE ON job_ingest_staging_deletes FOR EACH ROW EXECUTE PROCEDURE job_ingest_staging_deletes_touch_users();
+
+
+--
+-- Name: job_virus_scans_touch_file_groups_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER job_virus_scans_touch_file_groups_trigger AFTER INSERT OR DELETE OR UPDATE ON job_virus_scans FOR EACH ROW EXECUTE PROCEDURE job_virus_scans_touch_file_groups();
+
+
+--
+-- Name: repositories_touch_institutions_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER repositories_touch_institutions_trigger AFTER INSERT OR DELETE OR UPDATE ON repositories FOR EACH ROW EXECUTE PROCEDURE repositories_touch_institutions();
+
+
+--
+-- Name: resource_typeable_resource_type_joins_touch_resource_types_trig; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER resource_typeable_resource_type_joins_touch_resource_types_trig AFTER INSERT OR DELETE OR UPDATE ON resource_typeable_resource_type_joins FOR EACH ROW EXECUTE PROCEDURE resource_typeable_resource_type_joins_touch_resource_types();
+
+
+--
+-- Name: virus_scans_touch_file_groups_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER virus_scans_touch_file_groups_trigger AFTER INSERT OR DELETE OR UPDATE ON virus_scans FOR EACH ROW EXECUTE PROCEDURE virus_scans_touch_file_groups();
+
+
+--
+-- Name: workflow_accrual_jobs_touch_amazon_backups_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER workflow_accrual_jobs_touch_amazon_backups_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_accrual_jobs FOR EACH ROW EXECUTE PROCEDURE workflow_accrual_jobs_touch_amazon_backups();
+
+
+--
+-- Name: workflow_accrual_jobs_touch_cfs_directories_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER workflow_accrual_jobs_touch_cfs_directories_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_accrual_jobs FOR EACH ROW EXECUTE PROCEDURE workflow_accrual_jobs_touch_cfs_directories();
+
+
+--
+-- Name: workflow_accrual_jobs_touch_users_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER workflow_accrual_jobs_touch_users_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_accrual_jobs FOR EACH ROW EXECUTE PROCEDURE workflow_accrual_jobs_touch_users();
+
+
+--
+-- Name: workflow_ingests_touch_amazon_backups_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER workflow_ingests_touch_amazon_backups_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_ingests FOR EACH ROW EXECUTE PROCEDURE workflow_ingests_touch_amazon_backups();
+
+
+--
+-- Name: workflow_ingests_touch_users_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER workflow_ingests_touch_users_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_ingests FOR EACH ROW EXECUTE PROCEDURE workflow_ingests_touch_users();
 
 
 --
@@ -4527,4 +5469,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150908195139');
 INSERT INTO schema_migrations (version) VALUES ('20150916152553');
 
 INSERT INTO schema_migrations (version) VALUES ('20150917221307');
+
+INSERT INTO schema_migrations (version) VALUES ('20150918191709');
 

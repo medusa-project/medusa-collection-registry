@@ -9,8 +9,8 @@ require 'open3'
 class Workflow::Ingest < Workflow::Base
   belongs_to :external_file_group, touch: true
   belongs_to :bit_level_file_group, touch: true
-  belongs_to :user, touch: true
-  belongs_to :amazon_backup, touch: true
+  belongs_to :user
+  belongs_to :amazon_backup
 
   validates_uniqueness_of :external_file_group_id, allow_blank: false
 

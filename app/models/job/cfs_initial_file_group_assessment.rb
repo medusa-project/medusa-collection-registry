@@ -1,5 +1,5 @@
 class Job::CfsInitialFileGroupAssessment < Job::Base
-  belongs_to :file_group, touch: true
+  belongs_to :file_group
 
   def self.create_for(file_group)
     raise RuntimeError, "No cfs directory defined for file group #{file_group.id}. Cannot create assessment job." unless file_group.cfs_directory.present?

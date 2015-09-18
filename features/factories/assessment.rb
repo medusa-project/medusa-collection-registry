@@ -5,5 +5,6 @@ FactoryGirl.define do
     name {|n| "Assessment #{n}"}
     assessment_type 'external_files'
     preservation_risk_level 'medium'
+    storage_medium
   end
 end

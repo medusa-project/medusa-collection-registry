@@ -5,9 +5,9 @@ class AmazonBackup < ActiveRecord::Base
   serialize :archive_ids
   before_create :initialize_archive_ids_and_date
 
-  belongs_to :cfs_directory, touch: true
+  belongs_to :cfs_directory
   #This is the user who requested the backup, needed so we can email progress reports
-  belongs_to :user, touch: true
+  belongs_to :user
 
   has_one :job_amazon_backup, class_name: 'Job::AmazonBackup', dependent: :destroy
   has_one :workflow_ingest, class_name: 'Workflow::Ingest'

@@ -1,7 +1,7 @@
 require 'fileutils'
 class Job::CfsDirectoryExport < Job::Base
-  belongs_to :user, touch: true
-  belongs_to :cfs_directory, touch: true
+  belongs_to :user
+  belongs_to :cfs_directory
 
   def self.create_for(cfs_directory, user, recursive)
     Delayed::Job.enqueue(self.create!(cfs_directory: cfs_directory, user: user, uuid: UUID.generate, recursive: recursive))

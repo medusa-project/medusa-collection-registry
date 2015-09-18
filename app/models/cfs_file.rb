@@ -8,9 +8,9 @@ class CfsFile < ActiveRecord::Base
   include Breadcrumb
   include CfsFileAmqp
 
-  belongs_to :cfs_directory, touch: true
-  belongs_to :content_type, touch: true
-  belongs_to :file_extension, touch: true
+  belongs_to :cfs_directory
+  belongs_to :content_type
+  belongs_to :file_extension
   belongs_to :parent, class_name: 'CfsDirectory', foreign_key: 'cfs_directory_id'
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy

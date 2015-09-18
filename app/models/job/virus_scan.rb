@@ -1,5 +1,5 @@
 class Job::VirusScan < Job::Base
-  belongs_to :file_group, touch: true
+  belongs_to :file_group
 
   def self.create_for(file_group)
     Delayed::Job.enqueue(self.create!(file_group_id: file_group.id), priority: 20)

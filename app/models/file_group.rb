@@ -7,11 +7,11 @@ class FileGroup < ActiveRecord::Base
   include ResourceTypeable
   include EmailPersonAssociator
 
-  belongs_to :collection, touch: true
+  belongs_to :collection
   #parent is a duplicate, but allows uniformity for events, i.e. we can do eventable.parent
   belongs_to :parent, class_name: 'Collection', foreign_key: 'collection_id'
-  belongs_to :producer, touch: true
-  belongs_to :package_profile, touch: true
+  belongs_to :producer
+  belongs_to :package_profile
 
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
   has_one :cfs_directory, as: :parent

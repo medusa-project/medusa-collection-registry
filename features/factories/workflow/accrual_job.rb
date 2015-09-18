@@ -4,5 +4,6 @@ FactoryGirl.define do
     staging_path '/staging/path/'
     state 'start'
     user
+    amazon_backup
   end
 end

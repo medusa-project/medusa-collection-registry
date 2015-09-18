@@ -3,7 +3,7 @@ class Assessment < ActiveRecord::Base
   email_person_association(:author)
 
   belongs_to :assessable, polymorphic: true, touch: true
-  belongs_to :storage_medium, touch: true
+  belongs_to :storage_medium
 
   delegate :name, to: :storage_medium, prefix: true, allow_nil: true
 
