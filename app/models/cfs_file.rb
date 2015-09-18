@@ -26,14 +26,7 @@ class CfsFile < ActiveRecord::Base
   FIXITY_STATUSES = %w(ok bad nf)
   validates_inclusion_of :fixity_check_status, in: FIXITY_STATUSES, allow_nil: true
 
-  after_create :add_content_type_stats
-  after_destroy :remove_content_type_stats
-  after_update :update_content_type_stats
-
   before_validation :ensure_current_file_extension
-  after_create :add_file_extension_stats
-  after_destroy :remove_file_extension_stats
-  after_update :update_file_extension_stats
 
   breadcrumbs parent: :cfs_directory, label: :name
   cascades_events parent: :cfs_directory
@@ -206,49 +199,6 @@ class CfsFile < ActiveRecord::Base
   end
 
   protected
-
-  def add_content_type_stats
-    self.content_type.update_stats(1, self.safe_size) if self.content_type.present?
-  end
-
-  def update_content_type_stats
-    if self.content_type_id_changed?
-      if self.content_type.present?
-        self.content_type.update_stats(1, self.safe_size)
-      end
-      if self.content_type_id_was.present?
-        ContentType.find(self.content_type_id_was).update_stats(-1, -1 * self.safe_size_was)
-      end
-    else
-      if self.content_type.present? and self.size_changed?
-        self.content_type.update_stats(0, (self.safe_size - self.safe_size_was))
-      end
-    end
-  end
-
-  def remove_content_type_stats
-    self.content_type.update_stats(-1, -1 * self.safe_size) if self.content_type.present?
-  end
-
-  def add_file_extension_stats
-    self.file_extension.update_stats(1, self.safe_size)
-    true
-  end
-
-  def update_file_extension_stats
-    if self.file_extension_id_changed?
-      self.file_extension.update_stats(1, self.safe_size)
-      FileExtension.find(self.file_extension_id_was).update_stats(-1, -1 * self.safe_size_was) if self.file_extension_id_was
-    else
-      if self.size_changed?
-        self.file_extension.update_stats(0, self.safe_size - self.safe_size_was)
-      end
-    end
-  end
-
-  def remove_file_extension_stats
-    self.file_extension.update_stats(-1, -1 * self.safe_size)
-  end
 
   def get_fits_xml
     resource = RestClient::Resource.new("http://localhost:4567/fits/file")
