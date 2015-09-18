@@ -3,7 +3,7 @@ require 'fileutils'
 class Job::IngestStagingDelete < Job::Base
 
   belongs_to :user
-  belongs_to :external_file_group, touch: true
+  belongs_to :external_file_group
 
   def self.create_for(external_file_group, user)
     path = external_file_group.local_staged_file_location

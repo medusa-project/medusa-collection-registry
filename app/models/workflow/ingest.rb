@@ -7,8 +7,8 @@ require 'fileutils'
 require 'open3'
 
 class Workflow::Ingest < Workflow::Base
-  belongs_to :external_file_group, touch: true
-  belongs_to :bit_level_file_group, touch: true
+  belongs_to :external_file_group
+  belongs_to :bit_level_file_group
   belongs_to :user
   belongs_to :amazon_backup
 
