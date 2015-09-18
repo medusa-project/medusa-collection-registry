@@ -4,6 +4,7 @@
 #the triggers are installed. So that should be checked! I'll provide some sql queries/views to help with that, in
 #fact before I merge this in.
 class AddPostgresTriggersForFileSizeAndCountCaching < ActiveRecord::Migration
+
   def up
     drop_all_triggers
     define_all_trigger_functions
