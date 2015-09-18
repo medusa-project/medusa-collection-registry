@@ -33,19 +33,17 @@ CREATE FUNCTION cfs_dir_update_bit_level_file_group() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
   BEGIN
-    IF (COALESCE(NEW.parent_type, OLD.parent_type) = 'FileGroup') THEN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
-        UPDATE file_groups
-        SET total_files = NEW.tree_count,
-            total_file_size = NEW.tree_size / 1073741824,
-            updated_at = localtimestamp
-        WHERE id = NEW.parent_id;
-      ELSIF (TG_OP = 'DESTROY') THEN
-        UPDATE file_groups
-        SET tree_count = 0,
-            tree_size = 0
-        WHERE id = OLD.parent_id;
-      END IF;
+    IF ((TG_OP = 'INSERT' OR TG_OP = 'UPDATE') AND NEW.parent_type = 'FileGroup')  THEN
+      UPDATE file_groups
+      SET total_files = NEW.tree_count,
+          total_file_size = NEW.tree_size / 1073741824,
+          updated_at = localtimestamp
+      WHERE id = NEW.parent_id;
+    ELSIF (TG_OP = 'DELETE' AND OLD.parent_type = 'FileGroup') THEN
+      UPDATE file_groups
+      SET tree_count = 0,
+          tree_size = 0
+      WHERE id = OLD.parent_id;
     END IF;
     RETURN NULL;
   END;
@@ -60,27 +58,25 @@ CREATE FUNCTION cfs_dir_update_cfs_dir() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
   BEGIN
-    IF (COALESCE(NEW.parent_type, OLD.parent_type) = 'CfsDirectory') THEN
-      IF (TG_OP = 'INSERT') THEN
+    IF (TG_OP = 'INSERT' AND NEW.parent_type = 'CfsDirectory') THEN
+      UPDATE cfs_directories
+      SET tree_count = tree_count + NEW.tree_count,
+          tree_size = tree_size + NEW.tree_size,
+          updated_at = localtimestamp
+      WHERE id = NEW.parent_id;
+    ELSIF (TG_OP = 'UPDATE' AND NEW.parent_type = 'CfsDirectory') THEN
+      IF ((NEW.tree_size != OLD.tree_size) OR NEW.tree_count != OLD.tree_count) THEN
         UPDATE cfs_directories
-        SET tree_count = tree_count + NEW.tree_count,
-            tree_size = tree_size + NEW.tree_size,
+        SET tree_size = tree_size + (NEW.tree_size - OLD.tree_size),
+            tree_count = tree_count + (NEW.tree_count - OLD.tree_count),
             updated_at = localtimestamp
         WHERE id = NEW.parent_id;
-      ELSIF (TG_OP = 'UPDATE') THEN
-        IF ((NEW.tree_size != OLD.tree_size) OR NEW.tree_count != OLD.tree_count) THEN
-          UPDATE cfs_directories
-          SET tree_size = tree_size + (NEW.tree_size - OLD.tree_size),
-              tree_count = tree_count + (NEW.tree_count - OLD.tree_count),
-              updated_at = localtimestamp
-          WHERE id = NEW.parent_id;
-        END IF;
-      ELSIF (TG_OP = 'DESTROY') THEN
-        UPDATE cfs_directories
-        SET tree_count = tree_count - OLD.tree_count,
-            tree_size = tree_size - OLD.tree_size
-        WHERE id = OLD.parent_id;
       END IF;
+    ELSIF (TG_OP = 'DELETE' AND OLD.parent_type = 'CfsDirectory') THEN
+      UPDATE cfs_directories
+      SET tree_count = tree_count - OLD.tree_count,
+          tree_size = tree_size - OLD.tree_size
+      WHERE id = OLD.parent_id;
     END IF;
     RETURN NULL;
   END;
@@ -105,7 +101,7 @@ CREATE FUNCTION cfs_file_update_cfs_directory() RETURNS trigger
       IF (NEW.cfs_directory_id = OLD.cfs_directory_id) THEN
         IF (COALESCE(NEW.size,0) != COALESCE(OLD.size,0)) THEN
           UPDATE cfs_directories
-          SET tree_size = tree_size + (NEW.size - OLD.size),
+          SET tree_size = tree_size + (COALESCE(NEW.size,0) - COALESCE(OLD.size,0)),
               updated_at = localtimestamp
           WHERE id = NEW.cfs_directory_id;
         END IF;
@@ -121,7 +117,7 @@ CREATE FUNCTION cfs_file_update_cfs_directory() RETURNS trigger
             updated_at = localtimestamp
         WHERE id = OLD.cfs_directory_id;
       END IF;
-    ELSIF (TG_OP = 'DESTROY') THEN
+    ELSIF (TG_OP = 'DELETE') THEN
       UPDATE cfs_directories
       SET tree_count = tree_count - 1,
           tree_size = tree_size - COALESCE(OLD.size,0)
