@@ -109,7 +109,7 @@ class BitLevelFileGroup < FileGroup
   end
 
   def file_size
-    return total_file_size / 1.gigabyte
+    return total_file_size
   end
 
   def file_count
