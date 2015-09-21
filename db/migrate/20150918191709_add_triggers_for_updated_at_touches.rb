@@ -67,6 +67,11 @@ class AddTriggersForUpdatedAtTouches < ActiveRecord::Migration
         drop_simple_touch_trigger(source, target)
       end
     end
+    TOUCHES_WITH_DIFFERENT_TABLE_NAMES.each do |source, target_hash|
+      target_hash.each do |association, target|
+        drop_simple_touch_trigger(source, association)
+      end
+    end
     NEED_TIMESTAMPS.each do |table|
       remove_timestamps(table, null: false)
     end

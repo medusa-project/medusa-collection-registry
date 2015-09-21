@@ -2761,9 +2761,7 @@ CREATE TABLE job_cfs_directory_exports (
     user_id integer,
     cfs_directory_id integer,
     uuid character varying(255),
-    recursive boolean,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    recursive boolean
 );
 
 
@@ -2823,9 +2821,7 @@ ALTER SEQUENCE job_cfs_initial_directory_assessments_id_seq OWNED BY job_cfs_ini
 
 CREATE TABLE job_cfs_initial_file_group_assessments (
     id integer NOT NULL,
-    file_group_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    file_group_id integer
 );
 
 
@@ -3019,9 +3015,7 @@ CREATE TABLE job_ingest_staging_deletes (
     id integer NOT NULL,
     external_file_group_id integer,
     user_id integer,
-    path text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    path text
 );
 
 
@@ -5857,13 +5851,6 @@ CREATE TRIGGER job_fits_directory_trees_touch_file_group_trigger AFTER INSERT OR
 
 
 --
--- Name: job_ingest_staging_deletes_touch_external_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER job_ingest_staging_deletes_touch_external_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON job_ingest_staging_deletes FOR EACH ROW EXECUTE PROCEDURE job_ingest_staging_deletes_touch_external_file_group();
-
-
---
 -- Name: job_ingest_staging_deletes_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -5875,20 +5862,6 @@ CREATE TRIGGER job_ingest_staging_deletes_touch_user_trigger AFTER INSERT OR DEL
 --
 
 CREATE TRIGGER job_virus_scans_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON job_virus_scans FOR EACH ROW EXECUTE PROCEDURE job_virus_scans_touch_file_group();
-
-
---
--- Name: related_file_group_joins_touch_source_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER related_file_group_joins_touch_source_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON related_file_group_joins FOR EACH ROW EXECUTE PROCEDURE related_file_group_joins_touch_source_file_group();
-
-
---
--- Name: related_file_group_joins_touch_target_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER related_file_group_joins_touch_target_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON related_file_group_joins FOR EACH ROW EXECUTE PROCEDURE related_file_group_joins_touch_target_file_group();
 
 
 --
@@ -5966,20 +5939,6 @@ CREATE TRIGGER workflow_accrual_jobs_touch_user_trigger AFTER INSERT OR DELETE O
 --
 
 CREATE TRIGGER workflow_ingests_touch_amazon_backup_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_ingests FOR EACH ROW EXECUTE PROCEDURE workflow_ingests_touch_amazon_backup();
-
-
---
--- Name: workflow_ingests_touch_bit_level_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER workflow_ingests_touch_bit_level_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_ingests FOR EACH ROW EXECUTE PROCEDURE workflow_ingests_touch_bit_level_file_group();
-
-
---
--- Name: workflow_ingests_touch_external_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER workflow_ingests_touch_external_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_ingests FOR EACH ROW EXECUTE PROCEDURE workflow_ingests_touch_external_file_group();
 
 
 --
@@ -6500,6 +6459,4 @@ INSERT INTO schema_migrations (version) VALUES ('20150908195139');
 INSERT INTO schema_migrations (version) VALUES ('20150916152553');
 
 INSERT INTO schema_migrations (version) VALUES ('20150917221307');
-
-INSERT INTO schema_migrations (version) VALUES ('20150918191709');
 
