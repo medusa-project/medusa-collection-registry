@@ -1,10 +1,11 @@
-require 'trigger_helpers'
+require 'simple_trigger_helper'
 #This is to replace all existing association 'touch' operations by database triggers
 #I'll try to build up the machinery for this in such a way that it can be reused for adding
 #additional touches as needed.
-#Simple touches should be pretty easy; polymorphic ones will require additional care.
+#We omit adding these for the polymorphic cases, as the advantage seems overshadowed by the added
+#complexity. In these cases typically the Rails touch fire and then in the owning model one of these
+#simpler touches may trigger, so most of the database work will still be saved in any case.
 class AddTriggersForUpdatedAtTouches < ActiveRecord::Migration
-  include TriggerHelpers
 
   SIMPLE_TOUCHES = {
       cfs_files: [:file_extensions, :content_types, :cfs_directories],
@@ -46,17 +47,12 @@ class AddTriggersForUpdatedAtTouches < ActiveRecord::Migration
     end
     SIMPLE_TOUCHES.each do |source, targets|
       Array.wrap(targets).each do |target|
-        association = target.to_s.singularize
-        drop_simple_touch_trigger(source, association)
-        create_simple_touch_trigger_function(source, association, target)
-        create_simple_touch_trigger(source, association)
+        SimpleTriggerHelper.new(source_table: source, target_table: target).create_trigger
       end
     end
     TOUCHES_WITH_DIFFERENT_TABLE_NAMES.each do |source, target_hash|
       target_hash.each do |association, target|
-        drop_simple_touch_trigger(source, association)
-        create_simple_touch_trigger_function(source, association, target)
-        create_simple_touch_trigger(source, association)
+        SimpleTriggerHelper.new(source_table: source, target_table: target, association: association).create_trigger
       end
     end
   end
@@ -64,18 +60,17 @@ class AddTriggersForUpdatedAtTouches < ActiveRecord::Migration
   def down
     SIMPLE_TOUCHES.each do |source, targets|
       Array.wrap(targets).each do |target|
-        drop_simple_touch_trigger(source, target)
+        SimpleTriggerHelper.new(source_table: source, target_table: target).drop_trigger
       end
     end
     TOUCHES_WITH_DIFFERENT_TABLE_NAMES.each do |source, target_hash|
       target_hash.each do |association, target|
-        drop_simple_touch_trigger(source, association)
+        SimpleTriggerHelper.new(source_table: source, target_table: target, association: association).drop_trigger
       end
     end
     NEED_TIMESTAMPS.each do |table|
       remove_timestamps(table, null: false)
     end
   end
-
 
 end
