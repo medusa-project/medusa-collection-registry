@@ -49,6 +49,7 @@ module MedusaCollectionRegistry
     # like if you have constraints or database-specific column types
     # The following kludge is an attempt to correct running migrations on our production servers where the
     # postgres client stuff is a different version than the server.
+    # TODO remove this once we have the postgres issues resolved
     if Rails.env.production?
       config.active_record.schema_format = :ruby
     else
