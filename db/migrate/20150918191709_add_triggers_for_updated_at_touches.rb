@@ -43,7 +43,7 @@ class AddTriggersForUpdatedAtTouches < ActiveRecord::Migration
 
   def up
     NEED_TIMESTAMPS.each do |table|
-      add_timestamps(table, null: false)
+      add_timestamps(table)
     end
     SIMPLE_TOUCHES.each do |source, targets|
       Array.wrap(targets).each do |target|
@@ -69,7 +69,7 @@ class AddTriggersForUpdatedAtTouches < ActiveRecord::Migration
       end
     end
     NEED_TIMESTAMPS.each do |table|
-      remove_timestamps(table, null: false)
+      remove_timestamps(table)
     end
   end
 
