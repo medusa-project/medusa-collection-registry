@@ -13,6 +13,8 @@ class BitLevelFileGroup < FileGroup
   after_create :ensure_cfs_directory
   after_destroy :maybe_destroy_cfs_directories
 
+  delegate :pristine?, to: :cfs_directory
+
   def ensure_cfs_directory
     physical_cfs_directory_path = expected_absolute_cfs_root_directory
     FileUtils.mkdir_p(physical_cfs_directory_path) unless Dir.exists?(physical_cfs_directory_path)
