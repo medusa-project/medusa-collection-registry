@@ -169,8 +169,8 @@ CREATE OR REPLACE FUNCTION cfs_dir_update_bit_level_file_group() RETURNS trigger
       WHERE id = NEW.parent_id;
     ELSIF (TG_OP = 'DELETE' AND OLD.parent_type = 'FileGroup') THEN
       UPDATE file_groups
-      SET tree_count = 0,
-          tree_size = 0
+      SET total_files = 0,
+          total_file_size = 0
       WHERE id = OLD.parent_id;
     END IF;
     RETURN NULL;
