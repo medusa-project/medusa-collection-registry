@@ -47,7 +47,14 @@ module MedusaCollectionRegistry
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,
     # like if you have constraints or database-specific column types
-    config.active_record.schema_format = :sql
+    # The following kludge is an attempt to correct running migrations on our production servers where the
+    # postgres client stuff is a different version than the server.
+    if Rails.env.production?
+      config.active_record.schema_format = :ruby
+    else
+      config.active_record.schema_format = :sql
+    end
+
 
     # Enable the asset pipeline
     config.assets.enabled = true
