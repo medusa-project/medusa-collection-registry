@@ -26,8 +26,12 @@ class FileGroupsController < ApplicationController
 
   def destroy
     authorize! :destroy, @file_group
-    @file_group.destroy
-    redirect_to collection_path(@collection)
+    if @file_group.destroy
+      redirect_to collection_path(@collection)
+    else
+      flash[:notice] = @file_group.errors.full_messages.join('\n')
+      redirect_to :back
+    end
   end
 
   def edit
