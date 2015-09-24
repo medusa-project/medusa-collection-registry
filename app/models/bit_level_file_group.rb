@@ -14,8 +14,8 @@ class BitLevelFileGroup < FileGroup
   after_destroy :maybe_destroy_cfs_directories
   before_destroy :check_emptiness
 
-  delegate :pristine?, to: :cfs_directory
-
+  delegate :pristine?, :ensure_file_at_absolute_path, :ensure_file_at_relative_path, to: :cfs_directory
+  
   def ensure_cfs_directory
     physical_cfs_directory_path = expected_absolute_cfs_root_directory
     FileUtils.mkdir_p(physical_cfs_directory_path) unless Dir.exists?(physical_cfs_directory_path)
@@ -64,15 +64,6 @@ class BitLevelFileGroup < FileGroup
 
   def expected_relative_cfs_root_directory
     File.join(self.collection_id.to_s, self.id.to_s)
-  end
-
-  #make sure that there is a CfsFile object at the supplied absolute path and return it
-  def ensure_file_at_absolute_path(path)
-    self.cfs_directory.ensure_file_at_absolute_path(path)
-  end
-
-  def ensure_file_at_relative_path(path)
-    self.cfs_directory.ensure_file_at_relative_path(path)
   end
 
   #Find the cfs directory at the path relative to the cfs directory root path for this file group
