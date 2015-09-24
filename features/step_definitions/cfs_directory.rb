@@ -5,27 +5,27 @@ end
 
 When(/^I view the cfs directory for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
-  visit cfs_directory_path(file_group.cfs_directory_at_path(path))
+  visit cfs_directory_path(file_group.find_directory_at_relative_path(path))
 end
 
 Given(/^I public view the cfs directory for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
-  visit public_cfs_directory_path(file_group.cfs_directory_at_path(path))
+  visit public_cfs_directory_path(file_group.find_directory_at_relative_path(path))
 end
 
 Then(/^I should be viewing the cfs directory for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
-  expect(current_path).to eq(cfs_directory_path(file_group.cfs_directory_at_path(path)))
+  expect(current_path).to eq(cfs_directory_path(file_group.find_directory_at_relative_path(path)))
 end
 
 Then(/^I should be public viewing the cfs directory for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
-  expect(current_path).to eq(public_cfs_directory_path(file_group.cfs_directory_at_path(path)))
+  expect(current_path).to eq(public_cfs_directory_path(file_group.find_directory_at_relative_path(path)))
 end
 
 When(/^the cfs directory for the path '([^']*)' for the file group titled '([^']*)' has an assessment scheduled$/) do |path, title|
   file_group = FileGroup.find_by(title: title)
-  cfs_directory = file_group.cfs_directory_at_path(path)
+  cfs_directory = file_group.find_directory_at_relative_path(path)
   Job::CfsInitialDirectoryAssessment.create(cfs_directory: cfs_directory, file_group: file_group)
 end
 

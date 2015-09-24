@@ -64,7 +64,7 @@ end
 
 def with_cfs_file_at_path_for_file_group_titled(path, title)
   file_group = BitLevelFileGroup.find_by(title: title)
-  cfs_file = file_group.cfs_file_at_path(path)
+  cfs_file = file_group.find_file_at_relative_path(path)
   yield cfs_file, file_group
 end
 
@@ -106,12 +106,12 @@ end
 
 When(/^I view the cfs file for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
-  visit cfs_file_path(file_group.cfs_file_at_path(path))
+  visit cfs_file_path(file_group.find_file_at_relative_path(path))
 end
 
 Given(/^I public view the cfs file for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
-  visit public_cfs_file_path(file_group.cfs_file_at_path(path))
+  visit public_cfs_file_path(file_group.find_file_at_relative_path(path))
 end
 
 When(/^I run an initial cfs file assessment on the file group titled '([^']*)'$/) do |title|
@@ -142,7 +142,7 @@ end
 
 Then(/^the file group titled '([^']*)' should have a cfs directory for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
-  expect(file_group.cfs_directory_at_path(path)).to be_a(CfsDirectory)
+  expect(file_group.find_directory_at_relative_path(path)).to be_a(CfsDirectory)
 end
 
 Then(/^the file group titled '([^']*)' should have a cfs directory$/) do |title|
@@ -151,12 +151,12 @@ end
 
 Then(/^the file group titled '([^']*)' should not have a cfs file for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
-  expect { file_group.cfs_file_at_path(path) }.to raise_error(RuntimeError)
+  expect { file_group.find_file_at_relative_path(path) }.to raise_error(RuntimeError)
 end
 
 Then(/^the file group titled '([^']*)' should not have a cfs directory for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
-  expect { file_group.cfs_directory_at_path(path) }.to raise_error(RuntimeError)
+  expect { file_group.find_directory_at_relative_path(path) }.to raise_error(RuntimeError)
 end
 
 And(/^the file group titled '([^']*)' should have a cfs file for the path '([^']*)' with fits attached$/) do |title, path|
