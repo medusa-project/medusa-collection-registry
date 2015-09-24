@@ -36,7 +36,7 @@ end
 When(/^I set the cfs root of the file group titled '([^']*)' to '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
   new_root = CfsDirectory.find_by(path: path) || FactoryGirl.create(:cfs_directory, path: path)
-  file_group.cfs_directory = new_root
+  file_group.cfs_directory_id = new_root.id
   file_group.save!
 end
 
