@@ -12,6 +12,9 @@ class BitLevelFileGroup < FileGroup
 
   after_create :ensure_cfs_directory
   after_destroy :maybe_destroy_cfs_directories
+  before_destroy :check_emptiness
+
+  delegate :pristine?, to: :cfs_directory
 
   def ensure_cfs_directory
     physical_cfs_directory_path = expected_absolute_cfs_root_directory
@@ -159,6 +162,14 @@ class BitLevelFileGroup < FileGroup
   def accrual_unstarted?
     events.where(key: 'files_added').blank? and
     (cfs_directory.blank? or cfs_directory.pristine?)
+  end
+
+  def check_emptiness
+    unless self.pristine?
+      errors.add(:base, 'This file group has content and cannot be deleted. Please contact Medusa administrators to have it removed.')
+      return false
+    end
+    return true
   end
 
 end

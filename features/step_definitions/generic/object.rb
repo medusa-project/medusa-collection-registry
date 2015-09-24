@@ -15,6 +15,17 @@ Then /^the (.*)s? with fields should exist:?$/ do |object_type, table|
   end
 end
 
+#As conceived here only works for non-polymorphic associations, and of course with appropriate factory naming conventions
+And /^the (.*) with (.*) '([^']*)' has associated (.*) with field (.*):$/ do |base_object_type, base_key, base_value, association_name, association_key, table|
+  association_name = association_name.gsub(' ', '_')
+  base = step "the #{base_object_type} with #{base_key} '#{base_value}' exists"
+  association = base.class.reflect_on_association(association_name.singularize) || base.class.reflect_on_association(association_name.pluralize)
+  association_factory_name = association.class_name.underscore
+  table.headers.each do |child_value|
+    base.send(association.name) << (step "the #{association_factory_name} with #{association_key.gsub(' ', '_').singularize} '#{child_value}' exists")
+  end
+end
+
 And /^the (.*) with (.*) '([^']*)' has child (.*) with field (.*):$/ do |parent_object_type, parent_key, parent_value, child_object_type, child_key, table|
   parent = step "the #{parent_object_type} with #{parent_key} '#{parent_value}' exists"
   table.headers.each do |child_value|
@@ -50,9 +61,9 @@ And /^the (.*) with (.*) '([^']*)' exists$/ do |object_type, key, value|
 end
 
 And /^each (.*) with (.*) exists:$/ do |object_type, key, table|
- table.headers.each do |header|
-   step "the #{object_type} with #{key} '#{header}' exists"
- end
+  table.headers.each do |header|
+    step "the #{object_type} with #{key} '#{header}' exists"
+  end
 end
 
 And /^every (.*) with fields exists:$/ do |object_type, table|
