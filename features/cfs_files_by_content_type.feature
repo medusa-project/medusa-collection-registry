@@ -32,3 +32,12 @@ Feature: Cfs files by content type
   Scenario: Public user cannot view cfs files via content type
     Then deny object permission on the content type with name 'image/jpeg' to users for action with redirection:
       | public user | cfs_files | authentication |
+
+  #This test is clearly not perfect, but should fail at least 1 in 3 times if there is a problem
+  Scenario: View a random file of a given extension
+    Given I am logged in as an admin
+    When I go to the dashboard
+    And I click on 'image/jpeg'
+    And I click on 'Random File'
+    Then I should see none of:
+      | pit bull |

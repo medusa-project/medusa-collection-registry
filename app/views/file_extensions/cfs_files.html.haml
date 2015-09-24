@@ -5,6 +5,7 @@
   .col-md-8
     .btn-toolbar.pull-right
       = link_to 'Run FITS batch', fits_batch_file_extension_path(@file_extension), class: 'btn btn-default', method: :post
+      = link_to fa_icon('random'), random_cfs_file_file_extension_path(@file_extension), class: 'btn btn-default', title: 'Random File'
 .row
   = render 'cfs_files/table'
   = will_paginate @cfs_files, renderer: BootstrapPagination::Rails

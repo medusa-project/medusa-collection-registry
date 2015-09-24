@@ -17,4 +17,8 @@ class FileExtension < ActiveRecord::Base
     self.extension.if_blank('<no extension>')
   end
 
+  def random_cfs_file
+    self.cfs_files.order('name').offset(rand(self.cfs_files.count)).first
+  end
+
 end

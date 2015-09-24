@@ -6,4 +6,8 @@ class ContentType < ActiveRecord::Base
   validates_numericality_of :cfs_file_count, :cfs_file_size
   has_many :cfs_files
 
+  def random_cfs_file
+    self.cfs_files.order('name').offset(rand(self.cfs_files.count)).first
+  end
+
 end

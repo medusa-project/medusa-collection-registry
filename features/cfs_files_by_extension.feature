@@ -32,10 +32,19 @@ Feature: Cfs files by file extension
     Given I am logged in as an admin
     When I go to the dashboard
     Then I should see all of:
-      | 789 Bytes| 4.46 KB | 1 | 2 |
+      | 789 Bytes | 4.46 KB | 1 | 2 |
 
   Scenario: Stats are collected
     Then the file extension with fields should exist:
       | extension | cfs_file_count | cfs_file_size |
       | jpg       | 2              | 4567          |
       | xml       | 1              | 789           |
+
+  #This test is clearly not perfect, but should fail at least 1 in 3 times if there is a problem
+  Scenario: Random file
+    Given I am logged in as an admin
+    When I go to the dashboard
+    And I click on 'jpg'
+    And I click on 'Random File'
+    Then I should see none of:
+      | pit_bull.xml |
