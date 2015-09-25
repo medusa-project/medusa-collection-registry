@@ -201,8 +201,9 @@ class CfsFile < ActiveRecord::Base
   protected
 
   def get_fits_xml
-    resource = RestClient::Resource.new("http://localhost:4567/fits/file", read_timeout: 3600)
-    response = resource.get(params: {path: self.absolute_path.gsub(/^\/+/, '')})
+    uri = URI("http://localhost:4567/fits/file")
+    uri.query = URI.encode_www_form({path: self.absolute_path.gsub(/^\/+/, '')})
+    response = HTTParty.get(uri.to_s, timeout: 3000)
     case response.code
       when 200
         response.body
