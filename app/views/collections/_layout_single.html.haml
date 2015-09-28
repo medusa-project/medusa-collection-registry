@@ -22,6 +22,7 @@
           %ul.dropdown-menu
             %li= link_to 'XML (MODS)', collection_path(@collection, format: :xml)
             %li= link_to 'JSON', collection_path(@collection, format: :json)
+        = link_to 'Add Project', new_project_path(collection_id: @collection.id), class: 'btn btn-primary'
         = edit_button(@collection)
       - if content_for?(:extra_links)
         .btn-group

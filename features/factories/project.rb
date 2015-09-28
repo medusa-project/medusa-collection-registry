@@ -3,6 +3,7 @@ FactoryGirl.define do
     sequence(:title) {|n| "Sample Project #{n}"}
     association :manager, factory: :person
     association :owner, factory: :person
+    collection
     start_date '2015-09-16'
     status 'active'
     sequence(:specifications) {|n| "Project specifications #{n}"}

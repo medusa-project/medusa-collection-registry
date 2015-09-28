@@ -32,7 +32,8 @@ Feature: Project description
 
   Scenario: Create project
     Given I am logged in as an admin
-    When I go to the project index page
+    And the collection with title 'Dogs' exists
+    When I view the collection with title 'Dogs'
     And I click on 'Add Project'
     And I fill in fields:
       | Title          | Audio                            |
@@ -46,6 +47,7 @@ Feature: Project description
     And I should be on the view page for the project with title 'Audio'
     And I should see all of:
       | Audio | audioman@example.com | audioowner@example.com | 2015-09-15 | inactive | Audio conversion specs | Audio conversion project summary |
+    And the collection with title 'Dogs' should have 1 project with title 'Audio'
 
   Scenario: Edit and update project
     Given I am logged in as an admin

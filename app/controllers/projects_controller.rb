@@ -13,6 +13,7 @@ class ProjectsController < ApplicationController
   end
 
   def new
+    @collection = Collection.find(params[:collection_id])
     authorize! :create, Project
     @project = Project.new
   end
@@ -29,6 +30,7 @@ class ProjectsController < ApplicationController
 
   def edit
     authorize! :update, @project
+    @collection = @project.collection
   end
 
   def update
@@ -61,7 +63,7 @@ class ProjectsController < ApplicationController
 
   def allowed_params
     params[:project].permit(:title, :manager_email, :owner_email, :start_date,
-                            :status, :specifications, :summary)
+                            :status, :specifications, :summary, :collection_id)
   end
 
 end
