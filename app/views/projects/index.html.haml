@@ -1,7 +1,7 @@
 .row.vertical-align
   .col-md-4
     = render layout: 'layouts/page_header' do
-      Project
+      Projects
   .col-md-8
     .btn-group.pull-right
       .btn-group
@@ -12,7 +12,8 @@
           %li= link_to 'CSV', projects_path(format: 'csv')
 
 - cache(cache_key_for_all(Project)) do
-  = render :partial => 'index_table'
+  .row
+    = render :partial => 'index_table'
 
 %br
 
