@@ -9,6 +9,7 @@ class CollectionsController < ApplicationController
   include ModelsToCsv
 
   def show
+    @projects = @collection.projects
     respond_to do |format|
       format.html
       format.xml { render xml: @collection.to_mods }
