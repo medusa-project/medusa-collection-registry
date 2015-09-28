@@ -13,3 +13,9 @@ Feature: Collection projects table
     Then I should see the projects table
     And I should see all of:
       | Toys | Hounds | Retrievers |
+
+  Scenario: The collection view page omits the projects table if there are no projects
+    Given the collection with title 'Cats' exists
+    And I am logged in as an admin
+    When I view the collection with title 'Cats'
+    Then I should not see the projects table

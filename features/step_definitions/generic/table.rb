@@ -13,6 +13,11 @@ Then(/^I should see the ([^']*) table$/) do |key|
   page.should have_selector(table_selector(key))
 end
 
+Then(/^I should not see the ([^']*) table$/) do |key|
+  page.should_not have_selector(table_selector(key))
+end
+
+
 Then(/^the (.*) table should have (\d+) rows?$/) do |key, count|
   within(table_selector(key)) do
     within('tbody') { expect(all('tr').count).to eq(count.to_i) }

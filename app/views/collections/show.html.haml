@@ -9,7 +9,8 @@
     - if logged_in?
       .row
         = render 'file_groups_table'
-      %hr
-      .row
-        %h2 Projects
-        = render 'projects/index_table'
+      - if @projects.present?
+        %hr
+        .row
+          %h2 Projects
+          = render 'projects/index_table'
