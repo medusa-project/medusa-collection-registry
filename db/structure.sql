@@ -735,6 +735,28 @@ $$;
 
 
 --
+-- Name: projects_touch_collection(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION projects_touch_collection() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE collections
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.collection_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE collections
+        SET updated_at = localtimestamp
+        WHERE id = OLD.collection_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
 -- Name: related_file_group_joins_touch_source_file_group(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -5111,6 +5133,13 @@ CREATE TRIGGER job_virus_scans_touch_file_group_trigger AFTER INSERT OR DELETE O
 
 
 --
+-- Name: projects_touch_collection_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER projects_touch_collection_trigger AFTER INSERT OR DELETE OR UPDATE ON projects FOR EACH ROW EXECUTE PROCEDURE projects_touch_collection();
+
+
+--
 -- Name: related_file_group_joins_touch_source_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -5747,4 +5776,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150917221307');
 INSERT INTO schema_migrations (version) VALUES ('20150918191709');
 
 INSERT INTO schema_migrations (version) VALUES ('20150928151036');
+
+INSERT INTO schema_migrations (version) VALUES ('20150928171015');
 
