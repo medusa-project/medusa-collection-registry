@@ -11,28 +11,7 @@
         %ul.dropdown-menu
           %li= link_to 'CSV', projects_path(format: 'csv')
 
-.row
-  - cache(cache_key_for_all(Project)) do
-    %table.table.table-striped#projects
-      %thead
-        %tr
-          %th Title
-          %th Manager
-          %th Owner
-          %th Start Date
-          %th Status
-          %th
-      %tbody
-        - @projects.each do |project|
-          - cache(project) do
-            %tr
-              %td #{link_to project.title, project}
-              %td #{project.manager_email}
-              %td #{project.owner_email}
-              %td #{project.start_date}
-              %td #{project.status}
-              %td
-                = small_edit_button(project)
+= render :partial => 'index_table'
 
 %br
 

@@ -1,12 +1,12 @@
 .row.vertical-align
-  .col-xs-7
+  .col-xs-6
     = render layout: 'layouts/page_header' do
       - if content_for?(:title)
         = yield(:title)
       - else
         Collection:
       %small #{@collection.title}
-  .col-xs-5
+  .col-xs-6
     .btn-toolbar.pull-right
       .btn-group
         - if @collection.public? and public_view_on?

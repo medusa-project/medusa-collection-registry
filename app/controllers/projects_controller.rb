@@ -14,13 +14,14 @@ class ProjectsController < ApplicationController
 
   def new
     @collection = Collection.find(params[:collection_id])
-    authorize! :create, Project
     @project = Project.new
+    @project.collection = @collection
+    authorize! :create, @project
   end
 
   def create
-    authorize! :create, Project
     @project = Project.new(allowed_params)
+    authorize! :create, @project
     if @project.save
       redirect_to @project
     else
@@ -35,6 +36,7 @@ class ProjectsController < ApplicationController
 
   def update
     authorize! :update, @project
+    authorize! :update, Collection.find(params[:project][:collection_id])
     if @project.update_attributes(allowed_params)
       redirect_to @project
     else

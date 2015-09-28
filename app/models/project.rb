@@ -11,6 +11,8 @@ class Project < ActiveRecord::Base
 
   validates_presence_of :start_date, :title, :manager_id, :owner_id, :collection_id, :status
   validates_inclusion_of :status, in: STATUSES
+  delegate :title, to: :collection, prefix: true
+  delegate :repository, :repository_title, to: :collection
 
   standard_auto_html(:specifications, :summary)
 
