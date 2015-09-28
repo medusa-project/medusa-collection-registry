@@ -27,6 +27,7 @@ class CfsFile < ActiveRecord::Base
   validates_inclusion_of :fixity_check_status, in: FIXITY_STATUSES, allow_nil: true
 
   before_validation :ensure_current_file_extension
+  after_save :ensure_fits_xml_for_large_file
 
   breadcrumbs parent: :cfs_directory, label: :name
   cascades_events parent: :cfs_directory
@@ -126,6 +127,10 @@ class CfsFile < ActiveRecord::Base
 
   def ensure_fits_xml
     self.update_fits_xml if self.fits_xml.blank?
+  end
+
+  def ensure_fits_xml_for_large_file
+    self.delay(priority: 70).ensure_fits_xml if self.fits_xml.blank? and self.size.present? and self.size > 5.gigabytes
   end
 
   def update_fits_xml
