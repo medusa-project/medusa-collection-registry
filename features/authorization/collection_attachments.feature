@@ -8,7 +8,7 @@ Feature: Attachment authorization
     And the collection with title 'Dogs' exists
     And I view the collection with title 'Dogs'
     And I click on 'Attachments'
-    And I click on 'Add'
+    And I click on 'Add Attachment'
     And I fill in fields:
       | Description | grass |
     And I attach fixture file 'grass.jpg' to 'Attachment'
