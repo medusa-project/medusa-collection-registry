@@ -9,7 +9,7 @@ class Job::CfsDirectoryExport < Job::Base
 
   def perform
     FileUtils.mkdir_p(self.export_directory)
-    opts = %w(-a)
+    opts = %w(-a --exclude-from) << exclude_file_path
     opts += %w(--exclude */) unless self.recursive
     out, err, status = Open3.capture3('rsync', *opts,
                                       cfs_directory.absolute_path + '/', self.export_directory)
@@ -23,6 +23,10 @@ MESSAGE
       Rails.logger.error message
       raise RuntimeError, message
     end
+  end
+
+  def exclude_file_path
+    File.join(Rails.root, 'config', 'export_rsync_exclude.txt')
   end
 
   def success(job)
