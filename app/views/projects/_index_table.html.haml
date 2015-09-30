@@ -1,0 +1,24 @@
+%table.table.table-striped#projects
+  %thead
+    %tr
+      %th Title
+      %th Repository
+      %th Collection
+      %th Manager
+      %th Owner
+      %th Start Date
+      %th Status
+      %th
+  %tbody
+    - @projects.each do |project|
+      - cache(project) do
+        %tr
+          %td #{link_to project.title, project}
+          %td #{link_to project.repository_title, project.repository}
+          %td #{link_to project.collection_title, project.collection}
+          %td #{project.manager_email}
+          %td #{project.owner_email}
+          %td #{project.start_date}
+          %td #{project.status}
+          %td
+            = small_edit_button(project)

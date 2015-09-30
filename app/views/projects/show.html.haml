@@ -5,5 +5,10 @@
     = show_field @project, :owner_email
     = show_field @project, :start_date
     = show_field @project, :status
-    = show_field @project, :specifications
-    = show_field @project, :summary
+  %hr
+  .row
+    %h4 Summary
+    %div.col-md-offset-1= @project.summary.html_safe
+  .row
+    %h4 Specifications
+    %div.col-md-offset-1= @project.specifications.html_safe

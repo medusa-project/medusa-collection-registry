@@ -2,10 +2,12 @@
   .row
     = render partial: 'shared/form_sidebar', locals: {f: f, object: @project, cancel_return: projects_path}
     .col-sm-9
+      = f.input :collection_id, as: :hidden, input_html: {value: @collection.id}
       = f.input :title
       = f.input :manager_email, required: true
       = f.input :owner_email, required: true
       = f.input :start_date, as: :string, input_html: {class: 'datepicker', value: (@project.start_date.if_blank(Date.today)).to_s}
       = f.input :status, as: :select, collection: Project::STATUSES, include_blank: false
-      = f.input :specifications
-      = f.input :summary
+      = f.input :summary, as: :ckeditor, input_html: {ckeditor: {toolbar: 'Full'}}
+      = f.input :specifications, as: :ckeditor, input_html: {ckeditor: {toolbar: 'Full'}}
+      

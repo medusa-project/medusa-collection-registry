@@ -15,7 +15,6 @@
           %strong View by:
           %ul
             %li= link_to 'Producers', producers_path
-            -#%li= link_to 'Projects', projects_path
             %li= link_to 'Access Systems', access_systems_path
             %li= link_to 'Packages', package_profiles_path
             - if safe_can?(:read, FileFormatProfile)
