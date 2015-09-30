@@ -152,4 +152,8 @@ class BitLevelFileGroup < FileGroup
     return true
   end
 
+  def self.aggregate_size
+    self.sum('total_file_size')
+  end
+
 end

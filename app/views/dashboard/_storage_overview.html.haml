@@ -7,14 +7,6 @@
       %th files
   %tbody
     %tr
-      %td External (total)
-      %td.value= number_with_precision(@full_storage_summary['ExternalFileGroup'][:size], precision: 2, delimiter: ',')
-      %td.value= @full_storage_summary['ExternalFileGroup'][:count].to_s(:delimited)
-    %tr
-      %td External (not ingested)
-      %td.value= number_with_precision(@full_storage_summary['ExternalUningested'][:size], precision: 2, delimiter: ',')
-      %td.value= @full_storage_summary['ExternalUningested'][:count].to_s(:delimited)
-    %tr
       %td Bit Level
       %td.value= number_with_precision(@full_storage_summary['BitLevelFileGroup'][:size], precision: 2, delimiter: ',')
       %td.value= @full_storage_summary['BitLevelFileGroup'][:count].to_s(:delimited)
@@ -24,15 +16,11 @@
   %thead
     %tr
       %th Repository
-      %th External Files
-      %th External Size (GB)
       %th Bit Level Files
       %th Bit Level Size (GB)
   %tbody
     - @repository_storage_summary.each do |repository_id, summary|
       %tr
         %td= link_to summary[:title], repository_path(repository_id)
-        %td= summary['ExternalFileGroup'][:count].to_s(:delimited)
-        %td= number_with_precision(summary['ExternalFileGroup'][:size], precision: 2, delimiter: ',')
         %td= summary['BitLevelFileGroup'][:count].to_s(:delimited)
         %td= number_with_precision(summary['BitLevelFileGroup'][:size], precision: 2, delimiter: ',')

@@ -10,13 +10,13 @@ Feature: Collection File Size
       | Dogs  |
       | Cats  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | total_file_size |
-      | 10              |
-      | 11              |
-      | 35              |
+      | total_file_size | type              |
+      | 10              | BitLevelFileGroup |
+      | 11              | BitLevelFileGroup |
+      | 35              | BitLevelFileGroup |
     And the collection with title 'Cats' has child file groups with fields:
-      | total_file_size |
-      | 500             |
+      | total_file_size | type              |
+      | 500             | BitLevelFileGroup |
 
   Scenario: Collection index should show file size
     When I go to the collection index page

@@ -32,7 +32,7 @@ And /^I have some repositories with files totalling '(\d+)' GB$/ do |size|
   decompose_size(size).each do |x|
     repository = repositories.sample
     collection = repository.collections.sample
-    FactoryGirl.create(:file_group, collection: collection, total_file_size: x)
+    FactoryGirl.create(:bit_level_file_group, collection: collection, total_file_size: x)
   end
 end
 

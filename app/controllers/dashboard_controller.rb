@@ -36,13 +36,6 @@ class DashboardController < ApplicationController
     %w(ExternalFileGroup BitLevelFileGroup).each do |type|
       @full_storage_summary[type] ||= {count: 0, size: 0}
     end
-    ingested_external_storage =
-        RelatedFileGroupJoin.joins('JOIN file_groups AS source_file_group ON source_file_group.id = related_file_group_joins.source_file_group_id').
-            joins('JOIN file_groups AS target_file_group ON target_file_group.id = related_file_group_joins.target_file_group_id').
-            where('source_file_group.type = ?', 'ExternalFileGroup').where('target_file_group.type = ?', 'BitLevelFileGroup').
-            select('sum(source_file_group.total_files) as count, sum(source_file_group.total_file_size) as size').load.first
-    @full_storage_summary['ExternalUningested'] = {count: @full_storage_summary['ExternalFileGroup'][:count] - (ingested_external_storage.count || 0),
-                                                   size: @full_storage_summary['ExternalFileGroup'][:size] - (ingested_external_storage.size || 0)}
   end
 
   def setup_repository_storage_summary

@@ -79,10 +79,6 @@ class FileGroup < ActiveRecord::Base
                               rights_declarable_type: self.class.to_s))
   end
 
-  def self.aggregate_size
-    self.sum('total_file_size')
-  end
-
   def sibling_file_groups
     self.collection.file_groups.order(:title).all - [self]
   end

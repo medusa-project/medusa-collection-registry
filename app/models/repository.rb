@@ -31,7 +31,7 @@ class Repository < ActiveRecord::Base
 
   #TODO - this will probably not be correct any more when we have more than one institution
   def self.aggregate_size
-    FileGroup.aggregate_size
+    BitLevelFileGroup.aggregate_size
   end
 
   def recursive_assessments
