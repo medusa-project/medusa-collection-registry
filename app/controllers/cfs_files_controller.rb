@@ -108,6 +108,10 @@ class CfsFilesController < ApplicationController
     send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
   end
 
+  def random
+    redirect_to CfsFile.random
+  end
+
   protected
 
   def find_file

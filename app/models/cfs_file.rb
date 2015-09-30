@@ -227,4 +227,8 @@ class CfsFile < ActiveRecord::Base
     self.size_was || 0
   end
 
+  def self.random
+    self.offset(rand(self.count)).first
+  end
+
 end
