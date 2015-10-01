@@ -56,10 +56,14 @@ SQL
     <<SQL
     CREATE OR REPLACE FUNCTION #{touch_function_name}() RETURNS trigger AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE #{target_table}
         SET updated_at = NEW.updated_at
         WHERE id = NEW.#{association}_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE #{target_table}
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.#{association}_id OR id = OLD.#{association}_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE #{target_table}
         SET updated_at = localtimestamp

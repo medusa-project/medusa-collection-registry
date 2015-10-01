@@ -33,10 +33,14 @@ CREATE FUNCTION access_system_collection_joins_touch_access_system() RETURNS tri
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE access_systems
         SET updated_at = NEW.updated_at
         WHERE id = NEW.access_system_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE access_systems
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.access_system_id OR id = OLD.access_system_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE access_systems
         SET updated_at = localtimestamp
@@ -55,10 +59,14 @@ CREATE FUNCTION access_system_collection_joins_touch_collection() RETURNS trigge
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE collections
         SET updated_at = NEW.updated_at
         WHERE id = NEW.collection_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE collections
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.collection_id OR id = OLD.collection_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE collections
         SET updated_at = localtimestamp
@@ -77,10 +85,14 @@ CREATE FUNCTION amazon_backups_touch_cfs_directory() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE cfs_directories
         SET updated_at = NEW.updated_at
         WHERE id = NEW.cfs_directory_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE cfs_directories
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.cfs_directory_id OR id = OLD.cfs_directory_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE cfs_directories
         SET updated_at = localtimestamp
@@ -99,10 +111,14 @@ CREATE FUNCTION amazon_backups_touch_user() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE users
         SET updated_at = NEW.updated_at
         WHERE id = NEW.user_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE users
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.user_id OR id = OLD.user_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE users
         SET updated_at = localtimestamp
@@ -121,10 +137,14 @@ CREATE FUNCTION assessments_touch_storage_medium() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE storage_media
         SET updated_at = NEW.updated_at
         WHERE id = NEW.storage_medium_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE storage_media
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.storage_medium_id OR id = OLD.storage_medium_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE storage_media
         SET updated_at = localtimestamp
@@ -302,10 +322,14 @@ CREATE FUNCTION cfs_files_touch_cfs_directory() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE cfs_directories
         SET updated_at = NEW.updated_at
         WHERE id = NEW.cfs_directory_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE cfs_directories
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.cfs_directory_id OR id = OLD.cfs_directory_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE cfs_directories
         SET updated_at = localtimestamp
@@ -324,10 +348,14 @@ CREATE FUNCTION cfs_files_touch_content_type() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE content_types
         SET updated_at = NEW.updated_at
         WHERE id = NEW.content_type_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE content_types
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.content_type_id OR id = OLD.content_type_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE content_types
         SET updated_at = localtimestamp
@@ -346,10 +374,14 @@ CREATE FUNCTION cfs_files_touch_file_extension() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE file_extensions
         SET updated_at = NEW.updated_at
         WHERE id = NEW.file_extension_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE file_extensions
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.file_extension_id OR id = OLD.file_extension_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE file_extensions
         SET updated_at = localtimestamp
@@ -368,10 +400,14 @@ CREATE FUNCTION collections_touch_preservation_priority() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE preservation_priorities
         SET updated_at = NEW.updated_at
         WHERE id = NEW.preservation_priority_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE preservation_priorities
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.preservation_priority_id OR id = OLD.preservation_priority_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE preservation_priorities
         SET updated_at = localtimestamp
@@ -390,10 +426,14 @@ CREATE FUNCTION collections_touch_repository() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE repositories
         SET updated_at = NEW.updated_at
         WHERE id = NEW.repository_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE repositories
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.repository_id OR id = OLD.repository_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE repositories
         SET updated_at = localtimestamp
@@ -412,10 +452,14 @@ CREATE FUNCTION file_groups_touch_collection() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE collections
         SET updated_at = NEW.updated_at
         WHERE id = NEW.collection_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE collections
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.collection_id OR id = OLD.collection_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE collections
         SET updated_at = localtimestamp
@@ -434,10 +478,14 @@ CREATE FUNCTION file_groups_touch_package_profile() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE package_profiles
         SET updated_at = NEW.updated_at
         WHERE id = NEW.package_profile_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE package_profiles
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.package_profile_id OR id = OLD.package_profile_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE package_profiles
         SET updated_at = localtimestamp
@@ -456,10 +504,14 @@ CREATE FUNCTION file_groups_touch_producer() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE producers
         SET updated_at = NEW.updated_at
         WHERE id = NEW.producer_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE producers
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.producer_id OR id = OLD.producer_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE producers
         SET updated_at = localtimestamp
@@ -478,10 +530,14 @@ CREATE FUNCTION job_cfs_directory_exports_touch_cfs_directory() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE cfs_directories
         SET updated_at = NEW.updated_at
         WHERE id = NEW.cfs_directory_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE cfs_directories
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.cfs_directory_id OR id = OLD.cfs_directory_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE cfs_directories
         SET updated_at = localtimestamp
@@ -500,10 +556,14 @@ CREATE FUNCTION job_cfs_directory_exports_touch_user() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE users
         SET updated_at = NEW.updated_at
         WHERE id = NEW.user_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE users
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.user_id OR id = OLD.user_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE users
         SET updated_at = localtimestamp
@@ -522,10 +582,14 @@ CREATE FUNCTION job_cfs_initial_file_group_assessments_touch_file_group() RETURN
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE file_groups
         SET updated_at = NEW.updated_at
         WHERE id = NEW.file_group_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.file_group_id OR id = OLD.file_group_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE file_groups
         SET updated_at = localtimestamp
@@ -544,10 +608,14 @@ CREATE FUNCTION job_fits_directories_touch_cfs_directory() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE cfs_directories
         SET updated_at = NEW.updated_at
         WHERE id = NEW.cfs_directory_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE cfs_directories
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.cfs_directory_id OR id = OLD.cfs_directory_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE cfs_directories
         SET updated_at = localtimestamp
@@ -566,10 +634,14 @@ CREATE FUNCTION job_fits_directories_touch_file_group() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE file_groups
         SET updated_at = NEW.updated_at
         WHERE id = NEW.file_group_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.file_group_id OR id = OLD.file_group_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE file_groups
         SET updated_at = localtimestamp
@@ -588,10 +660,14 @@ CREATE FUNCTION job_fits_directory_trees_touch_cfs_directory() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE cfs_directories
         SET updated_at = NEW.updated_at
         WHERE id = NEW.cfs_directory_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE cfs_directories
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.cfs_directory_id OR id = OLD.cfs_directory_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE cfs_directories
         SET updated_at = localtimestamp
@@ -610,10 +686,14 @@ CREATE FUNCTION job_fits_directory_trees_touch_file_group() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE file_groups
         SET updated_at = NEW.updated_at
         WHERE id = NEW.file_group_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.file_group_id OR id = OLD.file_group_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE file_groups
         SET updated_at = localtimestamp
@@ -632,10 +712,14 @@ CREATE FUNCTION job_ingest_staging_deletes_touch_external_file_group() RETURNS t
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE file_groups
         SET updated_at = NEW.updated_at
         WHERE id = NEW.external_file_group_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.external_file_group_id OR id = OLD.external_file_group_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE file_groups
         SET updated_at = localtimestamp
@@ -654,10 +738,14 @@ CREATE FUNCTION job_ingest_staging_deletes_touch_user() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE users
         SET updated_at = NEW.updated_at
         WHERE id = NEW.user_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE users
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.user_id OR id = OLD.user_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE users
         SET updated_at = localtimestamp
@@ -676,10 +764,14 @@ CREATE FUNCTION job_virus_scans_touch_file_group() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE file_groups
         SET updated_at = NEW.updated_at
         WHERE id = NEW.file_group_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.file_group_id OR id = OLD.file_group_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE file_groups
         SET updated_at = localtimestamp
@@ -720,10 +812,14 @@ CREATE FUNCTION related_file_group_joins_touch_source_file_group() RETURNS trigg
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE file_groups
         SET updated_at = NEW.updated_at
         WHERE id = NEW.source_file_group_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.source_file_group_id OR id = OLD.source_file_group_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE file_groups
         SET updated_at = localtimestamp
@@ -742,10 +838,14 @@ CREATE FUNCTION related_file_group_joins_touch_target_file_group() RETURNS trigg
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE file_groups
         SET updated_at = NEW.updated_at
         WHERE id = NEW.target_file_group_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.target_file_group_id OR id = OLD.target_file_group_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE file_groups
         SET updated_at = localtimestamp
@@ -764,10 +864,14 @@ CREATE FUNCTION repositories_touch_institution() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE institutions
         SET updated_at = NEW.updated_at
         WHERE id = NEW.institution_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE institutions
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.institution_id OR id = OLD.institution_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE institutions
         SET updated_at = localtimestamp
@@ -786,10 +890,14 @@ CREATE FUNCTION resource_typeable_resource_type_joins_touch_resource_type() RETU
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE resource_types
         SET updated_at = NEW.updated_at
         WHERE id = NEW.resource_type_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE resource_types
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.resource_type_id OR id = OLD.resource_type_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE resource_types
         SET updated_at = localtimestamp
@@ -808,10 +916,14 @@ CREATE FUNCTION virus_scans_touch_file_group() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE file_groups
         SET updated_at = NEW.updated_at
         WHERE id = NEW.file_group_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.file_group_id OR id = OLD.file_group_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE file_groups
         SET updated_at = localtimestamp
@@ -830,10 +942,14 @@ CREATE FUNCTION workflow_accrual_comments_touch_workflow_accrual_job() RETURNS t
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE workflow_accrual_jobs
         SET updated_at = NEW.updated_at
         WHERE id = NEW.workflow_accrual_job_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE workflow_accrual_jobs
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.workflow_accrual_job_id OR id = OLD.workflow_accrual_job_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE workflow_accrual_jobs
         SET updated_at = localtimestamp
@@ -852,10 +968,14 @@ CREATE FUNCTION workflow_accrual_conflicts_touch_workflow_accrual_job() RETURNS 
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE workflow_accrual_jobs
         SET updated_at = NEW.updated_at
         WHERE id = NEW.workflow_accrual_job_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE workflow_accrual_jobs
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.workflow_accrual_job_id OR id = OLD.workflow_accrual_job_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE workflow_accrual_jobs
         SET updated_at = localtimestamp
@@ -874,10 +994,14 @@ CREATE FUNCTION workflow_accrual_directories_touch_workflow_accrual_job() RETURN
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE workflow_accrual_jobs
         SET updated_at = NEW.updated_at
         WHERE id = NEW.workflow_accrual_job_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE workflow_accrual_jobs
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.workflow_accrual_job_id OR id = OLD.workflow_accrual_job_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE workflow_accrual_jobs
         SET updated_at = localtimestamp
@@ -896,10 +1020,14 @@ CREATE FUNCTION workflow_accrual_files_touch_workflow_accrual_job() RETURNS trig
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE workflow_accrual_jobs
         SET updated_at = NEW.updated_at
         WHERE id = NEW.workflow_accrual_job_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE workflow_accrual_jobs
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.workflow_accrual_job_id OR id = OLD.workflow_accrual_job_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE workflow_accrual_jobs
         SET updated_at = localtimestamp
@@ -918,10 +1046,14 @@ CREATE FUNCTION workflow_accrual_jobs_touch_amazon_backup() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE amazon_backups
         SET updated_at = NEW.updated_at
         WHERE id = NEW.amazon_backup_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE amazon_backups
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.amazon_backup_id OR id = OLD.amazon_backup_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE amazon_backups
         SET updated_at = localtimestamp
@@ -940,10 +1072,14 @@ CREATE FUNCTION workflow_accrual_jobs_touch_cfs_directory() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE cfs_directories
         SET updated_at = NEW.updated_at
         WHERE id = NEW.cfs_directory_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE cfs_directories
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.cfs_directory_id OR id = OLD.cfs_directory_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE cfs_directories
         SET updated_at = localtimestamp
@@ -962,10 +1098,14 @@ CREATE FUNCTION workflow_accrual_jobs_touch_user() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE users
         SET updated_at = NEW.updated_at
         WHERE id = NEW.user_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE users
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.user_id OR id = OLD.user_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE users
         SET updated_at = localtimestamp
@@ -984,10 +1124,14 @@ CREATE FUNCTION workflow_ingests_touch_amazon_backup() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE amazon_backups
         SET updated_at = NEW.updated_at
         WHERE id = NEW.amazon_backup_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE amazon_backups
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.amazon_backup_id OR id = OLD.amazon_backup_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE amazon_backups
         SET updated_at = localtimestamp
@@ -1006,10 +1150,14 @@ CREATE FUNCTION workflow_ingests_touch_bit_level_file_group() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE file_groups
         SET updated_at = NEW.updated_at
         WHERE id = NEW.bit_level_file_group_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.bit_level_file_group_id OR id = OLD.bit_level_file_group_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE file_groups
         SET updated_at = localtimestamp
@@ -1028,10 +1176,14 @@ CREATE FUNCTION workflow_ingests_touch_external_file_group() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE file_groups
         SET updated_at = NEW.updated_at
         WHERE id = NEW.external_file_group_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE file_groups
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.external_file_group_id OR id = OLD.external_file_group_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE file_groups
         SET updated_at = localtimestamp
@@ -1050,10 +1202,14 @@ CREATE FUNCTION workflow_ingests_touch_user() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      IF (TG_OP = 'INSERT') THEN
         UPDATE users
         SET updated_at = NEW.updated_at
         WHERE id = NEW.user_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE users
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.user_id OR id = OLD.user_id);
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE users
         SET updated_at = localtimestamp
