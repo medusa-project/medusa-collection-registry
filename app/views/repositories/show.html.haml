@@ -26,11 +26,11 @@
     -#  = render 'file_stats_table'
     -##red-flags.tab-pane
     -#  = render 'shared/red_flags_table'
-    -##combined-events-tab.tab-pane
-    -#  = render 'events'
-    -##amazon.tab-pane
-    -#  = render 'amazon'
-    -#- if @accrual_jobs.present?
+    #combined-events-tab.tab-pane
+      = render 'events'
+    #amazon.tab-pane
+      = render 'amazon'
+    -# if @accrual_jobs.present?
     -#  #accruals.tab-pane
     -#    = render 'accruals'
 

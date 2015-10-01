@@ -5,7 +5,7 @@ module RepositoriesHelper
   end
 
   def repository_tab_list
-    %w(overview running-processes)
+    ['overview', 'running-processes', ['combined-events-tab', 'Events', 'newspaper-o'], 'amazon']
   end
 
 end
