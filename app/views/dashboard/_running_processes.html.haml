@@ -1,3 +1,9 @@
+- if Delayed::Job.where('failed_at IS NOT NULL').count > 0
+  .alert.alert-danger
+    %p
+      %span.badge #{Delayed::Job.where('failed_at IS NOT NULL').count}
+      delayed jobs have failed! Please contact the development staff to diagnose
+
 %table.table.table-striped.table-bordered.table-condensed#running_virus_scans
   %caption Virus Scans
   %thead
