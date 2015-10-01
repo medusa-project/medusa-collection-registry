@@ -61,5 +61,5 @@
       - Workflow::Ingest.where(state: state).includes(:bit_level_file_group).each do |ingest|
         - if ingest.most_advanced_file_group.present?
           %tr
-            %td= link_to ingest.most_advanced_file_group, ingest.most_advanced_file_group
+            %td= link_to ingest.most_advanced_file_group.title, ingest.most_advanced_file_group
             %td= ingest_state_text(state)
