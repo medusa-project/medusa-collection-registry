@@ -34,3 +34,10 @@ Feature: Repository dashboard
     Then I should see the storage summary table
     And I should see all of:
       | 116 | 1,421 |
+
+  Scenario: Dashboard includes running processes tables
+    When I view the repository with title 'Sample Repo'
+    Then I should see the running virus scans table
+    And I should see the running fits scans table
+    And I should see the running initial assessment scans table
+    And I should see the running ingests table
