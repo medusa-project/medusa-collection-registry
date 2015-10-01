@@ -49,7 +49,15 @@ class Collection < ActiveRecord::Base
   cascades_events parent: :repository
 
   def total_size
-    self.file_groups.select {|fg| fg.is_a?(BitLevelFileGroup)}.collect { |fg| fg.file_size }.sum
+    self.bit_level_file_groups.collect { |fg| fg.file_size }.sum
+  end
+
+  def total_files
+    self.bit_level_file_groups.collect { |fg| fg.total_files }.sum
+  end
+
+  def bit_level_file_groups
+    file_groups.where('type = ?', 'BitLevelFileGroup')
   end
 
   def medusa_url

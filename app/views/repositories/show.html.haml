@@ -15,4 +15,23 @@
         = show_field @repository, :active_start_date, 'Active Start Date'
         = show_field @repository, :active_end_date, 'Active End Date'
     .row
-      = render 'collections_table'
+      .tabbable
+  = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: repository_tab_list}
+  .tab-content
+    #overview.tab-pane.active
+      = render 'overview'
+    -##running-processes.tab-pane
+    -#  = render 'running_processes'
+    -##file-statistics.tab-pane
+    -#  = render 'file_stats_table'
+    -##red-flags.tab-pane
+    -#  = render 'shared/red_flags_table'
+    -##combined-events-tab.tab-pane
+    -#  = render 'events'
+    -##amazon.tab-pane
+    -#  = render 'amazon'
+    -#- if @accrual_jobs.present?
+    -#  #accruals.tab-pane
+    -#    = render 'accruals'
+
+

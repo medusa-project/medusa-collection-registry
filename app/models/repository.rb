@@ -29,6 +29,10 @@ class Repository < ActiveRecord::Base
     self.collections.collect { |c| c.total_size }.sum
   end
 
+  def total_files
+    self.collections.collect {|c| c.total_files}.sum
+  end
+
   #TODO - this will probably not be correct any more when we have more than one institution
   def self.aggregate_size
     BitLevelFileGroup.aggregate_size
