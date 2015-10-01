@@ -5,7 +5,7 @@ module RepositoriesHelper
   end
 
   def repository_tab_list
-    %w(overview)
+    %w(overview running-processes)
   end
 
 end

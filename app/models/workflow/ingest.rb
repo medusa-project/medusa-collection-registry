@@ -24,6 +24,10 @@ class Workflow::Ingest < Workflow::Base
     end
   end
 
+  def self.for_repository(repository)
+    joins(external_file_group: {collection: :repository}).where('repositories.id = ?', repository.id)
+  end
+
   def runnable?
     unless external_file_group.present? and bit_level_file_group.present?
       raise RuntimeError, "File group missing for Workflow::Ingest: #{id}"

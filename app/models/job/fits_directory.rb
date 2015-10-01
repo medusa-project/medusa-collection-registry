@@ -14,4 +14,12 @@ class Job::FitsDirectory < Job::Base
     self.cfs_directory.run_fits
   end
 
+  def self.for_repository(repository)
+    joins(file_group: {collection: :repository}).where('repositories.id = ?', repository.id)
+  end
+
+  def self.file_groups_for_repository(repository)
+    BitLevelFileGroup.where(id: for_repository(repository).distinct.pluck(:file_group_id)).includes(:cfs_directory)
+  end
+
 end

@@ -9,4 +9,8 @@ class Job::VirusScan < Job::Base
     VirusScan.check_file_group(self.file_group)
   end
 
+  def self.for_repository(repository)
+    joins(file_group: {collection: :repository}).where('repositories.id = ?', repository.id)
+  end
+
 end

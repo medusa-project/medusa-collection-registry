@@ -5,11 +5,10 @@
       %th File Group
       %th Created
   %tbody
-    - Job::VirusScan.includes(:file_group).each do |virus_scan_job|
+    - Job::VirusScan.for_repository(@repository).includes(:file_group).each do |virus_scan_job|
       %tr
         %td= link_to virus_scan_job.file_group.title, polymorphic_path(virus_scan_job.file_group)
         %td= link_to virus_scan_job.created_at.to_date.to_s
-
 
 %table.table.table-striped.table-bordered.table-condensed#running_fits_scans
   %caption FITS Scans
@@ -19,13 +18,12 @@
       %th File Group
       %th Files remaining
   %tbody
-    - BitLevelFileGroup.where(id: Job::FitsDirectory.distinct.pluck(:file_group_id)).includes(:cfs_directory).each do |file_group|
+    - Job::FitsDirectory.file_groups_for_repository(@repository).each do |file_group|
       - if file_group.cfs_directory.present?
         %tr
           %td= file_group.cfs_directory.relative_path
           %td= link_to(file_group.title, polymorphic_path(file_group))
           %td= file_group.running_fits_file_count
-
 
 %table.table.table-striped.table-bordered.table-condensed#running_initial_assessment_scans
   %caption Initial Assessment Scans
@@ -35,7 +33,7 @@
       %th File Group
       %th Files remaining
   %tbody
-    - BitLevelFileGroup.where(id: Job::CfsInitialDirectoryAssessment.distinct.pluck(:file_group_id)).includes(:cfs_directory).each do |file_group|
+    - Job::CfsInitialDirectoryAssessment.file_groups_for_repository(@repository).each do |file_group|
       - if file_group.cfs_directory.present?
         %tr
           %td= file_group.cfs_directory.relative_path
@@ -50,7 +48,7 @@
       %th Status
   %tbody
     - %w(copying amazon_backup).each do |state|
-      - Workflow::Ingest.where(state: state).includes(:bit_level_file_group).each do |ingest|
+      - Workflow::Ingest.for_repository(@repository).where(state: state).includes(:bit_level_file_group).each do |ingest|
         - if ingest.most_advanced_file_group.present?
           %tr
             %td= link_to ingest.most_advanced_file_group.title, ingest.most_advanced_file_group
