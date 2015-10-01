@@ -3,6 +3,8 @@
 #an object then if that object includes CascadedEventable then a CascadedEventJoin is created between the event and that
 #object. As long as ancestors are found such entries are created for each ancestor as well. Then an ancestor can find
 #all of these events by using the cascaded_events association.
+#In all cases a CascadedEventJoin is created between the event and the owning object (i.e. even if it is not
+# cascadable). This allows an object to get all of its events and child events in a uniform way.
 require 'active_support/concern'
 
 module CascadedEventable
@@ -34,16 +36,6 @@ module CascadedEventable
     else
       nil
     end
-  end
-
-  #this method is to give uncascaded events belonging directly to the object together with cascaded events
-  def combined_events
-    uncascaded_events = if self.respond_to?(:events)
-                          self.events.where(cascadable: false)
-                        else
-                          Array.new
-                        end
-    return (self.cascaded_events + uncascaded_events).sort { |a, b| b.created_at <=> a.created_at }
   end
 
 end

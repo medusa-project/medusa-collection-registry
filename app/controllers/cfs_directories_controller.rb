@@ -61,7 +61,7 @@ class CfsDirectoriesController < ApplicationController
 
   def events
     @eventable = @directory
-    @events = @eventable.combined_events
+    @events = @eventable.cascaded_events
   end
 
   protected

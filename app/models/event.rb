@@ -17,15 +17,20 @@ class Event < ActiveRecord::Base
     self.date ||= Date.today
   end
 
+  #Note that we always have a cascaded event join for the model that the event actually
+  #belongs to, even if it's not cascadable. I know this is bad terminology, but it seems
+  #better to do this way so that we can get all events for an object directly from
+  #the cascaded events join table.
   def maybe_cascade
+    CascadedEventJoin.find_or_create_by(cascaded_eventable: self, event_id: self.id)
     if self.cascadable and self.eventable.respond_to?(:cascade_event)
       self.eventable.cascade_event(self)
     end
   end
 
   def self.rebuild_cascaded_event_cache
-    CascadedEventJoin.find_each {|cascaded_event_join| cascaded_event_join.destroy}
-    self.where(cascadable: true).find_each do |event|
+    CascadedEventJoin.delete_all
+    self.find_each do |event|
       event.maybe_cascade
     end
   end
