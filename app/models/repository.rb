@@ -43,11 +43,11 @@ class Repository < ActiveRecord::Base
   end
 
   def all_scheduled_events
-    self.collections.collect { |collection| collection.all_scheduled_events }.flatten
+    self.collections.collect { |collection| collection.all_scheduled_events }.flatten.sort_by(&:action_date)
   end
 
   def incomplete_scheduled_events
-    self.collections.collect { |collection| collection.incomplete_scheduled_events }.flatten
+    self.collections.collect { |collection| collection.incomplete_scheduled_events }.flatten.sort_by(&:action_date)
   end
 
   def manager?(user)
