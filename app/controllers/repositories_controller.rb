@@ -27,6 +27,8 @@ class RepositoriesController < ApplicationController
     setup_events
     setup_amazon_info
     setup_red_flags
+    setup_file_stats
+    setup_full_storage_summary
   end
 
   def assessments
@@ -174,6 +176,22 @@ SQL
   def setup_red_flags
     @red_flags = @repository.all_red_flags
     @aggregator = @repository
+  end
+
+  def setup_file_stats
+    # @content_type_hashes = ContentType.connection.select_all('SELECT id, name, cfs_file_count, cfs_file_size FROM content_types ORDER BY name ASC').to_hash
+    # @file_extension_hashes = FileExtension.connection.select_all('SELECT id, extension, cfs_file_count, cfs_file_size FROM file_extensions ORDER BY extension ASC').to_hash
+  end
+
+  def setup_full_storage_summary
+  #   @full_storage_summary = Hash.new.tap do |h|
+  #     FileGroup.group(:type).select('type, sum(total_file_size) as size, sum(total_files) as count').each do |row|
+  #       h[row[:type]] = {count: row[:count], size: row[:size]}
+  #     end
+  #   end
+  #   %w(ExternalFileGroup BitLevelFileGroup).each do |type|
+  #     @full_storage_summary[type] ||= {count: 0, size: 0}
+  #   end
   end
 
 end
