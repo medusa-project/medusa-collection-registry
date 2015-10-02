@@ -1,4 +1,5 @@
 class DashboardController < ApplicationController
+  include DashboardCommon
 
   before_action :require_logged_in
 
@@ -15,7 +16,9 @@ class DashboardController < ApplicationController
   protected
 
   def setup_amazon
-    @amazon_info = amazon_info
+    file_groups = FileGroup.connection.select_all('SELECT * FROM view_file_group_dashboard_info').to_hash.collect {|h| h.with_indifferent_access}
+    backups = FileGroup.connection.select_rows('SELECT * FROM view_file_groups_latest_amazon_backup')
+    @amazon_info = amazon_info(file_groups, backups)
   end
 
   def setup_file_stats
@@ -58,42 +61,6 @@ class DashboardController < ApplicationController
   def setup_events
     @events = Event.order('date DESC').where('updated_at >= ?', Time.now - 7.days).where(cascadable: true).includes(eventable: :parent)
     @scheduled_events = ScheduledEvent.incomplete.order('action_date ASC').includes(scheduled_eventable: :parent)
-  end
-
-  #return a hash with key the id
-  #values are hashes with title, collection id and title, repository id and title, total file size and count,
-  #last backup date (or nil) and last backup completed (or nil)
-  def amazon_info
-    backup_info_hash = file_group_latest_amazon_backup_hash
-    file_groups = FileGroup.connection.select_all('SELECT * FROM view_file_group_dashboard_info').to_hash.collect {|h| h.with_indifferent_access}
-    Hash.new.tap do |hash|
-      file_groups.each do |file_group|
-        id = file_group[:id].to_i
-        hash[id] = file_group
-        if backup_info = backup_info_hash[id]
-          file_group[:backup_date] = backup_info[:date]
-          file_group[:backup_completed] = backup_info[:completed] ? 'Yes' : 'No'
-        else
-          file_group[:backup_date] = 'None'
-          file_group[:backup_completed] = 'N/A'
-        end
-      end
-    end
-  end
-
-  #hash from file_group_id to hash with latest backup date and whether it is complete, as judged from the part_count
-  #and archive_ids
-  def file_group_latest_amazon_backup_hash
-    backups = FileGroup.connection.select_rows('SELECT * FROM view_file_groups_latest_amazon_backup')
-    Hash.new.tap do |hash|
-      backups.each do |file_group_id, part_count, archive_ids, date|
-        hash[file_group_id.to_i] = HashWithIndifferentAccess.new.tap do |backup_hash|
-          backup_hash[:date] = date
-          archives = YAML.load(archive_ids)
-          backup_hash[:completed] = (archives.present? && (archives.size == part_count.to_i) && archives.none? {|id| id.blank?})
-        end
-      end
-    end
   end
 
   def setup_accrual_jobs
