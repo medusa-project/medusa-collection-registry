@@ -5,7 +5,9 @@ module RepositoriesHelper
   end
 
   def repository_tab_list
-    ['overview', 'running-processes', 'file-statistics', 'red-flags', ['combined-events-tab', 'Events', 'newspaper-o'], 'amazon', 'accruals']
+    tabs = ['overview', 'running-processes', 'file-statistics', 'red-flags', ['combined-events-tab', 'Events', 'newspaper-o'], 'amazon']
+    tabs << 'accruals' if @accrual_jobs.present?
+    tabs
   end
 
 end

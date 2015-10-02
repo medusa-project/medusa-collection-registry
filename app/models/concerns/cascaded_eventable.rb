@@ -12,7 +12,7 @@ module CascadedEventable
 
   included do
     has_many :cascaded_event_joins, as: :cascaded_eventable, dependent: :destroy
-    has_many :cascaded_events, -> { order 'date DESC' }, through: :cascaded_event_joins, class_name: 'Event', source: :event
+    has_many :cascaded_events, -> { order 'created_at DESC' }, through: :cascaded_event_joins, class_name: 'Event', source: :event
     class_attribute :cascade_events_parent_method
   end
 

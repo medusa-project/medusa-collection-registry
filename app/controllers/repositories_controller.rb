@@ -137,11 +137,11 @@ class RepositoriesController < ApplicationController
 
   def setup_accrual_jobs
     if ApplicationController.is_ad_admin?(current_user)
-      @accrual_jobs = Workflow::AccrualJob.order('created_at asc').all.decorate
+      accrual_jobs = Workflow::AccrualJob.order('created_at asc').all.decorate
     else
-      @accrual_jobs = current_user.workflow_accrual_jobs.order('created_at asc').decorate
+      accrual_jobs = current_user.workflow_accrual_jobs.order('created_at asc').decorate
     end
-    @accrual_jobs = @accrual_jobs.select {|accrual_job| accrual_job.repository == @repository}
+    @accrual_jobs = accrual_jobs.select {|accrual_job| accrual_job.repository == @repository}
   end
 
 end
