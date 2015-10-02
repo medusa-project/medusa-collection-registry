@@ -92,11 +92,11 @@ class BitLevelFileGroup < FileGroup
   end
 
   def file_size
-    return total_file_size
+    total_file_size
   end
 
   def file_count
-    return total_files
+    total_files
   end
 
   def amazon_backups

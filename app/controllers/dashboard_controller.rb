@@ -4,7 +4,7 @@ class DashboardController < ApplicationController
   before_action :require_logged_in
 
   def show
-    setup_full_storage_summary
+    setup_bit_level_storage_summary
     setup_repository_storage_summary
     setup_red_flags
     setup_file_stats
@@ -22,23 +22,16 @@ class DashboardController < ApplicationController
   end
 
   def setup_file_stats
-    @content_type_hashes = ContentType.connection.select_all('SELECT id, name, cfs_file_count, cfs_file_size FROM content_types ORDER BY name ASC').to_hash
-    @file_extension_hashes = FileExtension.connection.select_all('SELECT id, extension, cfs_file_count, cfs_file_size FROM file_extensions ORDER BY extension ASC').to_hash
+    @content_type_hashes = ContentType.connection.select_all('SELECT id AS content_type_id, name, cfs_file_count AS file_count, cfs_file_size AS file_size FROM content_types ORDER BY name ASC').to_hash
+    @file_extension_hashes = FileExtension.connection.select_all('SELECT id AS file_extension_id, extension, cfs_file_count AS file_count, cfs_file_size AS file_size FROM file_extensions ORDER BY extension ASC').to_hash
   end
 
   def setup_red_flags
     @red_flags = RedFlag.order('created_at DESC').includes(:red_flaggable).load
   end
 
-  def setup_full_storage_summary
-    @full_storage_summary = Hash.new.tap do |h|
-      FileGroup.group(:type).select('type, sum(total_file_size) as size, sum(total_files) as count').each do |row|
-        h[row[:type]] = {count: row[:count], size: row[:size]}
-      end
-    end
-    %w(ExternalFileGroup BitLevelFileGroup).each do |type|
-      @full_storage_summary[type] ||= {count: 0, size: 0}
-    end
+  def setup_bit_level_storage_summary
+    @bit_level_storage_summary = ActiveRecord::Base.connection.select_one("SELECT COALESCE(sum(total_file_size),0) * 1073741824 as size, sum(total_files) as count FROM file_groups WHERE type = 'BitLevelFileGroup'")
   end
 
   def setup_repository_storage_summary
