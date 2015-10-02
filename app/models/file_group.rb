@@ -127,13 +127,12 @@ class FileGroup < ActiveRecord::Base
     self.source_file_group_joins.where(source_file_group_id: file_group.id).first.try(:note)
   end
 
-  #override this as needed for subclasses. Size should be in GB. Should use this method rather than the db column to
-  #read this value.
+  #override this as needed for subclasses. Size should be in GB.
   def file_size
     self.total_file_size || 0
   end
 
-  #override as needed for subclasses. Should use this method rather than the db column to read this value.
+  #override as needed for subclasses.
   def file_count
     self.total_files || 0
   end
