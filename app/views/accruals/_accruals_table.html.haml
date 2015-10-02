@@ -11,4 +11,4 @@
       %th Actions
   %tbody
     - @accrual_jobs.each do |accrual_job|
-      = render partial: 'accruals_table_row', locals: {accrual_job: accrual_job}
+      = render partial: 'accruals/accruals_table_row', locals: {accrual_job: accrual_job}
