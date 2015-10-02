@@ -30,8 +30,8 @@
       = render 'events'
     #amazon.tab-pane
       = render 'amazon'
-    -# if @accrual_jobs.present?
-    -#  #accruals.tab-pane
-    -#    = render 'accruals'
+    - if @accrual_jobs.present?
+      #accruals.tab-pane
+        = render 'accruals'
 
 

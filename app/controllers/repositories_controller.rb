@@ -28,6 +28,7 @@ class RepositoriesController < ApplicationController
     setup_amazon_info
     setup_red_flags
     setup_file_stats_and_full_storage_summary
+    setup_accrual_jobs
   end
 
   def assessments
@@ -184,6 +185,15 @@ SQL
         select_all('SELECT content_type_id, name, file_size, file_count FROM view_file_content_type_stats_by_repository WHERE repository_id = $1', nil, [[nil, @repository.id]])
     @full_storage_summary = ActiveRecord::Base.connection.
         select_all('SELECT COALESCE(SUM(COALESCE(F.size,0)), 0) AS size, COUNT(*) AS count FROM view_cfs_files_to_parents V JOIN cfs_files F ON V.cfs_file_id = F.id WHERE V.repository_id = $1', nil, [[nil, @repository.id]]).to_hash.first
+  end
+
+  def setup_accrual_jobs
+    if ApplicationController.is_ad_admin?(current_user)
+      @accrual_jobs = Workflow::AccrualJob.order('created_at asc').all.decorate
+    else
+      @accrual_jobs = current_user.workflow_accrual_jobs.order('created_at asc').decorate
+    end
+    @accrual_jobs = @accrual_jobs.select {|accrual_job| accrual_job.repository == @repository}
   end
 
 end

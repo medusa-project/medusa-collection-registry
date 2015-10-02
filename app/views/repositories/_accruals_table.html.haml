@@ -1,0 +1,14 @@
+%table#accruals_table.table.table_striped
+  %thead
+    %tr
+      %th Ingest ID
+      %th Date submitted
+      %th File Group
+      %th Collection
+      %th Submitted by
+      %th Pre-ingest report
+      %th Status
+      %th Actions
+  %tbody
+    - @accrual_jobs.each do |accrual_job|
+      = render partial: 'accruals_table_row', locals: {accrual_job: accrual_job}

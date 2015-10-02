@@ -14,7 +14,7 @@ class Workflow::AccrualJob < Workflow::Base
   has_many :workflow_accrual_conflicts, class_name: 'Workflow::AccrualConflict', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
   has_many :workflow_accrual_comments, -> { order 'created_at desc' }, class_name: 'Workflow::AccrualComment', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
 
-  delegate :file_group, :root_cfs_directory, :collection, to: :cfs_directory
+  delegate :file_group, :root_cfs_directory, :collection, :repository, to: :cfs_directory
 
   validates_presence_of :cfs_directory_id, :user_id
   validates_uniqueness_of :staging_path, scope: :cfs_directory_id
