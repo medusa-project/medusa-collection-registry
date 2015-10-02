@@ -1,11 +1,3 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
-
 ActiveRecord::Base.transaction do
 
 #Storage media
@@ -62,5 +54,12 @@ ActiveRecord::Base.transaction do
 
   #Make sure that every cfs file has an associated file extension
   CfsFile.ensure_all_file_extensions
+
+  #load all views used by the application
+  Dir.chdir(File.join(Rails.root, 'db', 'views')) do
+    Dir['*.sql'].sort.each do |view_file|
+      ActiveRecord::Base.connection.execute(File.read(view_file))
+    end
+  end
 
 end
