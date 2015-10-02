@@ -26,6 +26,7 @@ class RepositoriesController < ApplicationController
                                                     {file_groups: [:cfs_directory, :assessments]}]).find(params[:id])
     setup_events
     setup_amazon_info
+    setup_red_flags
   end
 
   def assessments
@@ -63,8 +64,7 @@ class RepositoriesController < ApplicationController
   end
 
   def red_flags
-    @red_flags = @repository.all_red_flags
-    @aggregator = @repository
+    setup_red_flags
   end
 
   def events
@@ -171,5 +171,9 @@ SQL
     end
   end
 
+  def setup_red_flags
+    @red_flags = @repository.all_red_flags
+    @aggregator = @repository
+  end
 
 end

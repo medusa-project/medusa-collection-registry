@@ -43,16 +43,8 @@
         %td= @full_storage_summary['BitLevelFileGroup'][:count].to_s(:delimited)
         %td
 
-        %th{colspan: 2}
-          Total Object Preservation Files:
-        %td= file_count_objects_total.to_formatted_s(:delimited)
-
       %tr
         %th{colspan: 2}
           Total Bit Preservation Size:
         %td= (@full_storage_summary['BitLevelFileGroup'][:size] * 1.gigabyte).to_formatted_s(:human_size, precision: 3)
         %td
-
-        %th{colspan: 2}
-          Total Object Preservation Size:
-        %td= size_objects_total.to_formatted_s(:human_size, precision: 3)
