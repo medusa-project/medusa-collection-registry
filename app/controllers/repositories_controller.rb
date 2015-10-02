@@ -27,8 +27,7 @@ class RepositoriesController < ApplicationController
     setup_events
     setup_amazon_info
     setup_red_flags
-    setup_file_stats
-    setup_full_storage_summary
+    setup_file_stats_and_full_storage_summary
   end
 
   def assessments
@@ -178,20 +177,13 @@ SQL
     @aggregator = @repository
   end
 
-  def setup_file_stats
-    # @content_type_hashes = ContentType.connection.select_all('SELECT id, name, cfs_file_count, cfs_file_size FROM content_types ORDER BY name ASC').to_hash
-    # @file_extension_hashes = FileExtension.connection.select_all('SELECT id, extension, cfs_file_count, cfs_file_size FROM file_extensions ORDER BY extension ASC').to_hash
-  end
-
-  def setup_full_storage_summary
-  #   @full_storage_summary = Hash.new.tap do |h|
-  #     FileGroup.group(:type).select('type, sum(total_file_size) as size, sum(total_files) as count').each do |row|
-  #       h[row[:type]] = {count: row[:count], size: row[:size]}
-  #     end
-  #   end
-  #   %w(ExternalFileGroup BitLevelFileGroup).each do |type|
-  #     @full_storage_summary[type] ||= {count: 0, size: 0}
-  #   end
+  def setup_file_stats_and_full_storage_summary
+    @file_extension_hashes = ActiveRecord::Base.connection.
+        select_all('SELECT file_extension_id, extension, file_size, file_count FROM view_file_extension_stats_by_repository WHERE repository_id = $1', nil, [[nil, @repository.id]]).to_hash
+    @content_type_hashes = ActiveRecord::Base.connection.
+        select_all('SELECT content_type_id, name, file_size, file_count FROM view_file_content_type_stats_by_repository WHERE repository_id = $1', nil, [[nil, @repository.id]])
+    @full_storage_summary = ActiveRecord::Base.connection.
+        select_all('SELECT COALESCE(SUM(COALESCE(F.size,0)), 0) AS size, COUNT(*) AS count FROM view_cfs_files_to_parents V JOIN cfs_files F ON V.cfs_file_id = F.id WHERE V.repository_id = $1', nil, [[nil, @repository.id]]).to_hash.first
   end
 
 end

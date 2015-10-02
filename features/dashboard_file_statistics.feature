@@ -35,7 +35,7 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
     Then I should see the file stats by content type table
     And I should see the file stats by file extension table
     And I should see all of:
-      | Total Bit Preservation Files: | 3 | Total Object Preservation Files: | 0 |
+      | Total Bit Preservation Files: | 3 |
     And I should see all of:
-      | Total Bit Preservation Size: | 335 KB | Total Object Preservation Size: | 0 Bytes |
+      | Total Bit Preservation Size: | 335 KB |
 

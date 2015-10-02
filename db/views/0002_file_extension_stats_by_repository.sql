@@ -5,7 +5,7 @@ CREATE OR REPLACE VIEW view_file_extension_stats_by_repository AS
     FE.id AS file_extension_id,
     FE.extension AS extension,
     P.repository_id AS repository_id,
-    SUM(F.size) AS file_size,
+    COALESCE(SUM(COALESCE(F.size, 0)), 0) AS file_size,
     COUNT(F.id) AS file_count
   FROM file_extensions FE
     JOIN cfs_files F ON FE.id = F.file_extension_id
