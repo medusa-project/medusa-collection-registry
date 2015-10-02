@@ -33,7 +33,7 @@ ActiveRecord::Base.transaction do
 #Make sure every Collection has
 # - a preservation priority
 # - a uuid
-  Collection.all.each do |c|
+  Collection.find_each do |c|
     c.preservation_priority = PreservationPriority.default unless c.preservation_priority
     c.ensure_rights_declaration
     c.ensure_uuid
@@ -41,7 +41,7 @@ ActiveRecord::Base.transaction do
     #c.ensure_handle
   end
 
-  FileGroup.all.each do |fg|
+  FileGroup.find_each do |fg|
     fg.ensure_rights_declaration
     fg.save!
   end
