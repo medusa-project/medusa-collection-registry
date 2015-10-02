@@ -1,3 +1,4 @@
 The views in this folder are actually used by the application. seeds.rb will load them in numerical order.
 It's your responsibility to keep them arranged so that seeding can be rerun at will, e.g by using
-CREATE OR REPLACE and by keeping any dependencies in order.
+CREATE OR REPLACE and by keeping any dependencies in order. Also recommending prefacing the name with
+'view' to make a conflict with an auto-generated table name less likely.

@@ -1,6 +1,6 @@
 -- direct mapping of cfs files to their cfs_directory, root cfs directory,
 -- file group, collection, repository, and institution
-CREATE OR REPLACE VIEW cfs_files_to_parents AS
+CREATE OR REPLACE VIEW view_cfs_files_to_parents AS
   SELECT
     f.id  AS cfs_file_id,
     d.id AS cfs_directory_id,
