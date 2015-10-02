@@ -32,7 +32,8 @@ appropriately. For some of these no editing is necessary, but if there are passw
 #Create database
 
 Use rake db:create, db:migrate, and db:seed in both the development and test environments. Alternately, load the db
-schema with rake db:schema:load and then seed.
+schema with rake db:schema:load and then seed. Note that in addition to migrations there is also some
+sql in db/views that db:seed loads up and that is used in the application.
 
 #Get submodules
 
