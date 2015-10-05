@@ -37,13 +37,3 @@
   Medusa’s pre-ingest scan detects #{@workflow_accrual.workflow_accrual_conflicts.serious.count}
   md5 conflicts in this request.
 
--#%p
--#  An automated accrual of the staging path #{@workflow_accrual.staging_path} to
--#  the cfs directory #{@workflow_accrual.cfs_directory.relative_path} has been requested
--#  by #{@workflow_accrual.user.net_id}.
--#
--#- if file_group = @workflow_accrual.cfs_directory.file_group
--#  %p
--#    This belongs to the file group #{file_group.title}, collection #{file_group.collection.title},
--#    and repository #{file_group.repository.title}.
--#
