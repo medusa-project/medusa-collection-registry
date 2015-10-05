@@ -1,7 +1,9 @@
 require 'find'
 require 'open3'
+require 'render_anywhere'
 
 class Workflow::AccrualJob < Workflow::Base
+  include RenderAnywhere
 
   attr_accessor :comment
 
@@ -306,5 +308,13 @@ MESSAGE
     workflow_accrual_directories.sum(:size) + workflow_accrual_files.sum(:size)
   end
 
+  class RenderingController < RenderAnywhere::RenderingController
+    attr_accessor :workflow_accrual
+  end
+
+  def render_report
+    set_instance_variable("workflow_accrual", self)
+    render partial: 'workflow/accrual_mailer/view_report'
+  end
 
 end
