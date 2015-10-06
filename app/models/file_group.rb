@@ -1,6 +1,5 @@
 class FileGroup < ActiveRecord::Base
   include Eventable
-  include ScheduledEventable
   include CascadedEventable
   include Uuidable
   include Breadcrumb

@@ -51,4 +51,3 @@
     - @collection.file_groups.order('created_at').each do |file_group|
       - cache(['event_forms', file_group]) do
         = render partial: 'events/modal_form', locals: {eventable: file_group, remote: true, dialog_id: "add-event-file-group-#{file_group.id}"}
-        = render partial: 'scheduled_events/form', locals: {eventable: file_group, remote: true, dialog_id: "add-scheduled-event-file-group-#{file_group.id}" }

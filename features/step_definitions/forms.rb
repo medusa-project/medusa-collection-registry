@@ -2,12 +2,6 @@ When /^I fill in fields:$/ do |table|
   complete_form_from_table(table)
 end
 
-And(/^I fill in fields for a scheduled event:$/) do |table|
-  within('.scheduled-event-form') do
-    complete_form_from_table(table)
-  end
-end
-
 Then /^The field '([^']*)' should be filled in with '([^']*)'$/ do |field, value|
   find_field(field).value.should == value
 end

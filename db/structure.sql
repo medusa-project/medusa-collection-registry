@@ -2791,43 +2791,6 @@ ALTER SEQUENCE rights_declarations_id_seq OWNED BY rights_declarations.id;
 
 
 --
--- Name: scheduled_events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE scheduled_events (
-    id integer NOT NULL,
-    key character varying(255),
-    state character varying(255),
-    action_date date,
-    actor_email character varying(255),
-    scheduled_eventable_id integer,
-    scheduled_eventable_type character varying(255),
-    note text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: scheduled_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE scheduled_events_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: scheduled_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE scheduled_events_id_seq OWNED BY scheduled_events.id;
-
-
---
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3608,13 +3571,6 @@ ALTER TABLE ONLY rights_declarations ALTER COLUMN id SET DEFAULT nextval('rights
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY scheduled_events ALTER COLUMN id SET DEFAULT nextval('scheduled_events_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY sessions ALTER COLUMN id SET DEFAULT nextval('sessions_id_seq'::regclass);
 
 
@@ -4038,14 +3994,6 @@ ALTER TABLE ONLY resource_types
 
 ALTER TABLE ONLY rights_declarations
     ADD CONSTRAINT rights_declarations_pkey PRIMARY KEY (id);
-
-
---
--- Name: scheduled_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY scheduled_events
-    ADD CONSTRAINT scheduled_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -4862,41 +4810,6 @@ CREATE INDEX index_rights_declarations_on_rights_declarable_id ON rights_declara
 --
 
 CREATE INDEX index_rights_declarations_on_updated_at ON rights_declarations USING btree (updated_at);
-
-
---
--- Name: index_scheduled_events_on_actor_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_scheduled_events_on_actor_email ON scheduled_events USING btree (actor_email);
-
-
---
--- Name: index_scheduled_events_on_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_scheduled_events_on_key ON scheduled_events USING btree (key);
-
-
---
--- Name: index_scheduled_events_on_scheduled_eventable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_scheduled_events_on_scheduled_eventable_id ON scheduled_events USING btree (scheduled_eventable_id);
-
-
---
--- Name: index_scheduled_events_on_scheduled_eventable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_scheduled_events_on_scheduled_eventable_type ON scheduled_events USING btree (scheduled_eventable_type);
-
-
---
--- Name: index_scheduled_events_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_scheduled_events_on_updated_at ON scheduled_events USING btree (updated_at);
 
 
 --
@@ -5916,4 +5829,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150928151036');
 INSERT INTO schema_migrations (version) VALUES ('20150928171015');
 
 INSERT INTO schema_migrations (version) VALUES ('20151006191119');
+
+INSERT INTO schema_migrations (version) VALUES ('20151006210709');
 

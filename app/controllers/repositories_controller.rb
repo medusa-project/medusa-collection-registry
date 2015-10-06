@@ -71,9 +71,8 @@ class RepositoriesController < ApplicationController
   end
 
   def events
-    @scheduled_eventable = @eventable = Repository.find(params[:id])
+    @eventable = Repository.find(params[:id])
     @events = @eventable.cascaded_events
-    @scheduled_events = @scheduled_eventable.incomplete_scheduled_events.sort_by(&:action_date)
   end
 
   def edit_ldap_admins
@@ -112,7 +111,6 @@ class RepositoriesController < ApplicationController
 
   def setup_events
     @events = @repository.cascaded_events.where('events.updated_at > ?', Time.now - 7.days).where(cascadable: true).includes(eventable: :parent)
-    @scheduled_events = @repository.incomplete_scheduled_events
   end
 
   def setup_amazon_info

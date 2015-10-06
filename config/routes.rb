@@ -67,9 +67,6 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :access_systems, concerns: :collection_indexer
   resources :package_profiles, concerns: :collection_indexer
   resources :virus_scans, only: :show
-  resources :scheduled_events, only: [:edit, :update, :create, :destroy] do
-    %w(complete cancel).each { |action| post action, on: :member }
-  end
 
   resources :cfs_files, only: :show, concerns: %i(public downloadable eventable fixity_checkable) do
     %w(public_download public_view create_fits_xml fits view preview_image public_preview_image preview_video).each { |action| get action, on: :member }

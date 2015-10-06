@@ -42,14 +42,6 @@ class Repository < ActiveRecord::Base
     self.assessments + self.collections.collect { |collection| collection.recursive_assessments }.flatten
   end
 
-  def all_scheduled_events
-    self.collections.collect { |collection| collection.all_scheduled_events }.flatten.sort_by(&:action_date)
-  end
-
-  def incomplete_scheduled_events
-    self.collections.collect { |collection| collection.incomplete_scheduled_events }.flatten.sort_by(&:action_date)
-  end
-
   def manager?(user)
     ApplicationController.is_member_of?(self.ldap_admin_group, user, self.ldap_admin_domain)
   end
