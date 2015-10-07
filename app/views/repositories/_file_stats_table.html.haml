@@ -9,7 +9,7 @@
           %th File Format
           %th Number of Files
           %th Size
-      - cache(@repository) do
+      - cache([@repository, 'content_type']) do
         %tbody
           - @content_type_hashes.each do |info|
             = cache(info) do
@@ -27,7 +27,7 @@
           %th File Extension
           %th Number of Files
           %th Size
-      - cache(@repository) do
+      - cache([@repository, 'file_extension']) do
         %tbody
           - @file_extension_hashes.each do |info|
             = cache(info) do
