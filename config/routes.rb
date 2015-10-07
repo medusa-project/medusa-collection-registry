@@ -35,6 +35,9 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :repositories, concerns: %i(eventable red_flaggable assessable collection_indexer) do
     get 'edit_ldap_admins', on: :collection
     put 'update_ldap_admin', on: :member
+    %w(show_file_stats show_running_processes show_red_flags show_events show_amazon show_accruals).each do |action|
+      get action, on: :member
+    end
   end
   resources :institutions
   resources :assessments, only: [:show, :edit, :update, :new, :create, :destroy]

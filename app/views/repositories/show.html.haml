@@ -21,17 +21,36 @@
     #overview.tab-pane.active
       = render 'overview'
     #running-processes.tab-pane
-      = render 'running_processes'
+      Loading...
+      :javascript
+        $("#running-processes").load("#{show_running_processes_repository_path(@repository)}");
     #file-statistics.tab-pane
-      = render 'file_stats_table'
+      Loading...
+      :javascript
+        $("#file-statistics").load("#{show_file_stats_repository_path(@repository)}", function () {
+          initialize_data_table("table#file_stats_content_type", {});
+          initialize_data_table("table#file_stats_file_extension", {});
+          });
     #red-flags.tab-pane
-      = render 'shared/red_flags_table'
+      Loading...
+      :javascript
+        $("#red-flags").load("#{show_red_flags_repository_path(@repository)}", function () {
+          initialize_data_table("table#red-flags-table", {});
+        });
     #combined-events-tab.tab-pane
-      = render 'events'
+      Loading...
+      :javascript
+        $("#combined-events-tab").load("#{show_events_repository_path(@repository)}");
     #amazon.tab-pane
-      = render 'amazon'
-    - if @accrual_jobs.present?
-      #accruals.tab-pane
-        = render 'accruals/accruals'
+      Loading...
+      :javascript
+        $("#amazon").load("#{show_amazon_repository_path(@repository)}", function () {
+          initialize_data_table("table#amazon-backups-table", {});
+        });
+    #accruals.tab-pane
+      Loading...
+      :javascript
+        $("#accruals").load("#{show_accruals_repository_path(@repository)}");
+
 
 

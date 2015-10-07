@@ -19,6 +19,7 @@ class Collection < ActiveRecord::Base
 
   has_many :assessments, dependent: :destroy, as: :assessable
   has_many :file_groups, dependent: :destroy
+  has_many :bit_level_file_groups, -> {where('type = ?', 'BitLevelFileGroup')}, class_name: 'FileGroup'
   has_many :access_system_collection_joins, dependent: :destroy
   has_many :access_systems, through: :access_system_collection_joins
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
@@ -54,10 +55,6 @@ class Collection < ActiveRecord::Base
 
   def total_files
     self.bit_level_file_groups.collect { |fg| fg.total_files }.sum
-  end
-
-  def bit_level_file_groups
-    file_groups.where('type = ?', 'BitLevelFileGroup')
   end
 
   def medusa_url
