@@ -1528,6 +1528,39 @@ ALTER SEQUENCE cascaded_event_joins_id_seq OWNED BY cascaded_event_joins.id;
 
 
 --
+-- Name: cascaded_red_flag_joins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE cascaded_red_flag_joins (
+    id integer NOT NULL,
+    cascaded_red_flaggable_id integer,
+    cascaded_red_flaggable_type character varying,
+    red_flag_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: cascaded_red_flag_joins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE cascaded_red_flag_joins_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: cascaded_red_flag_joins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE cascaded_red_flag_joins_id_seq OWNED BY cascaded_red_flag_joins.id;
+
+
+--
 -- Name: cfs_directories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3319,6 +3352,13 @@ ALTER TABLE ONLY cascaded_event_joins ALTER COLUMN id SET DEFAULT nextval('casca
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY cascaded_red_flag_joins ALTER COLUMN id SET DEFAULT nextval('cascaded_red_flag_joins_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY cfs_directories ALTER COLUMN id SET DEFAULT nextval('cfs_directories_id_seq'::regclass);
 
 
@@ -3706,6 +3746,14 @@ ALTER TABLE ONLY book_tracker_tasks
 
 ALTER TABLE ONLY cascaded_event_joins
     ADD CONSTRAINT cascaded_event_joins_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cascaded_red_flag_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY cascaded_red_flag_joins
+    ADD CONSTRAINT cascaded_red_flag_joins_pkey PRIMARY KEY (id);
 
 
 --
@@ -4285,6 +4333,13 @@ CREATE INDEX index_book_tracker_items_on_volume ON book_tracker_items USING btre
 --
 
 CREATE INDEX index_cascaded_event_joins_on_event_id ON cascaded_event_joins USING btree (event_id);
+
+
+--
+-- Name: index_cascaded_red_flag_joins_on_red_flag_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_cascaded_red_flag_joins_on_red_flag_id ON cascaded_red_flag_joins USING btree (red_flag_id);
 
 
 --
@@ -4971,6 +5026,13 @@ CREATE INDEX index_workflow_ingests_on_user_id ON workflow_ingests USING btree (
 --
 
 CREATE UNIQUE INDEX unique_cascaded_events ON cascaded_event_joins USING btree (cascaded_eventable_type, cascaded_eventable_id, event_id);
+
+
+--
+-- Name: unique_cascaded_red_flags; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_cascaded_red_flags ON cascaded_red_flag_joins USING btree (cascaded_red_flaggable_type, cascaded_red_flaggable_id, red_flag_id);
 
 
 --
@@ -5831,4 +5893,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150928171015');
 INSERT INTO schema_migrations (version) VALUES ('20151006191119');
 
 INSERT INTO schema_migrations (version) VALUES ('20151006210709');
+
+INSERT INTO schema_migrations (version) VALUES ('20151007154809');
 

@@ -10,6 +10,7 @@ class RedFlag < ActiveRecord::Base
   validates_inclusion_of :status, in: STATUSES
 
   before_validation :ensure_priority, :ensure_status
+  after_create :maybe_cascade
 
   def ensure_priority
     self.priority ||= 'medium'
@@ -26,6 +27,20 @@ class RedFlag < ActiveRecord::Base
   def unflag!
     self.status = 'unflagged'
     self.save!
+  end
+
+  def maybe_cascade
+    CascadedRedFlagJoin.find_or_create_by(cascaded_red_flaggable: self, red_flag_id: self.id)
+    if red_flaggable.respond_to?(:cascade_red_flag)
+      red_flaggable.cascade_red_flag(self)
+    end
+  end
+
+  def self.rebuild_cascaded_red_flag_cache
+    CascadedRedFlagJoin.delete_all
+    self.find_each do |red_flag|
+      red_flag.maybe_cascade
+    end
   end
 
 end
