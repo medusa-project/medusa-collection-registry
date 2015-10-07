@@ -1,3 +1,4 @@
+@javascript
 Feature: FITS batch processing
   As a librarian
   In order to learn about the files that we have
@@ -17,6 +18,7 @@ Feature: FITS batch processing
 
   Scenario: Run batch of FITS on files by extension
     When I go to the dashboard
+    And I click on 'File Statistics'
     And I click on 'txt'
     And I click on 'Run FITS batch'
     Then I should be on the cfs files page for the file extension with extension 'txt'
@@ -28,6 +30,7 @@ Feature: FITS batch processing
 
   Scenario: Run batch of FITS on files by mime type
     When I go to the dashboard
+    And I click on 'File Statistics'
     And I click on 'text/plain'
     And I click on 'Run FITS batch'
     Then I should be on the cfs files page for the content type with name 'text/plain'
@@ -38,18 +41,22 @@ Feature: FITS batch processing
 
   Scenario: Only one delayed job may be active for an extension at a time
     When I go to the dashboard
+    And I click on 'File Statistics'
     And I click on 'xml'
     And I click on 'Run FITS batch'
     And I go to the dashboard
+    And I click on 'File Statistics'
     And I click on 'xml'
     And I click on 'Run FITS batch'
     Then I should see 'There is already a FITS batch scheduled for extension 'xml''
 
   Scenario: Only one delayed job may be active for an extension at a time
     When I go to the dashboard
+    And I click on 'File Statistics'
     And I click on 'application/xml'
     And I click on 'Run FITS batch'
     And I go to the dashboard
+    And I click on 'File Statistics'
     And I click on 'application/xml'
     And I click on 'Run FITS batch'
     Then I should see 'There is already a FITS batch scheduled for mime type 'application/xml''
@@ -57,6 +64,7 @@ Feature: FITS batch processing
   Scenario: Only admins may run FITS batch jobs by mime type
     When I relogin as a manager
     And I go to the dashboard
+    And I click on 'File Statistics'
     And I click on 'application/xml'
     And I click on 'Run FITS batch'
     Then I should be unauthorized
@@ -64,6 +72,7 @@ Feature: FITS batch processing
   Scenario: Only admins may run FITS batch jobs by extension
     When I relogin as a manager
     And I go to the dashboard
+    And I click on 'File Statistics'
     And I click on 'xml'
     And I click on 'Run FITS batch'
     Then I should be unauthorized

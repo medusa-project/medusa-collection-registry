@@ -54,6 +54,7 @@ Feature: Red flags
     And the cfs file at path 'grass.jpg' for the file group titled 'pictures' has fits rerun
     Then the cfs file at path 'grass.jpg' for the file group titled 'pictures' should have 3 red flags
 
+  @javascript
   Scenario: A list of red flags is available in the dashboard
     Given I am logged in as an admin
     And the file group titled 'pictures' has a cfs file for the path 'grass.jpg' with red flags with fields:
@@ -61,6 +62,7 @@ Feature: Red flags
       | Size red flag |
       | Md5 red flag  |
     When I go to the dashboard
+    And I click on 'Red Flags'
     Then I should see all of:
       | Size red flag | Md5 red flag | medium | flagged |
 
@@ -126,40 +128,48 @@ Feature: Red flags
     Then I should see 'The size is really off'
     And I should not see 'The size is off'
 
+  @javascript
   Scenario: Navigate from index to red flag view
     Given I am logged in as an admin
     And the file group titled 'pictures' has a cfs file for the path 'grass.jpg' with red flags with fields:
       | message       | notes           |
       | Size red flag | The size is off |
     When I go to the dashboard
+    And I click on 'Red Flags'
     And I click on 'View' in the red flags table
     Then I should be viewing the first red flag for the file group titled 'pictures' for the path 'grass.jpg'
 
+  @javascript
   Scenario: Navigate from index to red flag edit
     Given I am logged in as an admin
     And the file group titled 'pictures' has a cfs file for the path 'grass.jpg' with red flags with fields:
       | message       | notes           |
       | Size red flag | The size is off |
     When I go to the dashboard
+    And I click on 'Red Flags'
     And I click on 'Edit' in the red flags table
     Then I should be editing the first red flag for the file group titled 'pictures' for the path 'grass.jpg'
 
+  @javascript
   Scenario: Mark red flag as unflagged from index view
     Given I am logged in as an admin
     And the file group titled 'pictures' has a cfs file for the path 'grass.jpg' with red flags with fields:
       | message       | notes           |
       | Size red flag | The size is off |
     When I go to the dashboard
+    And I click on 'Red Flags'
     And I click on 'Unflag' in the red flags table
     Then I should be on the dashboard page
     And I should see 'unflagged'
 
+  @javascript
   Scenario: Mark red flag as unflagged from index view as a manager
     Given I am logged in as a manager
     And the file group titled 'pictures' has a cfs file for the path 'grass.jpg' with red flags with fields:
       | message       | notes           |
       | Size red flag | The size is off |
     When I go to the dashboard
+    And I click on 'Red Flags'
     And I click on 'Unflag' in the red flags table
     Then I should be on the dashboard page
     And I should see 'unflagged'

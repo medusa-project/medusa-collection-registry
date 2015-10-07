@@ -1,3 +1,4 @@
+@javascript
 Feature: File Statistics Summary on the Collection Registry Dashboard
   In order to view a summary of file statistics in the collection registry
   As a librarian
@@ -34,8 +35,4 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
     And I click on 'File Statistics'
     Then I should see the file stats by content type table
     And I should see the file stats by file extension table
-    And I should see all of:
-      | Total Bit Preservation Files: | 3 |
-    And I should see all of:
-      | Total Bit Preservation Size: | 335 KB |
 

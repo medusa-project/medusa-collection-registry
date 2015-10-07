@@ -35,18 +35,3 @@
                 %td= link_to info['extension'], cfs_files_file_extension_path(info['file_extension_id'])
                 %td= info['file_count'].to_i.to_formatted_s(:delimited)
                 %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_formatted_s(:human_size, precision: 3)
-
-.row
-  .col-sm-12
-    %table.table.table-condensed#file_stats_summary
-      %tr
-        %th{colspan: 2}
-          Total Bit Preservation Files:
-        %td= @bit_level_storage_summary['count'].to_i.to_s(:delimited)
-        %td
-
-      %tr
-        %th{colspan: 2}
-          Total Bit Preservation Size:
-        %td= (@bit_level_storage_summary['size']).to_d.to_formatted_s(:human_size, precision: 3)
-        %td

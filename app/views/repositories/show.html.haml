@@ -35,12 +35,14 @@
       Loading...
       :javascript
         $("#red-flags").load("#{show_red_flags_repository_path(@repository)}", function () {
-          initialize_data_table("table#red-flags-table", {});
+          initialize_data_table("table#accruals_table", {});
         });
     #combined-events-tab.tab-pane
       Loading...
       :javascript
-        $("#combined-events-tab").load("#{show_events_repository_path(@repository)}");
+        $("#combined-events-tab").load("#{show_events_repository_path(@repository)}", function () {
+          initialize_data_table("table#events", {});
+        });
     #amazon.tab-pane
       Loading...
       :javascript
@@ -50,7 +52,9 @@
     #accruals.tab-pane
       Loading...
       :javascript
-        $("#accruals").load("#{show_accruals_repository_path(@repository)}");
+        $("#accruals").load("#{show_accruals_repository_path(@repository)}", function () {
+          initialize_data_table("table#accruals_table", {});
+        });
 
 
 

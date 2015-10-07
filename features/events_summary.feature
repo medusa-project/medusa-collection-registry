@@ -80,8 +80,10 @@ Feature: Events Summary
     And I should see none of:
       | corn note 1|
 
+  @javascript
   Scenario: View all events
     When I go to the dashboard
+    And I click on 'Events'
     Then I should see the events table
     And I should see all of:
       | toy note 1 | toy note 2 | hot note 1 | cool note 1 | corn note 1  | Dogs | Cats |

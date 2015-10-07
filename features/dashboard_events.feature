@@ -1,3 +1,4 @@
+@javascript
 Feature: Dashboard event list
   In order to view recent happenings in Medusa
   As a librarian
@@ -14,10 +15,12 @@ Feature: Dashboard event list
 
   Scenario: Dashboard shows recent events, but not old ones
     When I go to the dashboard
+    And I click on 'Events'
     Then I should see 'Current Event'
     And I should not see 'Old Event'
 
   Scenario: Navigate from dashboard to complete events index
     When I go to the dashboard
+    And I click on 'Events'
     And I click on 'View all events'
     Then I should be on the events index page

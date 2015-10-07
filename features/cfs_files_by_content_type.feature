@@ -18,9 +18,11 @@ Feature: Cfs files by content type
       | name      | content_type_name |
       | long_hair | image/jpeg        |
 
+  @javascript
   Scenario: Navigate from dashboard to view of cfs files with a given type
     Given I am logged in as an admin
     When I go to the dashboard
+    And I click on 'File Statistics'
     And I click on 'image/jpeg'
     Then I should be on the cfs files page for the content type with name 'image/jpeg'
     And I should see a table of cfs files with 2 rows
@@ -34,9 +36,11 @@ Feature: Cfs files by content type
       | public user | cfs_files | authentication |
 
   #This test is clearly not perfect, but should fail at least 1 in 3 times if there is a problem
+  @javascript
   Scenario: View a random file of a given extension
     Given I am logged in as an admin
     When I go to the dashboard
+    And I click on 'File Statistics'
     And I click on 'image/jpeg'
     And I click on 'Random File'
     Then I should see none of:

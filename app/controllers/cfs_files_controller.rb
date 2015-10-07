@@ -155,6 +155,8 @@ class CfsFilesController < ApplicationController
       image = image.shrink(factor)
     end
     send_data image.jpeg.to_memory, type: 'image/jpeg', disposition: 'inline'
+  rescue
+    send_data "Unable to process", type: 'text/plain', disposition: 'inline'
   end
 
   def common_preview_iiif_image

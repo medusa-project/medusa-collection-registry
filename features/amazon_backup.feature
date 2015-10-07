@@ -27,9 +27,12 @@ Feature: Amazon backup
     And I click on 'Create backup'
     Then there should be 1 amazon backup delayed job
 
+  @javascript
   Scenario: Bulk schedule amazon backup of bit level file groups
     Given I am logged in as a medusa admin
     When I go to the dashboard
+    And I click on 'Amazon'
+    And I wait 1 second
     And I check all amazon backup checkboxes
     And I click on 'Create Backups'
     Then there should be 2 amazon backup delayed jobs

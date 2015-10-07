@@ -5,9 +5,7 @@ module RepositoriesHelper
   end
 
   def repository_tab_list
-    tabs = ['overview', 'running-processes', 'file-statistics', 'red-flags', ['combined-events-tab', 'Events', 'newspaper-o'], 'amazon']
-    tabs << 'accruals' if @accrual_jobs.present?
-    tabs
+    ['overview', 'running-processes', 'file-statistics', 'red-flags', ['combined-events-tab', 'Events', 'newspaper-o'], 'amazon', 'accruals']
   end
 
   def load_repository_dashboard_file_stats

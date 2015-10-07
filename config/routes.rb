@@ -103,6 +103,12 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :uuids, only: [:show]
 
   match '/dashboard', to: 'dashboard#show', as: :dashboard, via: [:get, :post]
+  match '/dashboard/running_processes', to: 'dashboard#running_processes', as: :running_processes_dashboard, via: :get
+  match '/dashboard/file_stats', to: 'dashboard#file_stats', as: :file_stats_dashboard, via: :get
+  match '/dashboard/red_flags', to: 'dashboard#red_flags', as: :red_flags_dashboard, via: :get
+  match '/dashboard/events', to: 'dashboard#events', as: :events_dashboard, via: :get
+  match '/dashboard/amazon', to: 'dashboard#amazon', as: :amazon_dashboard, via: :get
+  match '/dashboard/accruals', to: 'dashboard#accruals', as: :accruals_dashboard, via: :get
 
   namespace :book_tracker do
     match 'items', to: 'items#index', as: :items, via: [:get, :post]

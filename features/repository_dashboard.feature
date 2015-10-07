@@ -39,7 +39,6 @@ Feature: Repository dashboard
   Scenario: Dashboard includes running processes tables
     When I view the repository with title 'Sample Repo'
     And I click on 'Running Processes'
-    And I wait 1 seconds
     Then I should see the running virus scans table
     And I should see the running fits scans table
     And I should see the running initial assessment scans table

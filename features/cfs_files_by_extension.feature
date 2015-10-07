@@ -13,9 +13,11 @@ Feature: Cfs files by file extension
       | pit_bull.xml  | 789  |
       | long_hair.JPG | 4000 |
 
+  @javascript
   Scenario: Navigate from dashboard to view of cfs files with a extension
     Given I am logged in as an admin
     When I go to the dashboard
+    And I click on 'File Statistics'
     And I click on 'jpg'
     Then I should be on the cfs files page for the file extension with extension 'jpg'
     And I should see a table of cfs files with 2 rows
@@ -28,9 +30,11 @@ Feature: Cfs files by file extension
     Then deny object permission on the file extension with extension 'jpg' to users for action with redirection:
       | public user | cfs_files | authentication |
 
+  @javascript
   Scenario: See stats for file extensions on the dashboard
     Given I am logged in as an admin
     When I go to the dashboard
+    And I click on 'File Statistics'
     Then I should see all of:
       | 789 Bytes | 4.46 KB | 1 | 2 |
 
@@ -41,9 +45,11 @@ Feature: Cfs files by file extension
       | xml       | 1              | 789           |
 
   #This test is clearly not perfect, but should fail at least 1 in 3 times if there is a problem
+  @javascript
   Scenario: Random file
     Given I am logged in as an admin
     When I go to the dashboard
+    And I click on 'File Statistics'
     And I click on 'jpg'
     And I click on 'Random File'
     Then I should see none of:
