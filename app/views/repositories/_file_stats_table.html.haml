@@ -1,52 +1,54 @@
-%h3
-  - now = Time.now.strftime('%m/%d/%Y, %I:%M:%S%P %Z')
-  File Statistics (as of #{now})
-.row
-  .col-sm-6
-    %table.table.table-striped.table-bordered.table-condensed#file_stats_content_type
-      %thead
+- cache(@repository) do
+  - load_repository_dashboard_file_stats
+  %h3
+    - now = Time.now.strftime('%m/%d/%Y, %I:%M:%S%P %Z')
+    File Statistics (as of #{now})
+  .row
+    .col-sm-6
+      %table.table.table-striped.table-bordered.table-condensed#file_stats_content_type
+        %thead
+          %tr
+            %th File Format
+            %th Number of Files
+            %th Size
+        - cache([@repository, 'content_type']) do
+          %tbody
+            - @content_type_hashes.each do |info|
+              = cache(info) do
+                %tr
+                  - x = info['name']
+                  - y = info ['content_type_id']
+                  %td= link_to info['name'], cfs_files_content_type_path(info['content_type_id'])
+                  %td= info['file_count'].to_i.to_formatted_s(:delimited)
+                  %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_formatted_s(:human_size, precision: 3)
+
+    .col-sm-6
+      %table.table.table-striped.table-bordered.table-condensed#file_stats_file_extension
+        %thead
+          %tr
+            %th File Extension
+            %th Number of Files
+            %th Size
+        - cache([@repository, 'file_extension']) do
+          %tbody
+            - @file_extension_hashes.each do |info|
+              = cache(info) do
+                %tr
+                  %td= link_to info['extension'], cfs_files_file_extension_path(info['file_extension_id'])
+                  %td= info['file_count'].to_i.to_formatted_s(:delimited)
+                  %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_formatted_s(:human_size, precision: 3)
+
+  .row
+    .col-sm-12
+      %table.table.table-condensed#file_stats_summary
         %tr
-          %th File Format
-          %th Number of Files
-          %th Size
-      - cache([@repository, 'content_type']) do
-        %tbody
-          - @content_type_hashes.each do |info|
-            = cache(info) do
-              %tr
-                - x = info['name']
-                - y = info ['content_type_id']
-                %td= link_to info['name'], cfs_files_content_type_path(info['content_type_id'])
-                %td= info['file_count'].to_i.to_formatted_s(:delimited)
-                %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_formatted_s(:human_size, precision: 3)
+          %th{colspan: 2}
+            Total Bit Preservation Files:
+          %td= @bit_level_storage_summary['count'].to_i.to_s(:delimited)
+          %td
 
-  .col-sm-6
-    %table.table.table-striped.table-bordered.table-condensed#file_stats_file_extension
-      %thead
         %tr
-          %th File Extension
-          %th Number of Files
-          %th Size
-      - cache([@repository, 'file_extension']) do
-        %tbody
-          - @file_extension_hashes.each do |info|
-            = cache(info) do
-              %tr
-                %td= link_to info['extension'], cfs_files_file_extension_path(info['file_extension_id'])
-                %td= info['file_count'].to_i.to_formatted_s(:delimited)
-                %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_formatted_s(:human_size, precision: 3)
-
-.row
-  .col-sm-12
-    %table.table.table-condensed#file_stats_summary
-      %tr
-        %th{colspan: 2}
-          Total Bit Preservation Files:
-        %td= @bit_level_storage_summary['count'].to_i.to_s(:delimited)
-        %td
-
-      %tr
-        %th{colspan: 2}
-          Total Bit Preservation Size:
-        %td= (@bit_level_storage_summary['size']).to_d.to_formatted_s(:human_size, precision: 3)
-        %td
+          %th{colspan: 2}
+            Total Bit Preservation Size:
+          %td= (@bit_level_storage_summary['size']).to_d.to_formatted_s(:human_size, precision: 3)
+          %td
