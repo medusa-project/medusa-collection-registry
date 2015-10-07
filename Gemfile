@@ -125,4 +125,5 @@ group :test do
   gem 'selenium-webdriver'
   gem 'capybara-webkit'
   gem 'sunspot_test'
+  gem 'connection_pool'
 end
