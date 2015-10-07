@@ -46,7 +46,7 @@ Feature: File Group related file groups
     Then I should not see 'access_images'
     And the file group with title 'texts' should have 0 target file groups with title 'access_images'
 
-  #something went wrong with this between   
+  #something went wrong with this between commits  b5a341f8f and 90e4702c
   Scenario: We can attach a comment to a related file group
     When PENDING
     When I edit the file group with title 'texts'
