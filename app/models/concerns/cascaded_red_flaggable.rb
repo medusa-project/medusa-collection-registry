@@ -13,13 +13,13 @@ module CascadedRedFlaggable
 
   module ClassMethods
     def cascades_red_flags(options = {})
-      self.cascades_red_flags_parent_method = options[:parent] || nil
+      self.cascade_red_flags_parent_method = options[:parent] || nil
     end
   end
 
   def cascade_red_flag(red_flag)
-    CascadedRedFlagJoin.find_or_create_by(cascaded_ref_flaggable: self, red_flag_id: red_flag.id)
-    if self.cascaed_red_flag_parent
+    CascadedRedFlagJoin.find_or_create_by(cascaded_red_flaggable: self, red_flag_id: red_flag.id)
+    if self.cascaded_red_flag_parent
       self.cascaded_red_flag_parent.cascade_red_flag(red_flag)
     end
   end

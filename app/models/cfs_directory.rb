@@ -8,6 +8,7 @@ class CfsDirectory < ActiveRecord::Base
   include Breadcrumb
   include Eventable
   include CascadedEventable
+  include CascadedRedFlaggable
 
   has_many :subdirectories, class_name: 'CfsDirectory', as: :parent, dependent: :destroy
   has_many :cfs_files, dependent: :destroy
@@ -34,6 +35,7 @@ class CfsDirectory < ActiveRecord::Base
 
   breadcrumbs parent: :parent, label: :path
   cascades_events parent: :parent
+  cascades_red_flags parent: :parent
 
   #ensures that for FileGroup subclasses that we use FileGroup so that STI/polymorphism combination works properly
   def parent_type=(type)

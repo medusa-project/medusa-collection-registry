@@ -1,8 +1,8 @@
 class Repository < ActiveRecord::Base
   include ActiveDateChecker
-  include RedFlagAggregator
   include Breadcrumb
   include CascadedEventable
+  include CascadedRedFlaggable
   include MedusaAutoHtml
   include EmailPersonAssociator
 
@@ -21,9 +21,9 @@ class Repository < ActiveRecord::Base
 
   standard_auto_html(:notes)
 
-  aggregates_red_flags collections: :collections, label_method: :title
   breadcrumbs parent: nil, label: :title
   cascades_events parent: nil
+  cascades_red_flags parent: nil
 
   def total_size
     self.collections.collect { |c| c.total_size }.sum

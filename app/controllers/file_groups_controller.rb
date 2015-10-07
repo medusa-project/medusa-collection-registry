@@ -95,7 +95,7 @@ class FileGroupsController < ApplicationController
   end
 
   def red_flags
-    @red_flags = @file_group.all_red_flags
+    @red_flags = @file_group.cascaded_red_flags
     @aggregator = @file_group
   end
 

@@ -1,6 +1,7 @@
 class FileGroup < ActiveRecord::Base
   include Eventable
   include CascadedEventable
+  include CascadedRedFlaggable
   include Uuidable
   include Breadcrumb
   include ResourceTypeable
@@ -40,6 +41,7 @@ class FileGroup < ActiveRecord::Base
 
   breadcrumbs parent: :collection, label: :title
   cascades_events parent: :collection
+  cascades_red_flags parent: :collection
 
   STORAGE_LEVEL_HASH = {'external' => 'ExternalFileGroup',
                         'bit-level store' => 'BitLevelFileGroup',

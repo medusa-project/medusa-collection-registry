@@ -9,8 +9,7 @@
     %ul.dropdown-menu.dropdown-menu-right
       %li= link_to('View Events', events_file_group_path(@file_group))
       %li= link_to('Add Event', '#addEventModal', 'data-toggle' => 'modal', title: 'Add Event')
-  - if @file_group.respond_to?(:all_red_flags)
-    = red_flags_button(red_flags_file_group_path(@file_group))
+  = red_flags_button(red_flags_file_group_path(@file_group))
   = attachments_button(attachments_file_group_path(@file_group))
   .btn-group
     %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Run', value: 'Run', href: '#'}

@@ -5,10 +5,10 @@ class Collection < ActiveRecord::Base
   include MedusaAutoHtml
   include RegistersHandle
   include ModsHelper
-  include RedFlagAggregator
   include Uuidable
   include Breadcrumb
   include CascadedEventable
+  include CascadedRedFlaggable
   include ResourceTypeable
   include EmailPersonAssociator
 
@@ -44,9 +44,9 @@ class Collection < ActiveRecord::Base
 
   standard_auto_html(:description, :private_description, :notes)
 
-  aggregates_red_flags collections: :file_groups, label_method: :title
   breadcrumbs parent: :repository, label: :title
   cascades_events parent: :repository
+  cascades_red_flags parent: :repository
 
   def total_size
     self.bit_level_file_groups.collect { |fg| fg.file_size }.sum

@@ -120,7 +120,7 @@ class RepositoriesController < ApplicationController
   end
 
   def setup_red_flags
-    @red_flags = @repository.all_red_flags
+    @red_flags = @repository.cascaded_red_flags
     @aggregator = @repository
   end
 

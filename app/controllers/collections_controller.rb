@@ -84,7 +84,7 @@ class CollectionsController < ApplicationController
   end
 
   def red_flags
-    @red_flags = @collection.all_red_flags
+    @red_flags = @collection.cascaded_red_flags
     @aggregator = @collection
   end
 

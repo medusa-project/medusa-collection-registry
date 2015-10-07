@@ -1,12 +1,8 @@
 require 'fileutils'
 require 'set'
 class BitLevelFileGroup < FileGroup
-  include RedFlagAggregator
 
   has_many :virus_scans, dependent: :destroy, foreign_key: :file_group_id
-
-  aggregates_red_flags self: :cfs_red_flags, label_method: :title
-
   has_many :job_fits_directories, class_name: 'Job::FitsDirectory', foreign_key: :file_group_id
   has_many :job_cfs_initial_directory_assessments, class_name: 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
 
@@ -82,13 +78,6 @@ class BitLevelFileGroup < FileGroup
 
   def running_initial_assessments_file_count
     Job::CfsInitialDirectoryAssessment.where(file_group_id: self.id).sum(:file_count)
-  end
-
-  def cfs_red_flags
-    return [] unless self.cfs_directory
-    RedFlag.where(red_flaggable_type: 'CfsFile').
-        joins('JOIN cfs_files ON red_flags.red_flaggable_id = cfs_files.id').
-        where(cfs_files: {cfs_directory_id: self.cfs_directory.recursive_subdirectory_ids})
   end
 
   def file_size

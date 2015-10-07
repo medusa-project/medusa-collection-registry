@@ -4,6 +4,7 @@ require 'digest/md5'
 class CfsFile < ActiveRecord::Base
   include Eventable
   include CascadedEventable
+  include CascadedRedFlaggable
   include Uuidable
   include Breadcrumb
   include CfsFileAmqp
@@ -31,6 +32,7 @@ class CfsFile < ActiveRecord::Base
 
   breadcrumbs parent: :cfs_directory, label: :name
   cascades_events parent: :cfs_directory
+  cascades_red_flags parent: :cfs_directory
 
   searchable do
     text :name
