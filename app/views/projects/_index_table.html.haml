@@ -1,6 +1,7 @@
 %table.table.table-striped#projects
   %thead
     %tr
+      %th External Id
       %th Title
       %th Repository
       %th Collection
@@ -13,6 +14,7 @@
     - @projects.each do |project|
       - cache(project) do
         %tr
+          %td #{project.external_id}
           %td #{link_to project.title, project}
           %td #{link_to project.repository_title, project.repository}
           %td #{link_to project.collection_title, project.collection}

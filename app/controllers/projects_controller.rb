@@ -65,7 +65,7 @@ class ProjectsController < ApplicationController
 
   def allowed_params
     params[:project].permit(:title, :manager_email, :owner_email, :start_date,
-                            :status, :specifications, :summary, :collection_id)
+                            :status, :specifications, :summary, :collection_id, :external_id)
   end
 
 end

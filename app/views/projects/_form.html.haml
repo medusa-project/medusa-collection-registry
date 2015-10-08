@@ -4,6 +4,7 @@
     .col-sm-9
       = f.input :collection_id, as: :hidden, input_html: {value: @collection.id}
       = f.input :title
+      = f.input :external_id, label: 'External id'
       = f.input :manager_email, required: true
       = f.input :owner_email, required: true
       = f.input :start_date, as: :string, input_html: {class: 'datepicker', value: (@project.start_date.if_blank(Date.today)).to_s}

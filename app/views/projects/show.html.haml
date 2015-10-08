@@ -1,6 +1,7 @@
 = render layout: 'layout_single' do
 
   .row
+    = show_field @project, :external_id
     = show_field @project, :manager_email
     = show_field @project, :owner_email
     = show_field @project, :start_date

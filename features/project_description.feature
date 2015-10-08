@@ -5,9 +5,9 @@ Feature: Project description
 
   Background:
     Given every project with fields exists:
-      | title            | manager_email       | owner_email         | start_date | status    | specifications | summary          |
-      | Book Scanning    | scanman@example.com | scanown@example.com | 2015-09-16 | active    | Scanning specs | Scanning summary |
-      | Image Conversion | convman@example.com | convown@example.com | 2015-06-29 | completed | Image specs    | Image summary    |
+      | title            | manager_email       | owner_email         | start_date | status    | specifications | summary          | external_id |
+      | Book Scanning    | scanman@example.com | scanown@example.com | 2015-09-16 | active    | Scanning specs | Scanning summary | Buch001    |
+      | Image Conversion | convman@example.com | convown@example.com | 2015-06-29 | completed | Image specs    | Image summary    | Bild002    |
 
   Scenario: Navigate to project index from header links
     Given I am logged in as a visitor
@@ -19,7 +19,7 @@ Feature: Project description
     Given I am logged in as a visitor
     When I go to the project index page
     Then I should see all of:
-      | scanman@example.com | scanown@example.com | convman@example.com | convown@example.com | 2015-09-16 | 2015-06-29 | active | completed |
+      | scanman@example.com | scanown@example.com | convman@example.com | convown@example.com | 2015-09-16 | 2015-06-29 | active | completed | Buch001 | Bild002 |
     And I should see none of:
       | Scanning specs | Image specs | Scanning summary | Image summary |
 
@@ -28,7 +28,7 @@ Feature: Project description
     When I go to the project index page
     And I click on 'CSV'
     Then I should receive a file 'projects.csv' of type 'text/csv' matching:
-      | Book Scanning | scanman@example.com | scanown@example.com | 2015-09-16 | active | Scanning specs | Scanning summary | Image Conversion | convman@example.com | convown@example.com | 2015-06-29 | completed | Image specs | Image summary |
+      | Book Scanning | scanman@example.com | scanown@example.com | 2015-09-16 | active | Scanning specs | Scanning summary | Image Conversion | convman@example.com | convown@example.com | 2015-06-29 | completed | Image specs | Image summary | Buch001 | Bild002 |
 
   Scenario: Create project
     Given I am logged in as an admin
@@ -42,11 +42,12 @@ Feature: Project description
       | Start date     | 2015-09-15                       |
       | Specifications | Audio conversion specs           |
       | Summary        | Audio conversion project summary |
+      | External id    | Klingen003                       |
     And I select 'inactive' from 'Status'
     And I click on 'Create'
     And I should be on the view page for the project with title 'Audio'
     And I should see all of:
-      | Audio | audioman@example.com | audioowner@example.com | 2015-09-15 | inactive | Audio conversion specs | Audio conversion project summary |
+      | Audio | audioman@example.com | audioowner@example.com | 2015-09-15 | inactive | Audio conversion specs | Audio conversion project summary | Klingen003 |
     And the collection with title 'Dogs' should have 1 project with title 'Audio'
 
   Scenario: Edit and update project
@@ -73,7 +74,7 @@ Feature: Project description
     Given I am logged in as a visitor
     When I view the project with title 'Book Scanning'
     Then I should see all of:
-      | Book Scanning | scanman@example.com | scanown@example.com | 2015-09-16 | active | Scanning specs | Scanning summary |
+      | Book Scanning | scanman@example.com | scanown@example.com | 2015-09-16 | active | Scanning specs | Scanning summary | Buch001 |
 
   Scenario: Navigate from index page to edit page
     Given I am logged in as an admin

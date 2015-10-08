@@ -20,7 +20,7 @@ module ModelsToCsv
   end
 
   def projects_to_csv(projects, csv_options = {})
-    models_to_csv(projects, {id: 'Id', title: 'Title', manager_email: 'Manager',
+    models_to_csv(projects, {id: 'Id', external_id: 'External id', title: 'Title', manager_email: 'Manager',
                              owner_email: 'Owner', start_date: 'Start Date', status: 'Status',
                              specifications: 'Specifications', summary: 'Summary'}, csv_options)
   end

@@ -2584,7 +2584,8 @@ CREATE TABLE projects (
     summary text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    collection_id integer
+    collection_id integer,
+    external_id character varying DEFAULT ''::character varying
 );
 
 
@@ -5895,4 +5896,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151006191119');
 INSERT INTO schema_migrations (version) VALUES ('20151006210709');
 
 INSERT INTO schema_migrations (version) VALUES ('20151007154809');
+
+INSERT INTO schema_migrations (version) VALUES ('20151008152822');
 
