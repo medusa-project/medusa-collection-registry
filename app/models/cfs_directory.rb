@@ -15,6 +15,9 @@ class CfsDirectory < ActiveRecord::Base
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
   has_many :amazon_backups, -> { order 'date desc' }
   belongs_to :parent, polymorphic: true, touch: true
+  #This is only useful when you _know_ the object is a root cfs dir and the parent is therefore a file group. But
+  #it's needed for some queries.
+  belongs_to :parent_file_group, class_name: 'FileGroup', foreign_key: 'parent_id'
 
   validates :path, presence: true
   validates_uniqueness_of :path, scope: :parent_id, if: Proc.new { |record| record.parent_type == 'CfsDirectory' }

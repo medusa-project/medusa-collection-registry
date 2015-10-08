@@ -3,7 +3,14 @@ class ContentTypesController < ApplicationController
   before_action :find_content_type
 
   def cfs_files
-    @cfs_files = @content_type.cfs_files.order('name asc').page(params[:page]).per_page(params[:per_page] || 25)
+    @repository_id = params[:repository_id]
+    @cfs_files = if @repository_id
+                   @content_type.cfs_files.
+                       joins(cfs_directory: {root_cfs_directory: {parent_file_group: :collection}}).
+                       where('collections.repository_id = ?', @repository_id).order('cfs_files.name asc').page(params[:page]).per_page(params[:per_page] || 25)
+                 else
+                   @content_type.cfs_files.order('name asc').page(params[:page]).per_page(params[:per_page] || 25)
+                 end
   end
 
   def fits_batch
