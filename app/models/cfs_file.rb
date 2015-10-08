@@ -13,6 +13,7 @@ class CfsFile < ActiveRecord::Base
   belongs_to :content_type
   belongs_to :file_extension
   belongs_to :parent, class_name: 'CfsDirectory', foreign_key: 'cfs_directory_id'
+  has_one :file_format_test, dependent: :destroy
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
 

@@ -1966,6 +1966,40 @@ ALTER SEQUENCE file_format_profiles_id_seq OWNED BY file_format_profiles.id;
 
 
 --
+-- Name: file_format_tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE file_format_tests (
+    id integer NOT NULL,
+    cfs_file_id integer NOT NULL,
+    tester_email character varying NOT NULL,
+    date date NOT NULL,
+    pass boolean DEFAULT true NOT NULL,
+    notes text DEFAULT ''::text,
+    file_format_profile_id integer NOT NULL
+);
+
+
+--
+-- Name: file_format_tests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE file_format_tests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: file_format_tests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE file_format_tests_id_seq OWNED BY file_format_tests.id;
+
+
+--
 -- Name: file_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3430,6 +3464,13 @@ ALTER TABLE ONLY file_format_profiles_file_extensions_joins ALTER COLUMN id SET 
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY file_format_tests ALTER COLUMN id SET DEFAULT nextval('file_format_tests_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY file_groups ALTER COLUMN id SET DEFAULT nextval('file_groups_id_seq'::regclass);
 
 
@@ -3835,6 +3876,14 @@ ALTER TABLE ONLY file_format_profiles_file_extensions_joins
 
 ALTER TABLE ONLY file_format_profiles
     ADD CONSTRAINT file_format_profiles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: file_format_tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY file_format_tests
+    ADD CONSTRAINT file_format_tests_pkey PRIMARY KEY (id);
 
 
 --
@@ -4502,6 +4551,20 @@ CREATE UNIQUE INDEX index_file_extensions_on_extension ON file_extensions USING 
 --
 
 CREATE UNIQUE INDEX index_file_format_profiles_on_name ON file_format_profiles USING btree (name);
+
+
+--
+-- Name: index_file_format_tests_on_cfs_file_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_file_format_tests_on_cfs_file_id ON file_format_tests USING btree (cfs_file_id);
+
+
+--
+-- Name: index_file_format_tests_on_file_format_profile_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_file_format_tests_on_file_format_profile_id ON file_format_tests USING btree (file_format_profile_id);
 
 
 --
@@ -5478,11 +5541,27 @@ ALTER TABLE ONLY workflow_accrual_comments
 
 
 --
+-- Name: fk_rails_8c3cd8e21a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_tests
+    ADD CONSTRAINT fk_rails_8c3cd8e21a FOREIGN KEY (cfs_file_id) REFERENCES cfs_files(id);
+
+
+--
 -- Name: fk_rails_a920535132; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fixity_checks
     ADD CONSTRAINT fk_rails_a920535132 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_c986487b1e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_tests
+    ADD CONSTRAINT fk_rails_c986487b1e FOREIGN KEY (file_format_profile_id) REFERENCES file_format_profiles(id);
 
 
 --
@@ -5898,4 +5977,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151006210709');
 INSERT INTO schema_migrations (version) VALUES ('20151007154809');
 
 INSERT INTO schema_migrations (version) VALUES ('20151008152822');
+
+INSERT INTO schema_migrations (version) VALUES ('20151008210801');
 
