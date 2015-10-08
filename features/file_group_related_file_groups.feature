@@ -46,9 +46,7 @@ Feature: File Group related file groups
     Then I should not see 'access_images'
     And the file group with title 'texts' should have 0 target file groups with title 'access_images'
 
-  #something went wrong with this, so marking pending until I can diagnose
   Scenario: We can attach a comment to a related file group
-    When PENDING
     When I edit the file group with title 'texts'
     And I check 'access_images'
     And I fill in fields:

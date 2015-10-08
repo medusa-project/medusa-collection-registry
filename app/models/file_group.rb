@@ -108,7 +108,7 @@ class FileGroup < ActiveRecord::Base
   end
 
   def potential_target_file_groups
-    self.collection.file_groups.where(type: self.class.downstream_types)
+    self.collection.file_groups.where(type: self.class.downstream_types).order(:id)
   end
 
   #subclasses override this to give a list that contains the potential downstream classes for relating filegroups

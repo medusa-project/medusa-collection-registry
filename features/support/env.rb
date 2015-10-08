@@ -72,5 +72,15 @@ end
 
 ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
 
+Around('@selenium') do |scenario, block|
+  old_js_driver = Capybara.javascript_driver
+  begin
+    Capybara.javascript_driver = :selenium
+    block.call
+  ensure
+    Capybara.javascript_driver = old_js_driver
+  end
+end
+
 require 'capybara/email'
 World(Capybara::Email::DSL)
