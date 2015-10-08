@@ -71,6 +71,8 @@ class AttachmentsController < ApplicationController
         Collection
       when 'FileGroup', 'ExternalFileGroup', 'ObjectLevelFileGroup', 'BitLevelFileGroup'
         FileGroup
+      when 'Project'
+        Project
       else
         raise RuntimeError, "Unrecognized attachable type #{attachable_type_name}"
     end

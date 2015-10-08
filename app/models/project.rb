@@ -5,6 +5,7 @@ class Project < ActiveRecord::Base
   email_person_association(:manager)
   email_person_association(:owner)
 
+  has_many :attachments, as: :attachable, dependent: :destroy
   belongs_to :collection
 
   STATUSES = %w(active inactive completed)

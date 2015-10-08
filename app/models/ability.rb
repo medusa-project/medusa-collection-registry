@@ -11,7 +11,7 @@ class Ability
       end
     end
     #Attachments - must be done for each attachable, where the real check occurs
-    [Collection, FileGroup, BitLevelFileGroup, ObjectLevelFileGroup, ExternalFileGroup].each do |klass|
+    [Collection, FileGroup, BitLevelFileGroup, ObjectLevelFileGroup, ExternalFileGroup, Project].each do |klass|
       can [:create_attachment, :update_attachment], klass do |attachable|
         (attachable.is_a?(klass) and repository_manager?(user, attachable))
       end
@@ -24,7 +24,7 @@ class Ability
     can [:update, :create], Collection do |collection|
       repository_manager?(user, collection)
     end
-    can [:create, :update, :destroy], Project do |project|
+    can [:create, :update], Project do |project|
       repository_manager?(user, project)
     end
     #Events - must be done for each eventable, where the real check occurs

@@ -9,6 +9,7 @@
   .col-xs-4
     .btn-group.pull-right
       = index_button(projects_path)
+      = attachments_button(attachments_project_path(@project))
       = edit_button(@project)
 
 = yield

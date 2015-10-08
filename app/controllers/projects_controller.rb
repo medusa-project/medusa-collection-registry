@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
 
   before_action :require_logged_in
-  before_action :find_project, only: [:show, :edit, :update, :destroy]
+  before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments]
   include ModelsToCsv
 
   def index
@@ -55,6 +55,10 @@ class ProjectsController < ApplicationController
     else
       redirect_to :back, alert: 'Unknown error deleting project'
     end
+  end
+
+  def attachments
+    @attachable = @project
   end
 
   protected
