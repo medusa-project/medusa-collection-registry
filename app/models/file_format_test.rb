@@ -7,6 +7,7 @@ class FileFormatTest < ActiveRecord::Base
 
   validates_presence_of :file_format_profile_id, :date
   validates_uniqueness_of :cfs_file_id, allow_blank: false, collection: FileFormatProfile.order(:name)
+  validates_inclusion_of :pass, in: [true, false]
   validates :tester_email, allow_blank: false, email: true, presence: true
 
   delegate :name, to: :file_format_profile, prefix: true
