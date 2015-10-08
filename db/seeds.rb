@@ -62,4 +62,9 @@ ActiveRecord::Base.transaction do
     end
   end
 
+  #Some initial file format test reasons
+  ['saved with incorrect extension', 'corrupt', 'software unavailable'].each do |label|
+    FileFormatTestReason.find_or_create_by(label: label)
+  end
+
 end

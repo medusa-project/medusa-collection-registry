@@ -68,7 +68,7 @@ end
 
 And /^every (.*) with fields exists:$/ do |object_type, table|
   table.hashes.each do |hash|
-    FactoryGirl.create object_type.gsub(' ', '_'), hash
+    FactoryGirl.create(object_type.gsub(' ', '_'), hash)
   end
 end
 

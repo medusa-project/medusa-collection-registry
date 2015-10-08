@@ -18,6 +18,7 @@ class CfsFilesController < ApplicationController
     @file_group = @file.file_group
     @directory = @file.cfs_directory
     @preview_viewer_type = find_preview_viewer_type(@file)
+    @file_format_test = @file.file_format_test
     respond_to do |format|
       format.html
       format.json

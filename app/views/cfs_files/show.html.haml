@@ -26,3 +26,21 @@
               %li= red_flag.message
     .col-sm-8
       = render "preview_viewer_#{@preview_viewer_type}"
+
+  - if @file_format_test.present?
+    %hr
+    .row
+      #file-format-test.col-sm-12
+        %h4 File Format Test
+        = show_field @file_format_test, :tester_email
+        = show_field @file_format_test, :date
+        = show_value @file_format_test.file_format_profile_name, 'File Format Profile'
+        = show_value @file_format_test.pass_label, 'Status'
+        = show_field @file_format_test, :notes
+        - if @file_format_test.file_format_test_reasons.present?
+          %div
+            %strong File Format Test Failure Reasons
+            %ul
+              - @file_format_test.file_format_test_reasons.each do |reason|
+                %li= reason.label
+

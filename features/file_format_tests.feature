@@ -23,13 +23,13 @@ Feature: File Format Tests
     And I select 'TIFF' from 'File format profile'
     And I check all of:
       | corrupt | software unavailable |
-    And I choose 'Pass'
+    And I choose 'Fail'
     And I click on 'Create'
     Then I should be on the view page for the cfs file with name 'Ruthie'
     And I should see all of:
-      | fluffypuffy@example.com | 2015-10-08 | Pass | corrupt | software unavailable | Random stuff |
+      | fluffypuffy@example.com | 2015-10-08 | Fail | corrupt | software unavailable | Random stuff |
     And I should see none of:
-      | saved with incorrect extension |
+      | saved with incorrect extension | Pass |
     And the cfs file with name 'Ruthie' should have an associated file format test
 
   Scenario: Edit file format test of existing cfs file
@@ -44,12 +44,12 @@ Feature: File Format Tests
     And I select 'TIFF' from 'File format profile'
     And I check all of:
       | corrupt | software unavailable |
-    And I choose 'Pass'
+    And I choose 'Fail'
     And I click on 'Update'
     Then I should be on the view page for the cfs file with name 'Ruthie'
     And I should see all of:
-      | fluffypuffy@example.com | 2015-10-08 | Pass | corrupt | software unavailable | Random stuff |
+      | fluffypuffy@example.com | 2015-10-08 | Fail | corrupt | software unavailable | Random stuff |
     And I should see none of:
-      | saved with incorrect extension | sugar@example.com | 2015-10-06 | false | Sugie notes |
+      | saved with incorrect extension | sugar@example.com | 2015-10-06 | false | Sugie notes | Pass |
     And the cfs file with name 'Ruthie' should have an associated file format test
 

@@ -92,6 +92,7 @@ MedusaCollectionRegistry::Application.routes.draw do
     post :fits_batch, on: :member
   end
   resources :file_format_profiles
+  resources :file_format_tests, only: %i(new create edit update)
   resources :searches, only: [] do
     post :filename, on: :collection
     get :filename, on: :collection

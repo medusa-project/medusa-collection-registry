@@ -1966,6 +1966,37 @@ ALTER SEQUENCE file_format_profiles_id_seq OWNED BY file_format_profiles.id;
 
 
 --
+-- Name: file_format_test_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE file_format_test_reasons (
+    id integer NOT NULL,
+    label character varying NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: file_format_test_reasons_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE file_format_test_reasons_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: file_format_test_reasons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE file_format_test_reasons_id_seq OWNED BY file_format_test_reasons.id;
+
+
+--
 -- Name: file_format_tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1978,6 +2009,36 @@ CREATE TABLE file_format_tests (
     notes text DEFAULT ''::text,
     file_format_profile_id integer NOT NULL
 );
+
+
+--
+-- Name: file_format_tests_file_format_test_reasons_joins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE file_format_tests_file_format_test_reasons_joins (
+    id integer NOT NULL,
+    file_format_test_id integer,
+    file_format_test_reason_id integer
+);
+
+
+--
+-- Name: file_format_tests_file_format_test_reasons_joins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE file_format_tests_file_format_test_reasons_joins_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: file_format_tests_file_format_test_reasons_joins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE file_format_tests_file_format_test_reasons_joins_id_seq OWNED BY file_format_tests_file_format_test_reasons_joins.id;
 
 
 --
@@ -3464,7 +3525,21 @@ ALTER TABLE ONLY file_format_profiles_file_extensions_joins ALTER COLUMN id SET 
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY file_format_test_reasons ALTER COLUMN id SET DEFAULT nextval('file_format_test_reasons_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY file_format_tests ALTER COLUMN id SET DEFAULT nextval('file_format_tests_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins ALTER COLUMN id SET DEFAULT nextval('file_format_tests_file_format_test_reasons_joins_id_seq'::regclass);
 
 
 --
@@ -3879,6 +3954,22 @@ ALTER TABLE ONLY file_format_profiles
 
 
 --
+-- Name: file_format_test_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY file_format_test_reasons
+    ADD CONSTRAINT file_format_test_reasons_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: file_format_tests_file_format_test_reasons_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
+    ADD CONSTRAINT file_format_tests_file_format_test_reasons_joins_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: file_format_tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4225,6 +4316,20 @@ CREATE INDEX ffpfej_file_format_profile_id_idx ON file_format_profiles_file_exte
 
 
 --
+-- Name: fft_fftr_joins_fftr_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX fft_fftr_joins_fftr_id_index ON file_format_tests_file_format_test_reasons_joins USING btree (file_format_test_reason_id);
+
+
+--
+-- Name: fft_fftr_joins_unique_pairs; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX fft_fftr_joins_unique_pairs ON file_format_tests_file_format_test_reasons_joins USING btree (file_format_test_id, file_format_test_reason_id);
+
+
+--
 -- Name: fixity_object; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4557,7 +4662,7 @@ CREATE UNIQUE INDEX index_file_format_profiles_on_name ON file_format_profiles U
 -- Name: index_file_format_tests_on_cfs_file_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_file_format_tests_on_cfs_file_id ON file_format_tests USING btree (cfs_file_id);
+CREATE UNIQUE INDEX index_file_format_tests_on_cfs_file_id ON file_format_tests USING btree (cfs_file_id);
 
 
 --
@@ -5453,6 +5558,14 @@ ALTER TABLE ONLY workflow_accrual_jobs
 
 
 --
+-- Name: fk_rails_1db34f98ff; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
+    ADD CONSTRAINT fk_rails_1db34f98ff FOREIGN KEY (file_format_test_id) REFERENCES file_format_tests(id);
+
+
+--
 -- Name: fk_rails_2214d78ff1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5482,6 +5595,14 @@ ALTER TABLE ONLY workflow_accrual_jobs
 
 ALTER TABLE ONLY file_format_profiles_file_extensions_joins
     ADD CONSTRAINT fk_rails_264edd65c3 FOREIGN KEY (file_format_profile_id) REFERENCES file_format_profiles(id);
+
+
+--
+-- Name: fk_rails_2c4d650843; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
+    ADD CONSTRAINT fk_rails_2c4d650843 FOREIGN KEY (file_format_test_reason_id) REFERENCES file_format_test_reasons(id);
 
 
 --
@@ -5979,4 +6100,8 @@ INSERT INTO schema_migrations (version) VALUES ('20151007154809');
 INSERT INTO schema_migrations (version) VALUES ('20151008152822');
 
 INSERT INTO schema_migrations (version) VALUES ('20151008210801');
+
+INSERT INTO schema_migrations (version) VALUES ('20151008224057');
+
+INSERT INTO schema_migrations (version) VALUES ('20151008224141');
 

@@ -1,0 +1,12 @@
+= simple_form_for @file_format_test, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
+  .row
+    = render partial: 'shared/form_sidebar', locals: {f: f, object: @file_format_test, cancel_return: @cfs_file}
+
+    .col-md-9
+      = f.input :cfs_file_id, as: :hidden
+      = f.input :tester_email, type: :email
+      = f.input :date, as: :string, input_html: {class: 'datepicker'}
+      = f.association :file_format_profile, include_blank: false
+      = f.input :pass, as: :radio_buttons, collection: [%w(Pass true), %w(Fail false)], label_method: :first, value_method: :last, wrapper: :horizontal_radio_and_checkboxes, label: 'Status'
+      = f.input :notes
+      = f.association :file_format_test_reasons, as: :check_boxes, collection: FileFormatTestReason.order(:label).all, wrapper: :horizontal_radio_and_checkboxes, label_method: :label
