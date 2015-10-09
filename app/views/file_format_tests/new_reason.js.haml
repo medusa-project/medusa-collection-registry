@@ -1,0 +1,8 @@
+$("#new_reason_label").val("");
+- if @new_reason.blank?
+  - if @label.blank?
+    alert("Cannot create a blank reason.");
+  - else
+    alert("There is already a reason with label #{@label}.");
+- else
+  add_reason(#{@new_reason.id}, "#{@label}");

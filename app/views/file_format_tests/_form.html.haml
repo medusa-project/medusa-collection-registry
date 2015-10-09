@@ -10,3 +10,8 @@
       = f.input :pass, as: :radio_buttons, collection: [%w(Pass true), %w(Fail false)], label_method: :first, value_method: :last, wrapper: :horizontal_radio_and_checkboxes, label: 'Status'
       = f.input :notes
       = f.association :file_format_test_reasons, as: :check_boxes, collection: FileFormatTestReason.order(:label).all, wrapper: :horizontal_radio_and_checkboxes, label_method: :label
+.row
+  .col-md-4.col-md-offset-4
+    = form_for :new_reason, url: new_reason_file_format_tests_path, remote: true do |f|
+      = f.button 'Add Reason'
+      = f.text_field :label

@@ -18,7 +18,7 @@ class FileFormatTestsController < ApplicationController
   def new
     @cfs_file = CfsFile.find(params[:cfs_file_id])
     @file_format_test = FileFormatTest.new(date: Date.today, cfs_file_id: @cfs_file.id, tester_email: current_user.email,
-                                           file_format_profile: @cfs_file.random_file_format_profile)
+                                           file_format_profile: @cfs_file.random_file_format_profile, pass: true)
   end
 
   def create
@@ -29,6 +29,15 @@ class FileFormatTestsController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  def new_reason
+    @label = params[:new_reason][:label].strip
+    @new_reason = if @label.blank? or FileFormatTestReason.find_by(label: @label)
+                    nil
+                  else
+                    FileFormatTestReason.create!(label: @label)
+                  end
   end
 
   protected

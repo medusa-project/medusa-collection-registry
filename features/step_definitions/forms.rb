@@ -68,6 +68,11 @@ And(/^I choose '([^']*)'$/) do |string|
   choose(string)
 end
 
+Then(/^the checkbox '([^']*)' should be disabled and unchecked$/) do |label|
+  expect(page).to have_unchecked_field(label, disabled: true)
+end
+
+
 And(/^I attach fixture file '([^']*)' to '([^']*)'$/) do |file, field|
   attach_file(field, File.join(Rails.root, 'features', 'fixtures', file))
 end
