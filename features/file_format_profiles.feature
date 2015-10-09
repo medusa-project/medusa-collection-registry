@@ -5,8 +5,8 @@ Feature: File Format Profiles
 
   Background:
     Given every file format profile with fields exists:
-      | name   | software  | software_version | os_environment | os_version | notes              |
-      | images | Fotostore | 1.2.3            | Linux          | 3.2        | Photo manipulation |
+      | name   | software  | software_version | os_environment | os_version | notes              | status |
+      | images | Fotostore | 1.2.3            | Linux          | 3.2        | Photo manipulation | active |
     And there are cfs directories with fields:
       | path |
       | root |
@@ -25,7 +25,7 @@ Feature: File Format Profiles
   Scenario: Index of file format profiles
     When I go to the file format profiles index page
     Then I should see all of:
-      | images | Fotostore | (1.2.3) | Linux | (3.2) |
+      | images | Fotostore | (1.2.3) | Linux | (3.2) | active |
 
   Scenario: Go from index of file format profiles to show view of one
     When I go to the file format profiles index page
@@ -35,7 +35,7 @@ Feature: File Format Profiles
   Scenario: View file format profile
     When I view the file format profile with name 'images'
     Then I should see all of:
-      | images | Fotostore | 1.2.3 | Linux | 3.2 | Photo manipulation |
+      | images | Fotostore | 1.2.3 | Linux | 3.2 | Photo manipulation | active |
 
   Scenario: Go from index of file format profiles to edit one
     When I go to the file format profiles index page
@@ -56,12 +56,13 @@ Feature: File Format Profiles
       | OS environment   | Windows          |
       | OS version       | XP2000           |
       | Notes            | Picture changing |
+    And I select 'inactive' from 'Status'
     And I click on 'Update'
     Then I should be on the view page for the file format profile with name 'pictures'
     Then I should see none of:
       | images | Fotostore | 1.2.3 | Linux | 3.2 | Photo manipulation |
     And I should see all of:
-      | pictures | Picturemart | 4.5 | Windows | XP2000 | Picture changing |
+      | pictures | Picturemart | 4.5 | Windows | XP2000 | Picture changing | inactive |
 
   Scenario: Delete file format profile from edit view
     When I edit the file format profile with name 'images'

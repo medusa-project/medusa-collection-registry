@@ -1878,7 +1878,8 @@ CREATE TABLE file_format_profiles (
     os_version character varying,
     notes text,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    status character varying DEFAULT 'active'::character varying NOT NULL
 );
 
 
@@ -6104,4 +6105,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151008210801');
 INSERT INTO schema_migrations (version) VALUES ('20151008224057');
 
 INSERT INTO schema_migrations (version) VALUES ('20151008224141');
+
+INSERT INTO schema_migrations (version) VALUES ('20151009180849');
 

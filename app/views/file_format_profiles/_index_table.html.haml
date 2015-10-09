@@ -2,6 +2,7 @@
   %thead
     %tr
       %th Name
+      %th Status
       %th Software (Version)
       %th OS (Version)
       %th Content Types
@@ -13,6 +14,7 @@
         - cache(file_format_profile) do
           %tr
             %td= link_to(file_format_profile.name, file_format_profile)
+            %td= file_format_profile.status
             %td
               #{file_format_profile.software} (#{file_format_profile.software_version})
             %td

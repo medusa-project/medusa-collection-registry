@@ -4,6 +4,7 @@
 
     .col-sm-9
       = f.input :name
+      = f.input :status, as: :select, include_blank: false, collection: FileFormatProfile::STATUSES
       = f.input :software
       = f.input :software_version
       = f.input :os_environment, label: 'OS environment'

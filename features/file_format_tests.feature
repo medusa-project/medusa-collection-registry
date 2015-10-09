@@ -6,8 +6,11 @@ Feature: File Format Tests
   Background:
     Given each attached cfs file with name exists:
       | Ruthie | Buster |
-    And each file format profile with name exists:
-      | JPEG2000 | TIFF |
+    And every file format profile with fields exists:
+      | name     | status   |
+      | JPEG2000 | active   |
+      | TIFF     | active   |
+      | GIF      | inactive |
     And every file format test with fields exists:
       | tester_email      | date       | pass  | notes       |
       | sugar@example.com | 2015-10-06 | false | Sugie notes |
@@ -78,3 +81,11 @@ Feature: File Format Tests
     And I click on 'Create'
     Then I should be on the view page for the cfs file with name 'Ruthie'
     And I should see 'expired format'
+
+  Scenario: Inactive file format profiles should not show
+    Given I am logged in as a manager
+    When I view the cfs file with name 'Ruthie'
+    And I click on 'Create File format test'
+    Then I should see all of:
+      | JPEG2000 | TIFF |
+    And I should not see 'GIF'
