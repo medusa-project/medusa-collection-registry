@@ -4,10 +4,11 @@ class FileFormatTestsController < ApplicationController
   before_action :find_file_format_test, only: [:edit, :update]
 
   def edit
-
+    authorize! :update_file_format_test, @cfs_file
   end
 
   def update
+    authorize! :update_file_format_test, @cfs_file
     if @file_format_test.update_attributes(allowed_update_params)
       redirect_to @cfs_file
     else
@@ -17,12 +18,14 @@ class FileFormatTestsController < ApplicationController
 
   def new
     @cfs_file = CfsFile.find(params[:cfs_file_id])
+    authorize! :create_file_format_test, @cfs_file
     @file_format_test = FileFormatTest.new(date: Date.today, cfs_file_id: @cfs_file.id, tester_email: current_user.email,
                                            file_format_profile: @cfs_file.random_file_format_profile, pass: true)
   end
 
   def create
     @cfs_file = CfsFile.find(params[:file_format_test][:cfs_file_id])
+    authorize! :create_file_format_test, @cfs_file
     @file_format_test = FileFormatTest.create(allowed_create_params)
     if @file_format_test.save
       redirect_to @cfs_file
@@ -32,6 +35,8 @@ class FileFormatTestsController < ApplicationController
   end
 
   def new_reason
+    cfs_file = CfsFile.find(params[:cfs_file_id])
+    authorize! :create_file_format_test_reason, cfs_file
     @label = params[:new_reason][:label].strip
     @new_reason = if @label.blank? or FileFormatTestReason.find_by(label: @label)
                     nil

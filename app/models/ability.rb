@@ -48,6 +48,9 @@ class Ability
     can :accrue, CfsDirectory do |directory|
       repository_manager?(user, directory)
     end
+    can [:create_file_format_test, :update_file_format_test, :create_file_format_test_reason], CfsFile do |cfs_file|
+      repository_manager?(user, cfs_file)
+    end
   end
 
 

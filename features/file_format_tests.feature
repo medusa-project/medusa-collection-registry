@@ -4,7 +4,7 @@ Feature: File Format Tests
   I want to record information about how cfs files fare when we try to operate on them in appropriate ways
 
   Background:
-    Given each cfs file with name exists:
+    Given each attached cfs file with name exists:
       | Ruthie | Buster |
     And each file format profile with name exists:
       | JPEG2000 | TIFF |
