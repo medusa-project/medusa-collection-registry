@@ -17,7 +17,6 @@ Feature: File Format Tests
     When I view the cfs file with name 'Ruthie'
     And I click on 'Create File format test'
     And I fill in fields:
-      | Tester email | fluffypuffy@example.com |
       | Date         | 2015-10-08              |
       | Notes        | Random stuff            |
     And I select 'TIFF' from 'File format profile'
@@ -27,7 +26,7 @@ Feature: File Format Tests
     And I click on 'Create'
     Then I should be on the view page for the cfs file with name 'Ruthie'
     And I should see all of:
-      | fluffypuffy@example.com | 2015-10-08 | Fail | corrupt | software unavailable | Random stuff |
+      | manager@example.com | 2015-10-08 | Fail | corrupt | software unavailable | Random stuff |
     And I should see none of:
       | saved with incorrect extension | Pass |
     And the cfs file with name 'Ruthie' should have an associated file format test

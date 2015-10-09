@@ -28,7 +28,7 @@
           %li= link_to 'JSON', cfs_file_path(@file, format: :json)
       = view_button(view_cfs_file_path(@file))
       - if @file.file_format_test.present?
-        = fa_icon_link_to('Edit File format test', 'trophy', edit_file_format_test_path(@file.file_format_test), class: 'btn btn-default')
+        = fa_icon_link_to('Edit File format test', 'balance-scale', edit_file_format_test_path(@file.file_format_test), class: 'btn btn-default')
       - else
-        = fa_icon_link_to('Create File format test', 'trophy', new_file_format_test_path(cfs_file_id: @file.id), class: 'btn btn-default')
+        = fa_icon_link_to('Create File format test', 'balance-scale', new_file_format_test_path(cfs_file_id: @file.id), class: 'btn btn-default')
 = yield
