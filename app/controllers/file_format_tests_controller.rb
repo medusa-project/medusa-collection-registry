@@ -17,7 +17,8 @@ class FileFormatTestsController < ApplicationController
 
   def new
     @cfs_file = CfsFile.find(params[:cfs_file_id])
-    @file_format_test = FileFormatTest.new(date: Date.today, cfs_file_id: @cfs_file.id, tester_email: current_user.email)
+    @file_format_test = FileFormatTest.new(date: Date.today, cfs_file_id: @cfs_file.id, tester_email: current_user.email,
+                                           file_format_profile: @cfs_file.random_file_format_profile)
   end
 
   def create

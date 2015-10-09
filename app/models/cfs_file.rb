@@ -1,5 +1,6 @@
 require 'rest_client'
 require 'digest/md5'
+require 'set'
 
 class CfsFile < ActiveRecord::Base
   include Eventable
@@ -204,6 +205,13 @@ class CfsFile < ActiveRecord::Base
       cfs_file.ensure_current_file_extension
       cfs_file.save!
     end
+  end
+
+  def random_file_format_profile
+    file_extension_profiles = self.file_extension.file_format_profiles.to_set
+    content_type_profiles = self.content_type.file_format_profiles.to_set
+    file_extension_profiles.intersection(content_type_profiles).to_a.sample ||
+        file_extension_profiles.union(content_type_profiles).to_a.sample
   end
 
   protected
