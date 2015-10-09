@@ -17,7 +17,7 @@
       %tbody
         - cache(cache_key_for_all(BitLevelFileGroup)) do
           - @amazon_info.each do |id, info|
-            - cache hash do
+            - cache(info) do
               %tr
                 %td= id
                 %td= link_to(info[:title], file_group_path(id))
