@@ -317,6 +317,8 @@ GEM
     rake (10.4.2)
     redcarpet (3.3.2)
     ref (2.0.0)
+    render_anywhere (0.0.12)
+      rails (>= 3.0.7)
     request_store (1.2.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
@@ -493,6 +495,7 @@ DEPENDENCIES
   progress_bar
   rails (~> 4.2)
   rails3-jquery-autocomplete
+  render_anywhere
   responders
   rest-client
   rspec-rails

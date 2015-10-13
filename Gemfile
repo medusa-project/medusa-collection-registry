@@ -94,6 +94,8 @@ gem 'font-awesome-rails'
 gem 'sunspot_rails'
 gem 'progress_bar'
 
+gem 'render_anywhere', require: false
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl'
