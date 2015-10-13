@@ -1,0 +1,12 @@
+.row.vertical-align
+  .col-xs-8
+    = render layout: 'layouts/page_header' do
+      - if content_for?(:title)
+        = yield(:title)
+      - else
+        Archived Accrual Job
+  .col-xs-4
+    .btn-group.pull-right
+      = index_button(archived_accrual_jobs_path)
+
+= yield

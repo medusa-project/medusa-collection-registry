@@ -1,0 +1,16 @@
+= render layout: 'layout_single' do
+
+  .row
+    - if @archived_accrual_job.file_group.present?
+      = show_value link_to(@archived_accrual_job.file_group.title, @archived_accrual_job.file_group), 'File Group'
+    - else
+      = show_value 'No longer in system', 'File Group'
+    = show_field @archived_accrual_job, :staging_path
+    = show_field @archived_accrual_job, :state
+    = show_value @archived_accrual_job.user.email, 'User Email'
+    - if @archived_accrual_job.amazon_backup
+      = show_value @archived_accrual_job.amazon_backup.completed? ? 'completed' : 'pending', 'Amazon Backup'
+  %hr
+  .row
+    %h4 Report
+    %div.col-md-offset-1= @archived_accrual_job.report

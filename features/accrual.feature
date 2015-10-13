@@ -66,7 +66,7 @@ Feature: File accrual
     And I should see none of:
       | more.txt |
 
-  @javascript @current
+  @javascript
   Scenario: No conflict accrual, accepted
     When I am logged in as a manager
     And I navigate to my accrual data for bag 'accrual-disjoint-bag' at path 'dogs'
@@ -93,7 +93,7 @@ Feature: File accrual
       | state     |
       | completed |
 
-  @javascript @current
+  @javascript
   Scenario: No conflict accrual, aborted by repository admin
     When I am logged in as a manager
     And I navigate to my accrual data for bag 'accrual-disjoint-bag' at path 'dogs'
