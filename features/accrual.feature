@@ -89,6 +89,9 @@ Feature: File accrual
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
     And the file group with title 'Dogs' should have an event with key 'amazon_backup_completed' performed by 'manager@example.com'
+    And the archived accrual job with fields should exist:
+      | state     |
+      | completed |
 
   @javascript
   Scenario: No conflict accrual, aborted by repository admin
@@ -107,6 +110,9 @@ Feature: File accrual
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
     And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual aborted'
+    And the archived accrual job with fields should exist:
+      | state   |
+      | aborted |
 
   @javascript
   Scenario: No conflict accrual, aborted by preservation admin
