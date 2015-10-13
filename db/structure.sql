@@ -1329,6 +1329,44 @@ ALTER SEQUENCE amazon_backups_id_seq OWNED BY amazon_backups.id;
 
 
 --
+-- Name: archived_accrual_jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE archived_accrual_jobs (
+    id integer NOT NULL,
+    report text,
+    file_group_id integer,
+    amazon_backup_id integer,
+    user_id integer NOT NULL,
+    workflow_accrual_job_id integer NOT NULL,
+    state text NOT NULL,
+    staging_path text NOT NULL,
+    cfs_directory_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: archived_accrual_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE archived_accrual_jobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: archived_accrual_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE archived_accrual_jobs_id_seq OWNED BY archived_accrual_jobs.id;
+
+
+--
 -- Name: assessments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3057,6 +3095,57 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
+-- Name: view_bit_level_file_group_cfs_root_stats_two_ways; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW view_bit_level_file_group_cfs_root_stats_two_ways AS
+ SELECT fg.id AS file_group_id,
+    round((fg.total_file_size * (1073741824)::numeric)) AS file_group_size,
+    fg.total_files AS file_group_count,
+    d.id AS cfs_directory_id,
+    d.tree_size AS cfs_directory_size,
+    d.tree_count AS cfs_directory_count
+   FROM (file_groups fg
+     LEFT JOIN cfs_directories d ON ((fg.id = d.parent_id)))
+  WHERE ((d.parent_type)::text = 'FileGroup'::text);
+
+
+--
+-- Name: view_cfs_directories_file_stats_two_ways; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW view_cfs_directories_file_stats_two_ways AS
+ SELECT d.id,
+    d.tree_count,
+    d.tree_size,
+    (( SELECT count(*) AS count
+           FROM cfs_files f
+          WHERE (f.cfs_directory_id = d.id)) + ( SELECT sum(COALESCE(sd.tree_count, 0)) AS sum
+           FROM cfs_directories sd
+          WHERE (((sd.parent_type)::text = 'CfsDirectory'::text) AND (sd.parent_id = d.id)))) AS computed_count,
+    (( SELECT sum(COALESCE(f.size, (0)::numeric)) AS sum
+           FROM cfs_files f
+          WHERE (f.cfs_directory_id = d.id)) + ( SELECT sum(COALESCE(sd.tree_size, (0)::numeric)) AS sum
+           FROM cfs_directories sd
+          WHERE (((sd.parent_type)::text = 'CfsDirectory'::text) AND (sd.parent_id = d.id)))) AS computed_size
+   FROM cfs_directories d;
+
+
+--
+-- Name: view_cfs_directories_inconsistent_file_stats; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW view_cfs_directories_inconsistent_file_stats AS
+ SELECT view_cfs_directories_file_stats_two_ways.id,
+    view_cfs_directories_file_stats_two_ways.tree_count,
+    view_cfs_directories_file_stats_two_ways.tree_size,
+    view_cfs_directories_file_stats_two_ways.computed_count,
+    view_cfs_directories_file_stats_two_ways.computed_size
+   FROM view_cfs_directories_file_stats_two_ways
+  WHERE ((view_cfs_directories_file_stats_two_ways.tree_count <> view_cfs_directories_file_stats_two_ways.computed_count) OR (view_cfs_directories_file_stats_two_ways.tree_size <> view_cfs_directories_file_stats_two_ways.computed_size));
+
+
+--
 -- Name: view_cfs_files_to_parents; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -3408,6 +3497,13 @@ ALTER TABLE ONLY access_systems ALTER COLUMN id SET DEFAULT nextval('access_syst
 --
 
 ALTER TABLE ONLY amazon_backups ALTER COLUMN id SET DEFAULT nextval('amazon_backups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archived_accrual_jobs ALTER COLUMN id SET DEFAULT nextval('archived_accrual_jobs_id_seq'::regclass);
 
 
 --
@@ -3824,6 +3920,14 @@ ALTER TABLE ONLY access_systems
 
 ALTER TABLE ONLY amazon_backups
     ADD CONSTRAINT amazon_backups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: archived_accrual_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY archived_accrual_jobs
+    ADD CONSTRAINT archived_accrual_jobs_pkey PRIMARY KEY (id);
 
 
 --
@@ -4384,6 +4488,34 @@ CREATE UNIQUE INDEX index_amazon_backups_on_cfs_directory_id_and_date ON amazon_
 --
 
 CREATE INDEX index_amazon_backups_on_updated_at ON amazon_backups USING btree (updated_at);
+
+
+--
+-- Name: index_archived_accrual_jobs_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_archived_accrual_jobs_on_amazon_backup_id ON archived_accrual_jobs USING btree (amazon_backup_id);
+
+
+--
+-- Name: index_archived_accrual_jobs_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_archived_accrual_jobs_on_cfs_directory_id ON archived_accrual_jobs USING btree (cfs_directory_id);
+
+
+--
+-- Name: index_archived_accrual_jobs_on_file_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_archived_accrual_jobs_on_file_group_id ON archived_accrual_jobs USING btree (file_group_id);
+
+
+--
+-- Name: index_archived_accrual_jobs_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_archived_accrual_jobs_on_user_id ON archived_accrual_jobs USING btree (user_id);
 
 
 --
@@ -5591,6 +5723,14 @@ ALTER TABLE ONLY workflow_accrual_jobs
 
 
 --
+-- Name: fk_rails_242362ff14; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archived_accrual_jobs
+    ADD CONSTRAINT fk_rails_242362ff14 FOREIGN KEY (cfs_directory_id) REFERENCES cfs_directories(id);
+
+
+--
 -- Name: fk_rails_264edd65c3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5636,6 +5776,14 @@ ALTER TABLE ONLY job_fits_content_type_batches
 
 ALTER TABLE ONLY cascaded_event_joins
     ADD CONSTRAINT fk_rails_5f90452cff FOREIGN KEY (event_id) REFERENCES events(id);
+
+
+--
+-- Name: fk_rails_62dc01f91f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archived_accrual_jobs
+    ADD CONSTRAINT fk_rails_62dc01f91f FOREIGN KEY (file_group_id) REFERENCES file_groups(id);
 
 
 --
@@ -5727,11 +5875,27 @@ ALTER TABLE ONLY job_fits_content_type_batches
 
 
 --
+-- Name: fk_rails_d8a84160a7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archived_accrual_jobs
+    ADD CONSTRAINT fk_rails_d8a84160a7 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_f411565e2a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles_content_types_joins
     ADD CONSTRAINT fk_rails_f411565e2a FOREIGN KEY (content_type_id) REFERENCES content_types(id);
+
+
+--
+-- Name: fk_rails_f584154b33; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archived_accrual_jobs
+    ADD CONSTRAINT fk_rails_f584154b33 FOREIGN KEY (amazon_backup_id) REFERENCES amazon_backups(id);
 
 
 --
@@ -6107,4 +6271,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151008224057');
 INSERT INTO schema_migrations (version) VALUES ('20151008224141');
 
 INSERT INTO schema_migrations (version) VALUES ('20151009180849');
+
+INSERT INTO schema_migrations (version) VALUES ('20151013195837');
 

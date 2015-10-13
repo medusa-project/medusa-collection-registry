@@ -226,6 +226,7 @@ MESSAGE
 
   def perform_aborting
     Workflow::AccrualMailer.aborted(self).deliver_now
+    archive('aborted')
     be_in_state_and_requeue('end')
   end
 
@@ -235,6 +236,7 @@ MESSAGE
 
   def perform_email_done
     Workflow::AccrualMailer.done(self).deliver_now
+    archive('completed')
     be_in_state_and_requeue('end')
     #TODO - perhaps delete staged content, perhaps not
   end
@@ -258,6 +260,11 @@ MESSAGE
       else
         raise RuntimeError, 'Job approved from unallowed initial state'
     end
+  end
+
+  def archive(completion_state)
+    ArchivedAccrualJob.create!(workflow_accrual_job_id: self.id, file_group_id: file_group.id, cfs_directory_id: cfs_directory_id,
+    amazon_backup_id: amazon_backup_id, user_id: user_id, state: completion_state, staging_path: staging_path, report: render_report)
   end
 
   def abort_and_proceed
