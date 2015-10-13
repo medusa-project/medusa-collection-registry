@@ -69,8 +69,18 @@ end
 
 namespace :sunspot do
 
+  desc "Reindex sunspot indexes"
   task :reindex do
     execute_rake 'sunspot:reindex'
+  end
+
+end
+
+namespace :deploy do
+
+  desc "Seed database"
+  task :seed do
+    execute_rake "db:seed"
   end
 
 end
