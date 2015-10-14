@@ -1,0 +1,21 @@
+%table#file_format_tests.table.table-striped
+  %thead
+    %tr
+      %th File
+      %th Tester
+      %th Test Date
+      %th File Type
+      %th Status
+      %th Reasons
+      %th Comments
+  %tbody
+    - @file_format_tests.find_each do |file_format_test|
+      - cache(file_format_test.cfs_file) do
+        %tr
+          %td= file_format_test.cfs_file_name
+          %td= file_format_test.tester_email
+          %td= file_format_test.date
+          %td= file_format_test.content_type_name
+          %td= file_format_test.pass_label
+          %td= file_format_test.reasons_string
+          %td= file_format_test.notes

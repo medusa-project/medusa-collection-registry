@@ -24,4 +24,10 @@ module ModelsToCsv
                              owner_email: 'Owner', start_date: 'Start Date', status: 'Status',
                              specifications: 'Specifications', summary: 'Summary'}, csv_options)
   end
+
+  def file_format_tests_to_csv(file_format_tests, csv_options = {})
+    models_to_csv(file_format_tests, {cfs_file_name: 'File name', tester_email: 'Tester email', date: 'Test date',
+                                      content_type_name: 'File type', pass_label: 'Status', reasons_string: 'Reasons',
+                                      notes: 'Comments'}, csv_options)
+  end
 end
