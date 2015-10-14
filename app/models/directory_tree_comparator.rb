@@ -48,5 +48,5 @@ class DirectoryTreeComparator < Object
   def directories_equal?
     source_only_paths.blank? and target_only_paths.blank? and different_sizes_paths.blank?
   end
-  
+
 end
