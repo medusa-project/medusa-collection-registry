@@ -9,7 +9,7 @@ Feature: Record structured rights data for collections and file groups
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | title     | external_file_location |
+      | title    | external_file_location |
       | grainger | Grainger               |
 
   Scenario: Every collection should have rights attached
@@ -68,3 +68,22 @@ Feature: Record structured rights data for collections and file groups
     Then I should be on the view page for the file group with title 'grainger'
     And I should see 'license'
     And I should not see 'copyright'
+
+  Scenario: Enter custom copyright statement
+    When I edit the file group with title 'grainger'
+    And I select 'Custom copyright statement' from 'Copyright statement'
+    And I fill in fields:
+      | Custom Copyright Statement | My custom statement |
+    And I click on 'Update'
+    Then I should be on the view page for the file group with title 'grainger'
+    And I should see all of:
+      | Custom copyright statement | Custom Copyright Statement | My custom statement |
+
+  @javascript
+  Scenario: The custom copyright field is only enabled when the correct copyright statement type is selected
+    When I edit the file group with title 'grainger'
+    And I click on 'Rights Metadata'
+    Then the text area 'Custom Copyright Statement' should be disabled
+    When I select 'Custom copyright statement' from 'Copyright statement'
+    Then the text area 'Custom Copyright Statement' should be enabled
+

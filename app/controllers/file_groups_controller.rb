@@ -121,7 +121,8 @@ class FileGroupsController < ApplicationController
   #and is guaranteed to have both a collection and rights declaration, making both of those just updates.
   def handle_nested_rights_declaration(params)
     rights_params = params.delete(:rights_declaration) || ActionController::Parameters.new
-    rights_params = rights_params.permit(:rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions)
+    rights_params = rights_params.permit(:rights_basis, :copyright_jurisdiction, :copyright_statement,
+                                         :access_restrictions, :custom_copyright_statement)
     FileGroup.transaction do
       yield
       @file_group.rights_declaration.update_attributes!(rights_params)

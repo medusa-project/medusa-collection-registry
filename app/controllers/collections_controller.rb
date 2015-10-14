@@ -106,7 +106,8 @@ class CollectionsController < ApplicationController
     params[:collection].permit(:access_url, :description, :private_description, :end_date, :notes,
                                :ongoing, :published, :repository_id, :start_date, :title,
                                :preservation_priority_id, :package_profile_id, :contact_email, :external_id,
-                               rights_declaration_attributes: [:rights_basis, :copyright_jurisdiction, :copyright_statement, :access_restrictions],
+                               rights_declaration_attributes: [:rights_basis, :copyright_jurisdiction, :copyright_statement,
+                                                               :access_restrictions, :custom_copyright_statement],
                                resource_type_ids: [], access_system_ids: []
     )
   end

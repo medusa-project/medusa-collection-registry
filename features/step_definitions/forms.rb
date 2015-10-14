@@ -72,6 +72,13 @@ Then(/^the checkbox '([^']*)' should be disabled and unchecked$/) do |label|
   expect(page).to have_unchecked_field(label, disabled: true)
 end
 
+Then(/^the text area '([^']*)' should be disabled$/) do |label|
+  expect(page).to have_field(label, disabled: true)
+end
+
+Then(/^the text area '([^']*)' should be enabled$/) do |label|
+  expect(page).to have_field(label, disabled: false)
+end
 
 And(/^I attach fixture file '([^']*)' to '([^']*)'$/) do |file, field|
   attach_file(field, File.join(Rails.root, 'features', 'fixtures', file))

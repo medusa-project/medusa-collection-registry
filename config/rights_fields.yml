@@ -28,6 +28,7 @@ copyright_statements:
   pd: Public domain.
   pdpi: These records are in the public domain. Please contact us if you would like to purchase a high-resolution copy of the image.
   unkn: The holder of copyright for these records is unknown. Please contact us if you would like to use these materials, or if you can help us identify the copyright holder.
+  cus: Custom copyright statement
 
 default_access_restrictions: DISSEMINATE/DISALLOW
 access_restrictions:
