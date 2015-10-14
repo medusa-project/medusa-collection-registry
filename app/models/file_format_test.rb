@@ -12,7 +12,7 @@ class FileFormatTest < ActiveRecord::Base
 
   delegate :name, to: :file_format_profile, prefix: true
   delegate :name, to: :cfs_file, prefix: true
-  delegate :content_type_name, to: :cfs_file
+  delegate :content_type, :content_type_name, to: :cfs_file
 
   before_save :clear_reasons_on_pass
 
