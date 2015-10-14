@@ -45,4 +45,8 @@ class DirectoryTreeComparator < Object
     self.different_sizes_paths = all_paths.select {|path, sizes| sizes[:target].present? and sizes[:source].present? and sizes[:target] != sizes[:source]}
   end
 
+  def directories_equal?
+    source_only_paths.blank? and target_only_paths.blank? and different_sizes_paths.blank?
+  end
+  
 end
