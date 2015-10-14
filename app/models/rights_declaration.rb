@@ -1,5 +1,5 @@
 class RightsDeclaration < ActiveRecord::Base
-  belongs_to :rights_attachable, polymorphic: true, touch: true
+  belongs_to :rights_declarable, polymorphic: true, touch: true
   before_validation :set_defaults
   before_validation :maybe_clear_custom_copyright
   cattr_accessor :rights_bases, :default_rights_basis, :copyright_jurisdictions, :default_copyright_jurisdiction,
