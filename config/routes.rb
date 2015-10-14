@@ -136,6 +136,8 @@ MedusaCollectionRegistry::Application.routes.draw do
       get :view_report, on: :member
     end
   end
+  resources :archived_accrual_jobs, only: [:show, :index]
+
 
   match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
 
