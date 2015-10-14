@@ -85,6 +85,14 @@ namespace :deploy do
 
 end
 
+namespace :medusa do
+
+  desc "Clear rails cache"
+  task :clear_rails_cache do
+    execute_rake "medusa:rails_cache:clear"
+  end
+end
+
 def execute_rake(task)
   on roles(:app) do
     within release_path do

@@ -1,6 +1,7 @@
 -#must pass containing_form and rights_declaration as locals
 #rights-declaration
   = containing_form.simple_fields_for :rights_declaration, rights_declaration do |rd|
+    = rd.input :id, as: :hidden, value: rights_declaration.id
     = rd.input :rights_basis, as: :select, collection: RightsDeclaration.rights_bases, include_blank: false
     = rd.input :copyright_jurisdiction, as: :select, collection: copyright_jurisdiction_select_items, include_blank: false
     = rd.input :copyright_statement, as: :select, include_blank: true, collection: copyright_statement_select_items, input_html: {class: 'update_rights_form'}
