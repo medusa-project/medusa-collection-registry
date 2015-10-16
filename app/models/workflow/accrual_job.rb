@@ -21,7 +21,7 @@ class Workflow::AccrualJob < Workflow::Base
   validates_presence_of :cfs_directory_id, :user_id
   validates_uniqueness_of :staging_path, scope: :cfs_directory_id
 
-  STATE_HASH = {'start' => 'Start', 'check' => 'Checking for existing files',
+  STATE_HASH = {'start' => 'Start', 'check' => 'Checking for existing files', 'check_sync' => 'Checking sync',
                 'initial_approval' => 'Awaiting approval',
                 'copying' => 'Copying', 'admin_approval' => 'Awaiting admin approval',
                 'amazon_backup' => 'Amazon backup', 'amazon_backup_completed' => 'Amazon backup completed',
@@ -59,12 +59,21 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_start
-    be_in_state_and_requeue('check')
+    be_in_state_and_requeue('check_sync')
+  end
+
+  def perform_check_sync
+    comparator = DirectoryTreeComparator.new(staging_remote_path, staging_local_path)
+    if comparator.directories_equal?
+      be_in_state_and_requeue('check')
+    else
+      raise RuntimeError, "storage.library and condo copies of accrual directory are not in sync"
+    end
   end
 
   def perform_check
     add_stats
-    source_path = staging_source_path
+    source_path = staging_local_path
     duplicate_files(source_path).each do |duplicate_file|
       file_changed = file_changed?(duplicate_file, source_path)
       workflow_accrual_conflicts.create!(path: duplicate_file, different: file_changed)
@@ -74,7 +83,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def add_stats
-    source_path = staging_source_path
+    source_path = staging_local_path
     workflow_accrual_files.each do |file|
       file.size = File.size(File.join(source_path, file.name))
       file.save!
@@ -138,7 +147,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def internal_perform_copying(overwrite: false)
-    source_path = staging_source_path
+    source_path = staging_local_path
     target_path = cfs_directory.absolute_path
     copy_entries_and_remove(workflow_accrual_files, source_path, target_path, overwrite: overwrite)
     copy_entries_and_remove(workflow_accrual_directories, source_path, target_path, overwrite: overwrite)
@@ -159,9 +168,14 @@ class Workflow::AccrualJob < Workflow::Base
                                  note: "Accrual from #{staging_path}", actor_email: user.email)
   end
 
-  def staging_source_path
+  def staging_local_path
     staging_root, relative_path = staging_root_and_relative_path
     staging_root.full_local_path_to(relative_path)
+  end
+
+  def staging_remote_path
+    staging_root, relative_path = staging_root_and_relative_path
+    staging_root.full_remote_path_to(relative_path)
   end
 
   #note that this means remove the db model from the accrual job, not the files from the source filesystem
