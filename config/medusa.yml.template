@@ -19,7 +19,9 @@ development:
   #For each root the name gives a tag to be shown to start in the browser when accruing
   #The local path is the local path to the directory in the condo mount
   #the remote path is the path to a local mount of a storage.library (or other) directory which
-  #we expect has been synced to the local path - but having this lets us check the sync
+  #we expect has been synced to the local path - but having this lets us check the sync.
+  #Note that if there is no sync (probably for development and/or test) you can just the local and remote
+  #paths to be the same. The sync check will still happen, but will be trivial.
   #Some of this may go away if we go to ADS
   accrual_storage:
     roots:
