@@ -1,0 +1,3 @@
+class AccrualStorageRoot < Object
+
+end

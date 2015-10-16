@@ -1,5 +1,5 @@
-And(/^the bag '(.*)' is staged in the root named '(.*)' at path '(.*)'$/) do |bag_name, root_name, path|
-  root = StagingStorage.instance.root_named(root_name)
+And(/^the bag '(.*)' is staged in the accrual root named '(.*)' at path '(.*)'$/) do |bag_name, root_name, path|
+  root = AccrualStorage.instance.root_named(root_name)
   staging_target = File.join(root.local_path, path)
   FileUtils.rm_rf(staging_target)
   FileUtils.mkdir_p(staging_target)
@@ -79,7 +79,7 @@ end
 
 When /^I navigate to my accrual data for bag '(.*)' at path '(.*)'$/ do |bag_name, path|
   steps %Q(
-  When the bag '#{bag_name}' is staged in the root named 'staging-1' at path '#{path}'
+  When the bag '#{bag_name}' is staged in the accrual root named 'staging-1' at path '#{path}'
   And I view the bit level file group with title 'Dogs'
   And I click on 'Run'
   And I wait 1 second

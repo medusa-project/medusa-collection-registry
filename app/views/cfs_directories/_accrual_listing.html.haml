@@ -2,7 +2,7 @@
   %div
     %h5 Roots:
     %ul.list-group
-      - StagingStorage.instance.roots.each do |root|
+      - AccrualStorage.instance.roots.each do |root|
         %li.list-group-item= link_to root.name, @accrual.child_display_path(root.name), remote: true
 - else
   %div

@@ -54,7 +54,7 @@ class Workflow::AccrualJob < Workflow::Base
     path_components = staging_path.split('/').drop(1)
     staging_root_name = path_components.shift
     relative_path = path_components.join('/')
-    staging_root = StagingStorage.instance.root_named(staging_root_name)
+    staging_root = AccrualStorage.instance.root_named(staging_root_name)
     return staging_root, relative_path
   end
 
