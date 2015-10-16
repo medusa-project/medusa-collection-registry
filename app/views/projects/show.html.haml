@@ -1,15 +1,15 @@
 = render layout: 'layout_single' do
 
   .row
-    = show_field @project, :external_id, 'External id'
-    = show_field @project, :manager_email
-    = show_field @project, :owner_email
-    = show_field @project, :start_date
-    = show_field @project, :status
-  %hr
-  .row
-    %h4 Summary
-    %div.col-md-offset-1= @project.summary.html_safe
-  .row
-    %h4 Specifications
-    %div.col-md-offset-1= @project.specifications.html_safe
+    .col-md-4
+      = show_field @project, :external_id, 'External id'
+      = show_field @project, :manager_email
+      = show_field @project, :owner_email
+      = show_field @project, :start_date
+      = show_field @project, :status
+    .col-md-8
+      %h4 Summary
+      %div.col-md-offset-1= @project.summary.html_safe
+      %hr
+      %h4 Specifications
+      %div.col-md-offset-1= @project.specifications.html_safe
