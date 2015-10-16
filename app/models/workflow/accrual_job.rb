@@ -67,7 +67,11 @@ class Workflow::AccrualJob < Workflow::Base
     if comparator.directories_equal?
       be_in_state_and_requeue('check')
     else
-      raise RuntimeError, "storage.library and condo copies of accrual directory are not in sync"
+      raise RuntimeError,
+            %Q(storage.library and condo copies of accrual directory are not in sync.
+#{comparator.source_only_paths.count} files are only present in the source copy
+#{comparator.target_only_paths.count} files are only present in the target copy
+#{comparator.different_sizes_paths.count} files are present in both copies but with different sizes)
     end
   end
 
