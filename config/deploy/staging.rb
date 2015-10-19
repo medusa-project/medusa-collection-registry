@@ -16,6 +16,7 @@
 # used to set extended properties on the server.
 
 server 'medusatest.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
+ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
 # Custom SSH Options
 # ==================
