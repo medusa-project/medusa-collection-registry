@@ -6,6 +6,7 @@ set :repo_url, 'https://github.com/medusa-project/medusa-collection-registry.git
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
+set :branch, ENV['CAP_BRANCH'] if ENV['CAP_BRANCH']
 
 # Default deploy_to directory is /var/www/my_app_name
 set :home, '/services/medusa'
