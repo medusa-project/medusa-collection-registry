@@ -30,8 +30,7 @@ gem 'jbuilder'
 #custom gem that uses a web service to generate fits.
 gem 'fits', '~> 1.0.6', git: 'git://github.com/medusa-project/fits.git'
 
-#fixes a problem caused by our old postgres version
-gem 'delayed_job_active_record', git: 'git://github.com/medusa-project/delayed_job_active_record.git'
+gem 'delayed_job_active_record'
 #Pin because later versions seem to have a problem with doing actions on the delayed jobs - they are aware of the problem
 gem 'delayed_job_web', '1.2.5'
 gem 'daemons'
@@ -114,6 +113,7 @@ group :development do
 end
 
 group :test do
+  gem 'cucumber', '~> 2.0'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'simplecov'
