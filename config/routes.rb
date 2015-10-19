@@ -66,6 +66,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   end
 
   resources :projects, concerns: :attachable
+  resources :items
   resources :producers
   resources :access_systems, concerns: :collection_indexer
   resources :package_profiles, concerns: :collection_indexer

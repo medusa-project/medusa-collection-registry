@@ -45,7 +45,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
-
+    @items = @project.items
   end
 
   def destroy
