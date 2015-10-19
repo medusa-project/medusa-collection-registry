@@ -72,8 +72,11 @@ module ApplicationHelper
 
   def cache_key_for_all(klass)
     count = klass.count
-    max_updated_at = klass.maximum(:updated_at)
+    max_updated_at = klass.maximum(:updated_at) rescue nil
     "#{klass.to_s.pluralize.underscore}/all-#{count}-#{max_updated_at}"
+  rescue
+    #if there is an error force the cache to clear
+    UUID.generate
   end
 
   #TODO Obviously this could be much more general in the future
