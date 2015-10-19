@@ -113,7 +113,7 @@ group :development do
 end
 
 group :test do
-  gem 'cucumber', '~> 2.0'
+  #gem 'cucumber', '~> 2.0'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'simplecov'
