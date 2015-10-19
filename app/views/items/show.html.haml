@@ -1,0 +1,18 @@
+= render layout: 'layout_single' do
+
+  .row
+    .col-md-12
+      = show_field @item, :barcode
+      = show_field @item, :bib_id
+      = show_field @item, :oclc_number
+      = show_field @item, :call_number
+      = show_field @item, :book_name
+      = show_field @item, :title
+      = show_field @item, :author
+      = show_field @item, :imprint
+      = show_field @item, :photo_date
+      = show_field @item, :special_notes
+      = show_field @item, :tif_completed
+      = show_field @item, :qa_tif
+      = show_field @item, :transferred_to_medusa
+      = show_field @item, :transferred_to_hathi

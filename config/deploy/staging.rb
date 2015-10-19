@@ -16,7 +16,7 @@
 # used to set extended properties on the server.
 
 server 'medusatest.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
-#set :branch, 'add-projects'
+set :branch, 'project-items'
 
 # Custom SSH Options
 # ==================
