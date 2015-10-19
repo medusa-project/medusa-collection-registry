@@ -29,12 +29,9 @@ function initialize_data_table(tableSelector, extra_args) {
   var args = $.extend(true, {}, default_datatable_args, extra_args);
   $(function () {
     try {
-      var tables = $(tableSelector);
-      if (tables.length > 0) {
-        $(tableSelector).dataTable(args);
-        add_back_to_top_button(tableSelector);
-      }
-    } catch (err) {
+      $(tableSelector).dataTable(args);
+      add_back_to_top_button(tableSelector);
+    } catch(err) {
 
     }
   })
