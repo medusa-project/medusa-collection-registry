@@ -29,6 +29,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   concern :downloadable, Proc.new { member { get 'download' } }
   concern :collection_indexer, Proc.new { member { get 'collections' } }
   concern :fixity_checkable, Proc.new { member { post 'fixity_check' } }
+  concern :autocomplete_email, Proc.new {collection {get :autocomplete_user_email}}
 
   resources :collections, concerns: %i(eventable red_flaggable public assessable attachable)
 
@@ -43,9 +44,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :assessments, only: [:show, :edit, :update, :new, :create, :destroy]
   resources :attachments, only: [:show, :edit, :update, :new, :create, :destroy], concerns: :downloadable
 
-  resources :events do
-    get :autocomplete_user_email, on: :collection
-  end
+  resources :events, concerns: :autocomplete_email
 
   [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
     resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy],
@@ -65,7 +64,7 @@ MedusaCollectionRegistry::Application.routes.draw do
     post 'unflag', on: :member
   end
 
-  resources :projects, concerns: :attachable
+  resources :projects, concerns: [:attachable, :autocomplete_email]
   resources :items
   resources :producers
   resources :access_systems, concerns: :collection_indexer

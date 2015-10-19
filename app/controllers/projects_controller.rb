@@ -4,6 +4,8 @@ class ProjectsController < ApplicationController
   before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments]
   include ModelsToCsv
 
+  autocomplete :user, :email
+
   def index
     @projects = Project.order('title ASC')
     respond_to do |format|
