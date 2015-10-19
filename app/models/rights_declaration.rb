@@ -46,8 +46,12 @@ copyright_statements default_copyright_statement access_restrictions default_acc
     self.access_restrictions == 'DISSEMINATE'
   end
 
+  def self.custom_copyright_key
+    'cus'
+  end
+
   def custom_copyright?
-    self.copyright_statement == 'cus'
+    self.copyright_statement == self.class.custom_copyright_key
   end
 
   def maybe_clear_custom_copyright
