@@ -57,7 +57,7 @@ gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootst
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'rails3-jquery-autocomplete'
+gem 'rails-jquery-autocomplete'
 
 gem 'nokogiri'
 
