@@ -30,9 +30,9 @@ GIT
 
 GIT
   remote: git://github.com/thoughtbot/paperclip.git
-  revision: 6e0c9e992a8e65a41e2ab30af639b6274d379371
+  revision: 8339e0fce5d88312e4be20b40d6a49649487ca2f
   specs:
-    paperclip (4.3.0)
+    paperclip (4.3.1)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
       cocaine (~> 0.5.5)
@@ -195,7 +195,7 @@ GEM
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
     hashie (3.4.2)
-    highline (1.6.21)
+    highline (1.7.8)
     hodel_3000_compliant_logger (0.1.1)
     html2haml (2.0.0)
       erubis (~> 2.7.0)
@@ -204,7 +204,7 @@ GEM
       ruby_parser (~> 3.5)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
-    httparty (0.13.5)
+    httparty (0.13.7)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
@@ -275,8 +275,8 @@ GEM
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
     pr_geohash (1.0.0)
-    progress_bar (1.0.3)
-      highline (~> 1.6.1)
+    progress_bar (1.0.5)
+      highline (~> 1.6)
       options (~> 2.3.0)
     rack (1.6.4)
     rack-protection (1.5.3)
@@ -322,7 +322,7 @@ GEM
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     rinku (1.5.1)
-    rsolr (1.0.12)
+    rsolr (1.0.13)
       builder (>= 2.1.2)
     rspec (3.3.0)
       rspec-core (~> 3.3.0)
