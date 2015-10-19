@@ -4,6 +4,8 @@ class ProjectsController < ApplicationController
   before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments]
   include ModelsToCsv
 
+  autocomplete :user, :email
+
   def index
     @projects = Project.order('title ASC')
     respond_to do |format|
@@ -45,7 +47,11 @@ class ProjectsController < ApplicationController
   end
 
   def show
-
+    @items = @project.items
+    respond_to do |format|
+      format.html
+      format.csv {send_data items_to_csv(@items), type: 'text/csv', filename: 'items.csv'}
+    end
   end
 
   def destroy

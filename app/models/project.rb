@@ -6,6 +6,7 @@ class Project < ActiveRecord::Base
   email_person_association(:owner)
 
   has_many :attachments, as: :attachable, dependent: :destroy
+  has_many :items, -> {order 'created_at desc'}, dependent: :destroy
   belongs_to :collection
 
   STATUSES = %w(active inactive completed)

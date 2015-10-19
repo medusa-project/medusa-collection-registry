@@ -7,9 +7,19 @@
         Project:
       %small #{@project.title}
   .col-xs-4
-    .btn-group.pull-right
-      = index_button(projects_path)
-      = attachments_button(attachments_project_path(@project))
-      = edit_button(@project)
+    .btn-toolbar.pull-right
+      .btn-group
+        = index_button(projects_path)
+        = attachments_button(attachments_project_path(@project))
+        .btn-group
+          %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+            Export
+            %span.caret
+          %ul.dropdown-menu
+            %li= link_to 'CSV', project_path(@project, format: 'csv')
+        = edit_button(@project)
+      - if content_for?(:extra_links)
+        .btn-group
+          = yield(:extra_links)
 
 = yield

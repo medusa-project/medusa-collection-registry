@@ -1,0 +1,12 @@
+.row.vertical-align
+  .col-xs-8
+    = render layout: 'layouts/page_header' do
+      - if content_for?(:title)
+        = yield(:title)
+      - else
+        Item
+  .col-xs-4
+    .btn-group.pull-right
+      = index_button(project_path(@item.project))
+
+= yield
