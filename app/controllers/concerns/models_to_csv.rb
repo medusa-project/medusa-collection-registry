@@ -25,6 +25,10 @@ module ModelsToCsv
                              specifications: 'Specifications', summary: 'Summary'}, csv_options)
   end
 
+  def items_to_csv(items, csv_options = {})
+    models_to_csv(items, {barcode: 'Barcode', bib_id: 'Bib Id', book_name: 'Book Name', title: 'Title', author: 'Author'})
+  end
+
   def file_format_tests_to_csv(file_format_tests, csv_options = {})
     models_to_csv(file_format_tests, {cfs_file_name: 'File name', tester_email: 'Tester email', date: 'Test date',
                                       content_type_name: 'File type', pass_label: 'Status', reasons_string: 'Reasons',

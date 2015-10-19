@@ -16,6 +16,13 @@ Feature: Project Items
     And I should see all of:
       | xyz123 | 54321 | Animal | Dogs | Ruthie | abc789 | 98765 | Cats | CatCat |
 
+  Scenario: Obtain CSV file of items
+    Given I am logged in as a manager
+    When I view the project with title 'Scanning'
+    And I click on 'CSV'
+    Then I should receive a file 'items.csv' of type 'text/csv' matching:
+      | xyz123 | 54321 | Animal | Dogs | Ruthie | abc789 | 98765 | Cats | CatCat |
+
   Scenario: View individual item page
     Given I am logged in as a manager
     When I view the item with barcode 'xyz123'
