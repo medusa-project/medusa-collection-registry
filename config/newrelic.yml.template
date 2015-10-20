@@ -194,6 +194,7 @@ test:
   # It almost never makes sense to turn on the agent when running
   # unit, functional or integration tests or the like.
   monitor_mode: false
+  explain_enabled: false
 
 # Turn on the agent in production for 24x7 monitoring.  New Relic
 # testing shows an average performance impact of < 5 ms per
