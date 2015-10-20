@@ -54,23 +54,24 @@ DatabaseCleaner.strategy = :transaction
 # Possible values are :truncation and :transaction
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
-#Cucumber::Rails::Database.javascript_strategy = :truncation, {:except => %w[storage_media resource_types preservation_priorities static_pages]}
-Cucumber::Rails::Database.javascript_strategy = :transaction
+Cucumber::Rails::Database.javascript_strategy = :truncation,
+    {except:  %w(storage_media resource_types preservation_priorities static_pages file_format_test_reasons)}
+#Cucumber::Rails::Database.javascript_strategy = :transaction
 
 def last_json
   page.source
 end
 
-class ActiveRecord::Base
-  mattr_accessor :shared_connection
-  @@shared_connection = nil
+# class ActiveRecord::Base
+#   mattr_accessor :shared_connection
+#   @@shared_connection = nil
+#
+#   def self.connection
+#     @@shared_connection || ConnectionPool::Wrapper.new(:size => 1) { retrieve_connection }
+#   end
+# end
 
-  def self.connection
-    @@shared_connection || ConnectionPool::Wrapper.new(:size => 1) { retrieve_connection }
-  end
-end
-
-ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
+#ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
 
 Around('@selenium') do |scenario, block|
   old_js_driver = Capybara.javascript_driver
