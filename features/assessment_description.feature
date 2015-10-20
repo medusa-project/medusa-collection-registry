@@ -90,10 +90,10 @@ Feature: Assessment description
     And The collection titled 'Dogs' should have an assessment with date '2012-02-10'
 
     Examples:
-    |user_type|
-    |admin    |
-    |manager  |
-  
+      | user_type |
+      | admin     |
+      | manager   |
+
   Scenario: Autofill user id for new assessment
     Given I am logged in as an admin
     When I view the collection with title 'Dogs'
