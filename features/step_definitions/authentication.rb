@@ -2,19 +2,19 @@ Given /^I am logged in as '([^']*)'$/ do |uid|
   login_user(uid: uid)
 end
 
-Given(/^I am logged in as a medusa admin$/) do
+Given(/^I am logged in as an? medusa admin$/) do
   login_user(uid: 'admin@example.com')
 end
 
-Given /^I am logged in as a visitor$/ do
+Given /^I am logged in as an? visitor$/ do
   login_user(uid: 'visitor@example.com')
 end
 
-Given /^I am logged in as an admin$/ do
+Given /^I am logged in as an? admin$/ do
   login_user(uid: 'admin@example.com')
 end
 
-Given /^I am logged in as a manager$/ do
+Given /^I am logged in as an? manager$/ do
   login_user(uid: 'manager@example.com')
 end
 

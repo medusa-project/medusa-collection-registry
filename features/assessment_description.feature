@@ -20,18 +20,18 @@ Feature: Assessment description
     And I should see all of:
       | Once over | external_files | medium |
 
-  Scenario: View an assessment as manager
-    Given I am logged in as a manager
+  Scenario Outline: View an assessment
+    Given I am logged in as a <user_type>
     When I view the assessment with date '2012-01-09'
     Then I should be on the view page for the assessment with date '2012-01-09'
 
-  Scenario: View an assessment as visitor
-    Given I am logged in as a visitor
-    When I view the assessment with date '2012-01-09'
-    Then I should be on the view page for the assessment with date '2012-01-09'
+    Examples:
+      | user_type |
+      | manager   |
+      | visitor   |
 
-  Scenario: Edit an assessment
-    Given I am logged in as an admin
+  Scenario Outline: Edit an assessment
+    Given I am logged in as a <user_type>
     When I edit the assessment with date '2012-01-09'
     And I fill in fields:
       | Notes | Images of canines |
@@ -40,15 +40,10 @@ Feature: Assessment description
     And I should see 'Images of canines'
     And I should not see 'Pictures of dogs'
 
-  Scenario: Edit an assessment as a manager
-    Given I am logged in as a manager
-    When I edit the assessment with date '2012-01-09'
-    And I fill in fields:
-      | Notes | Images of canines |
-    And I press 'Update'
-    Then I should be on the view page for the assessment with date '2012-01-09'
-    And I should see 'Images of canines'
-    And I should not see 'Pictures of dogs'
+    Examples:
+      | user_type |
+      | admin     |
+      | manager   |
 
   Scenario: Navigate from the assessment view page to owning collection
     Given I am logged in as an admin
@@ -69,8 +64,8 @@ Feature: Assessment description
     Then I should be on the view page for the collection with title 'Dogs'
     And The collection titled 'Dogs' should not have an assessment with date '2012-01-09'
 
-  Scenario: Create a new assessment
-    Given I am logged in as an admin
+  Scenario Outline: Create a new assessment
+    Given I am logged in as an <user_type>
     When I view the collection with title 'Dogs'
     And I click on 'Assessments'
     And I click on 'Add Assessment'
@@ -94,31 +89,11 @@ Feature: Assessment description
       | I like dogs | Random | Unstructured | 2013-02-14 | Heterogeneous | 100 | 50 |
     And The collection titled 'Dogs' should have an assessment with date '2012-02-10'
 
-  Scenario: Create a new assessment as a manager
-    Given I am logged in as a manager
-    When I view the collection with title 'Dogs'
-    And I click on 'Assessments'
-    And I click on 'Add Assessment'
-    And I fill in fields:
-      | Preservation risks  | There are corrupt files too |
-      | Notes               | I like dogs                 |
-      | Date                | 2012-02-10                  |
-      | Name                | Initial assessment          |
-      | Naming conventions  | Random                      |
-      | Directory structure | Unstructured                |
-      | Last access date    | 2013-02-14                  |
-      | File format         | Heterogeneous               |
-      | Total file size     | 100                         |
-      | Total files         | 50                          |
-    And I select 'external_files' from 'Assessment type'
-    And I select 'low' from 'Preservation risk level'
-    And I select 'paper tape' from 'Storage medium'
-    And I press 'Create'
-    Then I should be on the view page for the assessment with date '2012-02-10'
-    And I should see all of:
-      | I like dogs | Random | Unstructured | 2013-02-14 | Heterogeneous | 100 | 50 |
-    And The collection titled 'Dogs' should have an assessment with date '2012-02-10'
-
+    Examples:
+    |user_type|
+    |admin    |
+    |manager  |
+  
   Scenario: Autofill user id for new assessment
     Given I am logged in as an admin
     When I view the collection with title 'Dogs'
