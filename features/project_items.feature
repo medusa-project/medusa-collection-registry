@@ -29,4 +29,28 @@ Feature: Project Items
     Then I should see all of:
       | xyz123 | 54321 | Animal | Dogs | Ruthie |
 
+  Scenario: Edit an existing item
+    When I edit the item with barcode 'xyz123'
+    And I fill in fields:
+      | Title  | Toys   |
+      | Author | Buster |
+    And I click on 'Update'
+    Then I should be on the view page for the project with title 'Scanning'
+    And I should see all of:
+      | Toys | Buster |
+    And I should see none of:
+      | Dogs | Ruthie |
+
+  Scenario: Create a new item
+    When I view the project with title 'Scanning'
+    And I click on 'Add Item'
+    And I fill in fields:
+      | Barcode | pqr456   |
+      | Title   | Catch-22 |
+      | Author  | Heller   |
+    And I click on 'Create'
+    Then I should be on the view page for the project with title 'Scanning'
+    And I should see all of:
+      | pqr456 | Catch-22 | Heller |
+
 
