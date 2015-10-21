@@ -1,15 +1,15 @@
 .row.vertical-align
-  .col-xs-8
+  .col-xs-6
     = render layout: 'layouts/page_header' do
       - if content_for?(:title)
         = yield(:title)
       - else
         Project:
       %small #{@project.title}
-  .col-xs-4
+  .col-xs-6
     .btn-toolbar.pull-right
       .btn-group
-        = link_to 'Add Item', new_item_path(project_id: @project.id)
+        = link_to 'Add Item', new_item_path(project_id: @project.id), class: 'btn btn-default'
         = index_button(projects_path)
         = attachments_button(attachments_project_path(@project))
         .btn-group
