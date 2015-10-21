@@ -8,5 +8,6 @@
   .col-xs-4
     .btn-group.pull-right
       = index_button(project_path(@item.project))
+      = edit_button(edit_item_path(@item)) unless @item.new_record?
 
 = yield

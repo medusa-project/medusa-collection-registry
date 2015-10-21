@@ -30,7 +30,9 @@ Feature: Project Items
       | xyz123 | 54321 | Animal | Dogs | Ruthie |
 
   Scenario: Edit an existing item
-    When I edit the item with barcode 'xyz123'
+    Given I am logged in as a manager
+    When I view the item with barcode 'xyz123'
+    And I click on 'Edit'
     And I fill in fields:
       | Title  | Toys   |
       | Author | Buster |
@@ -42,6 +44,7 @@ Feature: Project Items
       | Dogs | Ruthie |
 
   Scenario: Create a new item
+    Given I am logged in as a manager
     When I view the project with title 'Scanning'
     And I click on 'Add Item'
     And I fill in fields:

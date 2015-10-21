@@ -1,0 +1,22 @@
+= simple_form_for @item, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
+  .row
+    = render partial: 'shared/form_sidebar', locals: {f: f, object: @item, cancel_return: project_path(@item.project)}
+    .col-sm-9
+      = field_set_tag('Identifiers') do
+        = f.input :project_id, as: :hidden, input_html: {value: @item.project.id}
+        = f.input :barcode
+        = f.input :bib_id, label: 'Bib Id'
+        = f.input :oclc_number
+        = f.input :call_number
+      = field_set_tag('Metadata') do
+        = f.input :book_name
+        = f.input :title
+        = f.input :author
+        = f.input :imprint
+        = f.input :photo_date, as: :string, input_html: {class: 'datepicker', value: (@item.photo_date.if_blank(Date.today)).to_s}
+        = f.input :special_notes
+      = field_set_tag('Workflow') do
+        = f.input :tif_completed
+        = f.input :qa_tif
+        = f.input :transferred_to_medusa
+        = f.input :transferred_to_hathi
