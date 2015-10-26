@@ -9,7 +9,7 @@
   .col-xs-6
     .btn-toolbar.pull-right
       .btn-group
-        = link_to 'Add Item', new_item_path(project_id: @project.id), class: 'btn btn-default'
+        = link_to 'Add Item', new_item_path(project_id: @project.id), class: 'btn btn-default', remote: true
         = index_button(projects_path)
         = attachments_button(attachments_project_path(@project))
         .btn-group

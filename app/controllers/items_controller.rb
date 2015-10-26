@@ -12,7 +12,7 @@ class ItemsController < ApplicationController
   end
 
   def update
-    if @item.update(allowed_params)
+    if @item.update_attributes(allowed_params)
       redirect_to @item.project
     else
       render 'edit'
@@ -21,16 +21,32 @@ class ItemsController < ApplicationController
 
   def new
     @item = Item.new(project_id: params[:project_id])
+    respond_to do |format|
+      format.html
+      format.js { @remote = true }
+    end
   end
 
   def create
     @project = Project.find(params[:item][:project_id])
     @item = @project.items.new(allowed_params)
-    if @item.save
-      redirect_to @project
-    else
-      render 'new'
+    respond_to do |format|
+      if @item.save
+        format.html { redirect_to @project }
+        format.js { @items = @project.items(true) }
+      else
+        format.html { render 'new' }
+        format.js do
+          @remote = true
+          render 'new'
+        end
+      end
     end
+  end
+
+  def destroy
+    @item.destroy
+    redirect_to @item.project
   end
 
   protected

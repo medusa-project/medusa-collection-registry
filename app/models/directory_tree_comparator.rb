@@ -26,23 +26,25 @@ class DirectoryTreeComparator < Object
     self.all_paths ||= Hash.new
     Dir.chdir(directory) do
       Find.find('.') do |entry|
-        normalized_entry = entry.sub(/^\.\//, '')
-        all_paths[normalized_entry] ||= Hash.new
-        all_paths[normalized_entry][size_key] = File.size(normalized_entry)
+        if File.file?(entry)
+          normalized_entry = entry.sub(/^\.\//, '')
+          all_paths[normalized_entry] ||= Hash.new
+          all_paths[normalized_entry][size_key] = File.size(normalized_entry)
+        end
       end
     end
   end
 
   def create_source_only_paths
-    self.source_only_paths = all_paths.select {|path, sizes| sizes[:target].blank?}.keys
+    self.source_only_paths = all_paths.select { |path, sizes| sizes[:target].blank? }.keys
   end
 
   def create_target_only_paths
-    self.target_only_paths = all_paths.select {|path, sizes| sizes[:source].blank?}.keys
+    self.target_only_paths = all_paths.select { |path, sizes| sizes[:source].blank? }.keys
   end
 
   def create_different_sizes_paths
-    self.different_sizes_paths = all_paths.select {|path, sizes| sizes[:target].present? and sizes[:source].present? and sizes[:target] != sizes[:source]}
+    self.different_sizes_paths = all_paths.select { |path, sizes| sizes[:target].present? and sizes[:source].present? and sizes[:target] != sizes[:source] }
   end
 
   def directories_equal?

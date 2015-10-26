@@ -6,6 +6,7 @@
       %th Book Name
       %th Title
       %th Author
+      %th Created At
       %th
   %tbody
     - @items.each do |item|
@@ -16,4 +17,5 @@
           %td= item.book_name
           %td= item.title
           %td= item.author
+          %td= item.created_at
           %td= edit_button(item)

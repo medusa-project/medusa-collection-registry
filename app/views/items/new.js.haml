@@ -1,0 +1,3 @@
+-# load form ; show modally
+$("#new_item_form_placeholder").html("#{escape_javascript(render(partial: 'modal_form'))}");
+$("#modal_item_form").modal("show");

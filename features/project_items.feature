@@ -56,4 +56,17 @@ Feature: Project Items
     And I should see all of:
       | pqr456 | Catch-22 | Heller |
 
+  @javascript
+  Scenario: Create a new item with javascript interface
+    Given I am logged in as a manager
+    When I view the project with title 'Scanning'
+    And I click on 'Add Item'
+    And I fill in fields:
+      | Barcode | pqr456   |
+      | Title   | Catch-22 |
+      | Author  | Heller   |
+    And I click on 'Create'
+    Then I should be on the view page for the project with title 'Scanning'
+    And I should see all of:
+      | pqr456 | Catch-22 | Heller |
 
