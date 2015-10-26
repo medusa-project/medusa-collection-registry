@@ -1,3 +1,5 @@
+#This is pretty fragile right now, and may remain so until we have a better idea what fields we want
+#and what possible problems there could be in obtaining them from Tom's service.
 class BarcodeLookup < Object
 
   attr_accessor :barcode, :lookup_doc, :active_item_barcode
@@ -26,13 +28,13 @@ class BarcodeLookup < Object
     self.active_item_barcode.css('BibMfhd')
   end
 
-  def items_hashes
+  def item_hashes
     self.bib_mfhds.collect do |bib_mfhd|
       Hash.new.tap do |h|
-        h[:title] = bib_mfhd.at_css('TitleBrief').text.sub(/\s*\/\s*$/, '')
-        h[:author] = bib_mfhd.at_css('Author').text
-        h[:bib_id] = bib_mfhd.at_css('BibId').text
-        h[:imprint] = bib_mfhd.at_css('Imprint').text
+        h[:title] = bib_mfhd.at_css('TitleBrief').text.sub(/\s*\/\s*$/, '').strip
+        h[:author] = bib_mfhd.at_css('Author').text.strip
+        h[:bib_id] = bib_mfhd.at_css('BibId').text.strip
+        h[:imprint] = bib_mfhd.at_css('Imprint').text.strip
         h[:oclc_number] = extract_oclc_number(bib_mfhd)
       end
     end
@@ -41,9 +43,9 @@ class BarcodeLookup < Object
   def extract_oclc_number(bib_mfhd)
     node = bib_mfhd.css('NetworkNumber').detect { |x| x.text.match(/^\(OCoLC\)/) }
     if node
-      node.text.sub(/^\(OCoLC\)/, '')
+      node.text.sub(/^\(OCoLC\)/, '').strip
     else
-      ''
+      nil
     end
 
   end
