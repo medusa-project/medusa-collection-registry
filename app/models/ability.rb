@@ -24,7 +24,7 @@ class Ability
     can [:update, :create], Collection do |collection|
       repository_manager?(user, collection)
     end
-    can [:create, :update], Project do |project|
+    can [:create, :update, :edit_item, :create_item, :delete_item], Project do |project|
       repository_manager?(user, project)
     end
     #Events - must be done for each eventable, where the real check occurs

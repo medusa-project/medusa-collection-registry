@@ -1,26 +1,29 @@
 class ItemsController < ApplicationController
 
   before_action :require_logged_in
-  before_action :find_item, only: [:show, :edit, :update, :destroy]
+  before_action :find_item_and_project, only: [:show, :edit, :update, :destroy]
 
   def show
 
   end
 
   def edit
-
+    authorize! :edit_item, @project
   end
 
   def update
+    authorize! :edit_item, @project
     if @item.update_attributes(allowed_params)
-      redirect_to @item.project
+      redirect_to @project
     else
       render 'edit'
     end
   end
 
   def new
-    @item = Item.new(project_id: params[:project_id])
+    @project = Project.find(params[:project_id])
+    authorize! :create_item, @project
+    @item = Item.new(project_id: @project.id)
     respond_to do |format|
       format.html
       format.js { @remote = true }
@@ -29,6 +32,7 @@ class ItemsController < ApplicationController
 
   def create
     @project = Project.find(params[:item][:project_id])
+    authorize! :create_item, @project
     @item = @project.items.new(allowed_params)
     respond_to do |format|
       if @item.save
@@ -45,14 +49,16 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    @item.destroy
+    authorize :delete_item, @project
+    @item.destroy!
     redirect_to @item.project
   end
 
   protected
 
-  def find_item
+  def find_item_and_project
     @item = Item.find(params[:id])
+    @project = @item.project
   end
 
   def allowed_params
