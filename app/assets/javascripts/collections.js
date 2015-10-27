@@ -1,23 +1,15 @@
 initialize_data_table("table#assessments", {});
 initialize_data_table("table#attachments", {});
 initialize_data_table("table#file_groups", {
-  "aaSorting": [
+  "order": [
     [0, "desc"]
   ]
 });
 initialize_data_table("table#collections", {
-  "aaSorting": [
+  "order": [
     [3, "asc"]
   ]
 });
-
-function toggle_uuid() {
-  var table = $('table#collections').dataTable();
-  if (table) {
-    var isVisible = table.fnSettings().aoColumns[1].bVisible;
-    //table.fnSetColumnVis(1, true)
-  }
-}
 
 var storage_level_filter = {
   all: function () {
@@ -37,6 +29,6 @@ var storage_level_filter = {
   },
 
   filter: function (filter_string) {
-    $('#file_groups').dataTable().fnFilter(filter_string, 2)
+    $('#file_groups').DataTable().columns(2).search(filter_string).draw();
   }
 };

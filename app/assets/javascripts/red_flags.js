@@ -12,8 +12,8 @@ $.extend($.fn.dataTableExt.oSort, {
 });
 
 initialize_data_table('table#red-flags-table', {
-  "aoColumns": [null, null, {"sType": 'priority'}, null, null, null, null],
-  "aaSorting": [
+  "columns": [null, null, {"type": 'priority'}, null, null, null, null],
+  "order": [
     [3, "asc"],
     [2, "desc"]
   ]
@@ -34,18 +34,17 @@ var red_flag_filter = {
 
   filter: function (filter_string) {
     $('#red-flags-table').dataTable().fnFilter(filter_string, 3, true);
+    $('#red-flags-table').DataTable().columns(3).search(filter_string, true).draw();
   }
 };
 
 var red_flag_sorter = {
   recent: function () {
-    $('#red-flags-table').dataTable().fnSort([
-      [4, "desc"]
-    ]);
+    $('#red-flags-table').DataTable().columns(4).order("desc");
   },
 
   priority: function () {
-    $('#red-flags-table').dataTable().fnSort([
+    $('#red-flags-table').DataTable().order([
       [3, "asc"],
       [2, "desc"]
     ]);
