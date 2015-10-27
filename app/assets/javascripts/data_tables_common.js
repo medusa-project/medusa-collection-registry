@@ -20,7 +20,9 @@ var default_datatable_args = {
       "next": "<i class='fa fa-chevron-right' title='next'><\i>",
       "previous": "<i class='fa fa-chevron-left' title='previous'><\i>"
     }
-  }
+  },
+  "processing": true,
+  "pagingType": 'full_numbers'
 };
 
 //Make the table selected by the provided CSS selector into a dataTables table using the default_datatable_args with
