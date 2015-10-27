@@ -111,6 +111,8 @@ end
 
 group :development do
   gem 'newrelic_rpm'
+  gem 'spring'
+  gem 'spring-commands-cucumber'
 end
 
 group :test do
