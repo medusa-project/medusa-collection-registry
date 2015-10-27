@@ -12,11 +12,11 @@
 //
 //= require jquery2
 //= require jquery_ujs
+//= require dataTables/jquery.dataTables
+//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require jquery-ui
 //= require autocomplete-rails-uncompressed
 //= require twitter/bootstrap
-//= require jquery.dataTables
-//= require dataTables.bootstrap
 //= require data_tables_common
 //= require local_time
 //= require common

@@ -54,8 +54,9 @@ gem 'uglifier'
 # The "bootstrap3" branch is no longer needed -- bootstrap 3.2 is the default
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 
-gem 'jquery-rails', '4.0.4'
+gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'jquery-datatables-rails'
 gem 'rails-jquery-autocomplete'
 
 gem 'nokogiri'
