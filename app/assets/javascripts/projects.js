@@ -44,7 +44,10 @@ function barcode_item_html(i) {
   var item_data = barcode_item_data[i];
   var item_div = $('<div></div>');
   var item_link = $('<a href="#">Use</a>');
-  item_link.click(function () {insert_barcode_item(i)});
+  item_link.click(function () {
+    insert_barcode_item(i);
+    return false;
+  });
   var item_text = $('<span>&nbsp;' + item_data['bib_id'] + ': ' + item_data['title'] + '<span>');
   item_div.append(item_link);
   item_div.append(item_text);
