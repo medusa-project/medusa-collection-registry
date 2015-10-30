@@ -70,3 +70,19 @@ Feature: Project Items
     And I should see all of:
       | pqr456 | Catch-22 | Heller |
 
+  #Note that this looks up this item in the live catalog
+  @javascript
+  Scenario: Use auto barcode lookup with javascript interface
+    Given I am logged in as a manager
+    When I view the project with title 'Scanning'
+    And I click on 'Add Item'
+    And I fill in fields:
+      | Barcode | 30112017234789 |
+    Then I should see all of:
+      | Use | Kleinian groups |
+    When I click on 'Use'
+    And I click on 'Create'
+    Then I should see all of:
+      | Maskit | Bernard | 1153448 |
+
+

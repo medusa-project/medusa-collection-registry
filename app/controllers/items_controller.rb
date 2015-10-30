@@ -55,15 +55,9 @@ class ItemsController < ApplicationController
   end
 
   def barcode_lookup
-    barcode = params[:barcode]
-    barcode_items = BarcodeLookup.new(barcode).item_hashes
     respond_to do |format|
       format.json do
-        if barcode_items.present?
-          render json: barcode_items
-        else
-          render json: nil
-        end
+        render json: BarcodeLookup.new(params[:barcode].strip).item_hashes
       end
     end
   end
