@@ -71,7 +71,7 @@ class ItemsController < ApplicationController
 
   def allowed_params
     params[:item].permit(:barcode, :bib_id, :oclc_number, :call_number, :book_name, :title, :author,
-                         :imprint, :photo_date, :special_notes, :tif_completed, :qa_tif, :transferred_to_medusa, :transferred_to_hathi)
+                         :imprint, :photo_date, :special_notes)
   end
 
 end

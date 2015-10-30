@@ -15,11 +15,6 @@
         = f.input :imprint
         = f.input :photo_date, as: :string, input_html: {class: 'datepicker', value: (@item.photo_date.if_blank(Date.today)).to_s}
         = f.input :special_notes
-      = field_set_tag('Workflow') do
-        = f.input :tif_completed
-        = f.input :qa_tif
-        = f.input :transferred_to_medusa
-        = f.input :transferred_to_hathi
     .col-sm-2
       %h4 Voyager lookup
       #barcode_items

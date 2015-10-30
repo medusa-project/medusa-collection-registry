@@ -2278,10 +2278,6 @@ CREATE TABLE items (
     imprint character varying,
     photo_date date,
     special_notes text,
-    tif_completed boolean DEFAULT false NOT NULL,
-    qa_tif boolean DEFAULT false NOT NULL,
-    transferred_to_medusa boolean DEFAULT false NOT NULL,
-    transferred_to_hathi boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -6510,4 +6506,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151013195837');
 INSERT INTO schema_migrations (version) VALUES ('20151014151423');
 
 INSERT INTO schema_migrations (version) VALUES ('20151019141222');
+
+INSERT INTO schema_migrations (version) VALUES ('20151030190201');
 

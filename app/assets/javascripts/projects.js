@@ -27,7 +27,11 @@ function query_barcode(value) {
 }
 
 function possible_barcode(s) {
-  return s.length >= 14;
+  if (s) {
+    return s.length >= 14;
+  } else {
+    return false;
+  }
 }
 
 function populate_barcode_items() {
