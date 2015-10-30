@@ -3,7 +3,6 @@ initialize_data_table("table#items", {});
 
 $(function() {
   watch_item_barcode(".barcode_input");
-  query_barcode($(".barcode_input").val());
 });
 
 //JS to watch barcode field and call back to rails for barcode information when appropriate
@@ -11,6 +10,7 @@ $(function() {
 var barcode_item_data = [];
 
 function watch_item_barcode(barcode_field_selector) {
+  query_barcode($(barcode_field_selector).val());
   $(barcode_field_selector).on("input", function() {
      query_barcode($(barcode_field_selector).val())
     }
