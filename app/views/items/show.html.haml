@@ -1,7 +1,7 @@
 = render layout: 'layout_single' do
 
   .row
-    .col-md-12
+    .col-md-4
       = show_field @item, :barcode
       = show_field @item, :bib_id
       = show_field @item, :oclc_number
@@ -11,4 +11,6 @@
       = show_field @item, :author
       = show_field @item, :imprint
       = show_field @item, :photo_date
-      = show_field @item, :special_notes
+    .col-md-8
+      %h4 Notes
+      %div= @item.notes

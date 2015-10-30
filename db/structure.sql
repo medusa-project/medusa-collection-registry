@@ -2277,7 +2277,7 @@ CREATE TABLE items (
     author character varying,
     imprint character varying,
     photo_date date,
-    special_notes text,
+    notes text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -6508,4 +6508,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151014151423');
 INSERT INTO schema_migrations (version) VALUES ('20151019141222');
 
 INSERT INTO schema_migrations (version) VALUES ('20151030190201');
+
+INSERT INTO schema_migrations (version) VALUES ('20151030192656');
 

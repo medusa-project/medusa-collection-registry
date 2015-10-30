@@ -1,7 +1,11 @@
+- content_for :form_sidebar_extra do
+  %hr
+    %h4 Voyager lookup
+    #barcode_items
 = simple_form_for @item, html: {class: 'form-horizontal'}, wrapper: :horizontal_form, remote: @remote do |f|
   .row
     = render partial: 'shared/form_sidebar', locals: {f: f, object: @item, cancel_return: project_path(@item.project)}
-    .col-sm-7
+    .col-sm-5
       = field_set_tag('Identifiers') do
         = f.input :project_id, as: :hidden, input_html: {value: @item.project.id}
         = f.input :barcode, input_html: {class: 'barcode_input'}
@@ -14,7 +18,5 @@
         = f.input :author
         = f.input :imprint
         = f.input :photo_date, as: :string, input_html: {class: 'datepicker', value: (@item.photo_date.if_blank(Date.today)).to_s}
-        = f.input :special_notes
-    .col-sm-2
-      %h4 Voyager lookup
-      #barcode_items
+    .col-sm-4
+      = f.input :notes
