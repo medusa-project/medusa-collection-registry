@@ -1,6 +1,11 @@
 initialize_data_table("table#projects", {});
 initialize_data_table("table#items", {});
 
+$(function() {
+  watch_item_barcode(".barcode_input");
+  query_barcode($(".barcode_input").val());
+});
+
 //JS to watch barcode field and call back to rails for barcode information when appropriate
 //Hook up when displaying new item form
 var barcode_item_data = [];
