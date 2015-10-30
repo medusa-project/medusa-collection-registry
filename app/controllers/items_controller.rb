@@ -54,6 +54,20 @@ class ItemsController < ApplicationController
     redirect_to @item.project
   end
 
+  def barcode_lookup
+    barcode = params[:barcode]
+    barcode_items = BarcodeLookup.new(barcode).item_hashes
+    respond_to do |format|
+      format.json do
+        if barcode_items.present?
+          render json: barcode_items
+        else
+          render json: nil
+        end
+      end
+    end
+  end
+
   protected
 
   def find_item_and_project

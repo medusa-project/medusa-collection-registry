@@ -65,7 +65,9 @@ MedusaCollectionRegistry::Application.routes.draw do
   end
 
   resources :projects, concerns: [:attachable, :autocomplete_email]
-  resources :items
+  resources :items do
+    get 'barcode_lookup', on: :collection
+  end
   resources :producers
   resources :access_systems, concerns: :collection_indexer
   resources :package_profiles, concerns: :collection_indexer
