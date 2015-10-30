@@ -9,9 +9,33 @@ class BarcodeLookup < Object
     fetch_and_parse
   end
 
+  def valid?
+    self.lookup_doc.present?
+  end
+
+  def item_hashes
+    if self.valid?
+      self.bib_mfhds.collect do |bib_mfhd|
+        Hash.new.tap do |h|
+          h[:title] = bib_mfhd.at_css('TitleBrief').text.sub(/\s*\/\s*$/, '').strip
+          h[:author] = bib_mfhd.at_css('Author').text.strip
+          h[:bib_id] = bib_mfhd.at_css('BibId').text.strip
+          h[:imprint] = bib_mfhd.at_css('Imprint').text.strip
+          h[:oclc_number] = extract_oclc_number(bib_mfhd)
+        end
+      end
+    else
+      Array.new
+    end
+  end
+
+  protected
+
   def fetch_and_parse
     self.lookup_doc = Nokogiri::XML(open("http://s1.library.illinois.edu/barcode/Service/GetDetails/#{self.barcode}"))
     set_active_item_barcode
+  rescue OpenURI::HTTPError
+    self.lookup_doc = nil
   end
 
   def set_active_item_barcode
@@ -28,18 +52,6 @@ class BarcodeLookup < Object
     self.active_item_barcode.css('BibMfhd')
   end
 
-  def item_hashes
-    self.bib_mfhds.collect do |bib_mfhd|
-      Hash.new.tap do |h|
-        h[:title] = bib_mfhd.at_css('TitleBrief').text.sub(/\s*\/\s*$/, '').strip
-        h[:author] = bib_mfhd.at_css('Author').text.strip
-        h[:bib_id] = bib_mfhd.at_css('BibId').text.strip
-        h[:imprint] = bib_mfhd.at_css('Imprint').text.strip
-        h[:oclc_number] = extract_oclc_number(bib_mfhd)
-      end
-    end
-  end
-
   def extract_oclc_number(bib_mfhd)
     node = bib_mfhd.css('NetworkNumber').detect { |x| x.text.match(/^\(OCoLC\)/) }
     if node
@@ -47,7 +59,6 @@ class BarcodeLookup < Object
     else
       nil
     end
-
   end
 
 end
