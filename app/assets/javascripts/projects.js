@@ -43,7 +43,7 @@ function populate_barcode_items() {
 function barcode_item_html(i) {
   var item_data = barcode_item_data[i];
   var item_div = $('<div></div>');
-  var item_link = $('<a href="#">Use</a>');
+  var item_link = $('<a href="#" class="btn btn-xs btn-default">Use</a>');
   item_link.click(function () {
     insert_barcode_item(i);
     return false;
