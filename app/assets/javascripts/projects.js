@@ -1,7 +1,7 @@
 initialize_data_table("table#projects", {});
 initialize_data_table("table#items", {});
 
-$(function() {
+$(function () {
   watch_item_barcode(".barcode_input");
 });
 
@@ -11,15 +11,15 @@ var barcode_item_data = [];
 
 function watch_item_barcode(barcode_field_selector) {
   query_barcode($(barcode_field_selector).val());
-  $(barcode_field_selector).on("input", function() {
-     query_barcode($(barcode_field_selector).val())
+  $(barcode_field_selector).on("input", function () {
+      query_barcode($(barcode_field_selector).val());
     }
   );
 }
 
 function query_barcode(value) {
   if (possible_barcode(value)) {
-    $.get('/items/barcode_lookup.json', {"barcode" : value}, function (jsonResult) {
+    $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
       barcode_item_data = jsonResult;
       populate_barcode_items();
     })
@@ -60,7 +60,7 @@ function barcode_item_html(i) {
 
 function insert_barcode_item(i) {
   var item_data = barcode_item_data[i];
-  Object.keys(item_data).forEach(function(key) {
+  Object.keys(item_data).forEach(function (key) {
     $("#item_" + key).val(item_data[key]);
   });
 }

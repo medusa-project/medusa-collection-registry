@@ -8,7 +8,7 @@
     .col-sm-5
       = field_set_tag('Identifiers') do
         = f.input :project_id, as: :hidden, input_html: {value: @item.project.id}
-        = f.input :barcode, input_html: {class: 'barcode_input'}
+        = f.input :barcode, input_html: {class: 'barcode_input'}, autofocus: true
         = f.input :bib_id, label: 'Bib Id'
         = f.input :oclc_number
         = f.input :call_number
