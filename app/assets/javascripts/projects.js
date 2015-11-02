@@ -15,6 +15,11 @@ function watch_item_barcode(barcode_field_selector) {
       query_barcode($(barcode_field_selector).val());
     }
   );
+  $(barcode_field_selector).keypress(function(event) {
+    if (event.keyCode == 13) {
+      event.preventDefault();
+    }
+  });
 }
 
 function query_barcode(value) {
@@ -65,8 +70,11 @@ function insert_barcode_item(i) {
   });
 }
 
-$(document).on("keypress", "#item_barcode", function(event) {
-  if (event.keyCode == 13) {
-    event.preventDefault();
-  }
-});
+
+
+
+//$(document).on("keypress", "#item_barcode", function(event) {
+//  if (event.keyCode == 13) {
+//    event.preventDefault();
+//  }
+//});
