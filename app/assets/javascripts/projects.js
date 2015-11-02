@@ -64,3 +64,9 @@ function insert_barcode_item(i) {
     $("#item_" + key).val(item_data[key]);
   });
 }
+
+$(document).on("keypress", "#item_barcode", function(event) {
+  if (event.keyCode == 13) {
+    event.preventDefault();
+  }
+});
