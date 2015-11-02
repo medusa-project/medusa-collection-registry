@@ -5,16 +5,16 @@ Feature: Project Items
 
   Background:
     Given the project with title 'Scanning' has child items with fields:
-      | barcode | bib_id | book_name | title | author |
-      | xyz123  | 54321  | Animal    | Dogs  | Ruthie |
-      | abc789  | 98765  | Animal    | Cats  | CatCat |
+      | barcode | bib_id | book_name | title | author | notes       |
+      | xyz123  | 54321  | Animal    | Dogs  | Ruthie | My note     |
+      | abc789  | 98765  | Animal    | Cats  | CatCat | My cat note |
 
   Scenario: Project page contains a table of items
     Given I am logged in as a manager
     When I view the project with title 'Scanning'
     Then I should see the items table
     And I should see all of:
-      | xyz123 | 54321 | Animal | Dogs | Ruthie | abc789 | 98765 | Cats | CatCat |
+      | xyz123 | 54321 | Animal | Dogs | Ruthie | abc789 | 98765 | Cats | CatCat | My note | My cat note |
 
   Scenario: Obtain CSV file of items
     Given I am logged in as a manager
