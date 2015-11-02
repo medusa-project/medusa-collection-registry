@@ -3,4 +3,6 @@ class Item < ActiveRecord::Base
 
   validates :barcode, presence: true
 
+  auto_strip_attributes :barcode
+  
 end
