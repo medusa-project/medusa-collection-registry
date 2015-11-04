@@ -206,6 +206,11 @@ class CfsDirectory < ActiveRecord::Base
     end
   end
 
+  def make_and_assess_tree
+    self.make_initial_tree
+    self.schedule_initial_assessments
+  end
+
   def run_initial_assessment
     self.cfs_files.each do |cfs_file|
       cfs_file.run_initial_assessment
