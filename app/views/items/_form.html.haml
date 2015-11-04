@@ -10,7 +10,6 @@
         = f.input :barcode, input_html: {class: 'barcode_input'}, autofocus: true
         = f.input :project_id, as: :hidden, input_html: {value: @item.project.id}
         = f.input :local_title
-        = f.input :local_description
         = f.input :batch
         = f.input :file_count
         = f.input :reformatting_date, as: :string, input_html: {class: 'datepicker', value: (@item.reformatting_date.if_blank(Date.today)).to_s}
@@ -32,3 +31,5 @@
         = f.input :item_title
     .col-sm-4
       = f.input :notes
+      = f.input :local_description
+

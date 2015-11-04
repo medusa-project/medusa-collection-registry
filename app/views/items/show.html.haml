@@ -4,7 +4,6 @@
     .col-md-4
       = show_field @item, :barcode
       = show_field @item, :local_title
-      = show_field @item, :local_description
       = show_field @item, :batch
       = show_field @item, :file_count
       = show_field @item, :reformatting_date
@@ -27,3 +26,6 @@
     .col-md-8
       %h4 Notes
       %div= @item.notes
+      %h4 Local Description
+      %div= @item.local_description
+

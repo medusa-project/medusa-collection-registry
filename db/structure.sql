@@ -2168,7 +2168,7 @@ CREATE TABLE items (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     local_title character varying DEFAULT ''::character varying,
-    local_description character varying DEFAULT ''::character varying,
+    local_description text DEFAULT ''::text,
     batch character varying DEFAULT ''::character varying,
     file_count integer,
     reformatting_operator character varying DEFAULT ''::character varying,
@@ -6394,4 +6394,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151030190201');
 INSERT INTO schema_migrations (version) VALUES ('20151030192656');
 
 INSERT INTO schema_migrations (version) VALUES ('20151104182843');
+
+INSERT INTO schema_migrations (version) VALUES ('20151104210143');
 
