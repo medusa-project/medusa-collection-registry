@@ -81,4 +81,12 @@ module ButtonsHelper
     link_to 'Cancel', url_or_object, class: 'btn btn-default'
   end
 
+  def small_clone_button(url_or_object)
+    fa_icon_link_to('Clone', 'clone', url_or_object, class: 'btn btn-default btn-xs', method: :post)
+  end
+
+  def clone_button(url_or_object)
+    fa_icon_link_to('Clone', 'clone', url_or_object, class: 'btn btn-default', method: :post)
+  end
+
 end

@@ -128,3 +128,13 @@ Feature: File Format Profiles
     And deny permission on the file format profile collection to users for action with redirection:
       | public user      | view_index, new, create | authentication |
       | visitor, manager | view_index, new, create | unauthorized   |
+
+  Scenario: Clone file format profile from index
+    When I go to the file format profiles index page
+    And I click on 'Clone'
+    Then I should be on the edit page for the file format profile with name 'images (new)'
+
+  Scenario: Clone file format profile from show
+    When I view the file format profile with name 'images'
+    And I click on 'Clone'
+    Then I should be on the edit page for the file format profile with name 'images (new)'

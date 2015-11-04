@@ -1,6 +1,6 @@
 class FileFormatProfilesController < ApplicationController
   before_action :require_logged_in
-  before_action :find_file_format_profile, only: [:show, :edit, :update, :destroy]
+  before_action :find_file_format_profile, only: [:show, :edit, :update, :destroy, :clone]
 
   def index
     authorize! :read, FileFormatProfile
@@ -37,6 +37,12 @@ class FileFormatProfilesController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  def clone
+    authorize! :create, FileFormatProfile
+    @cloned_file_format_profile = @file_format_profile.create_clone
+    redirect_to edit_file_format_profile_path(@cloned_file_format_profile)
   end
 
   def destroy

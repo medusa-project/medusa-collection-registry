@@ -23,4 +23,5 @@
             %td= file_format_profile.file_extensions.collect {|file_extension| file_extension.extension}.join(', ')
             %td
               = small_view_button(file_format_profile)
+              = small_clone_button(clone_file_format_profile_path(file_format_profile))
               = small_edit_button(file_format_profile)
