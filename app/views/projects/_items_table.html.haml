@@ -2,22 +2,22 @@
   %thead
     %tr
       %th Barcode
-      %th Bib Id
-      %th Book Name
       %th Title
-      %th Author
       %th Notes
-      %th Created At
+      %th Batch
+      %th Call Number
+      %th Author
+      %th Record Series Id
       %th
   %tbody
     - @items.each do |item|
       - cache(item) do
         %tr
           %td= link_to(item.barcode, item_path(item))
-          %td= item.bib_id
-          %td= item.book_name
-          %td= item.title
-          %td= item.author
+          %td= [item.title,item.item_title,item.local_title].detect {|title| title.present?}
           %td= item.notes
-          %td= item.created_at
+          %td= item.batch
+          %td= item.call_number
+          %td= item.author
+          %td= item.record_series_id
           %td= edit_button(item)

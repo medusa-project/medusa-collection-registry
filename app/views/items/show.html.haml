@@ -3,14 +3,27 @@
   .row
     .col-md-4
       = show_field @item, :barcode
-      = show_field @item, :bib_id
-      = show_field @item, :oclc_number
+      = show_field @item, :local_title
+      = show_field @item, :local_description
+      = show_field @item, :batch
+      = show_field @item, :file_count
+      = show_field @item, :reformatting_date
+      = show_field @item, :reformatting_operator
+      %hr
       = show_field @item, :call_number
-      = show_field @item, :book_name
       = show_field @item, :title
       = show_field @item, :author
       = show_field @item, :imprint
-      = show_field @item, :photo_date
+      = show_field @item, :bib_id, 'Bib Id'
+      = show_field @item, :oclc_number
+      %hr
+      = show_field @item, :record_series_id, 'Record Series Id'
+      = show_field @item, :archival_management_system_url
+      = show_field @item, :series
+      = show_field @item, :sub_series, 'Sub-series'
+      = show_field @item, :box
+      = show_field @item, :folder
+      = show_field @item, :item_title
     .col-md-8
       %h4 Notes
       %div= @item.notes

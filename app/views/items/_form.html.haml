@@ -6,17 +6,29 @@
   .row
     = render partial: 'shared/form_sidebar', locals: {f: f, object: @item, cancel_return: project_path(@item.project)}
     .col-sm-5
-      = field_set_tag('Identifiers') do
-        = f.input :project_id, as: :hidden, input_html: {value: @item.project.id}
+      = field_set_tag('Administrative Metadata') do
         = f.input :barcode, input_html: {class: 'barcode_input'}, autofocus: true
-        = f.input :bib_id, label: 'Bib Id'
-        = f.input :oclc_number
+        = f.input :project_id, as: :hidden, input_html: {value: @item.project.id}
+        = f.input :local_title
+        = f.input :local_description
+        = f.input :batch
+        = f.input :file_count
+        = f.input :reformatting_date, as: :string, input_html: {class: 'datepicker', value: (@item.reformatting_date.if_blank(Date.today)).to_s}
+        = f.input :reformatting_operator
+      = field_set_tag('Voyager Metadata') do
         = f.input :call_number
-      = field_set_tag('Metadata') do
-        = f.input :book_name
         = f.input :title
         = f.input :author
         = f.input :imprint
-        = f.input :photo_date, as: :string, input_html: {class: 'datepicker', value: (@item.photo_date.if_blank(Date.today)).to_s}
+        = f.input :bib_id, label: 'Bib Id'
+        = f.input :oclc_number
+      = field_set_tag('Archival Metadata') do
+        = f.input :record_series_id, label: 'Record Series Id'
+        = f.input :archival_management_system_url
+        = f.input :series
+        = f.input :sub_series, label: 'Sub-series'
+        = f.input :box
+        = f.input :folder
+        = f.input :item_title
     .col-sm-4
       = f.input :notes

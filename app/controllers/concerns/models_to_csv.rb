@@ -26,7 +26,12 @@ module ModelsToCsv
   end
 
   def items_to_csv(items, csv_options = {})
-    models_to_csv(items, {barcode: 'Barcode', bib_id: 'Bib Id', book_name: 'Book Name', title: 'Title', author: 'Author'})
+    models_to_csv(items, {barcode: 'Barcode', local_title: 'Local Title', local_description: 'Local Description',
+                          notes: 'Notes', batch: 'Batch', file_count: 'File Count',
+                          reformatting_date: 'Reformatting Date', reformatting_operator: 'Reformatting Operator',
+                          call_number: 'Call Number', title: 'Title', author: 'Author', imprint: 'Imprint', bib_id: 'BibId', oclc_number: 'OCLC number',
+                          record_series_id: 'Record Series Id', archival_management_system_url: 'Archival Management System URL',
+                          series: 'Series', sub_series: 'Sub-series', box: 'Box', folder: 'Folder', item_title: 'Item Title'})
   end
 
   def file_format_tests_to_csv(file_format_tests, csv_options = {})

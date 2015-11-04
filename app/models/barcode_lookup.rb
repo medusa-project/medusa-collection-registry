@@ -2,7 +2,7 @@
 #and what possible problems there could be in obtaining them from Tom's service.
 class BarcodeLookup < Object
 
-  attr_accessor :barcode, :lookup_doc, :active_item_barcode
+  attr_accessor :barcode, :lookup_doc, :active_item_barcode, :call_number
 
   def initialize(barcode)
     self.barcode = barcode
@@ -10,18 +10,19 @@ class BarcodeLookup < Object
   end
 
   def valid?
-    self.lookup_doc.present?
+    self.lookup_doc.present? and self.active_item_barcode.present?
   end
 
   def item_hashes
     if self.valid?
       self.bib_mfhds.collect do |bib_mfhd|
         Hash.new.tap do |h|
-          h[:title] = bib_mfhd.at_css('TitleBrief').text.sub(/\s*\/\s*$/, '').strip
-          h[:author] = bib_mfhd.at_css('Author').text.strip
-          h[:bib_id] = bib_mfhd.at_css('BibId').text.strip
-          h[:imprint] = bib_mfhd.at_css('Imprint').text.strip
+          h[:title] = bib_mfhd.at_css('TitleBrief').text.sub(/\s*\/\s*$/, '').strip rescue ''
+          h[:author] = bib_mfhd.at_css('Author').text.strip rescue ''
+          h[:bib_id] = bib_mfhd.at_css('BibId').text.strip rescue ''
+          h[:imprint] = bib_mfhd.at_css('Imprint').text.strip rescue ''
           h[:oclc_number] = extract_oclc_number(bib_mfhd)
+          h[:call_number] = call_number
         end
       end
     else
@@ -45,7 +46,7 @@ class BarcodeLookup < Object
   end
 
   def call_number
-    self.active_item_barcode.at_css('DisplayCallNo').text
+    self.active_item_barcode.at_css('DisplayCallNo').text rescue ''
   end
 
   def bib_mfhds

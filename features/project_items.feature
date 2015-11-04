@@ -5,29 +5,31 @@ Feature: Project Items
 
   Background:
     Given the project with title 'Scanning' has child items with fields:
-      | barcode | bib_id | book_name | title | author | notes       |
-      | xyz123  | 54321  | Animal    | Dogs  | Ruthie | My note     |
-      | abc789  | 98765  | Animal    | Cats  | CatCat | My cat note |
+      | barcode | bib_id | title | author | notes       | call_number | batch   | local_title | item_title |
+      | xyz123  | 54321  | Dogs  | Ruthie | My note     | XYZ123      | batch_1 |             |            |
+      | abc789  | 98765  |       | CatCat | My cat note | ABC789      | batch_2 | Cats        |            |
 
   Scenario: Project page contains a table of items
     Given I am logged in as a manager
     When I view the project with title 'Scanning'
     Then I should see the items table
     And I should see all of:
-      | xyz123 | 54321 | Animal | Dogs | Ruthie | abc789 | 98765 | Cats | CatCat | My note | My cat note |
+      | xyz123 | Dogs | Ruthie | My note | XYZ123 | batch_1 |
+    And I should see all of:
+      | abc789 | CatCat | My cat note | ABC789 | batch_2 | Cats |
 
   Scenario: Obtain CSV file of items
     Given I am logged in as a manager
     When I view the project with title 'Scanning'
     And I click on 'CSV'
     Then I should receive a file 'items.csv' of type 'text/csv' matching:
-      | xyz123 | 54321 | Animal | Dogs | Ruthie | abc789 | 98765 | Cats | CatCat |
+      | xyz123 | 54321 | Dogs | Ruthie | abc789 | 98765 | Cats | CatCat |
 
   Scenario: View individual item page
     Given I am logged in as a manager
     When I view the item with barcode 'xyz123'
     Then I should see all of:
-      | xyz123 | 54321 | Animal | Dogs | Ruthie |
+      | xyz123 | 54321 | Dogs | Ruthie |
 
   Scenario: Edit an existing item
     Given I am logged in as a manager
@@ -83,6 +85,6 @@ Feature: Project Items
     When I click on 'Use'
     And I click on 'Create'
     Then I should see all of:
-      | Maskit | Bernard | 1153448 |
+      | Maskit | Bernard | 1153448 | 515 M379K |
 
 
