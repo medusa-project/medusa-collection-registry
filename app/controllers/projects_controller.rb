@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
 
   before_action :require_logged_in
-  before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments]
+  before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments, :batch]
   include ModelsToCsv
 
   autocomplete :user, :email
@@ -48,6 +48,8 @@ class ProjectsController < ApplicationController
 
   def show
     @items = @project.items
+    @batch = params[:batch]
+    @items = @items.where(batch: @batch) if @batch
     respond_to do |format|
       format.html
       format.csv {send_data items_to_csv(@items), type: 'text/csv', filename: 'items.csv'}

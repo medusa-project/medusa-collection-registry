@@ -16,7 +16,7 @@
           %td= link_to(item.barcode, item_path(item))
           %td= [item.title,item.item_title,item.local_title].detect {|title| title.present?}
           %td= item.notes
-          %td= item.batch
+          %td= link_to(item.batch, project_path(@project, batch: item.batch))
           %td= item.call_number
           %td= item.author
           %td= item.record_series_id

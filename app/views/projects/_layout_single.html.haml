@@ -17,7 +17,7 @@
             Export
             %span.caret
           %ul.dropdown-menu
-            %li= link_to 'CSV', project_path(@project, format: 'csv')
+            %li= link_to 'CSV', project_path(@project, format: 'csv', batch: @batch)
         = edit_button(@project)
       - if content_for?(:extra_links)
         .btn-group

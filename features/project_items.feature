@@ -8,6 +8,7 @@ Feature: Project Items
       | barcode | bib_id | title | author | notes       | call_number | batch   | local_title | item_title |
       | xyz123  | 54321  | Dogs  | Ruthie | My note     | XYZ123      | batch_1 |             |            |
       | abc789  | 98765  |       | CatCat | My cat note | ABC789      | batch_2 | Cats        |            |
+      | pqr456  | 76543  |       | Buster |             |             | batch_1 |             | Bustard    |
 
   Scenario: Project page contains a table of items
     Given I am logged in as a manager
@@ -17,6 +18,7 @@ Feature: Project Items
       | xyz123 | Dogs | Ruthie | My note | XYZ123 | batch_1 |
     And I should see all of:
       | abc789 | CatCat | My cat note | ABC789 | batch_2 | Cats |
+    And I should see 'Bustard'
 
   Scenario: Obtain CSV file of items
     Given I am logged in as a manager
@@ -86,5 +88,15 @@ Feature: Project Items
     And I click on 'Create'
     Then I should see all of:
       | Maskit | Bernard | 1153448 | 515 M379K |
+
+  Scenario: See items from a batch
+    Given I am logged in as a manager
+    When I view the project with title 'Scanning'
+    And I click on 'batch_1'
+    Then I should see all of:
+      | xyz123 | pqr456 |
+    And I should see none of:
+      | abc789 |
+
 
 

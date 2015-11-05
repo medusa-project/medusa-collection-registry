@@ -2,7 +2,9 @@
   %a.btn.btn-default{'data-toggle' => 'collapse', href: '#metadata', 'aria-expanded' => 'false', 'aria-controls' => 'metadata'}
     Metadata
     %span.caret
-
+- if @batch
+  - content_for :title do
+    Project (batch #{@batch}):
 = render layout: 'layout_single' do
 
   #metadata.row.collapse
