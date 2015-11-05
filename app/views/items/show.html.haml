@@ -4,7 +4,7 @@
     .col-md-4
       = show_field @item, :barcode
       = show_field @item, :local_title
-      = show_field @item, :batch
+      = show_value link_to(@item.batch, project_path(@project, batch: @item.batch)), 'Batch'
       = show_field @item, :file_count
       = show_field @item, :reformatting_date
       = show_field @item, :reformatting_operator

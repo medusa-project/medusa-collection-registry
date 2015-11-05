@@ -49,7 +49,7 @@ class ProjectsController < ApplicationController
   def show
     @items = @project.items
     @batch = params[:batch]
-    @items = @items.where(batch: @batch) if @batch
+    @items = @items.where(batch: @batch) if @batch.present?
     respond_to do |format|
       format.html
       format.csv {send_data items_to_csv(@items), type: 'text/csv', filename: 'items.csv'}
