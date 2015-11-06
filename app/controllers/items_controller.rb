@@ -21,9 +21,17 @@ class ItemsController < ApplicationController
   end
 
   def new
-    @project = Project.find(params[:project_id])
-    authorize! :create_item, @project
-    @item = Item.new(project_id: @project.id)
+    if params[:source_id]
+      @source_item = Item.find(params[:source_id])
+      @project = @source_item.project
+      authorize! :create_item, @project
+      @item = @source_item.dup
+      @item.barcode = nil
+    else
+      @project = Project.find(params[:project_id])
+      authorize! :create_item, @project
+      @item = Item.new(project_id: @project.id)
+    end
     respond_to do |format|
       format.html
       format.js { @remote = true }

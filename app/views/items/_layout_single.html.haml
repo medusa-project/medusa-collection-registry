@@ -8,6 +8,7 @@
   .col-xs-4
     .btn-group.pull-right
       = index_button(project_path(@item.project))
+      = clone_button(new_item_path(source_id: @item.id), method: :get)
       = edit_button(edit_item_path(@item)) unless @item.new_record?
       = delete_button(item_path(@item)) unless @item.new_record?
 

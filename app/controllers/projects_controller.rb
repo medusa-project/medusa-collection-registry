@@ -27,6 +27,7 @@ class ProjectsController < ApplicationController
     if @project.save
       redirect_to @project
     else
+      @collection = @project.collection
       render 'new'
     end
   end

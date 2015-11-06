@@ -20,4 +20,6 @@
           %td= item.call_number
           %td= item.author
           %td= item.record_series_id
-          %td= edit_button(item)
+          %td
+            = small_edit_button(item)
+            = small_clone_button(new_item_path(source_id: item.id), method: :get)

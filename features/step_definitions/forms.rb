@@ -84,6 +84,18 @@ And(/^I attach fixture file '([^']*)' to '([^']*)'$/) do |file, field|
   attach_file(field, File.join(Rails.root, 'features', 'fixtures', file))
 end
 
+And(/^there should be inputs with values:$/) do |table|
+  table.headers.each do |value|
+    expect(page).to have_xpath("//input[@value='#{value}']")
+  end
+end
+
+And(/^there should not be inputs with values:$/) do |table|
+  table.headers.each do |value|
+    expect(page).not_to have_xpath("//input[@value='#{value}']")
+  end
+end
+
 def complete_form_from_table(table)
   table.raw.each do |row|
     fill_in(row.first, with: row.last)

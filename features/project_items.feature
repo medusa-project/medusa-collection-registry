@@ -98,5 +98,21 @@ Feature: Project Items
     And I should see none of:
       | abc789 |
 
+  Scenario: Clone an item from view page
+    Given I am logged in as a manager
+    When I view the item with title 'Dogs'
+    And I click on 'Clone'
+    Then I should be on the new item page
+    And there should be inputs with values:
+      | 54321 | Dogs | Ruthie | XYZ123 | batch_1 |
+    And there should not be inputs with values:
+      | xyz123 |
+
+  Scenario: Clone an item from edit page
+    Given I am logged in as a manager
+    When I view the project with title 'Scanning'
+    And I click on 'Clone'
+    Then I should be on the new item page
+
 
 
