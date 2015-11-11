@@ -47,11 +47,12 @@ development:
   #Typical fields needed for our setup are shown below.
   amqp:
     #ssl: true
-    #port: 5762
+    #port: 5761 #this is the default port for ssl connections
     #host: 127.0.0.1
     #user: user
     #password: pw
     #vhost: medusa
+    #verify_peer: false
   book_tracker:
     import_path: ~/Projects/mbt_marcxml
     library_nuc_code: UIU

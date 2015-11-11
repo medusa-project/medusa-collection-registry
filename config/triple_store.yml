@@ -1,0 +1,12 @@
+development:
+  triple_store_base_url: http://localhost:3030/test
+  medusa_base_url: http://localhost:3000
+  medusa_rdf_prefix: https://medusa.library.illinois.edu/terms/
+test:
+  triple_store_base_url: http://localhost:3030/test
+  medusa_base_url: http://localhost:3000
+  medusa_rdf_prefix: https://medusa.library.illinois.edu/terms/
+production:
+  triple_store_base_url: http://localhost:3030/test
+  medusa_base_url: http://localhost:3000
+  medusa_rdf_prefix: https://medusa.library.illinois.edu/terms/
