@@ -1,3 +1,4 @@
+@idb
 Feature: Ingest IDB file
   In order to preserve IDB files
   As IDB
