@@ -19,12 +19,11 @@ module Uuidable
     self.medusa_uuid.try(:uuid)
   end
 
-  #This method is needed to get a predictable uuid for testing, but shouldn't be used otherwise
-  if Rails.env.test?
-    def uuid=(uuid)
-      self.medusa_uuid.destroy if self.medusa_uuid
-      MedusaUuid.create!(uuid: uuid, uuidable: self)
-    end
+  #This method is needed to get a predictable uuid for testing and when we have a
+  #pre-existing uuid we want to use
+  def uuid=(uuid)
+    self.medusa_uuid.destroy if self.medusa_uuid
+    MedusaUuid.create!(uuid: uuid, uuidable: self)
   end
 
   def handle

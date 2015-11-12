@@ -10,7 +10,7 @@ end
 
 Then(/^there should be an IDB ingest delayed job reflecting the ingest request$/) do
   message = IdbTestHelper.idb_ingest_message
-  expect(Idb::IngestJob.find_by(staging_path: message[:staging_path])).to be_truthy
+  expect(Idb::IngestJob.find_by(staging_path: message['staging_path'])).to be_truthy
 end
 
 Given(/^there is an IDB ingest delayed job$/) do
@@ -29,9 +29,20 @@ end
 
 Then(/^the IDB files should be present in medusa storage$/) do
   expect(Idb::Config.instance.idb_file_group.total_files).to eq(1)
+  Idb::Config.instance.idb_cfs_directory.each_file_in_tree do |file|
+    expect(file.name).to eq('file.txt')
+    expect(file.uuid).to eq(File.basename(file.cfs_directory.path))
+    expect(File.read(file.absolute_path)).to match('Staging text')
+  end
 end
 
 And(/^Medusa should have sent a return message to IDB$/) do
-  pending # express the regexp above with the code you wish you had
+  AmqpConnector.instance.with_message(Idb::Config.instance.outgoing_queue) do |raw_message|
+    message = JSON.parse(raw_message)
+    expect(message['operation']).to eq('ingest')
+    expect(message['status']).to eq('ok')
+    expect(message['staging_path']).to eq(IdbTestHelper.staging_path)
+    expect(CfsFile.first.relative_path).to match(message['medusa_path'])
+  end
 end
 

@@ -10,8 +10,8 @@ Feature: Ingest IDB file
     Then there should be an IDB ingest delayed job reflecting the ingest request
 
   Scenario: Medusa runs delayed job for IDB ingest, ingesting file and returning message to IDB
-    Given there is an IDB ingest delayed job
-    And there is an IDB file group
+    Given there is an IDB file group
+    And there is an IDB ingest delayed job
     When the IDB ingest delayed job is run
     Then the IDB files should be present in medusa storage
     And Medusa should have sent a return message to IDB

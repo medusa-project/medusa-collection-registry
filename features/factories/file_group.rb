@@ -16,7 +16,7 @@ FactoryGirl.define do
 
   factory :bit_level_file_group, parent: :file_group, class: BitLevelFileGroup do
     type 'BitLevelFileGroup'
-    cfs_directory
+    #cfs_directory
   end
 
 end

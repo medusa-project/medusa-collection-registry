@@ -10,7 +10,11 @@ class MedusaUuid < ActiveRecord::Base
   end
 
   def self.generate_for(uuidable)
-    self.create!(uuid: Utils::Luhn.add_check_character(UUID.generate), uuidable: uuidable)
+    self.create!(uuid: generate, uuidable: uuidable)
+  end
+
+  def self.generate
+    Utils::Luhn.add_check_character(UUID.generate)
   end
 
 end
