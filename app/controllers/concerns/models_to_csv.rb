@@ -35,8 +35,11 @@ module ModelsToCsv
   end
 
   def file_format_tests_to_csv(file_format_tests, csv_options = {})
-    models_to_csv(file_format_tests, {cfs_file_name: 'File name', tester_email: 'Tester email', date: 'Test date',
-                                      content_type_name: 'File type', pass_label: 'Status', reasons_string: 'Reasons',
-                                      notes: 'Comments'}, csv_options)
+    models_to_csv(file_format_tests.decorate, {cfs_file_name: 'File name', tester_email: 'Tester email', date: 'Test date',
+                                               content_type_name: 'File type', pass_label: 'Status', reasons_string: 'Reasons',
+                                               notes: 'Comments', file_group_id: 'File group Id', file_group_title: 'File group title',
+                                               acquisition_method: 'Acquistion method',
+                                               collection_id: 'Collection Id', collection_title: 'Collection title',
+                                               repository_id: 'Repository Id', repository_title: 'Repository title'}, csv_options)
   end
 end
