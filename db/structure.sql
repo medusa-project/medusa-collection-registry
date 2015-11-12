@@ -2119,6 +2119,38 @@ ALTER SEQUENCE file_groups_id_seq OWNED BY file_groups.id;
 
 
 --
+-- Name: idb_ingest_jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE idb_ingest_jobs (
+    id integer NOT NULL,
+    uuid character varying,
+    staging_path character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: idb_ingest_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE idb_ingest_jobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: idb_ingest_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE idb_ingest_jobs_id_seq OWNED BY idb_ingest_jobs.id;
+
+
+--
 -- Name: institutions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3703,6 +3735,13 @@ ALTER TABLE ONLY file_groups ALTER COLUMN id SET DEFAULT nextval('file_groups_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY idb_ingest_jobs ALTER COLUMN id SET DEFAULT nextval('idb_ingest_jobs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY institutions ALTER COLUMN id SET DEFAULT nextval('institutions_id_seq'::regclass);
 
 
@@ -4148,6 +4187,14 @@ ALTER TABLE ONLY file_format_tests
 
 ALTER TABLE ONLY file_groups
     ADD CONSTRAINT file_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idb_ingest_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY idb_ingest_jobs
+    ADD CONSTRAINT idb_ingest_jobs_pkey PRIMARY KEY (id);
 
 
 --
@@ -6396,4 +6443,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151030192656');
 INSERT INTO schema_migrations (version) VALUES ('20151104182843');
 
 INSERT INTO schema_migrations (version) VALUES ('20151104210143');
+
+INSERT INTO schema_migrations (version) VALUES ('20151112160558');
 

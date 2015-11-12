@@ -17,4 +17,12 @@ class Idb::Config < Object
     [self.incoming_queue, self.outgoing_queue]
   end
 
+  def idb_file_group
+    BitLevelFileGroup.find(self.idb_file_group_id)
+  end
+
+  def idb_cfs_directory
+    idb_file_group.cfs_directory
+  end
+
 end
