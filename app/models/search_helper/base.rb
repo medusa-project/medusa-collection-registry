@@ -115,6 +115,10 @@ class SearchHelper::Base < Object
     response.to_json
   end
 
+  def search_fields
+    columns.select {|c| c[:searchable]}.collect {|c| c[:solr_field]}
+  end
+
   protected
 
   def base_name
