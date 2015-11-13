@@ -16,7 +16,7 @@
             = fa_icon_link_to 'Dashboard', 'tachometer', dashboard_path
       %ul.nav.navbar-nav.navbar-right
         - if logged_in?
-          = render partial: 'shared/filename_search'
+          = render partial: 'shared/search'
         - if logged_in?
           %li= fa_icon_and_text_link_to 'Logout', 'user', logout_path
         - else

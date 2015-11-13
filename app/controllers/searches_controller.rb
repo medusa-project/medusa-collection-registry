@@ -1,8 +1,8 @@
 class SearchesController < ApplicationController
   before_action :require_logged_in
 
-  def filename
-    @search_string = params[:search][:filename]
+  def search
+    @search_string = params[:search][:query]
   end
 
   def file

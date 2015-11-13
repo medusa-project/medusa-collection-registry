@@ -100,8 +100,8 @@ MedusaCollectionRegistry::Application.routes.draw do
     post :new_reason, on: :collection
   end
   resources :searches, only: [] do
-    post :filename, on: :collection
-    get :filename, on: :collection
+    post :search, on: :collection
+    get :search, on: :collection
     get :file, on: :collection
   end
   resources :accruals, only: [] do
