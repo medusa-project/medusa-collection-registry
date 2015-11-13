@@ -45,10 +45,6 @@ class SearchHelper::Base < Object
     raise NotImplementedError, 'Subclass responsibility'
   end
 
-  def search_fields
-    raise NotImplementedError, 'Subclass responsibility'
-  end
-
   def draw
     params[:draw].to_i
   end
