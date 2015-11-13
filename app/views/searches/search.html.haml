@@ -8,7 +8,7 @@
 -#
 -#%hr
 
-%table.table.table-striped#ajax_files
+%table.table.table-striped#search_files
   %thead
     %tr
       %th Filename
@@ -17,7 +17,7 @@
       %th Collection
 :javascript
   $(document).ready(function() {
-    $('#ajax_files').DataTable({
+    $('#search_files').DataTable({
       "processing": true,
       "serverSide": true,
       "pageLength": 25,

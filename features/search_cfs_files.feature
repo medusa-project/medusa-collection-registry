@@ -1,4 +1,4 @@
-@search
+@search @javascript
 Feature: Search CFS Files
   In order to quickly locate files in which I have interest
   As a user
@@ -19,22 +19,22 @@ Feature: Search CFS Files
 
   Scenario: Public users cannot perform searches
     When I logout
-    Then trying to do post with the path 'filename_searches_path' as a public user should redirect to authentication
+    Then trying to do post with the path 'search_searches_path' as a public user should redirect to authentication
 
   Scenario: Search and find for exact string
     When I go to the site home
-    And I do a filename search for 'dog.txt'
+    And I do a search for 'dog.txt'
     Then I should see a table of cfs files with 1 row
     And I should see 'dog.txt'
 
   Scenario: Search for and do not find exact string
     When I go to the site home
-    And I do a filename search for 'joebob.txt'
-    Then I should see 'No files found with name joebob.txt.'
+    And I do a search for 'joebob.txt'
+    Then I should see 'No matching records found'
 
   Scenario: Wildcard search
     When I go to the site home
-    And I do a filename search for 'dog*'
+    And I do a search for 'dog*'
     Then I should see a table of cfs files with 2 rows
     And I should see all of:
       | dog.txt | Doggies.txt |
