@@ -11,4 +11,8 @@ class SearchHelper::CfsFile < SearchHelper::Base
      {header: 'Collection', solr_field: :collection_title, value_method: :search_collection_link}]
   end
 
+  def tab_label
+    'Files'
+  end
+
 end

@@ -25,6 +25,14 @@ class SearchHelper::Base < Object
     "search_#{base_plural_name}"
   end
 
+  def tab_id
+    "tab_#{base_plural_name}"
+  end
+
+  def tab_label
+    base_plural_name.humanize
+  end
+
   def url
     "/searches/#{base_name}.json"
   end
