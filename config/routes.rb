@@ -102,6 +102,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :searches, only: [] do
     post :filename, on: :collection
     get :filename, on: :collection
+    get :file, on: :collection
   end
   resources :accruals, only: [] do
     get :update_display, on: :member

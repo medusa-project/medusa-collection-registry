@@ -39,6 +39,15 @@ class CfsFile < ActiveRecord::Base
   searchable do
     text :name
     string :name, stored: true
+    string :path do
+      cfs_directory.path
+    end
+    string :collection_title do
+      collection.try(:title)
+    end
+    string :file_group_title do
+      file_group.try(:title)
+    end
   end
 
   def relative_path

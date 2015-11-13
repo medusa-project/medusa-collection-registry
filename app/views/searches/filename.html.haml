@@ -1,8 +1,32 @@
-- if @cfs_files.blank?
-  No files found with name #{@search_string}.
-- else
-  %p
-    #{@solr_search.total} #{'result'.pluralize(@solr_search.total)} found.
-  = render partial: 'cfs_files/table'
-  = will_paginate @cfs_files, renderer: BootstrapPagination::Rails, params: {search: {filename: @search_string}}
+-#- if @cfs_files.blank?
+-#  No files found with name #{@search_string}.
+-#- else
+-#  %p
+-#    #{@solr_search.total} #{'result'.pluralize(@solr_search.total)} found.
+-#  = render partial: 'cfs_files/table'
+-#  = will_paginate @cfs_files, renderer: BootstrapPagination::Rails, params: {search: {filename: @search_string}}
+-#
+-#%hr
 
+%table.table.table-striped#ajax_files
+  %thead
+    %tr
+      %th Filename
+      %th Path
+      %th File Group
+      %th Collection
+:javascript
+  $(document).ready(function() {
+    $('#ajax_files').DataTable({
+      "processing": true,
+      "serverSide": true,
+      "pageLength": 25,
+      "order" : [[0, 'asc']],
+      "search": {
+        "search": "#{@search_string}"
+      },
+      "ajax": {
+        "url": "/searches/file.json"
+      }
+    })
+  });
