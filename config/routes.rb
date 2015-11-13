@@ -102,7 +102,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :searches, only: [] do
     post :search, on: :collection
     get :search, on: :collection
-    %i(cfs_file cfs_directory).each do |action|
+    %i(cfs_file cfs_directory item file_group collection).each do |action|
       get action, on: :collection
     end
   end

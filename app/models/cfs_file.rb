@@ -36,7 +36,7 @@ class CfsFile < ActiveRecord::Base
   cascades_events parent: :cfs_directory
   cascades_red_flags parent: :cfs_directory
 
-  searchable do
+  searchable (include: {cfs_directory: {root_cfs_directory: {parent_file_group: :collection}}}) do
     text :name
     string :name, stored: true
     string :path do

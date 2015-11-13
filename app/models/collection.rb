@@ -49,6 +49,15 @@ class Collection < ActiveRecord::Base
   cascades_events parent: :repository
   cascades_red_flags parent: :repository
 
+  searchable do
+    text :title
+    string :title
+    text :description
+    string :description
+    text :external_id
+    string :external_id
+  end
+
   def total_size
     self.bit_level_file_groups.collect { |fg| fg.file_size }.sum
   end

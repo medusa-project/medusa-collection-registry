@@ -43,6 +43,15 @@ class FileGroup < ActiveRecord::Base
   cascades_events parent: :collection
   cascades_red_flags parent: :collection
 
+  searchable do
+    text :title
+    string :title
+    text :description
+    string :description
+    text :external_id
+    string :external_id
+  end
+
   STORAGE_LEVEL_HASH = {'external' => 'ExternalFileGroup',
                         'bit-level store' => 'BitLevelFileGroup',
                         'object-level store' => 'ObjectLevelFileGroup'}
