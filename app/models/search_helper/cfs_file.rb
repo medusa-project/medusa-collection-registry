@@ -9,18 +9,14 @@ class SearchHelper::CfsFile < SearchHelper::Base
   end
 
   def columns
-    [{header: 'Filename', solr_field: :name},
-     {header: 'Path', solr_field: :path},
-     {header: 'File Group', solr_field: :file_group_title},
-     {header: 'Collection', solr_field: :collection_title}]
+    [{header: 'Filename', solr_field: :name, value_method: :search_cfs_file_link},
+     {header: 'Path', solr_field: :path, value_method: :search_cfs_directory_path},
+     {header: 'File Group', solr_field: :file_group_title, value_method: :search_file_group_link},
+     {header: 'Collection', solr_field: :collection_title, value_method: :search_collection_link}]
   end
 
   def search_fields
     [:name]
-  end
-
-  def row(cfs_file)
-    [:search_cfs_file_link, :search_cfs_directory_path, :search_file_group_link, :search_collection_link].collect {|method| cfs_file.send(method)}
   end
 
 end

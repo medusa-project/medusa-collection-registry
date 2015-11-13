@@ -8,6 +8,10 @@
 #Subclasses need to implement the indicated methods, and solr search in the models must be set up with
 #the corresponding fields given in columns (See CfsFile subclass for an example). Given that this should
 #make it pretty easy to add in all needed searches.
+#In the columns the header is the header for the html/datatables table, the solr_field is the field on the model for
+#the column, used when a sort is requested, and value_method is either a symbol, which is sent to the (decorated) object
+#to get a table entry or a Proc that takes one argument (the object) to get a table entry.
+#Of course any of this stuff can be overriden as needed.
 class SearchHelper::Base < Object
 
   attr_accessor :initial_search_string, :params
@@ -42,10 +46,6 @@ class SearchHelper::Base < Object
   end
 
   def search_fields
-    raise NotImplementedError, 'Subclass responsibility'
-  end
-
-  def row(result)
     raise NotImplementedError, 'Subclass responsibility'
   end
 
@@ -89,6 +89,26 @@ class SearchHelper::Base < Object
         recordsFiltered: search.total,
         data: search.results.collect {|result| row(result.decorate)}
     }
+  end
+
+  def row(decorated_object)
+    value_methods.collect {|method| column_entry(method, decorated_object)}
+  end
+
+  def column_entry(method, decorated_object)
+    case method
+      when Symbol
+        decorated_object.send(method)
+      when Proc
+        method.call(decorated_object)
+      else
+        raise RuntimeError, "Unrecognized method for search helper evaluation"
+    end
+  end
+
+
+  def value_methods
+    columns.collect {|c| c[:value_method]}
   end
 
   def json_response
