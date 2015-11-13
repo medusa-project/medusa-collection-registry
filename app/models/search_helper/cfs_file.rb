@@ -1,9 +1,5 @@
 class SearchHelper::CfsFile < SearchHelper::Base
 
-  def initialize(args = {})
-    super
-  end
-
   def base_class
     ::CfsFile
   end
