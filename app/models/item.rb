@@ -6,7 +6,7 @@ class Item < ActiveRecord::Base
 
   auto_strip_attributes :barcode
 
-  searchable (include: :project) do
+  searchable include: :project do
     text :barcode
     string :barcode, stored: true
     string :title
