@@ -24,7 +24,7 @@ Feature: Search CFS Files
   Scenario: Search and find for exact string
     When I go to the site home
     And I do a search for 'dog.txt'
-    Then I should see a search table of files with 1 row
+    Then I should see a search table of cfs files with 1 row
     And I should see 'dog.txt'
 
   Scenario: Search for and do not find exact string
@@ -35,7 +35,7 @@ Feature: Search CFS Files
   Scenario: Wildcard search
     When I go to the site home
     And I do a search for 'dog*'
-    Then I should see a search table of files with 2 rows
+    Then I should see a search table of cfs files with 2 rows
     And I should see all of:
       | dog.txt | Doggies.txt |
     And I should not see 'cats.jpg'

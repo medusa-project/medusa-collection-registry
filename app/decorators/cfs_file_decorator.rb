@@ -20,4 +20,28 @@ class CfsFileDecorator < BaseDecorator
     end
   end
 
+  def search_cfs_file_link
+    h.link_to(cfs_file.name, h.cfs_file_path(cfs_file))
+  end
+
+  def search_file_group_link
+    if file_group = try(:file_group)
+      h.link_to(file_group.title, h.file_group_path(file_group))
+    else
+      ''
+    end
+  end
+
+  def search_collection_link
+    if collection = try(:collection)
+      h.link_to(collection.title, h.collection_path(collection))
+    else
+      ''
+    end
+  end
+
+  def search_cfs_directory_path
+    cfs_directory.path
+  end
+
 end

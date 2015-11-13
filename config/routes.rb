@@ -102,7 +102,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :searches, only: [] do
     post :search, on: :collection
     get :search, on: :collection
-    get :file, on: :collection
+    get :cfs_file, on: :collection
   end
   resources :accruals, only: [] do
     get :update_display, on: :member

@@ -1,5 +1,5 @@
 Then(/^I should see a search table of (.*) with (\d+) rows?$/) do |type, count|
-  selector = "#search_#{type}"
+  selector = "#search_#{type.gsub(' ', '_')}"
   expect(page).to have_selector(selector)
   within(selector) do
     expect(page).to have_css('tbody tr', count: count.to_i)
