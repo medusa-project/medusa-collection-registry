@@ -21,7 +21,7 @@ class CfsFileDecorator < BaseDecorator
   end
 
   def search_cfs_file_link
-    h.link_to(cfs_file.name, h.cfs_file_path(cfs_file))
+    h.link_to(self.name, h.cfs_file_path(self))
   end
 
   def search_file_group_link

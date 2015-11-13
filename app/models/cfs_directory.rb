@@ -38,6 +38,17 @@ class CfsDirectory < ActiveRecord::Base
   cascades_events parent: :parent
   cascades_red_flags parent: :parent
 
+  searchable do
+    text :path
+    string :path, stored: true
+    string :collection_title do
+      collection.try(:title)
+    end
+    string :file_group_title do
+      file_group.try(:title)
+    end
+  end
+
   #ensures that for FileGroup subclasses that we use FileGroup so that STI/polymorphism combination works properly
   def parent_type=(type)
     type = type.to_s.classify.constantize.base_class.to_s if type.present?
