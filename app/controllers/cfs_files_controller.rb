@@ -217,7 +217,7 @@ class CfsFilesController < ApplicationController
   end
 
   def image_server_config
-    MedusaCollectionRegistry::Application.medusa_config['loris']
+    MedusaCollectionRegistry::Application.medusa_config['iiif']
   end
 
 end
