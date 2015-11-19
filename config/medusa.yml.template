@@ -99,6 +99,7 @@ test:
     host: localhost
     port: 3000
     root: test
+    disabled: true
   public_view_on: true
   fits_batch_size: 1000
   #some of the tests may depend on a root named 'staging-1' being present, though the locations shouldn't matter.
