@@ -13,9 +13,31 @@ class DashboardController < ApplicationController
   end
 
   def file_stats
-    @content_type_hashes = ContentType.connection.select_all('SELECT id AS content_type_id, name, cfs_file_count AS file_count, cfs_file_size AS file_size FROM content_types ORDER BY name ASC').to_hash
-    @file_extension_hashes = FileExtension.connection.select_all('SELECT id AS file_extension_id, extension, cfs_file_count AS file_count, cfs_file_size AS file_size FROM file_extensions ORDER BY extension ASC').to_hash
+    @content_type_hashes = ContentType.connection.select_all(content_type_sql).to_hash
+    @file_extension_hashes = FileExtension.connection.select_all(file_extension_sql).to_hash
     render partial: 'file_stats_table', layout: false
+  end
+
+  def file_extension_sql
+    <<SQL
+    SELECT FE.id AS file_extension_id, FE.extension, FE.cfs_file_count AS file_count, FE.cfs_file_size AS file_size,
+      COALESCE(FEC.count, 0) AS tested_count
+    FROM file_extensions FE
+    LEFT JOIN (SELECT file_extension_id, SUM(count) AS count FROM view_tested_file_file_extension_counts GROUP BY file_extension_id) FEC
+    ON FE.id = FEC.file_extension_id
+    ORDER BY extension ASC
+SQL
+  end
+
+  def content_type_sql
+    <<SQL
+    SELECT CT.id AS content_type_id, CT.name, CT.cfs_file_count AS file_count, CT.cfs_file_size AS file_size,
+      COALESCE(CTC.count, 0) AS tested_count
+    FROM content_types CT
+    LEFT JOIN (SELECT content_type_id, SUM(count) AS count FROM view_tested_file_content_type_counts GROUP BY content_type_id) CTC
+    ON CT.id = CTC.content_type_id
+    ORDER BY name ASC
+SQL
   end
 
   def red_flags
