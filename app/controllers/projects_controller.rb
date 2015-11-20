@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
 
   before_action :require_logged_in
-  before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments, :batch]
+  before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments]
   include ModelsToCsv
 
   autocomplete :user, :email

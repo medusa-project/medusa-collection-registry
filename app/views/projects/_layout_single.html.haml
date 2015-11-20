@@ -10,7 +10,8 @@
     .btn-toolbar.pull-right
       .btn-group
         = link_to 'Add Item', new_item_path(project_id: @project.id), class: 'btn btn-default', remote: true
-        = index_button(projects_path)
+        - unless current_page?(action: 'show') and @batch.blank?
+          = fa_icon_link_to('View Project', 'home', @project, class: 'btn btn-default')
         = attachments_button(attachments_project_path(@project))
         .btn-group
           %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
