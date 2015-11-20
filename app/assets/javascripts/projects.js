@@ -27,6 +27,9 @@ function query_barcode(value) {
     $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
       barcode_item_data = jsonResult;
       populate_barcode_items();
+      if (barcode_item_data.length == 1) {
+        insert_barcode_item(0);
+      }
     })
   }
 }
@@ -66,6 +69,13 @@ function barcode_item_html(i) {
 function insert_barcode_item(i) {
   var item_data = barcode_item_data[i];
   Object.keys(item_data).forEach(function (key) {
-    $("#item_" + key).val(item_data[key]);
+    var field = "#item_" + key;
+    if (is_blank($(field).val())) {
+      $(field).val(item_data[key]);
+    }
   });
+}
+
+function is_blank(string) {
+  return /^\s*$/.test(string);
 }
