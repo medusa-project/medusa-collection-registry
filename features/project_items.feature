@@ -15,9 +15,9 @@ Feature: Project Items
     When I view the project with title 'Scanning'
     Then I should see the items table
     And I should see all of:
-      | xyz123 | Dogs | Ruthie | My note | XYZ123 | batch_1 |
+      | xyz123 | Dogs | Ruthie | My note | XYZ123 | batch_1 | 54321 |
     And I should see all of:
-      | abc789 | CatCat | My cat note | ABC789 | batch_2 | Cats |
+      | abc789 | CatCat | My cat note | ABC789 | batch_2 | Cats | 98765 |
     And I should see 'Bustard'
 
   Scenario: Obtain CSV file of items

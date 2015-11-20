@@ -2,6 +2,7 @@
   %thead
     %tr
       %th Barcode
+      %th Bib Id
       %th Title
       %th Notes
       %th Batch
@@ -14,6 +15,7 @@
       - cache(item) do
         %tr
           %td= link_to(item.barcode, item_path(item))
+          %td= item.bib_id
           %td= [item.title,item.item_title,item.local_title].detect {|title| title.present?}
           %td= item.notes
           %td= link_to(item.batch, project_path(@project, batch: item.batch))
