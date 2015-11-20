@@ -11,7 +11,7 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
     And the cfs directory 'animals/dogs/pictures' contains cfs fixture file 'grass.jpg'
     And the cfs directory 'animals/dogs' contains cfs fixture file 'fits.xml'
     And the collection with title 'Animals' has child file groups with fields:
-      | title          | type              |
+      | title         | type              |
       | Cats          | ExternalFileGroup |
       | Dogs-external | ExternalFileGroup |
       | Dogs          | BitLevelFileGroup |
@@ -35,4 +35,11 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
     And I click on 'File Statistics'
     Then I should see the file stats by content type table
     And I should see the file stats by file extension table
+
+  Scenario: Get CSV version of file statistics
+    When I go to the dashboard
+    And I click on 'File Statistics'
+    And within '#file-statistics' I click on 'CSV'
+    Then I should receive a file 'file-statistics.csv' of type 'text/csv' matching:
+      | image/jpeg | 2 | 332 KB | application/xml | 1 | 2.89 KB | 0 |
 

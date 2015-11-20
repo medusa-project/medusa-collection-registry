@@ -1,6 +1,11 @@
-%h3
-  - now = Time.now.strftime('%m/%d/%Y, %I:%M:%S%P %Z')
-  File Statistics (as of #{now})
+.row
+  .col-sm-6
+    %h3
+      - now = Time.now.strftime('%m/%d/%Y, %I:%M:%S%P %Z')
+      File Statistics (as of #{now})
+  .col-sm-6
+    .pull-right
+      = link_to 'CSV', file_stats_dashboard_path(format: :csv), class: 'btn btn-default'
 .row
   .col-sm-6
     %table.table.table-striped.table-bordered.table-condensed#file_stats_content_type
@@ -15,8 +20,6 @@
           - @content_type_hashes.each do |info|
             = cache(info) do
               %tr
-                - x = info['name']
-                - y = info ['content_type_id']
                 %td= link_to info['name'], cfs_files_content_type_path(info['content_type_id'])
                 %td= info['file_count'].to_i.to_formatted_s(:delimited)
                 - percent = info['tested_count'].to_d / info['file_count'].to_d * 100

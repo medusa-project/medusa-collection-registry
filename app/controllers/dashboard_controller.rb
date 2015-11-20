@@ -6,7 +6,7 @@ class DashboardController < ApplicationController
   def show
     setup_bit_level_storage_summary
     setup_repository_storage_summary
-   end
+  end
 
   def running_processes
     render partial: 'running_processes', layout: false
@@ -15,7 +15,12 @@ class DashboardController < ApplicationController
   def file_stats
     @content_type_hashes = ContentType.connection.select_all(content_type_sql).to_hash
     @file_extension_hashes = FileExtension.connection.select_all(file_extension_sql).to_hash
-    render partial: 'file_stats_table', layout: false
+    respond_to do |format|
+      format.html { render partial: 'file_stats_table', layout: false }
+      format.csv do
+        send_data file_stats_to_csv(@content_type_hashes, @file_extension_hashes), type: 'text/csv', filename: 'file-statistics.csv'
+      end
+    end
   end
 
   def file_extension_sql
@@ -85,6 +90,20 @@ SQL
     %w(ExternalFileGroup BitLevelFileGroup).each do |type|
       @repository_storage_summary.values.each do |summary|
         summary[type] ||= {count: 0, size: 0}
+      end
+    end
+  end
+
+  def file_stats_to_csv(content_type_hashes, file_extension_hashes)
+    CSV.generate do |csv|
+      csv << ['File Format', 'Number of Files', 'Number Tested', 'Percentage Tested', 'Size']
+      content_type_hashes.each do |info|
+        csv << [info['name'], info['file_count'].to_i, info['tested_count'].to_i, (100 * info['tested_count'].to_d / info['file_count'].to_d), info['file_size']]
+      end
+      csv << []
+      csv << ['File Extension', 'Number of Files', 'Number Tested', 'Percentage Tested', 'Size']
+      file_extension_hashes.each do |info|
+        csv << [info['extension'], info['file_count'].to_i, info['tested_count'].to_i, (100 * info['tested_count'].to_d / info['file_count'].to_d), info['file_size']]
       end
     end
   end

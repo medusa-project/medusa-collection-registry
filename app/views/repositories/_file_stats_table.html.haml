@@ -1,8 +1,14 @@
 - cache(@repository) do
   - load_repository_dashboard_file_stats
-  %h3
-    - now = Time.now.strftime('%m/%d/%Y, %I:%M:%S%P %Z')
-    File Statistics (as of #{now})
+
+  .row
+    .col-sm-6
+      %h3
+        - now = Time.now.strftime('%m/%d/%Y, %I:%M:%S%P %Z')
+        File Statistics (as of #{now})
+    .col-sm-6
+      .pull-right
+        = link_to 'CSV', show_file_stats_repository_path(@repository, format: :csv), class: 'btn btn-default'
   .row
     .col-sm-6
       %table.table.table-striped.table-bordered.table-condensed#file_stats_content_type
