@@ -40,6 +40,4 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
     When I go to the dashboard
     And I click on 'File Statistics'
     And within '#file-statistics' I click on 'CSV'
-    Then I should receive a file 'file-statistics.csv' of type 'text/csv' matching:
-      | image/jpeg | 2 | 332 KB | application/xml | 1 | 2.89 KB | 0 |
-
+    Then I should receive a file 'file-statistics.csv' of type 'text/csv'

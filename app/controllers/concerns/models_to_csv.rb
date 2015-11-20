@@ -42,4 +42,19 @@ module ModelsToCsv
                                                collection_id: 'Collection Id', collection_title: 'Collection title',
                                                repository_id: 'Repository Id', repository_title: 'Repository title'}, csv_options)
   end
+
+  def file_stats_to_csv(content_type_hashes, file_extension_hashes)
+    CSV.generate do |csv|
+      csv << ['File Format', 'Number of Files', 'Number Tested', 'Percentage Tested', 'Size']
+      content_type_hashes.each do |info|
+        csv << [info['name'], info['file_count'].to_i, info['tested_count'].to_i, (100 * info['tested_count'].to_d / info['file_count'].to_d), info['file_size']]
+      end
+      csv << []
+      csv << ['File Extension', 'Number of Files', 'Number Tested', 'Percentage Tested', 'Size']
+      file_extension_hashes.each do |info|
+        csv << [info['extension'], info['file_count'].to_i, info['tested_count'].to_i, (100 * info['tested_count'].to_d / info['file_count'].to_d), info['file_size']]
+      end
+    end
+  end
+
 end

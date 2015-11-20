@@ -5,3 +5,8 @@ Then(/^I should receive a file '([^']*)' of type '([^']*)' matching:$/) do |file
     expect(page).to have_content(header)
   end
 end
+
+Then(/^I should receive a file '([^']*)' of type '([^']*)'$/) do |file_name, mime_type|
+  expect(page.response_headers['Content-Type']).to eq(mime_type)
+  expect(page.response_headers['Content-Disposition']).to match(file_name)
+end

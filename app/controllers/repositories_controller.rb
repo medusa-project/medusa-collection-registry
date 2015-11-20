@@ -8,6 +8,8 @@ class RepositoriesController < ApplicationController
                                          :show_amazon, :show_accruals]
   include ModelsToCsv
 
+  helper_method :load_file_extension_stats, :load_content_type_stats
+
   def new
     authorize! :create, Repository
     @repository = Repository.new
@@ -31,7 +33,15 @@ class RepositoriesController < ApplicationController
   end
 
   def show_file_stats
-    render partial: 'file_stats_table', layout: false
+    respond_to do |format|
+      format.html {render partial: 'file_stats_table', layout: false}
+      format.csv do
+        content_type_hashes = load_content_type_stats(@repository)
+        file_extension_hashes = load_file_extension_stats(@repository)
+        send_data file_stats_to_csv(content_type_hashes, file_extension_hashes), type: 'text/csv', filename: 'file-statistics.csv'
+      end
+    end
+
   end
 
   def show_running_processes
@@ -144,6 +154,38 @@ class RepositoriesController < ApplicationController
   def setup_red_flags
     @red_flags = @repository.cascaded_red_flags
     @aggregator = @repository
+  end
+
+  def load_content_type_stats(repository)
+    ActiveRecord::Base.connection.
+        select_all(load_repository_dashboard_content_type_sql, nil, [[nil, repository.id]])
+  end
+
+  def load_file_extension_stats(repository)
+    ActiveRecord::Base.connection.
+        select_all(load_repository_dashboard_file_extension_sql, nil, [[nil, repository.id]]).to_hash
+  end
+
+  def load_repository_dashboard_content_type_sql
+    <<SQL
+    SELECT CTS.content_type_id, CTS.name, CTS.file_size, CTS.file_count,
+    COALESCE(CTC.count,0) AS tested_count
+    FROM view_file_content_type_stats_by_repository CTS
+    LEFT JOIN (SELECT content_type_id, count FROM view_tested_file_content_type_counts WHERE repository_id = $1) CTC
+    ON CTS.content_type_id = CTC.content_type_id
+    WHERE repository_id = $1
+SQL
+  end
+
+  def load_repository_dashboard_file_extension_sql
+    <<SQL
+    SELECT FES.file_extension_id, FES.extension, FES.file_size, FES.file_count,
+    COALESCE(FEC.count,0) AS tested_count
+    FROM view_file_extension_stats_by_repository FES
+    LEFT JOIN (SELECT file_extension_id, count FROM view_tested_file_file_extension_counts WHERE repository_id = $1) FEC
+    ON FES.file_extension_id = FEC.file_extension_id
+    WHERE repository_id = $1
+SQL
   end
 
 end
