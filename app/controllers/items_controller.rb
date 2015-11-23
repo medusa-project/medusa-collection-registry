@@ -42,10 +42,15 @@ class ItemsController < ApplicationController
     @project = Project.find(params[:item][:project_id])
     authorize! :create_item, @project
     @item = @project.items.new(allowed_params)
+    @do_another = params[:commit] == 'Create'
     respond_to do |format|
       if @item.save
-        format.html { redirect_to @project }
-        format.js { @items = @project.items(true) }
+        format.html do
+          redirect_to @do_another ? new_item_path : @project
+        end
+        format.js do
+          @items = @project.items(true)
+        end
       else
         format.html { render 'new' }
         format.js do

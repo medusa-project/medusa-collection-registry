@@ -9,7 +9,7 @@
   .col-xs-6
     .btn-toolbar.pull-right
       .btn-group
-        = link_to 'Add Item', new_item_path(project_id: @project.id), class: 'btn btn-default', remote: true
+        = link_to 'Add Item', new_item_path(project_id: @project.id), class: 'btn btn-default', remote: true, id: 'add_item_button'
         - unless current_page?(action: 'show') and @batch.blank?
           = fa_icon_link_to('View Project', 'home', @project, class: 'btn btn-default')
         = attachments_button(attachments_project_path(@project))

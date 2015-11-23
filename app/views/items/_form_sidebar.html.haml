@@ -1,0 +1,18 @@
+-#Must pass form variable f
+-#Must pass object
+-#May pass cancel_return - object or path to go to if the form is cancelled. Default is to show obj.
+- cancel_return ||= object
+.col-sm-3
+  .btn-group
+    = f.button :submit, class: 'btn btn-primary', value: (object.new_record? ? 'Create' : 'Update'), onclick: "$('.modal').modal('hide');"
+    - if defined?(@remote) and @remote
+      = link_to('Cancel', '#', class: 'btn btn-default', onclick: "$('.modal').modal('hide'); false;")
+    - else
+      = link_to('Cancel', cancel_return, class: 'btn btn-default')
+    - if object.new_record?
+      = f.button :submit, class: 'btn btn-primary', value: 'Create and Exit', onclick: "$('.modal').modal('hide');"
+    - if object.persisted? and safe_can?(:delete, object)
+      = delete_button(object)
+
+  - if content_for?(:form_sidebar_extra)
+    = content_for(:form_sidebar_extra)

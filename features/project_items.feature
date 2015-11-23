@@ -55,7 +55,7 @@ Feature: Project Items
       | Barcode | pqr456   |
       | Title   | Catch-22 |
       | Author  | Heller   |
-    And I click on 'Create'
+    And I click on 'Create and Exit'
     Then I should be on the view page for the project with title 'Scanning'
     And I should see all of:
       | pqr456 | Catch-22 | Heller |
