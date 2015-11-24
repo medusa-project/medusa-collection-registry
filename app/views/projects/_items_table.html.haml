@@ -6,7 +6,7 @@
           = f.input :batch, label: 'Assign batch:&nbsp;'.html_safe, required: false
           %a{href: '#items', 'data-toggle' => 'checkboxes', 'data-action' => 'check', class: 'btn btn-default'} Check All on Page
           %a{href: '#items', 'data-toggle' => 'checkboxes', 'data-action' => 'uncheck', class: 'btn btn-default'} Uncheck All on Page
-          = f.submit :Assign, class: 'btn btn-primary', onclick: "$('#items').DataTable().page.len(-1).draw();"
+          = f.submit :Assign, class: 'btn btn-primary', onclick: "before_assign_batch_submit();"
   .row
     %table.table.table-striped#items{'data-toggle' => 'checkboxes', 'data-range' => 'true'}
       %thead

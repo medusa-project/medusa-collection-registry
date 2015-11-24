@@ -2,6 +2,7 @@ initialize_data_table("table#projects", {});
 initialize_data_table("table#items", {});
 
 $(function () {
+  restore_item_table_size();
   watch_item_barcode(".barcode_input");
 });
 
@@ -78,4 +79,24 @@ function insert_barcode_item(i) {
 
 function is_blank(string) {
   return /^\s*$/.test(string);
+}
+
+function before_assign_batch_submit () {
+  localStorage.setItem(item_table_storage_name(), JSON.stringify($('#items').DataTable().page.len()));
+  set_item_table_page_length(-1);
+}
+
+function restore_item_table_size () {
+  var length = JSON.parse(localStorage.getItem(item_table_storage_name()));
+  if (length) {
+    set_item_table_page_length(length);
+  }
+}
+
+function set_item_table_page_length (length) {
+  $('#items').DataTable().page.len(length).draw();
+}
+
+function item_table_storage_name () {
+  return 'DataTables_item_table_' + window.location.pathname;
 }
