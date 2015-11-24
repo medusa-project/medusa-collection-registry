@@ -1,27 +1,36 @@
-%table.table.table-striped#items
-  %thead
-    %tr
-      %th Barcode
-      %th Bib Id
-      %th Title
-      %th Notes
-      %th Batch
-      %th Call Number
-      %th Author
-      %th Record Series Id
-      %th
-  %tbody
-    - @items.each do |item|
-      - cache(item) do
+= simple_form_for :assign_batch, url: assign_batch_project_path(@project), html: {class: 'form-inline' } do |f|
+  .row
+    .col-sm-12
+      .pull-right
+        = f.input :batch, label: 'Assign batch:&nbsp;'.html_safe, required: false
+        = f.submit :Assign
+  .row
+    %table.table.table-striped#items
+      %thead
         %tr
-          %td= link_to(item.barcode, item_path(item))
-          %td= item.bib_id
-          %td= [item.title,item.item_title,item.local_title].detect {|title| title.present?}
-          %td= item.notes
-          %td= link_to(item.batch, project_path(@project, batch: item.batch))
-          %td= item.call_number
-          %td= item.author
-          %td= item.record_series_id
-          %td
-            = small_edit_button(item)
-            = small_clone_button(new_item_path(source_id: item.id), method: :get)
+          %th Barcode
+          %th Bib Id
+          %th Title
+          %th Notes
+          %th Batch
+          %th Assign
+          %th Call Number
+          %th Author
+          %th Record Series Id
+          %th
+      %tbody
+        - @items.each do |item|
+          - cache(item) do
+            %tr
+              %td= link_to(item.barcode, item_path(item))
+              %td= item.bib_id
+              %td= [item.title,item.item_title,item.local_title].detect {|title| title.present?}
+              %td= item.notes
+              %td= link_to(item.batch, project_path(@project, batch: item.batch))
+              %td= check_box_tag('', item.id, false, name: 'assign_batch[assign][]', id: "assign_batch_assign_#{item.id}")
+              %td= item.call_number
+              %td= item.author
+              %td= item.record_series_id
+              %td
+                = small_edit_button(item)
+                = small_clone_button(new_item_path(source_id: item.id), method: :get)

@@ -64,7 +64,9 @@ MedusaCollectionRegistry::Application.routes.draw do
     post 'unflag', on: :member
   end
 
-  resources :projects, concerns: [:attachable, :autocomplete_email]
+  resources :projects, concerns: [:attachable, :autocomplete_email] do
+    post 'assign_batch', on: :member
+  end
   resources :items do
     get 'barcode_lookup', on: :collection
   end

@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
 
   before_action :require_logged_in
-  before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments]
+  before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments, :assign_batch]
   include ModelsToCsv
 
   autocomplete :user, :email
@@ -10,7 +10,7 @@ class ProjectsController < ApplicationController
     @projects = Project.order('title ASC')
     respond_to do |format|
       format.html
-      format.csv {send_data projects_to_csv(@projects), type: 'text/csv', filename: 'projects.csv'}
+      format.csv { send_data projects_to_csv(@projects), type: 'text/csv', filename: 'projects.csv' }
     end
   end
 
@@ -47,13 +47,23 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def assign_batch
+    authorize! :update, @project
+    batch = params[:assign_batch][:batch].strip
+    @project.items.where(id: params[:assign_batch][:assign]).find_each do |item|
+      item.batch = batch
+      item.save!
+    end
+    redirect_to @project
+  end
+
   def show
     @items = @project.items
     @batch = params[:batch]
     @items = @items.where(batch: @batch) if @batch.present?
     respond_to do |format|
       format.html
-      format.csv {send_data items_to_csv(@items), type: 'text/csv', filename: 'items.csv'}
+      format.csv { send_data items_to_csv(@items), type: 'text/csv', filename: 'items.csv' }
     end
   end
 
