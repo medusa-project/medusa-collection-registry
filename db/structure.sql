@@ -2210,7 +2210,10 @@ CREATE TABLE items (
     sub_series character varying DEFAULT ''::character varying,
     box character varying DEFAULT ''::character varying,
     folder character varying DEFAULT ''::character varying,
-    item_title character varying DEFAULT ''::character varying
+    item_title character varying DEFAULT ''::character varying,
+    foldout_present boolean DEFAULT false NOT NULL,
+    foldout_done boolean DEFAULT false NOT NULL,
+    equipment character varying DEFAULT ''::character varying
 );
 
 
@@ -3326,6 +3329,45 @@ CREATE VIEW view_file_groups_latest_amazon_backup AS
     collections c,
     repositories r
   WHERE (((((((((ab.cfs_directory_id = ablu.cfs_directory_id) AND (ab.date = ablu.max_date)) AND (ab.part_count IS NOT NULL)) AND (ab.archive_ids IS NOT NULL)) AND (cfs.id = ab.cfs_directory_id)) AND (fg.id = cfs.parent_id)) AND ((cfs.parent_type)::text = 'FileGroup'::text)) AND (fg.collection_id = c.id)) AND (c.repository_id = r.id));
+
+
+--
+-- Name: view_tested_file_relations; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW view_tested_file_relations AS
+ SELECT fft.id AS file_format_test_id,
+    f.id AS cfs_file_id,
+    f.content_type_id,
+    f.file_extension_id,
+    p.repository_id
+   FROM ((file_format_tests fft
+     JOIN cfs_files f ON ((fft.cfs_file_id = f.id)))
+     JOIN view_cfs_files_to_parents p ON ((f.id = p.cfs_file_id)));
+
+
+--
+-- Name: view_tested_file_content_type_counts; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW view_tested_file_content_type_counts AS
+ SELECT view_tested_file_relations.content_type_id,
+    view_tested_file_relations.repository_id,
+    count(*) AS count
+   FROM view_tested_file_relations
+  GROUP BY view_tested_file_relations.content_type_id, view_tested_file_relations.repository_id;
+
+
+--
+-- Name: view_tested_file_file_extension_counts; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW view_tested_file_file_extension_counts AS
+ SELECT view_tested_file_relations.file_extension_id,
+    view_tested_file_relations.repository_id,
+    count(*) AS count
+   FROM view_tested_file_relations
+  GROUP BY view_tested_file_relations.file_extension_id, view_tested_file_relations.repository_id;
 
 
 --
@@ -6445,4 +6487,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151104182843');
 INSERT INTO schema_migrations (version) VALUES ('20151104210143');
 
 INSERT INTO schema_migrations (version) VALUES ('20151112160558');
+
+INSERT INTO schema_migrations (version) VALUES ('20151201192336');
 

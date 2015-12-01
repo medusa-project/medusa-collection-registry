@@ -14,6 +14,9 @@
         = f.input :file_count
         = f.input :reformatting_date, as: :string, input_html: {class: 'datepicker', value: (@item.reformatting_date.if_blank(Date.today)).to_s}
         = f.input :reformatting_operator
+        = f.input :equipment
+        = f.input :foldout_present, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
+        = f.input :foldout_done, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
       = field_set_tag('Voyager Metadata') do
         = f.input :call_number
         = f.input :title
