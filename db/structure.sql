@@ -2213,7 +2213,8 @@ CREATE TABLE items (
     item_title character varying DEFAULT ''::character varying,
     foldout_present boolean DEFAULT false NOT NULL,
     foldout_done boolean DEFAULT false NOT NULL,
-    equipment character varying DEFAULT ''::character varying
+    equipment character varying DEFAULT ''::character varying,
+    status character varying
 );
 
 
@@ -5061,6 +5062,13 @@ CREATE INDEX index_items_on_project_id ON items USING btree (project_id);
 
 
 --
+-- Name: index_items_on_status; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_items_on_status ON items USING btree (status);
+
+
+--
 -- Name: index_job_amazon_backups_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6489,4 +6497,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151104210143');
 INSERT INTO schema_migrations (version) VALUES ('20151112160558');
 
 INSERT INTO schema_migrations (version) VALUES ('20151201192336');
+
+INSERT INTO schema_migrations (version) VALUES ('20151202172013');
 

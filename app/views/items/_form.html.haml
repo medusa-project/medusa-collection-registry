@@ -12,6 +12,7 @@
         = f.input :local_title
         = f.input :batch
         = f.input :file_count
+        = f.input :status, as: :select, collection: Item::STATUSES
         = f.input :reformatting_date, as: :string, input_html: {class: 'datepicker', value: (@item.reformatting_date.if_blank(Date.today)).to_s}
         = f.input :reformatting_operator
         = f.input :equipment
