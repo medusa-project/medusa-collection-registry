@@ -2212,7 +2212,6 @@ CREATE TABLE items (
     folder character varying DEFAULT ''::character varying,
     item_title character varying DEFAULT ''::character varying,
     foldout_present boolean DEFAULT false NOT NULL,
-    foldout_done boolean DEFAULT false NOT NULL,
     equipment character varying DEFAULT ''::character varying,
     status character varying
 );
@@ -6499,4 +6498,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151112160558');
 INSERT INTO schema_migrations (version) VALUES ('20151201192336');
 
 INSERT INTO schema_migrations (version) VALUES ('20151202172013');
+
+INSERT INTO schema_migrations (version) VALUES ('20151203164731');
 
