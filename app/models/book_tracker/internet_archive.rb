@@ -22,18 +22,18 @@ module BookTracker
                           service: Service::INTERNET_ARCHIVE)
 
       begin
-        json = get_api_results(task)
+        doc = get_api_results(task)
 
         items_in_ia = 0
-        num_items = json['response']['docs'].length
+        num_items = doc.xpath('//result/@numFound').first.content.to_i
 
         task.name = 'Checking Internet Archive: Scanning the inventory for '\
         'UIU records...'
         task.save!
         puts task.name
 
-        json['response']['docs'].each_with_index do |doc, index|
-          item = Item.find_by_ia_identifier(doc['identifier'])
+        doc.xpath('//result/doc/str').each_with_index do |node, index|
+          item = Item.find_by_ia_identifier(node.content)
           if item
             item.exists_in_internet_archive = true
             item.save!
@@ -68,18 +68,19 @@ module BookTracker
     private
 
     ##
-    # Downloads all UIUC records from IA, caching the same day's results.
+    # Gets all UIUC records from IA, downloading and caching them if necessary,
+    # or returning the current date's cached copy if available.
     #
-    # @return JSON object
+    # @return [Nokogiri::XML::Document]
     #
     def get_api_results(task)
-      expected_filename = "ia_results_#{Date.today.strftime('%Y%m%d')}.json"
+      expected_filename = "ia_results_#{Date.today.strftime('%Y%m%d')}.xml"
       cache_pathname = Rails.root.join('public', 'system', 'book_tracker')
       expected_pathname = File.join(cache_pathname, expected_filename)
 
       unless File.exists?(expected_pathname)
-        # Delete any older downloads that may exist, as they are now outdated
-        Dir.glob(File.join(cache_pathname, 'ia_results_*.json')).
+        # Delete older downloads
+        Dir.glob(File.join(cache_pathname, 'ia_results_*')).
             each{ |f| File.delete(f) }
 
         task.name = 'Checking Internet Archive: Downloading UIUC inventory'
@@ -91,7 +92,7 @@ module BookTracker
         end_date = Date.today.strftime('%Y-%m-%d')
         uri = URI.parse("https://archive.org/advancedsearch.php?"\
             "q=mediatype:texts+updatedate:[#{start_date}+TO+#{end_date}]&"\
-            "fl[]=identifier&rows=9999999&page=1&output=json&save=yes%20"\
+            "fl[]=identifier&rows=9999999&page=1&output=xml&save=yes%20"\
             "contributor:%22University%20of%20Illinois%20Urbana-Champaign")
 
         FileUtils.mkdir_p(cache_pathname)
@@ -103,9 +104,7 @@ module BookTracker
           end
         end
       end
-
-      json = File.read(expected_pathname)
-      JSON.parse(json)
+      File.open(expected_pathname) { |f| Nokogiri::XML(f) }
     end
 
   end
