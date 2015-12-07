@@ -96,12 +96,19 @@ module BookTracker
             "contributor:%22University%20of%20Illinois%20Urbana-Champaign")
 
         FileUtils.mkdir_p(cache_pathname)
-        Net::HTTP.get_response(uri) do |res|
-          res.read_body do |chunk|
-            File.open(expected_pathname, 'ab') { |file|
-              file.write(chunk)
-            }
+        begin
+          puts "Getting #{uri}"
+          Net::HTTP.get_response(uri) do |res|
+            res.read_body do |chunk|
+              File.open(expected_pathname, 'ab') do |file|
+                file.write(chunk)
+              end
+            end
           end
+        rescue => e
+          puts "#{e}"
+          File.delete(expected_pathname) if File.exists?(expected_pathname)
+          raise e
         end
       end
       File.open(expected_pathname) { |f| Nokogiri::XML(f) }
