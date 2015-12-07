@@ -47,12 +47,12 @@ module BookTracker
       end
 
       # in/not-in service (in[]=, ni[]=)
-      if params[:in].kind_of?(Array) and params[:ni].kind_of?(Array) and
+      if params[:in].respond_to?(:each) and params[:ni].respond_to?(:each) and
           (params[:in] & params[:ni]).length > 0
         flash[:error] = 'Cannot search for items that are both in and not in '\
         'the same service.'
       else
-        if params[:in].kind_of?(Array)
+        if params[:in].respond_to?(:each)
           params[:in].each do |service|
             case service
               when 'ht'
@@ -64,7 +64,7 @@ module BookTracker
             end
           end
         end
-        if params[:ni].kind_of?(Array)
+        if params[:ni].respond_to?(:each)
           params[:ni].each do |service|
             case service
               when 'ht'
