@@ -52,10 +52,11 @@ module BookTracker
         puts task.name
         raise e
       rescue => e
-        task = current_task
         task.name = "Internet Archive check failed: #{e}"
         task.status = Status::FAILED
         task.save!
+        puts task.name
+        raise e
       else
         task.name = "Checking Internet Archive: Updated database with "\
         "#{items_in_ia} found items."
