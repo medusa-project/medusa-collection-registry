@@ -91,10 +91,10 @@ module BookTracker
         # https://archive.org/advancedsearch.php
         start_date = '1980-01-01'
         end_date = Date.today.strftime('%Y-%m-%d')
-        uri = URI.parse("https://archive.org/advancedsearch.php?"\
-            "q=mediatype:texts+updatedate:[#{start_date}+TO+#{end_date}]&"\
-            "fl[]=identifier&rows=9999999&page=1&output=xml&save=yes%20"\
-            "contributor:%22University%20of%20Illinois%20Urbana-Champaign")
+        uri = URI.parse("https://archive.org/advancedsearch.php?q="\
+        "mediatype:texts AND contributor:\"University of Illinois Urbana-"\
+        "Champaign\" AND updatedate:[#{start_date} TO #{end_date}]&"\
+        "fl[]=identifier&rows=9999999&page=1&output=xml&save=yes")
 
         FileUtils.mkdir_p(cache_pathname)
         begin
