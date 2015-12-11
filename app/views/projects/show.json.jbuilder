@@ -2,7 +2,7 @@
 json.data do
   json.array! @items do |item|
     row = Array.new.tap do |row|
-      row << link_to(item.barcode, item)
+      row << link_to(item.barcode.if_blank('<no barcode>'), item)
       row << item.bib_id
       row << [item.title, item.item_title, item.local_title].detect { |title| title.present? }
       row << item.notes
