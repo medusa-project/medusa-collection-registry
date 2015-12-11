@@ -22,21 +22,15 @@
           %th Author
           %th Record Series Id
           %th
-      %tbody
-        - @items.each do |item|
-          - cache(item) do
-            %tr
-              %td= link_to(item.barcode, item_path(item))
-              %td= item.bib_id
-              %td= [item.title,item.item_title,item.local_title].detect {|title| title.present?}
-              %td= item.notes
-              %td= link_to(item.batch, project_path(@project, batch: item.batch))
-              - if safe_can?(:update, @project)
-                %td= check_box_tag('', item.id, false, name: 'assign_batch[assign][]', id: "assign_batch_assign_#{item.id}")
-              %td= item.call_number
-              %td= item.author
-              %td= item.record_series_id
-              %td
-                = small_edit_button(item)
-                = small_clone_button(new_item_path(source_id: item.id), method: :get)
-
+:javascript
+  $(document).ready(function() {
+    $('#items').DataTable({
+      'processing': true,
+      'pageLength': 25,
+      'order': [[0, "asc"]],
+      'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+      'ajax': {
+        'url': "#{project_path(@project, format: 'json', batch: @batch)}"
+      }
+    })
+  })

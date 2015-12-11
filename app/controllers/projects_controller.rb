@@ -64,6 +64,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv { send_data items_to_csv(@items), type: 'text/csv', filename: 'items.csv' }
+      format.json
     end
   end
 
@@ -89,6 +90,23 @@ class ProjectsController < ApplicationController
   def allowed_params
     params[:project].permit(:title, :manager_email, :owner_email, :start_date,
                             :status, :specifications, :summary, :collection_id, :external_id)
+  end
+
+  def items_to_json(items)
+    items.collect do |item|
+      Array.new.tap do |row|
+        row << link_to(item.barcode, item)
+        row << item.bib_id
+        row << [item.title,item.item_title,item.local_title].detect {|title| title.present?}
+        row << item.notes
+        row << link_to(item.batch, project_path(@project, batch: item.batch))
+        row << check_box_tag('', item.id, false, name: 'assign_batch[assign][]', id: "assign_batch_assign_#{item.id}") if safe_can?(:update, @project)
+        row << item.call_number
+        row << item.author
+        row << item.record_series_id
+        row << small_edit_button(item) + ' ' + small_clone_button(new_item_path(source_id: item.id), method: :get)
+      end
+    end.to_json
   end
 
 end

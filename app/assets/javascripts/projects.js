@@ -1,5 +1,4 @@
 initialize_data_table("table#projects", {});
-initialize_data_table("table#items", {});
 
 $(function () {
   restore_item_table_size();
