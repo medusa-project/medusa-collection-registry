@@ -1,7 +1,7 @@
 #not fully aptly named, as this is just the items for the project. But close enough for now.
 json.data do
   json.array! @items do |item|
-    json.cache! @item do
+    json.cache! item do
       row = Array.new.tap do |row|
         row << link_to(item.barcode.if_blank('<no barcode>'), item)
         row << item.bib_id
