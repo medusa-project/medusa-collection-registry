@@ -90,6 +90,8 @@ gem 'paperclip', git: 'git://github.com/thoughtbot/paperclip.git'
 
 gem 'font-awesome-rails'
 
+gem 'yajl-ruby'
+
 #search
 gem 'sunspot_rails'
 gem 'progress_bar'
