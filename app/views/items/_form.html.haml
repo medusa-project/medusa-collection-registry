@@ -35,4 +35,5 @@
     .col-sm-4
       = f.input :notes
       = f.input :local_description
-
+  :javascript
+    $(function () {prevent_enter_in_barcode_field = #{@item.barcode.blank?}})

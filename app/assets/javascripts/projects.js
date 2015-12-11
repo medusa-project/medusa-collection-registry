@@ -9,6 +9,7 @@ $(function () {
 //JS to watch barcode field and call back to rails for barcode information when appropriate
 //Hook up when displaying new item form
 var barcode_item_data = [];
+var prevent_enter_in_barcode_field = true;
 
 function watch_item_barcode(barcode_field_selector) {
   query_barcode($(barcode_field_selector).val());
@@ -17,7 +18,7 @@ function watch_item_barcode(barcode_field_selector) {
     }
   );
   $(barcode_field_selector).keypress(function(event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode == 13 && prevent_enter_in_barcode_field) {
       event.preventDefault();
     }
   });
@@ -31,6 +32,7 @@ function query_barcode(value) {
       if (barcode_item_data.length == 1) {
         insert_barcode_item(0);
       }
+      prevent_enter_in_barcode_field = false;
     })
   }
 }
