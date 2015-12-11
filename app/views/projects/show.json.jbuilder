@@ -6,7 +6,7 @@ json.data do
       row << item.bib_id
       row << [item.title, item.item_title, item.local_title].detect { |title| title.present? }
       row << item.notes
-      row << link_to(item.batch, project_path(@project, batch: item.batch))
+      row << (link_to(item.batch, project_path(@project, batch: item.batch))).gsub('"', "'")
       row << check_box_tag('', item.id, false, name: 'assign_batch[assign][]', id: "assign_batch_assign_#{item.id}") if safe_can?(:update, @project)
       row << item.call_number
       row << item.author

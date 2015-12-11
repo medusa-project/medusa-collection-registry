@@ -1,7 +1,6 @@
 initialize_data_table("table#projects", {});
 
 $(function () {
-  restore_item_table_size();
   watch_item_barcode(".barcode_input");
 });
 
@@ -16,7 +15,7 @@ function watch_item_barcode(barcode_field_selector) {
       query_barcode($(barcode_field_selector).val());
     }
   );
-  $(barcode_field_selector).keypress(function(event) {
+  $(barcode_field_selector).keypress(function (event) {
     if (event.keyCode == 13 && prevent_enter_in_barcode_field) {
       event.preventDefault();
     }
@@ -82,22 +81,15 @@ function is_blank(string) {
   return /^\s*$/.test(string);
 }
 
-function before_assign_batch_submit () {
+function before_assign_batch_submit() {
   localStorage.setItem(item_table_storage_name(), JSON.stringify($('#items').DataTable().page.len()));
   set_item_table_page_length(-1);
 }
 
-function restore_item_table_size () {
-  var length = JSON.parse(localStorage.getItem(item_table_storage_name()));
-  if (length) {
-    set_item_table_page_length(length);
-  }
-}
-
-function set_item_table_page_length (length) {
+function set_item_table_page_length(length) {
   $('#items').DataTable().page.len(length).draw();
 }
 
-function item_table_storage_name () {
+function item_table_storage_name() {
   return 'DataTables_item_table_' + window.location.pathname;
 }
