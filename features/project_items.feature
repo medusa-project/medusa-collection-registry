@@ -1,3 +1,4 @@
+@javascript
 Feature: Project Items
   In order to manage projects
   As a librarian
@@ -23,6 +24,7 @@ Feature: Project Items
   Scenario: Obtain CSV file of items
     Given I am logged in as a manager
     When I view the project with title 'Scanning'
+    And I click on 'Export'
     And I click on 'CSV'
     Then I should receive a file 'items.csv' of type 'text/csv' matching:
       | xyz123 | 54321 | Dogs | Ruthie | abc789 | 98765 | Cats | CatCat |
@@ -60,7 +62,6 @@ Feature: Project Items
     And I should see all of:
       | pqr456 | Catch-22 | Heller |
 
-  @javascript
   Scenario: Create a new item with javascript interface
     Given I am logged in as a manager
     When I view the project with title 'Scanning'
@@ -75,7 +76,6 @@ Feature: Project Items
       | pqr456 | Catch-22 | Heller |
 
   #Note that this looks up this item in the live catalog
-  @javascript
   Scenario: Use auto barcode lookup with javascript interface
     Given I am logged in as a manager
     When I view the project with title 'Scanning'
