@@ -60,11 +60,6 @@ module ApplicationHelper
     'https://wiki.cites.illinois.edu/wiki/display/LibraryDigitalPreservation/Medusa+FAQ'
   end
 
-  def date_picker_options(extra_opts = {})
-    {as: :string, input_html: {'data-datepicker' => 'datepicker'},
-     order: [:day, :month, :year], use_month_numbers: true}.merge(extra_opts)
-  end
-
   #Use in place of Cancan's can? so that it will work when there is not a user (in this case permission is denied, as you'd expect)
   def safe_can?(action, *args)
     current_user and (can?(action, *args))

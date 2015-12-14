@@ -1,2 +1,4 @@
 = render layout: 'layouts/bootstrap_modal', locals: {id: 'modal_item_form'} do
   = render partial: 'form'
+:javascript
+  $(function () {initialize_datepickers();});
