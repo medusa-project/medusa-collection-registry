@@ -12,7 +12,8 @@ class ItemCsvParser < Object
   end
 
   def self.from_file(file_path)
-    self.new(CSV.parse(File.read(file_path).scrub))
+    #self.new(CSV.parse(File.read(file_path).scrub))
+    self.new(CSV.read(file_path, col_sep: "\t", encoding: 'UTF-16:UTF-8'))
   end
 
   #map canonicalized headers to item fields. If the value needs to be processed then use an array [field, lambda].
@@ -26,7 +27,7 @@ class ItemCsvParser < Object
       publisher_date: nil,
       location_code: nil,
       item_barcode: [:barcode, ->(val) { val.present? ? val : '' }],
-      digitization_date: nil, #:reformatting_date,
+      digitization_date: [:reformatting_date, -> (val) {self.parse_date(val)}],
       equipment: :equipment,
       operator: :reformatting_operator,
       foldout_present: [:foldout_present, ->(val) { self.convert_to_boolean(val) }],
@@ -97,6 +98,15 @@ class ItemCsvParser < Object
       else
         raise RuntimeError, "Unable to convert value #{value} to boolean"
     end
+  end
+
+  #TODO - additional fixups on date strings as possible
+  #also seen in the wild '31-Jul', 'm/d/y reshot m/d/y'
+  def self.parse_date(date_string)
+    return '' unless date_string.present?
+    Date.strptime(date_string, '%m/%d/%y')
+  rescue
+    ''
   end
 
 end
