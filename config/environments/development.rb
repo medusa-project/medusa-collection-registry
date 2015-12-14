@@ -27,8 +27,8 @@ MedusaCollectionRegistry::Application.configure do
 
   # Expands the lines which load the assets
   #Use config.assets.debug = false to use newrelic, etc. where we don't want all those individual requests
-  config.assets.debug = true
-  #config.assets.debug = false
+  #config.assets.debug = true
+  config.assets.debug = false
   config.assets.logger = false
 
   config.eager_load = false
