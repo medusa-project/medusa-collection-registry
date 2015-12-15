@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
 
   before_action :require_logged_in
-  before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments, :assign_batch]
+  before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments, :assign_batch, :start_items_upload, :upload_items]
   include ModelsToCsv
 
   autocomplete :user, :email
@@ -81,6 +81,20 @@ class ProjectsController < ApplicationController
     @attachable = @project
   end
 
+  def start_items_upload
+    authorize! :update, @project
+  end
+
+  def upload_items
+    authorize! :update, @project
+    @project.transaction do
+      job = Job::ItemBulkImport.create!(user: current_user, project: @project)
+      job.copy_csv_file(params[:upload_items][:items].tempfile.path)
+      job.enqueue_job
+    end
+    redirect_to @project, notice: 'Your item upload job will be processed soon.'
+  end
+
   protected
 
   def find_project
@@ -97,7 +111,7 @@ class ProjectsController < ApplicationController
       Array.new.tap do |row|
         row << link_to(item.barcode, item)
         row << item.bib_id
-        row << [item.title,item.item_title,item.local_title].detect {|title| title.present?}
+        row << [item.title, item.item_title, item.local_title].detect { |title| title.present? }
         row << item.notes
         row << link_to(item.batch, project_path(@project, batch: item.batch))
         row << check_box_tag('', item.id, false, name: 'assign_batch[assign][]', id: "assign_batch_assign_#{item.id}") if safe_can?(:update, @project)

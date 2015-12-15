@@ -2588,6 +2588,38 @@ ALTER SEQUENCE job_ingest_staging_deletes_id_seq OWNED BY job_ingest_staging_del
 
 
 --
+-- Name: job_item_bulk_imports; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE job_item_bulk_imports (
+    id integer NOT NULL,
+    user_id integer,
+    project_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: job_item_bulk_imports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE job_item_bulk_imports_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: job_item_bulk_imports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE job_item_bulk_imports_id_seq OWNED BY job_item_bulk_imports.id;
+
+
+--
 -- Name: job_virus_scans; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3372,6 +3404,21 @@ CREATE VIEW view_tested_file_file_extension_counts AS
 
 
 --
+-- Name: view_tested_file_stats; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW view_tested_file_stats AS
+ SELECT f.id,
+    f.content_type_id,
+    f.file_extension_id,
+    p.repository_id
+   FROM ((file_format_tests fft
+     JOIN cfs_files f ON ((fft.cfs_file_id = f.id)))
+     JOIN view_cfs_files_to_parents p ON ((f.id = p.cfs_file_id)))
+ LIMIT 10;
+
+
+--
 -- Name: virus_scans; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3876,6 +3923,13 @@ ALTER TABLE ONLY job_ingest_staging_deletes ALTER COLUMN id SET DEFAULT nextval(
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY job_item_bulk_imports ALTER COLUMN id SET DEFAULT nextval('job_item_bulk_imports_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY job_virus_scans ALTER COLUMN id SET DEFAULT nextval('job_virus_scans_id_seq'::regclass);
 
 
@@ -4342,6 +4396,14 @@ ALTER TABLE ONLY job_fixity_checks
 
 ALTER TABLE ONLY job_ingest_staging_deletes
     ADD CONSTRAINT job_ingest_staging_deletes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: job_item_bulk_imports_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY job_item_bulk_imports
+    ADD CONSTRAINT job_item_bulk_imports_pkey PRIMARY KEY (id);
 
 
 --
@@ -5181,6 +5243,20 @@ CREATE INDEX index_job_ingest_staging_deletes_on_user_id ON job_ingest_staging_d
 
 
 --
+-- Name: index_job_item_bulk_imports_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_job_item_bulk_imports_on_project_id ON job_item_bulk_imports USING btree (project_id);
+
+
+--
+-- Name: index_job_item_bulk_imports_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_job_item_bulk_imports_on_user_id ON job_item_bulk_imports USING btree (user_id);
+
+
+--
 -- Name: index_job_virus_scans_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -5995,6 +6071,14 @@ ALTER TABLE ONLY job_fits_file_extension_batches
 
 
 --
+-- Name: fk_rails_7fe769aa60; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY job_item_bulk_imports
+    ADD CONSTRAINT fk_rails_7fe769aa60 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_814510e4f4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6024,6 +6108,14 @@ ALTER TABLE ONLY file_format_tests
 
 ALTER TABLE ONLY job_fixity_checks
     ADD CONSTRAINT fk_rails_a920535132 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_ac902747ea; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY job_item_bulk_imports
+    ADD CONSTRAINT fk_rails_ac902747ea FOREIGN KEY (project_id) REFERENCES projects(id);
 
 
 --
@@ -6503,4 +6595,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151202172013');
 INSERT INTO schema_migrations (version) VALUES ('20151203164731');
 
 INSERT INTO schema_migrations (version) VALUES ('20151214190747');
+
+INSERT INTO schema_migrations (version) VALUES ('20151214224916');
 

@@ -66,6 +66,8 @@ MedusaCollectionRegistry::Application.routes.draw do
 
   resources :projects, concerns: [:attachable, :autocomplete_email] do
     post 'assign_batch', on: :member
+    get 'start_items_upload', on: :member
+    post 'upload_items', on: :member
   end
   resources :items do
     get 'barcode_lookup', on: :collection

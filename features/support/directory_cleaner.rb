@@ -1,6 +1,6 @@
 require 'fileutils'
 
-#before each test make sure that the cfs directories and any staging directories are empty
+#before each test make sure that the cfs directories, any staging directories, item_upload_csv directories are empty
 Before do
   Dir[File.join(CfsDirectory.export_root, '*')].each do |dir|
     FileUtils.rm_rf(dir)
@@ -24,4 +24,9 @@ Before do
       end
     end
   end
+
+  Dir[File.join(Job::ItemBulkImport.csv_file_location_root, '*')].each do |dir|
+    FileUtils.rm_rf(dir)
+  end
+
 end

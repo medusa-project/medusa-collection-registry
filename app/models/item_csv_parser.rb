@@ -109,4 +109,8 @@ class ItemCsvParser < Object
     ''
   end
 
+  def row_count
+    self.data.count
+  end
+
 end
