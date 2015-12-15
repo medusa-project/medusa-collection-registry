@@ -87,12 +87,17 @@ class ProjectsController < ApplicationController
 
   def upload_items
     authorize! :update, @project
-    @project.transaction do
-      job = Job::ItemBulkImport.create!(user: current_user, project: @project)
-      job.copy_csv_file(params[:upload_items][:items].tempfile.path)
-      job.enqueue_job
+    upload = params[:upload_items][:items]
+    if upload
+      @project.transaction do
+        job = Job::ItemBulkImport.create!(user: current_user, project: @project, file_name: upload.original_filename)
+        job.copy_csv_file(upload.tempfile.path)
+        job.enqueue_job
+      end
+      redirect_to @project, notice: 'Your item upload job will be processed soon.'
+    else
+      redirect_to @project, notice: 'No items file attached'
     end
-    redirect_to @project, notice: 'Your item upload job will be processed soon.'
   end
 
   protected

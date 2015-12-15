@@ -27,10 +27,10 @@ class Job::ItemBulkImport < Job::Base
   def perform
     parser = ItemCsvParser.from_file(csv_file_location)
     parser.add_items_to_project(project)
-    ItemBulkImportMailer.success(user, project, parser.row_count).deliver_now
+    ItemBulkImportMailer.success(user, project, file_name, parser.row_count).deliver_now
     File.delete(csv_file_location) if File.exist?(csv_file_location)
   rescue Exception => e
-    ItemBulkImportMailer.failure(user, project, e).deliver_now
+    ItemBulkImportMailer.failure(user, project, file_name, e).deliver_now
   end
 
 end

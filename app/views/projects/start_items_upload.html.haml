@@ -7,6 +7,6 @@
     Medusa will process the import in the background and email you with the results of the import.
 
 .row
-  = simple_form_for :upload_items, html: {multipart: true, class: 'form-horizontal'}, wrapper: :horizontal_form, url: upload_items_project_path(@project)  do |f|
-    = f.input :items, as: :file, label: 'Items file'
+  = simple_form_for :upload_items, html: {multipart: true, class: 'form-horizontal'}, url: upload_items_project_path(@project)  do |f|
+    = f.input :items, as: :file, label: 'Items file', required: false
     = f.button :submit, class: 'btn btn-primary', value: "Upload"

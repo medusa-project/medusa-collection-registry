@@ -2596,7 +2596,8 @@ CREATE TABLE job_item_bulk_imports (
     user_id integer,
     project_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    file_name character varying
 );
 
 
@@ -6597,4 +6598,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151203164731');
 INSERT INTO schema_migrations (version) VALUES ('20151214190747');
 
 INSERT INTO schema_migrations (version) VALUES ('20151214224916');
+
+INSERT INTO schema_migrations (version) VALUES ('20151215152708');
 
