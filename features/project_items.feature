@@ -84,8 +84,7 @@ Feature: Project Items
       | Barcode | 30112017234789 |
     Then I should see all of:
       | Use | Kleinian groups |
-    When I click on 'Use'
-    And I click on 'Create'
+    When I click on 'Create'
     Then I should see all of:
       | Maskit | Bernard | 1153448 | 515 M379K |
 
