@@ -38,7 +38,7 @@ class SearchHelper::Base < Object
   end
 
   def headers
-    columns.collect {|c| c[:header]}
+    columns.collect { |c| c[:header] }
   end
 
   def full_count
@@ -62,11 +62,12 @@ class SearchHelper::Base < Object
   end
 
   def per_page
-    params[:length].to_i
+    count = params[:length].to_i
+    count > 0 ? count : full_count
   end
 
   def page
-    1 + (params[:start].to_i / params[:length].to_i)
+    1 + (params[:start].to_i / per_page)
   end
 
   def order_direction
@@ -87,16 +88,14 @@ class SearchHelper::Base < Object
   end
 
   def response
-    {
-        draw: draw,
-        recordsTotal: full_count,
-        recordsFiltered: search.total,
-        data: search.results.collect {|result| row(result.decorate)}
-    }
+    {draw: draw,
+     recordsTotal: full_count,
+     recordsFiltered: search.total,
+     data: search.results.collect { |result| row(result.decorate) }}
   end
 
   def row(decorated_object)
-    value_methods.collect {|method| column_entry(method, decorated_object)}
+    value_methods.collect { |method| column_entry(method, decorated_object) }
   end
 
   def column_entry(method, decorated_object)
@@ -112,7 +111,7 @@ class SearchHelper::Base < Object
 
 
   def value_methods
-    columns.collect {|c| c[:value_method]}
+    columns.collect { |c| c[:value_method] }
   end
 
   def json_response
@@ -120,7 +119,7 @@ class SearchHelper::Base < Object
   end
 
   def search_fields
-    columns.select {|c| c[:searchable]}.collect {|c| c[:solr_field]}
+    columns.select { |c| c[:searchable] }.collect { |c| c[:solr_field] }
   end
 
   protected

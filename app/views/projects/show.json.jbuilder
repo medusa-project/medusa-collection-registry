@@ -5,7 +5,7 @@ json.data do
       row = Array.new.tap do |row|
         row << link_to(item.barcode.if_blank('<no barcode>'), item)
         row << item.bib_id
-        row << [item.title, item.item_title, item.local_title].detect { |title| title.present? }
+        row << item.some_title
         row << item.notes
         row << (link_to(item.batch, project_path(@project, batch: item.batch))).gsub('"', "'")
         row << check_box_tag('', item.id, false, name: 'assign_batch[assign][]', id: "assign_batch_assign_#{item.id}") if safe_can?(:update, @project)

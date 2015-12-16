@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
 
   before_action :require_logged_in
-  before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments, :assign_batch, :start_items_upload, :upload_items]
+  before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments, :assign_batch, :start_items_upload, :upload_items, :items]
   include ModelsToCsv
 
   autocomplete :user, :email
@@ -61,10 +61,18 @@ class ProjectsController < ApplicationController
     @items = @project.items
     @batch = params[:batch]
     @items = @items.where(batch: @batch) if @batch.present?
+    @helper = SearchHelper::EnhancedItem.new(project: @project, batch: @batch)
     respond_to do |format|
       format.html
       format.csv { send_data items_to_csv(@items), type: 'text/csv', filename: 'items.csv' }
-      format.json
+    end
+  end
+
+  def items
+    respond_to do |format|
+      format.json do
+        render json: SearchHelper::EnhancedItem.new(params: params, project: @project, batch: params[:batch]).json_response
+      end
     end
   end
 

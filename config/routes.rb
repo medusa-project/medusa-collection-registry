@@ -34,9 +34,9 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :collections, concerns: %i(eventable red_flaggable public assessable attachable)
 
   resources :repositories, concerns: %i(eventable red_flaggable assessable collection_indexer) do
-    get 'edit_ldap_admins', on: :collection
-    put 'update_ldap_admin', on: :member
-    %w(show_file_stats show_running_processes show_red_flags show_events show_amazon show_accruals).each do |action|
+    get :edit_ldap_admins, on: :collection
+    put :update_ldap_admin, on: :member
+    %i(show_file_stats show_running_processes show_red_flags show_events show_amazon show_accruals).each do |action|
       get action, on: :member
     end
   end
@@ -49,28 +49,29 @@ MedusaCollectionRegistry::Application.routes.draw do
   [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
     resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy],
               concerns: %i(eventable red_flaggable public assessable attachable) do
-      %w(create_cfs_fits create_virus_scan create_amazon_backup fixity_check create_initial_cfs_assessment).each do |action|
+      %i(create_cfs_fits create_virus_scan create_amazon_backup fixity_check create_initial_cfs_assessment).each do |action|
         post action, on: :member
       end if file_group_type == :bit_level_file_groups
       if file_group_type == :external_file_groups
-        post 'ingest', on: :member
-        post 'create_bit_level', on: :member
+        post :ingest, on: :member
+        post :create_bit_level, on: :member
       end
-      post 'bulk_amazon_backup', on: :collection
+      post :bulk_amazon_backup, on: :collection
     end
   end
 
   resources :red_flags, only: [:show, :edit, :update] do
-    post 'unflag', on: :member
+    post :unflag, on: :member
   end
 
   resources :projects, concerns: [:attachable, :autocomplete_email] do
-    post 'assign_batch', on: :member
-    get 'start_items_upload', on: :member
-    post 'upload_items', on: :member
+    post :assign_batch, on: :member
+    get :start_items_upload, on: :member
+    post :upload_items, on: :member
+    get :items, on: :member
   end
   resources :items do
-    get 'barcode_lookup', on: :collection
+    get :barcode_lookup, on: :collection
   end
   resources :producers
   resources :access_systems, concerns: :collection_indexer
@@ -78,14 +79,14 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :virus_scans, only: :show
 
   resources :cfs_files, only: :show, concerns: %i(public downloadable eventable fixity_checkable) do
-    %w(public_download public_view create_fits_xml fits view preview_image public_preview_image preview_video).each { |action| get action, on: :member }
+    %i(public_download public_view create_fits_xml fits view preview_image public_preview_image preview_video).each { |action| get action, on: :member }
     get :random, on: :collection
   end
   get 'cfs_files/:id/preview_iiif_image/*iiif_parameters', to: 'cfs_files#preview_iiif_image', as: 'preview_iiif_image_cfs_file'
   get 'cfs_files/:id/public_preview_iiif_image/*iiif_parameters', to: 'cfs_files#public_preview_iiif_image', as: 'public_preview_iiif_image_cfs_file'
 
   resources :cfs_directories, only: :show, concerns: %i(public fixity_checkable eventable) do
-    %w(create_fits_for_tree export export_tree).each { |action| post action, on: :member }
+    %i(create_fits_for_tree export export_tree).each { |action| post action, on: :member }
   end
   resources :content_types, only: [] do
     get :cfs_files, on: :member
