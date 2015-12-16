@@ -8,9 +8,13 @@ class ItemDecorator < BaseDecorator
     h.link_to(self.project_title, h.project_path(self.project))
   end
 
+  def search_batch_link
+    h.link_to(self.batch, h.project_path(self.project, batch: self.batch))
+  end
+
   #TODO: create the checkbox - disable unless user can actually use
   def assign_checkbox(project)
-    h.check_box_tag('', self.id, false, name: 'assign_batch[assign][]', id: "assign_batch_assign_#{self.id}", disabled: !safe_can?(:update, project))
+    h.check_box_tag('', self.id, false, name: 'assign_batch[assign][]', id: "assign_batch_assign_#{self.id}", disabled: !h.safe_can?(:update, project))
   end
 
   #TODO: create the buttons
