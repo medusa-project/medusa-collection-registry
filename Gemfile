@@ -124,6 +124,7 @@ group :test do
   gem 'simplecov'
   gem 'json_spec'
   gem 'capybara'
+  gem 'capybara-puma'
   gem 'capybara-email'
   gem 'launchy'
   #testing with javascript - requires phantomjs to be installed on the test machine

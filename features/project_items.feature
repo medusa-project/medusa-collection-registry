@@ -1,4 +1,4 @@
-@javascript
+@javascript @search
 Feature: Project Items
   In order to manage projects
   As a librarian
