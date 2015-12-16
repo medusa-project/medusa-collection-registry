@@ -1,4 +1,4 @@
-= simple_form_for :assign_batch, url: assign_batch_project_path(@project), html: {class: 'form-inline' } do |f|
+= simple_form_for :assign_batch, url: assign_batch_project_path(@project), html: {class: 'form-inline' }, remote: true do |f|
   - if safe_can?(:update, @project)
     .row
       .col-sm-12

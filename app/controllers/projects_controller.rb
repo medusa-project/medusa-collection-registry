@@ -54,7 +54,11 @@ class ProjectsController < ApplicationController
       item.batch = batch
       item.save!
     end
-    redirect_to @project
+    respond_to do |format|
+      format.html {redirect_to @project}
+      format.js
+    end
+
   end
 
   def show
