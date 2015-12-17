@@ -1,4 +1,4 @@
-class SearchHelper::Collection < SearchHelper::Base
+class SearchHelper::Collection < SearchHelper::SearchBase
 
   def base_class
     ::Collection

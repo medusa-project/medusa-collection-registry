@@ -1,4 +1,4 @@
-class SearchHelper::EnhancedItem < SearchHelper::Base
+class SearchHelper::TableItem < SearchHelper::TableBase
 
   attr_accessor :project, :batch
 

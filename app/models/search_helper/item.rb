@@ -1,4 +1,4 @@
-class SearchHelper::Item < SearchHelper::Base
+class SearchHelper::Item < SearchHelper::SearchBase
 
   def base_class
     ::Item

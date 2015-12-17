@@ -1,4 +1,4 @@
-class SearchHelper::CfsDirectory < SearchHelper::Base
+class SearchHelper::CfsDirectory < SearchHelper::SearchBase
 
   def base_class
     ::CfsDirectory

@@ -65,7 +65,7 @@ class ProjectsController < ApplicationController
     @items = @project.items
     @batch = params[:batch]
     @items = @items.where(batch: @batch) if @batch.present?
-    @helper = SearchHelper::EnhancedItem.new(project: @project, batch: @batch)
+    @helper = SearchHelper::TableItem.new(project: @project, batch: @batch)
     respond_to do |format|
       format.html
       format.csv { send_data items_to_csv(@items), type: 'text/csv', filename: 'items.csv' }
@@ -75,7 +75,7 @@ class ProjectsController < ApplicationController
   def items
     respond_to do |format|
       format.json do
-        render json: SearchHelper::EnhancedItem.new(params: params, project: @project, batch: params[:batch]).json_response
+        render json: SearchHelper::TableItem.new(params: params, project: @project, batch: params[:batch]).json_response
       end
     end
   end

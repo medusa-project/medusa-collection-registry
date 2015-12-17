@@ -1,4 +1,4 @@
-class SearchHelper::FileGroup < SearchHelper::Base
+class SearchHelper::FileGroup < SearchHelper::SearchBase
 
   def base_class
     ::FileGroup
