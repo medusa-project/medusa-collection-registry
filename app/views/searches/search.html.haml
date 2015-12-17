@@ -21,6 +21,9 @@
             "search": {
               "search": "#{helper.initial_search_string}"
             },
+            'columnDefs': [
+              {'orderable': false, 'targets': #{helper.unsortable_columns}}
+            ],
             "ajax": {
               "url": "#{helper.url}"
             }
