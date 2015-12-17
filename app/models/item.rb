@@ -21,6 +21,7 @@ class Item < ActiveRecord::Base
     text :notes
     string :project_title
     integer :project_id
+    time :updated_at
   end
 
   def ensure_barcode

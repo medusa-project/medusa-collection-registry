@@ -10,7 +10,8 @@
 #make it pretty easy to add in all needed searches.
 #In the columns the header is the header for the html/datatables table, the solr_field is the field on the model for
 #the column, used when a sort is requested, and value_method is either a symbol, which is sent to the (decorated) object
-#to get a table entry or a Proc that takes one argument (the object) to get a table entry.
+#to get a table entry or a Proc that takes one argument (the object) to get a table entry. Unsortable indicates that the
+#column should not be marked as sortable in datatables.
 #Of course any of this stuff can be overriden as needed.
 class SearchHelper::Base < Object
 
@@ -72,6 +73,10 @@ class SearchHelper::Base < Object
 
   def order_direction
     params[:order]['0']['dir']
+  end
+
+  def unsortable_columns
+    columns.each.with_index.collect {|spec, index| [spec, index]}.select {|pair| pair.first[:unsortable]}.collect {|pair| pair.second}
   end
 
   def order_field

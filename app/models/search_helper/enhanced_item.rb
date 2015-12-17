@@ -24,6 +24,14 @@ class SearchHelper::EnhancedItem < SearchHelper::Base
     project.items.count
   end
 
+  def order_direction
+    super rescue 'desc'
+  end
+
+  def order_field
+    super rescue 'updated_at'
+  end
+
   def search
     @search ||= base_class.search do
       fulltext search_string, fields: search_fields
@@ -42,11 +50,11 @@ class SearchHelper::EnhancedItem < SearchHelper::Base
      {header: 'Title', solr_field: :some_title, value_method: :some_title, searchable: true},
      {header: 'Notes', solr_field: :notes, value_method: :notes, searchable: true},
      {header: 'Batch', solr_field: :batch, value_method: :search_batch_link, searchable: true},
-     {header: 'Assign', value_method: ->(decorated_item) {decorated_item.assign_checkbox(project)} },
+     {header: 'Assign', value_method: ->(decorated_item) {decorated_item.assign_checkbox(project)}, unsortable: true },
      {header: 'Call Number', solr_field: :call_number, value_method: :call_number, searchable: true},
      {header: 'Author', solr_field: :author, value_method: :author, searchable: true},
      {header: 'Record Series Id', solr_field: :record_series_id, value_method: :record_series_id, searchable: true},
-     {header: '', value_method: :action_buttons}]
+     {header: '', value_method: :action_buttons, unsortable: true}]
   end
 
 end
