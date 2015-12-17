@@ -25,11 +25,11 @@ class SearchHelper::TableItem < SearchHelper::TableBase
   end
 
   def order_direction
-    super rescue 'desc'
+    super || 'desc'
   end
 
   def order_field
-    super rescue 'updated_at'
+    super || 'updated_at'
   end
 
   def search

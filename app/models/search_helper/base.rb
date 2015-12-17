@@ -23,19 +23,11 @@ class SearchHelper::Base < Object
   end
 
   def table_id
-    "search_#{base_plural_name}"
-  end
-
-  def tab_id
-    "tab_#{base_plural_name}"
-  end
-
-  def tab_label
-    base_plural_name.humanize
+    raise NotImplementedError, 'Subclass responsibility'
   end
 
   def url
-    "/searches/#{base_name}.json"
+    raise NotImplementedError, 'Subclass responsibility'
   end
 
   def headers
@@ -43,7 +35,7 @@ class SearchHelper::Base < Object
   end
 
   def full_count
-    base_class.count
+    raise NotImplementedError, 'Subclass responsibility'
   end
 
   def base_class
@@ -72,24 +64,22 @@ class SearchHelper::Base < Object
   end
 
   def order_direction
-    params[:order]['0']['dir']
+    params[:order]['0']['dir'] rescue nil
+  end
+
+  def order_field
+    column_index = params[:order]['0']['column'].to_i
+    columns[column_index][:solr_field]
+  rescue
+    nil
   end
 
   def unsortable_columns
     columns.each.with_index.collect {|spec, index| [spec, index]}.select {|pair| pair.first[:unsortable]}.collect {|pair| pair.second}
   end
 
-  def order_field
-    column_index = params[:order]['0']['column'].to_i
-    columns[column_index][:solr_field]
-  end
-
   def search
-    @search ||= base_class.search do
-      fulltext search_string, fields: search_fields
-      paginate page: page, per_page: per_page
-      order_by order_field, order_direction
-    end
+    raise NotImplementedError, 'Subclass responsibility'
   end
 
   def response

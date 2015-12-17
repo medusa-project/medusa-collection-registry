@@ -1,9 +1,22 @@
 .row
   %p
     Attach a file containing items to be uploaded. This file must be a UTF-16 encoded, tab-separated file with approved
-    headers and one item per row. Such a file may be obtained from Excel via File -> Save As... -> choose UTF-16 Unicode
-    Text from the format dropdown.
+    headers and one item per row. Such a file may be obtained from Excel via:
 
+  %p
+    %strong Mac (Office 2011):
+    File -> Save As... -> choose UTF-16 Unicode Text from the format dropdown.
+
+  %p
+    %strong Windows:
+    Details forthcoming - "Unicode Text" is the desired export format.
+
+  %p
+    %strong Libre Office:
+    File -> Save As... -> File type choose Text CSV and click Save -> Click Use Text CSV Format -> Choose Character set:
+    UTF-16, Field delimiter {Tab}, Text delimiter ", Click OK
+
+  %p
     Medusa will process the import in the background and email you with the results of the import.
 
 .row
