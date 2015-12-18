@@ -17,8 +17,7 @@
             %li= link_to 'Producers', producers_path
             %li= link_to 'Access Systems', access_systems_path
             %li= link_to 'Packages', package_profiles_path
-            - if safe_can?(:read, FileFormatProfile)
-              %li= link_to 'File Format Profiles', file_format_profiles_path
+            %li= link_to 'File Format Profiles', file_format_profiles_path
             %li= link_to 'File Format Tests', file_format_tests_path
             - if safe_can?(:read, ArchivedAccrualJob)
               %li= link_to 'Archived Accrual Jobs', archived_accrual_jobs_path

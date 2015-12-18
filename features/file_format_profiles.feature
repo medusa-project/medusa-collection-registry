@@ -22,6 +22,11 @@ Feature: File Format Profiles
     And I click on 'File Format Profiles'
     Then I should be on the file format profiles index page
 
+  Scenario: Public can see file format profiles
+    Given I logout
+    When I go to the file format profiles index page
+    Then I should be on the file format profiles index page
+
   Scenario: Index of file format profiles
     When I go to the file format profiles index page
     Then I should see all of:
@@ -126,8 +131,8 @@ Feature: File Format Profiles
       | public user      | view, edit, update, delete | authentication |
       | visitor, manager | view, edit, update, delete | unauthorized   |
     And deny permission on the file format profile collection to users for action with redirection:
-      | public user      | view_index, new, create | authentication |
-      | visitor, manager | view_index, new, create | unauthorized   |
+      | public user      | new, create | authentication |
+      | visitor, manager | new, create | unauthorized   |
 
   Scenario: Clone file format profile from index
     When I go to the file format profiles index page
