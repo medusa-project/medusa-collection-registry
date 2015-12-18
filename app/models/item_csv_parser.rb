@@ -101,9 +101,10 @@ class ItemCsvParser < Object
 
   def add_items_to_project(project)
     project.transaction do
-      item_hashes.each do |item_hash|
+      items = item_hashes.collect do |item_hash|
         project.items.create!(item_hash)
       end
+      Sunspot.index! items
     end
   end
 
