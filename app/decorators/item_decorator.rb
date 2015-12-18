@@ -9,7 +9,11 @@ class ItemDecorator < BaseDecorator
   end
 
   def search_batch_link
-    h.link_to(self.batch, h.project_path(self.project, batch: self.batch))
+    if self.batch.present?
+      h.link_to(self.batch, h.project_path(self.project, batch: self.batch))
+    else
+      ''
+    end
   end
 
   #TODO: create the checkbox - disable unless user can actually use
