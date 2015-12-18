@@ -22,17 +22,41 @@ class ItemCsvParser < Object
       display_call_no: :call_number,
       bib_id: :bib_id,
       title_brief: :title,
-      author: :author,
       display_heading: nil,
       publisher_date: nil,
       location_code: nil,
       item_barcode: [:barcode, ->(val) { val.present? ? val : '' }],
-      digitization_date: [:reformatting_date, -> (val) {self.parse_date(val)}],
-      equipment: :equipment,
+      digitization_date: [:reformatting_date, -> (val) { self.parse_date(val) }],
       operator: :reformatting_operator,
       foldout_present: [:foldout_present, ->(val) { self.convert_to_boolean(val) }],
       foldout_done: nil,
-      special_notes: :notes
+      special_notes: :notes,
+      #from new spreadsheet
+      barcode: [:barcode, ->(val) { val.present? ? val : '' }],
+      local_title: :local_title,
+      batch: :batch,
+      file_count: :file_count,
+      status: :status,
+      #see date format in sample
+      reformatting_date: [:reformatting_date, -> (val) { self.parse_date(val) }],
+      reformatting_operator: :reformatting_operator,
+      equipment: :equipment,
+      foldouts_present: [:foldout_present, ->(val) { self.convert_to_boolean(val) }],
+      unique_identifier: :unique_identifier,
+      call_number: :call_number,
+      title: :title,
+      author: :author,
+      imprint: :imprint,
+      'oclc#': :oclc_number,
+      record_series_id: :record_series_id,
+      archival_management_system_url: :archival_management_system_url,
+      series: :series,
+      'sub-series': :sub_series,
+      box: :box,
+      folder: :folder,
+      item_title: :item_title,
+      notes: :notes,
+      local_description: :local_description
   }
 
   #the column mapping maps positions to the spec for what to do with that data, either directly use it for the given field
@@ -82,7 +106,7 @@ class ItemCsvParser < Object
       end
     end
   end
-  
+
   #need to attempt to convert spreadsheet value to a boolean
   def self.convert_to_boolean(value)
     return false if value.blank?
@@ -100,11 +124,24 @@ class ItemCsvParser < Object
     end
   end
 
-  #TODO - additional fixups on date strings as possible
-  #also seen in the wild '31-Jul', 'm/d/y reshot m/d/y'
+  #Here's the idea: find things that might be mm/dd/yy, yyyy/mm/dd, yyyymmdd. Find as many as possible in each string.
+  #Parse them all. Reject any that are in the future. Take the most recent one. Otherwise make the date blank.
+  #The DATE_SPECS are a hash from regexps to look for in the string to the format strings used in Date.strptime
+  DATE_SPECS = {
+      /\d{1,2}\/\d{1,2}\/\d{2}/ => '%m/%d/%y',
+      /\d{4}\/\d{1,2}\/\d{1,2}/ => '%Y/%m/%d',
+      /\d{8}/ => '%Y%m%d',
+      /\d{4}-\d{2}-\d{2}/ => '%Y-%m-%d'
+  }
   def self.parse_date(date_string)
     return '' unless date_string.present?
-    Date.strptime(date_string, '%m/%d/%y')
+    potential_dates = Set.new
+    DATE_SPECS.each do |regexp, format_string|'%Y-%m-%d'
+      date_string.scan(regexp).each do |match|
+        potential_dates << (Date.strptime(match, format_string) rescue nil)
+      end
+    end
+    potential_dates.delete(nil).reject { |date| date > Date.today }.max || ''
   rescue
     ''
   end
