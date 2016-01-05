@@ -24,7 +24,7 @@ while ($running) do
     AmqpConnector.instance.reinitialize
     AmqpResponse::AmazonBackup.handle_responses
     AmqpResponse::Fixity.handle_responses
-    Idb::AmqpReceiver.handle_responses
+    #Idb::AmqpReceiver.handle_responses
     $consecutive_errors = 0
     sleep 60
   rescue Exception => e
