@@ -1,11 +1,13 @@
 #configuration relating to the interaction between IDB and medusa
 development:
+  active: false
   incoming_queue: idb_to_medusa
   outgoing_queue: medusa_to_idb
   idb_file_group_id: 2109
   staging_directory: /Users/hding2/repos/medusa-collection-registry/tmp/idb-staging/development
 
 test:
+  active: false
   incoming_queue: idb_to_medusa_test
   outgoing_queue: medusa_to_idb_test
   #This is kind of meaningless given that the test db goes in and out. Steps will have to
@@ -14,6 +16,7 @@ test:
   staging_directory: /Users/hding2/repos/medusa-collection-registry/tmp/idb-staging/development
 
 production:
+  active: false
   incoming_queue: idb_to_medusa
   outgoing_queue: medusa_to_idb
   idb_file_group_id: id_for_idb_file_group

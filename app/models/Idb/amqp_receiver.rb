@@ -18,7 +18,9 @@ module Idb
         else
           raise RuntimeError, "Unrecognized operation requested"
       end
+    rescue Exception
+      Rails.logger.error "Failed to create IDB Ingest Job for message: #{message}"
+      raise
     end
-
   end
 end
