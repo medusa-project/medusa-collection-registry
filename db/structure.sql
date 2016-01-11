@@ -2,12 +2,16 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.5.0
+-- Dumped by pg_dump version 9.5.0
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -367,6 +371,28 @@ $$;
 
 
 --
+-- Name: cfs_files_touch_content_types(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION cfs_files_touch_content_types() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE content_types
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.content_type_id;
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE content_types
+        SET updated_at = localtimestamp
+        WHERE id = OLD.content_type_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
 -- Name: cfs_files_touch_file_extension(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -382,6 +408,28 @@ CREATE FUNCTION cfs_files_touch_file_extension() RETURNS trigger
         UPDATE file_extensions
         SET updated_at = NEW.updated_at
         WHERE (id = NEW.file_extension_id OR id = OLD.file_extension_id);
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE file_extensions
+        SET updated_at = localtimestamp
+        WHERE id = OLD.file_extension_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: cfs_files_touch_file_extensions(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION cfs_files_touch_file_extensions() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+        UPDATE file_extensions
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.file_extension_id;
       ELSIF (TG_OP = 'DELETE') THEN
         UPDATE file_extensions
         SET updated_at = localtimestamp
@@ -1229,7 +1277,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: access_system_collection_joins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: access_system_collection_joins; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE access_system_collection_joins (
@@ -1261,7 +1309,7 @@ ALTER SEQUENCE access_system_collection_joins_id_seq OWNED BY access_system_coll
 
 
 --
--- Name: access_systems; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: access_systems; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE access_systems (
@@ -1294,7 +1342,7 @@ ALTER SEQUENCE access_systems_id_seq OWNED BY access_systems.id;
 
 
 --
--- Name: amazon_backups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: amazon_backups; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE amazon_backups (
@@ -1329,7 +1377,7 @@ ALTER SEQUENCE amazon_backups_id_seq OWNED BY amazon_backups.id;
 
 
 --
--- Name: archived_accrual_jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: archived_accrual_jobs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE archived_accrual_jobs (
@@ -1367,7 +1415,7 @@ ALTER SEQUENCE archived_accrual_jobs_id_seq OWNED BY archived_accrual_jobs.id;
 
 
 --
--- Name: assessments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: assessments; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE assessments (
@@ -1417,7 +1465,7 @@ ALTER SEQUENCE assessments_id_seq OWNED BY assessments.id;
 
 
 --
--- Name: attachments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: attachments; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE attachments (
@@ -1454,7 +1502,69 @@ ALTER SEQUENCE attachments_id_seq OWNED BY attachments.id;
 
 
 --
--- Name: book_tracker_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: cfs_directories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE cfs_directories (
+    id integer NOT NULL,
+    path text,
+    root_cfs_directory_id integer,
+    tree_size numeric DEFAULT 0,
+    tree_count integer DEFAULT 0,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    parent_id integer,
+    parent_type character varying
+);
+
+
+--
+-- Name: file_groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE file_groups (
+    id integer NOT NULL,
+    external_file_location character varying(255),
+    file_format character varying(255),
+    total_file_size numeric,
+    total_files integer,
+    collection_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    producer_id integer,
+    description text,
+    provenance_note text,
+    title character varying(255),
+    staged_file_location character varying(255),
+    cfs_root character varying(255),
+    type character varying(255),
+    package_profile_id integer,
+    external_id character varying(255),
+    private_description text,
+    access_url character varying(255),
+    contact_id integer,
+    acquisition_method character varying
+);
+
+
+--
+-- Name: bit_level_file_group_cfs_root_stats_two_ways; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW bit_level_file_group_cfs_root_stats_two_ways AS
+ SELECT fg.id AS file_group_id,
+    fg.total_file_size AS file_group_size,
+    fg.total_files AS file_group_count,
+    d.id AS cfs_directory_id,
+    d.tree_size AS cfs_directory_size,
+    d.tree_count AS cfs_directory_count
+   FROM (file_groups fg
+     LEFT JOIN cfs_directories d ON ((fg.id = d.parent_id)))
+  WHERE ((d.parent_type)::text = 'FileGroup'::text);
+
+
+--
+-- Name: book_tracker_items; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE book_tracker_items (
@@ -1498,7 +1608,7 @@ ALTER SEQUENCE book_tracker_items_id_seq OWNED BY book_tracker_items.id;
 
 
 --
--- Name: book_tracker_tasks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: book_tracker_tasks; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE book_tracker_tasks (
@@ -1533,7 +1643,7 @@ ALTER SEQUENCE book_tracker_tasks_id_seq OWNED BY book_tracker_tasks.id;
 
 
 --
--- Name: cascaded_event_joins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: cascaded_event_joins; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE cascaded_event_joins (
@@ -1566,7 +1676,7 @@ ALTER SEQUENCE cascaded_event_joins_id_seq OWNED BY cascaded_event_joins.id;
 
 
 --
--- Name: cascaded_red_flag_joins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: cascaded_red_flag_joins; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE cascaded_red_flag_joins (
@@ -1599,20 +1709,45 @@ ALTER SEQUENCE cascaded_red_flag_joins_id_seq OWNED BY cascaded_red_flag_joins.i
 
 
 --
--- Name: cfs_directories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: cfs_files; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE cfs_directories (
+CREATE TABLE cfs_files (
     id integer NOT NULL,
-    path text,
-    root_cfs_directory_id integer,
-    tree_size numeric DEFAULT 0,
-    tree_count integer DEFAULT 0,
+    cfs_directory_id integer,
+    name character varying(255),
+    size numeric,
+    fits_xml text,
+    mtime timestamp without time zone,
+    md5_sum character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    parent_id integer,
-    parent_type character varying
+    content_type_id integer,
+    file_extension_id integer,
+    fixity_check_time timestamp without time zone,
+    fixity_check_status character varying
 );
+
+
+--
+-- Name: cfs_directories_file_stats_two_ways; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW cfs_directories_file_stats_two_ways AS
+ SELECT d.id,
+    d.tree_count,
+    d.tree_size,
+    (( SELECT count(*) AS count
+           FROM cfs_files f
+          WHERE (f.cfs_directory_id = d.id)) + ( SELECT sum(COALESCE(sd.tree_count, 0)) AS sum
+           FROM cfs_directories sd
+          WHERE (((sd.parent_type)::text = 'CfsDirectory'::text) AND (sd.parent_id = d.id)))) AS computed_count,
+    (( SELECT sum(COALESCE(f.size, (0)::numeric)) AS sum
+           FROM cfs_files f
+          WHERE (f.cfs_directory_id = d.id)) + ( SELECT sum(COALESCE(sd.tree_size, (0)::numeric)) AS sum
+           FROM cfs_directories sd
+          WHERE (((sd.parent_type)::text = 'CfsDirectory'::text) AND (sd.parent_id = d.id)))) AS computed_size
+   FROM cfs_directories d;
 
 
 --
@@ -1635,24 +1770,17 @@ ALTER SEQUENCE cfs_directories_id_seq OWNED BY cfs_directories.id;
 
 
 --
--- Name: cfs_files; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: cfs_directories_inconsistent_file_stats; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE TABLE cfs_files (
-    id integer NOT NULL,
-    cfs_directory_id integer,
-    name character varying(255),
-    size numeric,
-    fits_xml text,
-    mtime timestamp without time zone,
-    md5_sum character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    content_type_id integer,
-    file_extension_id integer,
-    fixity_check_time timestamp without time zone,
-    fixity_check_status character varying
-);
+CREATE VIEW cfs_directories_inconsistent_file_stats AS
+ SELECT cfs_directories_file_stats_two_ways.id,
+    cfs_directories_file_stats_two_ways.tree_count,
+    cfs_directories_file_stats_two_ways.tree_size,
+    cfs_directories_file_stats_two_ways.computed_count,
+    cfs_directories_file_stats_two_ways.computed_size
+   FROM cfs_directories_file_stats_two_ways
+  WHERE ((cfs_directories_file_stats_two_ways.tree_count <> cfs_directories_file_stats_two_ways.computed_count) OR (cfs_directories_file_stats_two_ways.tree_size <> cfs_directories_file_stats_two_ways.computed_size));
 
 
 --
@@ -1675,50 +1803,7 @@ ALTER SEQUENCE cfs_files_id_seq OWNED BY cfs_files.id;
 
 
 --
--- Name: file_groups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE file_groups (
-    id integer NOT NULL,
-    external_file_location character varying(255),
-    file_format character varying(255),
-    total_file_size numeric,
-    total_files integer,
-    collection_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    producer_id integer,
-    description text,
-    provenance_note text,
-    title character varying(255),
-    staged_file_location character varying(255),
-    cfs_root character varying(255),
-    type character varying(255),
-    package_profile_id integer,
-    external_id character varying(255),
-    private_description text,
-    access_url character varying,
-    contact_id integer,
-    acquisition_method character varying
-);
-
-
---
--- Name: cfs_files_to_file_groups; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW cfs_files_to_file_groups AS
- SELECT f.id AS cfs_file_id,
-    fg.id AS file_group_id
-   FROM cfs_files f,
-    cfs_directories d,
-    cfs_directories rd,
-    file_groups fg
-  WHERE (((f.cfs_directory_id = d.id) AND (d.root_cfs_directory_id = rd.id)) AND (rd.parent_id = fg.id));
-
-
---
--- Name: collections; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: collections; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE collections (
@@ -1762,7 +1847,7 @@ ALTER SEQUENCE collections_id_seq OWNED BY collections.id;
 
 
 --
--- Name: content_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: content_types; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE content_types (
@@ -1795,7 +1880,7 @@ ALTER SEQUENCE content_types_id_seq OWNED BY content_types.id;
 
 
 --
--- Name: delayed_jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: delayed_jobs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE delayed_jobs (
@@ -1834,7 +1919,7 @@ ALTER SEQUENCE delayed_jobs_id_seq OWNED BY delayed_jobs.id;
 
 
 --
--- Name: events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: events; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE events (
@@ -1871,7 +1956,38 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 
 
 --
--- Name: file_extensions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: fedora_roots; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE fedora_roots (
+    id integer NOT NULL,
+    url_prefix character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: fedora_roots_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE fedora_roots_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: fedora_roots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE fedora_roots_id_seq OWNED BY fedora_roots.id;
+
+
+--
+-- Name: file_extensions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE file_extensions (
@@ -1904,7 +2020,7 @@ ALTER SEQUENCE file_extensions_id_seq OWNED BY file_extensions.id;
 
 
 --
--- Name: file_format_profiles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: file_format_profiles; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE file_format_profiles (
@@ -1922,7 +2038,7 @@ CREATE TABLE file_format_profiles (
 
 
 --
--- Name: file_format_profiles_content_types_joins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: file_format_profiles_content_types_joins; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE file_format_profiles_content_types_joins (
@@ -1954,7 +2070,7 @@ ALTER SEQUENCE file_format_profiles_content_types_joins_id_seq OWNED BY file_for
 
 
 --
--- Name: file_format_profiles_file_extensions_joins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: file_format_profiles_file_extensions_joins; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE file_format_profiles_file_extensions_joins (
@@ -2005,7 +2121,7 @@ ALTER SEQUENCE file_format_profiles_id_seq OWNED BY file_format_profiles.id;
 
 
 --
--- Name: file_format_test_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: file_format_test_reasons; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE file_format_test_reasons (
@@ -2036,7 +2152,7 @@ ALTER SEQUENCE file_format_test_reasons_id_seq OWNED BY file_format_test_reasons
 
 
 --
--- Name: file_format_tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: file_format_tests; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE file_format_tests (
@@ -2051,7 +2167,7 @@ CREATE TABLE file_format_tests (
 
 
 --
--- Name: file_format_tests_file_format_test_reasons_joins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: file_format_tests_file_format_test_reasons_joins; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE file_format_tests_file_format_test_reasons_joins (
@@ -2119,7 +2235,7 @@ ALTER SEQUENCE file_groups_id_seq OWNED BY file_groups.id;
 
 
 --
--- Name: idb_ingest_jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: idb_ingest_jobs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE idb_ingest_jobs (
@@ -2151,7 +2267,7 @@ ALTER SEQUENCE idb_ingest_jobs_id_seq OWNED BY idb_ingest_jobs.id;
 
 
 --
--- Name: institutions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: institutions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE institutions (
@@ -2182,7 +2298,7 @@ ALTER SEQUENCE institutions_id_seq OWNED BY institutions.id;
 
 
 --
--- Name: items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: items; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE items (
@@ -2238,7 +2354,7 @@ ALTER SEQUENCE items_id_seq OWNED BY items.id;
 
 
 --
--- Name: job_amazon_backups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_amazon_backups; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_amazon_backups (
@@ -2267,7 +2383,7 @@ ALTER SEQUENCE job_amazon_backups_id_seq OWNED BY job_amazon_backups.id;
 
 
 --
--- Name: job_cfs_directory_export_cleanups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_cfs_directory_export_cleanups; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_cfs_directory_export_cleanups (
@@ -2296,7 +2412,7 @@ ALTER SEQUENCE job_cfs_directory_export_cleanups_id_seq OWNED BY job_cfs_directo
 
 
 --
--- Name: job_cfs_directory_exports; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_cfs_directory_exports; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_cfs_directory_exports (
@@ -2330,7 +2446,7 @@ ALTER SEQUENCE job_cfs_directory_exports_id_seq OWNED BY job_cfs_directory_expor
 
 
 --
--- Name: job_cfs_initial_directory_assessments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_cfs_initial_directory_assessments; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_cfs_initial_directory_assessments (
@@ -2361,7 +2477,7 @@ ALTER SEQUENCE job_cfs_initial_directory_assessments_id_seq OWNED BY job_cfs_ini
 
 
 --
--- Name: job_cfs_initial_file_group_assessments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_cfs_initial_file_group_assessments; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_cfs_initial_file_group_assessments (
@@ -2392,7 +2508,7 @@ ALTER SEQUENCE job_cfs_initial_file_group_assessments_id_seq OWNED BY job_cfs_in
 
 
 --
--- Name: job_fits_content_type_batches; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_fits_content_type_batches; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_fits_content_type_batches (
@@ -2424,7 +2540,7 @@ ALTER SEQUENCE job_fits_content_type_batches_id_seq OWNED BY job_fits_content_ty
 
 
 --
--- Name: job_fits_directories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_fits_directories; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_fits_directories (
@@ -2457,7 +2573,7 @@ ALTER SEQUENCE job_fits_directories_id_seq OWNED BY job_fits_directories.id;
 
 
 --
--- Name: job_fits_directory_trees; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_fits_directory_trees; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_fits_directory_trees (
@@ -2489,7 +2605,7 @@ ALTER SEQUENCE job_fits_directory_trees_id_seq OWNED BY job_fits_directory_trees
 
 
 --
--- Name: job_fits_file_extension_batches; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_fits_file_extension_batches; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_fits_file_extension_batches (
@@ -2521,7 +2637,7 @@ ALTER SEQUENCE job_fits_file_extension_batches_id_seq OWNED BY job_fits_file_ext
 
 
 --
--- Name: job_fixity_checks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_fixity_checks; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_fixity_checks (
@@ -2555,7 +2671,7 @@ ALTER SEQUENCE job_fixity_checks_id_seq OWNED BY job_fixity_checks.id;
 
 
 --
--- Name: job_ingest_staging_deletes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_ingest_staging_deletes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_ingest_staging_deletes (
@@ -2588,7 +2704,7 @@ ALTER SEQUENCE job_ingest_staging_deletes_id_seq OWNED BY job_ingest_staging_del
 
 
 --
--- Name: job_item_bulk_imports; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_item_bulk_imports; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_item_bulk_imports (
@@ -2621,7 +2737,7 @@ ALTER SEQUENCE job_item_bulk_imports_id_seq OWNED BY job_item_bulk_imports.id;
 
 
 --
--- Name: job_virus_scans; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: job_virus_scans; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE job_virus_scans (
@@ -2652,7 +2768,7 @@ ALTER SEQUENCE job_virus_scans_id_seq OWNED BY job_virus_scans.id;
 
 
 --
--- Name: medusa_uuids; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: medusa_uuids; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE medusa_uuids (
@@ -2685,7 +2801,7 @@ ALTER SEQUENCE medusa_uuids_id_seq OWNED BY medusa_uuids.id;
 
 
 --
--- Name: package_profiles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: package_profiles; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE package_profiles (
@@ -2718,7 +2834,7 @@ ALTER SEQUENCE package_profiles_id_seq OWNED BY package_profiles.id;
 
 
 --
--- Name: people; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: people; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE people (
@@ -2749,7 +2865,7 @@ ALTER SEQUENCE people_id_seq OWNED BY people.id;
 
 
 --
--- Name: preservation_priorities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: preservation_priorities; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE preservation_priorities (
@@ -2781,7 +2897,7 @@ ALTER SEQUENCE preservation_priorities_id_seq OWNED BY preservation_priorities.i
 
 
 --
--- Name: producers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: producers; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE producers (
@@ -2825,7 +2941,7 @@ ALTER SEQUENCE production_units_id_seq OWNED BY producers.id;
 
 
 --
--- Name: projects; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: projects; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE projects (
@@ -2864,7 +2980,7 @@ ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
 
 
 --
--- Name: red_flags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: red_flags; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE red_flags (
@@ -2900,7 +3016,7 @@ ALTER SEQUENCE red_flags_id_seq OWNED BY red_flags.id;
 
 
 --
--- Name: related_file_group_joins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: related_file_group_joins; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE related_file_group_joins (
@@ -2933,7 +3049,7 @@ ALTER SEQUENCE related_file_group_joins_id_seq OWNED BY related_file_group_joins
 
 
 --
--- Name: repositories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: repositories; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE repositories (
@@ -2980,7 +3096,7 @@ ALTER SEQUENCE repositories_id_seq OWNED BY repositories.id;
 
 
 --
--- Name: resource_typeable_resource_type_joins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: resource_typeable_resource_type_joins; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE resource_typeable_resource_type_joins (
@@ -2989,7 +3105,7 @@ CREATE TABLE resource_typeable_resource_type_joins (
     resource_type_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    resource_typeable_type character varying
+    resource_typeable_type character varying(255)
 );
 
 
@@ -3013,7 +3129,7 @@ ALTER SEQUENCE resource_typeable_resource_type_joins_id_seq OWNED BY resource_ty
 
 
 --
--- Name: resource_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: resource_types; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE resource_types (
@@ -3044,7 +3160,7 @@ ALTER SEQUENCE resource_types_id_seq OWNED BY resource_types.id;
 
 
 --
--- Name: rights_declarations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: rights_declarations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE rights_declarations (
@@ -3081,7 +3197,7 @@ ALTER SEQUENCE rights_declarations_id_seq OWNED BY rights_declarations.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE schema_migrations (
@@ -3090,7 +3206,7 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: sessions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: sessions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE sessions (
@@ -3122,7 +3238,7 @@ ALTER SEQUENCE sessions_id_seq OWNED BY sessions.id;
 
 
 --
--- Name: static_pages; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: static_pages; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE static_pages (
@@ -3154,7 +3270,7 @@ ALTER SEQUENCE static_pages_id_seq OWNED BY static_pages.id;
 
 
 --
--- Name: storage_media; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: storage_media; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE storage_media (
@@ -3185,7 +3301,7 @@ ALTER SEQUENCE storage_media_id_seq OWNED BY storage_media.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE users (
@@ -3285,7 +3401,7 @@ CREATE VIEW view_cfs_files_to_parents AS
     file_groups fg,
     collections c,
     repositories r
-  WHERE (((((f.cfs_directory_id = d.id) AND (d.root_cfs_directory_id = rd.id)) AND (rd.parent_id = fg.id)) AND (fg.collection_id = c.id)) AND (c.repository_id = r.id));
+  WHERE ((f.cfs_directory_id = d.id) AND (d.root_cfs_directory_id = rd.id) AND (rd.parent_id = fg.id) AND (fg.collection_id = c.id) AND (c.repository_id = r.id));
 
 
 --
@@ -3339,7 +3455,7 @@ CREATE VIEW view_file_group_dashboard_info AS
     collections c,
     repositories r,
     cfs_directories cfs
-  WHERE ((((((fg.type)::text = 'BitLevelFileGroup'::text) AND (fg.collection_id = c.id)) AND (c.repository_id = r.id)) AND ((cfs.parent_type)::text = 'FileGroup'::text)) AND (cfs.parent_id = fg.id))
+  WHERE (((fg.type)::text = 'BitLevelFileGroup'::text) AND (fg.collection_id = c.id) AND (c.repository_id = r.id) AND ((cfs.parent_type)::text = 'FileGroup'::text) AND (cfs.parent_id = fg.id))
   ORDER BY fg.id;
 
 
@@ -3362,65 +3478,11 @@ CREATE VIEW view_file_groups_latest_amazon_backup AS
     file_groups fg,
     collections c,
     repositories r
-  WHERE (((((((((ab.cfs_directory_id = ablu.cfs_directory_id) AND (ab.date = ablu.max_date)) AND (ab.part_count IS NOT NULL)) AND (ab.archive_ids IS NOT NULL)) AND (cfs.id = ab.cfs_directory_id)) AND (fg.id = cfs.parent_id)) AND ((cfs.parent_type)::text = 'FileGroup'::text)) AND (fg.collection_id = c.id)) AND (c.repository_id = r.id));
+  WHERE ((ab.cfs_directory_id = ablu.cfs_directory_id) AND (ab.date = ablu.max_date) AND (ab.part_count IS NOT NULL) AND (ab.archive_ids IS NOT NULL) AND (cfs.id = ab.cfs_directory_id) AND (fg.id = cfs.parent_id) AND ((cfs.parent_type)::text = 'FileGroup'::text) AND (fg.collection_id = c.id) AND (c.repository_id = r.id));
 
 
 --
--- Name: view_tested_file_relations; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW view_tested_file_relations AS
- SELECT fft.id AS file_format_test_id,
-    f.id AS cfs_file_id,
-    f.content_type_id,
-    f.file_extension_id,
-    p.repository_id
-   FROM ((file_format_tests fft
-     JOIN cfs_files f ON ((fft.cfs_file_id = f.id)))
-     JOIN view_cfs_files_to_parents p ON ((f.id = p.cfs_file_id)));
-
-
---
--- Name: view_tested_file_content_type_counts; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW view_tested_file_content_type_counts AS
- SELECT view_tested_file_relations.content_type_id,
-    view_tested_file_relations.repository_id,
-    count(*) AS count
-   FROM view_tested_file_relations
-  GROUP BY view_tested_file_relations.content_type_id, view_tested_file_relations.repository_id;
-
-
---
--- Name: view_tested_file_file_extension_counts; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW view_tested_file_file_extension_counts AS
- SELECT view_tested_file_relations.file_extension_id,
-    view_tested_file_relations.repository_id,
-    count(*) AS count
-   FROM view_tested_file_relations
-  GROUP BY view_tested_file_relations.file_extension_id, view_tested_file_relations.repository_id;
-
-
---
--- Name: view_tested_file_stats; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW view_tested_file_stats AS
- SELECT f.id,
-    f.content_type_id,
-    f.file_extension_id,
-    p.repository_id
-   FROM ((file_format_tests fft
-     JOIN cfs_files f ON ((fft.cfs_file_id = f.id)))
-     JOIN view_cfs_files_to_parents p ON ((f.id = p.cfs_file_id)))
- LIMIT 10;
-
-
---
--- Name: virus_scans; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: virus_scans; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE virus_scans (
@@ -3452,7 +3514,7 @@ ALTER SEQUENCE virus_scans_id_seq OWNED BY virus_scans.id;
 
 
 --
--- Name: workflow_accrual_comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: workflow_accrual_comments; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE workflow_accrual_comments (
@@ -3485,7 +3547,7 @@ ALTER SEQUENCE workflow_accrual_comments_id_seq OWNED BY workflow_accrual_commen
 
 
 --
--- Name: workflow_accrual_conflicts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: workflow_accrual_conflicts; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE workflow_accrual_conflicts (
@@ -3518,7 +3580,7 @@ ALTER SEQUENCE workflow_accrual_conflicts_id_seq OWNED BY workflow_accrual_confl
 
 
 --
--- Name: workflow_accrual_directories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: workflow_accrual_directories; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE workflow_accrual_directories (
@@ -3552,7 +3614,7 @@ ALTER SEQUENCE workflow_accrual_directories_id_seq OWNED BY workflow_accrual_dir
 
 
 --
--- Name: workflow_accrual_files; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: workflow_accrual_files; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE workflow_accrual_files (
@@ -3585,7 +3647,7 @@ ALTER SEQUENCE workflow_accrual_files_id_seq OWNED BY workflow_accrual_files.id;
 
 
 --
--- Name: workflow_accrual_jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: workflow_accrual_jobs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE workflow_accrual_jobs (
@@ -3620,7 +3682,7 @@ ALTER SEQUENCE workflow_accrual_jobs_id_seq OWNED BY workflow_accrual_jobs.id;
 
 
 --
--- Name: workflow_ingests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: workflow_ingests; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE workflow_ingests (
@@ -3764,6 +3826,13 @@ ALTER TABLE ONLY delayed_jobs ALTER COLUMN id SET DEFAULT nextval('delayed_jobs_
 --
 
 ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY fedora_roots ALTER COLUMN id SET DEFAULT nextval('fedora_roots_id_seq'::regclass);
 
 
 --
@@ -4096,7 +4165,7 @@ ALTER TABLE ONLY workflow_ingests ALTER COLUMN id SET DEFAULT nextval('workflow_
 
 
 --
--- Name: access_system_collection_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: access_system_collection_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY access_system_collection_joins
@@ -4104,7 +4173,7 @@ ALTER TABLE ONLY access_system_collection_joins
 
 
 --
--- Name: access_systems_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: access_systems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY access_systems
@@ -4112,7 +4181,7 @@ ALTER TABLE ONLY access_systems
 
 
 --
--- Name: amazon_backups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: amazon_backups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY amazon_backups
@@ -4120,7 +4189,7 @@ ALTER TABLE ONLY amazon_backups
 
 
 --
--- Name: archived_accrual_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: archived_accrual_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY archived_accrual_jobs
@@ -4128,7 +4197,7 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 
 --
--- Name: assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY assessments
@@ -4136,7 +4205,7 @@ ALTER TABLE ONLY assessments
 
 
 --
--- Name: attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY attachments
@@ -4144,7 +4213,7 @@ ALTER TABLE ONLY attachments
 
 
 --
--- Name: book_tracker_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: book_tracker_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY book_tracker_items
@@ -4152,7 +4221,7 @@ ALTER TABLE ONLY book_tracker_items
 
 
 --
--- Name: book_tracker_tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: book_tracker_tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY book_tracker_tasks
@@ -4160,7 +4229,7 @@ ALTER TABLE ONLY book_tracker_tasks
 
 
 --
--- Name: cascaded_event_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: cascaded_event_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cascaded_event_joins
@@ -4168,7 +4237,7 @@ ALTER TABLE ONLY cascaded_event_joins
 
 
 --
--- Name: cascaded_red_flag_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: cascaded_red_flag_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cascaded_red_flag_joins
@@ -4176,7 +4245,7 @@ ALTER TABLE ONLY cascaded_red_flag_joins
 
 
 --
--- Name: cfs_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: cfs_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cfs_directories
@@ -4184,7 +4253,7 @@ ALTER TABLE ONLY cfs_directories
 
 
 --
--- Name: cfs_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: cfs_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cfs_files
@@ -4192,7 +4261,15 @@ ALTER TABLE ONLY cfs_files
 
 
 --
--- Name: collections_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: collection_resource_type_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY resource_typeable_resource_type_joins
+    ADD CONSTRAINT collection_resource_type_joins_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: collections_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY collections
@@ -4200,7 +4277,7 @@ ALTER TABLE ONLY collections
 
 
 --
--- Name: content_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: content_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY content_types
@@ -4208,7 +4285,7 @@ ALTER TABLE ONLY content_types
 
 
 --
--- Name: delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY delayed_jobs
@@ -4216,7 +4293,7 @@ ALTER TABLE ONLY delayed_jobs
 
 
 --
--- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY events
@@ -4224,7 +4301,15 @@ ALTER TABLE ONLY events
 
 
 --
--- Name: file_extensions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: fedora_roots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY fedora_roots
+    ADD CONSTRAINT fedora_roots_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: file_extensions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_extensions
@@ -4232,7 +4317,7 @@ ALTER TABLE ONLY file_extensions
 
 
 --
--- Name: file_format_profiles_content_types_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: file_format_profiles_content_types_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles_content_types_joins
@@ -4240,7 +4325,7 @@ ALTER TABLE ONLY file_format_profiles_content_types_joins
 
 
 --
--- Name: file_format_profiles_file_extensions_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: file_format_profiles_file_extensions_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles_file_extensions_joins
@@ -4248,7 +4333,7 @@ ALTER TABLE ONLY file_format_profiles_file_extensions_joins
 
 
 --
--- Name: file_format_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: file_format_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles
@@ -4256,7 +4341,7 @@ ALTER TABLE ONLY file_format_profiles
 
 
 --
--- Name: file_format_test_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: file_format_test_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_test_reasons
@@ -4264,7 +4349,7 @@ ALTER TABLE ONLY file_format_test_reasons
 
 
 --
--- Name: file_format_tests_file_format_test_reasons_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: file_format_tests_file_format_test_reasons_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
@@ -4272,7 +4357,7 @@ ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
 
 
 --
--- Name: file_format_tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: file_format_tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_tests
@@ -4280,7 +4365,7 @@ ALTER TABLE ONLY file_format_tests
 
 
 --
--- Name: file_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: file_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_groups
@@ -4288,7 +4373,7 @@ ALTER TABLE ONLY file_groups
 
 
 --
--- Name: idb_ingest_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: idb_ingest_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY idb_ingest_jobs
@@ -4296,7 +4381,7 @@ ALTER TABLE ONLY idb_ingest_jobs
 
 
 --
--- Name: institutions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: institutions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY institutions
@@ -4304,7 +4389,7 @@ ALTER TABLE ONLY institutions
 
 
 --
--- Name: items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY items
@@ -4312,7 +4397,7 @@ ALTER TABLE ONLY items
 
 
 --
--- Name: job_amazon_backups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_amazon_backups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_amazon_backups
@@ -4320,7 +4405,7 @@ ALTER TABLE ONLY job_amazon_backups
 
 
 --
--- Name: job_cfs_directory_export_cleanups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_cfs_directory_export_cleanups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_cfs_directory_export_cleanups
@@ -4328,7 +4413,7 @@ ALTER TABLE ONLY job_cfs_directory_export_cleanups
 
 
 --
--- Name: job_cfs_directory_exports_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_cfs_directory_exports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_cfs_directory_exports
@@ -4336,7 +4421,7 @@ ALTER TABLE ONLY job_cfs_directory_exports
 
 
 --
--- Name: job_cfs_initial_directory_assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_cfs_initial_directory_assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_cfs_initial_directory_assessments
@@ -4344,7 +4429,7 @@ ALTER TABLE ONLY job_cfs_initial_directory_assessments
 
 
 --
--- Name: job_cfs_initial_file_group_assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_cfs_initial_file_group_assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_cfs_initial_file_group_assessments
@@ -4352,7 +4437,7 @@ ALTER TABLE ONLY job_cfs_initial_file_group_assessments
 
 
 --
--- Name: job_fits_content_type_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_fits_content_type_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_content_type_batches
@@ -4360,7 +4445,7 @@ ALTER TABLE ONLY job_fits_content_type_batches
 
 
 --
--- Name: job_fits_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_fits_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_directories
@@ -4368,7 +4453,7 @@ ALTER TABLE ONLY job_fits_directories
 
 
 --
--- Name: job_fits_directory_trees_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_fits_directory_trees_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_directory_trees
@@ -4376,7 +4461,7 @@ ALTER TABLE ONLY job_fits_directory_trees
 
 
 --
--- Name: job_fits_file_extension_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_fits_file_extension_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_file_extension_batches
@@ -4384,7 +4469,7 @@ ALTER TABLE ONLY job_fits_file_extension_batches
 
 
 --
--- Name: job_fixity_checks_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_fixity_checks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fixity_checks
@@ -4392,7 +4477,7 @@ ALTER TABLE ONLY job_fixity_checks
 
 
 --
--- Name: job_ingest_staging_deletes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_ingest_staging_deletes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_ingest_staging_deletes
@@ -4400,7 +4485,7 @@ ALTER TABLE ONLY job_ingest_staging_deletes
 
 
 --
--- Name: job_item_bulk_imports_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_item_bulk_imports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_item_bulk_imports
@@ -4408,7 +4493,7 @@ ALTER TABLE ONLY job_item_bulk_imports
 
 
 --
--- Name: job_virus_scans_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: job_virus_scans_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_virus_scans
@@ -4416,7 +4501,7 @@ ALTER TABLE ONLY job_virus_scans
 
 
 --
--- Name: medusa_uuids_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: medusa_uuids_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY medusa_uuids
@@ -4424,7 +4509,7 @@ ALTER TABLE ONLY medusa_uuids
 
 
 --
--- Name: package_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: package_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY package_profiles
@@ -4432,7 +4517,7 @@ ALTER TABLE ONLY package_profiles
 
 
 --
--- Name: people_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: people_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY people
@@ -4440,7 +4525,7 @@ ALTER TABLE ONLY people
 
 
 --
--- Name: preservation_priorities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: preservation_priorities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY preservation_priorities
@@ -4448,7 +4533,7 @@ ALTER TABLE ONLY preservation_priorities
 
 
 --
--- Name: production_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: production_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY producers
@@ -4456,7 +4541,7 @@ ALTER TABLE ONLY producers
 
 
 --
--- Name: projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY projects
@@ -4464,7 +4549,7 @@ ALTER TABLE ONLY projects
 
 
 --
--- Name: red_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: red_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY red_flags
@@ -4472,7 +4557,7 @@ ALTER TABLE ONLY red_flags
 
 
 --
--- Name: related_file_group_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: related_file_group_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY related_file_group_joins
@@ -4480,7 +4565,7 @@ ALTER TABLE ONLY related_file_group_joins
 
 
 --
--- Name: repositories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: repositories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY repositories
@@ -4488,15 +4573,7 @@ ALTER TABLE ONLY repositories
 
 
 --
--- Name: resource_typeable_resource_type_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY resource_typeable_resource_type_joins
-    ADD CONSTRAINT resource_typeable_resource_type_joins_pkey PRIMARY KEY (id);
-
-
---
--- Name: resource_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: resource_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY resource_types
@@ -4504,7 +4581,7 @@ ALTER TABLE ONLY resource_types
 
 
 --
--- Name: rights_declarations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: rights_declarations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY rights_declarations
@@ -4512,7 +4589,7 @@ ALTER TABLE ONLY rights_declarations
 
 
 --
--- Name: sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY sessions
@@ -4520,7 +4597,7 @@ ALTER TABLE ONLY sessions
 
 
 --
--- Name: static_pages_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: static_pages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY static_pages
@@ -4528,7 +4605,7 @@ ALTER TABLE ONLY static_pages
 
 
 --
--- Name: storage_media_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: storage_media_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY storage_media
@@ -4536,7 +4613,7 @@ ALTER TABLE ONLY storage_media
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -4544,7 +4621,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: virus_scans_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: virus_scans_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY virus_scans
@@ -4552,7 +4629,7 @@ ALTER TABLE ONLY virus_scans
 
 
 --
--- Name: workflow_accrual_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: workflow_accrual_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_comments
@@ -4560,7 +4637,7 @@ ALTER TABLE ONLY workflow_accrual_comments
 
 
 --
--- Name: workflow_accrual_conflicts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: workflow_accrual_conflicts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_conflicts
@@ -4568,7 +4645,7 @@ ALTER TABLE ONLY workflow_accrual_conflicts
 
 
 --
--- Name: workflow_accrual_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: workflow_accrual_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_directories
@@ -4576,7 +4653,7 @@ ALTER TABLE ONLY workflow_accrual_directories
 
 
 --
--- Name: workflow_accrual_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: workflow_accrual_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_files
@@ -4584,7 +4661,7 @@ ALTER TABLE ONLY workflow_accrual_files
 
 
 --
--- Name: workflow_accrual_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: workflow_accrual_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_jobs
@@ -4592,7 +4669,7 @@ ALTER TABLE ONLY workflow_accrual_jobs
 
 
 --
--- Name: workflow_ingests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: workflow_ingests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_ingests
@@ -4600,1043 +4677,1043 @@ ALTER TABLE ONLY workflow_ingests
 
 
 --
--- Name: cfs_directory_parent_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: cfs_directory_parent_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX cfs_directory_parent_idx ON cfs_directories USING btree (parent_type, parent_id, path);
 
 
 --
--- Name: delayed_jobs_priority; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: delayed_jobs_priority; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX delayed_jobs_priority ON delayed_jobs USING btree (priority, run_at);
 
 
 --
--- Name: ffpctj_content_type_id_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ffpctj_content_type_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ffpctj_content_type_id_idx ON file_format_profiles_content_types_joins USING btree (content_type_id);
 
 
 --
--- Name: ffpctj_file_format_profile_id_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ffpctj_file_format_profile_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ffpctj_file_format_profile_id_idx ON file_format_profiles_content_types_joins USING btree (file_format_profile_id);
 
 
 --
--- Name: ffpfej_file_extension_id_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ffpfej_file_extension_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ffpfej_file_extension_id_idx ON file_format_profiles_file_extensions_joins USING btree (file_extension_id);
 
 
 --
--- Name: ffpfej_file_format_profile_id_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ffpfej_file_format_profile_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ffpfej_file_format_profile_id_idx ON file_format_profiles_file_extensions_joins USING btree (file_format_profile_id);
 
 
 --
--- Name: fft_fftr_joins_fftr_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: fft_fftr_joins_fftr_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX fft_fftr_joins_fftr_id_index ON file_format_tests_file_format_test_reasons_joins USING btree (file_format_test_reason_id);
 
 
 --
--- Name: fft_fftr_joins_unique_pairs; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: fft_fftr_joins_unique_pairs; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX fft_fftr_joins_unique_pairs ON file_format_tests_file_format_test_reasons_joins USING btree (file_format_test_id, file_format_test_reason_id);
 
 
 --
--- Name: fixity_object; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: fixity_object; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX fixity_object ON job_fixity_checks USING btree (fixity_checkable_id, fixity_checkable_type);
 
 
 --
--- Name: idx_cfs_files_lower_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: idx_cfs_files_lower_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX idx_cfs_files_lower_name ON cfs_files USING btree (lower((name)::text));
 
 
 --
--- Name: index_access_system_collection_joins_on_access_system_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_access_system_collection_joins_on_access_system_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_access_system_collection_joins_on_access_system_id ON access_system_collection_joins USING btree (access_system_id);
 
 
 --
--- Name: index_access_system_collection_joins_on_collection_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_access_system_collection_joins_on_collection_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_access_system_collection_joins_on_collection_id ON access_system_collection_joins USING btree (collection_id);
 
 
 --
--- Name: index_access_system_collection_joins_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_access_system_collection_joins_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_access_system_collection_joins_on_updated_at ON access_system_collection_joins USING btree (updated_at);
 
 
 --
--- Name: index_access_systems_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_access_systems_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_access_systems_on_updated_at ON access_systems USING btree (updated_at);
 
 
 --
--- Name: index_amazon_backups_on_cfs_directory_id_and_date; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_amazon_backups_on_cfs_directory_id_and_date; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_amazon_backups_on_cfs_directory_id_and_date ON amazon_backups USING btree (cfs_directory_id, date);
 
 
 --
--- Name: index_amazon_backups_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_amazon_backups_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_amazon_backups_on_updated_at ON amazon_backups USING btree (updated_at);
 
 
 --
--- Name: index_archived_accrual_jobs_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_archived_accrual_jobs_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_archived_accrual_jobs_on_amazon_backup_id ON archived_accrual_jobs USING btree (amazon_backup_id);
 
 
 --
--- Name: index_archived_accrual_jobs_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_archived_accrual_jobs_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_archived_accrual_jobs_on_cfs_directory_id ON archived_accrual_jobs USING btree (cfs_directory_id);
 
 
 --
--- Name: index_archived_accrual_jobs_on_file_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_archived_accrual_jobs_on_file_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_archived_accrual_jobs_on_file_group_id ON archived_accrual_jobs USING btree (file_group_id);
 
 
 --
--- Name: index_archived_accrual_jobs_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_archived_accrual_jobs_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_archived_accrual_jobs_on_user_id ON archived_accrual_jobs USING btree (user_id);
 
 
 --
--- Name: index_assessments_on_author_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_assessments_on_author_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_assessments_on_author_id ON assessments USING btree (author_id);
 
 
 --
--- Name: index_assessments_on_collection_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_assessments_on_collection_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_assessments_on_collection_id ON assessments USING btree (assessable_id);
 
 
 --
--- Name: index_assessments_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_assessments_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_assessments_on_updated_at ON assessments USING btree (updated_at);
 
 
 --
--- Name: index_attachments_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_attachments_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_attachments_on_updated_at ON attachments USING btree (updated_at);
 
 
 --
--- Name: index_book_tracker_items_on_author; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_book_tracker_items_on_author; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_book_tracker_items_on_author ON book_tracker_items USING btree (author);
 
 
 --
--- Name: index_book_tracker_items_on_bib_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_book_tracker_items_on_bib_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_book_tracker_items_on_bib_id ON book_tracker_items USING btree (bib_id);
 
 
 --
--- Name: index_book_tracker_items_on_date; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_book_tracker_items_on_date; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_book_tracker_items_on_date ON book_tracker_items USING btree (date);
 
 
 --
--- Name: index_book_tracker_items_on_exists_in_hathitrust; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_book_tracker_items_on_exists_in_hathitrust; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_book_tracker_items_on_exists_in_hathitrust ON book_tracker_items USING btree (exists_in_hathitrust);
 
 
 --
--- Name: index_book_tracker_items_on_exists_in_internet_archive; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_book_tracker_items_on_exists_in_internet_archive; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_book_tracker_items_on_exists_in_internet_archive ON book_tracker_items USING btree (exists_in_internet_archive);
 
 
 --
--- Name: index_book_tracker_items_on_ia_identifier; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_book_tracker_items_on_ia_identifier; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_book_tracker_items_on_ia_identifier ON book_tracker_items USING btree (ia_identifier);
 
 
 --
--- Name: index_book_tracker_items_on_obj_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_book_tracker_items_on_obj_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_book_tracker_items_on_obj_id ON book_tracker_items USING btree (obj_id);
 
 
 --
--- Name: index_book_tracker_items_on_oclc_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_book_tracker_items_on_oclc_number; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_book_tracker_items_on_oclc_number ON book_tracker_items USING btree (oclc_number);
 
 
 --
--- Name: index_book_tracker_items_on_title; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_book_tracker_items_on_title; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_book_tracker_items_on_title ON book_tracker_items USING btree (title);
 
 
 --
--- Name: index_book_tracker_items_on_volume; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_book_tracker_items_on_volume; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_book_tracker_items_on_volume ON book_tracker_items USING btree (volume);
 
 
 --
--- Name: index_cascaded_event_joins_on_event_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cascaded_event_joins_on_event_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cascaded_event_joins_on_event_id ON cascaded_event_joins USING btree (event_id);
 
 
 --
--- Name: index_cascaded_red_flag_joins_on_red_flag_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cascaded_red_flag_joins_on_red_flag_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cascaded_red_flag_joins_on_red_flag_id ON cascaded_red_flag_joins USING btree (red_flag_id);
 
 
 --
--- Name: index_cfs_directories_on_path; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cfs_directories_on_path; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cfs_directories_on_path ON cfs_directories USING btree (path);
 
 
 --
--- Name: index_cfs_directories_on_root_cfs_directory_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cfs_directories_on_root_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cfs_directories_on_root_cfs_directory_id ON cfs_directories USING btree (root_cfs_directory_id);
 
 
 --
--- Name: index_cfs_directories_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cfs_directories_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cfs_directories_on_updated_at ON cfs_directories USING btree (updated_at);
 
 
 --
--- Name: index_cfs_files_on_cfs_directory_id_and_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cfs_files_on_cfs_directory_id_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_cfs_files_on_cfs_directory_id_and_name ON cfs_files USING btree (cfs_directory_id, name);
 
 
 --
--- Name: index_cfs_files_on_content_type_id_and_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cfs_files_on_content_type_id_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cfs_files_on_content_type_id_and_name ON cfs_files USING btree (content_type_id, name);
 
 
 --
--- Name: index_cfs_files_on_file_extension_id_and_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cfs_files_on_file_extension_id_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cfs_files_on_file_extension_id_and_name ON cfs_files USING btree (file_extension_id, name);
 
 
 --
--- Name: index_cfs_files_on_fixity_check_status; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cfs_files_on_fixity_check_status; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cfs_files_on_fixity_check_status ON cfs_files USING btree (fixity_check_status);
 
 
 --
--- Name: index_cfs_files_on_fixity_check_time; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cfs_files_on_fixity_check_time; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cfs_files_on_fixity_check_time ON cfs_files USING btree (fixity_check_time);
 
 
 --
--- Name: index_cfs_files_on_mtime; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cfs_files_on_mtime; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cfs_files_on_mtime ON cfs_files USING btree (mtime);
 
 
 --
--- Name: index_cfs_files_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cfs_files_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cfs_files_on_name ON cfs_files USING btree (name);
 
 
 --
--- Name: index_cfs_files_on_size; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cfs_files_on_size; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cfs_files_on_size ON cfs_files USING btree (size);
 
 
 --
--- Name: index_cfs_files_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cfs_files_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cfs_files_on_updated_at ON cfs_files USING btree (updated_at);
 
 
 --
--- Name: index_collections_on_contact_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_collections_on_contact_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_collections_on_contact_id ON collections USING btree (contact_id);
 
 
 --
--- Name: index_collections_on_external_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_collections_on_external_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_collections_on_external_id ON collections USING btree (external_id);
 
 
 --
--- Name: index_collections_on_repository_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_collections_on_repository_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_collections_on_repository_id ON collections USING btree (repository_id);
 
 
 --
--- Name: index_collections_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_collections_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_collections_on_updated_at ON collections USING btree (updated_at);
 
 
 --
--- Name: index_content_types_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_content_types_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_content_types_on_name ON content_types USING btree (name);
 
 
 --
--- Name: index_events_on_actor_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_actor_email; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_actor_email ON events USING btree (actor_email);
 
 
 --
--- Name: index_events_on_cascadable; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_cascadable; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_cascadable ON events USING btree (cascadable);
 
 
 --
--- Name: index_events_on_eventable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_eventable_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_eventable_id ON events USING btree (eventable_id);
 
 
 --
--- Name: index_events_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_updated_at ON events USING btree (updated_at);
 
 
 --
--- Name: index_file_extensions_on_extension; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_file_extensions_on_extension; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_file_extensions_on_extension ON file_extensions USING btree (extension);
 
 
 --
--- Name: index_file_format_profiles_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_file_format_profiles_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_file_format_profiles_on_name ON file_format_profiles USING btree (name);
 
 
 --
--- Name: index_file_format_tests_on_cfs_file_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_file_format_tests_on_cfs_file_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_file_format_tests_on_cfs_file_id ON file_format_tests USING btree (cfs_file_id);
 
 
 --
--- Name: index_file_format_tests_on_file_format_profile_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_file_format_tests_on_file_format_profile_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_file_format_tests_on_file_format_profile_id ON file_format_tests USING btree (file_format_profile_id);
 
 
 --
--- Name: index_file_groups_on_acquisition_method; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_file_groups_on_acquisition_method; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_file_groups_on_acquisition_method ON file_groups USING btree (acquisition_method);
 
 
 --
--- Name: index_file_groups_on_cfs_root; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_file_groups_on_cfs_root; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_file_groups_on_cfs_root ON file_groups USING btree (cfs_root);
 
 
 --
--- Name: index_file_groups_on_collection_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_file_groups_on_collection_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_file_groups_on_collection_id ON file_groups USING btree (collection_id);
 
 
 --
--- Name: index_file_groups_on_external_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_file_groups_on_external_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_file_groups_on_external_id ON file_groups USING btree (external_id);
 
 
 --
--- Name: index_file_groups_on_package_profile_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_file_groups_on_package_profile_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_file_groups_on_package_profile_id ON file_groups USING btree (package_profile_id);
 
 
 --
--- Name: index_file_groups_on_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_file_groups_on_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_file_groups_on_type ON file_groups USING btree (type);
 
 
 --
--- Name: index_file_groups_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_file_groups_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_file_groups_on_updated_at ON file_groups USING btree (updated_at);
 
 
 --
--- Name: index_institutions_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_institutions_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_institutions_on_name ON institutions USING btree (name);
 
 
 --
--- Name: index_institutions_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_institutions_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_institutions_on_updated_at ON institutions USING btree (updated_at);
 
 
 --
--- Name: index_items_on_barcode; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_items_on_barcode; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_items_on_barcode ON items USING btree (barcode);
 
 
 --
--- Name: index_items_on_bib_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_items_on_bib_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_items_on_bib_id ON items USING btree (bib_id);
 
 
 --
--- Name: index_items_on_call_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_items_on_call_number; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_items_on_call_number ON items USING btree (call_number);
 
 
 --
--- Name: index_items_on_oclc_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_items_on_oclc_number; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_items_on_oclc_number ON items USING btree (oclc_number);
 
 
 --
--- Name: index_items_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_items_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_items_on_project_id ON items USING btree (project_id);
 
 
 --
--- Name: index_items_on_status; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_items_on_status; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_items_on_status ON items USING btree (status);
 
 
 --
--- Name: index_job_amazon_backups_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_amazon_backups_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_job_amazon_backups_on_amazon_backup_id ON job_amazon_backups USING btree (amazon_backup_id);
 
 
 --
--- Name: index_job_cfs_initial_directory_assessments_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_cfs_initial_directory_assessments_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_cfs_initial_directory_assessments_on_cfs_directory_id ON job_cfs_initial_directory_assessments USING btree (cfs_directory_id);
 
 
 --
--- Name: index_job_cfs_initial_directory_assessments_on_file_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_cfs_initial_directory_assessments_on_file_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_cfs_initial_directory_assessments_on_file_group_id ON job_cfs_initial_directory_assessments USING btree (file_group_id);
 
 
 --
--- Name: index_job_cfs_initial_file_group_assessments_on_file_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_cfs_initial_file_group_assessments_on_file_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_cfs_initial_file_group_assessments_on_file_group_id ON job_cfs_initial_file_group_assessments USING btree (file_group_id);
 
 
 --
--- Name: index_job_fits_content_type_batches_on_content_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_fits_content_type_batches_on_content_type_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_job_fits_content_type_batches_on_content_type_id ON job_fits_content_type_batches USING btree (content_type_id);
 
 
 --
--- Name: index_job_fits_content_type_batches_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_fits_content_type_batches_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_fits_content_type_batches_on_user_id ON job_fits_content_type_batches USING btree (user_id);
 
 
 --
--- Name: index_job_fits_directories_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_fits_directories_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_fits_directories_on_cfs_directory_id ON job_fits_directories USING btree (cfs_directory_id);
 
 
 --
--- Name: index_job_fits_directories_on_file_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_fits_directories_on_file_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_fits_directories_on_file_group_id ON job_fits_directories USING btree (file_group_id);
 
 
 --
--- Name: index_job_fits_directory_trees_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_fits_directory_trees_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_fits_directory_trees_on_cfs_directory_id ON job_fits_directory_trees USING btree (cfs_directory_id);
 
 
 --
--- Name: index_job_fits_directory_trees_on_file_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_fits_directory_trees_on_file_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_fits_directory_trees_on_file_group_id ON job_fits_directory_trees USING btree (file_group_id);
 
 
 --
--- Name: index_job_fits_file_extension_batches_on_file_extension_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_fits_file_extension_batches_on_file_extension_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_job_fits_file_extension_batches_on_file_extension_id ON job_fits_file_extension_batches USING btree (file_extension_id);
 
 
 --
--- Name: index_job_fits_file_extension_batches_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_fits_file_extension_batches_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_fits_file_extension_batches_on_user_id ON job_fits_file_extension_batches USING btree (user_id);
 
 
 --
--- Name: index_job_fixity_checks_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_fixity_checks_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_fixity_checks_on_cfs_directory_id ON job_fixity_checks USING btree (cfs_directory_id);
 
 
 --
--- Name: index_job_fixity_checks_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_fixity_checks_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_fixity_checks_on_user_id ON job_fixity_checks USING btree (user_id);
 
 
 --
--- Name: index_job_ingest_staging_deletes_on_external_file_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_ingest_staging_deletes_on_external_file_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_ingest_staging_deletes_on_external_file_group_id ON job_ingest_staging_deletes USING btree (external_file_group_id);
 
 
 --
--- Name: index_job_ingest_staging_deletes_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_ingest_staging_deletes_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_ingest_staging_deletes_on_user_id ON job_ingest_staging_deletes USING btree (user_id);
 
 
 --
--- Name: index_job_item_bulk_imports_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_item_bulk_imports_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_item_bulk_imports_on_project_id ON job_item_bulk_imports USING btree (project_id);
 
 
 --
--- Name: index_job_item_bulk_imports_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_item_bulk_imports_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_item_bulk_imports_on_user_id ON job_item_bulk_imports USING btree (user_id);
 
 
 --
--- Name: index_job_virus_scans_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_job_virus_scans_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_job_virus_scans_on_updated_at ON job_virus_scans USING btree (updated_at);
 
 
 --
--- Name: index_medusa_uuids_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_medusa_uuids_on_uuid; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_medusa_uuids_on_uuid ON medusa_uuids USING btree (uuid);
 
 
 --
--- Name: index_medusa_uuids_on_uuidable_id_and_uuidable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_medusa_uuids_on_uuidable_id_and_uuidable_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_medusa_uuids_on_uuidable_id_and_uuidable_type ON medusa_uuids USING btree (uuidable_id, uuidable_type);
 
 
 --
--- Name: index_package_profiles_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_package_profiles_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_package_profiles_on_updated_at ON package_profiles USING btree (updated_at);
 
 
 --
--- Name: index_people_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_people_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_people_on_email ON people USING btree (email);
 
 
 --
--- Name: index_people_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_people_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_people_on_updated_at ON people USING btree (updated_at);
 
 
 --
--- Name: index_preservation_priorities_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_preservation_priorities_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_preservation_priorities_on_updated_at ON preservation_priorities USING btree (updated_at);
 
 
 --
--- Name: index_producers_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_producers_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_producers_on_updated_at ON producers USING btree (updated_at);
 
 
 --
--- Name: index_production_units_on_administrator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_production_units_on_administrator_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_production_units_on_administrator_id ON producers USING btree (administrator_id);
 
 
 --
--- Name: index_projects_on_collection_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_projects_on_collection_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_projects_on_collection_id ON projects USING btree (collection_id);
 
 
 --
--- Name: index_red_flags_on_priority; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_red_flags_on_priority; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_red_flags_on_priority ON red_flags USING btree (priority);
 
 
 --
--- Name: index_red_flags_on_red_flaggable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_red_flags_on_red_flaggable_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_red_flags_on_red_flaggable_id ON red_flags USING btree (red_flaggable_id);
 
 
 --
--- Name: index_red_flags_on_red_flaggable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_red_flags_on_red_flaggable_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_red_flags_on_red_flaggable_type ON red_flags USING btree (red_flaggable_type);
 
 
 --
--- Name: index_red_flags_on_status; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_red_flags_on_status; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_red_flags_on_status ON red_flags USING btree (status);
 
 
 --
--- Name: index_red_flags_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_red_flags_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_red_flags_on_updated_at ON red_flags USING btree (updated_at);
 
 
 --
--- Name: index_related_file_group_joins_on_source_file_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_related_file_group_joins_on_source_file_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_related_file_group_joins_on_source_file_group_id ON related_file_group_joins USING btree (source_file_group_id);
 
 
 --
--- Name: index_related_file_group_joins_on_target_file_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_related_file_group_joins_on_target_file_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_related_file_group_joins_on_target_file_group_id ON related_file_group_joins USING btree (target_file_group_id);
 
 
 --
--- Name: index_related_file_group_joins_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_related_file_group_joins_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_related_file_group_joins_on_updated_at ON related_file_group_joins USING btree (updated_at);
 
 
 --
--- Name: index_repositories_on_contact_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_repositories_on_contact_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_repositories_on_contact_id ON repositories USING btree (contact_id);
 
 
 --
--- Name: index_repositories_on_institution_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_repositories_on_institution_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_repositories_on_institution_id ON repositories USING btree (institution_id);
 
 
 --
--- Name: index_repositories_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_repositories_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_repositories_on_updated_at ON repositories USING btree (updated_at);
 
 
 --
--- Name: index_resource_typeable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_resource_typeable_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_resource_typeable_id ON resource_typeable_resource_type_joins USING btree (resource_typeable_id);
 
 
 --
--- Name: index_resource_typeable_resource_type_joins_on_resource_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_resource_typeable_resource_type_joins_on_resource_type_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_resource_typeable_resource_type_joins_on_resource_type_id ON resource_typeable_resource_type_joins USING btree (resource_type_id);
 
 
 --
--- Name: index_resource_typeable_resource_type_joins_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_resource_typeable_resource_type_joins_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_resource_typeable_resource_type_joins_on_updated_at ON resource_typeable_resource_type_joins USING btree (updated_at);
 
 
 --
--- Name: index_resource_types_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_resource_types_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_resource_types_on_updated_at ON resource_types USING btree (updated_at);
 
 
 --
--- Name: index_rights_declarations_on_rights_declarable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_rights_declarations_on_rights_declarable_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_rights_declarations_on_rights_declarable_id ON rights_declarations USING btree (rights_declarable_id);
 
 
 --
--- Name: index_rights_declarations_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_rights_declarations_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_rights_declarations_on_updated_at ON rights_declarations USING btree (updated_at);
 
 
 --
--- Name: index_sessions_on_session_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_sessions_on_session_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_sessions_on_session_id ON sessions USING btree (session_id);
 
 
 --
--- Name: index_sessions_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_sessions_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_sessions_on_updated_at ON sessions USING btree (updated_at);
 
 
 --
--- Name: index_storage_media_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_storage_media_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_storage_media_on_updated_at ON storage_media USING btree (updated_at);
 
 
 --
--- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
--- Name: index_users_on_uid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_uid; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_users_on_uid ON users USING btree (uid);
 
 
 --
--- Name: index_users_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_users_on_updated_at ON users USING btree (updated_at);
 
 
 --
--- Name: index_virus_scans_on_file_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_virus_scans_on_file_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_virus_scans_on_file_group_id ON virus_scans USING btree (file_group_id);
 
 
 --
--- Name: index_virus_scans_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_virus_scans_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_virus_scans_on_updated_at ON virus_scans USING btree (updated_at);
 
 
 --
--- Name: index_workflow_accrual_comments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_accrual_comments_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_accrual_comments_on_user_id ON workflow_accrual_comments USING btree (user_id);
 
 
 --
--- Name: index_workflow_accrual_comments_on_workflow_accrual_job_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_accrual_comments_on_workflow_accrual_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_accrual_comments_on_workflow_accrual_job_id ON workflow_accrual_comments USING btree (workflow_accrual_job_id);
 
 
 --
--- Name: index_workflow_accrual_conflicts_on_different; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_accrual_conflicts_on_different; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_accrual_conflicts_on_different ON workflow_accrual_conflicts USING btree (different);
 
 
 --
--- Name: index_workflow_accrual_conflicts_on_workflow_accrual_job_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_accrual_conflicts_on_workflow_accrual_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_accrual_conflicts_on_workflow_accrual_job_id ON workflow_accrual_conflicts USING btree (workflow_accrual_job_id);
 
 
 --
--- Name: index_workflow_accrual_directories_on_workflow_accrual_job_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_accrual_directories_on_workflow_accrual_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_accrual_directories_on_workflow_accrual_job_id ON workflow_accrual_directories USING btree (workflow_accrual_job_id);
 
 
 --
--- Name: index_workflow_accrual_files_on_workflow_accrual_job_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_accrual_files_on_workflow_accrual_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_accrual_files_on_workflow_accrual_job_id ON workflow_accrual_files USING btree (workflow_accrual_job_id);
 
 
 --
--- Name: index_workflow_accrual_jobs_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_accrual_jobs_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_accrual_jobs_on_amazon_backup_id ON workflow_accrual_jobs USING btree (amazon_backup_id);
 
 
 --
--- Name: index_workflow_accrual_jobs_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_accrual_jobs_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_accrual_jobs_on_cfs_directory_id ON workflow_accrual_jobs USING btree (cfs_directory_id);
 
 
 --
--- Name: index_workflow_accrual_jobs_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_accrual_jobs_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_accrual_jobs_on_user_id ON workflow_accrual_jobs USING btree (user_id);
 
 
 --
--- Name: index_workflow_ingests_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_ingests_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_ingests_on_amazon_backup_id ON workflow_ingests USING btree (amazon_backup_id);
 
 
 --
--- Name: index_workflow_ingests_on_bit_level_file_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_ingests_on_bit_level_file_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_ingests_on_bit_level_file_group_id ON workflow_ingests USING btree (bit_level_file_group_id);
 
 
 --
--- Name: index_workflow_ingests_on_external_file_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_ingests_on_external_file_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_workflow_ingests_on_external_file_group_id ON workflow_ingests USING btree (external_file_group_id);
 
 
 --
--- Name: index_workflow_ingests_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_ingests_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_ingests_on_updated_at ON workflow_ingests USING btree (updated_at);
 
 
 --
--- Name: index_workflow_ingests_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_workflow_ingests_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workflow_ingests_on_user_id ON workflow_ingests USING btree (user_id);
 
 
 --
--- Name: unique_cascaded_events; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: unique_cascaded_events; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX unique_cascaded_events ON cascaded_event_joins USING btree (cascaded_eventable_type, cascaded_eventable_id, event_id);
 
 
 --
--- Name: unique_cascaded_red_flags; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: unique_cascaded_red_flags; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX unique_cascaded_red_flags ON cascaded_red_flag_joins USING btree (cascaded_red_flaggable_type, cascaded_red_flaggable_id, red_flag_id);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
 
 
 --
--- Name: wfad_job_and_name_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: wfad_job_and_name_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX wfad_job_and_name_idx ON workflow_accrual_directories USING btree (workflow_accrual_job_id, name);
 
 
 --
--- Name: wfaf_job_and_name_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: wfaf_job_and_name_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX wfaf_job_and_name_idx ON workflow_accrual_files USING btree (workflow_accrual_job_id, name);
 
 
 --
--- Name: wfaj_cfs_dir_id_and_staging_path_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: wfaj_cfs_dir_id_and_staging_path_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX wfaj_cfs_dir_id_and_staging_path_idx ON workflow_accrual_jobs USING btree (cfs_directory_id, staging_path);
@@ -5944,27 +6021,27 @@ CREATE TRIGGER workflow_ingests_touch_user_trigger AFTER INSERT OR DELETE OR UPD
 
 
 --
--- Name: fk_rails_04822aba51; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_006b003ef5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY file_format_profiles_file_extensions_joins
-    ADD CONSTRAINT fk_rails_04822aba51 FOREIGN KEY (file_extension_id) REFERENCES file_extensions(id);
-
-
---
--- Name: fk_rails_07ebf5783f; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflow_accrual_conflicts
-    ADD CONSTRAINT fk_rails_07ebf5783f FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
+ALTER TABLE ONLY workflow_accrual_directories
+    ADD CONSTRAINT fk_rails_006b003ef5 FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
 
 
 --
--- Name: fk_rails_0d41a20552; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_05018793e6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY workflow_accrual_jobs
-    ADD CONSTRAINT fk_rails_0d41a20552 FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE ONLY cascaded_event_joins
+    ADD CONSTRAINT fk_rails_05018793e6 FOREIGN KEY (event_id) REFERENCES events(id);
+
+
+--
+-- Name: fk_rails_1c44ece84c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_accrual_comments
+    ADD CONSTRAINT fk_rails_1c44ece84c FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
 
 
 --
@@ -5976,30 +6053,6 @@ ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
 
 
 --
--- Name: fk_rails_2214d78ff1; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY job_fits_file_extension_batches
-    ADD CONSTRAINT fk_rails_2214d78ff1 FOREIGN KEY (file_extension_id) REFERENCES file_extensions(id);
-
-
---
--- Name: fk_rails_2258e947c4; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflow_accrual_comments
-    ADD CONSTRAINT fk_rails_2258e947c4 FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
-
-
---
--- Name: fk_rails_2307b1ca05; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflow_accrual_jobs
-    ADD CONSTRAINT fk_rails_2307b1ca05 FOREIGN KEY (amazon_backup_id) REFERENCES amazon_backups(id);
-
-
---
 -- Name: fk_rails_242362ff14; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6008,11 +6061,11 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 
 --
--- Name: fk_rails_264edd65c3; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_261391b37b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY file_format_profiles_file_extensions_joins
-    ADD CONSTRAINT fk_rails_264edd65c3 FOREIGN KEY (file_format_profile_id) REFERENCES file_format_profiles(id);
+ALTER TABLE ONLY job_fits_content_type_batches
+    ADD CONSTRAINT fk_rails_261391b37b FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -6024,35 +6077,35 @@ ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
 
 
 --
--- Name: fk_rails_2d8d8e95f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_46d68b01f6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY cfs_files
-    ADD CONSTRAINT fk_rails_2d8d8e95f6 FOREIGN KEY (file_extension_id) REFERENCES file_extensions(id);
+ALTER TABLE ONLY workflow_accrual_jobs
+    ADD CONSTRAINT fk_rails_46d68b01f6 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
--- Name: fk_rails_321123b6a8; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_4b057de313; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_accrual_comments
+    ADD CONSTRAINT fk_rails_4b057de313 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_4f056ac37d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_profiles_file_extensions_joins
+    ADD CONSTRAINT fk_rails_4f056ac37d FOREIGN KEY (file_format_profile_id) REFERENCES file_format_profiles(id);
+
+
+--
+-- Name: fk_rails_59f66c8e60; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_files
-    ADD CONSTRAINT fk_rails_321123b6a8 FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
-
-
---
--- Name: fk_rails_49490359d8; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY job_fits_content_type_batches
-    ADD CONSTRAINT fk_rails_49490359d8 FOREIGN KEY (content_type_id) REFERENCES content_types(id);
-
-
---
--- Name: fk_rails_5f90452cff; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY cascaded_event_joins
-    ADD CONSTRAINT fk_rails_5f90452cff FOREIGN KEY (event_id) REFERENCES events(id);
+    ADD CONSTRAINT fk_rails_59f66c8e60 FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
 
 
 --
@@ -6064,11 +6117,27 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 
 --
--- Name: fk_rails_75f09068b2; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_64a0ab5e2a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY job_fits_file_extension_batches
-    ADD CONSTRAINT fk_rails_75f09068b2 FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE ONLY file_format_profiles_content_types_joins
+    ADD CONSTRAINT fk_rails_64a0ab5e2a FOREIGN KEY (content_type_id) REFERENCES content_types(id);
+
+
+--
+-- Name: fk_rails_6e22d462d8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_accrual_conflicts
+    ADD CONSTRAINT fk_rails_6e22d462d8 FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
+
+
+--
+-- Name: fk_rails_7bca99061f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_profiles_content_types_joins
+    ADD CONSTRAINT fk_rails_7bca99061f FOREIGN KEY (file_format_profile_id) REFERENCES file_format_profiles(id);
 
 
 --
@@ -6080,19 +6149,19 @@ ALTER TABLE ONLY job_item_bulk_imports
 
 
 --
--- Name: fk_rails_814510e4f4; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_899cdd7f4d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY workflow_accrual_directories
-    ADD CONSTRAINT fk_rails_814510e4f4 FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
+ALTER TABLE ONLY workflow_accrual_jobs
+    ADD CONSTRAINT fk_rails_899cdd7f4d FOREIGN KEY (cfs_directory_id) REFERENCES cfs_directories(id);
 
 
 --
--- Name: fk_rails_8aaf1a7eb8; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_89e9b0caf7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY workflow_accrual_comments
-    ADD CONSTRAINT fk_rails_8aaf1a7eb8 FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE ONLY job_fits_file_extension_batches
+    ADD CONSTRAINT fk_rails_89e9b0caf7 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -6104,11 +6173,11 @@ ALTER TABLE ONLY file_format_tests
 
 
 --
--- Name: fk_rails_a920535132; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_96a7cdf9b6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY job_fixity_checks
-    ADD CONSTRAINT fk_rails_a920535132 FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE ONLY job_fits_file_extension_batches
+    ADD CONSTRAINT fk_rails_96a7cdf9b6 FOREIGN KEY (file_extension_id) REFERENCES file_extensions(id);
 
 
 --
@@ -6128,43 +6197,11 @@ ALTER TABLE ONLY file_format_tests
 
 
 --
--- Name: fk_rails_cf395e5550; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflow_accrual_jobs
-    ADD CONSTRAINT fk_rails_cf395e5550 FOREIGN KEY (cfs_directory_id) REFERENCES cfs_directories(id);
-
-
---
--- Name: fk_rails_cfaf129e28; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY cfs_files
-    ADD CONSTRAINT fk_rails_cfaf129e28 FOREIGN KEY (content_type_id) REFERENCES content_types(id);
-
-
---
--- Name: fk_rails_d1c1c35cf5; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY file_format_profiles_content_types_joins
-    ADD CONSTRAINT fk_rails_d1c1c35cf5 FOREIGN KEY (file_format_profile_id) REFERENCES file_format_profiles(id);
-
-
---
 -- Name: fk_rails_d5e71e625f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY projects
     ADD CONSTRAINT fk_rails_d5e71e625f FOREIGN KEY (collection_id) REFERENCES collections(id);
-
-
---
--- Name: fk_rails_d7b90994ef; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY job_fits_content_type_batches
-    ADD CONSTRAINT fk_rails_d7b90994ef FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -6176,11 +6213,51 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 
 --
--- Name: fk_rails_f411565e2a; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_e77d7e4911; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY file_format_profiles_content_types_joins
-    ADD CONSTRAINT fk_rails_f411565e2a FOREIGN KEY (content_type_id) REFERENCES content_types(id);
+ALTER TABLE ONLY file_format_profiles_file_extensions_joins
+    ADD CONSTRAINT fk_rails_e77d7e4911 FOREIGN KEY (file_extension_id) REFERENCES file_extensions(id);
+
+
+--
+-- Name: fk_rails_e8d155be25; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY cfs_files
+    ADD CONSTRAINT fk_rails_e8d155be25 FOREIGN KEY (content_type_id) REFERENCES content_types(id);
+
+
+--
+-- Name: fk_rails_ed83b6871f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY cfs_files
+    ADD CONSTRAINT fk_rails_ed83b6871f FOREIGN KEY (file_extension_id) REFERENCES file_extensions(id);
+
+
+--
+-- Name: fk_rails_f0af9d0b1f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_accrual_jobs
+    ADD CONSTRAINT fk_rails_f0af9d0b1f FOREIGN KEY (amazon_backup_id) REFERENCES amazon_backups(id);
+
+
+--
+-- Name: fk_rails_f4de0ef7ac; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY job_fixity_checks
+    ADD CONSTRAINT fk_rails_f4de0ef7ac FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_f50a5e7028; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY job_fits_content_type_batches
+    ADD CONSTRAINT fk_rails_f50a5e7028 FOREIGN KEY (content_type_id) REFERENCES content_types(id);
 
 
 --
@@ -6203,7 +6280,7 @@ ALTER TABLE ONLY items
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO "$user", public;
 
 INSERT INTO schema_migrations (version) VALUES ('20120723183454');
 
@@ -6526,6 +6603,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150210220335');
 INSERT INTO schema_migrations (version) VALUES ('20150210220730');
 
 INSERT INTO schema_migrations (version) VALUES ('20150217225223');
+
+INSERT INTO schema_migrations (version) VALUES ('20150415180523');
 
 INSERT INTO schema_migrations (version) VALUES ('20150424212432');
 
