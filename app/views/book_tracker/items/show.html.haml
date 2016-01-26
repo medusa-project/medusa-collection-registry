@@ -29,7 +29,8 @@
             = link_to('Google Books', @item.google_url, target: '_blank')
       = link_to(book_tracker_item_path(@item, format: :json),
                     class: 'btn btn-default', target: '_blank') do
-        %span.glyphicon.glyphicon-new-window{ 'aria-hidden' => true } JSON
+        %span.glyphicon.glyphicon-new-window{ 'aria-hidden' => true }
+        JSON
 
 .row
   .col-sm-9

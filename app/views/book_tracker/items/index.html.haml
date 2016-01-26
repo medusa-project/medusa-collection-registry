@@ -5,7 +5,8 @@
   .col-sm-2{ 'style' => 'text-align:right' }
     = form_tag(params.merge(controller: 'items', action: 'index', format: 'json' )) do
       = button_tag('JSON', { class: 'btn btn-default', type: 'submit' }) do
-        %span.glyphicon.glyphicon-new-window{ 'aria-hidden' => true } JSON
+        %span.glyphicon.glyphicon-new-window{ 'aria-hidden' => true }
+        JSON
 
 .panel.panel-default.book-tracker-checks
   .panel-heading
