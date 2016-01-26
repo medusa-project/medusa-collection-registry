@@ -5,7 +5,8 @@
   .col-sm-2{ 'style' => 'text-align:right' }
     = form_tag(params.merge(controller: 'items', action: 'index', format: 'json' )) do
       = button_tag('JSON', { class: 'btn btn-default', type: 'submit' }) do
-        %span.glyphicon.glyphicon-new-window{ 'aria-hidden' => true } JSON
+        %span.glyphicon.glyphicon-new-window{ 'aria-hidden' => true }
+        JSON
 
 .panel.panel-default.book-tracker-checks
   .panel-heading
@@ -15,7 +16,7 @@
       %th Local Index
       %th HathiTrust
       %th Internet Archive
-      %th Google
+      %th Corporate Partners
     %tr
       %td= @dates[:local_storage]
       %td= @dates[:hathitrust]
@@ -44,7 +45,7 @@
               = label_tag('', class: 'checkbox-inline') do
                 = check_box_tag('in[]', 'gb', (params[:in] and params[:in].include?('gb')),
                 { id: 'in-gb', class: 'book-tracker-service-checkbox' })
-                Google
+                Corporate Partners
             %td
               %button.btn.btn-default.btn-xs.mbt-check-all
                 &check;
@@ -66,7 +67,7 @@
               = label_tag('', class: 'checkbox-inline') do
                 = check_box_tag('ni[]', 'gb', (params[:ni] and params[:ni].include?('gb')),
                 { id: 'ni-gb', class: 'book-tracker-service-checkbox' })
-                Google
+                Corporate Partners
             %td
               %button.btn.btn-default.btn-xs.mbt-check-all
                 &check;
