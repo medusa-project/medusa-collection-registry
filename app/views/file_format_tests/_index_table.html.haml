@@ -9,7 +9,7 @@
       %th Reasons
       %th Comments
   %tbody
-    - @file_format_tests.find_each do |file_format_test|
+    - @file_format_tests.find_each(batch_size: 50) do |file_format_test|
       - cache(file_format_test.cfs_file) do
         %tr
           %td= link_to file_format_test.cfs_file_name, file_format_test.cfs_file
