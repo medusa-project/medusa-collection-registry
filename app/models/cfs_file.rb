@@ -15,6 +15,7 @@ class CfsFile < ActiveRecord::Base
   belongs_to :file_extension
   belongs_to :parent, class_name: 'CfsDirectory', foreign_key: 'cfs_directory_id'
   has_one :file_format_test, dependent: :destroy
+  has_one :fits_result, dependent: :destroy, autosave: true
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
 
@@ -139,11 +140,11 @@ class CfsFile < ActiveRecord::Base
   end
 
   def ensure_fits_xml
-    self.update_fits_xml if self.fits_xml.blank?
+    self.update_fits_xml unless self.fits_result.present?
   end
 
   def ensure_fits_xml_for_large_file
-    self.delay(priority: 70).ensure_fits_xml if self.fits_xml.blank? and self.size.present? and self.size > 5.gigabytes
+    self.delay(priority: 70).ensure_fits_xml if self.fits_result.blank? and self.size.present? and self.size > 5.gigabytes
   end
 
   def update_fits_xml
@@ -221,6 +222,19 @@ class CfsFile < ActiveRecord::Base
     content_type_profiles = self.content_type.file_format_profiles.active.to_set
     file_extension_profiles.intersection(content_type_profiles).to_a.sample ||
         file_extension_profiles.union(content_type_profiles).to_a.sample
+  end
+
+  def fits_xml
+    self.fits_result.try(:xml)
+  end
+
+  def fits_xml=(value)
+    result = fits_result || build_fits_result
+    result.xml = value
+  end
+
+  def fits_xml_was
+    self.fits_result.try(:xml_was)
   end
 
   protected
