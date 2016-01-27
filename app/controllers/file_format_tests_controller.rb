@@ -47,8 +47,7 @@ class FileFormatTestsController < ApplicationController
   end
 
   def index
-    #@file_format_tests = FileFormatTest.order('date desc, id desc').includes(cfs_file: :content_type)
-    @file_format_tests = FileFormatTest.order('date desc, id desc')
+    @file_format_tests = FileFormatTest.order('date desc, id desc').includes(cfs_file: :content_type)
     respond_to do |format|
       format.html
       format.csv { send_data file_format_tests_to_csv(@file_format_tests), type: 'text/csv', filename: 'file_format_tests.csv' }
