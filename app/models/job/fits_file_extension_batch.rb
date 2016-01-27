@@ -26,7 +26,7 @@ class Job::FitsFileExtensionBatch < ActiveRecord::Base
         missing_files << cfs_file
         next
       end
-      if cfs_file.fits_xml.present?
+      if cfs_file.fits_result.present?
         already_done_files << cfs_file
         next
       end
