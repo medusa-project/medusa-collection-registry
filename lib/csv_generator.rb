@@ -10,7 +10,7 @@ module CsvGenerator
   def generate(collection, header_spec, csv_options = {})
     CSV.generate(csv_options) do |csv|
       csv << header_spec.values
-      collection.each do |record|
+      collection.find_each(batch_size: 100) do |record|
         csv << header_spec.keys.collect {|key| record.send(key) rescue ''}
       end
     end
