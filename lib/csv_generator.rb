@@ -11,6 +11,7 @@ module CsvGenerator
     CSV.generate(csv_options) do |csv|
       csv << header_spec.values
       collection.find_each(batch_size: 100) do |record|
+        record = record.decorate if record.respond_to?(:decorate)
         csv << header_spec.keys.collect {|key| record.send(key) rescue ''}
       end
     end
