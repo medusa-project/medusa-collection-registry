@@ -5,7 +5,6 @@ module Idb
       AmqpConnector.instance.with_queue(Config.instance.incoming_queue) do |queue|
         while true
           delivery_info, properties, raw_payload = queue.pop
-          Rails.logger.error("Handling IDB message #{raw_payload}")
           break unless raw_payload
           handle_message(JSON.parse(raw_payload))
         end
