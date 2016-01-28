@@ -14,6 +14,9 @@ class Idb::IngestJob < Job::Base
     create_cfs_file
     schedule_assessments
     send_return_message
+  rescue Exception => e
+    Rails.logger.error("Error ingesting IDB file. Job: #{self.id}\nError: #{e}")
+    raise
   end
 
   protected
