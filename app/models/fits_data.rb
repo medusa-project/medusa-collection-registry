@@ -6,6 +6,7 @@ class FitsData < ActiveRecord::Base
       file_format: 'fits/identification/identity/@format',
       file_format_version: 'fits/identification/identity/version',
       mime_type: 'fits/identification/identity/@mimetype',
+      pronom_id: 'fits/identification/identity/externalIdentifier[@type="puid"]',
       file_size: 'fits/fileinfo/size',
       creating_application: 'fits/fileinfo/creatingApplicationName',
       well_formed: 'fits/filestatus/well-formed',
