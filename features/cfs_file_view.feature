@@ -75,7 +75,7 @@ Feature: Viewing CFS file information and content
     And I click on 'Create FITS'
     Then the file group titled 'Dogs' should have a cfs file for the path 'grass.jpg' with fits attached
     And I should be viewing the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And the cfs file with name 'grass.jpg' should have a fits result matching:
+    And the cfs file with name 'grass.jpg' should have fits data matching:
       | file_format         | JPEG File Interchange Format |
       | file_format_version | 1.01                         |
 

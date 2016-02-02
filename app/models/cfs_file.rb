@@ -16,6 +16,7 @@ class CfsFile < ActiveRecord::Base
   belongs_to :parent, class_name: 'CfsDirectory', foreign_key: 'cfs_directory_id'
   has_one :file_format_test, dependent: :destroy
   has_one :fits_result, dependent: :destroy, autosave: true
+  has_one :fits_data, dependent: :destroy, autosave: true
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
 
