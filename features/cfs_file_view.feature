@@ -9,7 +9,7 @@ Feature: Viewing CFS file information and content
     And the cfs directory 'dogs/places' contains cfs fixture file 'grass.jpg'
     And the collection with title 'Animals' has child file groups with fields:
       | title | type              |
-      | Dogs | BitLevelFileGroup |
+      | Dogs  | BitLevelFileGroup |
     And the file group titled 'Dogs' has cfs root 'dogs/places' and delayed jobs are run
 
   Scenario: View cfs file
@@ -75,6 +75,9 @@ Feature: Viewing CFS file information and content
     And I click on 'Create FITS'
     Then the file group titled 'Dogs' should have a cfs file for the path 'grass.jpg' with fits attached
     And I should be viewing the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
+    And the cfs file with name 'grass.jpg' should have a fits result matching:
+      | file_format         | JPEG File Interchange Format |
+      | file_format_version | 1.01                         |
 
   Scenario: View FITS for file
     Given the cfs file at path 'grass.jpg' for the file group titled 'Dogs' has fits attached
