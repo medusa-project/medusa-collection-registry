@@ -76,8 +76,16 @@ Feature: Viewing CFS file information and content
     Then the file group titled 'Dogs' should have a cfs file for the path 'grass.jpg' with fits attached
     And I should be viewing the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
     And the cfs file with name 'grass.jpg' should have fits data matching:
-      | file_format         | JPEG File Interchange Format |
-      | file_format_version | 1.01                         |
+      | file_format              | JPEG File Interchange Format                              |
+      | file_format_version      | 1.01                                                      |
+      | file_size                | 169804.0                                                    |
+      | creating_application     | CREATOR: gd-jpeg v1.0 (using IJG JPEG v62), quality = 100 |
+      | well_formed              | true                                                      |
+      | is_valid                 | true                                                      |
+      | image_byte_order         | big endian                                                |
+      | image_compression_scheme | JPEG (old-style)                                          |
+      | image_color_space        | YCbCr                                                     |
+
 
   Scenario: View FITS for file
     Given the cfs file at path 'grass.jpg' for the file group titled 'Dogs' has fits attached

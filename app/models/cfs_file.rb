@@ -232,6 +232,8 @@ class CfsFile < ActiveRecord::Base
   def fits_xml=(value)
     result = fits_result || build_fits_result
     result.xml = value
+    self.fits_data ||= build_fits_data
+    self.fits_data.update_from(value)
   end
 
   def fits_xml_was

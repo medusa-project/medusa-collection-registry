@@ -1,6 +1,7 @@
 class CreateFitsData < ActiveRecord::Migration
   def change
     create_table :fits_data do |t|
+      t.references :cfs_file, null: false
       t.string :file_format, default: ''
       t.string :file_format_version, default: ''
       t.string :mime_type, default: ''
@@ -26,8 +27,10 @@ class CreateFitsData < ActiveRecord::Migration
       t.string :text_markup_basis, default: ''
       t.string :text_markup_basis_version, default: ''
       t.integer :video_bit_depth
+      t.string :video_compressor, default: ''
       t.string :video_compression_scheme, default: ''
       t.integer :video_sample_rate
     end
+    add_index :fits_data, :cfs_file_id, unique: true
   end
 end
