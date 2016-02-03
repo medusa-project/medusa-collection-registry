@@ -61,4 +61,12 @@ class FitsData < ActiveRecord::Base
     end
   end
 
+  def safe_parse_datetime(datetime_string, toolname)
+    parse_datetime(datetime_string, toolname)
+  rescue Exception => e
+    Rails.logger.error e.to_s
+    GenericErrorMailer.error("#{e}\nFits data id:#{self.id}\nCfs File id:#{self.cfs_file.id}").deliver_now
+    return nil
+  end
+
 end

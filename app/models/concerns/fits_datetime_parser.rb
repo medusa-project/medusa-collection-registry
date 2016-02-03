@@ -18,14 +18,6 @@ module FitsDatetimeParser
     end
   end
 
-  def safe_parse_datetime(datetime_string, toolname)
-    parse_datetime(datetime_string, toolname)
-  rescue Exception => e
-    Rails.logger.error e.to_s
-    GenericErrorMailer.error(e.to_s).deliver_now
-    return nil
-  end
-
   def parse_datetime_exiftool(datetime_string)
     datetime_string.squish!
     case datetime_string
