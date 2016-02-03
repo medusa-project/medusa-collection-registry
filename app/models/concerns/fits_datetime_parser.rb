@@ -19,6 +19,7 @@ module FitsDatetimeParser
   end
 
   def parse_datetime_exiftool(datetime_string)
+    datetime_string.squish!
     case datetime_string
       when /^-+$/, '0', /CPY/
         nil
@@ -26,8 +27,16 @@ module FitsDatetimeParser
         Time.strptime(datetime_string, '%m/%d/%y')
       when %r[^\d{1,2}/\d{1,2}/\d{4}$]
         Time.strptime(datetime_string, '%m/%d/%Y')
-      when %r[^\d{1,2}/\d{1,2}/\d{4}(\s+)\d{1,2}:\d{2}:\d{2}$]
-        Time.strptime(datetime_string, "%m/%d/%Y#{$1}%H:%M:%S")
+      when %r[^\d{1,2}/\d{1,2}/\d{2} \d{1,2}:\d{2}$]
+        Time.strptime(datetime_string, "%m/%d/%y %H:%M")
+      when %r[^\d{1,2}/\d{1,2}/\d{4} \d{1,2}:\d{2} (A|P)M$]
+        Time.strptime(datetime_string, "%m/%d/%Y %H:%M %p")
+      when %r[^\d{1,2}/\d{1,2}/\d{4} \d{1,2}:\d{2}:\d{2}$]
+        Time.strptime(datetime_string, "%m/%d/%Y %H:%M:%S")
+      when %r[^\d{1,2}/\d{1,2}/\d{2} \d{1,2}:\d{2}:\d{2}$]
+        Time.strptime(datetime_string, "%m/%d/%y %H:%M:%S")
+      when %r[^\d{1,2}:\d{2}:\d{2} \d{1,2}/\d{1,2}/\d{2}$]
+        Time.strptime(datetime_string, "%H:%M:%S %m/%d/%Y")
       when %r[^\d{1,2}/\d{1,2}/\d{2} \d{1,2}:\d{2} (A|P)M$]
         Time.strptime(datetime_string, '%m/%d/%y %I:%M %p')
       when %r[^\d{1,2}/\d{1,2}/\d{2}, \d{1,2}:\d{2} (A|P)M$]
@@ -36,6 +45,8 @@ module FitsDatetimeParser
         Time.strptime(datetime_string, '%Y:%m:%d %H:%M:%S.%L%:z')
       when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}$]
         Time.strptime(datetime_string, '%Y:%m:%d %H:%M:%S%:z')
+      when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}(\+|-)\d{2}:\d{2}$]
+        Time.strptime(datetime_string, '%Y:%m:%d %H:%M%:z')
       when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}Z?$]
         Time.strptime(datetime_string, "%Y:%m:%d %H:%M:%S")
       when %r[^D:(\d+)Z?]
@@ -73,6 +84,8 @@ module FitsDatetimeParser
         Time.parse(datetime_string)
       when /^\d{4}:/
         Time.strptime(datetime_string, '%Y:%m:%d %H:%M:%S')
+      when /^[[:alpha:]]+ [[:alpha:]]+ \d{1,2} \d{1,2}:\d{2}:\d{2} [[:alpha:]]+ \d{4}$/
+        Time.strptime(datetime_string, '%a %b %d %H:%M:%S %Z %Y')
       else
         raise RuntimeError
     end
