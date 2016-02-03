@@ -34,7 +34,7 @@ class FitsData < ActiveRecord::Base
 
   DATE_FIELDS = {
       last_modified_date: 'fits/fileinfo/lastmodified',
-      creation_date: 'fits/created'
+      creation_date: 'fits/fileinfo/created'
   }
 
   ALL_FIELDS = SIMPLE_STRING_FIELDS.keys + DATE_FIELDS.keys

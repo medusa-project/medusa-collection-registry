@@ -21,7 +21,7 @@ module FitsDatetimeParser
   def safe_parse_datetime(datetime_string, toolname)
     parse_datetime(datetime_string, toolname)
   rescue Exception => e
-    Rail.logger.error e.to_s
+    Rails.logger.error e.to_s
     GenericErrorMailer.error(e.to_s).deliver_now
     return nil
   end
