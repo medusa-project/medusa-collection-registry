@@ -25,5 +25,5 @@ function add_reason(id, label) {
 $(function () {
   update_file_format_reasons();
   $("input.radio_buttons").change(update_file_format_reasons);
-  initialize_data_table("table#file_format_tests", {});
+//  initialize_data_table("table#file_format_tests", {});
 });

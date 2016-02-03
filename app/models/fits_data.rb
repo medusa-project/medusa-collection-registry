@@ -60,6 +60,7 @@ class FitsData < ActiveRecord::Base
 
   #TODO - parse the datetime_string in the manner appropriate to the specified tool
   def parse_datetime(datetime_string, toolname)
+    return Time.now
     case toolname
       when 'ack'
       else

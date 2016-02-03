@@ -47,10 +47,14 @@ class FileFormatTestsController < ApplicationController
   end
 
   def index
-    @file_format_tests = FileFormatTest.order('date desc, id desc').includes(cfs_file: :content_type)
     respond_to do |format|
-      format.html
-      format.csv { send_data file_format_tests_to_csv(@file_format_tests), type: 'text/csv', filename: 'file_format_tests.csv' }
+      format.html do
+        @file_format_tests = FileFormatTest.order('date desc, id desc').page(params[:page]).per_page(params[:per_page] || 50)
+      end
+      format.csv do
+        @file_format_tests = FileFormatTest.order('date desc, id desc').includes(cfs_file: :content_type)
+        send_data file_format_tests_to_csv(@file_format_tests), type: 'text/csv', filename: 'file_format_tests.csv'
+      end
     end
   end
 
