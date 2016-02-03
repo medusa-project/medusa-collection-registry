@@ -22,6 +22,9 @@ class CfsFile < ActiveRecord::Base
 
   delegate :repository, :collection, :file_group, :public?, to: :cfs_directory
   delegate :name, to: :content_type, prefix: true, allow_nil: true
+  FitsData::ALL_FIELDS.each do |field|
+    delegate field, to: :fits_data, prefix: true, allow_nil: true
+  end
 
   validates_uniqueness_of :name, scope: :cfs_directory_id, allow_blank: false
 
