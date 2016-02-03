@@ -225,6 +225,11 @@ class CfsFile < ActiveRecord::Base
         file_extension_profiles.union(content_type_profiles).to_a.sample
   end
 
+  def ensure_fits_data
+    self.fits_data ||= build_fits_data
+    self.fits_data.update_from(self.fits_xml) if self.fits_xml.present?
+  end
+
   def fits_xml
     self.fits_result.try(:xml)
   end
@@ -232,8 +237,7 @@ class CfsFile < ActiveRecord::Base
   def fits_xml=(value)
     result = fits_result || build_fits_result
     result.xml = value
-    self.fits_data ||= build_fits_data
-    self.fits_data.update_from(value)
+    ensure_fits_data
   end
 
   def fits_xml_was

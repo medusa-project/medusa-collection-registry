@@ -1,4 +1,5 @@
 class FitsData < ActiveRecord::Base
+  include FitsDatetimeParser
 
   belongs_to :cfs_file
 
@@ -58,14 +59,5 @@ class FitsData < ActiveRecord::Base
     end
   end
 
-  #TODO - parse the datetime_string in the manner appropriate to the specified tool
-  def parse_datetime(datetime_string, toolname)
-    return Time.now
-    case toolname
-      when 'ack'
-      else
-        raise RuntimeError, "Unrecognized FITS tool: #{toolname} reporting datetime #{datetime_string}"
-    end
-  end
 
 end
