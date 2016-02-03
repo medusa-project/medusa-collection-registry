@@ -18,6 +18,14 @@ module FitsDatetimeParser
     end
   end
 
+  def safe_parse_datetime(datetime_string, toolname)
+    parse_datetime(datetime_string, toolname)
+  rescue Exception => e
+    Rail.logger.error e.to_s
+    GenericErrorMailer.error(e.to_s).deliver_now
+    return nil
+  end
+
   def parse_datetime_exiftool(datetime_string)
     datetime_string.squish!
     case datetime_string
@@ -72,7 +80,6 @@ module FitsDatetimeParser
     end
   rescue Exception => e
     message = "Unable to parse Exiftool date time: #{datetime_string}"
-    Rails.logger.error message
     raise RuntimeError, message
   end
 
@@ -80,7 +87,6 @@ module FitsDatetimeParser
     Time.parse(datetime_string)
   rescue Exception => e
     message = "Unable to parse Tika date time: #{datetime_string}"
-    Rails.logger.error message
     raise RuntimeError, message
   end
 
@@ -97,7 +103,6 @@ module FitsDatetimeParser
     end
   rescue Exception => e
     message = "Unable to parse NLNZ date time: #{datetime_string}"
-    Rails.logger.error message
     raise RuntimeError, message
   end
 

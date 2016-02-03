@@ -54,7 +54,7 @@ class FitsData < ActiveRecord::Base
   def update_date_fields(doc)
     DATE_FIELDS.each do |field, xpath|
       node = doc.at_xpath(xpath)
-      value = node.present? ? parse_datetime(node.text, node['toolname']) : nil
+      value = node.present? ? safe_parse_datetime(node.text, node['toolname']) : nil
       send("#{field}=", value)
     end
   end
