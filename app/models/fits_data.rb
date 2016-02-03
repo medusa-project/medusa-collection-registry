@@ -37,6 +37,8 @@ class FitsData < ActiveRecord::Base
       creation_date: 'fits/created'
   }
 
+  ALL_FIELDS = SIMPLE_STRING_FIELDS.keys + DATE_FIELDS.keys
+
   def update_from(xml)
     doc = Nokogiri::XML.parse(xml).remove_namespaces!
     update_simple_string_fields(doc)
@@ -58,6 +60,5 @@ class FitsData < ActiveRecord::Base
       send("#{field}=", value)
     end
   end
-
 
 end
