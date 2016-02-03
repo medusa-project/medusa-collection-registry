@@ -45,10 +45,14 @@ module FitsDatetimeParser
         Time.strptime(datetime_string, '%Y:%m:%d %H:%M:%S.%L%:z')
       when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}$]
         Time.strptime(datetime_string, '%Y:%m:%d %H:%M:%S%:z')
+      when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}\.\d+$]
+        Time.strptime(datetime_string, '%Y:%m:%d %H:%M:%S.%L')
       when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}(\+|-)\d{2}:\d{2}$]
         Time.strptime(datetime_string, '%Y:%m:%d %H:%M%:z')
       when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}Z?$]
         Time.strptime(datetime_string, "%Y:%m:%d %H:%M:%S")
+      when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}Z?$]
+        Time.strptime(datetime_string, "%Y:%m:%d %H:%M")
       when %r[^D:(\d+)Z?]
         Time.strptime($1, '%Y%m%d%H%M%S')
       when %r[^D:(\d+)(\+|-)(\d+)'(\d+)'$]
@@ -61,6 +65,8 @@ module FitsDatetimeParser
         Time.strptime(datetime_string, '%a %b %d %H:%M:%S %Y')
       when %r<^\d{1,2}:\d{2} (A|P)M [[:alpha:]]+, [[:alpha:]]+ \d{1,2}, \d{4}>
         Time.strptime(datetime_string, '%H:%M %p %A, %B %d, %Y')
+      when %r|^\d{2} [[:alpha:]]+ \d{4} \d{1,2}:\d{2}|
+        Time.strptime(datetime_string, '%d %b %Y %H:%M')
       else
         raise RuntimeError
     end
