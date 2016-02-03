@@ -31,9 +31,15 @@ class FitsData < ActiveRecord::Base
       video_sample_rate: 'fits/metadata/video/sampleRate'
   }
 
+  DATE_FIELDS = {
+      last_modified_date: 'fits/fileinfo/lastmodified',
+      creation_date: 'fits/created'
+  }
+
   def update_from(xml)
     doc = Nokogiri::XML.parse(xml).remove_namespaces!
     update_simple_string_fields(doc)
+    update_date_fields(doc)
   end
 
   def update_simple_string_fields(doc)
@@ -41,6 +47,23 @@ class FitsData < ActiveRecord::Base
       node = doc.at_xpath(xpath)
       value = node.present? ? node.text : nil
       send("#{field}=", value)
+    end
+  end
+
+  def update_date_fields(doc)
+    DATE_FIELDS.each do |field, xpath|
+      node = doc.at_xpath(xpath)
+      value = node.present? ? parse_datetime(node.text, node['toolname']) : nil
+      send("#{field}=", value)
+    end
+  end
+
+  #TODO - parse the datetime_string in the manner appropriate to the specified tool
+  def parse_datetime(datetime_string, toolname)
+    case toolname
+      when 'ack'
+      else
+        raise RuntimeError, "Unrecognized FITS tool: #{toolname} reporting datetime #{datetime_string}"
     end
   end
 
