@@ -175,7 +175,7 @@ class CfsFilesController < ApplicationController
     send_data fix_json_id(json, @file), type: response_type, disposition: 'inline'
   end
 
-  #The IIIF server returns @id in the JSON with _it's_ url information, but for seadragon to work properly
+  #The IIIF server returns @id in the JSON with _its_ url information, but for seadragon to work properly
   #proxying through this app we need it to refer back to our medusa URL. This fixes that.
   def fix_json_id(json, file)
     parsed_json = JSON.parse(json)
