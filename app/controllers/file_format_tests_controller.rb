@@ -52,7 +52,8 @@ class FileFormatTestsController < ApplicationController
         @file_format_tests = FileFormatTest.order('date desc, id desc').page(params[:page]).per_page(params[:per_page] || 50)
       end
       format.csv do
-        @file_format_tests = FileFormatTest.order('date desc, id desc').includes(cfs_file: :content_type)
+        @file_format_tests = FileFormatTest.order('date desc, id desc').
+            includes(cfs_file: [:content_type, :fits_data, cfs_directory: {root_cfs_directory: {parent_file_group: {collection: :repository}}}])
         send_data file_format_tests_to_csv(@file_format_tests), type: 'text/csv', filename: 'file_format_tests.csv'
       end
     end
