@@ -10,4 +10,9 @@ class FileFormatTestDecorator < BaseDecorator
     delegate :"fits_data_#{field}", to: :cfs_file
   end
 
+  def medusa_url
+    "#{MedusaCollectionRegistry::Application.medusa_config['server']}#{h.cfs_file_path(cfs_file)}"
+  end
+
+
 end
