@@ -25,7 +25,7 @@ class FileFormatTest < ActiveRecord::Base
   end
 
   def reasons_string
-    file_format_test_reasons.pluck(:label).join(', ')
+    file_format_test_reasons.collect(&:label).join(', ')
   end
 
 end
