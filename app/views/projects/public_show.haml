@@ -1,0 +1,17 @@
+= render layout: 'layout_single_public' do
+
+  #metadata.row
+    .col-md-4
+      .well
+        = show_field @project, :external_id, 'External id'
+        = show_field @project, :manager_email
+        = show_field @project, :owner_email
+        = show_field @project, :start_date
+        = show_field @project, :status
+    .col-md-8
+      %h4 Summary
+      .well
+        %div.col-md-offset-1= @project.summary.html_safe
+      %h4 Specifications
+      .well
+        %div.col-md-offset-1= @project.specifications.html_safe

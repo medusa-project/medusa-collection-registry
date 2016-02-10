@@ -69,6 +69,7 @@ MedusaCollectionRegistry::Application.routes.draw do
     get :start_items_upload, on: :member
     post :upload_items, on: :member
     get :items, on: :member
+    get :public_show, on: :member
   end
   resources :items do
     get :barcode_lookup, on: :collection

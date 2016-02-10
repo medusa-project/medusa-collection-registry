@@ -9,7 +9,8 @@
       %th Owner
       %th Start Date
       %th Status
-      %th
+      - if current_user.present?
+        %th
   %tbody
     - @projects.each do |project|
       - cache(project) do
@@ -22,5 +23,6 @@
           %td #{project.owner_email}
           %td #{project.start_date}
           %td #{project.status}
-          %td
-            = small_edit_button(project)
+          - if current_user.present?
+            %td
+              = small_edit_button(project)

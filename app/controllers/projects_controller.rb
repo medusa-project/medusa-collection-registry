@@ -1,7 +1,8 @@
 class ProjectsController < ApplicationController
 
-  before_action :require_logged_in
-  before_action :find_project, only: [:show, :edit, :update, :destroy, :attachments, :assign_batch, :start_items_upload, :upload_items, :items]
+  before_action :require_logged_in, except: [:index, :show, :public_show]
+  before_action :find_project, only: [:show, :public_show, :edit, :update, :destroy, :attachments,
+                                      :assign_batch, :start_items_upload, :upload_items, :items]
   include ModelsToCsv
 
   autocomplete :user, :email
@@ -62,6 +63,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    redirect_to public_show_project_path(@project) and return unless current_user
     @items = @project.items
     @batch = params[:batch]
     @items = @items.where(batch: @batch) if @batch.present?
@@ -70,6 +72,10 @@ class ProjectsController < ApplicationController
       format.html
       format.csv { send_data items_to_csv(@items), type: 'text/csv', filename: 'items.csv' }
     end
+  end
+
+  def public_show
+
   end
 
   def items
