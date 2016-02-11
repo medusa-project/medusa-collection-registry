@@ -4,7 +4,8 @@ module BookTracker
 
     CSV_HEADER = ['Bib ID', 'Medusa ID', 'OCLC Number', 'Object ID', 'Title',
                   'Author', 'Volume', 'Date', 'IA Identifier',
-                  'Exists in HathiTrust', 'Exists in IA', 'Exists in Google']
+                  'HathiTrust Handle', 'Exists in HathiTrust', 'Exists in IA',
+                  'Exists in Google']
 
     # Used by self.insert_or_update!
     INSERTED = 0
@@ -122,20 +123,23 @@ module BookTracker
     end
 
     ##
-    # Returns the expected HathiTrust handle of the item. The handle should
-    # work if self.exists_in_hathitrust is true; otherwise it will be broken.
-    #
-    # @return string
+    # @return [String] If self.exists_in_hathitrust is true, returns the
+    # expected HathiTrust handle of the item. Otherwise, returns an empty
+    # string.
     #
     def hathitrust_handle
-      case self.service
-        when Service::INTERNET_ARCHIVE
-          "http://hdl.handle.net/2027/uiuo.#{self.obj_id}"
-        when Service::GOOGLE
-          "http://hdl.handle.net/2027/uiug.#{self.obj_id}"
-        else # digitized locally or by vendors
-          "http://hdl.handle.net/2027/uiuc.#{self.obj_id}"
+      handle = ''
+      if self.exists_in_hathitrust
+        case self.service
+          when Service::INTERNET_ARCHIVE
+            handle = "http://hdl.handle.net/2027/uiuo.#{self.obj_id}"
+          when Service::GOOGLE
+            handle = "http://hdl.handle.net/2027/uiug.#{self.obj_id}"
+          else # digitized locally or by vendors
+            handle = "http://hdl.handle.net/2027/uiuc.#{self.obj_id}"
+        end
       end
+      handle
     end
 
     ##
@@ -160,12 +164,13 @@ module BookTracker
     end
 
     def to_csv(options = {})
-      # this must be kept in sync with CSV_HEADER
-      columns = %w(bib_id id oclc_number obj_id title author volume date
-          ia_identifier exists_in_hathitrust exists_in_internet_archive
-          exists_in_google)
       CSV.generate(options) do |csv|
-        csv << self.attributes.values_at(*columns)
+        # columns must be kept in sync with CSV_HEADER
+        csv << [ self.bib_id, self.id, self.oclc_number, self.obj_id,
+                 self.title, self.author, self.volume, self.date,
+                 self.ia_identifier, self.hathitrust_handle,
+                 self.exists_in_hathitrust, self.exists_in_internet_archive,
+                 self.exists_in_google]
       end
     end
 
