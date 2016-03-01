@@ -18,7 +18,8 @@ class ItemDecorator < BaseDecorator
 
   #TODO: create the checkbox - disable unless user can actually use
   def assign_checkbox(project)
-    h.check_box_tag('', self.id, false, name: 'assign_batch[assign][]', id: "assign_batch_assign_#{self.id}", disabled: !h.safe_can?(:update, project))
+    #h.check_box_tag('', self.id, false, name: 'assign_batch[assign][]', id: "assign_batch_assign_#{self.id}", disabled: !h.safe_can?(:update, project))
+    h.check_box_tag('', self.id, false, name: 'assign_batch[assign][]', id: "assign_batch_assign_#{self.id}", disabled: false)
   end
 
   #TODO: create the buttons

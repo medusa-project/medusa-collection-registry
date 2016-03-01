@@ -49,7 +49,7 @@ class ProjectsController < ApplicationController
   end
 
   def assign_batch
-    authorize! :update, @project
+    #authorize! :update, @project
     batch = params[:assign_batch][:batch].strip
     @project.items.where(id: params[:assign_batch][:assign]).find_each do |item|
       item.batch = batch

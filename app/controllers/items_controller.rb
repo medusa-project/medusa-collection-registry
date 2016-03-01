@@ -8,11 +8,11 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    authorize! :edit_item, @project
+    #authorize! :edit_item, @project
   end
 
   def update
-    authorize! :edit_item, @project
+    #authorize! :edit_item, @project
     if @item.update_attributes(allowed_params)
       redirect_to @project
     else
