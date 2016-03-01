@@ -1,5 +1,5 @@
 class FileFormatProfilesController < ApplicationController
-  before_action :require_logged_in, except: [:index]
+  before_action :require_logged_in, except: [:index, :show]
   before_action :find_file_format_profile, only: [:show, :edit, :update, :destroy, :clone]
 
   def index
@@ -7,7 +7,7 @@ class FileFormatProfilesController < ApplicationController
   end
 
   def show
-    authorize! :read, @file_format_profile
+
   end
 
   def edit
