@@ -44,13 +44,13 @@ Feature: Repository description
     When I go to the repository index page
     Then I should be on the repository index page
 
-  Scenario: View index as a visitor
-    Given I am logged in as a visitor
+  Scenario: View index as a user
+    Given I am logged in as a user
     When I go to the repository index page
     Then I should be on the repository index page
 
   Scenario: Get CSV list of all repositories
-    Given I am logged in as a visitor
+    Given I am logged in as a user
     When I go to the repository index page
     And I click on 'CSV'
     Then I should receive a file 'repositories.csv' of type 'text/csv' matching:
@@ -67,8 +67,8 @@ Feature: Repository description
     When I view the repository with title 'Sample 1'
     Then I should be on the view page for the repository with title 'Sample 1'
 
-  Scenario: View repository as a visitor
-    Given I am logged in as a visitor
+  Scenario: View repository as a user
+    Given I am logged in as a user
     When I view the repository with title 'Sample 1'
     Then I should be on the view page for the repository with title 'Sample 1'
 

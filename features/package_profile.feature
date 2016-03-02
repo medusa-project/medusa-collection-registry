@@ -23,8 +23,8 @@ Feature: Package Profiles
     When I view the package profile with name 'book'
     Then I should be on the view page for the package profile with name 'book'
 
-  Scenario: View package profile as visitor
-    Given I am logged in as a visitor
+  Scenario: View package profile as user
+    Given I am logged in as a user
     When I view the package profile with name 'book'
     Then I should be on the view page for the package profile with name 'book'
 
@@ -40,8 +40,8 @@ Feature: Package Profiles
     When I go to the package profile index page
     Then I should be on the package profile index page
 
-  Scenario: View package profile index as a visitor
-    Given I am logged in as a visitor
+  Scenario: View package profile index as a user
+    Given I am logged in as a user
     When I go to the package profile index page
     Then I should be on the package profile index page
 
@@ -142,7 +142,7 @@ Feature: Package Profiles
     And I should not see 'Bats'
 
   Scenario: Navigate from index to collections for given package profile
-    Given I am logged in as a visitor
+    Given I am logged in as a user
     When the collection titled 'Dogs' has a file group with package profile named 'book'
     And the collection titled 'Cats' has a file group with package profile named 'book'
     And the collection titled 'Cats' has a file group with package profile named 'image'

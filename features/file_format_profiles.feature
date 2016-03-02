@@ -129,10 +129,10 @@ Feature: File Format Profiles
   Scenario: Enforce permissions
     Then deny object permission on the file format profile with name 'images' to users for action with redirection:
       | public user      | view, edit, update, delete | authentication |
-      | visitor, manager | view, edit, update, delete | unauthorized   |
+      | user, manager | view, edit, update, delete | unauthorized   |
     And deny permission on the file format profile collection to users for action with redirection:
       | public user      | new, create | authentication |
-      | visitor, manager | new, create | unauthorized   |
+      | user, manager | new, create | unauthorized   |
 
   Scenario: Clone file format profile from index
     When I go to the file format profiles index page

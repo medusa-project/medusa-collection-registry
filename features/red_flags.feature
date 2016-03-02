@@ -84,8 +84,8 @@ Feature: Red flags
     Then I should see all of:
       | Size red flag | The size is off | medium | flagged |
 
-  Scenario: View a red flag as visitor
-    Given I am logged in as a visitor
+  Scenario: View a red flag as user
+    Given I am logged in as a user
     And the file group titled 'pictures' has a cfs file for the path 'grass.jpg' with red flags with fields:
       | message       | notes           |
       | Size red flag | The size is off |

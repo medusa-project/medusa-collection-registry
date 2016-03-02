@@ -139,16 +139,16 @@ Feature: Fixity Checking
     And I should see all of:
       | Fixity result | FAILED |
 
-  Scenario: Visitors and public cannot order fixity checks. Public user cannot view events for cfs directory and cfs file.
+  Scenario: users and public cannot order fixity checks. Public user cannot view events for cfs directory and cfs file.
     Then deny object permission on the file group with title 'Toys' to users for action with redirection:
       | public user | fixity_check(post) | authentication |
-      | visitor     | fixity_check(post) | unauthorized   |
+      | user     | fixity_check(post) | unauthorized   |
     Then deny object permission on the cfs directory with path 'yorkies' to users for action with redirection:
       | public user | fixity_check(post), events | authentication |
-      | visitor     | fixity_check(post)         | unauthorized   |
+      | user     | fixity_check(post)         | unauthorized   |
     Then deny object permission on the cfs file with name 'something.txt' to users for action with redirection:
       | public user | fixity_check(post), events | authentication |
-      | visitor     | fixity_check(post)         | unauthorized   |
+      | user     | fixity_check(post)         | unauthorized   |
 
   Scenario: Failed fixity events are visible all the way up to the repository level
     Given the cfs file with name 'something.txt' has events with fields:

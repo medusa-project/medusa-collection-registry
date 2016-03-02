@@ -24,6 +24,6 @@ Feature: Automatic creation of bit level file group associated with external fil
     Then I should not see 'Create Bit Level File Group'
 
   Scenario: There is not a button if I am not a manager of the external file group
-    Given I am logged in as a visitor
+    Given I am logged in as a user
     When I view the external file group with title 'Dogs'
     Then I should not see 'Create Bit Level File Group'

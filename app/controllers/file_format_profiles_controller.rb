@@ -1,5 +1,5 @@
 class FileFormatProfilesController < ApplicationController
-  before_action :require_logged_in, except: [:index]
+  before_action :require_medusa_user, except: [:index]
   before_action :find_file_format_profile, only: [:show, :edit, :update, :destroy, :clone]
 
   def index

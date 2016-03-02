@@ -14,8 +14,8 @@ Feature: Collection attachment maintenance
     And I attach fixture file 'grass.jpg' to 'Attachment'
     And I click on 'Create'
 
-  Scenario: Download attachment from collection as a visitor
-    Given I relogin as a visitor
+  Scenario: Download attachment from collection as a user
+    Given I relogin as a user
     When I view the collection with title 'Dogs'
     And I click on 'Attachments'
     And I click on 'Download'
@@ -42,8 +42,8 @@ Feature: Collection attachment maintenance
     And I should not see 'What the attachment is.'
     And the collection with title 'Dogs' should have 1 attachment
     
-  Scenario: View attachment details as a visitor
-    Given I relogin as a visitor
+  Scenario: View attachment details as a user
+    Given I relogin as a user
     When I view the collection with title 'Dogs'
     And I click on 'Attachments'
     And I click on 'grass.jpg'

@@ -6,8 +6,8 @@ Feature: Authorization
   Background:
     Given the collection with title 'Dogs' exists
 
-  Scenario: A visitor should not be able to view a restricted page
-    Given I am logged in as a visitor
+  Scenario: A user should not be able to view a restricted page
+    Given I am logged in as a user
     When I edit the collection with title 'Dogs'
     Then I should be redirected to the unauthorized page
     And I should see 'You are not authorized to view the requested page.'

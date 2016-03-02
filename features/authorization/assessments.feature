@@ -14,15 +14,15 @@ Feature: Assessment authorization
   Scenario: Enforce permissions
     Then deny object permission on the assessment with name 'Once over' to users for action with redirection:
       | public user | view, delete, edit, update | authentication |
-      | visitor     | delete, edit, update        | unauthorized   |
+      | user     | delete, edit, update        | unauthorized   |
       | manager     | delete                     | unauthorized   |
     And deny permission on the assessment collection to users for action with redirection:
       | public user | new, create | authentication |
 
-  Scenario: Visitor tries to start assessment
-    Then a visitor is unauthorized to start an assessment for the collection titled 'Dogs'
+  Scenario: user tries to start assessment
+    Then a user is unauthorized to start an assessment for the collection titled 'Dogs'
 
-  Scenario: Visitor tries to create assessment
-    Then a visitor is unauthorized to create an assessment for the collection titled 'Dogs'
+  Scenario: user tries to create assessment
+    Then a user is unauthorized to create an assessment for the collection titled 'Dogs'
 
 

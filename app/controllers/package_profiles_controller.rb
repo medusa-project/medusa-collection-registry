@@ -1,6 +1,6 @@
 class PackageProfilesController < ApplicationController
 
-  before_action :require_logged_in, except: [:index]
+  before_action :require_medusa_user, except: [:index]
   before_action :find_package_profile, only: [:show, :edit, :update, :destroy, :collections]
 
   def show

@@ -1,6 +1,6 @@
 class AttachmentsController < ApplicationController
 
-  before_action :require_logged_in
+  before_action :require_medusa_user
   before_action :find_attachment_and_attachable, only: [:destroy, :show, :edit, :update, :download]
 
   def destroy

@@ -1,5 +1,5 @@
 class SearchesController < ApplicationController
-  before_action :require_logged_in
+  before_action :require_medusa_user
 
   def search
     @search_string = params[:search][:query] rescue ''

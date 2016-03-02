@@ -4,8 +4,8 @@ class CfsFilesController < ApplicationController
   PUBLIC_ACTIONS = [:public, :public_view, :public_download, :public_preview_image, :public_preview_iiif_image]
 
   before_action :public_view_enabled?, only: PUBLIC_ACTIONS
-  before_action :require_logged_in, except: [:show] + PUBLIC_ACTIONS
-  before_action :require_logged_in_or_basic_auth, only: [:show]
+  before_action :require_medusa_user, except: [:show] + PUBLIC_ACTIONS
+  before_action :require_medusa_user_or_basic_auth, only: [:show]
   before_action :find_file, only: [:show, :create_fits_xml, :fits, :download, :view,
                                    :preview_image, :preview_video, :fixity_check, :events, :preview_iiif_image] + PUBLIC_ACTIONS
   before_action :require_public_file, only: PUBLIC_ACTIONS

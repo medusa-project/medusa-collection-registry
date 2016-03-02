@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  helper_method :current_user, :logged_in?, :public_path, :public_view_on?
+  helper_method :current_user, :medusa_user?, :public_path, :public_view_on?
 
   protected
 
@@ -22,22 +22,45 @@ class ApplicationController < ActionController::Base
     current_user.uid
   end
 
+  def medusa_user?
+    logged_in? and self.class.is_ad_user?(current_user)
+  end
+
+  def require_medusa_user
+    unless medusa_user?
+      redirect_non_medusa_user
+    end
+  end
+
+  def require_medusa_user_or_basic_auth
+    unless medusa_user? or basic_auth?
+      redirect_non_medusa_user
+    end
+  end
+
+  def redirect_non_medusa_user
+    if current_user
+      redirect_to unauthorized_net_id_url(net_id: current_user.net_id)
+    else
+      redirect_non_logged_in_user
+    end
+  end
+
+  def redirect_non_logged_in_user
+    session[:login_return_uri] = request.env['REQUEST_URI']
+    redirect_to(login_path)
+  end
+
   def logged_in?
     current_user.present?
   end
 
   def require_logged_in
-    unless logged_in?
-      session[:login_return_uri] = request.env['REQUEST_URI']
-      redirect_to(login_path)
-    end
+    redirect_non_logged_in_user unless logged_in?
   end
 
   def require_logged_in_or_basic_auth
-    unless logged_in? or basic_auth?
-      session[:login_return_uri] = request.env['REQUEST_URI']
-      redirect_to(login_path)
-    end
+    redirect_non_logged_in_user unless logged_in? or basic_auth?
   end
 
   def basic_auth?
@@ -76,8 +99,8 @@ class ApplicationController < ActionController::Base
       return false if group.blank?
       return true if net_id.match(/admin/) and (group == admin_ad_group or group == user_ad_group)
       return true if net_id.match(/manager/) and (group == user_ad_group or group.match(/manager/))
-      return true if net_id.match(/visitor/) and group == user_ad_group
-      return false if net_id.match(/visitor/) or net_id.match(/outsider/)
+      return true if net_id.match(/user/) and group == user_ad_group
+      return false if net_id.match(/user/) or net_id.match(/outsider/) or net_id.match(/visitor/)
       return net_id.split('@').first.downcase.match(group.downcase.gsub(' ', '-'))
     end
   end

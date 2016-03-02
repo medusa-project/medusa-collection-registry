@@ -28,7 +28,7 @@ Feature: Institution description
   Scenario: As a non-medusa admin I cannot do certain actions on institutions
     Then deny permission on the institution collection to users for action with redirection:
       | public user      | view_index, new, create | authentication |
-      | visitor, manager | view_index, new, create | unauthorized   |
+      | user, manager | view_index, new, create | unauthorized   |
 
   Scenario: As a medusa admin I can see an individual institution
     Given I am logged in as a medusa admin
@@ -60,4 +60,4 @@ Feature: Institution description
   Scenario: As a non medusa admin I cannot do certain actions an individual institution
     Then deny object permission on the institution with name 'UIUC' to users for action with redirection:
       | public user      | view, edit, update, delete | authentication |
-      | visitor, manager | view, edit, update, delete | unauthorized   |
+      | user, manager | view, edit, update, delete | unauthorized   |

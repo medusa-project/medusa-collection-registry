@@ -55,8 +55,8 @@ Feature: Events Summary
     And I should see none of:
       | cool note 1 | corn note 1 |
 
-  Scenario: View collection events as a visitor
-    Given I relogin as a visitor
+  Scenario: View collection events as a user
+    Given I relogin as a user
     When I view the collection with title 'Dogs'
     And I click on 'Events'
     Then I should see the events table

@@ -1,6 +1,6 @@
 class AccessSystemsController < ApplicationController
 
-  before_action :require_logged_in, except: [:index, :show]
+  before_action :require_medusa_user, except: [:index, :show]
   before_action :find_access_system, only: [:show, :edit, :update, :destroy, :collections]
 
   def index

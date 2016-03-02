@@ -18,5 +18,5 @@ Feature: Red flags authorization
   Scenario: Enforce permissions
     Then deny object permission on the red flag with message 'Size red flag' to users for action with redirection:
       | public user | view, edit, update, unflag(post) | authentication |
-      | visitor     | edit, update, unflag(post)       | unauthorized  |
+      | user     | edit, update, unflag(post)       | unauthorized  |
 

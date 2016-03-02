@@ -40,10 +40,10 @@ Feature: Amazon backup
   Scenario: Amazon backup is restricted to medusa admins
     Then deny object permission on the bit level file group with title 'Dogs' to users for action with redirection:
       | public user      | create_amazon_backup(post) | authentication |
-      | visitor, manager | create_amazon_backup(post) | unauthorized   |
+      | user, manager | create_amazon_backup(post) | unauthorized   |
 
   Scenario: Bulk amazon backup is restricted to medusa admins
     When deny permission on the bit level file group collection to users for action with redirection:
       | public user      | bulk_amazon_backup via post | authentication |
-      | visitor, manager | bulk_amazon_backup via post | unauthorized   |
+      | user, manager | bulk_amazon_backup via post | unauthorized   |
 

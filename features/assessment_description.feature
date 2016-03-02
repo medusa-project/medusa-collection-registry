@@ -28,7 +28,7 @@ Feature: Assessment description
     Examples:
       | user_type |
       | manager   |
-      | visitor   |
+      | user   |
 
   Scenario Outline: Edit an assessment
     Given I am logged in as a <user_type>

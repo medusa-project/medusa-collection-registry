@@ -45,15 +45,15 @@ And(/^the cfs root for the file group titled '([^']*)' should be nil$/) do |titl
   FileGroup.find_by(title: title).cfs_root.should be_nil
 end
 
-Then(/^a visitor is unauthorized to start a file group for the collection titled '([^']*)'$/) do |title|
-  rack_login('a visitor')
+Then(/^a user is unauthorized to start a file group for the collection titled '([^']*)'$/) do |title|
+  rack_login('a user')
   get new_file_group_path(collection_id: Collection.find_by(title: title).id)
   expect(last_response.redirect?).to be_truthy
   expect(last_response.location).to match(/#{unauthorized_path}$/)
 end
 
-Then(/^a visitor is unauthorized to create a file group for the collection titled '([^']*)'$/) do |title|
-  rack_login('a visitor')
+Then(/^a user is unauthorized to create a file group for the collection titled '([^']*)'$/) do |title|
+  rack_login('a user')
   post file_groups_path(file_group: {collection_id: Collection.find_by(title: title).id,
                                         storage_level: 'bit-level store'})
   expect(last_response.redirect?).to be_truthy

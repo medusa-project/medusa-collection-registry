@@ -51,8 +51,8 @@ Feature: Red Flag Summary
     And I click on 'Red Flags'
     Then I should see the red flags table
 
-  Scenario: View red flags for file group as a visitor
-    Given I am logged in as a visitor
+  Scenario: View red flags for file group as a user
+    Given I am logged in as a user
     When I view the file group with title 'Toys'
     And I click on 'Red Flags'
     Then I should see the red flags table
@@ -75,8 +75,8 @@ Feature: Red Flag Summary
       | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Dogs | Collection |
     And I should not see 'Bad cool text'
 
-  Scenario: View red flags for collection as a visitor
-    Given I am logged in as a visitor
+  Scenario: View red flags for collection as a user
+    Given I am logged in as a user
     When I view the collection with title 'Dogs'
     And I click on 'Red Flags'
     Then I should see the red flags table
@@ -100,8 +100,8 @@ Feature: Red Flag Summary
     And I should see all of:
       | Bad toy picture | Bad checksum | Bad toy text | Bad hot picture | Bad cool text | Animals |
 
-  Scenario: View red flags for repository as a visitor
-    Given I am logged in as a visitor
+  Scenario: View red flags for repository as a user
+    Given I am logged in as a user
     When I view the repository with title 'Animals'
     And I click on 'Red Flags'
     Then I should see the red flags table

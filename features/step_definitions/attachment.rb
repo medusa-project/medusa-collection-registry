@@ -15,8 +15,8 @@ Then(/^I should be on the download page for the attachment '([^']*)'$/) do |file
 end
 
 def setup_and_check_assessment_creation_doing(user_type, object_type)
-  expected_path = if user_type == 'visitor'
-                    rack_login('a visitor')
+  expected_path = if user_type == 'user'
+                    rack_login('a user')
                     unauthorized_path
                   else
                     login_path

@@ -11,8 +11,8 @@ Feature: Collection Registry Dashboard
     And The dashboard should have a file statistics section
     And The dashboard should have a red flags section
 
-  Scenario: View the dashboard as a visitor
-    Given I am logged in as a visitor
+  Scenario: View the dashboard as a user
+    Given I am logged in as a user
     When I go to the dashboard
     Then I should be on the dashboard page
 

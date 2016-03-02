@@ -28,8 +28,8 @@ Feature: CFS FITS integration
     Then I should be viewing the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And the file group titled 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
 
-  Scenario: Run fits on a file as a visitor
-    Given I am logged in as a visitor
+  Scenario: Run fits on a file as a user
+    Given I am logged in as a user
     When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And I click on 'Create'
     Then I should be unauthorized
@@ -48,8 +48,8 @@ Feature: CFS FITS integration
     And I click on 'View'
     Then I should be on the fits info page for the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys'
 
-  Scenario: View fits on a file as a visitor
-    Given I am logged in as a visitor
+  Scenario: View fits on a file as a user
+    Given I am logged in as a user
     And the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys' has fits attached
     When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And I click on 'View'
@@ -75,8 +75,8 @@ Feature: CFS FITS integration
     And the file group titled 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
     And I should see 'Scheduling FITS creation for /dogs/toy-dogs'
 
-  Scenario: Run fits on a directory tree as a visitor
-    Given I am logged in as a visitor
+  Scenario: Run fits on a directory tree as a user
+    Given I am logged in as a user
     When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And I click on 'Create FITS'
     Then I should be unauthorized

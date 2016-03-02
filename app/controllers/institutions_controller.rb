@@ -1,5 +1,5 @@
 class InstitutionsController < ApplicationController
-  before_action :require_logged_in
+  before_action :require_medusa_user
   before_action :find_institution, only: [:show, :edit, :update, :destroy]
 
   def index
