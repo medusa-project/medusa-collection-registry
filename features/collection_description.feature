@@ -6,9 +6,9 @@ Feature: Collection description
   Background:
     Given I am logged in as an admin
     And the repository with title 'Sample Repo' has child collections with fields:
-      | title | published | ongoing | description                               | private_description                          | access_url               | notes                                       | external_id      |
-      | dogs  | true      | true    | Dog stuff                                 | private dog info                             | http://dogs.example.com  | Stuff about dogs                            | external-dogs-id |
-      | cats  | false     | true    | Cat stuff. http://description.example.com | private cat info. http://private.example.com | http://cats.example.com   | Stuff about cats. https://notes.example.com |                  |
+      | title | description                               | private_description                          | access_url              | notes                                       | external_id      |
+      | dogs  | Dog stuff                                 | private dog info                             | http://dogs.example.com | Stuff about dogs                            | external-dogs-id |
+      | cats  | Cat stuff. http://description.example.com | private cat info. http://private.example.com | http://cats.example.com | Stuff about cats. https://notes.example.com |                  |
 
   Scenario: Change repository of a collection
     Given the repository with title 'Plays' has child collections with fields:
