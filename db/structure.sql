@@ -1820,7 +1820,8 @@ CREATE TABLE collections (
     notes_html text,
     description_html text,
     private_description_html text,
-    external_id character varying(255)
+    external_id character varying(255),
+    publish boolean DEFAULT false
 );
 
 
@@ -5180,6 +5181,13 @@ CREATE INDEX index_collections_on_external_id ON collections USING btree (extern
 
 
 --
+-- Name: index_collections_on_publish; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_collections_on_publish ON collections USING btree (publish);
+
+
+--
 -- Name: index_collections_on_repository_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6860,4 +6868,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160126233249');
 INSERT INTO schema_migrations (version) VALUES ('20160202183505');
 
 INSERT INTO schema_migrations (version) VALUES ('20160302185450');
+
+INSERT INTO schema_migrations (version) VALUES ('20160302191209');
 

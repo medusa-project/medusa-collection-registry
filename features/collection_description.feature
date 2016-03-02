@@ -42,6 +42,7 @@ Feature: Collection description
       | Description         | Puppy stuff          |
       | Private description | Internal puppy stuff |
       | External ID         | external-puppy-id    |
+    And I check 'Publish'
     And I press 'Update'
     Then I should be on the view page for the collection with title 'dogs'
     And I should see all of:
