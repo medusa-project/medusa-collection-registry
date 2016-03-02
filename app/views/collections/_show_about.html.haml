@@ -4,6 +4,7 @@
       %h3 Descriptive metadata
       = show_field @collection, :description_html, 'Description'
       = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
+      = show_field @collection, :representative_image
       = show_field @collection, :resource_type_names, 'Type of Resource'
   .col-md-4
     .well
