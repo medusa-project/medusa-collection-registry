@@ -53,7 +53,6 @@ class Ability
     end
   end
 
-
   def medusa_admin?(user)
     ApplicationController.is_ad_admin?(user)
   end
