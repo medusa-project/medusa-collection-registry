@@ -1,6 +1,6 @@
 class AssessmentsController < ApplicationController
 
-  before_action :require_logged_in
+  before_action :require_medusa_user
   before_action :find_assessment_and_assessable, only: [:destroy, :show, :edit, :update]
   helper :assessments
   decorates_assigned :assessable

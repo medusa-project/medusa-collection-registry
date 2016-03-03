@@ -29,8 +29,8 @@ Feature: File group attachment maintenance
     And I click on 'Download'
     Then I should be on the download page for the attachment 'grass.jpg'
 
-  Scenario: Download attachment from file group as a visitor
-    Given I relogin as a visitor
+  Scenario: Download attachment from file group as a user
+    Given I relogin as a user
     When I view the file group with title 'Dogs'
     And I click on 'Attachments'
     And I click on 'Download'
@@ -85,8 +85,8 @@ Feature: File group attachment maintenance
     Then I should see all of:
       | grass.jpg | What the attachment is. | image/jpeg |
 
-  Scenario: View attachment details as a visitor
-    Given I relogin as a visitor
+  Scenario: View attachment details as a user
+    Given I relogin as a user
     When I view the file group with title 'Dogs'
     And I click on 'Attachments'
     And I click on 'grass.jpg'

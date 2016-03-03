@@ -31,8 +31,8 @@ Feature: Collection description
     When I view the collection with title 'dogs'
     Then I should be on the view page for the collection with title 'dogs'
 
-  Scenario: View a collection as a visitor
-    Given I relogin as a visitor
+  Scenario: View a collection as a user
+    Given I relogin as a user
     When I view the collection with title 'dogs'
     Then I should be on the view page for the collection with title 'dogs'
 
@@ -112,8 +112,8 @@ Feature: Collection description
     When I go to the collection index page
     Then I should be on the collection index page
 
-  Scenario: Index of all collections as a visitor
-    Given I relogin as a visitor
+  Scenario: Index of all collections as a user
+    Given I relogin as a user
     When I go to the collection index page
     Then I should be on the collection index page
 

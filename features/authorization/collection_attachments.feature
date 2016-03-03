@@ -18,7 +18,7 @@ Feature: Attachment authorization
   Scenario: Enforce permissions
     Then deny object permission on the attachment with description 'grass' to users for action with redirection:
       | public user | view, download, edit, update, delete | authentication |
-      | visitor     | edit, update, delete                 | unauthorized   |
+      | user     | edit, update, delete                 | unauthorized   |
       | manager     | delete                               | unauthorized   |
 
   Scenario: Public user tries to start attachment
@@ -27,9 +27,9 @@ Feature: Attachment authorization
   Scenario: Public user tries to create attachment
     Then a public user is unauthorized to create an attachment for the collection with title 'Dogs'
 
-  Scenario: Visitor tries to start attachment
-    Then a visitor is unauthorized to start an attachment for the collection with title 'Dogs'
+  Scenario: user tries to start attachment
+    Then a user is unauthorized to start an attachment for the collection with title 'Dogs'
 
-  Scenario: Visitor tries to create attachment
-    Then a visitor is unauthorized to start an attachment for the collection with title 'Dogs'
+  Scenario: user tries to create attachment
+    Then a user is unauthorized to start an attachment for the collection with title 'Dogs'
 

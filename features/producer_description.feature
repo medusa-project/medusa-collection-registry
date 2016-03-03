@@ -37,8 +37,8 @@ Feature: Producer description
     When I view the producer with title 'Scanning'
     Then I should see all producer fields
 
-  Scenario: View all producer fields as visitor
-    Given I am logged in as a visitor
+  Scenario: View all producer fields as user
+    Given I am logged in as a user
     When I view the producer with title 'Scanning'
     Then I should see all producer fields
 
@@ -59,8 +59,8 @@ Feature: Producer description
     When I go to the producer index page
     Then I should see the producers table
 
-  Scenario: View index as a visitor
-    Given I am logged in as a visitor
+  Scenario: View index as a user
+    Given I am logged in as a user
     When I go to the producer index page
     Then I should see the producers table
 

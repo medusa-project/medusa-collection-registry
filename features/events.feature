@@ -21,8 +21,8 @@ Feature: Record events
     And I click on 'Events'
     Then I should be viewing events for the file group with title 'dog-files'
 
-  Scenario: Navigate from file group to events for file group as a visitor
-    Given I am logged in as a visitor
+  Scenario: Navigate from file group to events for file group as a user
+    Given I am logged in as a user
     When I view the file group with title 'dog-files'
     And I click on 'Events'
     Then I should be viewing events for the file group with title 'dog-files'

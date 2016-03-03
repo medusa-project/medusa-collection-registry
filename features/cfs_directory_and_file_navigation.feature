@@ -27,8 +27,8 @@ Feature: CFS integration
     Then I should see all of:
       | intro.txt | pugs |
 
-  Scenario: View CFS directory as a visitor
-    Given I am logged in as a visitor
+  Scenario: View CFS directory as a user
+    Given I am logged in as a user
     When I view the cfs directory for the file group titled 'Dogs' for the path '.'
     Then I should see all of:
       | intro.txt | pugs |
@@ -61,8 +61,8 @@ Feature: CFS integration
     When I view the cfs file for the file group titled 'Dogs' for the path 'intro.txt'
     Then I should be viewing the cfs file for the file group titled 'Dogs' for the path 'intro.txt'
 
-  Scenario: View a file as a visitor
-    Given I am logged in as a visitor
+  Scenario: View a file as a user
+    Given I am logged in as a user
     When I view the cfs file for the file group titled 'Dogs' for the path 'intro.txt'
     Then I should be viewing the cfs file for the file group titled 'Dogs' for the path 'intro.txt'
 

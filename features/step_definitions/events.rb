@@ -40,8 +40,8 @@ Then /^I should be viewing events for the (.*) with (.*) '([^']*)'$/ do |object_
 end
 
 Then /^a (.*) is unauthorized to create an event for the file group titled '([^']*)'$/ do |user_type, title|
-  if user_type == 'visitor'
-    rack_login('a visitor')
+  if user_type == 'user'
+    rack_login('a user')
     expected_path = unauthorized_path
   else
     expected_path = login_path

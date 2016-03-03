@@ -23,7 +23,7 @@ Feature: Edit repository admins
     Then the repository titled 'Animals' should be administered by the group 'Animal admins' in the domain 'uofi'
 
   Scenario: Only medusa admins can edit repository ldap information
-    Given I am logged in as a visitor
+    Given I am logged in as a user
     When I edit repository administration groups
     Then I should be redirected to the unauthorized page
     And I should see 'You are not authorized to view the requested page.'

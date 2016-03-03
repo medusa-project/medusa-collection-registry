@@ -14,5 +14,5 @@ Feature: Events authorization
   Scenario: Public user tries to create event for file group
     Then a public user is unauthorized to create an event for the file group titled 'images'
 
-  Scenario: Visitor tries to create event for file group
-    Then a visitor is unauthorized to create an event for the file group titled 'images'
+  Scenario: user tries to create event for file group
+    Then a user is unauthorized to create an event for the file group titled 'images'

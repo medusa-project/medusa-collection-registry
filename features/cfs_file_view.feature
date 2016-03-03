@@ -40,19 +40,19 @@ Feature: Viewing CFS file information and content
     And I click on 'View'
     Then I should have viewed the fixture file 'grass.jpg'
 
-  Scenario: Deny view to visitors
-    Given I relogin as a visitor
+  Scenario: Deny view to users
+    Given I relogin as a user
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
     And I click on 'View'
     Then I should be unauthorized
 
-  Scenario: Deny download to visitors
-    Given I relogin as a visitor
+  Scenario: Deny download to users
+    Given I relogin as a user
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
     And I click on 'Download'
     Then I should be unauthorized
 
-  Scenario: Deny download and view permissions to public and visitors
+  Scenario: Deny download and view permissions to public and users
     Then deny object permission on the cfs file with name 'grass.jpg' to users for action with redirection:
       | public user | view, download | authentication |
 

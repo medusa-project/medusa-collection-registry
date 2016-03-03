@@ -2,7 +2,7 @@ class DashboardController < ApplicationController
   include DashboardCommon
   include ModelsToCsv
 
-  before_action :require_logged_in
+  before_action :require_medusa_user
 
   def show
     setup_bit_level_storage_summary

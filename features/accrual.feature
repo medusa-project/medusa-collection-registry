@@ -46,13 +46,13 @@ Feature: File accrual
     And I should see the accrual form and dialog
 
   Scenario: There is no accrual button nor form on a file group for a non medusa admin
-    Given I am logged in as a visitor
+    Given I am logged in as a user
     When I view the bit level file group with title 'Dogs'
     Then I should not see 'Add files'
     And I should not see the accrual form and dialog
 
   Scenario: There is no accrual button nor form on a cfs directory for a non medusa admin
-    Given I am logged in as a visitor
+    Given I am logged in as a user
     When I view the cfs directory for the file group titled 'Dogs' for the path 'pugs'
     Then I should not see 'Add files'
     And I should not see the accrual form and dialog

@@ -14,4 +14,4 @@ Feature: Producers authorization
       | manager     | edit                 | unauthorized   |
     And deny permission on the producer collection to users for action with redirection:
       | public user      | new, create, view_index | authentication |
-      | manager, visitor | new, create | unauthorized   |
+      | manager, user | new, create | unauthorized   |

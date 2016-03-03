@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-  before_action :require_logged_in
+  before_action :require_medusa_user
   before_action :find_event, only: [:destroy, :edit, :update]
   helper_method :eventable_events_path
 

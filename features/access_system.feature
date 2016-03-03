@@ -110,8 +110,8 @@ Feature: Access Systems
       | Dogs | Cats | Collections | ContentDM |
     And I should not see 'Bats'
 
-  Scenario: View collections associated with an access system as a visitor
-    Given I relogin as a visitor
+  Scenario: View collections associated with an access system as a user
+    Given I relogin as a user
     Given the collection with title 'Dogs' has child access system with field name:
       | ContentDM |
     And the collection with title 'Cats' has child access systems with field name:

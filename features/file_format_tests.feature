@@ -91,19 +91,19 @@ Feature: File Format Tests
     And I should not see 'GIF'
 
   Scenario: Navigate to index of file format tests
-    Given I am logged in as a visitor
+    Given I am logged in as a user
     When I go to the dashboard
     And I click on 'File Format Tests'
     Then I should be on the file format tests index page
 
   Scenario: View index of file format tests
-    Given I am logged in as a visitor
+    Given I am logged in as a user
     When I go to the file format tests index page
     Then I should see all of:
       | sugar@example.com | 2015-10-06 | Fail | Sugie notes |
 
   Scenario: CSV download of file format tests
-    Given I am logged in as a visitor
+    Given I am logged in as a user
     When I go to the file format tests index page
     And I click on 'CSV'
     Then I should receive a file 'file_format_tests.csv' of type 'text/csv' matching:

@@ -27,8 +27,8 @@ Feature: File Group description
     When I view the file group with title 'images'
     Then I should be on the view page for the file group with title 'images'
 
-  Scenario: View a file group as a visitor
-    Given I am logged in as a visitor
+  Scenario: View a file group as a user
+    Given I am logged in as a user
     When I view the file group with title 'images'
     Then I should be on the view page for the file group with title 'images'
 

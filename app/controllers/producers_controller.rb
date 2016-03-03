@@ -1,6 +1,6 @@
 class ProducersController < ApplicationController
 
-  before_action :require_logged_in
+  before_action :require_medusa_user
   before_action :find_producer, only: [:show, :destroy, :edit, :update]
 
   def index

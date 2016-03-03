@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
 
-  before_action :require_logged_in, except: [:index, :show, :public_show]
+  before_action :require_medusa_user, except: [:index, :show, :public_show]
   before_action :find_project, only: [:show, :public_show, :edit, :update, :destroy, :attachments,
                                       :assign_batch, :start_items_upload, :upload_items, :items]
   include ModelsToCsv

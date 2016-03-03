@@ -6,8 +6,8 @@ Given(/^I am logged in as an? medusa admin$/) do
   login_user(uid: 'admin@example.com')
 end
 
-Given /^I am logged in as an? visitor$/ do
-  login_user(uid: 'visitor@example.com')
+Given /^I am logged in as an? user$/ do
+  login_user(uid: 'user@example.com')
 end
 
 Given /^I am logged in as an? admin$/ do

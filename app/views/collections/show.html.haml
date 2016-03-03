@@ -6,7 +6,7 @@
   - cache(@collection) do
     .row
       = render 'show_about'
-    - if logged_in?
+    - if medusa_user?
       .row
         = render 'file_groups_table'
       - if @projects.present?

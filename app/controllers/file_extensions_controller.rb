@@ -1,5 +1,5 @@
 class FileExtensionsController < ApplicationController
-  before_action :require_logged_in
+  before_action :require_medusa_user
   before_action :find_file_extension
 
   def cfs_files
