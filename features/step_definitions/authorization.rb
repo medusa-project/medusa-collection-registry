@@ -111,6 +111,8 @@ def rack_login(user_type)
   case user_type
     when 'a public user'
       post '/logout'
+    when 'a visitor'
+      post '/auth/developer/callback', {name: 'visitor@example.com', email: 'visitor@example.com'}
     when 'a user'
       post '/auth/developer/callback', {name: 'user@example.com', email: 'user@example.com'}
     when 'a manager'
