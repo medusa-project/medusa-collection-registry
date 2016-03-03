@@ -38,6 +38,7 @@ Feature: File Format Profiles
     Then I should be on the view page for the file format profile with name 'images'
 
   Scenario: View file format profile
+    Given I logout
     When I view the file format profile with name 'images'
     Then I should see all of:
       | images | Fotostore | 1.2.3 | Linux | 3.2 | Photo manipulation | active |
@@ -128,7 +129,7 @@ Feature: File Format Profiles
 
   Scenario: Enforce permissions
     Then deny object permission on the file format profile with name 'images' to users for action with redirection:
-      | public user      | view, edit, update, delete | authentication |
+      | public user      | edit, update, delete       | authentication |
       | visitor, manager | view, edit, update, delete | unauthorized   |
     And deny permission on the file format profile collection to users for action with redirection:
       | public user      | new, create | authentication |
