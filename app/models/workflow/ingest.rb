@@ -42,7 +42,8 @@ class Workflow::Ingest < Workflow::Base
   def perform_copying
     FileUtils.mkdir_p(self.bit_level_file_group.expected_absolute_cfs_root_directory)
     #copy files from staged location to cfs storage
-    out, err, status = Open3.capture3('rsync', '-a', self.external_file_group.local_staged_file_location + '/',
+    opts = %w(-a --chmod Dug+w)
+    out, err, status = Open3.capture3('rsync', *opts, self.external_file_group.local_staged_file_location + '/',
                                       self.bit_level_file_group.expected_absolute_cfs_root_directory)
     unless status.success?
       message = <<MESSAGE

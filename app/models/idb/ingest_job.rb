@@ -52,7 +52,7 @@ class Idb::IngestJob < Job::Base
   end
 
   def rsync_file
-    opts = %w(-a --ignore-times)
+    opts = %w(-a --ignore-times --chmod Dug+w)
     out, err, status = Open3.capture3('rsync', *opts, source_file, absolute_target_file)
     unless status.success?
       message = <<MESSAGE

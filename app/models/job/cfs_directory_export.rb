@@ -9,7 +9,7 @@ class Job::CfsDirectoryExport < Job::Base
 
   def perform
     FileUtils.mkdir_p(self.export_directory)
-    opts = %w(-a --exclude-from) << exclude_file_path
+    opts = %w(-a --chmod Dug+w --exclude-from) << exclude_file_path
     opts += %w(--exclude */) unless self.recursive
     out, err, status = Open3.capture3('rsync', *opts,
                                       cfs_directory.absolute_path + '/', self.export_directory)

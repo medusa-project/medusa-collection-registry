@@ -191,7 +191,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def copy_entry(entry, source_path, target_path, overwrite: false)
-    opts = %w(-a --ignore-times)
+    opts = %w(-a --ignore-times --chmod Dug+w)
     opts << '--ignore-existing' unless overwrite
     source_entry = File.join(source_path, entry.name)
     return unless File.exists?(source_entry)
