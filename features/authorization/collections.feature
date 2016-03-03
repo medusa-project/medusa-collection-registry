@@ -5,8 +5,8 @@ Feature: Collection authorization
 
   Background:
     Given the repository with title 'Sample Repo' has child collections with fields:
-      | title | published | ongoing | description |
-      | dogs  | true      | true    | Dog stuff   |
+      | title |  description |
+      | dogs  |  Dog stuff   |
 
   Scenario: Enforce permissions
     Then deny object permission on the collection with title 'dogs' to users for action with redirection:

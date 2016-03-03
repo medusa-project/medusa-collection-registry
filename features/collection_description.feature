@@ -6,9 +6,9 @@ Feature: Collection description
   Background:
     Given I am logged in as an admin
     And the repository with title 'Sample Repo' has child collections with fields:
-      | title | published | ongoing | description                               | private_description                          | access_url               | notes                                       | external_id      |
-      | dogs  | true      | true    | Dog stuff                                 | private dog info                             | http://dogs.example.com  | Stuff about dogs                            | external-dogs-id |
-      | cats  | false     | true    | Cat stuff. http://description.example.com | private cat info. http://private.example.com | http://cats.example.com   | Stuff about cats. https://notes.example.com |                  |
+      | title | description                               | private_description                          | access_url              | notes                                       | external_id      |
+      | dogs  | Dog stuff                                 | private dog info                             | http://dogs.example.com | Stuff about dogs                            | external-dogs-id |
+      | cats  | Cat stuff. http://description.example.com | private cat info. http://private.example.com | http://cats.example.com | Stuff about cats. https://notes.example.com |                  |
 
   Scenario: Change repository of a collection
     Given the repository with title 'Plays' has child collections with fields:
@@ -39,13 +39,15 @@ Feature: Collection description
   Scenario: Edit a collection
     When I edit the collection with title 'dogs'
     And I fill in fields:
-      | Description         | Puppy stuff          |
-      | Private description | Internal puppy stuff |
-      | External ID         | external-puppy-id    |
+      | Description          | Puppy stuff          |
+      | Private description  | Internal puppy stuff |
+      | External ID          | external-puppy-id    |
+      | Representative image | my_image_url         |
+    And I check 'Publish'
     And I press 'Update'
     Then I should be on the view page for the collection with title 'dogs'
     And I should see all of:
-      | Puppy stuff | Internal puppy stuff | external-puppy-id |
+      | Puppy stuff | Internal puppy stuff | external-puppy-id |my_image_url|
     And I should see none of:
       | Dog stuff | external-dogs-id |
 
