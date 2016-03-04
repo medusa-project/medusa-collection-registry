@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def medusa_user?
-    logged_in? and self.class.is_ad_user?(current_user)
+    logged_in? and Application.group_resolver.is_ad_user?(current_user)
   end
 
   def require_medusa_user
@@ -75,50 +75,6 @@ class ApplicationController < ActionController::Base
 
   def record_event(eventable, key, user = current_user)
     eventable.events.create(actor_email: user.email, key: key, date: Date.today)
-  end
-
-  def self.is_member_of?(group, user, domain = nil)
-    domain ||= 'uofi'
-    self.internal_is_member_of?(group, user.net_id, domain)
-  end
-
-  #We define this differently for production and development/test for convenience
-  if Rails.env.production?
-    def self.internal_is_member_of?(group, net_id, domain)
-      LdapQuery.new.is_member_of?(group, net_id)
-    end
-  else
-    #To make development/test easier
-    #any net_id that matches admin is member of the ad_admin and ad_users
-    #any net_id that matches user is a member only of ad_users
-    #any net_id that matched manager is a member of ad_users and the managers group
-    #any net_id that matches outsider or visitor is a member of no AD groups, but is logged in
-    #otherwise member iff the part of the net_id preceding '@' (recall Omniauth dev mode uses email as uid)
-    #includes the group when both are downcased and any spaces in the group converted to '-'
-    def self.internal_is_member_of?(group, net_id, domain=nil)
-      return false if group.blank?
-      return true if net_id.match(/admin/) and (group == admin_ad_group or group == user_ad_group)
-      return true if net_id.match(/manager/) and (group == user_ad_group or group.match(/manager/))
-      return true if net_id.match(/user/) and group == user_ad_group
-      return false if net_id.match(/user/) or net_id.match(/outsider/) or net_id.match(/visitor/)
-      return net_id.split('@').first.downcase.match(group.downcase.gsub(' ', '-'))
-    end
-  end
-
-  def self.is_ad_user?(user)
-    user and self.is_member_of?(user_ad_group, user, 'uofi')
-  end
-
-  def self.is_ad_admin?(user)
-    user and self.is_member_of?(admin_ad_group, user, 'uofi')
-  end
-
-  def self.user_ad_group
-    MedusaCollectionRegistry::Application.medusa_config['medusa_users_group']
-  end
-
-  def self.admin_ad_group
-    MedusaCollectionRegistry::Application.medusa_config['medusa_admins_group']
   end
 
   def public_path(object)

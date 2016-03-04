@@ -48,7 +48,7 @@ MESSAGE
   end
 
   def group_directory
-    (self.cfs_directory.repository.ldap_admin_group || ApplicationController.admin_ad_group).gsub(' ', '_')
+    (self.cfs_directory.repository.ldap_admin_group || Application.group_resolver.admin_ad_group).gsub(' ', '_')
   end
 
 end

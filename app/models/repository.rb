@@ -43,7 +43,7 @@ class Repository < ActiveRecord::Base
   end
 
   def manager?(user)
-    ApplicationController.is_member_of?(self.ldap_admin_group, user, self.ldap_admin_domain)
+    Application.group_resolver.is_member_of?(self.ldap_admin_group, user)
   end
 
   def repository

@@ -54,7 +54,7 @@ class Ability
   end
 
   def medusa_admin?(user)
-    ApplicationController.is_ad_admin?(user)
+    Application.group_resolver.is_ad_admin?(user)
   end
 
   def repository_manager?(user, object)
