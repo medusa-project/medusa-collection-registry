@@ -90,9 +90,9 @@ class ApplicationController < ActionController::Base
   else
     #To make development/test easier
     #any net_id that matches admin is member of the ad_admin and ad_users
-    #any net_id that matches visitor is a member only of ad_users
+    #any net_id that matches user is a member only of ad_users
     #any net_id that matched manager is a member of ad_users and the managers group
-    #any net_id that matches outsider is a member of no AD groups
+    #any net_id that matches outsider or visitor is a member of no AD groups, but is logged in
     #otherwise member iff the part of the net_id preceding '@' (recall Omniauth dev mode uses email as uid)
     #includes the group when both are downcased and any spaces in the group converted to '-'
     def self.internal_is_member_of?(group, net_id, domain=nil)
