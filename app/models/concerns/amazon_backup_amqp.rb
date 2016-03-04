@@ -9,11 +9,11 @@ module AmazonBackupAmqp
 
   module ClassMethods
     def incoming_queue
-      MedusaCollectionRegistry::Application.medusa_config['amazon']['incoming_queue']
+      Application.medusa_config.amazon_incoming_queue
     end
 
     def outgoing_queue
-      MedusaCollectionRegistry::Application.medusa_config['amazon']['outgoing_queue']
+      Application.medusa_config.amazon_outgoing_queue
     end
 
   end

@@ -1,11 +1,11 @@
 class GroupResolver::Base < Object
 
   def user_ad_group
-    Application.medusa_config['medusa_users_group']
+    Application.medusa_config.medusa_users_group
   end
 
   def admin_ad_group
-    Application.medusa_config['medusa_admins_group']
+    Application.medusa_config.medusa_admins_group
   end
 
   def is_ad_user?(user)

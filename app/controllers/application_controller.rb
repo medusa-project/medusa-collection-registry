@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
   end
 
   def basic_auth?
-    ActionController::HttpAuthentication::Basic.decode_credentials(request) == MedusaCollectionRegistry::Application.medusa_config['basic_auth']
+    ActionController::HttpAuthentication::Basic.decode_credentials(request) == Application.medusa_config.basic_auth_credentials
   rescue
     false
   end
@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
   end
 
   def public_view_on?
-    MedusaCollectionRegistry::Application.medusa_config['public_view_on']
+    Application.medusa_config.public_view_on?
   end
 
   def public_view_enabled?

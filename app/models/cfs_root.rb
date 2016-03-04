@@ -9,7 +9,7 @@ class CfsRoot
   attr_accessor :path, :config, :tmp_path
 
   def initialize
-    self.config = MedusaCollectionRegistry::Application.medusa_config['cfs']
+    self.config = Application.medusa_config.cfs
     self.path = config['root']
     self.tmp_path = config['tmp'] || '/tmp'
   end
