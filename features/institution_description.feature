@@ -10,14 +10,14 @@ Feature: Institution description
       | SUNY-SB |
 
   Scenario: As a medusa admin I can see a list of institutions
-    Given I am logged in as a medusa admin
+    Given I am logged in as an admin
     When I go to the institution index page
     Then I should see the institutions table
     And I should see all of:
       | UIUC | SUNY-SB |
 
   Scenario: As a medusa admin I can create a new institution
-    Given I am logged in as a medusa admin
+    Given I am logged in as an admin
     When I go to the institution index page
     And I click on 'New Institution'
     And I fill in fields:
@@ -31,7 +31,7 @@ Feature: Institution description
       | user, manager | view_index, new, create | unauthorized   |
 
   Scenario: As a medusa admin I can see an individual institution
-    Given I am logged in as a medusa admin
+    Given I am logged in as an admin
     And the institution with name 'UIUC' has child repositories with field title:
       | Animals | Plants |
     When I view the institution with name 'UIUC'
@@ -41,7 +41,7 @@ Feature: Institution description
     And I should see the repositories table
 
   Scenario: As a medusa admin I can edit an individual institution
-    Given I am logged in as a medusa admin
+    Given I am logged in as an admin
     When I view the institution with name 'UIUC'
     And I click on 'Edit'
     And I fill in fields:
@@ -51,7 +51,7 @@ Feature: Institution description
     And there should be no institution with name 'UIUC'
 
   Scenario: As a medusa admin I can delete an individual institution
-    Given I am logged in as a medusa admin
+    Given I am logged in as an admin
     When I edit the institution with name 'UIUC'
     And I click on 'Delete'
     Then I should be on the institution index page

@@ -22,14 +22,14 @@ Feature: Amazon backup
     Then the file group titled 'Dogs' should have a completed Amazon backup
 
   Scenario: Schedule amazon backup of a bit level file group
-    Given I am logged in as a medusa admin
+    Given I am logged in as an admin
     When I view the file group with title 'Dogs'
     And I click on 'Create backup'
     Then there should be 1 amazon backup delayed job
 
   @javascript
   Scenario: Bulk schedule amazon backup of bit level file groups
-    Given I am logged in as a medusa admin
+    Given I am logged in as an admin
     When I go to the dashboard
     And I click on 'Amazon'
     And I wait 1 second
