@@ -49,21 +49,13 @@ namespace :deploy do
     end
   end
 
-  before :publishing, :stop_application
-
-  task :stop_application do
-    on roles(:app), in: :sequence, wait: 5 do
-      execute "cd #{fetch(:bin)} ; ./stop-rails"
+  task :restart do
+    on roles(:app) do
+      execute 'monit -c ~/.monitrc -g rails restart'
     end
   end
 
-  task :start_application do
-    on roles(:app), in: :sequence, wait: 5 do
-      execute "cd #{fetch(:bin)} ; ./start-rails"
-    end
-  end
-
-  after :publishing, :start_application
+  after 'deploy:publishing', 'deploy:restart'
 
 end
 
@@ -91,6 +83,17 @@ namespace :medusa do
   task :clear_rails_cache do
     execute_rake "medusa:rails_cache:clear"
   end
+
+  desc "Stop delayed job and collection registry"
+  task :stop do
+    execute 'monit -c ~/.monitrc -g rails stop'
+  end
+
+  desc "Start delayed job and collection registry"
+  task :start do
+    execute 'monit -c ~/.monitrc -g rails start'
+  end
+
 end
 
 def execute_rake(task)
