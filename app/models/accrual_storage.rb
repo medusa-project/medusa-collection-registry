@@ -6,7 +6,7 @@ class AccrualStorage < Object
   attr_reader :roots
 
   def initialize
-    config_roots = MedusaCollectionRegistry::Application.medusa_config['accrual_storage']['roots'] || []
+    config_roots = Application.medusa_config.accrual_storage_roots(default: [])
     @roots = config_roots.collect {|root_hash| AccrualStorageRoot.new(root_hash)}
   end
 

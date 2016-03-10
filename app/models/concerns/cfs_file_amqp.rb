@@ -9,11 +9,11 @@ module CfsFileAmqp
 
   module ClassMethods
     def incoming_queue
-      MedusaCollectionRegistry::Application.medusa_config['fixity_server']['incoming_queue']
+      Application.medusa_config.fixity_server_incoming_queue
     end
 
     def outgoing_queue
-      MedusaCollectionRegistry::Application.medusa_config['fixity_server']['outgoing_queue']
+      Application.medusa_config.fixity_server_outgoing_queue
     end
 
   end

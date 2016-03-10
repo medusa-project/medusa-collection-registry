@@ -13,7 +13,7 @@ class AmqpConnector < Object
   end
 
   def reinitialize
-    config = (MedusaCollectionRegistry::Application.medusa_config['amqp'] || {}).symbolize_keys
+    config = Application.medusa_config.amqp(default: {}).symbolize_keys
     config.merge!(recover_from_connection_close: true)
     self.known_queues = Set.new
     self.connection.close if self.connection

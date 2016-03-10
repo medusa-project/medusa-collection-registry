@@ -11,7 +11,7 @@ class FileFormatTestDecorator < BaseDecorator
   end
 
   def medusa_url
-    "#{MedusaCollectionRegistry::Application.medusa_config['server']}#{h.cfs_file_path(cfs_file)}"
+    "#{Application.medusa_config.server_url}#{h.cfs_file_path(cfs_file)}"
   end
 
 

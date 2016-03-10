@@ -15,6 +15,7 @@ module MedusaCollectionRegistry
     attr_accessor :handle_client, :medusa_host
     attr_accessor :bit_file_tmp_dir
     attr_accessor :medusa_config
+    attr_accessor :group_resolver
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -60,3 +61,6 @@ module MedusaCollectionRegistry
 
   end
 end
+
+#establish a short cut for the Application object
+Application = MedusaCollectionRegistry::Application

@@ -16,7 +16,7 @@ class Job::FitsContentTypeBatch < ActiveRecord::Base
   end
 
   def perform
-    size = MedusaCollectionRegistry::Application.medusa_config['fits_batch_size'] || BATCH_MAX_SIZE
+    size = Application.medusa_config.fits_batch_size(default: BATCH_MAX_SIZE)
     cfs_files = content_type.cfs_files.joins('LEFT JOIN fits_results FR ON FR.cfs_file_id = cfs_files.id').where('FR.id IS NULL').limit(size)
     missing_files = Array.new
     already_done_files = Array.new
