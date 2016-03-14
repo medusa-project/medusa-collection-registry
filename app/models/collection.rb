@@ -4,7 +4,6 @@ require 'mods_helper'
 class Collection < ActiveRecord::Base
   include MedusaAutoHtml
   include RegistersHandle
-  include ModsHelper
   include Uuidable
   include Breadcrumb
   include CascadedEventable
@@ -76,21 +75,7 @@ class Collection < ActiveRecord::Base
   end
 
   def to_mods
-    with_mods_boilerplate do |xml|
-      xml.titleInfo do
-        xml.title self.title
-      end
-      xml.identifier(self.uuid, type: 'uuid')
-      xml.identifier(self.handle, type: 'handle')
-      resource_types_to_mods(xml)
-      xml.abstract self.description
-      xml.location do
-        xml.url(self.access_url || '', access: 'object in context', usage: 'primary')
-      end
-      xml.originInfo do
-        xml.publisher(self.repository.title)
-      end
-    end
+    MetadataHelper::Collection.new(self).to_mods
   end
 
   def recursive_assessments
