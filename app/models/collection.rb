@@ -74,12 +74,16 @@ class Collection < ActiveRecord::Base
                                                       rights_declarable_type: 'Collection')
   end
 
-  def to_mods
-    MetadataHelper::Collection.new(self).to_mods
-  end
-
   def recursive_assessments
     (self.assessments + self.file_groups.collect { |file_group| file_group.assessments }.flatten)
+  end
+
+  def to_mods
+    metadata_helper.to_mods
+  end
+
+  def metadata_helper
+    MetadataHelper::Collection.new(self)
   end
 
 end
