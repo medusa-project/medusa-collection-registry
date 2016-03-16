@@ -80,7 +80,7 @@ class CollectionsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv { send_data collections_to_csv(@collections), type: 'text/csv', filename: 'collections.csv' }
-      format.json { render json: @collections}
+      format.json 
     end
   end
 
