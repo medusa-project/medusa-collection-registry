@@ -67,8 +67,8 @@ namespace :amazon do
       Open3.capture2('find . -type f | wc -l')
     end
     return fs_count.to_i - db_count
-  rescue
-    return 'error'
+  rescue Exception => e
+    return "error: #{e}"
   end
 
 end
