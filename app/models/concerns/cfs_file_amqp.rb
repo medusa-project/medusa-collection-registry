@@ -19,7 +19,7 @@ module CfsFileAmqp
   end
 
   def send_amqp_fixity_message
-    AmqpConnector.instance.send_message(self.outgoing_queue, create_amqp_fixity_message)
+    AmqpConnector.connector(:medusa).send_message(self.outgoing_queue, create_amqp_fixity_message)
   end
 
   def create_amqp_fixity_message

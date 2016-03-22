@@ -21,7 +21,7 @@ $consecutive_errors = 0
 #have to spawn a lot of these daemons?
 while ($running) do
   begin
-    AmqpConnector.instance.reinitialize
+    AmqpConnector.connector(:medusa).reinitialize
     AmqpResponse::AmazonBackup.handle_responses
     AmqpResponse::Fixity.handle_responses
     Idb::AmqpReceiver.handle_responses if Idb::Config.instance.active?
