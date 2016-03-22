@@ -8,3 +8,4 @@ medusa.yml
 smtp.yml
 newrelic.yml
 idb.yml
+downloader.yml
