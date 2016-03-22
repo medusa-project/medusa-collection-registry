@@ -5146,6 +5146,13 @@ CREATE UNIQUE INDEX index_content_types_on_name ON content_types USING btree (na
 
 
 --
+-- Name: index_downloader_requests_on_downloader_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_downloader_requests_on_downloader_id ON downloader_requests USING btree (downloader_id);
+
+
+--
 -- Name: index_events_on_actor_email; Type: INDEX; Schema: public; Owner: -
 --
 
