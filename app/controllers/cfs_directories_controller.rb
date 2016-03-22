@@ -36,12 +36,12 @@ class CfsDirectoriesController < ApplicationController
 
   def export
     authorize! :export, @directory.file_group
-    Job::CfsDirectoryExport.create_for(@directory, current_user, false)
+    Downloader::Request.create_for(@directory, current_user, recursive: false)
   end
 
   def export_tree
     authorize! :export, @directory.file_group
-    Job::CfsDirectoryExport.create_for(@directory, current_user, true)
+    Downloader::Request.create_for(@directory, current_user, recursive: true)
   end
 
   def fixity_check

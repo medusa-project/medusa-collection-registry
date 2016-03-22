@@ -27,7 +27,7 @@ class AmqpConnector < Object
   end
 
   def self.clear_all_queues
-    self.connectors.values.each {|connector| connector.clear_all_queues}
+    self.connectors.values.each {|connector| connector.clear_all_queues} if self.connectors.present?
   end
 
   def clear_all_queues
@@ -50,7 +50,7 @@ class AmqpConnector < Object
     channel = connection.create_channel
     yield channel
   ensure
-    channel.close
+    channel.close if channel.present? and channel.open?
   end
 
   def with_queue(queue_name)
