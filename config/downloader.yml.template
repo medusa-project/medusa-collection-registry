@@ -1,0 +1,13 @@
+development:
+  root: medusa
+  incoming_queue: downloader_to_medusa_dev
+  outgoing_queue: client_to_downloader_dev
+  #Bunny style amqp connection options
+  amqp:
+test:
+  root: medusa
+  incoming_queue: downloader_to_medusa_test
+  outgoing_queue: client_to_downloader_test
+  #Bunny style amqp connection options
+  amqp:
+production:
