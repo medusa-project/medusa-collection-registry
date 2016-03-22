@@ -16,20 +16,25 @@ Feature: Cfs directory export
   Scenario: Request an export of a directory
     Given I am logged in as a manager
     When I view the cfs directory for the file group titled 'Dogs' for the path '.'
-    And I click on 'Download Files' and delayed jobs are run
+    And I click on 'Download Files'
     Then I should see 'Your directory has been scheduled for export. You will be notified by email when the export is complete.'
-    And there should be an exported directory with paths:
-      | intro.txt |
-    And 'manager@example.com' should receive an email with subject 'Medusa export completed'
+    And there should be a simple download request for the export of the cfs directory for the file group titled 'Dogs' for the path '.'
 
   Scenario: Request an export of a directory tree
     Given I am logged in as a manager
     When I view the cfs directory for the file group titled 'Dogs' for the path '.'
-    And I click on 'Download Files and All Subdirectories' and delayed jobs are run
+    And I click on 'Download Files and All Subdirectories'
     Then I should see 'Your directory tree has been scheduled for export. You will be notified by email when the export is complete.'
-    And there should be an exported directory with paths:
-      | intro.txt | pugs/picture.jpg | pugs/description.txt |
-    And 'manager@example.com' should receive an email with subject 'Medusa export completed'
+    And there should be a recursive download request for the export of the cfs directory for the file group titled 'Dogs' for the path '.'
+
+  Scenario: Error message is received
+    When PENDING
+
+  Scenario: Request received message is received
+    When PENDING
+
+  Scenario: Request completed message is received
+    When PENDING
 
   Scenario: Deny exports to public and users
     Then deny object permission on the cfs directory with path 'dogs' to users for action with redirection:
