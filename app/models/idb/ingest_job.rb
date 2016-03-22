@@ -82,7 +82,7 @@ MESSAGE
   end
 
   def send_return_message
-    AmqpConnector.instance.send_message(Idb::Config.instance.outgoing_queue, return_message)
+    AmqpConnector.connector(:medusa).send_message(Idb::Config.instance.outgoing_queue, return_message)
   end
 
   def return_message
