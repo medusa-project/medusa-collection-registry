@@ -18,7 +18,7 @@ class CfsDirectory < ActiveRecord::Base
   belongs_to :parent_file_group, class_name: 'FileGroup', foreign_key: 'parent_id'
 
   validates :path, presence: true
-  validates_uniqueness_of :path, scope: :parent_id, if: Proc.new { |record| record.parent_type == 'CfsDirectory' }
+  validates_uniqueness_of :path, scope: :parent_id, if: ->(record) {record.parent_type == 'CfsDirectory' }
   validate(unless: Proc.new { |record| record.parent_type == 'CfsDirectory' }) do |cfs_directory|
     unless (CfsDirectory.roots.where(path: cfs_directory.path).all - [cfs_directory]).empty?
       errors.add(:base, 'Path must be unique for roots')
@@ -29,8 +29,8 @@ class CfsDirectory < ActiveRecord::Base
   #two validations are needed because we can't set the root directory to self
   #until after we've saved once. The after_save callback sets this by default
   #after the initial save
-  validates :root_cfs_directory_id, presence: true, if: Proc.new { |record| record.parent_type == 'CfsDirectory' }
-  validates :root_cfs_directory_id, presence: true, unless: Proc.new { |record| record.parent_type == 'CfsDirectory' }, on: :update
+  validates :root_cfs_directory_id, presence: true, if: ->(record) { record.parent_type == 'CfsDirectory' }
+  validates :root_cfs_directory_id, presence: true, unless: ->(record){ record.parent_type == 'CfsDirectory' }, on: :update
   after_save :ensure_root
   after_update :handle_cfs_assessment
 
