@@ -14,5 +14,12 @@ class FileFormatTestDecorator < BaseDecorator
     "#{Application.medusa_config.server_url}#{h.cfs_file_path(cfs_file)}"
   end
 
+  def profile_name
+    file_format_profile.name
+  end
+
+  def profile_name_simplified
+    profile_name.sub(/\s*\(.*\)\s*$/, '')
+  end
 
 end

@@ -36,12 +36,13 @@ module ModelsToCsv
   end
 
   def file_format_tests_to_csv(file_format_tests, csv_options = {})
-    fields = {cfs_file_name: 'File name', medusa_url: 'Medusa Url', tester_email: 'Tester email', date: 'Test date',
-                 content_type_name: 'File type', pass_label: 'Status', reasons_string: 'Reasons',
-                 notes: 'Comments', file_group_id: 'File group Id', file_group_title: 'File group title',
-                 acquisition_method: 'Acquistion method',
-                 collection_id: 'Collection Id', collection_title: 'Collection title',
-                 repository_id: 'Repository Id', repository_title: 'Repository title'}
+    fields = {profile_name: 'FileFormatProfile', profile_name_simplified: 'FileFormatProfileSimplified',
+              cfs_file_name: 'File name', medusa_url: 'Medusa Url', tester_email: 'Tester email', date: 'Test date',
+              content_type_name: 'File type', pass_label: 'Status', reasons_string: 'Reasons',
+              notes: 'Comments', file_group_id: 'File group Id', file_group_title: 'File group title',
+              acquisition_method: 'Acquistion method',
+              collection_id: 'Collection Id', collection_title: 'Collection title',
+              repository_id: 'Repository Id', repository_title: 'Repository title'}
     FitsData::ALL_FIELDS.each do |field|
       fields[:"fits_data_#{field}"] = field.to_s.titlecase
     end
