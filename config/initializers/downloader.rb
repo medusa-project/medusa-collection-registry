@@ -6,14 +6,8 @@ if defined?(PhusionPassenger)
     if forked
       AmqpConnector.new(:downloader, Application.downloader_config.amqp(default: Hash.new).symbolize_keys)
       begin
-        config = Application.downloader_config
-        connection = Bunny.new(config.amqp)
-        connection.start
-        Kernel.at_exit do
-          connection.close rescue nil
-        end
         Rails.logger.info "Starting AMQP listener for Downloader"
-        channel = connection.create_channel
+        channel = AmqpConnector.connector(:downloader).connection.create_channel
         queue = channel.queue(config.incoming_queue, durable: true)
         queue.subscribe do |delivery_info, properties, payload|
           begin
