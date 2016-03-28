@@ -22,7 +22,7 @@ class AmqpConnector < Object
     #config = Application.medusa_config.amqp(default: {}).symbolize_keys
     self.known_queues = Set.new
     self.connection.close if self.connection
-    self.connection = Bunny.new(config)
+    self.connection = Bunny.new(self.config)
     self.connection.start
   end
 
