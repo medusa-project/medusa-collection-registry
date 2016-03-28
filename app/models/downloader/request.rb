@@ -2,6 +2,9 @@ class Downloader::Request < ActiveRecord::Base
 
   belongs_to :cfs_directory
 
+  STATUSES = %w(pending request_received request_completed error)
+  validates :status, inclusion: STATUSES, allow_blank: false
+
   def self.handle_response(payload)
     raise RuntimeError, "Not Yet Implemented"
     #parse payload
@@ -10,7 +13,7 @@ class Downloader::Request < ActiveRecord::Base
   end
 
   def self.create_for(cfs_directory, user, recursive: false)
-    request = self.create!(cfs_directory: cfs_directory, email: user.email)
+    request = self.create!(cfs_directory: cfs_directory, email: user.email, status: 'pending')
     request.send_export_request(recursive: recursive)
   end
 
@@ -28,6 +31,7 @@ class Downloader::Request < ActiveRecord::Base
   def handle_request_completed
     raise RuntimeError, "Not Yet Implemented"
     #email user with particulars of download
+    #remove download request - or should that wait and maybe be done in a batch processes so we have a temporary record
   end
 
   def send_export_request(recursive: false)

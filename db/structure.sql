@@ -1845,6 +1845,7 @@ CREATE TABLE downloader_requests (
     email character varying,
     cfs_directory_id integer,
     downloader_id character varying,
+    status character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -5150,6 +5151,13 @@ CREATE UNIQUE INDEX index_content_types_on_name ON content_types USING btree (na
 --
 
 CREATE INDEX index_downloader_requests_on_downloader_id ON downloader_requests USING btree (downloader_id);
+
+
+--
+-- Name: index_downloader_requests_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_downloader_requests_on_status ON downloader_requests USING btree (status);
 
 
 --

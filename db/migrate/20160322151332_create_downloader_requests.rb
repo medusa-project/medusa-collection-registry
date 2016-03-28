@@ -4,6 +4,7 @@ class CreateDownloaderRequests < ActiveRecord::Migration
       t.string :email
       t.integer :cfs_directory_id
       t.string :downloader_id, index: true
+      t.string :status, index: true
       t.timestamps null: false
     end
   end
