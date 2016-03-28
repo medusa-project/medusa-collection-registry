@@ -6,10 +6,21 @@ class Downloader::Request < ActiveRecord::Base
   validates :status, inclusion: STATUSES, allow_blank: false
 
   def self.handle_response(payload)
-    raise RuntimeError, "Not Yet Implemented"
-    #parse payload
-    #find request and action from payload
-    #handle that request
+    response = JSON.parse(payload)
+    case response['action']
+      when 'request_received'
+        request = Downloader::Request.find_by(id: response['client_id'])
+        request.handle_request_received(response)
+      when 'request_completed'
+        request = Downloader::Request.find_by(downloader_id: response['id'])
+        request.handle_request_completed(response)
+      when 'error'
+        request = Downloader::Request.find_by(downloader_id: response['id'])
+        request.handle_error(response)
+      else
+        Rails.logger.error "Unrecognized response from downloader server: #{response}"
+        raise RuntimeError, "Unrecognized response from downloader server"
+    end
   end
 
   def self.create_for(cfs_directory, user, recursive: false)
@@ -17,21 +28,23 @@ class Downloader::Request < ActiveRecord::Base
     request.send_export_request(recursive: recursive)
   end
 
-  def handle_request_received
-    raise RuntimeError, "Not Yet Implemented"
-    #store downloader id
+  def handle_request_received(response)
+    self.status = 'request_received'
+    self.downloader_id = response['id']
+    self.save!
   end
 
-  def handle_error
-    raise RuntimeError, "Not Yet Implemented"
-    #email user with error message
-    #email admin with error message
+  def handle_error(response)
+    self.status = 'error'
+    self.save!
+    CfsMailer.export_error_user(self, response).deliver_now
+    CfsMailer.export_error_admin(self, response).deliver_now
   end
 
-  def handle_request_completed
-    raise RuntimeError, "Not Yet Implemented"
-    #email user with particulars of download
-    #remove download request - or should that wait and maybe be done in a batch processes so we have a temporary record
+  def handle_request_completed(response)
+    self.status = 'request_completed'
+    self.save!
+    CfsMailer.export_complete(self, response).deliver_now
   end
 
   def send_export_request(recursive: false)

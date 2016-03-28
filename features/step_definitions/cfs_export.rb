@@ -26,3 +26,54 @@ And(/^there should be a (.*) download request for the export of the cfs director
     expect(target['zip_path']).to eq('')
   end
 end
+
+Then(/^the downloader request with id '(.*)' should have status '(.*)'$/) do |id, status|
+  expect(Downloader::Request.find_by(downloader_id: id).status).to eq(status)
+end
+
+Given(/^there is a downloader request for the export of the cfs directory for the file group titled '(.*)' for the path '(.*)' with fields:$/) do |title, path, table|
+  cfs_root = FileGroup.find_by(title: title).cfs_directory
+  cfs_directory = cfs_root.find_directory_at_relative_path(path)
+  FactoryGirl.create(:downloader_request, table.hashes.first.merge(cfs_directory_id: cfs_directory.id))
+end
+
+When(/^a downloader request completed message is received with id '(.*)'$/) do |id|
+  request = Downloader::Request.first
+  Downloader::Request.handle_response(request_completed_message(request))
+end
+
+When(/^a downloader error message is received with id '(.*)'$/) do |id|
+  request = Downloader::Request.first
+  Downloader::Request.handle_response(error_message(request))
+end
+
+When(/^a downloader request received message is received with id '(.*)'$/) do |id|
+  request = Downloader::Request.first
+  Downloader::Request.handle_response(request_received_message(request, id))
+end
+
+def request_received_message(request, downloader_id)
+  Hash.new.tap do |h|
+    h[:client_id] = request.id
+    h[:action] = 'request_received'
+    h[:id] = downloader_id
+    h[:status] = 'ok'
+  end.to_json
+end
+
+def error_message(request)
+  Hash.new.tap do |h|
+    h[:id] = request.downloader_id
+    h[:action] = 'error'
+    h[:error] = 'Something wrong'
+  end.to_json
+end
+
+def request_completed_message(request)
+  Hash.new.tap do |h|
+    h[:id] = request.downloader_id
+    h[:action] = 'request_completed'
+    h[:approximate_size] = 987654
+    h[:download_url] = "http://download.example.com/download_id/get"
+  end.to_json
+end
