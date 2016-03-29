@@ -1,0 +1,16 @@
+%p
+  Your download for the directory:
+
+  #{@request.cfs_directory.relative_path}
+
+  is ready.
+
+%p
+  %a
+    = link_to 'Download', @response['download_url']
+
+%p
+  Note: For large (more than 4GB or more than about 65000 files) downloads certain zip software will have trouble
+  unzipping your download. In particular, the default Mac OS X tools can be problematic. 7Zip and The Unarchiver
+  are replacements that will be able to handle these downloads.
+

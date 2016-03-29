@@ -10,28 +10,48 @@ Feature: Cfs directory export
     And the physical cfs directory 'dogs/pugs' has a file 'description.txt' with contents 'anything'
     And the collection with title 'Animals' has child file groups with fields:
       | title | type              |
-      | Dogs | BitLevelFileGroup |
+      | Dogs  | BitLevelFileGroup |
     And the file group titled 'Dogs' has cfs root 'dogs' and delayed jobs are run
 
   Scenario: Request an export of a directory
     Given I am logged in as a manager
     When I view the cfs directory for the file group titled 'Dogs' for the path '.'
-    And I click on 'Download Files' and delayed jobs are run
+    And I click on 'Download Files'
     Then I should see 'Your directory has been scheduled for export. You will be notified by email when the export is complete.'
-    And there should be an exported directory with paths:
-      | intro.txt |
-    And 'manager@example.com' should receive an email with subject 'Medusa export completed'
+    And there should be a simple download request for the export of the cfs directory for the file group titled 'Dogs' for the path '.'
 
   Scenario: Request an export of a directory tree
     Given I am logged in as a manager
     When I view the cfs directory for the file group titled 'Dogs' for the path '.'
-    And I click on 'Download Files and All Subdirectories' and delayed jobs are run
+    And I click on 'Download Files and All Subdirectories'
     Then I should see 'Your directory tree has been scheduled for export. You will be notified by email when the export is complete.'
-    And there should be an exported directory with paths:
-      | intro.txt | pugs/picture.jpg | pugs/description.txt |
-    And 'manager@example.com' should receive an email with subject 'Medusa export completed'
+    And there should be a recursive download request for the export of the cfs directory for the file group titled 'Dogs' for the path '.'
+
+  Scenario: Error message is received
+    Given there is a downloader request for the export of the cfs directory for the file group titled 'Dogs' for the path '.' with fields:
+      | email            | status  | downloader_id |
+      | user@example.com | pending | 123abc        |
+    When a downloader error message is received with id '123abc'
+    Then the downloader request with id '123abc' should have status 'error'
+    And 'user@example.com' should receive an email with subject 'Medusa Download error'
+    And 'medusa-admin@example.com' should receive an email with subject 'Medusa Download error'
+
+  Scenario: Request received message is received
+    Given there is a downloader request for the export of the cfs directory for the file group titled 'Dogs' for the path '.' with fields:
+      | email            | status  | downloader_id |
+      | user@example.com | pending | 123abc        |
+    When a downloader request received message is received with id '123abc'
+    Then the downloader request with id '123abc' should have status 'request_received'
+
+  Scenario: Request completed message is received
+    Given there is a downloader request for the export of the cfs directory for the file group titled 'Dogs' for the path '.' with fields:
+      | email            | status           | downloader_id |
+      | user@example.com | request_received | 123abc        |
+    When a downloader request completed message is received with id '123abc'
+    Then the downloader request with id '123abc' should have status 'request_completed'
+    And 'user@example.com' should receive an email with subject 'Medusa Download ready'
 
   Scenario: Deny exports to public and users
     Then deny object permission on the cfs directory with path 'dogs' to users for action with redirection:
       | public user | export(post), export_tree(post) | authentication |
-      | user     | export(post), export_tree(post) | unauthorized   |
+      | user        | export(post), export_tree(post) | unauthorized   |

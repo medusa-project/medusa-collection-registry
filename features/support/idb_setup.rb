@@ -27,5 +27,5 @@ Before('@idb') do
     FileUtils.rm_rf(dir)
   end
   #clear idb queues
-  AmqpConnector.instance.clear_queues(Idb::Config.instance.all_queues)
+  AmqpConnector.connector(:medusa).clear_queues(Idb::Config.instance.all_queues)
 end

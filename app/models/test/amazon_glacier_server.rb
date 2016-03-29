@@ -14,22 +14,18 @@ module Test
       self.outgoing_queue = Application.medusa_config.amazon_incoming_queue
     end
 
-    def clear_queues
-      AmqpConnector.instance.clear_queues(self.incoming_queue, self.outgoing_queue)
-    end
-
     def import_succeed
-      AmqpConnector.instance.with_parsed_message(self.incoming_queue) do |message|
+      AmqpConnector.connector(:medusa).with_parsed_message(self.incoming_queue) do |message|
         return_message = {pass_through: message['pass_through'], status: 'success',
                           parameters: {archive_ids: [UUID.generate]}, action: 'upload_directory'}
-        AmqpConnector.instance.send_message(self.outgoing_queue, return_message)
+        AmqpConnector.connector(:medusa).send_message(self.outgoing_queue, return_message)
       end
     end
 
     def import_fail
-      AmqpConnector.instance.with_parsed_message(self.incoming_queue) do |message|
+      AmqpConnector.connector(:medusa).with_parsed_message(self.incoming_queue) do |message|
         return_message = {pass_through: message['pass_through'], status: 'failure', error_message: 'test_error', action: 'upload_directory'}
-        AmqpConnector.instance.send_message(self.outgoing_queue, return_message)
+        AmqpConnector.connector(:medusa).send_message(self.outgoing_queue, return_message)
       end
     end
 
