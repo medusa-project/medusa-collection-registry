@@ -25,8 +25,8 @@
             = fa_icon('download')
             %span.caret
           %ul.dropdown-menu.dropdown-menu-right
-            %li= link_to 'Download Files', export_cfs_directory_path(@directory), method: :post
-            %li= link_to 'Download Files and All Subdirectories', export_tree_cfs_directory_path(@directory), method: :post
+            %li= link_to 'Download Files', export_cfs_directory_path(@directory), method: :post, remote: true
+            %li= link_to 'Download Files and All Subdirectories', export_tree_cfs_directory_path(@directory), method: :post, remote: true
             %li= link_to 'JSON', cfs_directory_path(@directory, format: :json)
 
 = yield
