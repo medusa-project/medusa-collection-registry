@@ -31,7 +31,6 @@ Then(/^the IDB files should be present in medusa storage$/) do
   expect(Idb::Config.instance.idb_file_group.total_files).to eq(1)
   Idb::Config.instance.idb_cfs_directory.each_file_in_tree do |file|
     expect(file.name).to eq('file.txt')
-    expect(file.uuid).to eq(File.basename(file.cfs_directory.path))
     expect(File.read(file.absolute_path)).to match('Staging text')
   end
 end

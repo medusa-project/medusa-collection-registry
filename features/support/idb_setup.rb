@@ -4,7 +4,7 @@ module IdbTestHelper
   module_function
 
   def idb_ingest_message
-    {'operation' => 'ingest', 'staging_path' => 'test_dir/file.txt'}
+    {'operation' => 'ingest', 'staging_path' => 'prefix/test_dir/file.txt'}
   end
 
   def staging_path

@@ -26,8 +26,12 @@ class Idb::IngestJob < Job::Base
     self.save!
   end
 
+  def item_path_from_root
+    File.dirname(staging_path.split('/').drop(1).join('/'))
+  end
+
   def target_directory
-    File.join(uuid[0, 2], uuid[2, 2], uuid)
+    item_path_from_root
   end
 
   def target_file
@@ -86,7 +90,8 @@ MESSAGE
   end
 
   def return_message
-    {operation: 'ingest', staging_path: staging_path, medusa_path: target_file,
+    {operation: 'ingest', staging_path: staging_path,
+     medusa_path: File.join(Idb::Config.instance.idb_cfs_directory.path, target_file),
      status: 'ok', uuid: uuid}
   end
 
