@@ -91,7 +91,7 @@ MESSAGE
 
   def return_message
     {operation: 'ingest', staging_path: staging_path,
-     medusa_path: File.join(Idb::Config.instance.idb_cfs_directory.path, target_file),
+     medusa_path: target_file,
      status: 'ok', uuid: uuid}
   end
 
