@@ -72,8 +72,10 @@ MESSAGE
 
   def create_cfs_file
     transaction do
-      file = immediate_parent_directory.cfs_files.create!(name: file_name)
-      file.uuid = uuid
+      unless immediate_parent_directory.cfs_files.find_by(name: file_name)
+        file = immediate_parent_directory.cfs_files.create!(name: file_name)
+        file.uuid = uuid
+      end
     end
   end
 
