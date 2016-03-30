@@ -31,4 +31,3 @@ Feature: View virus check
       | admin     |
       | manager   |
       | user      |
-

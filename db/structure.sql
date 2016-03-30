@@ -1741,7 +1741,9 @@ CREATE TABLE collections (
     private_description_html text,
     external_id character varying(255),
     publish boolean DEFAULT false,
-    representative_image character varying DEFAULT ''::character varying
+    representative_image character varying DEFAULT ''::character varying,
+    representative_item character varying DEFAULT ''::character varying,
+    published_in_dls boolean DEFAULT false
 );
 
 
@@ -6825,3 +6827,4 @@ INSERT INTO schema_migrations (version) VALUES ('20160302195237');
 
 INSERT INTO schema_migrations (version) VALUES ('20160322151332');
 
+INSERT INTO schema_migrations (version) VALUES ('20160330152020');
