@@ -72,14 +72,10 @@ function insert_barcode_item(i) {
   var item_data = barcode_item_data[i];
   Object.keys(item_data).forEach(function (key) {
     var field = "#item_" + key;
-    if (is_blank($(field).val())) {
+    if (_.string.isBlank($(field).val())) {
       $(field).val(item_data[key]);
     }
   });
-}
-
-function is_blank(string) {
-  return /^\s*$/.test(string);
 }
 
 function before_mass_action_submit() {
