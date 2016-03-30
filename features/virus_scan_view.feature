@@ -31,7 +31,7 @@ Feature: View virus check
     And I click on 'View' in the virus-scan actions and delayed jobs are run
     Then I should see 'images'
     And I should see all of:
-      | Infected files: 1 | Scanned files: 2 | dogs/images/clam.exe: ClamAV-Test-File FOUND |
+      | Infected files: 1 | Scanned files: 2 | dogs/images/clam.exe: Clamav.Test.File-6 FOUND |
 
   Scenario: View results of a virus check as a user
     When I relogin as a user
@@ -39,4 +39,4 @@ Feature: View virus check
     And I click on 'View' in the virus-scan actions and delayed jobs are run
     Then I should see 'images'
     And I should see all of:
-      | Infected files: 1 | Scanned files: 2 | dogs/images/clam.exe: ClamAV-Test-File FOUND |
+      | Infected files: 1 | Scanned files: 2 | dogs/images/clam.exe: Clamav.Test.File-6 FOUND |

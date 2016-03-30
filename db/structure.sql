@@ -1741,7 +1741,9 @@ CREATE TABLE collections (
     private_description_html text,
     external_id character varying(255),
     publish boolean DEFAULT false,
-    representative_image character varying DEFAULT ''::character varying
+    representative_image character varying DEFAULT ''::character varying,
+    representative_item character varying DEFAULT ''::character varying,
+    published_in_dls boolean DEFAULT false
 );
 
 
@@ -1834,6 +1836,40 @@ CREATE SEQUENCE delayed_jobs_id_seq
 --
 
 ALTER SEQUENCE delayed_jobs_id_seq OWNED BY delayed_jobs.id;
+
+
+--
+-- Name: downloader_requests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE downloader_requests (
+    id integer NOT NULL,
+    email character varying,
+    cfs_directory_id integer,
+    downloader_id character varying,
+    status character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: downloader_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE downloader_requests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: downloader_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE downloader_requests_id_seq OWNED BY downloader_requests.id;
 
 
 --
@@ -3853,6 +3889,13 @@ ALTER TABLE ONLY delayed_jobs ALTER COLUMN id SET DEFAULT nextval('delayed_jobs_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY downloader_requests ALTER COLUMN id SET DEFAULT nextval('downloader_requests_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq'::regclass);
 
 
@@ -4317,6 +4360,14 @@ ALTER TABLE ONLY content_types
 
 ALTER TABLE ONLY delayed_jobs
     ADD CONSTRAINT delayed_jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: downloader_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY downloader_requests
+    ADD CONSTRAINT downloader_requests_pkey PRIMARY KEY (id);
 
 
 --
@@ -5095,6 +5146,20 @@ CREATE INDEX index_collections_on_updated_at ON collections USING btree (updated
 --
 
 CREATE UNIQUE INDEX index_content_types_on_name ON content_types USING btree (name);
+
+
+--
+-- Name: index_downloader_requests_on_downloader_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_downloader_requests_on_downloader_id ON downloader_requests USING btree (downloader_id);
+
+
+--
+-- Name: index_downloader_requests_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_downloader_requests_on_status ON downloader_requests USING btree (status);
 
 
 --
@@ -6759,4 +6824,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160302185450');
 INSERT INTO schema_migrations (version) VALUES ('20160302191209');
 
 INSERT INTO schema_migrations (version) VALUES ('20160302195237');
+
+INSERT INTO schema_migrations (version) VALUES ('20160322151332');
+
+INSERT INTO schema_migrations (version) VALUES ('20160330152020');
 
