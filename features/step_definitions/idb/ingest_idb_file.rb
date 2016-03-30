@@ -31,7 +31,6 @@ Then(/^the IDB files should be present in medusa storage$/) do
   expect(Idb::Config.instance.idb_file_group.total_files).to eq(1)
   Idb::Config.instance.idb_cfs_directory.each_file_in_tree do |file|
     expect(file.name).to eq('file.txt')
-    expect(file.uuid).to eq(File.basename(file.cfs_directory.path))
     expect(File.read(file.absolute_path)).to match('Staging text')
   end
 end
@@ -42,7 +41,8 @@ And(/^Medusa should have sent a return message to IDB$/) do
     expect(message['operation']).to eq('ingest')
     expect(message['status']).to eq('ok')
     expect(message['staging_path']).to eq(IdbTestHelper.staging_path)
-    expect(CfsFile.first.relative_path).to match(message['medusa_path'])
+    f = CfsFile.first
+    expect(message['medusa_path']).to match(f.relative_path.gsub(/^#{f.cfs_directory.root_cfs_directory.relative_path}\//, ''))
   end
 end
 

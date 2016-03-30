@@ -26,8 +26,12 @@ class Idb::IngestJob < Job::Base
     self.save!
   end
 
+  def item_path_from_root
+    File.dirname(staging_path.split('/').drop(1).join('/'))
+  end
+
   def target_directory
-    File.join(uuid[0, 2], uuid[2, 2], uuid)
+    item_path_from_root
   end
 
   def target_file
@@ -52,7 +56,7 @@ class Idb::IngestJob < Job::Base
   end
 
   def rsync_file
-    opts = %w(-a --ignore-times --chmod Dug+w)
+    opts = %w(-a --no-l -L --ignore-times --chmod Dug+w)
     out, err, status = Open3.capture3('rsync', *opts, source_file, absolute_target_file)
     unless status.success?
       message = <<MESSAGE
@@ -68,7 +72,7 @@ MESSAGE
 
   def create_cfs_file
     transaction do
-      file = immediate_parent_directory.cfs_files.create!(name: file_name)
+      file = immediate_parent_directory.cfs_files.find_or_create_by!(name: file_name)
       file.uuid = uuid
     end
   end
@@ -86,7 +90,8 @@ MESSAGE
   end
 
   def return_message
-    {operation: 'ingest', staging_path: staging_path, medusa_path: target_file,
+    {operation: 'ingest', staging_path: staging_path,
+     medusa_path: target_file,
      status: 'ok', uuid: uuid}
   end
 
