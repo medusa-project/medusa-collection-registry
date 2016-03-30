@@ -24,11 +24,10 @@ Feature: View virus check
     And I click on 'View' in the virus-scan actions and delayed jobs are run
     Then I should see 'images'
     And I should see all of:
-      | Infected files: 1 | Scanned files: 2 | dogs/images/clam.exe: Win.Trojan.Trojan-476 FOUND |
+      | Infected files: 1 | Scanned files: 2 | dogs/images/clam.exe: Clamav.Test.File-6 FOUND |
 
     Examples:
       | user_type |
       | admin     |
       | manager   |
       | user      |
-
