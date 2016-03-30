@@ -1,15 +1,16 @@
 :plain
 
-Your export of the directory:
+Your download for the directory:
 
-#{@job.cfs_directory.relative_path}
+#{@request.cfs_directory.relative_path}
 
-has completed.
+is ready.
 
 It is available at:
 
-#{@job.pickup_path}
+#{@response['download_url']}
 
-- if CfsDirectory.export_autoclean
-  After one week it will be deleted from that location. Please copy it to
-  your own storage for continued use.
+Note: For large (more than 4GB or more than about 65000 files) downloads certain zip software will have trouble
+unzipping your download. In particular, the default Mac OS X tools can be problematic. 7Zip and The Unarchiver
+are replacements that will be able to handle these downloads.
+

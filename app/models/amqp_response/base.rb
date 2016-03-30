@@ -48,7 +48,7 @@ class AmqpResponse::Base < Object
   end
 
   def self.handle_responses
-    AmqpConnector.instance.with_queue(incoming_queue) do |queue|
+    AmqpConnector.connector(self.connector_key).with_queue(incoming_queue) do |queue|
       while true
         delivery_info, properties, raw_payload = queue.pop
         break unless raw_payload
@@ -56,6 +56,11 @@ class AmqpResponse::Base < Object
         response.dispatch_result
       end
     end
+  end
+
+  #can override as needed
+  def self.connector_key
+    :medusa
   end
 
   #The key in the pass through hash used to find the class of the
