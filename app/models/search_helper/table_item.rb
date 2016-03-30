@@ -45,12 +45,12 @@ class SearchHelper::TableItem < SearchHelper::TableBase
   end
 
   def columns
-    [{header: 'Barcode', solr_field: :barcode, value_method: :search_barcode_link, searchable: true},
+    [{header: 'Mass Action', value_method: ->(decorated_item) {decorated_item.assign_checkbox(project)}, unsortable: true },
+     {header: 'Barcode', solr_field: :barcode, value_method: :search_barcode_link, searchable: true},
      {header: 'Bib Id', solr_field: :bib_id, value_method: :bib_id, searchable: true},
      {header: 'Title', solr_field: :some_title, value_method: :some_title, searchable: true},
      {header: 'Notes', solr_field: :notes, value_method: :notes, searchable: true},
      {header: 'Batch', solr_field: :batch, value_method: :search_batch_link, searchable: true},
-     {header: 'Assign', value_method: ->(decorated_item) {decorated_item.assign_checkbox(project)}, unsortable: true },
      {header: 'Call Number', solr_field: :call_number, value_method: :call_number, searchable: true},
      {header: 'Author', solr_field: :author, value_method: :author, searchable: true},
      {header: 'Record Series Id', solr_field: :record_series_id, value_method: :record_series_id, searchable: true},
