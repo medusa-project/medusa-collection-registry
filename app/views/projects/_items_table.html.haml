@@ -1,10 +1,12 @@
 = simple_form_for :assign_batch, url: assign_batch_project_path(@project), html: {class: 'form-inline' }, remote: true do |f|
   .row
-    .col-sm-12
-      .pull-right
-        = f.input :batch, label: 'Assign batch:&nbsp;'.html_safe, required: false
+    .col-sm-4
+      .pull-left
         %a{href: '#items', 'data-toggle' => 'checkboxes', 'data-action' => 'check', class: 'btn btn-default'} Check All on Page
         %a{href: '#items', 'data-toggle' => 'checkboxes', 'data-action' => 'uncheck', class: 'btn btn-default'} Uncheck All on Page
+    .col-sm-8
+      .pull-right
+        = f.input :batch, label: 'Assign batch:&nbsp;'.html_safe, required: false
         = f.submit :Assign, class: 'btn btn-primary', onclick: "before_assign_batch_submit();"
   .row
     %table.table.table-striped#items{'data-toggle' => 'checkboxes', 'data-range' => 'true'}
