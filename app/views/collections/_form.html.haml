@@ -10,13 +10,13 @@
             = f.association :repository, collection: repository_select_collection, include_blank: false, selected: @repository.id
             = f.input :description
             = f.input :access_url, as: :string, label: 'Access URL'
-            = f.input :representative_image
             = f.association :resource_types, as: :check_boxes, wrapper_html: {id: 'resource_types'}, wrapper: :horizontal_radio_and_checkboxes
           #administrative-metadata.tab-pane
             = f.input :external_id, label: 'External ID'
             = f.input :private_description
             = f.input :contact_email, label: 'Contact Person Email', type: :email
             = f.input :publish, wrapper: :horizontal_radio_and_checkboxes
+            = f.input :representative_image
             = f.association :preservation_priority, include_blank: false, selected: (@collection.preservation_priority.id rescue PreservationPriority.default.id)
             = f.association :access_systems, collection: access_system_select_collection, html: {multiple: true}, as: :check_boxes, wrapper: :horizontal_radio_and_checkboxes
             = f.input :notes
