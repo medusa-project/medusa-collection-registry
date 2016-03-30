@@ -58,6 +58,9 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-datatables-rails'
 gem 'rails-jquery-autocomplete'
+gem 'clipboard-rails'
+gem 'underscore-rails'
+gem 'underscore-string-rails'
 
 gem 'nokogiri'
 

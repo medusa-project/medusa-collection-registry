@@ -21,4 +21,7 @@
 //= require local_time
 //= require common
 //= require ckeditor/init
+//= require clipboard
+//= require underscore
+//= require underscore.string
 //= require_tree .

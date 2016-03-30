@@ -2,8 +2,12 @@
   .row
     .col-sm-4
       .pull-left
-        %a{href: '#items', 'data-toggle' => 'checkboxes', 'data-action' => 'check', class: 'btn btn-default'} Check All on Page
-        %a{href: '#items', 'data-toggle' => 'checkboxes', 'data-action' => 'uncheck', class: 'btn btn-default'} Uncheck All on Page
+        %a.btn.btn-default{href: '#items', 'data-toggle' => 'checkboxes', 'data-action' => 'check'}
+          = fa_icon 'check-square-o', text: 'All'
+        %a.btn.btn-default{href: '#items', 'data-toggle' => 'checkboxes', 'data-action' => 'uncheck'}
+          = fa_icon 'square-o', text: 'All'
+        %a.btn.btn-default#bibids-to-clipboard-btn{href: '#'}
+          = fa_icon 'clipboard', text: 'Bibids'
     .col-sm-8
       .pull-right
         %ul.nav.nav-tabs{role: :tablist}

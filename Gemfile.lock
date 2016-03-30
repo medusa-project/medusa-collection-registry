@@ -126,6 +126,7 @@ GEM
       orm_adapter (~> 0.5.0)
     climate_control (0.0.3)
       activesupport (>= 3.0)
+    clipboard-rails (1.5.9)
     cliver (0.3.2)
     cocaine (0.5.7)
       climate_control (>= 0.0.3, < 1.0)
@@ -428,6 +429,8 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    underscore-rails (1.8.3)
+    underscore-string-rails (0.0.2)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
@@ -464,6 +467,7 @@ DEPENDENCIES
   capybara-puma
   capybara-webkit
   ckeditor
+  clipboard-rails
   coffee-rails
   connection_pool
   cucumber-rails
@@ -525,6 +529,8 @@ DEPENDENCIES
   thin
   twitter-bootstrap-rails!
   uglifier
+  underscore-rails
+  underscore-string-rails
   uuid
   valid_email
   will_paginate

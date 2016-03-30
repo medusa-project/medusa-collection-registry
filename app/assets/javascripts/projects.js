@@ -2,6 +2,7 @@ initialize_data_table("table#projects", {});
 
 $(function () {
   watch_item_barcode(".barcode_input");
+  set_up_bibid_clipboard();
 });
 
 //JS to watch barcode field and call back to rails for barcode information when appropriate
@@ -92,4 +93,25 @@ function set_item_table_page_length(length) {
 
 function item_table_storage_name() {
   return 'DataTables_item_table_' + window.location.pathname;
+}
+
+function set_up_bibid_clipboard() {
+  new Clipboard('#bibids-to-clipboard-btn', {
+      text: function() {
+        return selected_bibids();
+      }
+  })
+}
+
+function selected_bibids() {
+  var checked = $('#items input:checked');
+  var bibids = _.reject($.map(checked, checkbox_to_bibid), _.string.isBlank);
+  if (bibids.length == 0) {
+    bibids = [' '];
+  }
+  return _.reduce(bibids, function(memo, obj) {return _.string.join(',', memo, obj)});
+}
+
+function checkbox_to_bibid(checkbox) {
+  return $($('td', checkbox.closest('tr'))[2]).text();
 }
