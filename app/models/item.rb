@@ -6,7 +6,7 @@ class Item < ActiveRecord::Base
   auto_strip_attributes :barcode, nullify: false
 
   STATUSES = ['Sent to Conservation', 'Sent to Preservation', 'Sent to IPM', 'Sent for cataloging', 'Send to IA for digitization']
-
+  EQUIPMENT_TYPES = ['BC100', 'RCAM', 'Canon Sheetfed', 'Epson Flatbed']
   validates :status, inclusion: STATUSES, allow_blank: true
 
   searchable include: :project do

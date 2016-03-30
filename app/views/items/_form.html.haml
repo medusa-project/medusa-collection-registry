@@ -15,7 +15,7 @@
         = f.input :status, as: :select, collection: Item::STATUSES
         = f.input :reformatting_date, as: :string, input_html: {class: 'datepicker', value: @item.reformatting_date.if_blank(Date.today.to_s)}
         = f.input :reformatting_operator
-        = f.input :equipment
+        = f.input :equipment, as: :select, collection: Item::EQUIPMENT_TYPES, allow_blank: true
         = f.input :foldout_present, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
         = f.input :unique_identifier
       = field_set_tag('Voyager Metadata') do
