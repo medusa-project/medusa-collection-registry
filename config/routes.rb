@@ -65,7 +65,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   end
 
   resources :projects, concerns: [:attachable, :autocomplete_email] do
-    post :assign_batch, on: :member
+    post :mass_action, on: :member
     get :start_items_upload, on: :member
     post :upload_items, on: :member
     get :items, on: :member

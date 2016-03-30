@@ -81,7 +81,7 @@ function is_blank(string) {
   return /^\s*$/.test(string);
 }
 
-function before_assign_batch_submit() {
+function before_mass_action_submit() {
   localStorage.setItem(item_table_storage_name(), JSON.stringify($('#items').DataTable().page.len()));
   set_item_table_page_length(-1);
 }

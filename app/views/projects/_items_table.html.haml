@@ -1,4 +1,4 @@
-= simple_form_for :assign_batch, url: assign_batch_project_path(@project), html: {class: 'form-inline' }, remote: true do |f|
+= simple_form_for :mass_action, url: mass_action_project_path(@project), html: {class: 'form-inline' }, remote: true do |f|
   .row
     .col-sm-4
       .pull-left
@@ -6,8 +6,17 @@
         %a{href: '#items', 'data-toggle' => 'checkboxes', 'data-action' => 'uncheck', class: 'btn btn-default'} Uncheck All on Page
     .col-sm-8
       .pull-right
-        = f.input :batch, label: 'Assign batch:&nbsp;'.html_safe, required: false
-        = f.submit :Assign, class: 'btn btn-primary', onclick: "before_assign_batch_submit();"
+        %ul.nav.nav-tabs{role: :tablist}
+          %li{role: :presentation}
+            %a{href: '#delete-action', 'data-toggle': :tab} Delete
+          %li.active{role: :presentation}
+            %a{href: '#assign-batch-action', 'data-toggle': :tab} Batch
+        .tab-content
+          #delete-action.tab-pane{role: 'tab-pane'}
+            = f.submit :'Delete checked', class: 'btn btn-primary', onclick: "before_mass_action_submit();"
+          #assign-batch-action.tab-pane.active{role: 'tab-pane'}
+            = f.input :batch, label: 'Assign batch:&nbsp;'.html_safe, required: false
+            = f.submit :'Assign batch', class: 'btn btn-primary', onclick: "before_mass_action_submit();"
   .row
     %table.table.table-striped#items{'data-toggle' => 'checkboxes', 'data-range' => 'true'}
       %thead

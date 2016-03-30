@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
 
   before_action :require_medusa_user, except: [:index, :show, :public_show]
   before_action :find_project, only: [:show, :public_show, :edit, :update, :destroy, :attachments,
-                                      :assign_batch, :start_items_upload, :upload_items, :items]
+                                      :mass_action, :start_items_upload, :upload_items, :items]
   include ModelsToCsv
 
   autocomplete :user, :email
@@ -48,12 +48,14 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def assign_batch
+  def mass_action
     #authorize! :update, @project
-    batch = params[:assign_batch][:batch].strip
-    @project.items.where(id: params[:assign_batch][:assign]).find_each do |item|
-      item.batch = batch
-      item.save!
+    items = @project.items.where(id: params[:mass_action][:item])
+    case params[:commit]
+      when 'Assign batch'
+        assign_batch(params[:mass_action][:batch].strip, items)
+      when 'Delete checked'
+        items.destroy_all
     end
     respond_to do |format|
       format.html {redirect_to @project}
@@ -127,6 +129,13 @@ class ProjectsController < ApplicationController
   def allowed_params
     params[:project].permit(:title, :manager_email, :owner_email, :start_date,
                             :status, :specifications, :summary, :collection_id, :external_id)
+  end
+
+  def assign_batch(batch, items)
+    items.find_each do |item|
+      item.batch = batch
+      item.save!
+    end
   end
 
   def items_to_json(items)
