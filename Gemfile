@@ -115,7 +115,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'newrelic_rpm'
+  #gem 'newrelic_rpm'
 end
 
 group :test do

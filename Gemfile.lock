@@ -262,7 +262,6 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (3.0.1)
     netrc (0.10.3)
-    newrelic_rpm (3.14.0.305)
     nokogiri (1.6.7.1)
       mini_portile2 (~> 2.0.0.rc2)
     oink (0.10.1)
@@ -496,7 +495,6 @@ DEPENDENCIES
   logger
   net-http-digest_auth!
   net-ldap
-  newrelic_rpm
   nokogiri
   oink
   omniauth
