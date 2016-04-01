@@ -3,8 +3,17 @@ require 'open3'
 class Idb::IngestJob < Job::Base
 
   def self.create_for(message)
-    job = self.create!(staging_path: message['staging_path'])
-    Delayed::Job.enqueue(job)
+    job = self.new(staging_path: message['staging_path'])
+    if find_by(staging_path: job.staging_path) or File.exist?(job.absolute_target_file) or job.staging_path.blank?
+      Rails.logger.error "Failed to create IDB Ingest Job for message: #{message}. Duplicate file or blank path."
+      send_duplicate_file_message(message)
+    else
+      job.save!
+      Delayed::Job.enqueue(job)
+    end
+  rescue Exception => e
+    Rails.logger.error "Failed to create IDB Ingest Job for message: #{message}. Error: #{e}"
+    send_unknown_error_message(message, e)
   end
 
   def perform
@@ -17,6 +26,10 @@ class Idb::IngestJob < Job::Base
   rescue Exception => e
     Rails.logger.error("Error ingesting IDB file. Job: #{self.id}\nError: #{e}")
     raise
+  end
+
+  def absolute_target_file
+    File.join(Idb::Config.instance.idb_cfs_directory.absolute_path, target_file)
   end
 
   protected
@@ -36,10 +49,6 @@ class Idb::IngestJob < Job::Base
 
   def target_file
     File.join(target_directory, file_name)
-  end
-
-  def absolute_target_file
-    File.join(Idb::Config.instance.idb_cfs_directory.absolute_path, target_file)
   end
 
   def file_name
@@ -93,6 +102,24 @@ MESSAGE
     {operation: 'ingest', staging_path: staging_path,
      medusa_path: target_file,
      status: 'ok', uuid: uuid}
+  end
+
+  def self.duplicate_file_message(incoming_message)
+    {operation: 'ingest', staging_path: incoming_message['staging_path'],
+     status: 'error', error: 'File with the path already exists or is already scheduled for ingestion'}
+  end
+
+  def self.unknown_error_message(incoming_message, error)
+    {operation: 'ingest', staging_path: incoming_message['staging_path'],
+     status: 'error', error: "Unknown error: #{error}"}
+  end
+
+  def self.send_duplicate_file_message(incoming_message)
+    AmqpConnector.connector(:medusa).send_message(Idb::Config.instance.outgoing_queue, duplicate_file_message(incoming_message))
+  end
+
+  def self.send_unknown_error_message(incoming_message, error)
+    AmqpConnector.connector(:medusa).send_message(Idb::Config.instance.outgoing_queue, unknown_error_message(incoming_message, error))
   end
 
 end
