@@ -247,6 +247,12 @@ class CfsFile < ActiveRecord::Base
     self.fits_result.try(:xml_was)
   end
 
+  def remove_fits
+    self.fits_data.destroy! if self.fits_data.present?
+    self.fits_result.destroy! if self.fits_result.present?
+    self.reload
+  end
+
   protected
 
   def get_fits_xml
