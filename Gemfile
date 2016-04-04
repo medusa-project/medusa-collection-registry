@@ -11,7 +11,9 @@ gem 'passenger'
 gem 'haml'
 gem 'haml-rails'
 gem 'simple_form'
-gem 'auto_html'
+#auto_html 2.0 is breaking - need to fix up code before going, though right now I don't see that there is
+#an improvment worth doing it for
+gem 'auto_html', '~> 1.6.4'
 gem 'ckeditor'
 gem 'simple_memoize'
 gem 'auto_strip_attributes'
@@ -89,7 +91,7 @@ gem 'will_paginate-bootstrap'
 gem 'draper'
 
 gem 'uuid'
-gem 'paperclip', git: 'git://github.com/thoughtbot/paperclip.git'
+gem 'paperclip'#, git: 'git://github.com/thoughtbot/paperclip.git'
 
 gem 'font-awesome-rails'
 
