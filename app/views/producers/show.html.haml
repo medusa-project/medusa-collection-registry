@@ -11,6 +11,4 @@
         = show_field @producer, :notes_html, 'Notes'
 
     .col-sm-9#content
-      %a.toggles{href: '#', rel: 'tooltip', title: 'Hide or show the sidebar' }
-        %span.glyphicon.glyphicon-arrow-left
       = render 'collections_table'
