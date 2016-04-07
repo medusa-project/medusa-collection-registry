@@ -5,6 +5,7 @@
       %small #{@directory.path}
       = content_for :page_header_extra do
         UUID: #{@directory.uuid}
+    #export_message
   .col-xs-7
     .btn-group.pull-right
       - if @directory.public? and public_view_on?
