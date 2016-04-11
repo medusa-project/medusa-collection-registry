@@ -53,8 +53,7 @@ gem 'therubyracer'
 
 gem 'uglifier'
 
-# The "bootstrap3" branch is no longer needed -- bootstrap 3.2 is the default
-gem 'twitter-bootstrap-rails'#, :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
+gem 'twitter-bootstrap-rails'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
