@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 9.5.1
--- Dumped by pg_dump version 9.5.1
+-- Dumped by pg_dump version 9.5.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1699,8 +1699,7 @@ CREATE TABLE collections (
     external_id character varying(255),
     publish boolean DEFAULT false,
     representative_image character varying DEFAULT ''::character varying,
-    representative_item character varying DEFAULT ''::character varying,
-    published_in_dls boolean DEFAULT false
+    representative_item character varying DEFAULT ''::character varying
 );
 
 
@@ -6808,4 +6807,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160322151332');
 INSERT INTO schema_migrations (version) VALUES ('20160330152020');
 
 INSERT INTO schema_migrations (version) VALUES ('20160401193220');
+
+INSERT INTO schema_migrations (version) VALUES ('20160411215028');
 
