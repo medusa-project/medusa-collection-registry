@@ -101,7 +101,27 @@ MESSAGE
   def return_message
     {operation: 'ingest', staging_path: staging_path,
      medusa_path: target_file,
-     status: 'ok', uuid: uuid}
+     status: 'ok', uuid: uuid}.merge(return_directory_information)
+  end
+
+  def return_directory_information
+    parent_directory = immediate_parent_directory
+    grandparent_directory = parent_directory.parent
+    item_root_directory = parent_directory.ancestors_and_self.drop(1).first
+    Hash.new.tap do |h|
+      h[:parent_dir] = dir_to_json(parent_directory)
+      h[:grandparent_dir] = dir_to_json(grandparent_directory)
+      h[:item_root_dir] = dir_to_json(item_root_directory)
+    end
+  end
+
+  def dir_to_json(cfs_directory)
+    Hash.new.tap do |h|
+      h[:id] = cfs_directory.id
+      h[:uuid] = cfs_directory.uuid
+      h[:relative_path] = cfs_directory.relative_path_from_root
+      h[:url_path] = Rails.application.routes.url_helpers.cfs_directory_path(cfs_directory)
+    end
   end
 
   def self.duplicate_file_message(incoming_message)

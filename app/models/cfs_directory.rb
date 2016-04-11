@@ -145,7 +145,11 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def relative_path
-    self.root? ? self.path : File.join(self.parent.relative_path, self.path)
+    File.join(ancestors_and_self.collect {|d| d.path})
+  end
+
+  def relative_path_from_root
+    File.join(ancestors_and_self.collect {|d| d.path}.drop(1))
   end
 
   def absolute_path
