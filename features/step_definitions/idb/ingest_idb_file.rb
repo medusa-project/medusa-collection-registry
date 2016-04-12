@@ -41,6 +41,7 @@ And(/^Medusa should have sent a return message to IDB$/) do
     expect(message['operation']).to eq('ingest')
     expect(message['status']).to eq('ok')
     expect(message['staging_path']).to eq(IdbTestHelper.staging_path)
+    expect(message['item_root_dir']).to be_truthy
     f = CfsFile.first
     expect(message['medusa_path']).to match(f.relative_path.gsub(/^#{f.cfs_directory.root_cfs_directory.relative_path}\//, ''))
   end
