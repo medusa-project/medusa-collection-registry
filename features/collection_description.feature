@@ -45,7 +45,6 @@ Feature: Collection description
       | Representative image | my_image_url         |
       | Representative item  | my_item_url          |
     And I check 'Publish'
-    And I check 'Published in dls'
     And I press 'Update'
     Then I should be on the view page for the collection with title 'dogs'
     And I should see all of:
