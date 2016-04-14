@@ -20,17 +20,17 @@ module Idb
       Rails.logger.error "Failed to create IDB Ingest Job for message: #{message}"
       raise
     end
-  end
 
-  #redundant except for tests
-  def self.handle_responses
-    AmqpConnector.connector(:medusa).with_queue(Config.instance.incoming_queue) do |queue|
-      while true
-        delivery_info, properties, raw_payload = queue.pop
-        break unless raw_payload
-        handle_message(JSON.parse(raw_payload))
+    #redundant except for tests
+    def self.handle_responses
+      AmqpConnector.connector(:medusa).with_queue(Config.instance.incoming_queue) do |queue|
+        while true
+          delivery_info, properties, raw_payload = queue.pop
+          break unless raw_payload
+          handle_message(raw_payload)
+        end
       end
     end
-  end
 
+  end
 end
