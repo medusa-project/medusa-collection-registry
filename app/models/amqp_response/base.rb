@@ -52,10 +52,14 @@ class AmqpResponse::Base < Object
       while true
         delivery_info, properties, raw_payload = queue.pop
         break unless raw_payload
-        response = self.new(raw_payload)
-        response.dispatch_result
+        handle_response(raw_payload)
       end
     end
+  end
+
+  def self.handle_response(raw_payload)
+    response = self.new(raw_payload)
+    response.dispatch_result
   end
 
   #can override as needed
