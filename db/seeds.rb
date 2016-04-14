@@ -12,35 +12,13 @@ ActiveRecord::Base.transaction do
   end
 
 #Resource types
-  CHANGE_TYPES = {'cartographic' => 'maps', 'notated music' => 'sheet music',
-                  'sound recording' => 'audio', 'moving image' => 'video'}
-  UPDATE_TYPES = {'sound recording-musical' => 'audio', 'sound recording-nonmusical' => 'audio'}
-  DELETE_TYPES = ['software, multimedia']
-  OLD_TYPES = ['text', 'still image', 'three dimensional object', 'mixed material']
-  NEW_TYPES = ['newspapers', 'archives', 'photographs', 'born digital materials', 'oral histories',
-               'books and manuscripts', 'scholarly publications', 'posters', 'audiovisual materials',
-               'postcards', 'thesis and dissertations']
-  (OLD_TYPES + NEW_TYPES).each do |name|
+  TYPES = ['text', 'still image', 'three dimensional object', 'mixed material',
+           'maps', 'sheet music', 'audio', 'video',
+           'newspapers', 'archives', 'photographs', 'born digital materials', 'oral histories',
+           'books and manuscripts', 'scholarly publications', 'posters', 'audiovisual materials',
+           'postcards', 'thesis and dissertations']
+  TYPES.each do |name|
     ResourceType.find_or_create_by(name: name)
-  end
-  DELETE_TYPES.each do |name|
-    ResourceType.find_by(name: name).try(:destroy!)
-  end
-  CHANGE_TYPES.each do |old, new|
-    if resource_type = ResourceType.find_by(name: old)
-      resource_type.name = new
-      resource_type.save!
-    end
-  end
-  UPDATE_TYPES.each do |old, new|
-    old_type = ResourceType.find_by(name: old)
-    new_type = ResourceType.find_by(name: new)
-    return unless old_type and new_type
-    old_type.resource_typeable_resource_type_joins.each do |join|
-      resource_typeable = join.resource_typeable
-      resource_typeable.resource_types << new_type
-    end
-    old_type.destroy!
   end
 
 #PreservationPriorities

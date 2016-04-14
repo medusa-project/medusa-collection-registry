@@ -27,6 +27,6 @@ Feature: Collection Resource types
   Scenario: Resource types are seeded with common values
   #this is just a spot check - see seed file for all values - note we need to use some not in the background
     Then each resource type with name should exist:
-      | still image | moving image |
+      | still image | video |
 
 
