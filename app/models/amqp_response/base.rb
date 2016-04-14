@@ -47,7 +47,7 @@ class AmqpResponse::Base < Object
     end
   end
 
-  #TODO remove when redundant
+  #redundant except for testing
   def self.handle_responses
     AmqpConnector.connector(self.connector_key).with_queue(incoming_queue) do |queue|
       while true
