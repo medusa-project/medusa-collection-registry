@@ -1,12 +1,15 @@
 class AmqpListener
 
   attr_accessor :amqp_config, :queue_name, :name, :action_callback, :connection
+  cattr_accessor :listeners
 
   def initialize(amqp_config:, queue_name:, name:, action_callback:)
     self.amqp_config = amqp_config
     self.queue_name = queue_name
     self.name = name
     self.action_callback = action_callback
+    self.class.listeners ||= Hash.new
+    self.class.listeners[self.name] = self
     self.connect
   end
 
