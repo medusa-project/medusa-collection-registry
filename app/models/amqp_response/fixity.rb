@@ -12,6 +12,10 @@ class AmqpResponse::Fixity < AmqpResponse::Base
     ::CfsFile.incoming_queue
   end
 
+  def self.listener_name
+    'fixity'
+  end
+
   def success_method
     :on_amqp_fixity_success
   end

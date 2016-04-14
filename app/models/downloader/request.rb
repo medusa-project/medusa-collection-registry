@@ -5,6 +5,13 @@ class Downloader::Request < ActiveRecord::Base
   STATUSES = %w(pending request_received request_completed error)
   validates :status, inclusion: STATUSES, allow_blank: false
 
+  def self.listen
+    config = Application.downloader_config
+    AmqpListener.new(amqp_config: config.amqp, name: 'downloader',
+                     queue_name: config.incoming_queue,
+                     action_callback: ->(payload) {handle_response(payload)}).listen
+  end
+
   def self.handle_response(payload)
     response = JSON.parse(payload)
     case response['action']

@@ -17,6 +17,10 @@ class AmqpResponse::AmazonBackup < AmqpResponse::Base
     ::AmazonBackup.incoming_queue
   end
 
+  def self.listener_name
+    'amazon backup'
+  end
+
   def success_method
     :on_amazon_glacier_succeeded_message
   end

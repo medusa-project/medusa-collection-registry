@@ -47,6 +47,7 @@ class AmqpResponse::Base < Object
     end
   end
 
+  #TODO remove when redundant
   def self.handle_responses
     AmqpConnector.connector(self.connector_key).with_queue(incoming_queue) do |queue|
       while true
@@ -55,6 +56,13 @@ class AmqpResponse::Base < Object
         handle_response(raw_payload)
       end
     end
+  end
+
+  def self.listen
+    amqp_config = AmqpConnector.connector(self.connector_key).config
+    AmqpListener.new(amqp_config: amqp_config, name: listener_name,
+                     queue_name: incoming_queue,
+                     action_callback: ->(payload) {handle_response(payload)}).listen
   end
 
   def self.handle_response(raw_payload)
@@ -81,6 +89,11 @@ class AmqpResponse::Base < Object
 
   #AMQP queue from which to pull messages
   def self.incoming_queue
+    raise RuntimeError, "Subclass Responsibility"
+  end
+
+  #Name to use for listener logging
+  def self.listener_name
     raise RuntimeError, "Subclass Responsibility"
   end
 
