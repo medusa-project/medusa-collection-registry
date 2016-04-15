@@ -54,7 +54,7 @@ class SearchHelper::TableItem < SearchHelper::TableBase
      {header: 'Call Number', solr_field: :call_number, value_method: :call_number, searchable: true},
      {header: 'Author', solr_field: :author, value_method: :author, searchable: true},
      {header: 'Record Series Id', solr_field: :record_series_id, value_method: :record_series_id, searchable: true},
-     {header: '', value_method: :action_buttons, unsortable: true}]
+     {header: 'Action', value_method: :action_buttons, unsortable: true}]
   end
 
 end
