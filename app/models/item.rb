@@ -14,7 +14,8 @@ class Item < ActiveRecord::Base
       text field
       string field, stored: true
     end
-    %i(some_title bib_id call_number author record_series_id).each do |field|
+    %i(some_title bib_id call_number author record_series_id oclc_number imprint local_title local_description
+reformatting_operator archival_management_system_url series sub_series box).each do |field|
       text field
       string field
     end
@@ -22,6 +23,7 @@ class Item < ActiveRecord::Base
     string :project_title
     integer :project_id
     time :updated_at
+    date :reformatting_date
   end
 
   def ensure_barcode

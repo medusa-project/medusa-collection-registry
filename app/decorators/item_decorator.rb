@@ -23,7 +23,9 @@ class ItemDecorator < BaseDecorator
 
   #TODO: create the buttons
   def action_buttons
-    h.small_edit_button(self) + ' ' + h.small_clone_button(h.new_item_path(source_id: self.id), method: :get)
+    h.content_tag(:span, class: 'project-items-table-actions') do
+      h.small_edit_button(self) + h.small_clone_button(h.new_item_path(source_id: self.id), method: :get)
+    end
   end
 
 end
