@@ -35,6 +35,9 @@
         = f.input :box
         = f.input :folder
         = f.input :item_title
+        = f.input :creator
+        = f.input :date, as: :string, input_html: {class: 'datepicker', value: @item.date}
+        = f.input :rights_information
     .col-sm-4
       = f.input :notes
       = f.input :local_description

@@ -40,9 +40,12 @@ Feature: Project Items
     When I view the item with barcode 'xyz123'
     And I click on 'Edit'
     And I fill in fields:
-      | Title             | Toys   |
-      | Author            | Buster |
-      | Unique identifier | abc123 |
+      | Title              | Toys         |
+      | Author             | Buster       |
+      | Unique identifier  | abc123       |
+      | Creator            | Joebob       |
+      | Date               | 1999-10-17   |
+      | Rights information | Rights stuff |
     And I select 'RCAM' from 'Equipment'
     And I check 'Foldout present'
     And I check 'Foldout done'
@@ -55,7 +58,7 @@ Feature: Project Items
       | Dogs | Ruthie |
     When I view the item with barcode 'xyz123'
     Then I should see all of:
-      | Toys | Buster | abc123 | RCAM |
+      | Toys | Buster | abc123 | RCAM | Joebob | 1999-10-17 | Rights stuff |
     And the item with fields should exist:
       | title | foldout_present | foldout_done | item_done |
       | Toys  | true            | true         | true      |
