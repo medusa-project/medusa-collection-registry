@@ -84,9 +84,10 @@ class ItemsController < ApplicationController
 
   def allowed_params
     params[:item].permit(:barcode, :local_title, :local_description, :notes, :batch, :file_count, :status, :reformatting_date,
-                         :reformatting_operator, :equipment, :foldout_present, :unique_identifier,
+                         :reformatting_operator, :equipment, :foldout_present, :foldout_done, :item_done, :unique_identifier,
                          :call_number, :title, :author, :imprint, :bib_id, :oclc_number,
-                         :record_series_id, :archival_management_system_url, :series, :sub_series, :box, :folder, :item_title)
+                         :record_series_id, :archival_management_system_url, :series, :sub_series, :box, :folder,
+                         :item_title, :creator, :date, :rights_information)
   end
 
 end

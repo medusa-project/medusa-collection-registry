@@ -11,6 +11,8 @@
       = show_field @item, :reformatting_operator
       = show_field @item, :equipment
       = show_field @item, :foldout_present
+      = show_field @item, :foldout_done
+      = show_field @item, :item_done
       = show_field @item, :unique_identifier
       %hr
       = show_field @item, :call_number
@@ -27,9 +29,11 @@
       = show_field @item, :box
       = show_field @item, :folder
       = show_field @item, :item_title
+      = show_field @item, :creator
+      = show_field @item, :date
+      = show_field @item, :rights_information
     .col-md-8
       %h4 Notes
       %div= @item.notes
       %h4 Local Description
       %div= @item.local_description
-
