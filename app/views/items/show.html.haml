@@ -11,6 +11,8 @@
       = show_field @item, :reformatting_operator
       = show_field @item, :equipment
       = show_field @item, :foldout_present
+      = show_field @item, :foldout_done
+      = show_field @item, :item_done
       = show_field @item, :unique_identifier
       %hr
       = show_field @item, :call_number
@@ -32,4 +34,3 @@
       %div= @item.notes
       %h4 Local Description
       %div= @item.local_description
-

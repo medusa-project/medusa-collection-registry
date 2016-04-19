@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.0
+-- Dumped from database version 9.5.1
 -- Dumped by pg_dump version 9.5.2
 
 SET statement_timeout = 0;
@@ -2325,7 +2325,9 @@ CREATE TABLE items (
     foldout_present boolean DEFAULT false NOT NULL,
     equipment character varying DEFAULT ''::character varying,
     status character varying,
-    unique_identifier character varying
+    unique_identifier character varying,
+    foldout_done boolean DEFAULT false NOT NULL,
+    item_done boolean DEFAULT false NOT NULL
 );
 
 
@@ -6809,4 +6811,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160330152020');
 INSERT INTO schema_migrations (version) VALUES ('20160401193220');
 
 INSERT INTO schema_migrations (version) VALUES ('20160411215028');
+
+INSERT INTO schema_migrations (version) VALUES ('20160419143152');
 

@@ -17,6 +17,8 @@
         = f.input :reformatting_operator
         = f.input :equipment, as: :select, collection: Item::EQUIPMENT_TYPES, allow_blank: true
         = f.input :foldout_present, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
+        = f.input :foldout_done, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
+        = f.input :item_done, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
         = f.input :unique_identifier
       = field_set_tag('Voyager Metadata') do
         = f.input :call_number
