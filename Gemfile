@@ -29,9 +29,6 @@ gem 'ruby-filemagic', require: 'filemagic'
 
 gem 'jbuilder'
 
-#custom gem that uses a web service to generate fits.
-gem 'fits', '~> 1.0.6', git: 'git://github.com/medusa-project/fits.git'
-
 gem 'delayed_job_active_record'
 #Pin because later versions seem to have a problem with doing actions on the delayed jobs - they are aware of the problem
 gem 'delayed_job_web', '1.2.5'
