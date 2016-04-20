@@ -39,7 +39,8 @@ class Config < Object
       fixity_server_outgoing_queue: %i(fixity_server outgoing_queue),
       medusa_users_group: :medusa_users_group,
       medusa_admins_group: :medusa_admins_group,
-      fits_batch_size: :fits_batch_size
+      fits_batch_size: :fits_batch_size,
+      fits_server_url: :fits_server_url
   }
 
   EXPOSED_VALUES.each do |method_name, keys|

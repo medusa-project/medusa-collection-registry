@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/medusa-project/fits.git
-  revision: 1d8620943d7cb44b2690dc368a92f0e3ab6b01eb
-  specs:
-    fits (1.0.6)
-      typhoeus (>= 0.6.2)
-
-GIT
   remote: git://github.com/medusa-project/handle-server.git
   revision: d4f9632d60601073e06d0905c9ab9b1bff05b2fe
   specs:
@@ -162,8 +155,6 @@ GEM
       activesupport (>= 3.0)
       request_store (~> 1.0)
     erubis (2.7.0)
-    ethon (0.8.1)
-      ffi (>= 1.3.0)
     eventmachine (1.2.0.1)
     execjs (2.6.0)
     factory_girl (4.7.0)
@@ -408,8 +399,6 @@ GEM
       execjs (>= 2.2.2, >= 2.2)
       less-rails (>= 2.5.0)
       railties (>= 3.1)
-    typhoeus (1.0.1)
-      ethon (>= 0.8.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
@@ -464,7 +453,6 @@ DEPENDENCIES
   delayed_job_web (= 1.2.5)
   draper
   factory_girl
-  fits (~> 1.0.6)!
   font-awesome-rails
   haml
   haml-rails

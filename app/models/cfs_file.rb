@@ -256,7 +256,7 @@ class CfsFile < ActiveRecord::Base
   protected
 
   def get_fits_xml
-    uri = URI("http://localhost:4567/fits/file")
+    uri = URI(File.join(Application.medusa_config.fits_server_url, 'fits/file'))
     uri.query = URI.encode_www_form({path: self.absolute_path.gsub(/^\/+/, '')})
     response = HTTParty.get(uri.to_s, timeout: 3000)
     case response.code
