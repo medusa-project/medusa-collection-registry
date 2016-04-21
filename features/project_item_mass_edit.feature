@@ -20,13 +20,15 @@ Feature: Project items mass edit
     And I fill in item mass edit fields:
       | Batch                 | batch_3 |
       | Reformatting operator | Dee     |
+    And I select 'RCAM' from 'Equipment'
+    And I check 'mass_action_update_equipment'
     And I click on 'Mass update'
     And I wait 1 second
     Then the item with fields should exist:
-      | barcode | batch   | reformatting_operator |
-      | xyz123  | batch_3 | Dee                   |
-      | abc789  | batch_3 | Dee                   |
-      | pqr456  | batch_3 | Dee                   |
+      | barcode | batch   | reformatting_operator | equipment |
+      | xyz123  | batch_3 | Dee                   | RCAM      |
+      | pqr456  | batch_3 | Dee                   | RCAM      |
+      | abc789  | batch_3 | Dee                   | RCAM      |
     And I should see 'batch_3'
     And I should see none of:
       | batch_1 | batch_2 |

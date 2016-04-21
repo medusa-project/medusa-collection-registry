@@ -155,7 +155,7 @@ class ProjectsController < ApplicationController
     end.to_json
   end
 
-  MASS_UPDATE_FIELDS = [:batch, :reformatting_operator]
+  MASS_UPDATE_FIELDS = [:batch, :reformatting_operator, :reformatting_date, :equipment]
   def mass_update(params)
     item_ids = params[:item_ids].split(',')
     items = @project.items.where(id: item_ids)

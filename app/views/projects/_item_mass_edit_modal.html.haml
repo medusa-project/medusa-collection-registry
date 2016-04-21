@@ -7,7 +7,19 @@
             Update field?
           .col-sm-9
         = render 'item_mass_edit_field_row', f: f, field: :batch
+        .row
+          .col-sm-1
+            = f.input :"update_reformatting_date", label: false, as: :boolean
+          .col-sm-9
+            = f.input :reformatting_date, label: false, required: false, as: :string, input_html: {class: 'datepicker', value: Date.today.to_s}
+            = f.label :reformatting_date, required: false
         = render 'item_mass_edit_field_row', f: f, field: :reformatting_operator
+        .row
+          .col-sm-1
+            = f.input :"update_equipment", label: false, as: :boolean
+          .col-sm-9
+            = f.input :equipment, label: false, required: false, as: :select, collection: Item::EQUIPMENT_TYPES, allow_blank: true
+            = f.label :equipment, required: false
         .row
           = f.input :item_ids, as: :hidden, input_html: { value: '' }
         .row
