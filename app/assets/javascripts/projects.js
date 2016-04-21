@@ -115,7 +115,11 @@ function checkbox_to_bibid(checkbox) {
 }
 
 function show_item_mass_edit() {
-    //reset modal form, copying checked ids into modal
+    reset_item_mass_edit_form();
+    $('#item_mass_edit_modal').modal('show');
+}
+
+function reset_item_mass_edit_form () {
     var form = $('#item_mass_edit_modal form');
     $('input[type="text"]', form).val('');
     $('input[type="checkbox"]', form).prop('checked', false);
@@ -124,7 +128,4 @@ function show_item_mass_edit() {
     $('#mass_action_item_ids').val(_.string.join(',', $.map($('.mass-item-checkbox:checked'), function (e) {
         return $(e).val();
     })));
-    //show modal
-    $('#item_mass_edit_modal').modal('show');
 }
-

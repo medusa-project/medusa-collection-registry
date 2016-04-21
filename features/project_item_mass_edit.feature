@@ -23,7 +23,7 @@ Feature: Project items mass edit
     And I select 'RCAM' from 'Equipment'
     And I check 'mass_action_update_equipment'
     And I click on 'Mass update'
-    And I wait 1 second
+    And I wait 2 seconds
     Then the item with fields should exist:
       | barcode | batch   | reformatting_operator | equipment |
       | xyz123  | batch_3 | Dee                   | RCAM      |
@@ -41,7 +41,7 @@ Feature: Project items mass edit
     And I fill in item mass edit fields:
       | Reformatting operator | Dee |
     And I click on 'Mass update'
-    And I wait 1 second
+    And I wait 2 seconds
     Then the item with fields should exist:
       | barcode | batch   | reformatting_operator |
       | xyz123  | batch_1 | Dee                   |
