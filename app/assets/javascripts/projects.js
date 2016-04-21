@@ -111,3 +111,13 @@ function selected_bibids() {
 function checkbox_to_bibid(checkbox) {
   return $($('td', checkbox.closest('tr'))[2]).text();
 }
+
+function show_item_mass_edit() {
+    //reset modal form, copying checked ids into modal
+    var form = $('#item_mass_edit_modal form');
+    $('input[type="text"]', form).val('');
+    $('input[type="checkbox"]', form).attr('checked', false);
+    $('#mass_action_item_ids').val(_.string.join(',', $.map($('.mass-item-checkbox:checked'), function(e) {return $(e).val()})));
+    //show modal
+    $('#item_mass_edit_modal').modal('show');
+}

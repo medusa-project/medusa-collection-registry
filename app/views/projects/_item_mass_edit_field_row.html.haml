@@ -1,0 +1,7 @@
+-# must pass in field, f (form)
+.row
+  .col-sm-1
+    = f.input :"update_#{field}", label: false, as: :boolean
+  .col-sm-9
+    = f.input field, label: false, required: false
+    = f.label field, required: false

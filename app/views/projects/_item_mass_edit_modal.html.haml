@@ -1,0 +1,15 @@
+= render layout: 'layouts/bootstrap_modal', locals: {id: 'item_mass_edit_modal'} do
+  = simple_form_for :mass_action, url: mass_action_project_path(@project), html: {class: 'form-inline' }, remote: true do |f|
+    .container
+      .col-sm-10
+        .row
+          .col-sm-1
+            Update field?
+          .col-sm-9
+        = render 'item_mass_edit_field_row', f: f, field: :batch
+        = render 'item_mass_edit_field_row', f: f, field: :reformatting_operator
+        .row
+          = f.input :item_ids, as: :hidden, input_html: { value: '' }
+        .row
+          = link_to 'Close', '#', class: 'btn btn-default', 'data-dismiss': 'modal'
+          = f.submit :'Mass update', class: 'btn btn-primary', onclick: 'before_mass_action_submit();'
