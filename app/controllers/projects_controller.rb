@@ -156,6 +156,7 @@ class ProjectsController < ApplicationController
   end
 
   MASS_UPDATE_FIELDS = [:batch, :reformatting_operator, :reformatting_date, :equipment]
+  MASS_UPDATE_BOOLEANS = [:foldout_present, :foldout_done, :item_done]
   def mass_update(params)
     item_ids = params[:item_ids].split(',')
     items = @project.items.where(id: item_ids)
@@ -163,6 +164,10 @@ class ProjectsController < ApplicationController
       MASS_UPDATE_FIELDS.each do |field|
         updates[field] = params[field] if params["update_#{field}"] == '1'
       end
+      MASS_UPDATE_BOOLEANS.each do |field|
+        updates[field] = true if params[field] == 'Yes'
+        updates[field] = false if params[field] == 'No'
+     end
     end
     items.each do |item|
       item.update!(update_hash)

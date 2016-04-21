@@ -1,0 +1,6 @@
+-#must pass in f (form) and field
+.row
+  .col-sm-2
+    = f.label field, required: false
+  .col-sm-8
+    = f.input field, as: :radio_buttons, collection: ["Don't change", 'Yes', 'No'], checked: "Don't change", required: false, label: false

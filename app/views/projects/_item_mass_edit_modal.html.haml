@@ -3,25 +3,31 @@
     .container
       .col-sm-10
         .row
+          .col-sm-2
           .col-sm-1
             Update field?
-          .col-sm-9
+          .col-sm-7
         = render 'item_mass_edit_field_row', f: f, field: :batch
         .row
+          .col-sm-2
+            = f.label :reformatting_date, required: false
           .col-sm-1
             = f.input :"update_reformatting_date", label: false, as: :boolean
-          .col-sm-9
+          .col-sm-7
             = f.input :reformatting_date, label: false, required: false, as: :string, input_html: {class: 'datepicker', value: Date.today.to_s}
-            = f.label :reformatting_date, required: false
         = render 'item_mass_edit_field_row', f: f, field: :reformatting_operator
         .row
+          .col-sm-2
+            = f.label :equipment, required: false
           .col-sm-1
             = f.input :"update_equipment", label: false, as: :boolean
           .col-sm-9
             = f.input :equipment, label: false, required: false, as: :select, collection: Item::EQUIPMENT_TYPES, allow_blank: true
-            = f.label :equipment, required: false
         .row
           = f.input :item_ids, as: :hidden, input_html: { value: '' }
+        = render 'projects/item_mass_edit_radio_row', f: f, field: :foldout_present
+        = render 'projects/item_mass_edit_radio_row', f: f, field: :foldout_done
+        = render 'projects/item_mass_edit_radio_row', f: f, field: :item_done
         .row
           = link_to 'Close', '#', class: 'btn btn-default', 'data-dismiss': 'modal'
           = f.submit :'Mass update', class: 'btn btn-primary', onclick: 'before_mass_action_submit();'
