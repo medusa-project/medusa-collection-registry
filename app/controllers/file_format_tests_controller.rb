@@ -49,7 +49,7 @@ class FileFormatTestsController < ApplicationController
   def index
     respond_to do |format|
       format.html do
-        @file_format_tests = FileFormatTest.order('date desc, id desc').page(params[:page]).per_page(params[:per_page] || 50)
+        @file_format_tests = FileFormatTest.order('date desc, id desc')
       end
       format.csv do
         @file_format_tests = FileFormatTest.order('date desc, id desc').
