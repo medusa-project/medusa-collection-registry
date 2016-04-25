@@ -3,6 +3,6 @@
   .col-sm-2
     = f.label field, required: false
   .col-sm-1
-    = f.input :"update_#{field}", label: false, as: :boolean
+    = f.input :"allow_blank_#{field}", label: false, as: :boolean
   .col-sm-7
     = f.input field, label: false, required: false

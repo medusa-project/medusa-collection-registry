@@ -5,7 +5,7 @@
         .row
           .col-sm-2
           .col-sm-1
-            Update field?
+            Allow blank?
           .col-sm-7
         = render 'item_mass_edit_field_row', f: f, field: :batch
         .row
@@ -14,7 +14,7 @@
           .col-sm-1
             = f.input :"update_reformatting_date", label: false, as: :boolean
           .col-sm-7
-            = f.input :reformatting_date, label: false, required: false, as: :string, input_html: {class: 'datepicker', value: Date.today.to_s}
+            = f.input :reformatting_date, label: false, required: false, as: :string, input_html: {class: 'datepicker', value: ''}
         = render 'item_mass_edit_field_row', f: f, field: :reformatting_operator
         .row
           .col-sm-2
@@ -30,4 +30,5 @@
         = render 'projects/item_mass_edit_radio_row', f: f, field: :item_done
         .row
           = link_to 'Close', '#', class: 'btn btn-default', 'data-dismiss': 'modal'
+          = link_to 'Reset', '#', class: 'btn btn-default', onclick: 'reset_item_mass_edit_form();'
           = f.submit :'Mass update', class: 'btn btn-primary', onclick: 'before_mass_action_submit();'

@@ -162,7 +162,7 @@ class ProjectsController < ApplicationController
     items = @project.items.where(id: item_ids)
     update_hash = Hash.new.tap do |updates|
       MASS_UPDATE_FIELDS.each do |field|
-        updates[field] = params[field] if params["update_#{field}"] == '1'
+        updates[field] = params[field] if params["allow_blank_#{field}"] == '1' or params[field].present?
       end
       MASS_UPDATE_BOOLEANS.each do |field|
         updates[field] = true if params[field] == 'Yes'

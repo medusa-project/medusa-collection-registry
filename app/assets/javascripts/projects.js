@@ -115,7 +115,6 @@ function checkbox_to_bibid(checkbox) {
 }
 
 function show_item_mass_edit() {
-    reset_item_mass_edit_form();
     $('#mass_action_item_ids').val(_.string.join(',', $.map($('.mass-item-checkbox:checked'), function (e) {
         return $(e).val();
     })));
