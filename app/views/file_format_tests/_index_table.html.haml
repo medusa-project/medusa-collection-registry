@@ -1,4 +1,3 @@
-= will_paginate @file_format_tests, renderer: BootstrapPagination::Rails
 %table#file_format_tests.table.table-striped
   %thead
     %tr
@@ -10,7 +9,8 @@
       %th Reasons
       %th Comments
   %tbody
-    - @file_format_tests.each do |file_format_test|
+    - @file_format_tests.find_each(batch_size: 10) do |file_format_test|
+      -# cache(file_format_test.cfs_file) do
       %tr
         %td= link_to file_format_test.cfs_file_name, file_format_test.cfs_file
         %td= file_format_test.tester_email
@@ -19,4 +19,3 @@
         %td= file_format_test.pass_label
         %td= file_format_test.reasons_string
         %td= file_format_test.notes
-= will_paginate @file_format_tests, renderer: BootstrapPagination::Rails
