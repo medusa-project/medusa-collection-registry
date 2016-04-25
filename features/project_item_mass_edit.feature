@@ -11,7 +11,6 @@ Feature: Project items mass edit
       | abc789  | 98765  |       | CatCat | My cat note | ABC789      | batch_2 | Cats        |            |
       | pqr456  | 76543  |       | Buster |             |             | batch_1 |             | Bustard    |
 
-  #@selenium
   Scenario: Mass edit project items
     Given I am logged in as an admin
     When I view the project with title 'Scanning'
@@ -33,7 +32,7 @@ Feature: Project items mass edit
     And I should see none of:
       | batch_1 | batch_2 |
 
-  Scenario: Mass edit project items doesn't change unchecked items
+  Scenario: Mass edit project items doesn't change blank items when unchecked
     Given I am logged in as an admin
     When I view the project with title 'Scanning'
     And I click on 'check_all'
@@ -48,4 +47,22 @@ Feature: Project items mass edit
       | abc789  | batch_2 | Dee                   |
       | pqr456  | batch_1 | Dee                   |
     And I should see all of:
+      | batch_1 | batch_2 |
+
+  Scenario: Mass edit project items does change blank items when checked
+    Given I am logged in as an admin
+    When I view the project with title 'Scanning'
+    And I click on 'check_all'
+    And I click on 'Mass edit'
+    And I fill in item mass edit fields:
+      | Reformatting operator | Dee |
+      | Batch                 |     |
+    And I click on 'Mass update'
+    And I wait 2 seconds
+    Then the item with fields should exist:
+      | barcode | batch | reformatting_operator |
+      | xyz123  |       | Dee                   |
+      | abc789  |       | Dee                   |
+      | pqr456  |       | Dee                   |
+    And I should see none of:
       | batch_1 | batch_2 |
