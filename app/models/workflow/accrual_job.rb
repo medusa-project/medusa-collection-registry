@@ -43,7 +43,7 @@ class Workflow::AccrualJob < Workflow::Base
 
   def create_accrual_requests(requested_files, requested_directories)
     requested_files.each do |file|
-      Workflow::AccrualFile.create!(name: file, workflow_accrual_job: self)
+      Workflow::AccrualFile.create!(name: file, workflow_accrual_job: self) unless excluded_file?(file)
     end
     requested_directories.each do |directory|
       Workflow::AccrualDirectory.create!(name: directory, workflow_accrual_job: self)
@@ -191,7 +191,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def copy_entry(entry, source_path, target_path, overwrite: false)
-    opts = %w(-a --ignore-times --chmod Dug+w)
+    opts = %w(-a --ignore-times --chmod Dug+w --exclude-from) << exclude_file_path
     opts << '--ignore-existing' unless overwrite
     source_entry = File.join(source_path, entry.name)
     return unless File.exists?(source_entry)
@@ -206,6 +206,14 @@ MESSAGE
       Rails.logger.error message
       raise RuntimeError, message
     end
+  end
+
+  def exclude_file_path
+    File.join(Rails.root, 'config', 'accrual_rsync_exclude.txt')
+  end
+
+  def excluded_file?(file)
+    %w(Thumbs.db .DS_Store).include?(file)
   end
 
   #We have to be a little careful here, as we want to make sure the backup happens, but at the same time it may
