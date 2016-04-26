@@ -10,6 +10,8 @@ Feature: CFS basic properties
       | Toys  | BitLevelFileGroup |
     And I clear the cfs root directory
     And the physical cfs directory 'dogs/toy-dogs' has a file 'stuff.txt' with contents 'Toy dog stuff'
+    And the physical cfs directory 'dogs/toy-dogs' has a file 'Thumbs.db' with contents 'thumbs'
+    And the physical cfs directory 'dogs/toy-dogs' has a file '.DS_Store' with contents 'ds_store'
     And the physical cfs directory 'dogs/toy-dogs/chihuahuas' has a file 'freakdog.xml' with contents '<?xml version="1.0" encoding="utf-8"?><freak>dog</freak>'
     And the file group titled 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
 
@@ -26,6 +28,10 @@ Feature: CFS basic properties
       | content_type_name   | application/xml                  |
       | md5_sum             | 9972d3c67a1155d5694c6647e1e2dafc |
       | fixity_check_status | ok                               |
+
+  Scenario: Certain files are automatically removed when doing assessments
+    Then the file group titled 'Toys' should not have a cfs file for the path 'Thumbs.db'
+    Then the file group titled 'Toys' should not have a cfs file for the path '.DS_Store'
 
   Scenario: When I remove a file and rerun assessments then the record for that file is deleted
     When I remove the cfs path 'dogs/toy-dogs/chihuahuas/freakdog.xml'

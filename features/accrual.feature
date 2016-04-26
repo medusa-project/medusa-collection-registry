@@ -82,6 +82,8 @@ Feature: File accrual
     And I wait 1 second
     Then the cfs directory with path 'dogs' should have an accrual job with 0 files and 0 directories
     Then the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
+    And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/Thumbs.db'
+    And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/.DS_Store'
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'pete.txt'
     And the cfs directory with path 'dogs' should have an event with key 'deposit_completed' performed by 'manager@example.com'
