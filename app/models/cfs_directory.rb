@@ -198,7 +198,11 @@ class CfsDirectory < ActiveRecord::Base
       end
       disk_files = entries.select { |entry| File.file?(entry) }.to_set
       disk_files.each do |entry|
-        self.ensure_file_at_relative_path(entry)
+        if excluded_file?(entry)
+          File.delete(entry)
+        else
+          self.ensure_file_at_relative_path(entry)
+        end
       end
       self.cfs_files.reload.each do |cfs_file|
         unless disk_files.include?(cfs_file.name)
@@ -209,6 +213,10 @@ class CfsDirectory < ActiveRecord::Base
       self.subdirectories.reset
       self.cfs_files.reset
     end
+  end
+
+  def excluded_file?(entry)
+    %w(Thumbs.db .DS_Store).include?(File.basename(entry))
   end
 
   def schedule_initial_assessments
