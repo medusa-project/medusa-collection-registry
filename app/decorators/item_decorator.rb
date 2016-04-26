@@ -18,7 +18,8 @@ class ItemDecorator < BaseDecorator
 
   #TODO: create the checkbox - disable unless user can actually use
   def assign_checkbox(project)
-    h.check_box_tag('', self.id, false, name: 'mass_action[item][]', id: "mass_action_item_#{self.id}", disabled: false)
+    h.check_box_tag('', self.id, false, name: 'mass_action[item][]', id: "mass_action_item_#{self.id}",
+                    class: 'mass-item-checkbox', disabled: false)
   end
 
   #TODO: create the buttons

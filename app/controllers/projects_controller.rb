@@ -52,8 +52,8 @@ class ProjectsController < ApplicationController
     #authorize! :update, @project
     items = @project.items.where(id: params[:mass_action][:item])
     case params[:commit]
-      when 'Assign batch'
-        assign_batch(params[:mass_action][:batch].strip, items)
+      when 'Mass update'
+        mass_update(params[:mass_action])
       when 'Delete checked'
         items.destroy_all
     end
@@ -153,6 +153,25 @@ class ProjectsController < ApplicationController
         row << small_edit_button(item) + ' ' + small_clone_button(new_item_path(source_id: item.id), method: :get)
       end
     end.to_json
+  end
+
+  MASS_UPDATE_FIELDS = [:batch, :reformatting_operator, :reformatting_date, :equipment]
+  MASS_UPDATE_BOOLEANS = [:foldout_present, :foldout_done, :item_done]
+  def mass_update(params)
+    item_ids = params[:item_ids].split(',')
+    items = @project.items.where(id: item_ids)
+    update_hash = Hash.new.tap do |updates|
+      MASS_UPDATE_FIELDS.each do |field|
+        updates[field] = params[field] if params["allow_blank_#{field}"] == '1' or params[field].present?
+      end
+      MASS_UPDATE_BOOLEANS.each do |field|
+        updates[field] = true if params[field] == 'Yes'
+        updates[field] = false if params[field] == 'No'
+     end
+    end
+    items.each do |item|
+      item.update!(update_hash)
+    end
   end
 
 end
