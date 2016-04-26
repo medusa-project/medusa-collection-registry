@@ -199,7 +199,7 @@ class CfsDirectory < ActiveRecord::Base
       disk_files = entries.select { |entry| File.file?(entry) }.to_set
       disk_files.each do |entry|
         if excluded_file?(entry)
-          File.delete(entry)
+          File.delete(entry) if File.exist?(entry)
         else
           self.ensure_file_at_relative_path(entry)
         end
