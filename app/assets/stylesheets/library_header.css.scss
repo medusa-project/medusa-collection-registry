@@ -1,0 +1,20 @@
+@import 'variables';
+
+.library-header {
+  position: relative;
+  z-index: 1002;
+  margin-bottom: 0;
+  background-color: $color__dark-navy;
+  width: 100%;
+  margin-top: 0;
+}
+
+.banner-image-library, .banner-image-imark {
+  padding: 0 0;
+  transition: all .15s ease-in-out;
+}
+
+.banner-image-library:hover, .banner-image-imark:hover {
+  opacity: .7;
+  transition: all .15s ease-in-out;
+}

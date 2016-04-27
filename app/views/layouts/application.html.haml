@@ -25,6 +25,7 @@
 
 
   %body{'data-spy' => 'scroll', 'data-target' => '.affix-sidebar'}
+    = render 'shared/library_header'
     = render 'shared/global_navigation'
     .container
       .row
@@ -35,6 +36,7 @@
       .clearfix
       = yield
       .clearfix
+      = render 'shared/library_footer'
       .row
         %footer.footer
           %p.pull-left

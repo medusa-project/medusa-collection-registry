@@ -1,0 +1,94 @@
+//Primary Palette
+$color__light-orange: #ffa466;
+$color__orange: #F47F24;
+$color__dark-orange: #c86128;
+$color__light-blue: #ccdff6;
+$color__dark-moderate-blue: #2d4f8e;
+$color__navy: #1f3762;
+$color__dark-navy: #022544;
+$color__link-blue: #428bca;
+$color__darker-blue: #0c172d;
+$color__official_orange: #FA6300;
+$color__official_blue: #131F33;
+$color__lighter_blue: #e0ebf9;
+$color__lightest_blue: #eff5fc;
+
+//Secondary Palette
+$color__highlight-green: #e2e8bc;
+$color__green: #acbe38;
+$color__highlight-red: #f0c4c5;
+$color__red: #bf2d2b;
+$color__highlight-orange: #fed9bf;
+$color__yellow: #ffea00;
+//$color__bright-orange: #f05a24;
+$color__burnt-orange: #c74a27;
+$color__darkest-orange: #8d3400;
+
+//Greys Palette
+$color__lightest-grey: #f3f2f2;
+$color__light-grey: #dddddd;
+$color__medium-grey: #bbbbbb;
+$color__darker-grey: #777777;
+$color__darkest-grey: #333333;
+
+//location relative color variables
+$color__background-main-column: #fff;
+
+//underscores default color variables
+$color__background-screen: #f1f1f1;
+$color__background-hr: #ccc;
+$color__background-button: #e6e6e6;
+$color__background-pre: #eee;
+$color__background-ins: #fff9c0;
+
+$color__text-screen: #21759b;
+$color__text-input: #666;
+$color__text-input-focus: #111;
+//underscores default link variables
+//used in sass/navigation/links
+//which has been disabled in
+//sass/navigation
+//$color__link: royalblue;
+//$color__link-visited: purple;
+//$color__link-hover: midnightblue;
+
+//use specific color variables
+$color__text-light: #fff;
+$color__dark-link: #265191;
+
+$color__text-main: #404040;
+
+$color__border-button: #ccc #ccc #bbb;
+$color__border-button-hover: #ccc #bbb #aaa;
+$color__border-button-focus: #aaa #bbb #bbb;
+$color__border-input: #ccc;
+$color__border-abbr: #666;
+
+//Palettes
+$color__light-blue-background: #ccdef3;
+$color__light-blue-header: $color__navy;
+
+$color__red-background: $color__highlight-red;
+$color__red-header: $color__red;
+
+$color__green-background: $color__highlight-green;
+$color__green-header: #333;
+$color__green-title-background: #ADBF39;
+
+$color__yellow-background: #f7ecad;
+$color__yellow-header: #333;
+
+$color__gray-background: #ccc;
+$color__gray-header: #333;
+
+$color__orange-background: #f7c7a6;
+$color__orange-header: #c96128;
+
+//colors not in wp scss
+$color__light-orange-hover: #DD6C2A;
+$color__med-orange: #C95F17;
+$panel-border: 1px solid #bbb;
+
+@mixin border-rad() {
+  border-radius: 0;
+}
