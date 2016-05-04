@@ -16,7 +16,7 @@
           = fa_icon('cog')
           %span.caret
         %ul.dropdown-menu.dropdown-menu-right
-          - unless @file.fits_result
+          - unless @file.fits_result.present?
             %li= link_to 'Create FITS', create_fits_xml_cfs_file_path(@file)
           %li= link_to 'Fixity check', fixity_check_cfs_file_path(@file), method: :post
       .btn-group

@@ -1,10 +1,12 @@
 require 'fileutils'
 
-class FitsResult < ActiveRecord::Base
-  belongs_to :cfs_file
+class FitsResult < Object
+  attr_accessor :cfs_file, :new
 
-  before_save :serialize_xml
-  before_destroy :remove_serialized_xml
+  def initialize(cfs_file)
+    self.cfs_file = cfs_file
+    self.new = !self.serialized?
+  end
 
   def self.storage_root
     Application.medusa_config.fits_storage
@@ -32,6 +34,10 @@ class FitsResult < ActiveRecord::Base
     File.exists?(self.storage_file)
   end
 
+  def present?
+    serialized?
+  end
+
   def serialize_xml
     FileUtils.mkdir_p(storage_directory)
     File.open(storage_file, 'w') do |f|
@@ -41,6 +47,21 @@ class FitsResult < ActiveRecord::Base
 
   def remove_serialized_xml
     File.delete(storage_file) if File.exist?(storage_file)
+  end
+
+  def xml
+    serialized? ? File.read(storage_file) : nil
+  end
+
+  def xml=(string)
+    FileUtils.mkdir_p(storage_directory)
+    File.open(storage_file, 'w') do |f|
+      f.write(string)
+    end
+  end
+
+  def new?
+    self.new
   end
 
 end
