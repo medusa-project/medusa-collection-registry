@@ -12,12 +12,6 @@ class FitsResult < Object
     Application.medusa_config.fits_storage
   end
 
-  def self.serialize_all
-    self.find_each do |fits_result|
-      fits_result.serialize_xml unless fits_result.serialized?
-    end
-  end
-  
   def storage_directory
     File.join(self.class.storage_root, cfs_file_uuid.first(6).chars.in_groups_of(2).collect(&:join))
   end

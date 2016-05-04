@@ -148,11 +148,11 @@ class CfsFile < ActiveRecord::Base
   end
 
   def ensure_fits_xml
-    self.update_fits_xml unless self.fits_result.serialized?
+    self.update_fits_xml unless fits_serialized
   end
 
   def ensure_fits_xml_for_large_file
-    self.delay(priority: 70).ensure_fits_xml if !self.fits_result.serialized? and self.size.present? and self.size > 5.gigabytes
+    self.delay(priority: 70).ensure_fits_xml if !fits_serialized? and self.size.present? and self.size > 5.gigabytes
   end
 
   def update_fits_xml
