@@ -1,0 +1,42 @@
+@import 'variables';
+
+.library-footer {
+  z-index: 501;
+  bottom: 0;
+  width: 100%;
+  /*/!* Set the fixed height of the footer here *!/*/
+  height: 150px;
+  background-color: #f5f5f5;
+  margin-top: 20px;
+}
+
+.footer-info {
+  background-color: $color__lightest-grey;
+  font-size: 14px;
+}
+
+.row.footer-info, .row.lg-copyright-footer {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.repository-footer-info {
+  padding-top: 15px;
+  text-align: center;
+}
+
+.copyright-footer {
+  background-color: $color__dark-navy;
+  border-top: 5px solid $color__light-grey;
+  color: $color__text-light;
+  font-size: 11px;
+  line-height: 1.5;
+  min-height: 90px;
+  padding: 15px;
+  text-align: center;
+  p {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+}
+

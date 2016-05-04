@@ -1,0 +1,16 @@
+%footer.library-footer.hidden-xs{role: :contentinfo}
+  .row.footer-info
+    %h2.sr-only library website footer information
+    %p.repository-footer-info
+      More information: Medusa at
+      %a{href: 'tel:2173334618'} 217-333-4648
+      or
+      %a{href: 'mailto:medusa@library.illinois.edu'} medusa@library.illinois.edu
+      or
+      %a{href: 'https://medusa.library.illinois.edu'} http://medusa.library.illinois.edu
+  .row.lg-copyright-footer
+    .col-md-12.copyright-footer{'aria-label': 'university library copyright info'}
+      %p
+        %a{href: 'http://illinois.edu', 'aria-label': 'University of Illinois website link'}
+          = image_tag('illinois_wordmark_footer.png', alt: "University of Illinois Logo")
+      © #{Date.today.year} University of Illinois Board of Trustees
