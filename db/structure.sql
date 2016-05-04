@@ -1654,7 +1654,8 @@ CREATE TABLE cfs_files (
     content_type_id integer,
     file_extension_id integer,
     fixity_check_time timestamp without time zone,
-    fixity_check_status character varying
+    fixity_check_status character varying,
+    fits_serialized boolean DEFAULT false NOT NULL
 );
 
 
@@ -5040,6 +5041,13 @@ CREATE INDEX index_cfs_files_on_file_extension_id_and_name ON cfs_files USING bt
 
 
 --
+-- Name: index_cfs_files_on_fits_serialized; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cfs_files_on_fits_serialized ON cfs_files USING btree (fits_serialized);
+
+
+--
 -- Name: index_cfs_files_on_fixity_check_status; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6818,4 +6826,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160411215028');
 INSERT INTO schema_migrations (version) VALUES ('20160419143152');
 
 INSERT INTO schema_migrations (version) VALUES ('20160419150545');
+
+INSERT INTO schema_migrations (version) VALUES ('20160504200651');
+
+INSERT INTO schema_migrations (version) VALUES ('20160504204653');
 

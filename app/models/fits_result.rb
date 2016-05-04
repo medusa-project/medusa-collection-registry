@@ -37,10 +37,12 @@ class FitsResult < ActiveRecord::Base
     File.open(storage_file, 'w') do |f|
       f.write(self.xml)
     end
+    self.cfs_file.update_attribute(:fits_serialized, true)
   end
 
   def remove_serialized_xml
     File.delete(storage_file) if File.exist?(storage_file)
+    self.cfs_file.update_attribute(:fits_serialized, false)
   end
 
 end
