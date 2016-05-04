@@ -60,6 +60,7 @@ class FitsResult < Object
     File.open(storage_file, 'w') do |f|
       f.write(string)
     end
+    self.cfs_file.update_attribute(:fits_serialized, true)
   end
 
   def new?
