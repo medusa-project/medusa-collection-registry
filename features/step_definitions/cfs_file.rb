@@ -195,7 +195,7 @@ When(/^I update the cfs file with name '([^']*)' with fields:$/) do |name, table
 end
 
 Then(/^(\d+) cfs files should have fits attached$/) do |count|
-  expect(FitsResult.count).to eql(count.to_i)
+  expect(CfsFile.with_fits.count).to eql(count.to_i)
 end
 
 Then(/^I should see a table of cfs files with (\d+) rows?$/) do |count|

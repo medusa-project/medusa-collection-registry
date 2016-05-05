@@ -3,6 +3,7 @@ require 'digest/md5'
 require 'set'
 
 class CfsFile < ActiveRecord::Base
+
   include Eventable
   include CascadedEventable
   include CascadedRedFlaggable
@@ -15,7 +16,6 @@ class CfsFile < ActiveRecord::Base
   belongs_to :file_extension
   belongs_to :parent, class_name: 'CfsDirectory', foreign_key: 'cfs_directory_id'
   has_one :file_format_test, dependent: :destroy
-  has_one :fits_result, dependent: :destroy, autosave: true
   has_one :fits_data, dependent: :destroy, autosave: true
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
@@ -53,6 +53,10 @@ class CfsFile < ActiveRecord::Base
     string :file_group_title do
       file_group.try(:title)
     end
+  end
+
+  def self.with_fits
+    where(fits_serialized: true)
   end
 
   def relative_path
@@ -144,11 +148,11 @@ class CfsFile < ActiveRecord::Base
   end
 
   def ensure_fits_xml
-    self.update_fits_xml unless self.fits_result.present?
+    self.update_fits_xml unless fits_serialized
   end
 
   def ensure_fits_xml_for_large_file
-    self.delay(priority: 70).ensure_fits_xml if self.fits_result.blank? and self.size.present? and self.size > 5.gigabytes
+    self.delay(priority: 70).ensure_fits_xml if !fits_serialized? and self.size.present? and self.size > 5.gigabytes
   end
 
   def update_fits_xml
@@ -187,7 +191,7 @@ class CfsFile < ActiveRecord::Base
     if self.content_type_name != new_content_type_name
       #For this one we don't report a red flag if this is the first generation of
       #the fits xml overwriting the content type found by the 'file' command
-      unless self.content_type.blank? or self.fits_xml_was.blank?
+      unless self.content_type.blank? or self.fits_result.new?
         self.red_flags.create(message: "Content Type changed. Old: #{self.content_type_name} New: #{new_content_type_name}")
       end
       self.content_type_name = new_content_type_name
@@ -234,23 +238,22 @@ class CfsFile < ActiveRecord::Base
   end
 
   def fits_xml
-    self.fits_result.try(:xml)
+    self.fits_result.xml
   end
 
   def fits_xml=(value)
-    result = fits_result || build_fits_result
-    result.xml = value
+    fits_result.xml = value
     ensure_fits_data
-  end
-
-  def fits_xml_was
-    self.fits_result.try(:xml_was)
   end
 
   def remove_fits
     self.fits_data.destroy! if self.fits_data.present?
-    self.fits_result.destroy! if self.fits_result.present?
+    self.fits_result.remove_serialized_xml
     self.reload
+  end
+
+  def fits_result
+    @fits_result ||= FitsResult.new(self)
   end
 
   protected

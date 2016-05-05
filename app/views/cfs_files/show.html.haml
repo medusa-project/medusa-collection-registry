@@ -6,7 +6,7 @@
       = show_value 'bit-level', 'Storage level'
       = show_value @file.md5_sum, 'MD5'
       = show_value @file.uuid, 'UUID'
-      - if @file.fits_result
+      - if @file.fits_result.present?
         %p
           %strong
             FITS:

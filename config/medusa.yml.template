@@ -75,6 +75,7 @@ development:
     noreply: medusa-noreply@medusatest.library.illinois.edu
   fits_batch_size: 1000
   fits_server_url: http://localhost:4567
+  fits_storage: /Users/hding2/repos/medusa-collection-registry/tmp/storage-dev/fits
   ldap:
     host: ad.uillinois.edu
     port: 389
@@ -106,6 +107,7 @@ test:
   public_view_on: true
   fits_batch_size: 1000
   fits_server_url: http://localhost:4567
+  fits_storage: /Users/hding2/repos/medusa-collection-registry/tmp/storage-test/fits
   #some of the tests may depend on a root named 'staging-1' being present, though the locations shouldn't matter.
   staging_storage:
     roots:
@@ -139,6 +141,7 @@ production:
     library_nuc_code: UIU
   fits_batch_size: 1000
   fits_server_url: http://localhost:4567
+  fits_storage: /path/to/fits-storage
   iiif:
     host: localhost
     port: 3000

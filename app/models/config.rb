@@ -40,7 +40,8 @@ class Config < Object
       medusa_users_group: :medusa_users_group,
       medusa_admins_group: :medusa_admins_group,
       fits_batch_size: :fits_batch_size,
-      fits_server_url: :fits_server_url
+      fits_server_url: :fits_server_url,
+      fits_storage: :fits_storage
   }
 
   EXPOSED_VALUES.each do |method_name, keys|
