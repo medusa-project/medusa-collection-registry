@@ -49,7 +49,7 @@ module FitsDatetimeParser
         Time.strptime(datetime_string, '%Y:%m:%d %H:%M:%S.%L')
       when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}(\+|-)\d{2}:\d{2}$]
         Time.strptime(datetime_string, '%Y:%m:%d %H:%M%:z')
-      when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}Z?$]
+      when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}(\.\d{3})?Z?$]
         Time.strptime(datetime_string, "%Y:%m:%d %H:%M:%S")
       when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}Z?$]
         Time.strptime(datetime_string, "%Y:%m:%d %H:%M")
