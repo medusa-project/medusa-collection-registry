@@ -1,16 +1,24 @@
 :plain
 
-Your download for the directory:
+  Your download for the directory:
 
-#{@request.cfs_directory.relative_path}
+  #{@request.cfs_directory.relative_path}
 
-is ready.
+  is ready.
 
-It is available at:
+  It is available at:
 
-#{@response['download_url']}
+  #{@response['download_url']}
 
-Note: For large (more than 4GB or more than about 65000 files) downloads certain zip software will have trouble
-unzipping your download. In particular, the default Mac OS X tools can be problematic. 7Zip and The Unarchiver
-are replacements that will be able to handle these downloads.
+  *** OS X Users ***
+
+  For large (more than 4GB or more than about 65000 files) downloads certain zip software will have trouble
+  unzipping your download. In particular, the default Mac OS X tools can be problematic. 7Zip and The Unarchiver
+  are free replacements that will be able to handle these downloads.
+
+  *** Windows 7 and below users ***
+
+  For some large downloads Windows Explorer will have trouble unzipping your download. 7Zip is a free replacement
+  that will be able to handle these downloads.
+
 
