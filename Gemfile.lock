@@ -113,6 +113,8 @@ GEM
     commonjs (0.2.7)
     concurrent-ruby (1.0.1)
     connection_pool (2.2.0)
+    csv_builder (2.1.1)
+      actionpack (>= 3.0.0)
     cucumber (2.3.3)
       builder (>= 2.1.2)
       cucumber-core (~> 1.4.0)
@@ -444,6 +446,7 @@ DEPENDENCIES
   clipboard-rails
   coffee-rails
   connection_pool
+  csv_builder
   cucumber-rails
   daemons
   daemons-rails

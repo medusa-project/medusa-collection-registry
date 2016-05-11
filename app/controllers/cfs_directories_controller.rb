@@ -1,9 +1,9 @@
 class CfsDirectoriesController < ApplicationController
 
   before_action :public_view_enabled?, only: [:public]
-  before_action :require_medusa_user, except: [:show, :public]
-  before_action :require_medusa_user_or_basic_auth, only: [:show]
-  before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :fixity_check]
+  before_action :require_medusa_user, except: [:show, :public, :show_tree]
+  before_action :require_medusa_user_or_basic_auth, only: [:show, :show_tree]
+  before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :fixity_check, :show_tree]
   layout 'public', only: [:public]
 
   def show
@@ -42,6 +42,17 @@ class CfsDirectoriesController < ApplicationController
   def export_tree
     authorize! :export, @directory.file_group
     Downloader::Request.create_for(@directory, current_user, recursive: true)
+  end
+
+  def show_tree
+    respond_to do |format|
+      format.tsv do
+        @filename = "#{@directory.path}.tsv"
+        @output_encoding = 'UTF-8'
+        @csv_options = {col_sep: "\t"}
+        response.headers['Content-Type'] = 'text/tab-separated-values'
+      end
+    end
   end
 
   def fixity_check

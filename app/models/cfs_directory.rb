@@ -300,7 +300,7 @@ class CfsDirectory < ActiveRecord::Base
 
   #yield each CfsDirectory in the tree to the block.
   def each_directory_in_tree(include_self = true)
-    self.directories_in_tree(include_self).each do |directory|
+    self.directories_in_tree(include_self).find_each do |directory|
       yield directory
     end
   end

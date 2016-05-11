@@ -5,3 +5,4 @@
 # Mime::Type.register_alias "text/html", :iphone
 
 Mime::Type.register 'application/xls', :xls # for exporting book tracker items
+Mime::Type.register 'text/tab-separated-values', :tsv # for exporting cfs directory trees as tsv
