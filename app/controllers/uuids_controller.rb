@@ -9,7 +9,7 @@ class UuidsController < ApplicationController
     end
     object = uuid.uuidable
     if current_user and can?(:read, object)
-        redirect_to object
+        redirect_to polymorphic_path(object, params.slice(:format))
     else
         redirect_to public_path(object)
     end
