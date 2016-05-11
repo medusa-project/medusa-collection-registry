@@ -27,6 +27,13 @@ Feature: Cfs directory export
     Then I should see 'Your directory tree has been scheduled for export. You will be notified by email when the export is complete.'
     And there should be a recursive download request for the export of the cfs directory for the file group titled 'Dogs' for the path '.'
 
+  Scenario: Request a TSV representation of a directory tree
+    Given I am logged in as a manager
+    When I view the cfs directory for the file group titled 'Dogs' for the path '.'
+    And I click on 'TSV'
+    Then I should receive a file 'dogs.tsv' of type 'text/tab-separated-values' matching:
+      | intro.txt | picture.jpg | description.txt | dogs | pugs |
+
   Scenario: Error message is received
     Given there is a downloader request for the export of the cfs directory for the file group titled 'Dogs' for the path '.' with fields:
       | email            | status  | downloader_id |
