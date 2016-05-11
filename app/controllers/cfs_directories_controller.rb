@@ -49,7 +49,7 @@ class CfsDirectoriesController < ApplicationController
       format.tsv do
         @filename = "#{@directory.path}.tsv"
         @output_encoding = 'UTF-8'
-        @csv_options = {col_sep: "\t"}
+        @csv_options = {col_sep: "\t", row_sep: "\r\n"}
         response.headers['Content-Type'] = 'text/tab-separated-values'
       end
     end
