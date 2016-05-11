@@ -28,13 +28,15 @@
         %li= link_to 'Create Bit Level File Group', create_bit_level_external_file_group_path(@file_group), method: :post
       - if @accrual.present? and safe_can?(:accrue, @directory)
         %li= link_to 'Add files', '#', 'data-toggle' => 'modal', 'data-target' => '#add-files-dialog'
-  - if @directory.present? and can?(:export, @file_group)
+  - if @directory.present?
     .btn-group
       %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Download', href: '#'}
         = fa_icon('download')
         %span.caret
       %ul.dropdown-menu.dropdown-menu-right
-        %li= link_to 'Download Files', export_cfs_directory_path(@directory), method: :post, remote: true
-        %li= link_to 'Download Files and All Subdirectories', export_tree_cfs_directory_path(@directory), method: :post, remote: true
+        - if can?(:export, @file_group)
+          %li= link_to 'Download Files', export_cfs_directory_path(@directory), method: :post, remote: true
+          %li= link_to 'Download Files and All Subdirectories', export_tree_cfs_directory_path(@directory), method: :post, remote: true
+        %li= link_to 'TSV', show_tree_cfs_directory_path(@directory, format: :tsv)
 
   = edit_button(@file_group)

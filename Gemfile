@@ -91,6 +91,7 @@ gem 'paperclip'#, git: 'git://github.com/thoughtbot/paperclip.git'
 gem 'font-awesome-rails'
 
 gem 'yajl-ruby'
+gem 'csv_builder'
 
 #search
 gem 'sunspot_rails'
