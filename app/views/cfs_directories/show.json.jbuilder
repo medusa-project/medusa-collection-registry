@@ -1,4 +1,5 @@
 json.id @directory.id
+json.uuid @directory.uuid
 json.name @directory.path
 json.subdirectories @directory.subdirectories, partial: 'cfs_directories/show_related_directory', as: :directory
 json.files @directory.cfs_files, partial: 'cfs_files/show_related_file_detailed', as: :file, locals: {show_path: true}
