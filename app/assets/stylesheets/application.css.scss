@@ -14,7 +14,7 @@
  *= require font-awesome
  *= require_tree .
 */
-@import 'colors.css.less';
+@import 'variables';
 
 .dataTables_wrapper {
   padding: 5px 0;
@@ -81,10 +81,10 @@ label.checkbox {
     margin: 0 !important;
   }
   thead tr {
-    background-color: @datatables-header-color;
+    background-color: $datatables-header-color;
   }
   div.row:first-child {
-    background-color: @datatables-filter-row-color;
+    background-color: $datatables-filter-row-color;
     margin: 0 !important;
     padding: 0 !important;
     div {

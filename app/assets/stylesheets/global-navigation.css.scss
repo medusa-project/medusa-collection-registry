@@ -1,0 +1,46 @@
+@import 'variables';
+
+$navbar-object-border: solid 7px;
+
+#global-navigation {
+  .global-nav-row:first-child {
+    border-bottom: 3px solid #fa6300;
+    background-color: white;
+  }
+  .global-nav-row {
+    padding: 0 50px;
+    background-color: $navbar-background-color;
+    color: $navbar-text-color;
+    a:visited, a:link {
+      color: $navbar-link-color;
+    }
+  }
+  .navbar-institutions {
+    background-color: $navbar-institutions-background-color;
+    border-bottom: $navbar-object-border $navbar-institutions-footer-color;
+  }
+  .navbar-repositories {
+    background-color: $navbar-repositories-background-color;
+    border-bottom: $navbar-object-border $navbar-repositories-footer-color;
+  }
+  .navbar-collections {
+    background-color: $navbar-collections-background-color;
+    border-bottom: $navbar-object-border $navbar-collections-footer-color;
+  }
+  .navbar-projects {
+    background-color: $navbar-projects-background-color;
+    border-bottom: $navbar-object-border $navbar-projects-footer-color;
+  }
+  .navbar-file-groups {
+    background-color: $navbar-file-groups-background-color;
+    border-bottom: $navbar-object-border $navbar-file-groups-footer-color;
+  }
+  .navbar-files {
+    background-color: $navbar-files-background-color;
+    border-bottom: $navbar-object-border $navbar-files-footer-color;
+  }
+}
+
+#medusa-logo {
+  margin-right: 100px;
+}

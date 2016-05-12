@@ -1,3 +1,40 @@
+//Original Medusa stuff
+$blue-text-color: #1e3862;
+$first-navbar-background-color: $blue-text-color;
+$first-navbar-text-color: white;
+$first-navbar-link-color: white;
+$navbar-background-color: white;
+$navbar-link-color: $blue-text-color;
+$navbar-text-color: $blue-text-color;
+
+$navbar-institutions-background-color: #f9ece6;
+$navbar-institutions-footer-color: #e58c51;
+$navbar-repositories-background-color: #f8e5e2;
+$navbar-repositories-footer-color: #dc7d65;
+$navbar-collections-background-color: #f6efe7;
+$navbar-collections-footer-color: #d9b992;
+$navbar-file-groups-background-color: #f3f5ed;
+$navbar-file-groups-footer-color: #d0dbaf;
+$navbar-files-background-color: #f0f7f1;
+$navbar-files-footer-color: #c3ddc7;
+//Reuse the files stuff for now, as it isn't shown
+$navbar-projects-background-color: #f0f7f1;
+$navbar-projects-footer-color: #c3ddc7;
+
+//These are in the initial style guide, but I'm not sure for what they're intended.
+//I'm copying them here just to have them - I expect to stumble across them somewhere
+//while looking through the styling materials, at which point I can clarify
+$medusa-navbar-background-blue: #e4eaed;
+$medusa-navbar-footer-blue: #5e85a7;
+
+$content-header-text-color: $blue-text-color;
+
+//datatables table coloring
+$datatables-header-color:  #e4e9ec;
+$datatables-filter-row-color: #a8b6bd;
+
+//Copied from IDB
+
 //Primary Palette
 $color__light-orange: #ffa466;
 $color__orange: #F47F24;
