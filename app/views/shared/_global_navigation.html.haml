@@ -3,7 +3,9 @@
     .navbar-header
       #medusa-logo.pull-left
         %a{href: root_path}
-          = image_tag('medusa_wordmark_50x250px.png', alt: 'Medusa logo')
+          = image_tag('medusa_wordmark_50x60px.png', alt: 'Medusa logo image')
+          %span.header-medusa-text
+            MEDUSA
       = render partial: 'shared/navbar_toggle', locals: {id: '#global-nav-row-1'}
     #global-nav-row-1.collapse.navbar-collapse
       %ul.nav.navbar-nav.navbar-left
