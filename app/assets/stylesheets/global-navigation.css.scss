@@ -9,35 +9,35 @@ $navbar-object-border: solid 7px;
   }
   .global-nav-row {
     padding: 0 50px;
-    background-color: $navbar-background-color;
-    color: $navbar-text-color;
+    background-color: $mcolor__navbar-background;
+    color: $mcolor__navbar-text;
     a:visited, a:link {
-      color: $navbar-link-color;
+      color: $mcolor__navbar-link;
     }
   }
   .navbar-institutions {
-    background-color: $navbar-institutions-background-color;
-    border-bottom: $navbar-object-border $navbar-institutions-footer-color;
+    background-color: $mcolor__navbar-institutions-background;
+    border-bottom: $navbar-object-border $mcolor__navbar-institutions-footer;
   }
   .navbar-repositories {
-    background-color: $navbar-repositories-background-color;
-    border-bottom: $navbar-object-border $navbar-repositories-footer-color;
+    background-color: $mcolor__navbar-repositories-background;
+    border-bottom: $navbar-object-border $mcolor__navbar-repositories-footer;
   }
   .navbar-collections {
-    background-color: $navbar-collections-background-color;
-    border-bottom: $navbar-object-border $navbar-collections-footer-color;
+    background-color: $mcolor__navbar-collections-background;
+    border-bottom: $navbar-object-border $mcolor__navbar-collections-footer;
   }
   .navbar-projects {
-    background-color: $navbar-projects-background-color;
-    border-bottom: $navbar-object-border $navbar-projects-footer-color;
+    background-color: $mcolor__navbar-projects-background;
+    border-bottom: $navbar-object-border $mcolor__navbar-projects-footer;
   }
   .navbar-file-groups {
-    background-color: $navbar-file-groups-background-color;
-    border-bottom: $navbar-object-border $navbar-file-groups-footer-color;
+    background-color: $mcolor__navbar-file-groups-background;
+    border-bottom: $navbar-object-border $mcolor__navbar-file-groups-footer;
   }
   .navbar-files {
-    background-color: $navbar-files-background-color;
-    border-bottom: $navbar-object-border $navbar-files-footer-color;
+    background-color: $mcolor__navbar-files-background;
+    border-bottom: $navbar-object-border $mcolor__navbar-files-footer;
   }
 }
 
