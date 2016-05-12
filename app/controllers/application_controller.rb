@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  helper_method :current_user, :medusa_user?, :public_path, :public_view_on?
+  helper_method :current_user, :medusa_user?, :public_path_to, :public_view_on?
 
   protected
 
@@ -77,7 +77,7 @@ class ApplicationController < ActionController::Base
     eventable.events.create(actor_email: user.email, key: key, date: Date.today)
   end
 
-  def public_path(object)
+  def public_path_to(object)
     class_name = object.class.to_s.underscore
     self.send("public_#{class_name}_path", object)
   end

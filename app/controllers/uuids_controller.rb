@@ -11,7 +11,7 @@ class UuidsController < ApplicationController
     if (current_user and can?(:read, object)) or request.env['HTTP_AUTHORIZATION'].present?
         redirect_to polymorphic_path(object, params.slice(:format))
     else
-        redirect_to public_path(object)
+        redirect_to public_path_to(object)
     end
 
   end
