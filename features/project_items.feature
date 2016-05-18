@@ -6,19 +6,19 @@ Feature: Project Items
 
   Background:
     Given the project with title 'Scanning' has child items with fields:
-      | barcode | bib_id | title | author | notes       | call_number | batch   | local_title | item_title |
-      | xyz123  | 54321  | Dogs  | Ruthie | My note     | XYZ123      | batch_1 |             |            |
-      | abc789  | 98765  |       | CatCat | My cat note | ABC789      | batch_2 | Cats        |            |
-      | pqr456  | 76543  |       | Buster |             |             | batch_1 |             | Bustard    |
+      | barcode        | bib_id | title | author | notes       | call_number | batch   | local_title | item_title |
+      | 30012323456789 | 54321  | Dogs  | Ruthie | My note     | XYZ123      | batch_1 |             |            |
+      | 30078923456789 | 98765  |       | CatCat | My cat note | ABC789      | batch_2 | Cats        |            |
+      | 30045623456789 | 76543  |       | Buster |             |             | batch_1 |             | Bustard    |
 
   Scenario: Project page contains a table of items
     Given I am logged in as a manager
     When I view the project with title 'Scanning'
     Then I should see the items table
     And I should see all of:
-      | xyz123 | Dogs | Ruthie | My note | XYZ123 | batch_1 | 54321 |
+      | 30012323456789 | Dogs | Ruthie | My note | XYZ123 | batch_1 | 54321 |
     And I should see all of:
-      | abc789 | CatCat | My cat note | ABC789 | batch_2 | Cats | 98765 |
+      | 30078923456789 | CatCat | My cat note | ABC789 | batch_2 | Cats | 98765 |
     And I should see 'Bustard'
 
   Scenario: Obtain CSV file of items
@@ -27,17 +27,17 @@ Feature: Project Items
     And I click on 'Export'
     And I click on 'CSV'
     Then I should receive a file 'items.csv' of type 'text/csv' matching:
-      | xyz123 | 54321 | Dogs | Ruthie | abc789 | 98765 | Cats | CatCat |
+      | 30012323456789 | 54321 | Dogs | Ruthie | 30078923456789 | 98765 | Cats | CatCat |
 
   Scenario: View individual item page
     Given I am logged in as a manager
-    When I view the item with barcode 'xyz123'
+    When I view the item with barcode '30012323456789'
     Then I should see all of:
-      | xyz123 | 54321 | Dogs | Ruthie |
+      | 30012323456789 | 54321 | Dogs | Ruthie |
 
   Scenario: Edit an existing item
     Given I am logged in as a manager
-    When I view the item with barcode 'xyz123'
+    When I view the item with barcode '30012323456789'
     And I click on 'Edit'
     And I fill in fields:
       | Title              | Toys         |
@@ -56,7 +56,7 @@ Feature: Project Items
       | Toys | Buster |
     And I should see none of:
       | Dogs | Ruthie |
-    When I view the item with barcode 'xyz123'
+    When I view the item with barcode '30012323456789'
     Then I should see all of:
       | Toys | Buster | abc123 | RCAM | Joebob | 1999-10-17 | Rights stuff |
     And the item with fields should exist:
@@ -68,26 +68,26 @@ Feature: Project Items
     When I view the project with title 'Scanning'
     And I click on 'Add Item'
     And I fill in fields:
-      | Barcode | pqr456   |
-      | Title   | Catch-22 |
-      | Author  | Heller   |
+      | Barcode | 30045623456789 |
+      | Title   | Catch-22       |
+      | Author  | Heller         |
     And I click on 'Create and Exit'
     Then I should be on the view page for the project with title 'Scanning'
     And I should see all of:
-      | pqr456 | Catch-22 | Heller |
+      | 30045623456789 | Catch-22 | Heller |
 
   Scenario: Create a new item with javascript interface
     Given I am logged in as a manager
     When I view the project with title 'Scanning'
     And I click on 'Add Item'
     And I fill in fields:
-      | Barcode | pqr456   |
-      | Title   | Catch-22 |
-      | Author  | Heller   |
+      | Barcode | 30045623456789 |
+      | Title   | Catch-22       |
+      | Author  | Heller         |
     And I click on 'Create'
     Then I should be on the view page for the project with title 'Scanning'
     And I should see all of:
-      | pqr456 | Catch-22 | Heller |
+      | 30045623456789 | Catch-22 | Heller |
 
   #Note that this looks up this item in the live catalog
   Scenario: Use auto barcode lookup with javascript interface
@@ -107,9 +107,9 @@ Feature: Project Items
     When I view the project with title 'Scanning'
     And I click on 'batch_1'
     Then I should see all of:
-      | xyz123 | pqr456 |
+      | 30012323456789 | 30045623456789 |
     And I should see none of:
-      | abc789 |
+      | 30078923456789 |
 
   Scenario: Clone an item from view page
     Given I am logged in as a manager
@@ -119,7 +119,7 @@ Feature: Project Items
     And there should be inputs with values:
       | 54321 | Dogs | Ruthie | XYZ123 | batch_1 |
     And there should not be inputs with values:
-      | xyz123 |
+      | 30012323456789 |
 
   Scenario: Clone an item from edit page
     Given I am logged in as a manager
