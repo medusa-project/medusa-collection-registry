@@ -7,7 +7,7 @@ class ItemCsvParser < Object
   def initialize(csv_data)
     self.csv = csv_data
     self.headers = csv_data.first
-    self.data = csv_data.drop(1)
+    self.data = csv_data.drop(1).select {|row| row.detect {|field| field.present?}}
     make_column_mapping
   end
 
@@ -29,8 +29,6 @@ class ItemCsvParser < Object
       item_barcode: [:barcode, ->(val) { val.present? ? val : '' }],
       digitization_date: [:reformatting_date, -> (val) { self.parse_date(val) }],
       operator: :reformatting_operator,
-      foldout_present: [:foldout_present, ->(val) { self.convert_to_boolean(val) }],
-      foldout_done: nil,
       special_notes: :notes,
       #from new spreadsheet
       barcode: [:barcode, ->(val) { val.present? ? val : '' }],
@@ -42,7 +40,6 @@ class ItemCsvParser < Object
       reformatting_date: [:reformatting_date, -> (val) { self.parse_date(val) }],
       reformatting_operator: :reformatting_operator,
       equipment: :equipment,
-      foldouts_present: [:foldout_present, ->(val) { self.convert_to_boolean(val) }],
       unique_identifier: :unique_identifier,
       call_number: :call_number,
       title: :title,
@@ -57,8 +54,15 @@ class ItemCsvParser < Object
       box: :box,
       folder: :folder,
       item_title: :item_title,
+      creator: :creator,
+      date: :date,
       notes: :notes,
-      local_description: :local_description
+      local_description: :local_description,
+      rights_information: :rights_information,
+      foldouts_present: [:foldout_present, ->(val) { self.convert_to_boolean(val) }],
+      foldout_present: [:foldout_present, ->(val) { self.convert_to_boolean(val) }],
+      foldout_done: [:foldout_done, ->(val) { self.convert_to_boolean(val) }],
+      item_done: [:item_done, ->(val) { self.convert_to_boolean(val) }],
   }
 
   #the column mapping maps positions to the spec for what to do with that data, either directly use it for the given field
