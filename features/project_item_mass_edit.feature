@@ -6,10 +6,10 @@ Feature: Project items mass edit
 
   Background:
     Given the project with title 'Scanning' has child items with fields:
-      | barcode | bib_id | title | author | notes       | call_number | batch   | local_title | item_title |
-      | xyz123  | 54321  | Dogs  | Ruthie | My note     | XYZ123      | batch_1 |             |            |
-      | abc789  | 98765  |       | CatCat | My cat note | ABC789      | batch_2 | Cats        |            |
-      | pqr456  | 76543  |       | Buster |             |             | batch_1 |             | Bustard    |
+      | barcode        | bib_id | title | author | notes       | call_number | batch   | local_title | item_title |
+      | 30012323456789 | 54321  | Dogs  | Ruthie | My note     | XYZ123      | batch_1 |             |            |
+      | 30078923456789 | 98765  |       | CatCat | My cat note | ABC789      | batch_2 | Cats        |            |
+      | 30045623456789 | 76543  |       | Buster |             |             | batch_1 |             | Bustard    |
 
   Scenario: Mass edit project items
     Given I am logged in as an admin
@@ -24,10 +24,10 @@ Feature: Project items mass edit
     And I click on 'Mass update'
     And I wait 2 seconds
     Then the item with fields should exist:
-      | barcode | batch   | reformatting_operator | equipment |
-      | xyz123  | batch_3 | Dee                   | RCAM      |
-      | pqr456  | batch_3 | Dee                   | RCAM      |
-      | abc789  | batch_3 | Dee                   | RCAM      |
+      | barcode        | batch   | reformatting_operator | equipment |
+      | 30012323456789 | batch_3 | Dee                   | RCAM      |
+      | 30045623456789 | batch_3 | Dee                   | RCAM      |
+      | 30078923456789 | batch_3 | Dee                   | RCAM      |
     And I should see 'batch_3'
     And I should see none of:
       | batch_1 | batch_2 |
@@ -42,10 +42,10 @@ Feature: Project items mass edit
     And I click on 'Mass update'
     And I wait 2 seconds
     Then the item with fields should exist:
-      | barcode | batch   | reformatting_operator |
-      | xyz123  | batch_1 | Dee                   |
-      | abc789  | batch_2 | Dee                   |
-      | pqr456  | batch_1 | Dee                   |
+      | barcode        | batch   | reformatting_operator |
+      | 30012323456789 | batch_1 | Dee                   |
+      | 30078923456789 | batch_2 | Dee                   |
+      | 30045623456789 | batch_1 | Dee                   |
     And I should see all of:
       | batch_1 | batch_2 |
 
@@ -60,9 +60,9 @@ Feature: Project items mass edit
     And I click on 'Mass update'
     And I wait 2 seconds
     Then the item with fields should exist:
-      | barcode | batch | reformatting_operator |
-      | xyz123  |       | Dee                   |
-      | abc789  |       | Dee                   |
-      | pqr456  |       | Dee                   |
+      | barcode        | batch | reformatting_operator |
+      | 30012323456789 |       | Dee                   |
+      | 30078923456789 |       | Dee                   |
+      | 30045623456789 |       | Dee                   |
     And I should see none of:
       | batch_1 | batch_2 |
