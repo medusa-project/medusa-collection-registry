@@ -56,6 +56,8 @@ class ProjectsController < ApplicationController
         mass_update(params[:mass_action])
       when 'Delete checked'
         items.destroy_all
+      else
+        raise RuntimeError, 'Unexpected mass action on project items'
     end
     respond_to do |format|
       format.html {redirect_to @project}
