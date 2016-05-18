@@ -8,6 +8,7 @@ class Item < ActiveRecord::Base
   STATUSES = ['Sent to Conservation', 'Sent to Preservation', 'Sent to IPM', 'Sent for cataloging', 'Send to IA for digitization']
   EQUIPMENT_TYPES = ['BC100', 'RCAM', 'Canon Sheetfed', 'Epson Flatbed']
   validates :status, inclusion: STATUSES, allow_blank: true
+  validates :barcode, allow_blank: true, format: /\d{14}/
 
   searchable include: :project do
     %i(barcode batch).each do |field|
