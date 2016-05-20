@@ -9,7 +9,7 @@ class Idb::IngestJob < Job::Base
       send_duplicate_file_message(message)
     else
       job.save!
-      Delayed::Job.enqueue(job)
+      Delayed::Job.enqueue(job, queue: 'idb')
     end
   rescue Exception => e
     Rails.logger.error "Failed to create IDB Ingest Job for message: #{message}. Error: #{e}"
