@@ -16,13 +16,18 @@ class Item < ActiveRecord::Base
       string field, stored: true
     end
     %i(some_title bib_id call_number author record_series_id oclc_number imprint local_title local_description
-reformatting_operator archival_management_system_url series sub_series box).each do |field|
+reformatting_operator archival_management_system_url series sub_series box folder item_title creator date
+rights_information status equipment unique_identifier).each do |field|
       text field
       string field
+    end
+    %i(foldout_present foldout_done item_done).each do |field|
+      boolean field
     end
     text :notes
     string :project_title
     integer :project_id
+    integer :file_count
     time :updated_at
     date :reformatting_date
   end
