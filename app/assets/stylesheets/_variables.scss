@@ -1,3 +1,38 @@
+//Original Medusa stuff
+$mcolor__blue-text: #1e3862;
+$mcolor__first-navbar-background: $mcolor__blue-text;
+$mcolor__navbar-background: white;
+$mcolor__navbar-link: $mcolor__blue-text;
+$mcolor__navbar-text: $mcolor__blue-text;
+
+$mcolor__navbar-institutions-background: #f9ece6;
+$mcolor__navbar-institutions-footer: #e58c51;
+$mcolor__navbar-repositories-background: #f8e5e2;
+$mcolor__navbar-repositories-footer: #dc7d65;
+$mcolor__navbar-collections-background: #f6efe7;
+$mcolor__navbar-collections-footer: #d9b992;
+$mcolor__navbar-file-groups-background: #f3f5ed;
+$mcolor__navbar-file-groups-footer: #d0dbaf;
+$mcolor__navbar-files-background: #f0f7f1;
+$mcolor__navbar-files-footer: #c3ddc7;
+//Reuse the files stuff for now, as it isn't shown
+$mcolor__navbar-projects-background: #f0f7f1;
+$mcolor__navbar-projects-footer: #c3ddc7;
+
+//These are in the initial style guide, but I'm not sure for what they're intended.
+//I'm copying them here just to have them - I expect to stumble across them somewhere
+//while looking through the styling materials, at which point I can clarify
+$mcolor__navbar-background-blue: #e4eaed;
+$mcolor__navbar-footer-blue: #5e85a7;
+
+$mcolor__content-header-text: $mcolor__blue-text;
+
+//datatables table coloring
+$mcolor__datatables-header:  #e4e9ec;
+$mcolor__datatables-filter-row: #a8b6bd;
+
+//Copied from IDB
+
 //Primary Palette
 $color__light-orange: #ffa466;
 $color__orange: #F47F24;
