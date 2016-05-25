@@ -48,6 +48,7 @@ class ItemCsvParser < Object
       'oclc#': :oclc_number,
       oclc_number: :oclc_number,
       record_series_id: :record_series_id,
+      record_series: :record_series_id,
       archival_management_system_url: :archival_management_system_url,
       series: :series,
       'sub-series': :sub_series,
