@@ -6,8 +6,20 @@ class ContentType < ActiveRecord::Base
   validates_numericality_of :cfs_file_count, :cfs_file_size
   has_many :cfs_files
 
-  def random_cfs_file
-    self.cfs_files.order('name').offset(rand(self.cfs_files.count)).first
+  def random_cfs_file(args = {})
+    if args[:file_group_ids].present?
+      query = self.cfs_files.joins(cfs_directory: {root_cfs_directory: :parent_file_group}).where('file_groups.id': args[:file_group_ids])
+      count = query.count
+      query.order(:name).offset(rand(count)).first
+    elsif args[:repository_id].present?
+      file_group_ids = Repository.find(args[:repository_id]).collections.collect { |c| c.file_group_ids }.flatten
+      self.random_cfs_file(file_group_ids: file_group_ids)
+    elsif args[:virtual_repository_id].present?
+      file_group_ids = VirtualRepository.find(args[:virtual_repository_id]).collections.collect { |c| c.file_group_ids }.flatten
+      self.random_cfs_file(file_group_ids: file_group_ids)
+    else
+      self.cfs_files.order(:name).offset(rand(self.cfs_files.count)).first
+    end
   end
 
 end

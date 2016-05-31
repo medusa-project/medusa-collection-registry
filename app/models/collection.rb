@@ -24,6 +24,7 @@ class Collection < ActiveRecord::Base
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
   has_many :attachments, as: :attachable, dependent: :destroy
   has_many :projects
+  has_many :collection_virtual_repository_joins, dependent: :destroy
 
   delegate :public?, to: :rights_declaration
   delegate :title, to: :repository, prefix: true

@@ -1,0 +1,14 @@
+%table.table.table-hover.table-bordered.table-condensed#storage-summary
+  %caption Storage
+  %thead
+    %tr
+      %th state
+      %th size(GB)
+      %th files
+  %tbody
+    %tr
+      %td Bit Level
+      %td.value= number_with_precision(@virtual_repository.total_size, precision: 2, delimiter: ',')
+      %td.value= number_with_precision(@virtual_repository.total_files, precision: 0, delimiter: ',')
+
+= render 'collections_table'

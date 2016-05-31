@@ -13,7 +13,13 @@
         = events_button(events_repository_path(@repository))
         = red_flags_button(red_flags_repository_path(@repository))
         = edit_button(@repository)
-        = add_button(new_collection_path(repository_id: @repository.id), title: 'Add Collection')
+        .btn-group
+          %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+            = fa_icon 'plus'
+            %span.caret
+          %ul.dropdown-menu.dropdown-menu-right
+            %li= link_to 'Collection', new_collection_path(repository_id: @repository.id), title: 'Add Collection'
+            %li= link_to 'Virtual Repository', new_virtual_repository_path(repository_id: @repository.id), title: 'Add Virtual Repository'
         .btn-group
           %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
             Export
