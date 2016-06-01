@@ -4,7 +4,6 @@ Feature: Virtual repositories
   I want to be able to select subsets of a repository and get stats on them
 
   Background:
-    #Given the repository with title 'Animals' exists
     Given the repository with title 'Animals' has child collections with field title:
       | Dogs | Cats | Zebras |
     And the repository with title 'Animals' has child virtual repository with field title:
@@ -70,12 +69,9 @@ Feature: Virtual repositories
     Then I should see the collections table
     And I should see all of:
       | 1.3 | 2.5 | 3.8 | 579 |
-
-  Scenario: Virtual repository stats
-    When PENDING
-
-  Scenario: Virtual repository random sampler
-    When PENDING
-
+    
   Scenario: Destroy virtual repository
-    When PENDING
+    When I edit the virtual repository with title 'Pets'
+    And I click on 'Delete'
+    Then I should be on the view page for the repository with title 'Animals'
+    And there should be no virtual repository with title 'Pets'

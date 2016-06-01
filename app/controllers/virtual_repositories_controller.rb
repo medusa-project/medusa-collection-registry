@@ -24,12 +24,12 @@ class VirtualRepositoriesController < ApplicationController
     @virtual_repository = VirtualRepository.new
     @repository = Repository.find(params[:repository_id])
     @virtual_repository.repository = @repository
-    authorize! :edit, @repository
+    authorize! :update, @repository
   end
 
   def create
     @repository = Repository.find(params[:virtual_repository][:repository_id])
-    authorize! :edit, @repository
+    authorize! :update, @repository
     collection_ids = params[:virtual_repository].delete(:collection_ids)
     @virtual_repository = VirtualRepository.new(allowed_params)
     begin
@@ -45,16 +45,25 @@ class VirtualRepositoriesController < ApplicationController
   end
 
   def edit
-    authorize! :edit, @virtual_repository.repository
+    authorize! :update, @virtual_repository.repository
   end
 
   def update
-    authorize! :edit, @virtual_repository.repository
+    authorize! :update, @virtual_repository.repository
     params[:virtual_repository].delete(:repository_id) if params[:virtual_repository][:repository_id].present?
     if @virtual_repository.update_attributes(allowed_params)
       redirect_to @virtual_repository
     else
       render 'edit'
+    end
+  end
+
+  def destroy
+    authorize! :update, @virtual_repository.repository
+    if @virtual_repository.destroy
+      redirect_to @virtual_repository.repository
+    else
+      raise RuntimeError, "Unable to destroy virtual repository"
     end
   end
 
@@ -94,7 +103,7 @@ class VirtualRepositoriesController < ApplicationController
     GROUP BY CTS.content_type_id, CTS.name
 SQL
   end
-  
+
   def load_virtual_repository_dashboard_file_extension_sql(collection_ids)
     id_string = "(#{collection_ids.join(',')})"
     <<SQL
