@@ -1,4 +1,5 @@
 class VirtualRepositoriesController < ApplicationController
+  include ModelsToCsv
 
   before_action :require_medusa_user
   before_action :find_virtual_repository, only: [:edit, :update, :destroy, :show, :show_file_stats]
@@ -78,17 +79,6 @@ class VirtualRepositoriesController < ApplicationController
         select_all(load_virtual_repository_dashboard_file_extension_sql(virtual_repository.collection_ids)).to_hash
   end
 
-#   def load_virtual_repository_dashboard_content_type_sql
-#     <<SQL
-#     SELECT CTS.content_type_id, CTS.name, CTS.file_size, CTS.file_count,
-#     COALESCE(CTC.count,0) AS tested_count
-#     FROM view_file_content_type_stats_by_repository CTS
-#     LEFT JOIN (SELECT content_type_id, count FROM view_tested_file_content_type_counts WHERE repository_id = $1) CTC
-#     ON CTS.content_type_id = CTC.content_type_id
-#     WHERE repository_id = $1
-# SQL
-#   end
-
   def load_virtual_repository_dashboard_content_type_sql(collection_ids)
     id_string = "(#{collection_ids.join(',')})"
     <<SQL
@@ -104,19 +94,7 @@ class VirtualRepositoriesController < ApplicationController
     GROUP BY CTS.content_type_id, CTS.name
 SQL
   end
-
-
-#   def load_virtual_repository_dashboard_file_extension_sql
-#     <<SQL
-#     SELECT FES.file_extension_id, FES.extension, FES.file_size, FES.file_count,
-#     COALESCE(FEC.count,0) AS tested_count
-#     FROM view_file_extension_stats_by_repository FES
-#     LEFT JOIN (SELECT file_extension_id, count FROM view_tested_file_file_extension_counts WHERE repository_id = $1) FEC
-#     ON FES.file_extension_id = FEC.file_extension_id
-#     WHERE repository_id = $1
-# SQL
-#   end
-
+  
   def load_virtual_repository_dashboard_file_extension_sql(collection_ids)
     id_string = "(#{collection_ids.join(',')})"
     <<SQL
