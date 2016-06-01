@@ -5,7 +5,8 @@ CREATE OR REPLACE VIEW view_tested_file_relations AS
     F.id AS cfs_file_id,
     F.content_type_id,
     F.file_extension_id,
-    P.repository_id
+    P.repository_id,
+    P.collection_id
   FROM
     file_format_tests FFT JOIN
     cfs_files F ON FFT.cfs_file_id=F.id JOIN

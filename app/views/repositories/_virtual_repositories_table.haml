@@ -1,0 +1,13 @@
+%h2
+  Virtual Repositories
+
+%div
+  %table.table.table-striped#virtual_repositories
+    %thead
+      %tr
+        %th Title
+    %tbody
+      - @repository.virtual_repositories.each do |virtual_repository|
+        - cache(virtual_repository) do
+          %tr
+            %td= link_to(virtual_repository.title, virtual_repository)

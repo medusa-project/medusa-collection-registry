@@ -1,0 +1,17 @@
+.row.vertical-align
+  .col-xs-6
+    = render layout: 'layouts/page_header' do
+      - if content_for?(:title)
+        = yield(:title)
+      - else
+        Virtual Repository:
+      %small #{@virtual_repository.title}
+  .col-xs-6
+    .btn-toolbar.pull-right
+      .btn-group
+        = edit_button(@virtual_repository)
+      - if content_for?(:extra_links)
+        .btn-group
+          = yield(:extra_links)
+
+= yield

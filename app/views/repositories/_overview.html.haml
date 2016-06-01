@@ -13,3 +13,5 @@
         %td.value= number_with_precision(@repository.total_files, precision: 0, delimiter: ',')
 
   = render 'collections_table'
+  - unless @repository.virtual_repositories.empty?
+    = render 'virtual_repositories_table'

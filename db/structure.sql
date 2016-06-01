@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.2
+-- Dumped from database version 9.5.3
 -- Dumped by pg_dump version 9.5.3
 
 SET statement_timeout = 0;
@@ -1676,6 +1676,38 @@ CREATE SEQUENCE cfs_files_id_seq
 --
 
 ALTER SEQUENCE cfs_files_id_seq OWNED BY cfs_files.id;
+
+
+--
+-- Name: collection_virtual_repository_joins; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE collection_virtual_repository_joins (
+    id integer NOT NULL,
+    collection_id integer,
+    virtual_repository_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: collection_virtual_repository_joins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE collection_virtual_repository_joins_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: collection_virtual_repository_joins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE collection_virtual_repository_joins_id_seq OWNED BY collection_virtual_repository_joins.id;
 
 
 --
@@ -3492,6 +3524,38 @@ CREATE VIEW view_tested_file_file_extension_counts AS
 
 
 --
+-- Name: virtual_repositories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE virtual_repositories (
+    id integer NOT NULL,
+    title character varying,
+    repository_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: virtual_repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE virtual_repositories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: virtual_repositories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE virtual_repositories_id_seq OWNED BY virtual_repositories.id;
+
+
+--
 -- Name: virus_scans; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3808,6 +3872,13 @@ ALTER TABLE ONLY cfs_directories ALTER COLUMN id SET DEFAULT nextval('cfs_direct
 --
 
 ALTER TABLE ONLY cfs_files ALTER COLUMN id SET DEFAULT nextval('cfs_files_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY collection_virtual_repository_joins ALTER COLUMN id SET DEFAULT nextval('collection_virtual_repository_joins_id_seq'::regclass);
 
 
 --
@@ -4136,6 +4207,13 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY virtual_repositories ALTER COLUMN id SET DEFAULT nextval('virtual_repositories_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY virus_scans ALTER COLUMN id SET DEFAULT nextval('virus_scans_id_seq'::regclass);
 
 
@@ -4283,6 +4361,14 @@ ALTER TABLE ONLY cfs_files
 
 ALTER TABLE ONLY resource_typeable_resource_type_joins
     ADD CONSTRAINT collection_resource_type_joins_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: collection_virtual_repository_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY collection_virtual_repository_joins
+    ADD CONSTRAINT collection_virtual_repository_joins_pkey PRIMARY KEY (id);
 
 
 --
@@ -4646,6 +4732,14 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: virtual_repositories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY virtual_repositories
+    ADD CONSTRAINT virtual_repositories_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: virus_scans_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4706,6 +4800,20 @@ ALTER TABLE ONLY workflow_ingests
 --
 
 CREATE UNIQUE INDEX cfs_directory_parent_idx ON cfs_directories USING btree (parent_type, parent_id, path);
+
+
+--
+-- Name: collection_virtual_repository_join_collection_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX collection_virtual_repository_join_collection_index ON collection_virtual_repository_joins USING btree (collection_id);
+
+
+--
+-- Name: collection_virtual_repository_join_unique_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX collection_virtual_repository_join_unique_index ON collection_virtual_repository_joins USING btree (virtual_repository_id, collection_id);
 
 
 --
@@ -6128,6 +6236,14 @@ ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
 
 
 --
+-- Name: fk_rails_3c52875c13; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY collection_virtual_repository_joins
+    ADD CONSTRAINT fk_rails_3c52875c13 FOREIGN KEY (virtual_repository_id) REFERENCES virtual_repositories(id);
+
+
+--
 -- Name: fk_rails_4f056ac37d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6173,6 +6289,14 @@ ALTER TABLE ONLY workflow_accrual_directories
 
 ALTER TABLE ONLY workflow_accrual_jobs
     ADD CONSTRAINT fk_rails_714fa9a746 FOREIGN KEY (cfs_directory_id) REFERENCES cfs_directories(id);
+
+
+--
+-- Name: fk_rails_7a05f7a57b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY collection_virtual_repository_joins
+    ADD CONSTRAINT fk_rails_7a05f7a57b FOREIGN KEY (collection_id) REFERENCES collections(id);
 
 
 --
@@ -6774,4 +6898,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160504204653');
 INSERT INTO schema_migrations (version) VALUES ('20160505011200');
 
 INSERT INTO schema_migrations (version) VALUES ('20160518182728');
+
+INSERT INTO schema_migrations (version) VALUES ('20160531161759');
+
+INSERT INTO schema_migrations (version) VALUES ('20160531162831');
 

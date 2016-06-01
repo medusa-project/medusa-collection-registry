@@ -45,6 +45,9 @@ class Ability
     can :update, Repository do |repository|
       repository_manager?(user, repository)
     end
+    can :manage, VirtualRepository do |virtual_repository|
+      repository_manager?(user, virtual_repository.repository)
+    end
     can :accrue, CfsDirectory do |directory|
       repository_manager?(user, directory)
     end

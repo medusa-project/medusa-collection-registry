@@ -10,6 +10,7 @@ class Repository < ActiveRecord::Base
   belongs_to :institution
   has_many :collections, dependent: :destroy
   has_many :assessments, as: :assessable, dependent: :destroy
+  has_many :virtual_repositories, dependent: :destroy
 
   LDAP_DOMAINS = %w(uofi uiuc)
 

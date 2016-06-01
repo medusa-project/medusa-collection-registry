@@ -40,6 +40,9 @@ MedusaCollectionRegistry::Application.routes.draw do
       get action, on: :member
     end
   end
+  resources :virtual_repositories do
+    get :show_file_stats, on: :member
+  end
   resources :institutions
   resources :assessments, only: [:show, :edit, :update, :new, :create, :destroy]
   resources :attachments, only: [:show, :edit, :update, :new, :create, :destroy], concerns: :downloadable

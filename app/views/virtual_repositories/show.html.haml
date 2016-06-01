@@ -1,0 +1,12 @@
+= render layout: 'layout_single' do
+  = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: virtual_repository_tab_list}
+  .tab-content
+    #overview.tab-pane.active
+      = render 'overview'
+    #file-statistics.tab-pane
+      Loading...
+      :javascript
+        $("#file-statistics").load("#{show_file_stats_virtual_repository_path(@virtual_repository)}", function () {
+          initialize_data_table("table#file_stats_content_type", {});
+          initialize_data_table("table#file_stats_file_extension", {});
+          });
