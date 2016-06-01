@@ -69,7 +69,7 @@ Feature: Virtual repositories
     Then I should see the collections table
     And I should see all of:
       | 1.3 | 2.5 | 3.8 | 579 |
-    
+
   Scenario: Destroy virtual repository
     When I edit the virtual repository with title 'Pets'
     And I click on 'Delete'

@@ -31,7 +31,7 @@ class FileExtensionsController < ApplicationController
   end
 
   def random_cfs_file
-    redirect_to @file_extension.random_cfs_file(params.slice(repository_id, virtual_repository_id))
+    redirect_to @file_extension.random_cfs_file(params.slice(:repository_id, :virtual_repository_id))
   end
 
   protected
