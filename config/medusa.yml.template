@@ -75,6 +75,8 @@ development:
     noreply: medusa-noreply@medusatest.library.illinois.edu
   fits_batch_size: 1000
   fits_server_url: http://localhost:4567
+  #In certain cases it may be advantageous to call a fits binary directly
+  fits_binary: /path/to/fits/binary
   fits_storage: /Users/hding2/repos/medusa-collection-registry/tmp/storage-dev/fits
   ldap:
     host: ad.uillinois.edu
