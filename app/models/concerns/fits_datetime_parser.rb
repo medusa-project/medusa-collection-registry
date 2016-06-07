@@ -67,8 +67,6 @@ module FitsDatetimeParser
         Time.strptime(datetime_string, '%H:%M %p %A, %B %d, %Y')
       when %r|^\d{2} [[:alpha:]]+ \d{4} \d{1,2}:\d{2}|
         Time.strptime(datetime_string, '%d %b %Y %H:%M')
-      when "0000:00:00 00:00:00"
-        nil
       else
         raise RuntimeError
     end
