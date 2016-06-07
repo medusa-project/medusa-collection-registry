@@ -21,9 +21,7 @@ module FitsDatetimeParser
   def parse_datetime_exiftool(datetime_string)
     datetime_string.squish!
     case datetime_string
-      when /^-+$/, '0', /CPY/, '0000:00:00 00:00:00Z'
-        nil
-      when "0000:00:00 00:00:00"
+      when /^-+$/, '0', /CPY/, '0000:00:00 00:00:00Z?'
         nil
       when %r[^\d{1,2}/\d{1,2}/\d{2}$]
         Time.strptime(datetime_string, '%m/%d/%y')
