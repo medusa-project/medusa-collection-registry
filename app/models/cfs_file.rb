@@ -59,6 +59,10 @@ class CfsFile < ActiveRecord::Base
     where(fits_serialized: true)
   end
 
+  def self.without_fits
+    where(fits_serialized: false)
+  end
+
   def relative_path
     File.join(self.cfs_directory.relative_path, self.name)
   end
