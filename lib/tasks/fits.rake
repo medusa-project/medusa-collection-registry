@@ -12,7 +12,15 @@ namespace :fits do
       begin
         cfs_file.ensure_fits_xml
       rescue Exception => e
-        errors[cfs_file.id] = e
+        if e.to_s.match('Code 500')
+          begin
+           Fits::Runner.update_cfs_file(cfs_file)
+          rescue Exception => fits_runner_error
+            error[cfs_file.id] = fits_runner_error
+          end
+        else
+          errors[cfs_file.id] = e
+        end
       ensure
         bar.increment!
       end
