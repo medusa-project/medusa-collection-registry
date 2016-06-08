@@ -18,11 +18,11 @@ namespace :fits do
       end
     end
     if errors.present?
-      error_string = StringIO.new("")
+      error_string = StringIO.new
       errors.each do |id, error|
         error_string.puts "#{id}: #{error}"
       end
-      GenericErrorMailer.error(error_string.to_s).deliver_now
+      GenericErrorMailer.error(error_string.string).deliver_now
     end
   end
 end
