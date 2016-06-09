@@ -1,7 +1,7 @@
 module CfsDirectoriesHelper
 
   def add_cfs_directory_tree_csv_headers(csv)
-    csv << %w(uuid type name parent_directory_uuid parent_directory_name md5_sum content_type size mtime relative_pathname)
+    csv << %w(uuid inode_type name parent_directory_uuid parent_directory_name md5_sum content_type size mtime relative_pathname)
   end
 
   def add_cfs_directory_tree_entries(csv, root_cfs_directory)
