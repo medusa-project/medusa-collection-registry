@@ -7,7 +7,7 @@ class Job::AmazonBackup < Job::Base
   validates_uniqueness_of :amazon_backup_id, allow_blank: false
 
   def self.create_for(amazon_backup, job_opts = {})
-    Delayed::Job.enqueue(self.create!(amazon_backup_id: amazon_backup.id), {queue: 'glacier'}.merge(job_opts))
+    Delayed::Job.enqueue(self.create!(amazon_backup_id: amazon_backup.id), {queue: 'default'}.merge(job_opts))
   end
 
   def perform
