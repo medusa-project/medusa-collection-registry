@@ -7,6 +7,7 @@ Feature: Amqp deletion
   Background:
     Given there is an IDB file group
 
+  @current
   Scenario: Medusa receives message from IDB and creates delayed job to delete
     When IDB sends an delete request
     And Medusa picks up the IDB AMQP request

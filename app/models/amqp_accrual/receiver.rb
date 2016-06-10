@@ -13,6 +13,8 @@ module AmqpAccrual
       case message['operation']
         when 'ingest'
           AmqpAccrual::IngestJob.create_for(client, message)
+        when 'delete'
+          AmqpAccrual::DeleteJob.create_for(client, message)
         else
           raise RuntimeError, "Unrecognized operation requested"
       end

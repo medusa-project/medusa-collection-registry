@@ -7,6 +7,10 @@ module IdbTestHelper
     {'operation' => 'ingest', 'staging_path' => 'prefix/test_dir/file.txt'}
   end
 
+  def idb_delete_message
+    {'operation' => 'delete', 'uuid' => 'c3712760-1183-0134-1d5b-0050569601ca-b'}
+  end
+
   def staging_path
     idb_ingest_message['staging_path']
   end
