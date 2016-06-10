@@ -2,6 +2,7 @@
 #using amqp and a shared staging directory for ingest (and possibly in the future deletion)
 development:
   idb:
+    active: true
     incoming_queue: idb_to_medusa
     outgoing_queue: medusa_to_idb
     file_group_id: 1401
@@ -9,6 +10,7 @@ development:
 
 test:
   idb:
+    active: true
     incoming_queue: idb_to_medusa_test
     outgoing_queue: medusa_to_idb_test
     #This is kind of meaningless given that the test db goes in and out. Steps will have to
@@ -18,6 +20,7 @@ test:
 
 production:
   idb:
+    active: true
     incoming_queue: idb_to_medusa
     outgoing_queue: medusa_to_idb
     file_group_id: id_for_idb_file_group
