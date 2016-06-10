@@ -1,0 +1,24 @@
+#configuration relating to the interaction between medusa and external applications
+#using amqp and a shared staging directory for ingest (and possibly in the future deletion)
+development:
+  idb:
+    incoming_queue: idb_to_medusa
+    outgoing_queue: medusa_to_idb
+    file_group_id: 1401
+    staging_directory: /Users/hding2/repos/medusa-collection-registry/tmp/idb-staging/development
+
+test:
+  idb:
+    incoming_queue: idb_to_medusa_test
+    outgoing_queue: medusa_to_idb_test
+    #This is kind of meaningless given that the test db goes in and out. Steps will have to
+    #set it as needed.
+    file_group_id: 2109
+    staging_directory: /Users/hding2/repos/medusa-collection-registry/tmp/idb-staging/test
+
+production:
+  idb:
+    incoming_queue: idb_to_medusa
+    outgoing_queue: medusa_to_idb
+    file_group_id: id_for_idb_file_group
+    staging_directory: location_of_idb_staging
