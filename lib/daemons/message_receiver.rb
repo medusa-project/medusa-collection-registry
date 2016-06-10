@@ -25,8 +25,10 @@ AmqpResponse::AmazonBackup.listen
 #handle responses from medusa-fixity
 AmqpResponse::Fixity.listen
 
-#handle requests from idb
-Idb::AmqpReceiver.listen if Idb::Config.instance.active?
+#handle requests from active amqp accruers
+AmqpAccrual::Config.clients.each do |client|
+  AmqpAccrual::Receiver.listen(client) if AmqpAccrual::Config.active?(client)
+end
 
 #nothing happens here - the listeners do all the work
 while ($running) do
