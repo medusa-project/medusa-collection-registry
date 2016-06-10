@@ -9,3 +9,4 @@ smtp.yml
 newrelic.yml
 idb.yml
 downloader.yml
+amqp_accrual.yml
