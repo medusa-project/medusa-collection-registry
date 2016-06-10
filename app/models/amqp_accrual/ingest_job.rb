@@ -9,7 +9,7 @@ class AmqpAccrual::IngestJob < Job::Base
       send_duplicate_file_message(client, message)
     else
       job.save!
-      Delayed::Job.enqueue(job, queue: AmqpAccrual::Config.delayed_job_queue(client))
+      Delayed::Job.enqueue(job, queue: AmqpAccrual::Config.delayed_job_queue(client), priority: 50)
     end
   rescue Exception => e
     Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Error: #{e}"
