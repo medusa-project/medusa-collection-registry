@@ -5,7 +5,7 @@ When(/^IDB sends an ingest request$/) do
 end
 
 And(/^Medusa picks up the IDB ingest request$/) do
-  AmqpAccrual::Receiver.handle_response('idb')
+  AmqpAccrual::Receiver.handle_responses('idb')
 end
 
 Then(/^there should be an IDB ingest delayed job reflecting the ingest request$/) do
