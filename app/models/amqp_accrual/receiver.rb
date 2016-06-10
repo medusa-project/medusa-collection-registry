@@ -1,5 +1,5 @@
-module Idb
-  class AmqpReceiver < Object
+module AmqpAccrual
+  class Receiver < Object
 
     def self.listen
       AmqpListener.new(amqp_config: AmqpConnector.connector(:medusa).config,

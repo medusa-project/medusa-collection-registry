@@ -1,6 +1,6 @@
 require 'singleton'
 
-class Idb::Config < Object
+class AmqpAccrual::Config < Object
   include Singleton
 
   attr_accessor :incoming_queue, :outgoing_queue, :idb_file_group_id, :staging_directory, :active
