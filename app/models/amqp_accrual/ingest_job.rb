@@ -1,6 +1,6 @@
 require 'open3'
 
-class Idb::IngestJob < Job::Base
+class AmqpAccrual::IngestJob < Job::Base
 
   def self.create_for(message)
     job = self.new(staging_path: message['staging_path'])
