@@ -1,7 +1,7 @@
-@idb @current
-Feature: Ingest IDB file
-  In order to preserve IDB files
-  As IDB
+@idb
+Feature: Amqp accrual
+  In order to preserve files from clients such as IDB
+  As a client application
   I want to be able to tell Medusa to ingest a file and have it go to preservation storage
 
   Background:
