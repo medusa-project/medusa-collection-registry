@@ -3,31 +3,54 @@ require 'singleton'
 class AmqpAccrual::Config < Object
   include Singleton
 
-  attr_accessor :incoming_queue, :outgoing_queue, :idb_file_group_id, :staging_directory, :active
+  #attr_accessor :incoming_queue, :outgoing_queue, :idb_file_group_id, :staging_directory, :active
+  attr_accessor :config
 
   def initialize
-    config = YAML.load_file(File.join(Rails.root, 'config', 'idb.yml'))[Rails.env]
-    self.incoming_queue ||= config['incoming_queue']
-    self.outgoing_queue ||= config['outgoing_queue']
-    self.idb_file_group_id ||= config['idb_file_group_id']
-    self.staging_directory ||= config['staging_directory']
-    self.active ||= config['active']
+    self.config = YAML.load_file(File.join(Rails.root, 'config', 'amqp_accrual.yml'))[Rails.env]
   end
 
-  def all_queues
-    [self.incoming_queue, self.outgoing_queue]
+  ACCESSORS = [:incoming_queue, :outgoing_queue, :file_group_id, :staging_directory, :active, :delayed_job_queue]
+
+  ACCESSORS.each do |accessor|
+    define_method(accessor) do |client|
+      self.config[client.to_s][accessor.to_s]
+    end
   end
 
-  def idb_file_group
-    BitLevelFileGroup.find(self.idb_file_group_id)
+  def all_queues(client)
+    [self.incoming_queue(client), self.outgoing_queue(client)]
   end
 
-  def idb_cfs_directory
-    idb_file_group.cfs_directory
+  def file_group(client)
+    BitLevelFileGroup.find(self.file_group_id(client))
   end
 
-  def active?
-    self.active
+  def cfs_directory(client)
+    file_group(client).cfs_directory
+  end
+
+  def active?(client)
+    self.active(client)
+  end
+
+  #for testing we need this
+  def set_file_group_id(client, id)
+    self.config[client]['file_group_id'] = id
+  end
+
+  def clients
+    self.config.keys
+  end
+
+  DELEGATE_TO_INSTANCE = ACCESSORS + %i(all_queues file_group cfs_directory active? set_file_group_id clients)
+
+  def self.method_missing(method_name, *args)
+    if DELEGATE_TO_INSTANCE.include?(method_name)
+      self.instance.send(method_name, *args)
+    else
+      super
+    end
   end
 
 end

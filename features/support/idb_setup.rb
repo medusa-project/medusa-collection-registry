@@ -12,7 +12,7 @@ module IdbTestHelper
   end
 
   def stage_content
-    path = File.join(AmqpAccrual.staging_directory('idb'), staging_path)
+    path = File.join(AmqpAccrual::Config.staging_directory('idb'), staging_path)
     FileUtils.mkdir_p(File.dirname(path))
     File.open(path, 'w') do |f|
       f.puts "Staging text"
@@ -23,7 +23,7 @@ end
 
 Before('@idb') do
   #clear idb staging directories - test should set these up as desired
-  Dir[File.join(AmqpAccrual.staging_directory('idb'), '*')].each do |dir|
+  Dir[File.join(AmqpAccrual::Config.staging_directory('idb'), '*')].each do |dir|
     FileUtils.rm_rf(dir)
   end
   #clear idb queues

@@ -2,18 +2,18 @@ require 'open3'
 
 class AmqpAccrual::IngestJob < Job::Base
 
-  def self.create_for(message)
-    job = self.new(staging_path: message['staging_path'])
-    if find_by(staging_path: job.staging_path) or File.exist?(job.absolute_target_file) or job.staging_path.blank?
-      Rails.logger.error "Failed to create IDB Ingest Job for message: #{message}. Duplicate file or blank path."
-      send_duplicate_file_message(message)
+  def self.create_for(client, message)
+    job = self.new(staging_path: message['staging_path'], client: client)
+    if find_by(staging_path: job.staging_path, client: client) or File.exist?(job.absolute_target_file) or job.staging_path.blank?
+      Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Duplicate file or blank path."
+      send_duplicate_file_message(client, message)
     else
       job.save!
       Delayed::Job.enqueue(job, queue: 'idb')
     end
   rescue Exception => e
-    Rails.logger.error "Failed to create IDB Ingest Job for message: #{message}. Error: #{e}"
-    send_unknown_error_message(message, e)
+    Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Error: #{e}"
+    send_unknown_error_message(client, message, e)
   end
 
   def perform
@@ -24,12 +24,12 @@ class AmqpAccrual::IngestJob < Job::Base
     schedule_assessments
     send_return_message
   rescue Exception => e
-    Rails.logger.error("Error ingesting IDB file. Job: #{self.id}\nError: #{e}")
+    Rails.logger.error("Error ingesting Amqp Accrual file. Job: #{self.id}\nError: #{e}")
     raise
   end
 
   def absolute_target_file
-    File.join(Idb::Config.instance.idb_cfs_directory.absolute_path, target_file)
+    File.join(AmqpAccrual::Config.cfs_directory(self.client).absolute_path, target_file)
   end
 
   protected
@@ -56,12 +56,12 @@ class AmqpAccrual::IngestJob < Job::Base
   end
 
   def source_file
-    File.join(Idb::Config.instance.staging_directory, staging_path)
+    File.join(AmqpAccrual::Config.staging_directory(client), staging_path)
   end
 
   def ensure_directories
-    FileUtils.mkdir_p(File.join(Idb::Config.instance.idb_cfs_directory.absolute_path, target_directory))
-    Idb::Config.instance.idb_cfs_directory.ensure_directory_at_relative_path(target_directory)
+    FileUtils.mkdir_p(File.join(AmqpAccrual::Config.cfs_directory(client).absolute_path, target_directory))
+    AmqpAccrual::Config.cfs_directory(client).ensure_directory_at_relative_path(target_directory)
   end
 
   def rsync_file
@@ -69,7 +69,7 @@ class AmqpAccrual::IngestJob < Job::Base
     out, err, status = Open3.capture3('rsync', *opts, source_file, absolute_target_file)
     unless status.success?
       message = <<MESSAGE
-Error doing rsync for idb ingest job #{self.id}.
+Error doing rsync for Amqp Accrual job #{self.id}.
 STDOUT: #{out}
 STDERR: #{err}
 Rescheduling.
@@ -87,7 +87,7 @@ MESSAGE
   end
 
   def immediate_parent_directory
-    Idb::Config.instance.idb_cfs_directory.find_directory_at_relative_path(target_directory)
+    AmqpAccrual::Config.cfs_directory(client).find_directory_at_relative_path(target_directory)
   end
 
   def schedule_assessments
@@ -95,7 +95,7 @@ MESSAGE
   end
 
   def send_return_message
-    AmqpConnector.connector(:medusa).send_message(Idb::Config.instance.outgoing_queue, return_message)
+    AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), return_message)
   end
 
   def return_message
@@ -134,12 +134,12 @@ MESSAGE
      status: 'error', error: "Unknown error: #{error}"}
   end
 
-  def self.send_duplicate_file_message(incoming_message)
-    AmqpConnector.connector(:medusa).send_message(Idb::Config.instance.outgoing_queue, duplicate_file_message(incoming_message))
+  def self.send_duplicate_file_message(client, incoming_message)
+    AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), duplicate_file_message(incoming_message))
   end
 
-  def self.send_unknown_error_message(incoming_message, error)
-    AmqpConnector.connector(:medusa).send_message(Idb::Config.instance.outgoing_queue, unknown_error_message(incoming_message, error))
+  def self.send_unknown_error_message(client, incoming_message, error)
+    AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), unknown_error_message(incoming_message, error))
   end
 
 end
