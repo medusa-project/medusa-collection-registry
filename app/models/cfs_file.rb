@@ -75,6 +75,10 @@ class CfsFile < ActiveRecord::Base
     File.exists?(self.absolute_path)
   end
 
+  def remove_from_filesystem
+    File.delete(self.absolute_path) if File.exists?(self.absolute_path)
+  end
+
   #the directories leading up to the file
   def ancestors
     self.cfs_directory.ancestors_and_self
