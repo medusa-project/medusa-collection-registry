@@ -105,6 +105,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'thin'
   gem 'sunspot_solr'
+  gem 'byebug'
 end
 
 group :development do

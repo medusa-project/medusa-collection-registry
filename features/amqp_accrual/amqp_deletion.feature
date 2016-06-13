@@ -1,4 +1,4 @@
-@idb
+@idb @current
 Feature: Amqp deletion
   In order to preserve files from clients such as IDB
   As a client application
@@ -7,7 +7,6 @@ Feature: Amqp deletion
   Background:
     Given there is an IDB file group
 
-  @current
   Scenario: Medusa receives message from IDB and creates delayed job to delete
     When IDB sends an delete request
     And Medusa picks up the IDB AMQP request
@@ -19,12 +18,11 @@ Feature: Amqp deletion
     Then the IDB file should have been deleted
     And Medusa should have sent a valid delete return message to IDB
 
-  Scenario: Medusa runs delayed job for IDB delete, but is configured not to allow deletions
-    Given there is a valid IDB delete delayed job
-    And the IDB AMQP is configured not to allow deletion
-    When the IDB delete delayed job is run
-    Then no IDB file should be deleted
-    And Medusa should have sent an error return message to IDB matching 'Deletion is not allowed'
+  @idb-no-deletions
+  Scenario: Medusa receives a delete message from IDB, but is configured not to allow deletions
+    When IDB sends an delete request
+    And Medusa picks up the IDB AMQP request
+    Then Medusa should have sent an error return message to IDB matching 'Deletion is not allowed'
 
   Scenario: Medusa runs delayed job for IDB delete, but the file is in the wrong file group
     Given there is an IDB delete delayed job for a cfs file in another file group
@@ -34,6 +32,12 @@ Feature: Amqp deletion
 
   Scenario: Medusa runs delayed job for IDB delete, but the file object is not found
     Given there is an IDB delete delayed job for a cfs file that does not exist
+    When the IDB delete delayed job is run
+    Then no IDB file should be deleted
+    And Medusa should have sent an error return message to IDB matching 'File not found'
+
+  Scenario: Medusa runs delayed job for IDB delete, but the uuid corresponds to a non-file object
+    Given there is an IDB delete delayed job for a uuid corresponding to a non-file object
     When the IDB delete delayed job is run
     Then no IDB file should be deleted
     And Medusa should have sent an error return message to IDB matching 'File not found'

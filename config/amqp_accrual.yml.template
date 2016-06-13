@@ -3,6 +3,7 @@
 development:
   idb:
     active: true
+    allow_delete: false
     delayed_job_queue: idb
     incoming_queue: idb_to_medusa
     outgoing_queue: medusa_to_idb
@@ -13,6 +14,7 @@ development:
 test:
   idb:
     active: true
+    allow_delete: true
     delayed_job_queue: idb
     incoming_queue: idb_to_medusa_test
     outgoing_queue: medusa_to_idb_test
@@ -25,6 +27,7 @@ test:
 production:
   idb:
     active: true
+    allow_delete: false
     delayed_job_queue: idb
     incoming_queue: idb_to_medusa
     outgoing_queue: medusa_to_idb

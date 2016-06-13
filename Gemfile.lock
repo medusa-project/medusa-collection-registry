@@ -60,6 +60,7 @@ GEM
     builder (3.2.2)
     bunny (2.3.1)
       amq-protocol (>= 2.0.1)
+    byebug (9.0.5)
     cancan (1.6.10)
     capistrano (3.4.0)
       i18n
@@ -433,6 +434,7 @@ DEPENDENCIES
   auto_html (~> 1.6.4)
   auto_strip_attributes
   bunny
+  byebug
   cancan
   capistrano-bundler
   capistrano-passenger

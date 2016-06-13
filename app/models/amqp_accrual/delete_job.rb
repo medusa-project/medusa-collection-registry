@@ -1,7 +1,10 @@
 class AmqpAccrual::DeleteJob < Job::Base
 
   def self.create_for(client, message)
-    #TODO check that deletion is permitted
+    unless AmqpAccrual::Config.allow_delete?(client)
+      send_delete_not_permitted_message(client, message)
+      return
+    end
     job = self.new(cfs_file_uuid: message['uuid'], client: client)
     job.save!
     Delayed::Job.enqueue(job, queue: AmqpAccrual::Config.delayed_job_queue(client), priority: 30)
@@ -27,6 +30,15 @@ class AmqpAccrual::DeleteJob < Job::Base
 
   def self.send_unknown_error_message(client, incoming_message, error)
     AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), unknown_error_message(incoming_message, error))
+  end
+
+  def self.delete_not_permitted_message(incoming_message)
+    {operation: 'delete', uuid: incoming_message['uuid'],
+     status: 'error', error: 'Deletion is not allowed for this file group.'}
+  end
+
+  def self.send_delete_not_permitted_message(client, incoming_message)
+    AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), delete_not_permitted_message(incoming_message))
   end
 
 end
