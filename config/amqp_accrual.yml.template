@@ -8,6 +8,7 @@ development:
     outgoing_queue: medusa_to_idb
     file_group_id: 1401
     staging_directory: /Users/hding2/repos/medusa-collection-registry/tmp/idb-staging/development
+    return_directory_information: true
 
 test:
   idb:
@@ -19,6 +20,7 @@ test:
     #set it as needed.
     file_group_id: 2109
     staging_directory: /Users/hding2/repos/medusa-collection-registry/tmp/idb-staging/test
+    return_directory_information: true
 
 production:
   idb:
@@ -28,3 +30,4 @@ production:
     outgoing_queue: medusa_to_idb
     file_group_id: id_for_idb_file_group
     staging_directory: location_of_idb_staging
+    return_directory_information: true
