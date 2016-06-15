@@ -9,7 +9,7 @@ class AmqpAccrual::Config < Object
   def initialize
     self.config = YAML.load_file(File.join(Rails.root, 'config', 'amqp_accrual.yml'))[Rails.env]
   end
-  
+
   ACCESSORS = [:incoming_queue, :outgoing_queue, :file_group_id, :staging_directory, :active, :delayed_job_queue,
                :return_directory_information, :allow_delete]
 
