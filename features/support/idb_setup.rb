@@ -7,6 +7,10 @@ module IdbTestHelper
     {'operation' => 'ingest', 'staging_path' => 'prefix/test_dir/file.txt'}
   end
 
+  def idb_delete_message
+    {'operation' => 'delete', 'uuid' => 'c3712760-1183-0134-1d5b-0050569601ca-b'}
+  end
+
   def staging_path
     idb_ingest_message['staging_path']
   end
@@ -28,4 +32,11 @@ Before('@idb') do
   end
   #clear idb queues
   AmqpConnector.connector(:medusa).clear_queues(AmqpAccrual::Config.all_queues('idb'))
+end
+
+Around('@idb-no-deletions') do |scenario, block|
+  old_value = AmqpAccrual::Config.allow_delete('idb')
+  AmqpAccrual::Config.set_allow_delete('idb', false)
+  block.call
+  AmqpAccrual::Config.set_allow_delete('idb', old_value)
 end

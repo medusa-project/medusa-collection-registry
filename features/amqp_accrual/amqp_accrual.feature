@@ -9,11 +9,11 @@ Feature: Amqp accrual
 
   Scenario: Medusa receives message from IDB and creates delayed job to ingest
     When IDB sends an ingest request
-    And Medusa picks up the IDB ingest request
+    And Medusa picks up the IDB AMQP request
     Then there should be an IDB ingest delayed job reflecting the ingest request
 
   Scenario: Medusa runs delayed job for IDB ingest, ingesting file and returning message to IDB
     And there is an IDB ingest delayed job
     When the IDB ingest delayed job is run
     Then the IDB files should be present in medusa storage
-    And Medusa should have sent a return message to IDB
+    And Medusa should have sent an ingest return message to IDB
