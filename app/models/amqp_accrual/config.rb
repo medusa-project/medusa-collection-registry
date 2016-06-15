@@ -10,7 +10,7 @@ class AmqpAccrual::Config < Object
     self.config = YAML.load_file(File.join(Rails.root, 'config', 'amqp_accrual.yml'))[Rails.env]
   end
 
-  ACCESSORS = [:incoming_queue, :outgoing_queue, :file_group_id, :staging_directory, :active, :delayed_job_queue]
+  ACCESSORS = [:incoming_queue, :outgoing_queue, :file_group_id, :staging_directory, :active, :delayed_job_queue, :return_directory_information]
 
   ACCESSORS.each do |accessor|
     define_method(accessor) do |client|
@@ -34,6 +34,10 @@ class AmqpAccrual::Config < Object
     self.active(client)
   end
 
+  def return_directory_information?(client)
+    self.return_directory_information(client)
+  end
+
   #for testing we need this
   def set_file_group_id(client, id)
     self.config[client]['file_group_id'] = id
@@ -43,7 +47,7 @@ class AmqpAccrual::Config < Object
     self.config.keys
   end
 
-  DELEGATE_TO_INSTANCE = ACCESSORS + %i(all_queues file_group cfs_directory active? set_file_group_id clients)
+  DELEGATE_TO_INSTANCE = ACCESSORS + %i(all_queues file_group cfs_directory active? return_directory_information? set_file_group_id clients)
 
   def self.method_missing(method_name, *args)
     if DELEGATE_TO_INSTANCE.include?(method_name)

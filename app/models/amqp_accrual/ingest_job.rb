@@ -100,8 +100,9 @@ MESSAGE
 
   def return_message
     {operation: 'ingest', staging_path: staging_path,
-     medusa_path: target_file,
-     status: 'ok', uuid: uuid}.merge(return_directory_information)
+     medusa_path: target_file, status: 'ok', uuid: uuid}.clone.tap do |message|
+      message.merge!(return_directory_information) if AmqpAccrual::Config.return_directory_information?(client)
+    end
   end
 
   def return_directory_information
