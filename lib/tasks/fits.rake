@@ -27,6 +27,7 @@ namespace :fits do
     end
     if errors.present?
       error_string = StringIO.new
+      error_string << "Fits Errors"
       errors.each do |id, error|
         error_string.puts "#{id}: #{error}"
       end

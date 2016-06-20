@@ -4,7 +4,10 @@ class UuidsController < ApplicationController
     uuid = MedusaUuid.find_by(uuid: params[:id])
     unless uuid.present? and uuid.uuidable.present?
       @unfound_uuid = params[:id]
-      render 'not_found', status: 404
+      respond_to do |format|
+        format.html {render 'not_found', status: 404}
+        format.json {render json: "UUID not found: #{@unfound_uuid}", status: 404}
+      end
       return
     end
     object = uuid.uuidable
