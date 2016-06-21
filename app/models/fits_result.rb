@@ -43,9 +43,9 @@ class FitsResult < Object
     end
   end
 
-  def remove_serialized_xml
+  def remove_serialized_xml(update_cfs_file: true)
     File.delete(storage_file) if File.exist?(storage_file)
-    self.cfs_file.update_attribute(:fits_serialized, false)
+    self.cfs_file.update_attribute(:fits_serialized, false) if update_cfs_file
   end
 
   def xml

@@ -36,6 +36,7 @@ class CfsFile < ActiveRecord::Base
 
   before_validation :ensure_current_file_extension
   after_save :ensure_fits_xml_for_large_file
+  before_destroy :remove_fits_xml_on_destroy
 
   breadcrumbs parent: :cfs_directory, label: :name
   cascades_events parent: :cfs_directory
@@ -258,6 +259,10 @@ class CfsFile < ActiveRecord::Base
     self.fits_data.destroy! if self.fits_data.present?
     self.fits_result.remove_serialized_xml
     self.reload
+  end
+
+  def remove_fits_xml_on_destroy
+    self.fits_result.remove_serialized_xml(update_cfs_file: false)
   end
 
   def fits_result
