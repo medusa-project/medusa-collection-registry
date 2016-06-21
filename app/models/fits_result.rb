@@ -37,7 +37,10 @@ class FitsResult < Object
     File.open(storage_file, 'w') do |f|
       f.write(self.xml)
     end
-    self.cfs_file.update_attribute(:fits_serialized, true)
+    cfs_file.with_lock do
+      cfs_file.fits_serialized = true
+      cfs_file.save!
+    end
   end
 
   def remove_serialized_xml
