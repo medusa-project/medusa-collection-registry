@@ -334,7 +334,7 @@ GEM
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
     rsync (1.0.9)
-    ruby-filemagic (0.7.1)
+    ruby-filemagic (0.7.0)
     ruby-vips (0.3.14)
     ruby_parser (3.8.2)
       sexp_processor (~> 4.1)
@@ -485,7 +485,7 @@ DEPENDENCIES
   responders
   rspec-rails
   rsync
-  ruby-filemagic
+  ruby-filemagic (= 0.7.0)
   ruby-vips (~> 0.3.14)
   sass
   sass-rails

@@ -25,7 +25,8 @@ gem 'logger'
 #need slightly patched version of this
 gem 'net-http-digest_auth', git: 'git://github.com/medusa-project/net-http-digest_auth.git'
 
-gem 'ruby-filemagic', require: 'filemagic'
+#pinned for a problem compiling 0.7.1 on our servers
+gem 'ruby-filemagic', '0.7.0', require: 'filemagic'
 
 gem 'jbuilder'
 
