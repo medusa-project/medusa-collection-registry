@@ -47,8 +47,7 @@ gem 'bunny'
 gem 'sass-rails'
 gem 'coffee-rails'
 
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'therubyracer'
+#make sure node.js is installed for asset compilation - no longer use therubyracer
 
 gem 'uglifier'
 
