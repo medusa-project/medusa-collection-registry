@@ -1,4 +1,3 @@
-require 'rest_client'
 require 'digest/md5'
 require 'set'
 
