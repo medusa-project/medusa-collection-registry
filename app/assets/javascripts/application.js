@@ -13,8 +13,8 @@
 //= require jquery2
 //= require jquery_ujs
 //= require jquery-ui
+//= require bootstrap-sprockets
 //= require autocomplete-rails-uncompressed
-//= require bootstrap
 //= require data_tables_common
 //= require local_time
 //= require common
