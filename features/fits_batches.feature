@@ -53,19 +53,19 @@ Feature: FITS batch processing
   Scenario: Only one delayed job may be active for an extension at a time
     When I go to the dashboard
     And I click on 'File Statistics'
-    And I click on 'application/xml'
+    And I click on 'text/xml'
     And I click on 'Run FITS batch'
     And I go to the dashboard
     And I click on 'File Statistics'
-    And I click on 'application/xml'
+    And I click on 'text/xml'
     And I click on 'Run FITS batch'
-    Then I should see 'There is already a FITS batch scheduled for mime type 'application/xml''
+    Then I should see 'There is already a FITS batch scheduled for mime type 'text/xml''
 
   Scenario: Only admins may run FITS batch jobs by mime type
     When I relogin as a manager
     And I go to the dashboard
     And I click on 'File Statistics'
-    And I click on 'application/xml'
+    And I click on 'text/xml'
     And I click on 'Run FITS batch'
     Then I should be unauthorized
 

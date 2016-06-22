@@ -25,7 +25,7 @@ Feature: CFS basic properties
     And the file group titled 'Toys' should have a cfs file for the path 'chihuahuas/freakdog.xml' with results:
       | size                | 56.0                             |
       | name                | freakdog.xml                     |
-      | content_type_name   | application/xml                  |
+      | content_type_name   | text/xml                  |
       | md5_sum             | 9972d3c67a1155d5694c6647e1e2dafc |
       | fixity_check_status | ok                               |
 
@@ -65,7 +65,7 @@ Feature: CFS basic properties
     And the file group titled 'Toys' should have a cfs file for the path 'chihuahuas/freakdog.xml' with results:
       | size              | 56.0                             |
       | name              | freakdog.xml                     |
-      | content_type_name | application/xml                  |
+      | content_type_name | text/xml                  |
       | md5_sum           | 9972d3c67a1155d5694c6647e1e2dafc |
 
   Scenario: When I add a directory and rerun assessments then the record for that directory is created
