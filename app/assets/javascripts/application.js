@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require autocomplete-rails-uncompressed
-//= require twitter/bootstrap
+//= require bootstrap
 //= require data_tables_common
 //= require local_time
 //= require common

@@ -46,14 +46,13 @@ gem 'bunny'
 
 gem 'sass-rails'
 gem 'coffee-rails'
-gem 'less-rails'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer'
 
 gem 'uglifier'
 
-gem 'twitter-bootstrap-rails'
+gem 'bootstrap-sass'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'

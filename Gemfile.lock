@@ -59,6 +59,11 @@ GEM
       rinku (~> 1.5.0)
     auto_strip_attributes (2.0.6)
       activerecord (>= 3.0)
+    autoprefixer-rails (6.3.6.2)
+      execjs
+    bootstrap-sass (3.3.6)
+      autoprefixer-rails (>= 5.2.1)
+      sass (>= 3.3.4)
     builder (3.2.2)
     bunny (2.4.0)
       amq-protocol (>= 2.0.1)
@@ -116,7 +121,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
-    commonjs (0.2.7)
     concurrent-ruby (1.0.2)
     connection_pool (2.2.0)
     csv_builder (2.1.1)
@@ -206,13 +210,6 @@ GEM
       rspec (>= 2.0, < 4.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    less (2.6.0)
-      commonjs (~> 0.2.7)
-    less-rails (2.7.1)
-      actionpack (>= 4.0)
-      less (~> 2.6.0)
-      sprockets (> 2, < 4)
-      tilt
     libv8 (3.16.14.15)
     local_time (1.0.3)
       coffee-rails
@@ -397,11 +394,6 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
-    twitter-bootstrap-rails (3.2.2)
-      actionpack (>= 3.1)
-      execjs (>= 2.2.2, >= 2.2)
-      less-rails (>= 2.5.0)
-      railties (>= 3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
@@ -430,6 +422,7 @@ PLATFORMS
 DEPENDENCIES
   auto_html (~> 1.6.4)
   auto_strip_attributes
+  bootstrap-sass
   bunny
   byebug
   cancan
@@ -465,7 +458,6 @@ DEPENDENCIES
   jquery-ui-rails
   json_spec
   launchy
-  less-rails
   local_time
   logger
   net-http-digest_auth!
@@ -499,7 +491,6 @@ DEPENDENCIES
   sunspot_test
   therubyracer
   thin
-  twitter-bootstrap-rails
   uglifier
   underscore-rails
   underscore-string-rails
@@ -510,4 +501,4 @@ DEPENDENCIES
   yajl-ruby
 
 BUNDLED WITH
-   1.10.6
+   1.12.5

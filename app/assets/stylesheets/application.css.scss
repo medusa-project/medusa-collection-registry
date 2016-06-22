@@ -8,13 +8,19 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_self
- *= require jquery-ui
- *= require bootstrap_and_overrides
- *= require font-awesome
- *= require_tree .
 */
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import 'jquery-ui';
+@import 'font-awesome';
 @import 'variables';
+@import 'dashboard';
+@import 'datatables';
+@import 'global-navigation';
+@import 'library_footer';
+@import 'library_header';
+@import 'book_tracker/items';
 
 .dataTables_wrapper {
   padding: 5px 0;

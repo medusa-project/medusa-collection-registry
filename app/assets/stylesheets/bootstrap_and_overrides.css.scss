@@ -1,6 +1,7 @@
-@import "twitter/bootstrap/bootstrap";
+//@import "twitter/bootstrap/bootstrap";
 
 // Set correct font paths
+/*
 @glyphiconsEotPath: font-url("glyphicons-halflings-regular.eot");
 @glyphiconsEotPath_iefix: font-url("glyphicons-halflings-regular.eot?#iefix");
 @glyphiconsWoffPath: font-url("glyphicons-halflings-regular.woff");
@@ -16,7 +17,7 @@
 
 // Glyphicons
 @import "twitter/bootstrap/glyphicons.less";
-
+*/
 // Your custom LESS stylesheets goes here
 //
 // Since bootstrap was imported above you have access to its mixins which
@@ -32,9 +33,9 @@
 /* Table
 -------------------------------------------------- */
 table > caption {
-  padding-top: @table-cell-padding;
-  padding-bottom: @table-cell-padding;
-  color: @text-muted;
+  padding-top: $table-cell-padding;
+  padding-bottom: $table-cell-padding;
+  color: $text-muted;
   text-align: left;
 }
 
