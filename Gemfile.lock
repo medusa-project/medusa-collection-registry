@@ -169,12 +169,8 @@ GEM
     font-awesome-rails (4.6.3.0)
       railties (>= 3.2, < 5.1)
     gherkin (4.0.0)
-    glib2 (3.0.8)
-      pkg-config
     globalid (0.3.6)
       activesupport (>= 4.1.0)
-    gobject-introspection (3.0.8)
-      glib2 (= 3.0.8)
     haml (4.0.7)
       tilt
     haml-rails (0.9.0)
@@ -339,8 +335,7 @@ GEM
     rspec-support (3.4.1)
     rsync (1.0.9)
     ruby-filemagic (0.7.1)
-    ruby-vips (1.0.0)
-      gobject-introspection (~> 3.0)
+    ruby-vips (0.3.14)
     ruby_parser (3.8.2)
       sexp_processor (~> 4.1)
     rubyzip (1.2.0)
@@ -491,7 +486,7 @@ DEPENDENCIES
   rspec-rails
   rsync
   ruby-filemagic
-  ruby-vips
+  ruby-vips (~> 0.3.14)
   sass
   sass-rails
   selenium-webdriver

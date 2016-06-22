@@ -36,7 +36,9 @@ gem 'daemons'
 gem 'daemons-rails'
 
 #image processing for file previews
-gem 'ruby-vips', require: 'vips'
+#problem installing 1.0.0 - couldn't compile dependency glib2(3.0.8) on the servers
+#revisit this later
+gem 'ruby-vips', '~>0.3.14', require: 'vips'
 
 #AMQP communication
 gem 'bunny'
