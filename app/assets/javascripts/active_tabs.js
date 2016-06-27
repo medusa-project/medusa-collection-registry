@@ -1,8 +1,6 @@
-var active_tabs;
+var active_tabs = active_tabs || [];
 $(function () {
-  if (!_.isUndefined(active_tabs)) {
     $(active_tabs).each(function (i, val) {
-      $("[href='" + val + "']").click();
+        $("[href='" + val + "']").click();
     });
-  }
 });
