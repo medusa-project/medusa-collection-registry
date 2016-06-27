@@ -4,31 +4,25 @@
  * Bootstrap Datepicker helpers
  */
 $.extend($.fn.datepicker.defaults, {
-	parse: function(a) {
-		var b;
-		if (b = a.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)) {
-			return new Date(b[3], b[1] - 1, b[2])
-		} else {
-			return null
-		}
-	},
-	format: function(a) {
-		var b = (a.getMonth() + 1).toString(),
-			c = a.getDate().toString();
-		if (b.length === 1) {
-			b = "0" + b
-		}
-		if (c.length === 1) {
-			c = "0" + c
-		}
-    return a.getFullYear() + "-" + b + "-" + c;
-	}
+    parse: function (a) {
+        var b;
+        if (b = a.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)) {
+            return new Date(b[3], b[1] - 1, b[2])
+        } else {
+            return null
+        }
+    },
+    format: function (a) {
+        var b = _.string.lpad((a.getMonth() + 1).toString(), 2, '0'),
+            c = _.string.lpad(a.getDate().toString(), 2, '0');
+        return _.string.join('-', a.getFullYear(), b, c)
+    }
 });
 
 /**
  * Toggle collapse the sidebar
  */
-$('a.toggles').click(function() {
+$('a.toggles').click(function () {
     $('a.toggles i').toggleClass('icon-arrow-left icon-arrow-right');
 
     $('#sidebar').animate({
@@ -41,5 +35,5 @@ $('a.toggles').click(function() {
  * Tooltip placement for the toggle button
  */
 $('a[rel=tooltip]').tooltip({
-  placement : 'right'
+    placement: 'right'
 });

@@ -1,5 +1,6 @@
+var active_tabs;
 $(function () {
-  if (typeof active_tabs != "undefined") {
+  if (!_.isUndefined(active_tabs)) {
     $(active_tabs).each(function (i, val) {
       $("[href='" + val + "']").click();
     });

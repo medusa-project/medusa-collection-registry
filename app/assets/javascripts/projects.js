@@ -37,11 +37,7 @@ function query_barcode(value) {
 }
 
 function possible_barcode(s) {
-    if (s) {
-        return s.length >= 14;
-    } else {
-        return false;
-    }
+    return _.isString(s) && s.length >= 14;
 }
 
 function populate_barcode_items() {
@@ -105,7 +101,7 @@ function selected_bibids() {
     var bibids = _.reject(_.map(rows, function (row) {return row[bib_id_column];}), _.string.isBlank);
     //var checked = $('#items input:checked');
     //var bibids = _.reject($.map(checked, checkbox_to_bibid), _.string.isBlank);
-    if (bibids.length == 0) {
+    if (_.isEmpty(bibids)) {
         bibids = [' '];
     }
     return _.reduce(bibids, function (memo, obj) {
