@@ -48,6 +48,7 @@ gem 'bunny'
 
 gem 'sass-rails'
 gem 'coffee-rails'
+gem 'html5shiv-js-rails'
 
 #make sure node.js is installed for asset compilation - no longer use therubyracer
 
