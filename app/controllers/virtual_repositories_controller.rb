@@ -91,32 +91,38 @@ class VirtualRepositoriesController < ApplicationController
   def load_virtual_repository_dashboard_content_type_sql(collection_ids)
     id_string = "(#{collection_ids.join(',')})"
     <<SQL
-    SELECT CTS.content_type_id, CTS.name, SUM(CTS.file_size) AS file_size, SUM(CTS.file_count) AS file_count,
-    SUM(COALESCE(CTC.count,0)) AS tested_count
-    FROM view_file_content_type_stats_by_collection CTS
-    LEFT JOIN (SELECT content_type_id, SUM(COALESCE(count,0)) AS count
-               FROM view_tested_file_content_type_counts_by_collection
-               WHERE collection_id IN #{id_string}
-               GROUP BY content_type_id) CTC
-    ON CTS.content_type_id = CTC.content_type_id
-    WHERE collection_id IN #{id_string}
-    GROUP BY CTS.content_type_id, CTS.name
+SELECT STATS.content_type_id, STATS.name, STATS.file_size, STATS.file_count, COALESCE(TESTED.count, 0) AS tested_count
+FROM
+  (SELECT content_type_id, name, SUM(file_size) AS file_size,
+      SUM(file_count) AS file_count
+   FROM view_file_content_type_stats_by_collection
+   WHERE collection_id IN #{id_string}
+   GROUP BY content_type_id, name) STATS
+LEFT JOIN
+  (SELECT content_type_id, SUM(COALESCE(count,0)) AS count
+   FROM view_tested_file_content_type_counts_by_collection
+   WHERE collection_id IN #{id_string}
+   GROUP BY content_type_id) TESTED
+ON STATS.content_type_id = TESTED.content_type_id
 SQL
   end
 
   def load_virtual_repository_dashboard_file_extension_sql(collection_ids)
     id_string = "(#{collection_ids.join(',')})"
     <<SQL
-    SELECT FES.file_extension_id, FES.extension, SUM(FES.file_size) AS file_size, SUM(FES.file_count) AS file_count,
-    SUM(COALESCE(FEC.count,0)) AS tested_count
-    FROM view_file_extension_stats_by_collection FES
-    LEFT JOIN (SELECT file_extension_id, SUM(COALESCE(count,0)) AS COUNT
-               FROM view_tested_file_file_extension_counts_by_collection
-               WHERE collection_id IN #{id_string}
-               GROUP BY file_extension_id) FEC
-    ON FES.file_extension_id = FEC.file_extension_id
-    WHERE collection_id IN #{id_string}
-    GROUP BY FES.file_extension_id, FES.extension
+SELECT STATS.file_extension_id, STATS.extension, STATS.file_size, STATS.file_count, COALESCE(TESTED.count, 0) AS tested_count
+FROM
+  (SELECT file_extension_id, extension, SUM(file_size) AS file_size,
+      SUM(file_count) AS file_count
+   FROM view_file_extension_stats_by_collection
+   WHERE collection_id IN #{id_string}
+   GROUP BY file_extension_id, extension) STATS
+LEFT JOIN
+  (SELECT file_extension_id, SUM(COALESCE(count, 0)) AS count
+   FROM view_tested_file_file_extension_counts_by_collection
+   WHERE collection_id in #{id_string}
+   GROUP BY file_extension_id) TESTED
+ON STATS.file_extension_id = TESTED.file_extension_id
 SQL
   end
 
