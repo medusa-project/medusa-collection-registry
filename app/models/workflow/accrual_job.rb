@@ -259,7 +259,11 @@ MESSAGE
 
   def perform_assessing
     if has_pending_assessments?
-      raise RuntimeError, "Assessments are still pending. Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
+      if self.created_at + 2.days > Time.now
+        self.put_in_queue(run_at: Time.now + 5.minutes)
+      else
+        raise RuntimeError, "Assessments are still pending. Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
+      end
     else
       be_in_state_and_requeue('email_done')
     end
@@ -299,7 +303,7 @@ MESSAGE
 
   def archive(completion_state)
     ArchivedAccrualJob.create!(workflow_accrual_job_id: self.id, file_group_id: file_group.id, cfs_directory_id: cfs_directory_id,
-    amazon_backup_id: amazon_backup_id, user_id: user_id, state: completion_state, staging_path: staging_path, report: render_report)
+                               amazon_backup_id: amazon_backup_id, user_id: user_id, state: completion_state, staging_path: staging_path, report: render_report)
   end
 
   def abort_and_proceed
