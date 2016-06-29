@@ -257,6 +257,8 @@ MESSAGE
     be_in_state_and_requeue('assessing')
   end
 
+  #this is a bit misleading - the assessments are kicked off by perform_copying in delayed jobs; this
+  #really just checks to see if any of them are still going and blocks until they are all done
   def perform_assessing
     if has_pending_assessments?
       if self.created_at + 2.days > Time.now
