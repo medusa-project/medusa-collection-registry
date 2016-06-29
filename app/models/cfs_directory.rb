@@ -16,6 +16,7 @@ class CfsDirectory < ActiveRecord::Base
   #This is only useful when you _know_ the object is a root cfs dir and the parent is therefore a file group. But
   #it's needed for some queries.
   belongs_to :parent_file_group, class_name: 'FileGroup', foreign_key: 'parent_id'
+  has_one :job_cfs_initial_directory_assessment, :class_name => 'Job::CfsInitialDirectoryAssessment', dependent: :destroy
 
   validates :path, presence: true
   validates_uniqueness_of :path, scope: :parent_id, if: ->(record) {record.parent_type == 'CfsDirectory' }
@@ -180,9 +181,9 @@ class CfsDirectory < ActiveRecord::Base
     end
   end
 
-  def make_initial_tree
+  def make_initial_entries
     Dir.chdir(self.absolute_path) do
-      #create the entire directory tree under this directory
+      #create the directories and files under this directory
       entries = Pathname.new('.').children.reject { |entry| entry.symlink? }.collect { |entry| entry.to_s }
       disk_directories = entries.select { |entry| File.directory?(entry) }.to_set
       disk_directories.each do |entry|
@@ -192,9 +193,6 @@ class CfsDirectory < ActiveRecord::Base
         unless disk_directories.include?(directory.path)
           directory.destroy_tree_from_leaves
         end
-      end
-      self.subdirectories.reload.each do |directory|
-        directory.make_initial_tree
       end
       disk_files = entries.select { |entry| File.file?(entry) }.to_set
       disk_files.each do |entry|
@@ -209,9 +207,6 @@ class CfsDirectory < ActiveRecord::Base
           cfs_file.destroy
         end
       end
-      #We do this to free up the subdirectories and files for GC. I think it should do so.
-      self.subdirectories.reset
-      self.cfs_files.reset
     end
   end
 
@@ -219,23 +214,18 @@ class CfsDirectory < ActiveRecord::Base
     %w(Thumbs.db .DS_Store).include?(File.basename(entry))
   end
 
-  def schedule_initial_assessments
-    #walk the directory tree under and including this directory and schedule an
-    #initial assessment for each directory
-    self.each_directory_in_tree(true) do |directory|
-      Job::CfsInitialDirectoryAssessment.create_for(directory, self.file_group) unless directory.cfs_files.count == 0
-    end
+  def schedule_assessment_job
+    Job::CfsInitialDirectoryAssessment.create_for(self, self.file_group) unless self.job_cfs_initial_directory_assessment.present?
   end
 
   def make_and_assess_tree
-    self.make_initial_tree
-    self.schedule_initial_assessments
+    schedule_assessment_job
   end
 
-  def run_initial_assessment
-    self.cfs_files.each do |cfs_file|
-      cfs_file.run_initial_assessment
-    end
+  def run_initial_assessment(recursive: true)
+    make_initial_entries
+    self.cfs_files(true).each { |cfs_file| cfs_file.run_initial_assessment }
+    self.subdirectories(true).each {|subdirectory| subdirectory.schedule_assessment_job} if recursive
   end
 
   def schedule_fits

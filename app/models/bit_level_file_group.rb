@@ -68,8 +68,7 @@ class BitLevelFileGroup < FileGroup
   end
 
   def run_initial_cfs_assessment
-    self.cfs_directory.make_initial_tree
-    self.cfs_directory.schedule_initial_assessments
+    self.cfs_directory.make_and_assess_tree
   end
 
   def running_fits_file_count

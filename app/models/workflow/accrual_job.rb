@@ -155,11 +155,8 @@ class Workflow::AccrualJob < Workflow::Base
     target_path = cfs_directory.absolute_path
     copy_entries_and_remove(workflow_accrual_files, source_path, target_path, overwrite: overwrite)
     copy_entries_and_remove(workflow_accrual_directories, source_path, target_path, overwrite: overwrite)
-    transaction do
-      cfs_directory.make_initial_tree
-      cfs_directory.schedule_initial_assessments
-      be_in_state_and_requeue('amazon_backup')
-    end
+    cfs_directory.make_and_assess_tree
+    be_in_state_and_requeue('amazon_backup')
   end
 
   def perform_copying
