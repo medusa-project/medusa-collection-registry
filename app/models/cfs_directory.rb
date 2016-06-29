@@ -225,6 +225,7 @@ class CfsDirectory < ActiveRecord::Base
   def run_initial_assessment(recursive: true)
     make_initial_entries
     self.cfs_files(true).each { |cfs_file| cfs_file.run_initial_assessment }
+    sleep 10
     self.subdirectories(true).each {|subdirectory| subdirectory.schedule_assessment_job} if recursive
   end
 

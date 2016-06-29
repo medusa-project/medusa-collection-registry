@@ -25,7 +25,7 @@ class Workflow::AccrualJob < Workflow::Base
                 'initial_approval' => 'Awaiting approval',
                 'copying' => 'Copying', 'admin_approval' => 'Awaiting admin approval',
                 'amazon_backup' => 'Amazon backup', 'amazon_backup_completed' => 'Amazon backup completed',
-                'email_done' => "Emailing completion",
+                'assessing' => 'Running Assessments', 'email_done' => "Emailing completion",
                 'aborting' => 'Aborting', 'end' => 'Ending'}
   STATES = STATE_HASH.keys
 
@@ -254,7 +254,24 @@ MESSAGE
   end
 
   def perform_amazon_backup_completed
-    be_in_state_and_requeue('email_done')
+    be_in_state_and_requeue('assessing')
+  end
+
+  def perform_assessing
+    if has_pending_assessments?
+      raise RuntimeError, "Assessments are still pending. Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
+    else
+      be_in_state_and_requeue('email_done')
+    end
+  end
+
+  #Are there any initial directory assessments belonging to a subdirectory of this accrual jobs cfs directory?
+  def has_pending_assessments?
+    transaction do
+      subdirectory_ids = self.cfs_directory.recursive_subdirectory_ids.to_set
+      possible_assessment_job_ids = Job::CfsInitialDirectoryAssessment.where(file_group_id: self.cfs_directory.file_group.id).pluck(:cfs_directory_id).to_set
+      return subdirectory_ids.intersect?(possible_assessment_job_ids)
+    end
   end
 
   def perform_email_done
@@ -262,11 +279,6 @@ MESSAGE
     archive('completed')
     be_in_state_and_requeue('end')
     #TODO - perhaps delete staged content, perhaps not
-  end
-
-  def has_outstanding_assessments?
-    Job::CfsInitialDirectoryAssessment.where(file_group_id: self.file_group.id).present? or
-        Job::CfsInitialFileGroupAssessment.where(file_group_id: self.file_group.id).present?
   end
 
   def status_label
