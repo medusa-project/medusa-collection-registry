@@ -4,7 +4,7 @@ class SearchesController < ApplicationController
   def search
     @search_string = params[:search][:query] rescue ''
     @helpers = [SearchHelper::CfsFile, SearchHelper::CfsDirectory, SearchHelper::Item,
-                SearchHelper::FileGroup, SearchHelper::Collection].collect {|klass| klass.new(initial_search_string: @search_string)}
+                SearchHelper::FileGroup, SearchHelper::Collection, SearchHelper::MedusaUuid].collect {|klass| klass.new(initial_search_string: @search_string)}
   end
 
   def cfs_file
@@ -43,6 +43,14 @@ class SearchesController < ApplicationController
     respond_to do |format|
       format.json do
         render json: SearchHelper::Collection.new(params: params).json_response
+      end
+    end
+  end
+
+  def medusa_uuid
+    respond_to do |format|
+      format.json do
+        render json: SearchHelper::MedusaUuid.new(params: params).json_response
       end
     end
   end

@@ -9,6 +9,11 @@ class MedusaUuid < ActiveRecord::Base
     record.errors.add attr, 'is not a valid uuid' unless Utils::Luhn.verify(value)
   end
 
+  searchable do
+    text :uuid
+    string :uuid
+  end
+
   def self.generate_for(uuidable)
     self.create!(uuid: generate, uuidable: uuidable)
   end

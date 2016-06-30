@@ -39,3 +39,11 @@ Feature: Search CFS Files
     And I should see all of:
       | dog.txt | Doggies.txt |
     And I should not see 'cats.jpg'
+
+  Scenario: Find file by uuid
+    Given the uuid of the cfs file with name 'cats.jpg' is 'cb7f4fb0-2101-0134-2199-00e6501e2024-d'
+    When I go to the site home
+    And I do a search for 'cb7f4fb0-2101-0134-2199-00e6501e2024-d'
+    And I click on 'UUIDs'
+    Then I should see a search table of uuids with 1 row
+    And I should see 'cats.jpg'
