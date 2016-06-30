@@ -3,6 +3,7 @@
     %li
       %a{href: "##{helper.tab_id}", 'data-toggle' => 'tab', title: helper.tab_label}
         = helper.tab_label
+        %span.indicator-icon= fa_icon('spinner', class: 'search-unknown')
 
 .tab-content
   - @helpers.each do |helper|
@@ -29,7 +30,7 @@
               "url": "#{helper.url}",
               "complete": function (xhr) {
                 if (xhr.status == 200) {
-                  indicate_search_results_in_tab_header(xhr.responseJSON.recordsFiltered, "##{helper.table_id}");
+                  indicate_search_results_in_tab_header(xhr.responseJSON.recordsFiltered, "##{helper.tab_id}");
                 }
               }
             }
