@@ -1,11 +1,13 @@
+@import "variables";
+
 .search-hit {
-  color: green;
+  color: $mcolor__search-hit;
 }
 
 .search-missed {
-  color: red;
+  color: $mcolor__search-missed;
 }
 
 .search-unknown {
-  color: #e9ab17;
+  color: $mcolor__search-unknown;
 }

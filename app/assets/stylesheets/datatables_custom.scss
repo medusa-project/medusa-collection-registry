@@ -1,14 +1,11 @@
 @import 'variables';
 
-.dataTables_wrapper {
-  padding: 5px 0;
-}
-
 .table.dataTable {
   font-size: 13px;
 }
 
 .dataTables_wrapper {
+  padding: 5px 0;
   table.dataTable {
     margin: 0 !important;
   }

@@ -12,11 +12,10 @@
 .banner-image-library, .banner-image-imark {
   padding: 0 0;
   transition: all .15s ease-in-out;
-}
-
-.banner-image-library:hover, .banner-image-imark:hover {
-  opacity: .7;
-  transition: all .15s ease-in-out;
+  :hover {
+    opacity: .7;
+    transition: all .15s ease-in-out;
+  }
 }
 
 #medusa-logo a {

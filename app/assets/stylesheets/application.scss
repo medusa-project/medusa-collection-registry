@@ -18,29 +18,29 @@
 @import 'variables';
 @import 'datatables_custom';
 @import 'dashboard';
-@import 'global-navigation';
+@import 'global_navigation';
 @import 'library_footer';
 @import 'library_header';
 @import 'book_tracker/items';
 @import 'search';
 
-#file_stats_summary td {
-  border-top: none;
-}
-
-#file_stats_summary th {
-  text-align: right;
-  border-top: none;
+#file_stats_summary {
+  td, th {
+    border-top: none;
+  }
+  th {
+    text-align: right;
+  }
 }
 
 .file_stats_separator {
-  background-color: #0088CC;
+  background-color: $mcolor__file-stats-separator;
 }
 
 label.checkbox {
   max-width: 200px;
   padding: 2px;
-  background-color: #d3d3d3;
+  background-color: $mcolor__label-checkbox;
   border-radius: 5px;
 }
 
@@ -48,12 +48,10 @@ label.checkbox {
   min-width: 300px;
 }
 
-#edit_content_type_list .modal-dialog {
-  min-width: 80%;
-}
-
-#edit_file_extension_list .modal-dialog {
-  min-width: 80%;
+#edit_content_type_list, #edit_file_extension_list {
+  .modal-dialog {
+    min-width: 80%;
+  }
 }
 
 .vertical-align {
