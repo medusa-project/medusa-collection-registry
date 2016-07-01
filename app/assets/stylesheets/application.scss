@@ -14,22 +14,15 @@
 @import "bootstrap";
 @import 'jquery-ui';
 @import 'font-awesome';
-@import 'variables';
-@import 'dashboard';
 @import 'datatables';
+@import 'variables';
+@import 'datatables_custom';
+@import 'dashboard';
 @import 'global-navigation';
 @import 'library_footer';
 @import 'library_header';
 @import 'book_tracker/items';
 @import 'search';
-
-.dataTables_wrapper {
-  padding: 5px 0;
-}
-
-.table.dataTable {
-  font-size: 13px;
-}
 
 #file_stats_summary td {
   border-top: none;
@@ -83,33 +76,8 @@ label.checkbox {
   min-width: 80%;
 }
 
-.dataTables_wrapper {
-  table.dataTable {
-    margin: 0 !important;
-  }
-  thead tr {
-    background-color: $mcolor__datatables-header;
-  }
-  div.row:first-child {
-    background-color: $mcolor__datatables-filter-row;
-    margin: 0 !important;
-    padding: 0 !important;
-    div {
-     padding: 4px !important;
-    }
-  }
-}
-
-.well {
-  overflow: auto;
-}
-
 #accrual_comment_form .btn {
   margin-top: 10px !important;
-}
-
-.dashboard-notification {
-  color: red;
 }
 
 .project-items-table-actions {
@@ -128,5 +96,4 @@ label.checkbox {
       margin-right: 5px;
     }
   }
-
 }

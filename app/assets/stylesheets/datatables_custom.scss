@@ -1,0 +1,26 @@
+@import 'variables';
+
+.dataTables_wrapper {
+  padding: 5px 0;
+}
+
+.table.dataTable {
+  font-size: 13px;
+}
+
+.dataTables_wrapper {
+  table.dataTable {
+    margin: 0 !important;
+  }
+  thead tr {
+    background-color: $mcolor__datatables-header;
+  }
+  div.row:first-child {
+    background-color: $mcolor__datatables-filter-row;
+    margin: 0 !important;
+    padding: 0 !important;
+    div {
+      padding: 4px !important;
+    }
+  }
+}
