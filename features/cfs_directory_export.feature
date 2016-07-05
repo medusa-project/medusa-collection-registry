@@ -34,6 +34,19 @@ Feature: Cfs directory export
     Then I should receive a file 'dogs.tsv' of type 'text/tab-separated-values' matching:
       | intro.txt | picture.jpg | description.txt | dogs | pugs |
 
+  Scenario: Request a JSON representation of a directory tree
+    Given I am logged in as a manager
+    When I view the cfs directory for the file group titled 'Dogs' for the path '.'
+    And I click on 'JSON Tree'
+    And the JSON at "name" should be "dogs"
+    And the JSON at "relative_pathname" should be "dogs"
+    And the JSON at "files/0/name" should be "intro.txt"
+    And the JSON at "files/0/size" should be 8
+    And the JSON at "files/0/relative_pathname" should be "dogs/intro.txt"
+    And the JSON at "subdirectories" should have 1 entries
+    And the JSON at "subdirectories/0/files" should have 2 entries
+    And the JSON at "subdirectories/0/files/0/size" should be 8
+
   Scenario: Error message is received
     Given there is a downloader request for the export of the cfs directory for the file group titled 'Dogs' for the path '.' with fields:
       | email            | status  | downloader_id |

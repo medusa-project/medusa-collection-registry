@@ -52,6 +52,9 @@ class CfsDirectoriesController < ApplicationController
         @csv_options = {col_sep: "\t", row_sep: "\r\n"}
         response.headers['Content-Type'] = 'text/tab-separated-values'
       end
+      format.json do
+        render json: directory_tree_as_hashes(@directory)
+      end
     end
   end
 
@@ -80,6 +83,64 @@ class CfsDirectoriesController < ApplicationController
   def find_directory
     @directory = CfsDirectory.find(params[:id])
     @breadcrumbable = @directory
+  end
+
+  def directory_tree_as_hashes(directory)
+    cfs_directory_ids = directory.recursive_subdirectory_ids
+    directories = CfsDirectory.where(id: cfs_directory_ids).includes(cfs_files: [:medusa_uuid, :content_type]).includes(:medusa_uuid)
+    directory_hashes = directories.collect { |d| [d.id, directory_to_hash(d)] }.to_h
+    #make the tree
+    directory_hashes.each do |id, hash|
+      unless id == directory.id
+        parent_hash = directory_hashes[hash[:parent_id]]
+        parent_hash[:subdirectories] ||= Array.new
+        parent_hash[:subdirectories] << hash
+      end
+    end
+    #Add this now for efficiency
+    add_relative_path_information(directory.relative_path, directory_hashes[directory.id])
+    #remove parent information, which was just for us to use in construction
+    directory_hashes.each do |h|
+      %i(parent_id parent_type).each {|key| h.delete(key)}
+    end
+    return directory_hashes[directory.id]
+  end
+
+  def directory_to_hash(directory)
+    Hash.new.tap do |h|
+      h[:id] = directory.id
+      h[:uuid] = directory.uuid
+      h[:name] = directory.path
+      h[:parent_id] = directory.parent_id
+      h[:parent_type] = directory.parent_type
+      h[:files] = directory.cfs_files.collect do |cfs_file|
+        Hash.new.tap do |file_hash|
+          file_hash[:id] = cfs_file.id
+          file_hash[:uuid] = cfs_file.uuid
+          file_hash[:name] = cfs_file.name
+          file_hash[:content_type] = cfs_file.content_type_name
+          file_hash[:md5_sum] = cfs_file.md5_sum
+          file_hash[:size] = cfs_file.size.to_i
+          file_hash[:mtime] = cfs_file.mtime
+        end
+      end
+    end
+  end
+
+  def add_relative_path_information(root_path, root_hash)
+    root_hash[:relative_pathname] = root_path
+    pending_hashes = [root_hash]
+    while current_hash = pending_hashes.pop
+      if current_hash[:subdirectories].present?
+        current_hash[:subdirectories].each do |subdirectory|
+          subdirectory[:relative_pathname] = File.join(current_hash[:relative_pathname], subdirectory[:name])
+          pending_hashes.push(subdirectory)
+        end
+      end
+      current_hash[:files].each do |file|
+        file[:relative_pathname] = File.join(current_hash[:relative_pathname], file[:name])
+      end
+    end
   end
 
 end
