@@ -87,6 +87,3 @@ Feature: Project description
     When I go to the project index page
     And I click on 'Book Scanning'
     Then I should be on the view page for the project with title 'Book Scanning'
-
-  Scenario: Enforce permissions
-    When PENDING
