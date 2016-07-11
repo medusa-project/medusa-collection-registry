@@ -247,6 +247,7 @@ GEM
       omniauth (>= 1.0.0)
     options (2.3.2)
     orm_adapter (0.5.0)
+    os (0.9.6)
     paperclip (4.3.6)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -464,6 +465,7 @@ DEPENDENCIES
   oink
   omniauth
   omniauth-shibboleth
+  os
   paperclip
   passenger
   pg

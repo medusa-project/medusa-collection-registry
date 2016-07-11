@@ -102,6 +102,8 @@ gem 'progress_bar'
 
 gem 'render_anywhere', require: false
 
+gem 'os'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl'

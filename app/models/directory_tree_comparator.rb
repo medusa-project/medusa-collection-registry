@@ -3,6 +3,7 @@
 #allow showing which is in just the source, in just the target, or in both but with different sizes
 #Obviously this is not the most efficient way to do, but it's clear
 require 'find'
+require 'open3'
 class DirectoryTreeComparator < Object
 
   attr_accessor :source_directory, :target_directory, :all_paths, :source_only_paths,
@@ -25,13 +26,36 @@ class DirectoryTreeComparator < Object
   def augment_all_paths(directory, size_key)
     self.all_paths ||= Hash.new
     Dir.chdir(directory) do
-      Find.find('.') do |entry|
-        if File.file?(entry)
-          normalized_entry = entry.sub(/^\.\//, '')
-          all_paths[normalized_entry] ||= Hash.new
-          all_paths[normalized_entry][size_key] = File.size(normalized_entry)
+      Open3.popen2(find_command, '.', '-type', 'f', '-exec', stat_command, '-c', '"%n %s"', '{}', ';') do |stdin, stdout, wait|
+        stdout.each_line do |line|
+          normalized_entry = line.chomp.sub(/^\.\//, '')
+          normalized_entry.match(/^(.*) (\d+)$/)
+          all_paths[$1] ||= Hash.new
+          all_paths[$1][size_key] = $2.to_i
         end
       end
+    end
+  end
+
+  #find/gfind <dir> -type f -exec stat/gstat -c "%n %s" {} \;
+
+  def find_command
+    if OS.linux?
+      'find'
+    elsif OS.mac?
+      'gfind'
+    else
+      raise RuntimeError, "Unrecognized platform"
+    end
+  end
+
+  def stat_command
+    if OS.linux?
+      'stat'
+    elsif OS.mac?
+      'gstat'
+    else
+      raise RuntimeError, "Unrecognized platform"
     end
   end
 
