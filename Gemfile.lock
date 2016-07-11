@@ -170,6 +170,7 @@ GEM
     factory_girl (4.7.0)
       activesupport (>= 3.0.0)
     ffi (1.9.10)
+    fiddler-rb (0.1.2)
     font-awesome-rails (4.6.3.0)
       railties (>= 3.2, < 5.1)
     gherkin (4.0.0)
@@ -212,6 +213,8 @@ GEM
       rspec (>= 2.0, < 4.0)
     launchy (2.4.3)
       addressable (~> 2.3)
+    leveldb (0.1.9)
+      fiddler-rb (~> 0.1.1)
     local_time (1.0.3)
       coffee-rails
     logger (1.2.8)
@@ -457,6 +460,7 @@ DEPENDENCIES
   jquery-ui-rails
   json_spec
   launchy
+  leveldb
   local_time
   logger
   net-http-digest_auth!

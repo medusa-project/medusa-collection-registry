@@ -2,42 +2,58 @@
 #get a list of all files in each along with their sizes
 #allow showing which is in just the source, in just the target, or in both but with different sizes
 #Obviously this is not the most efficient way to do, but it's clear
-require 'find'
 require 'open3'
+require 'set'
+require 'fileutils'
+require 'tmpdir'
 class DirectoryTreeComparator < Object
 
-  attr_accessor :source_directory, :target_directory, :all_paths, :source_only_paths,
+  attr_accessor :source_directory, :target_directory, :source_only_paths,
                 :target_only_paths, :different_sizes_paths
 
   def initialize(source_directory, target_directory)
     self.source_directory = source_directory
     self.target_directory = target_directory
+    self.source_only_paths = Set.new
+    self.target_only_paths = Set.new
+    self.different_sizes_paths = Set.new
     self.analyze
   end
 
   def analyze
-    augment_all_paths(source_directory, :source)
-    augment_all_paths(target_directory, :target)
-    create_source_only_paths
-    create_target_only_paths
-    create_different_sizes_paths
+    uuid = UUID.generate
+    db_dir = File.join(Dir.tmpdir, "leveldb-#{uuid}")
+    db = LevelDB::DB.new(db_dir)
+    with_all_files_and_sizes(source_directory) do |path, source_size|
+      db[path] = source_size
+    end
+    with_all_files_and_sizes(target_directory) do |path, target_size|
+      if source_size = db[path]
+        if source_size != target_size
+          different_sizes_paths << path
+        end
+        db.delete(path)
+      else
+        target_only_paths << path
+      end
+    end
+    self.source_only_paths = db.keys.to_set
+  ensure
+    db.close if db
+    FileUtils.rmtree(db_dir) if db_dir and Dir.exist?(db_dir)
   end
 
-  def augment_all_paths(directory, size_key)
-    self.all_paths ||= Hash.new
+  def with_all_files_and_sizes(directory)
     Dir.chdir(directory) do
-      Open3.popen2(find_command, '.', '-type', 'f', '-exec', stat_command, '-c', '"%n %s"', '{}', ';') do |stdin, stdout, wait|
+      Open3.popen2(find_command, '.', '-type', 'f', '-exec', stat_command, '-c', "%n %s", '{}', ';') do |stdin, stdout, wait|
         stdout.each_line do |line|
-          normalized_entry = line.chomp.sub(/^\.\//, '')
-          normalized_entry.match(/^(.*) (\d+)$/)
-          all_paths[$1] ||= Hash.new
-          all_paths[$1][size_key] = $2.to_i
+          line.chomp!
+          line.match(/^(.*) (\d+)$/)
+          yield $1, $2
         end
       end
     end
   end
-
-  #find/gfind <dir> -type f -exec stat/gstat -c "%n %s" {} \;
 
   def find_command
     if OS.linux?
@@ -57,18 +73,6 @@ class DirectoryTreeComparator < Object
     else
       raise RuntimeError, "Unrecognized platform"
     end
-  end
-
-  def create_source_only_paths
-    self.source_only_paths = all_paths.select { |path, sizes| sizes[:target].blank? }.keys
-  end
-
-  def create_target_only_paths
-    self.target_only_paths = all_paths.select { |path, sizes| sizes[:source].blank? }.keys
-  end
-
-  def create_different_sizes_paths
-    self.different_sizes_paths = all_paths.select { |path, sizes| sizes[:target].present? and sizes[:source].present? and sizes[:target] != sizes[:source] }
   end
 
   def directories_equal?
