@@ -67,11 +67,30 @@ class Workflow::AccrualJob < Workflow::Base
     if comparator.directories_equal?
       be_in_state_and_requeue('check')
     else
+      tmpfile = File.join(Dir.tmpdir, "check_sync-#{self.id}-#{Time.now}")
+      File.open(tmpfile, 'w') do |f|
+        f.puts "Source only:"
+        comparator.source_only_paths.each {|p| f.puts p}
+        f.puts "Target only:"
+        comparator.target_only_paths.each {|p| f.puts p}
+        f.puts "Differences:"
+        comparator.different_sizes_path.each {|p| f.puts p}
+        f.puts "Suggested remediation:"
+        comparator.target_only_path.each do |p|
+          puts "rm -f #{File.join(staging_remote_path, p)}"
+        end
+        (comparator.source_only_paths + comparator.different_sizes_paths).each do |p|
+          puts "cp -f #{File.join(staging_local_path, p)} #{File.join(staging_remote_path, p)}"
+        end
+      end
+      GenericErrorMailer.error("Check sync failed for accrual_job: #{self.id}.\n See #{tmpfile} for details.").deliver_now
       raise RuntimeError,
             %Q(storage.library and condo copies of accrual directory are not in sync.
 #{comparator.source_only_paths.count} files are only present in the source copy
 #{comparator.target_only_paths.count} files are only present in the target copy
-#{comparator.different_sizes_paths.count} files are present in both copies but with different sizes)
+#{comparator.different_sizes_paths.count} files are present in both copies but with different sizes
+Paths are stored for inspection in #{tmpfile} on the server.
+)
     end
   end
 

@@ -45,7 +45,7 @@ class DirectoryTreeComparator < Object
 
   def with_all_files_and_sizes(directory)
     Dir.chdir(directory) do
-      Open3.popen2(find_command, '.', '-type', 'f', '-exec', stat_command, '-c', "%n %s", '{}', ';') do |stdin, stdout, wait|
+      Open3.popen2(find_command, '.', '-type', 'f', '-exec', stat_command, '-c', "%n %s", '{}', '+') do |stdin, stdout, wait|
         stdout.each_line do |line|
           line.chomp!
           line.match(/^(.*) (\d+)$/)
