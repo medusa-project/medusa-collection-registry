@@ -8,7 +8,7 @@ namespace :fits do
     batch_size = (ENV['FITS_BATCH_SIZE'] || DEFAULT_FITS_BATCH_SIZE).to_i
     errors = Hash.new
     bar = ProgressBar.new(batch_size)
-    CfsFile.without_fits.order('id asc').where('size is not null').limit(batch_size).each do |cfs_file|
+    CfsFile.without_fits.where('size is not null').limit(batch_size).each do |cfs_file|
       begin
         cfs_file.ensure_fits_xml
       rescue Exception => e
