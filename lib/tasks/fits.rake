@@ -33,6 +33,7 @@ namespace :fits do
       end
       GenericErrorMailer.error(error_string.string).deliver_now
     end
+    Sunspot.commit
   end
 end
 
