@@ -1997,6 +1997,78 @@ ALTER SEQUENCE file_extensions_id_seq OWNED BY file_extensions.id;
 
 
 --
+-- Name: file_format_normalization_paths; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE file_format_normalization_paths (
+    id integer NOT NULL,
+    file_format_id integer,
+    name character varying,
+    output_format character varying,
+    software character varying,
+    software_version character varying,
+    operating_system character varying,
+    software_settings text,
+    potential_for_loss text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: file_format_normalization_paths_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE file_format_normalization_paths_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: file_format_normalization_paths_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE file_format_normalization_paths_id_seq OWNED BY file_format_normalization_paths.id;
+
+
+--
+-- Name: file_format_notes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE file_format_notes (
+    id integer NOT NULL,
+    file_format_id integer,
+    user_id integer,
+    date date NOT NULL,
+    note text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: file_format_notes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE file_format_notes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: file_format_notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE file_format_notes_id_seq OWNED BY file_format_notes.id;
+
+
+--
 -- Name: file_format_profiles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4067,6 +4139,20 @@ ALTER TABLE ONLY file_extensions ALTER COLUMN id SET DEFAULT nextval('file_exten
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY file_format_normalization_paths ALTER COLUMN id SET DEFAULT nextval('file_format_normalization_paths_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_notes ALTER COLUMN id SET DEFAULT nextval('file_format_notes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY file_format_profiles ALTER COLUMN id SET DEFAULT nextval('file_format_profiles_id_seq'::regclass);
 
 
@@ -4573,6 +4659,22 @@ ALTER TABLE ONLY events
 
 ALTER TABLE ONLY file_extensions
     ADD CONSTRAINT file_extensions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: file_format_normalization_paths_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_normalization_paths
+    ADD CONSTRAINT file_format_normalization_paths_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: file_format_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_notes
+    ADD CONSTRAINT file_format_notes_pkey PRIMARY KEY (id);
 
 
 --
@@ -5418,6 +5520,27 @@ CREATE INDEX index_events_on_updated_at ON events USING btree (updated_at);
 --
 
 CREATE UNIQUE INDEX index_file_extensions_on_extension ON file_extensions USING btree (extension);
+
+
+--
+-- Name: index_file_format_normalization_paths_on_file_format_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_file_format_normalization_paths_on_file_format_id ON file_format_normalization_paths USING btree (file_format_id);
+
+
+--
+-- Name: index_file_format_notes_on_file_format_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_file_format_notes_on_file_format_id ON file_format_notes USING btree (file_format_id);
+
+
+--
+-- Name: index_file_format_notes_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_file_format_notes_on_user_id ON file_format_notes USING btree (user_id);
 
 
 --
@@ -6397,6 +6520,14 @@ ALTER TABLE ONLY workflow_accrual_comments
 
 
 --
+-- Name: fk_rails_23d6ecdef7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_notes
+    ADD CONSTRAINT fk_rails_23d6ecdef7 FOREIGN KEY (file_format_id) REFERENCES file_formats(id);
+
+
+--
 -- Name: fk_rails_242362ff14; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6525,6 +6656,14 @@ ALTER TABLE ONLY workflow_accrual_conflicts
 
 
 --
+-- Name: fk_rails_9a724fc755; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_notes
+    ADD CONSTRAINT fk_rails_9a724fc755 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_9fe508decd; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6618,6 +6757,14 @@ ALTER TABLE ONLY cfs_files
 
 ALTER TABLE ONLY job_fixity_checks
     ADD CONSTRAINT fk_rails_f4de0ef7ac FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_f4f83033da; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_normalization_paths
+    ADD CONSTRAINT fk_rails_f4f83033da FOREIGN KEY (file_format_id) REFERENCES file_formats(id);
 
 
 --
@@ -7089,4 +7236,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160621144247');
 INSERT INTO schema_migrations (version) VALUES ('20160805144959');
 
 INSERT INTO schema_migrations (version) VALUES ('20160805172916');
+
+INSERT INTO schema_migrations (version) VALUES ('20160805193842');
+
+INSERT INTO schema_migrations (version) VALUES ('20160805200045');
 

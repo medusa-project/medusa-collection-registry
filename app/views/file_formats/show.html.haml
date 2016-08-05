@@ -17,3 +17,31 @@
               %li.list-group-item= link_to(file_format_profile.name, file_format_profile)
         - else
           .panel-body None
+  .row
+    .col-xs-12
+      .panel.panel-default
+        .panel-heading
+          %h4 Notes
+        .panel-body
+          - @file_format.file_format_notes.each do |note|
+            .file-format-note{id: "file_format_note_#{note.id}"}
+              .well
+                %p
+                  #{note.user.email} - #{note.date}
+                %p= note.note
+  .row
+    .col-xs-12
+      .panel.panel-default
+        .panel-heading
+          %h4 Normalization Paths
+        .panel-body
+          - @file_format.file_format_normalization_paths.each do |path|
+            .file-format-path{id: "file_format_path_#{path.id}"}
+              .well
+                = show_field path, :name
+                = show_field path, :output_format
+                = show_field path, :software
+                = show_field path, :software_version
+                = show_field path, :operating_system
+                = show_field path, :software_settings
+                = show_field path, :potential_for_loss
