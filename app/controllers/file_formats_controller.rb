@@ -2,6 +2,7 @@ class FileFormatsController < ApplicationController
 
   before_action :require_medusa_user, except: [:show, :index]
   before_action :get_file_format, only: [:show, :edit, :update, :destroy]
+
   def index
     @file_formats = FileFormat.order('name asc').all.decorate
   end
@@ -54,7 +55,7 @@ class FileFormatsController < ApplicationController
   end
 
   def allowed_params
-    params[:file_format].permit(:name, :pronom_id, :policy_summary)
+    params[:file_format].permit(:name, :pronom_id, :policy_summary, file_format_profile_ids: [])
   end
 
 end

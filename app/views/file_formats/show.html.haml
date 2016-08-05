@@ -6,24 +6,14 @@
         = show_field @file_format, :name
         = show_value @file_format.pronom_link, "Pronom ID"
         = show_field @file_format, :policy_summary
-  -#.row
-  -#  .col-xs-4
-  -#    .panel.panel-default
-  -#      .panel-heading
-  -#        %h4 Content types:
-  -#      - if @file_format_profile.content_types.present?
-  -#        %ul.list-group
-  -#          - @file_format_profile.content_types.each do |content_type|
-  -#            %li.list-group-item= content_type.name
-  -#      - else
-  -#        .panel-body None
-  -#  .col-xs-4
-  -#    .panel.panel-default
-  -#      .panel-heading
-  -#        %h4 File Extensions:
-  -#      - if @file_format_profile.file_extensions.present?
-  -#        %ul.list-group
-  -#          - @file_format_profile.file_extensions.order('extension asc').each do |extension|
-  -#            %li.list-group-item= extension.extension_label
-  -#      - else
-  -#        .panel-body None
+  .row
+    .col-xs-12
+      .panel.panel-default
+        .panel-heading
+          %h4 File format profiles:
+        - if @file_format.file_format_profiles.present?
+          %ul.list-group
+            - @file_format.file_format_profiles.each do |file_format_profile|
+              %li.list-group-item= link_to(file_format_profile.name, file_format_profile)
+        - else
+          .panel-body None

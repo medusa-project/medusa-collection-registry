@@ -2010,7 +2010,8 @@ CREATE TABLE file_format_profiles (
     notes text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    status character varying DEFAULT 'active'::character varying NOT NULL
+    status character varying DEFAULT 'active'::character varying NOT NULL,
+    file_format_id integer
 );
 
 
@@ -5420,6 +5421,13 @@ CREATE UNIQUE INDEX index_file_extensions_on_extension ON file_extensions USING 
 
 
 --
+-- Name: index_file_format_profiles_on_file_format_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_file_format_profiles_on_file_format_id ON file_format_profiles USING btree (file_format_id);
+
+
+--
 -- Name: index_file_format_profiles_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7079,4 +7087,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160610220337');
 INSERT INTO schema_migrations (version) VALUES ('20160621144247');
 
 INSERT INTO schema_migrations (version) VALUES ('20160805144959');
+
+INSERT INTO schema_migrations (version) VALUES ('20160805172916');
 

@@ -1,4 +1,3 @@
-@current
 Feature: File Formats
   In order to manage files of various formats
   As a librarian

@@ -48,10 +48,8 @@ label.checkbox {
   min-width: 300px;
 }
 
-#edit_content_type_list, #edit_file_extension_list {
-  .modal-dialog {
-    min-width: 80%;
-  }
+.modal-checkbox-dialog {
+  min-width: 80%;
 }
 
 .vertical-align {
