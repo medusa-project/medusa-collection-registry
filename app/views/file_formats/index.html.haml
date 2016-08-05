@@ -1,0 +1,7 @@
+= render layout: 'layouts/page_header' do
+  File Formats
+
+-if can?(:create, FileFormat)
+  = link_to 'Add File Format', new_file_format_path, class: 'btn btn-primary'
+
+= render 'index_table'

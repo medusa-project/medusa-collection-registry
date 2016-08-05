@@ -2193,6 +2193,39 @@ ALTER SEQUENCE file_format_tests_id_seq OWNED BY file_format_tests.id;
 
 
 --
+-- Name: file_formats; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE file_formats (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    pronom_id character varying,
+    policy_summary text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: file_formats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE file_formats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: file_formats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE file_formats_id_seq OWNED BY file_formats.id;
+
+
+--
 -- Name: file_groups; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4075,6 +4108,13 @@ ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins ALTER COLUMN i
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY file_formats ALTER COLUMN id SET DEFAULT nextval('file_formats_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY file_groups ALTER COLUMN id SET DEFAULT nextval('file_groups_id_seq'::regclass);
 
 
@@ -4580,6 +4620,14 @@ ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
 
 ALTER TABLE ONLY file_format_tests
     ADD CONSTRAINT file_format_tests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: file_formats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_formats
+    ADD CONSTRAINT file_formats_pkey PRIMARY KEY (id);
 
 
 --
@@ -7029,4 +7077,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160610185704');
 INSERT INTO schema_migrations (version) VALUES ('20160610220337');
 
 INSERT INTO schema_migrations (version) VALUES ('20160621144247');
+
+INSERT INTO schema_migrations (version) VALUES ('20160805144959');
 

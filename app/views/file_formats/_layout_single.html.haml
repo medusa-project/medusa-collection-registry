@@ -1,0 +1,16 @@
+.row.vertical-align
+  .col-xs-6
+    = render layout: 'layouts/page_header' do
+      - if content_for?(:title)
+        = yield(:title)
+      - else
+        File Format:
+      %small #{@file_format.name}
+  .col-xs-6
+    .btn-group.pull-right
+      = index_button(file_formats_path)
+      - if can?(:update, @file_format)
+        = edit_button(@file_format)
+
+
+= yield

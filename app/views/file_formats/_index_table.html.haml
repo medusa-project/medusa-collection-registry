@@ -1,0 +1,19 @@
+%table#file_formats.table.table-striped
+  %thead
+    %tr
+      %th Name
+      %th Pronom ID
+      %th Policy Summary
+      %th
+  - cache(cache_key_for_all(FileFormat)) do
+    %tbody
+      - @file_formats.each do |file_format|
+        - cache(file_format) do
+          %tr
+            %td= file_format.name
+            %td= file_format.pronom_link
+            %td= truncate(file_format.policy_summary, length: 50)
+            %td
+              = small_view_button(file_format)
+              - if can?(:update, file_format)
+                = small_edit_button(file_format)

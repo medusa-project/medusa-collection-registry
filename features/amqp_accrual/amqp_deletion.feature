@@ -1,4 +1,4 @@
-@idb @current
+@idb
 Feature: Amqp deletion
   In order to preserve files from clients such as IDB
   As a client application

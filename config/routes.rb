@@ -103,6 +103,7 @@ MedusaCollectionRegistry::Application.routes.draw do
     get :random_cfs_file, on: :member
     post :fits_batch, on: :member
   end
+  resources :file_formats
   resources :file_format_profiles do
     post :clone, on: :member
   end
