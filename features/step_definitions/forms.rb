@@ -35,6 +35,12 @@ And /^I click on '([^']*)'$/ do |link_name|
   click_on(link_name)
 end
 
+And(/^I click on and confirm '(.*)'$/) do |link_name|
+  accept_confirm do
+    click_on(link_name)
+  end
+end
+
 And /^I click consecutively on:$/ do |table|
   table.headers.each {|header| click_on(header)}
 end

@@ -6,7 +6,7 @@
   .btn-group
     = f.button :submit, class: 'btn btn-primary btn-sm', value: (object.new_record? ? 'Create' : 'Update'), onclick: "$('.modal').modal('hide');"
     - if defined?(@remote) and @remote
-      = link_to('Cancel', '#', class: 'btn btn-default btn-sm', onclick: "$('.modal').modal('hide'); false;")
+      = link_to('Cancel', '#', class: 'btn btn-default btn-sm', onclick: "$('.modal').modal('hide'); return false;")
     - else
       = link_to('Cancel', cancel_return, class: 'btn btn-default btn-sm')
     - if object.new_record?

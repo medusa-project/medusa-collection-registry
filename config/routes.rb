@@ -29,7 +29,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   concern :downloadable, Proc.new { member { get 'download' } }
   concern :collection_indexer, Proc.new { member { get 'collections' } }
   concern :fixity_checkable, Proc.new { member { post 'fixity_check' } }
-  concern :autocomplete_email, Proc.new {collection {get :autocomplete_user_email}}
+  concern :autocomplete_email, Proc.new { collection { get :autocomplete_user_email } }
 
   resources :collections, concerns: %i(eventable red_flaggable public assessable attachable)
 
@@ -103,7 +103,20 @@ MedusaCollectionRegistry::Application.routes.draw do
     get :random_cfs_file, on: :member
     post :fits_batch, on: :member
   end
-  resources :file_formats
+  resources :file_formats do
+    member do
+      post :create_note
+      post :create_normalization_path
+      get :edit_note
+      get :edit_normalization_path
+      patch :update_note
+      patch :update_normalization_path
+      get :new_note
+      get :new_normalization_path
+      delete :delete_note
+      delete :delete_normalization_path
+    end
+  end
   resources :file_format_profiles do
     post :clone, on: :member
   end

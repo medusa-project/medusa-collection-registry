@@ -1,0 +1,13 @@
+- url = @normalization_path.new_record? ? create_normalization_path_file_format_path(@file_format) : update_normalization_path_file_format_path(@file_format)
+= render layout: 'layouts/bootstrap_modal', locals: {id: 'modal_item_form'} do
+  = simple_form_for @normalization_path, url: url, remote: true, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
+    .row
+      = render partial: 'form_sidebar', locals: {f: f, object: @normalization_path}
+      .col-sm-10
+        = f.input :name
+        = f.input :output_format
+        = f.input :software
+        = f.input :software_version
+        = f.input :operating_system
+        = f.input :software_settings
+        = f.input :potential_for_loss
