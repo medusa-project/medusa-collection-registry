@@ -1,0 +1,4 @@
+- if @updated
+  $("#file_format_note_#{@note.id}").replaceWith("#{escape_javascript(render(partial: 'file_format_note', locals: {note: @note}))}")
+- else
+  alert("Error updating Note!");

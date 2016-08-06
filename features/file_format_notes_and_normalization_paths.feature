@@ -36,8 +36,16 @@ Feature: File format notes and normalization paths
     Then there should be no file format note with note 'My tiff note'
     And I should not see 'My tiff note'
 
+  @javascript
   Scenario: Edit note of file format
-    When PENDING
+    Given I am logged in as an admin
+    When I view the file format with name 'tiff'
+    And I click on 'Edit Note'
+    And I fill in fields:
+      | Note | Edited Note |
+    And I click on 'Update'
+    Then I should see 'Edited Note'
+    And a file format note with note 'Edited Note' should exist
 
   @javascript
   Scenario: Add normalization path to file format
@@ -57,5 +65,15 @@ Feature: File format notes and normalization paths
     Then there should be no file format normalization path with name 'Normalization Path 1'
     And I should not see 'Normalization Path 1'
 
+  @javascript
   Scenario: Edit normalization path of file format
-    When PENDING
+    Given I am logged in as an admin
+    When I view the file format with name 'tiff'
+    And I click on 'Edit Normalization Path'
+    And I fill in fields:
+      | Software | Photoshop |
+    And I click on 'Update'
+    Then I should see 'Photoshop'
+    And the file format normalization path with fields should exist:
+      | name                 | software  |
+      | Normalization Path 1 | Photoshop |

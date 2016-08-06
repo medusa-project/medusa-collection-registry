@@ -3,6 +3,7 @@
     - if can?(:update, @file_format)
       %div
         .pull-right
+          = link_to 'Edit Normalization Path', edit_normalization_path_file_format_path(@file_format, normalization_path_id: path.id), class: 'btn btn-xs btn-default', remote: true
           = link_to 'Delete Normalization Path', delete_normalization_path_file_format_path(@file_format, normalization_path_id: path.id), class: 'btn btn-xs btn-danger', remote: true, method: :delete, data: {confirm: 'Are you sure? This cannot be undone.'}
     %div
       = show_field path, :name

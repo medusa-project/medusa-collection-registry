@@ -1,4 +1,4 @@
-- url = @normalization_path.new_record? ? create_normalization_path_file_format_path(@file_format) : update_normalization_path_file_format_path(@file_format)
+- url = @normalization_path.new_record? ? create_normalization_path_file_format_path(@file_format) : update_normalization_path_file_format_path(@file_format, normalization_path_id: @normalization_path.id)
 = render layout: 'layouts/bootstrap_modal', locals: {id: 'modal_item_form'} do
   = simple_form_for @normalization_path, url: url, remote: true, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
     .row

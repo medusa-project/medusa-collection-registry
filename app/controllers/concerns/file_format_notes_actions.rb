@@ -39,6 +39,28 @@ module FileFormatNotesActions
     end
   end
 
+  def edit_note
+    @file_format = FileFormat.find(params[:id])
+    @note = FileFormatNote.find(params[:note_id])
+    render :nothing and return unless @note.file_format = @file_format
+    authorize! :update, @file_format
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update_note
+    @file_format = FileFormat.find(params[:id])
+    @note = FileFormatNote.find(params[:note_id])
+    render :nothing and return unless @note.file_format = @file_format
+    authorize! :update, @file_format
+    @updated = @note.update_attributes(allowed_note_params)
+    respond_to do |format|
+      format.js
+    end
+  end
+
+
   protected
 
   def allowed_note_params

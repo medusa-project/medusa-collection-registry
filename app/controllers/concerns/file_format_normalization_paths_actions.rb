@@ -37,6 +37,27 @@ module FileFormatNormalizationPathsActions
     end
   end
 
+  def edit_normalization_path
+    @file_format = FileFormat.find(params[:id])
+    @normalization_path = FileFormatNormalizationPath.find(params[:normalization_path_id])
+    render :nothing and return unless @normalization_path.file_format = @file_format
+    authorize! :update, @file_format
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update_normalization_path
+    @file_format = FileFormat.find(params[:id])
+    @normalization_path = FileFormatNormalizationPath.find(params[:normalization_path_id])
+    render :nothing and return unless @normalization_path.file_format = @file_format
+    authorize! :update, @file_format
+    @updated = @normalization_path.update_attributes(allowed_normalization_path_params)
+    respond_to do |format|
+      format.js
+    end
+  end
+
   protected
 
   def allowed_normalization_path_params
