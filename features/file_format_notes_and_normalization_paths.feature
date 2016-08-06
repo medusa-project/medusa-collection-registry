@@ -1,4 +1,3 @@
-@current
 Feature: File format notes and normalization paths
   In order to track information about file formats
   As a librarian
