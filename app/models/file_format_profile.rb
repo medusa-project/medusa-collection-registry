@@ -10,7 +10,7 @@ class FileFormatProfile < ActiveRecord::Base
   has_many :file_extensions, -> { order "extension asc" }, through: :file_format_profiles_file_extensions_joins
   belongs_to :file_format
 
-  default_scope {order(:name)}
+  default_scope { order(:name) }
 
   def self.active
     where(status: 'active')
