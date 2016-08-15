@@ -72,6 +72,7 @@ Feature: File format notes and normalization paths
     And I fill in fields:
       | Software | Photoshop |
     And I click on 'Update'
+    And I wait 1 second
     Then I should see 'Photoshop'
     And the file format normalization path with fields should exist:
       | name                 | software  |
