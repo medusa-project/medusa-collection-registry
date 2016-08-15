@@ -1,27 +1,6 @@
 %table#file_format_profiles.table.table-striped
-  %thead
-    %tr
-      %th Name
-      %th Status
-      %th Software (Version)
-      %th OS (Version)
-      %th Content Types
-      %th File Extensions
-      %th
+  = render partial: 'index_table_header'
   - cache(cache_key_for_all(FileFormatProfile)) do
     %tbody
       - @file_format_profiles.find_each do |file_format_profile|
-        - cache(file_format_profile) do
-          %tr
-            %td= link_to(file_format_profile.name, file_format_profile)
-            %td= file_format_profile.status
-            %td
-              #{file_format_profile.software} (#{file_format_profile.software_version})
-            %td
-              #{file_format_profile.os_environment} (#{file_format_profile.os_version})
-            %td= file_format_profile.content_types.collect {|content_type| content_type.name}.join(', ')
-            %td= file_format_profile.file_extensions.collect {|file_extension| file_extension.extension}.join(', ')
-            %td
-              = small_view_button(file_format_profile)
-              = small_clone_button(clone_file_format_profile_path(file_format_profile))
-              = small_edit_button(file_format_profile)
+        = render partial: 'index_table_row', locals: {file_format_profile: file_format_profile}
