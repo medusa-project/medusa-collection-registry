@@ -115,6 +115,7 @@ MedusaCollectionRegistry::Application.routes.draw do
       get :new_normalization_path
       delete :delete_note
       delete :delete_normalization_path
+      get :normalization_path
     end
   end
   resources :file_format_profiles do

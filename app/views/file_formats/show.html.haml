@@ -36,7 +36,6 @@
             = link_to "Add", new_normalization_path_file_format_path(@file_format), class: 'btn btn-xs btn-default', remote: true, title: 'Add Normalization Path'
           %h4 Normalization Paths
         .panel-body
-          - @file_format.file_format_normalization_paths.each do |path|
-            = render partial: 'file_format_normalization_path', locals: {path: path}
+          = render partial: 'file_format_normalization_paths_table'
 
   #form_placeholder

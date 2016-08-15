@@ -1,0 +1,17 @@
+.row.vertical-align
+  .col-xs-6
+    = render layout: 'layouts/page_header' do
+      - if content_for?(:title)
+        = yield(:title)
+      - else
+        Normalization Path:
+      %small #{@file_format.name}
+
+%div
+  = show_field @normalization_path, :name
+  = show_field @normalization_path, :output_format
+  = show_field @normalization_path, :software
+  = show_field @normalization_path, :software_version
+  = show_field @normalization_path, :operating_system
+  = show_field @normalization_path, :software_settings
+  = show_field @normalization_path, :potential_for_loss

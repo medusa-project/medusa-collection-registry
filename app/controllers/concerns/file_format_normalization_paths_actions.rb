@@ -58,6 +58,11 @@ module FileFormatNormalizationPathsActions
     end
   end
 
+  def normalization_path
+    @file_format = FileFormat.find(params[:id])
+    @normalization_path = FileFormatNormalizationPath.find(params[:normalization_path_id])
+  end
+
   protected
 
   def allowed_normalization_path_params

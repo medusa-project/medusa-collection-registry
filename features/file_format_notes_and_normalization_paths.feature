@@ -9,8 +9,8 @@ Feature: File format notes and normalization paths
       | note         |
       | My tiff note |
     And the file format with name 'tiff' has child file format normalization path with fields:
-      | name                 |
-      | Normalization Path 1 |
+      | name                 | potential_for_loss    |
+      | Normalization Path 1 | Big potential to lose |
 
   Scenario: See notes when viewing file format
     When I view the file format with name 'tiff'
@@ -76,3 +76,8 @@ Feature: File format notes and normalization paths
     And the file format normalization path with fields should exist:
       | name                 | software  |
       | Normalization Path 1 | Photoshop |
+
+  Scenario: View normalization path
+    When I view the file format with name 'tiff'
+    And I click on 'Normalization Path 1'
+    Then I should see 'Big potential to lose'

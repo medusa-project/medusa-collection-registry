@@ -3,7 +3,7 @@ class FileFormatsController < ApplicationController
   include FileFormatNotesActions
   include FileFormatNormalizationPathsActions
 
-  before_action :require_medusa_user, except: [:show, :index]
+  before_action :require_medusa_user, except: [:show, :index, :normalization_path]
   before_action :get_file_format, only: [:show, :edit, :update, :destroy]
 
   def index
