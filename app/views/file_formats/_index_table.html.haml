@@ -10,7 +10,7 @@
       - @file_formats.each do |file_format|
         - cache(file_format) do
           %tr
-            %td= file_format.name
+            %td= link_to file_format.name, file_format
             %td= file_format.pronom_link
             %td= truncate(file_format.policy_summary, length: 50)
             %td
