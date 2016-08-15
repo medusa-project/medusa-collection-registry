@@ -15,8 +15,7 @@
           %table#file_format_profiles.table.table-striped
             = render partial: 'file_format_profiles/index_table_header'
             %tbody
-              - @file_format.file_format_profiles.each do |file_format_profile|
-                = render partial: 'file_format_profiles/index_table_row', locals: {file_format_profile: file_format_profile}
+              = render partial: 'file_format_profiles/index_table_row', collection: @file_format.file_format_profiles, as: :file_format_profile
         - else
           .panel-body None
   .row

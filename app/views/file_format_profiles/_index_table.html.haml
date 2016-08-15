@@ -2,5 +2,5 @@
   = render partial: 'index_table_header'
   - cache(cache_key_for_all(FileFormatProfile)) do
     %tbody
-      - @file_format_profiles.find_each do |file_format_profile|
-        = render partial: 'index_table_row', locals: {file_format_profile: file_format_profile}
+      = render partial: 'index_table_row', collection: @file_format_profiles, as: :file_format_profile
+      
