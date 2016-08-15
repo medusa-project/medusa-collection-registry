@@ -1,6 +1,6 @@
 %tr{id: "file_format_normalization_path_#{normalization_path.id}"}
   %td= link_to normalization_path.name, normalization_path_file_format_path(@file_format, normalization_path_id: normalization_path.id), target: '_blank'
-  %td= normalization_path.output_format
+  %td= link_to(normalization_path.output_format_name, normalization_path.output_format) if normalization_path.output_format.present?
   %td= normalization_path.software
   %td= normalization_path.operating_system
   %td

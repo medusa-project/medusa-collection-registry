@@ -9,7 +9,7 @@
 
 %div
   = show_field @normalization_path, :name
-  = show_field @normalization_path, :output_format
+  = show_value link_to(@normalization_path.output_format_name, @normalization_path.output_format), 'Output Format'
   = show_field @normalization_path, :software
   = show_field @normalization_path, :software_version
   = show_field @normalization_path, :operating_system

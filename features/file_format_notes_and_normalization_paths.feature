@@ -67,13 +67,16 @@ Feature: File format notes and normalization paths
   @javascript
   Scenario: Edit normalization path of file format
     Given I am logged in as an admin
+    And the file format with name 'jp2' exists
     When I view the file format with name 'tiff'
     And I click on 'Edit Normalization Path'
     And I fill in fields:
       | Software | Photoshop |
+    And I select 'jp2' from 'Output format'
     And I click on 'Update'
     And I wait 1 second
-    Then I should see 'Photoshop'
+    Then I should see all of:
+      | Photoshop | jp2 |
     And the file format normalization path with fields should exist:
       | name                 | software  |
       | Normalization Path 1 | Photoshop |

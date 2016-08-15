@@ -72,9 +72,9 @@ Feature: Project Items
       | Title   | Catch-22       |
       | Author  | Heller         |
     And I click on 'Create and Exit'
-    Then I should be on the view page for the project with title 'Scanning'
-    And I should see all of:
+    Then I should see all of:
       | 30045623456789 | Catch-22 | Heller |
+    And I should be on the view page for the project with title 'Scanning'
 
   Scenario: Create a new item with javascript interface
     Given I am logged in as a manager

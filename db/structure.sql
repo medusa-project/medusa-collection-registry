@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 9.5.3
--- Dumped by pg_dump version 9.5.3
+-- Dumped by pg_dump version 9.5.4
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2004,14 +2004,14 @@ CREATE TABLE file_format_normalization_paths (
     id integer NOT NULL,
     file_format_id integer,
     name character varying,
-    output_format character varying,
     software character varying,
     software_version character varying,
     operating_system character varying,
     software_settings text,
     potential_for_loss text,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    output_format_id integer
 );
 
 
@@ -5530,6 +5530,13 @@ CREATE INDEX index_file_format_normalization_paths_on_file_format_id ON file_for
 
 
 --
+-- Name: index_file_format_normalization_paths_on_output_format_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_file_format_normalization_paths_on_output_format_id ON file_format_normalization_paths USING btree (output_format_id);
+
+
+--
 -- Name: index_file_format_notes_on_file_format_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7240,4 +7247,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160805172916');
 INSERT INTO schema_migrations (version) VALUES ('20160805193842');
 
 INSERT INTO schema_migrations (version) VALUES ('20160805200045');
+
+INSERT INTO schema_migrations (version) VALUES ('20160815185511');
 

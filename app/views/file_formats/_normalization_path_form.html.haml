@@ -5,7 +5,7 @@
       = render partial: 'form_sidebar', locals: {f: f, object: @normalization_path}
       .col-sm-10
         = f.input :name
-        = f.input :output_format
+        = f.association :output_format, as: :select, allow_blank: true
         = f.input :software
         = f.input :software_version
         = f.input :operating_system
