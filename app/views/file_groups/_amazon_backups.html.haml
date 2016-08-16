@@ -1,16 +1,10 @@
 - if @file_group.amazon_backups.present?
-  %table#amazon-backups-table.table.table-striped
-    %thead
+  = render layout: 'layouts/standard_table', locals: {id: 'amazon-backups-table', headers: %i(Date Completed User)} do
+    - @file_group.amazon_backups.each do |amazon_backup|
       %tr
-        %th Date
-        %th Completed
-        %th User
-    %tbody
-      - @file_group.amazon_backups.each do |amazon_backup|
-        %tr
-          %td= amazon_backup.date
-          %td= amazon_backup.completed? ? 'Yes' : 'No'
-          %td= amazon_backup.user.uid
+        %td= amazon_backup.date
+        %td= amazon_backup.completed? ? 'Yes' : 'No'
+        %td= amazon_backup.user.uid
 - else
   %div
     No Amazon Backups

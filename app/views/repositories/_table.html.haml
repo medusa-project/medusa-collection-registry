@@ -1,18 +1,10 @@
-%table.table.table-striped#repositories
-  %thead
-    %tr
-      %th Title
-      %th Contact
-      %th URL
-      %th Total Size (GB)
-      %th
-  %tbody
-    - @repositories.each do |repository|
-      - cache([repository, repository.contact]) do
-        %tr
-          %td #{link_to repository.title, repository}
-          %td #{repository.contact_email}
-          %td #{link_to_external repository.url, repository.url}
-          %td #{repository.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
-          %td
-            = small_edit_button(repository)
+= render layout: 'layouts/standard_table', locals: {id: :repositories, headers: ['Title', 'Contact', 'URL', 'Total Size (GB)', '']} do
+  - @repositories.each do |repository|
+    - cache([repository, repository.contact]) do
+      %tr
+        %td #{link_to repository.title, repository}
+        %td #{repository.contact_email}
+        %td #{link_to_external repository.url, repository.url}
+        %td #{repository.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
+        %td
+          = small_edit_button(repository)

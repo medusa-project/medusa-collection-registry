@@ -1,24 +1,17 @@
-%table#files.table.table-striped
-  %thead
+= render layout: 'layouts/standard_table', locals: {id: :files, headers: ['Name', 'Size', 'Last Modified', 'FITS']} do
+  - @directory.subdirectories.order(:path).each do |subdirectory|
     %tr
-      %th Name
-      %th Size
-      %th Last Modified
-      %th FITS
-  %tbody
-    - @directory.subdirectories.order(:path).each do |subdirectory|
-      %tr
-        %td{'data-sort' => "a-#{subdirectory.path}"}
-          = fa_icon 'folder-o'
-          = link_to subdirectory.path, cfs_directory_path(subdirectory)
-        %td
-        %td
-        %td
-    - @directory.cfs_files.decorate.each do |file|
-      %tr
-        %td{'data-sort' => "b-#{file.name}"}
-          = fa_icon 'file'
-          = link_to file.name, cfs_file_path(file)
-        %td= file.size
-        %td= file.mtime
-        %td= file.fits_button
+      %td{'data-sort' => "a-#{subdirectory.path}"}
+        = fa_icon 'folder-o'
+        = link_to subdirectory.path, cfs_directory_path(subdirectory)
+      %td
+      %td
+      %td
+  - @directory.cfs_files.decorate.each do |file|
+    %tr
+      %td{'data-sort' => "b-#{file.name}"}
+        = fa_icon 'file'
+        = link_to file.name, cfs_file_path(file)
+      %td= file.size
+      %td= file.mtime
+      %td= file.fits_button

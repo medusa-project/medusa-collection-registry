@@ -1,26 +1,15 @@
-%table#events.table.table-striped.table-condensed
-  %thead
+= render layout: 'layouts/standard_table', locals: {id: :events, classes: %w(table-condensed),  headers: %w(Time Label Type Parent User Messge Note Actions)} do
+  - @events.each do |event|
+    - eventable = event.eventable.decorate
+    - parent = eventable.parent.decorate
     %tr
-      %td Time
-      %td Label
-      %td Type
-      %td Parent
-      %td User
-      %td Message
-      %td Note
-      %td Actions
-  %tbody
-    - @events.each do |event|
-      - eventable = event.eventable.decorate
-      - parent = eventable.parent.decorate
-      %tr
-        %td= event.date
-        %td= link_to eventable.label, eventable
-        %td= eventable.decorated_class_human
-        %td= link_to(parent.label, parent)
-        %td= event.actor_email
-        %td= event.message
-        %td= event.note
-        %td
-          = small_edit_button(event)
-          = small_delete_button(event, message: event_confirm_message)
+      %td= event.date
+      %td= link_to eventable.label, eventable
+      %td= eventable.decorated_class_human
+      %td= link_to(parent.label, parent)
+      %td= event.actor_email
+      %td= event.message
+      %td= event.note
+      %td
+        = small_edit_button(event)
+        = small_delete_button(event, message: event_confirm_message)

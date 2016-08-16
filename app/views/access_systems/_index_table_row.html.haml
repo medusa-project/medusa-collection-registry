@@ -1,0 +1,10 @@
+-# must pass access_system
+- cache(access_system) do
+  %tr
+    %td #{link_to access_system.name, collections_access_system_path(access_system)}
+    %td #{access_system.service_owner}
+    %td #{access_system.application_manager}
+    %td
+      .pull-right
+        = small_view_button(access_system)
+        = small_edit_button(access_system)

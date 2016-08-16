@@ -1,0 +1,11 @@
+-#must pass in 'headers' collection for table headers and may pass in 'id' for table id and 'classes' for additional table
+-#classes, in a form suitable for haml interpolation. May pass 'caption' to add a caption element.
+- id ||= nil
+- classes ||= []
+- caption ||= nil
+%table.table.table-striped{id: id, class: classes}
+  - if caption
+    %caption #{caption}
+  = render 'shared/table_header', headers: headers
+  %tbody
+    = yield

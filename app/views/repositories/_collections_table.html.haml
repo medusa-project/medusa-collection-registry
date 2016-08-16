@@ -2,23 +2,5 @@
   Collections
 
 %div
-  %table.table.table-striped#collections
-    %thead
-      %tr
-        %th External ID
-        %th Title
-        %th Contact
-        %th Size (GB)
-        %th Preservation Priority
-        %th
-    %tbody
-      - @repository.collections.each do |collection|
-        - cache(collection) do
-          %tr
-            %td #{collection.external_id}
-            %td #{link_to collection.title, collection}
-            %td #{collection.contact_email}
-            %td #{collection.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
-            %td #{collection.preservation_priority_name}
-            %td
-              = small_edit_button(collection)
+  = render layout: 'layouts/standard_table', locals: {id: :collections, headers: ['External ID', 'Title', 'Contact', 'Size (GB)', 'Preservation Priority', '']} do
+    = render partial: 'repositories/collections_table_row', collection: @repository.collections, as: :collection, cached: true

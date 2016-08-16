@@ -1,18 +1,4 @@
-%table.table.table-striped#cfs_files
-  %thead
-    %tr
-      %th Filename
-      %th Path
-      %th File Group
-      %th Collection
-  %tbody
-    - @cfs_files.each do |cfs_file|
-      - file_group = cfs_file.try(:file_group)
-      - collection = file_group.try(:collection)
-      %tr
-        %td= link_to(cfs_file.name, cfs_file_path(cfs_file))
-        %td= cfs_file.cfs_directory.path
-        %td= link_to(file_group.title, file_group_path(file_group)) if file_group.present?
-        %td= link_to(collection.title, collection_path(collection)) if collection.present?
+= render layout: 'layouts/standard_table', locals: {id: :cfs_files, headers: ['Filename', 'Path', 'File Group', 'Collection']} do
+  = render partial: 'cfs_files/table_row', collection: @cfs_files, as: :cfs_file
 
 -#if you want pagination you have to do it in the caller, as it may vary depending on how this table is generated

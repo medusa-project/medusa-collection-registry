@@ -1,0 +1,8 @@
+-# must pass 'cfs_file'
+- file_group = cfs_file.try(:file_group)
+- collection = file_group.try(:collection)
+%tr
+  %td= link_to(cfs_file.name, cfs_file_path(cfs_file))
+  %td= cfs_file.cfs_directory.path
+  %td= link_to(file_group.title, file_group_path(file_group)) if file_group.present?
+  %td= link_to(collection.title, collection_path(collection)) if collection.present?

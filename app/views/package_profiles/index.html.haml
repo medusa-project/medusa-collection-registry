@@ -1,13 +1,9 @@
 = render layout: 'layouts/page_header' do
   Package Profiles
 
-%table.table.table-striped#package_profiles
-  %thead
-    %th Name
-    %th Url
-    %th
-  %tbody
-    - @package_profiles.each do |package_profile|
+= render layout: 'layouts/standard_table', locals: {id: :package_profiles, headers: ['Name', 'Url', '']} do
+  - @package_profiles.each do |package_profile|
+    - cache(package_profile) do
       %tr
         %td= link_to(package_profile.name, collections_package_profile_path(package_profile))
         %td= link_to(package_profile.url, package_profile.url)

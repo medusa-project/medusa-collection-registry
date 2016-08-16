@@ -11,37 +11,23 @@
         = link_to 'CSV', show_file_stats_repository_path(@repository, format: :csv), class: 'btn btn-default'
   .row
     .col-sm-6
-      %table.table.table-striped.table-bordered.table-condensed#file_stats_content_type
-        %thead
-          %tr
-            %th File Format
-            %th Number of Files
-            %th Tested
-            %th Size
-        - cache([@repository, 'content_type']) do
-          %tbody
-            - @content_type_hashes.each do |info|
-              %tr
-                %td= link_to info['name'], cfs_files_content_type_path(info['content_type_id'], repository_id: @repository.id)
-                %td= info['file_count'].to_i.to_formatted_s(:delimited)
-                - percent = info['tested_count'].to_d / info['file_count'].to_d * 100
-                %td= "#{info['tested_count'].to_i.to_formatted_s(:delimited)}&nbsp;(#{percent.to_formatted_s(:percentage, precision: 3)})".html_safe
-                %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_formatted_s(:human_size, precision: 3).sub(' ', '&nbsp;').html_safe
+      - cache([@repository, 'content_type']) do
+        = render layout: 'layouts/standard_table', locals: {id: :file_stats_content_type, classes: %w(table-bordered table-condensed), headers: ['File Format', 'Number of Files', 'Tested', 'Size']} do
+          - @content_type_hashes.each do |info|
+            %tr
+              %td= link_to info['name'], cfs_files_content_type_path(info['content_type_id'], repository_id: @repository.id)
+              %td= info['file_count'].to_i.to_formatted_s(:delimited)
+              - percent = info['tested_count'].to_d / info['file_count'].to_d * 100
+              %td= "#{info['tested_count'].to_i.to_formatted_s(:delimited)}&nbsp;(#{percent.to_formatted_s(:percentage, precision: 3)})".html_safe
+              %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_formatted_s(:human_size, precision: 3).sub(' ', '&nbsp;').html_safe
 
     .col-sm-6
-      %table.table.table-striped.table-bordered.table-condensed#file_stats_file_extension
-        %thead
-          %tr
-            %th File Extension
-            %th Number of Files
-            %th Tested
-            %th Size
-        - cache([@repository, 'file_extension']) do
-          %tbody
-            - @file_extension_hashes.each do |info|
-              %tr
-                %td= link_to info['extension'], cfs_files_file_extension_path(info['file_extension_id'], repository_id: @repository.id)
-                %td= info['file_count'].to_i.to_formatted_s(:delimited)
-                - percent = info['tested_count'].to_d / info['file_count'].to_d * 100
-                %td= "#{info['tested_count'].to_i.to_formatted_s(:delimited)}&nbsp;(#{percent.to_formatted_s(:percentage, precision: 3)})".html_safe
-                %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_formatted_s(:human_size, precision: 3).sub(' ', '&nbsp;').html_safe
+      - cache([@repository, 'file_extension']) do
+        = render layout: 'layouts/standard_table', locals: {id: :file_stats_file_extension, classes: %w(table-bordered table-condensed), headers: ['File Extension', 'Number of Files', 'Tested', 'Size']} do
+          - @file_extension_hashes.each do |info|
+            %tr
+              %td= link_to info['extension'], cfs_files_file_extension_path(info['file_extension_id'], repository_id: @repository.id)
+              %td= info['file_count'].to_i.to_formatted_s(:delimited)
+              - percent = info['tested_count'].to_d / info['file_count'].to_d * 100
+              %td= "#{info['tested_count'].to_i.to_formatted_s(:delimited)}&nbsp;(#{percent.to_formatted_s(:percentage, precision: 3)})".html_safe
+              %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_formatted_s(:human_size, precision: 3).sub(' ', '&nbsp;').html_safe

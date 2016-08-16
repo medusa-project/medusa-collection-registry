@@ -2,24 +2,14 @@
   Collections
 
 %div
-  %table.table.table-striped#collections
-    %thead
+  = render layout: 'layouts/standard_table', locals: {id: :collections, headers: ['External ID', 'Title', 'Repository', 'Contact', 'Size (GB)', 'Preservation Priority', '']} do
+    - @producer.collections.each do |collection|
       %tr
-        %th External ID
-        %th Title
-        %th Repository
-        %th Contact
-        %th Size (GB)
-        %th Preservation Priority
-        %th
-    %tbody
-      - @producer.collections.each do |collection|
-        %tr
-          %td #{collection.external_id}
-          %td #{link_to collection.title, collection}
-          %td #{link_to collection.repository.title, collection.repository}
-          %td #{collection.contact_email}
-          %td #{collection.total_size.to_s(:rounded, precision: 3)}
-          %td #{collection.preservation_priority_name}
-          %td
-            = small_edit_button(collection)
+        %td #{collection.external_id}
+        %td #{link_to collection.title, collection}
+        %td #{link_to collection.repository.title, collection.repository}
+        %td #{collection.contact_email}
+        %td #{collection.total_size.to_s(:rounded, precision: 3)}
+        %td #{collection.preservation_priority_name}
+        %td
+          = small_edit_button(collection)

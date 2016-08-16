@@ -1,18 +1,5 @@
 %h2 File Groups
 
 - if @public_file_groups.present?
-  %table#file_groups.table.table-striped
-    %thead
-      %tr
-        %th Name
-        %th Total files
-        %th Total file size (GB)
-    %tbody
-      - @public_file_groups.each do |file_group|
-        %tr
-          %td
-            #{link_to file_group.title, public_file_group_path(file_group)}
-            - if file_group.supports_cfs and file_group.cfs_directory.present?
-              %div= link_to 'View Files', public_cfs_directory_path(file_group.cfs_directory)
-          %td #{file_group.file_count.to_s(:delimited) rescue ''}
-          %td #{file_group.file_size.to_s(:rounded, precision: 2, delimiter: ',')}
+  = render layout: 'layouts/standard_table', locals: {id: :file_groups, headers: ['Name', 'Total files', 'Total file size (GB)']} do
+    = render partial: 'public_file_groups_table_row', collection: @public_file_groups, as: :file_group

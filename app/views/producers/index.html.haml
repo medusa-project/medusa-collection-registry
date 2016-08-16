@@ -3,22 +3,15 @@
 
 = render 'shared/definitions/producer'
 
-%table.table.table-striped#producers
-  %thead
+= render layout: 'layouts/standard_table', locals: {id: :producers, headers: ['Title', 'Administrator', 'URL', '']} do
+  - @producers.each do |producer|
     %tr
-      %th Title
-      %th Administrator
-      %th URL
-      %th
-  %tbody
-    - @producers.each do |producer|
-      %tr
-        %td #{link_to producer.title, producer}
-        %td #{producer.administrator_email}
-        %td #{link_to_external producer.url, producer.url}
-        %td
-          = small_view_button(producer)
-          = small_edit_button(producer)
+      %td #{link_to producer.title, producer}
+      %td #{producer.administrator_email}
+      %td #{link_to_external producer.url, producer.url}
+      %td
+        = small_view_button(producer)
+        = small_edit_button(producer)
 
 %br
 

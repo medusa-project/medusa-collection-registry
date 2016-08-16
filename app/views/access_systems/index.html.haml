@@ -1,22 +1,8 @@
 = render layout: 'layouts/page_header' do
   Access Systems
 
-%table.table.table-striped#access_systems
-  %thead
-    %th Name
-    %th Service owner
-    %th Application manager
-    %th
-  %tbody
-    - @access_systems.each do |access_system|
-      %tr
-        %td #{link_to access_system.name, collections_access_system_path(access_system)}
-        %td #{access_system.service_owner}
-        %td #{access_system.application_manager}
-        %td
-          .pull-right
-            = small_view_button(access_system)
-            = small_edit_button(access_system)
+= render layout: 'layouts/standard_table', locals: {id: :access_systems, headers: ['Name', 'Service owner', 'Application manager', '']} do
+  = render partial: 'index_table_row', collection: @access_systems, as: :access_system, cached: true
 
 %br
 

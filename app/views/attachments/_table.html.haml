@@ -6,23 +6,5 @@
 
   .row
     - if @attachable.attachments.includes(:author).present?
-      %table#attachments.table.table-striped
-        %thead
-          %tr
-            %th Filename
-            %th Description
-            %th Content Type
-            %th Author
-            %th
-        %tbody
-          - @attachable.attachments.each do |attachment|
-            - cache(attachment, attachment.author) do
-              %tr
-                %td #{link_to attachment.attachment_file_name, attachment}
-                %td #{attachment.description}
-                %td #{attachment.attachment_content_type}
-                %td #{attachment.author_email}
-                %td
-                  = small_download_button(download_attachment_path(attachment))
-                  = small_edit_button(attachment)
-                  = small_delete_button(attachment)
+      = render layout: 'layouts/standard_table', locals: {id: :attachments, headers: ['Filename', 'Description', 'Content Type', 'Author', '']} do
+        = render partial: 'attachments/table_row', collection: @attachable.attachments, as: :attachment

@@ -11,29 +11,19 @@
   |
   = link_to 'Most Important', '#', onclick: 'red_flag_sorter.priority(); return false;'
 .row
-  %table#red-flags-table.table.table-striped.table-condensed
-    %thead
-      %tr
-        %th Type
-        %th Label
-        %th Priority
-        %th Status
-        %th Time
-        %th Message
-        %th Actions
-    %tbody
-      - @red_flags.each do |red_flag|
-        - red_flaggable = red_flag.red_flaggable.decorate
-        %tr{id: "red-flag-#{red_flag.id}"}
-          %td= red_flaggable.cfs_type
-          %td= red_flaggable.cfs_label
-          %td= red_flag.priority
-          %td.status= red_flag.status
-          %td= red_flag.created_at
-          %td= red_flag.message
-          %td
-            = small_view_button(red_flag)
-            = small_edit_button(red_flag)
-            - if red_flag.flagged?
-              %span.unflag-link
-                = link_to('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true, class: 'btn btn-default btn-xs')
+  = render layout: 'layouts/standard_table', locals: {id: 'red-flags-table', classes: 'table-condensed', headers: %w(Type Label Priority Status Time Message Actions)} do
+    - @red_flags.each do |red_flag|
+      - red_flaggable = red_flag.red_flaggable.decorate
+      %tr{id: "red-flag-#{red_flag.id}"}
+        %td= red_flaggable.cfs_type
+        %td= red_flaggable.cfs_label
+        %td= red_flag.priority
+        %td.status= red_flag.status
+        %td= red_flag.created_at
+        %td= red_flag.message
+        %td
+          = small_view_button(red_flag)
+          = small_edit_button(red_flag)
+          - if red_flag.flagged?
+            %span.unflag-link
+              = link_to('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true, class: 'btn btn-default btn-xs')

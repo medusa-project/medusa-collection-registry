@@ -2,27 +2,6 @@
   Archived Accrual Jobs
 
 %div
-  %table.table.table-striped#archived_accrual_jobs
-    %thead
-      %tr
-        %th Archived At
-        %th File Group
-        %th Staging Path
-        %th State
-        %th User
-        %th
-    %tbody
-      - cache(cache_key_for_all(ArchivedAccrualJob)) do
-        - ArchivedAccrualJob.order('created_at desc').each do |archived_accrual_job|
-          - cache(archived_accrual_job) do
-            %tr
-              %td= archived_accrual_job.created_at.to_date
-              %td
-                - if archived_accrual_job.file_group.present?
-                  = link_to archived_accrual_job.file_group.title, archived_accrual_job.file_group
-                - else
-                  No longer in system
-              %td= archived_accrual_job.staging_path
-              %td= archived_accrual_job.state
-              %td= archived_accrual_job.user.email
-              %td= small_view_button(archived_accrual_job)
+  = render layout: 'layouts/standard_table', locals: {id: :archived_accrual_jobs, headers: ['Archived At', 'File Group', 'Staging Path', 'State', 'User', '']} do
+    - cache(cache_key_for_all(ArchivedAccrualJob)) do
+      = render partial: 'index_table_row', collection: ArchivedAccrualJob.order('created_at desc'), as: :archived_accrual_job, cached: true

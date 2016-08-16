@@ -1,10 +1,2 @@
-%table#normalization_paths.table.table-striped
-  %thead
-    %tr
-      %th Name
-      %th Output Format
-      %th Software
-      %th Operating System
-      %th
-  %tbody
-    = render partial: 'file_format_normalization_path_row', collection: @file_format.file_format_normalization_paths, as: :normalization_path
+= render layout: 'layouts/standard_table', locals: {id: :normalization_paths, headers: ['Name', 'Output Format', 'Software', 'Operating System', '']} do
+  = render partial: 'file_format_normalization_path_row', collection: @file_format.file_format_normalization_paths, as: :normalization_path

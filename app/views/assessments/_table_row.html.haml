@@ -1,0 +1,12 @@
+-# must pass 'assessable'
+- assessable = assessment.assessable.decorate
+- cache([assessment, assessable.object]) do
+  %tr
+    %td #{link_to assessment.name, assessment}
+    %td #{link_to assessable.label, assessable}
+    %td #{assessable.decorated_class_human}
+    %td #{assessment.date}
+    %td #{assessment.author_email}
+    %td
+      = small_view_button(assessment)
+      = small_edit_button(assessment)

@@ -1,13 +1,9 @@
 = render layout: 'layouts/page_header' do
   Institutions
 
-%table.table.table-striped#institutions
-  %thead
-    %tr
-      %th Name
-      %th
-  %tbody
-    - @institutions.each do |institution|
+= render layout: 'layouts/standard_table', locals: {id: :institutions, headers: ['Name', '']} do
+  - @institutions.each do |institution|
+    - cache(institution) do
       %tr
         %td= link_to(institution.name, institution)
         %td= small_edit_button(institution)

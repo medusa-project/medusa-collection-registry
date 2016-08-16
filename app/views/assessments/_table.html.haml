@@ -4,25 +4,5 @@
 
 .row
   - if @assessments.present?
-    %table#assessments.table.table-striped
-      %thead
-        %tr
-          %th Name
-          %th For
-          %th Type
-          %th Date
-          %th Author
-          %th
-      %tbody
-        - @assessments.each do |assessment|
-          - assessable = assessment.assessable.decorate
-          - cache([assessment, assessable.object]) do
-            %tr
-              %td #{link_to assessment.name, assessment}
-              %td #{link_to assessable.label, assessable}
-              %td #{assessable.decorated_class_human}
-              %td #{assessment.date}
-              %td #{assessment.author_email}
-              %td
-                = small_view_button(assessment)
-                = small_edit_button(assessment)
+    = render layout: 'layouts/standard_table', locals: {id: :assessments, headers: ['Name', 'For', 'Type',  'Date',  'Author', '']} do
+      = render partial: 'assessments/table_row', collection: @assessments, as: :assessment
