@@ -1,7 +1,8 @@
 class RepositoriesController < ApplicationController
   include DashboardCommon
 
-  before_action :require_medusa_user
+  before_action :require_medusa_user, except: [:show]
+  before_action :require_medusa_user_or_basic_auth, only: [:show]
   before_action :find_repository, only: [:edit, :update, :destroy, :red_flags, :update_ldap_admin,
                                          :collections, :events, :assessments,
                                          :show_file_stats, :show_running_processes, :show_red_flags, :show_events,

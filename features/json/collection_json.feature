@@ -15,6 +15,7 @@ Feature: JSON data about collection
     Then the JSON should have "id"
     And the JSON should have "uuid"
     And the JSON at "title" should be "Dogs"
+    And the JSON at "repository_path" should be a string
     And the JSON at "file_groups" should be an array
     And the JSON at "file_groups" should have 2 entries
     And the JSON at "file_groups/0/id" should be 1
