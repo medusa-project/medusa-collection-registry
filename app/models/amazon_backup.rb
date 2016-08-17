@@ -10,7 +10,6 @@ class AmazonBackup < ActiveRecord::Base
   belongs_to :user
 
   has_one :job_amazon_backup, class_name: 'Job::AmazonBackup', dependent: :destroy
-  has_one :workflow_ingest, class_name: 'Workflow::Ingest'
   has_many :workflow_accrual_jobs, :class_name => 'Workflow::AccrualJob'
 
   #Only allow one backup per day for a file group

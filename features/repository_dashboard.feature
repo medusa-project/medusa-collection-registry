@@ -42,7 +42,6 @@ Feature: Repository dashboard
     Then I should see the running virus scans table
     And I should see the running fits scans table
     And I should see the running initial assessment scans table
-    And I should see the running ingests table
 
   @javascript
   Scenario: Get CSV version of file statistics
