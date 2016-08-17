@@ -5,11 +5,12 @@
         = yield(:title)
       - else
         Normalization Path:
-      %small #{@file_format.name}
+      %small #{@normalization_path.file_format.name}
 
 %div
   = show_field @normalization_path, :name
-  = show_value link_to(@normalization_path.output_format_name, @normalization_path.output_format), 'Output Format'
+  - link = @normalization_path.output_format ? link_to(@normalization_path.output_format_name, @normalization_path.output_format) : ''
+  = show_value link, 'Output Format'
   = show_field @normalization_path, :software
   = show_field @normalization_path, :software_version
   = show_field @normalization_path, :operating_system

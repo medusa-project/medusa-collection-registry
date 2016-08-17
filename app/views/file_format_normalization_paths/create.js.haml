@@ -1,0 +1,4 @@
+- if @created
+  $("#file_format_normalization_paths .panel-body tbody").append("#{escape_javascript(render(partial: 'table_row', locals: {normalization_path: @normalization_path}))}")
+- else
+  alert("Error creating Normalization Path!");

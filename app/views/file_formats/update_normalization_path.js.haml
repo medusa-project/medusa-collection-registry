@@ -1,4 +1,0 @@
-- if @updated
-  $("#file_format_normalization_path_#{@normalization_path.id}").replaceWith("#{escape_javascript(render(partial: 'file_format_normalization_path_row', locals: {normalization_path: @normalization_path}))}")
-- else
-  alert("Error updating Normalization Path!");
