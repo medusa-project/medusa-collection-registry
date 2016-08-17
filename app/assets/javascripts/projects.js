@@ -117,7 +117,7 @@ function checked_rows(table_selector) {
     var checked = $('#' + checkbox_id).prop('checked');
     return checked;
   });
-  return checked_rows
+  return checked_rows;
 }
 
 function column_with_header(table_selector, header_text) {

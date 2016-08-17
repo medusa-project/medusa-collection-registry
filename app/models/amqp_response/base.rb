@@ -78,42 +78,42 @@ class AmqpResponse::Base < Object
   #The key in the pass through hash used to find the class of the
   # object to handle the response
   def pass_through_class_key
-    raise RuntimeError, "Subclass Responsibility"
+    raise RuntimeError, 'Subclass Responsibility'
   end
 
   #The key in the pass through hash used to find the id of the
   # object to handle the response
-  def pass_through_class_key
-    raise RuntimeError, "Subclass Responsibility"
+  def pass_through_id_key
+    raise RuntimeError, 'Subclass Responsibility'
   end
 
   #AMQP queue from which to pull messages
   def self.incoming_queue
-    raise RuntimeError, "Subclass Responsibility"
+    raise RuntimeError, 'Subclass Responsibility'
   end
 
   #Name to use for listener logging
   def self.listener_name
-    raise RuntimeError, "Subclass Responsibility"
+    raise RuntimeError, 'Subclass Responsibility'
   end
 
   #method to call on handler object when message indicates success. Called
   #with sole argument this response object
   def success_method
-    raise RuntimeError, "Subclass Responsibility"
+    raise RuntimeError, 'Subclass Responsibility'
   end
 
   #method to call on handler object when message indicates failure. Called
   #with sole argument this response object
   def failure_method
-    raise RuntimeError, "Subclass Responsibility"
+    raise RuntimeError, 'Subclass Responsibility'
   end
 
   #method to call on handler object when message status is neither
   # success nor failure (should not happen). Called
   #with sole argument this response object
   def unrecognized_method
-    raise RuntimeError, "Subclass Responsibility"
+    raise RuntimeError, 'Subclass Responsibility'
   end
 
 end

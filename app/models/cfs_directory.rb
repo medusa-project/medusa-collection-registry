@@ -25,7 +25,7 @@ class CfsDirectory < ActiveRecord::Base
       errors.add(:base, 'Path must be unique for roots')
     end
   end
-  validates_inclusion_of :parent_type, in: ['CfsDirectory', 'FileGroup'], allow_nil: true
+  validates_inclusion_of :parent_type, in: %w(CfsDirectory FileGroup), allow_nil: true
 
   #two validations are needed because we can't set the root directory to self
   #until after we've saved once. The after_save callback sets this by default

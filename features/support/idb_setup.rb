@@ -19,7 +19,7 @@ module IdbTestHelper
     path = File.join(AmqpAccrual::Config.staging_directory('idb'), staging_path)
     FileUtils.mkdir_p(File.dirname(path))
     File.open(path, 'w') do |f|
-      f.puts "Staging text"
+      f.puts 'Staging text'
     end
   end
 

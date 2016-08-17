@@ -5,7 +5,7 @@ module RepositoriesHelper
   end
 
   def repository_tab_list
-    ['overview', 'running-processes', 'file-statistics', 'red-flags', ['combined-events-tab', 'Events', 'newspaper-o'], 'amazon', 'accruals']
+    ['overview', 'running-processes', 'file-statistics', 'red-flags', %w(combined-events-tab Events newspaper-o), 'amazon', 'accruals']
   end
 
   def load_repository_dashboard_file_stats

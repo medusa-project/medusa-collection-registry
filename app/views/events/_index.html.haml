@@ -1,4 +1,4 @@
-= render layout: 'layouts/standard_table', locals: {id: :events, classes: %w(table-condensed),  headers: %w(Time Label Type Parent User Messge Note Actions)} do
+= render layout: 'layouts/standard_table', locals: {id: :events, classes: %w(table-condensed),  headers: %w(Time Label Type Parent User Message Note Actions)} do
   - @events.each do |event|
     - eventable = event.eventable.decorate
     - parent = eventable.parent.decorate

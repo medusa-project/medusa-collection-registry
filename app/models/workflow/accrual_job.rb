@@ -25,7 +25,7 @@ class Workflow::AccrualJob < Workflow::Base
                 'initial_approval' => 'Awaiting approval',
                 'copying' => 'Copying', 'admin_approval' => 'Awaiting admin approval',
                 'amazon_backup' => 'Amazon backup', 'amazon_backup_completed' => 'Amazon backup completed',
-                'assessing' => 'Running Assessments', 'email_done' => "Emailing completion",
+                'assessing' => 'Running Assessments', 'email_done' => 'Emailing completion',
                 'aborting' => 'Aborting', 'end' => 'Ending'}
   STATES = STATE_HASH.keys
 
@@ -69,13 +69,13 @@ class Workflow::AccrualJob < Workflow::Base
     else
       tmpfile = File.join(Dir.tmpdir, "check_sync-#{self.id}-#{Time.now}")
       File.open(tmpfile, 'w') do |f|
-        f.puts "Source only:"
+        f.puts 'Source only:'
         comparator.source_only_paths.each {|p| f.puts p}
-        f.puts "Target only:"
+        f.puts 'Target only:'
         comparator.target_only_paths.each {|p| f.puts p}
-        f.puts "Differences:"
+        f.puts 'Differences:'
         comparator.different_sizes_paths.each {|p| f.puts p}
-        f.puts "Suggested remediation:"
+        f.puts 'Suggested remediation:'
         comparator.target_only_path.each do |p|
           puts "rm -f #{File.join(staging_remote_path, p)}"
         end
@@ -380,7 +380,7 @@ MESSAGE
   end
 
   def render_report
-    set_instance_variable("workflow_accrual", self)
+    set_instance_variable('workflow_accrual', self)
     render partial: 'workflow/accrual_mailer/view_report'
   end
 

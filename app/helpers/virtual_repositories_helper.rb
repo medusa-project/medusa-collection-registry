@@ -1,7 +1,7 @@
 module VirtualRepositoriesHelper
 
   def virtual_repository_tab_list
-    ['overview', 'file-statistics']
+    %w(overview file-statistics)
   end
 
   def load_virtual_repository_dashboard_file_stats

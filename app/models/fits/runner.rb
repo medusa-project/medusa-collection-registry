@@ -13,7 +13,7 @@ module Fits::Runner
     xml, status = Open3.capture2(fits_binary_path, '-i', cfs_file.absolute_path)
     raise RuntimeError, "Error running fits binary on cfs file id: #{cfs_file.id}" unless status.success?
     #remove any junk we get before the actual FITS
-    if index = xml.index("<?xml")
+    if index = xml.index('<?xml')
       xml.slice!(0, index)
     end
     return xml

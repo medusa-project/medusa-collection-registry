@@ -1,5 +1,5 @@
 - if @file_group.amazon_backups.present?
-  = render layout: 'layouts/standard_table', locals: {id: 'amazon-backups-table', headers: %i(Date Completed User)} do
+  = render layout: 'layouts/standard_table', locals: {id: 'amazon-backups-table', headers: %w(Date Completed User)} do
     - @file_group.amazon_backups.each do |amazon_backup|
       %tr
         %td= amazon_backup.date

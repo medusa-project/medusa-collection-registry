@@ -5,9 +5,9 @@ class FileFormatProfile < ActiveRecord::Base
   validates :status, presence: true, inclusion: STATUSES
 
   has_many :file_format_profiles_content_types_joins, dependent: :destroy
-  has_many :content_types, -> { order "name asc" }, through: :file_format_profiles_content_types_joins
+  has_many :content_types, -> { order 'name asc' }, through: :file_format_profiles_content_types_joins
   has_many :file_format_profiles_file_extensions_joins, dependent: :destroy
-  has_many :file_extensions, -> { order "extension asc" }, through: :file_format_profiles_file_extensions_joins
+  has_many :file_extensions, -> { order 'extension asc' }, through: :file_format_profiles_file_extensions_joins
   belongs_to :file_format
 
   default_scope { order(:name) }

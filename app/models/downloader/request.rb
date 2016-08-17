@@ -26,7 +26,7 @@ class Downloader::Request < ActiveRecord::Base
         request.handle_error(response)
       else
         Rails.logger.error "Unrecognized response from downloader server: #{response}"
-        raise RuntimeError, "Unrecognized response from downloader server"
+        raise RuntimeError, 'Unrecognized response from downloader server'
     end
   end
 

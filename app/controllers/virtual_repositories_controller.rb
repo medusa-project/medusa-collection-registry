@@ -63,7 +63,7 @@ class VirtualRepositoriesController < ApplicationController
     if @virtual_repository.destroy
       redirect_to @virtual_repository.repository
     else
-      raise RuntimeError, "Unable to destroy virtual repository"
+      raise RuntimeError, 'Unable to destroy virtual repository'
     end
   end
 

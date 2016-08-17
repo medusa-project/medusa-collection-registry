@@ -100,7 +100,7 @@ class SearchHelper::Base < Object
       when Proc
         method.call(decorated_object)
       else
-        raise RuntimeError, "Unrecognized method for search helper evaluation"
+        raise RuntimeError, 'Unrecognized method for search helper evaluation'
     end
   end
 

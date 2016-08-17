@@ -16,7 +16,7 @@ module AmqpAccrual
         when 'delete'
           AmqpAccrual::DeleteJob.create_for(client, message)
         else
-          raise RuntimeError, "Unrecognized operation requested"
+          raise RuntimeError, 'Unrecognized operation requested'
       end
     rescue Exception
       Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}"

@@ -58,7 +58,7 @@ class LdapQuery < Object
     self.connection = Net::LDAP.new(host: host, port: port, encryption: :start_tls,
                                     auth: {username: user, password: passwd, method: :simple})
     unless connection.bind
-      raise RuntimeError, "Unable to connect to LDAP server"
+      raise RuntimeError, 'Unable to connect to LDAP server'
     end
   end
 

@@ -74,6 +74,6 @@ def request_completed_message(request)
     h[:id] = request.downloader_id
     h[:action] = 'request_completed'
     h[:approximate_size] = 987654
-    h[:download_url] = "http://download.example.com/download_id/get"
+    h[:download_url] = 'http://download.example.com/download_id/get'
   end.to_json
 end

@@ -157,7 +157,7 @@ class CfsFilesController < ApplicationController
     end
     send_data image.jpeg.to_memory, type: 'image/jpeg', disposition: 'inline'
   rescue
-    send_data "Unable to process", type: 'text/plain', disposition: 'inline'
+    send_data 'Unable to process', type: 'text/plain', disposition: 'inline'
   end
 
   def common_preview_iiif_image

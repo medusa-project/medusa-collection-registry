@@ -123,7 +123,7 @@ class ItemCsvParser < Object
         if value.match(/\d+/)
           return !(value.match(/0+/))
         else
-          return ['y', 't'].include?(value.first.downcase)
+          return %w(y t).include?(value.first.downcase)
         end
       when Numeric
         return value == 1
