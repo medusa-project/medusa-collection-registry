@@ -104,19 +104,8 @@ MedusaCollectionRegistry::Application.routes.draw do
     post :fits_batch, on: :member
   end
   resources :file_formats do
-    member do
-      post :create_note
-      post :create_normalization_path
-      get :edit_note
-      get :edit_normalization_path
-      patch :update_note
-      patch :update_normalization_path
-      get :new_note
-      get :new_normalization_path
-      delete :delete_note
-      delete :delete_normalization_path
-      get :normalization_path
-    end
+    resources :file_format_notes, shallow: true, as: :notes
+    resources :file_format_normalization_paths, shallow: true, as: :normalization_paths
   end
   resources :file_format_profiles do
     post :clone, on: :member
