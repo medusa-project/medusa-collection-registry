@@ -11,6 +11,7 @@
           = field_set_tag('Administrative Metadata') do
             .col-sm-5
               = f.input :barcode, input_html: {class: 'barcode_input'}, autofocus: true
+              = f.input :item_number
               = f.input :project_id, as: :hidden, input_html: {value: @item.project.id}
               = f.input :local_title
               = f.input :batch
@@ -45,6 +46,7 @@
               = f.input :box
               = f.input :folder
               = f.input :item_title
+              = f.input :source_media, as: :select, allow_blank: true, collection: Item::SOURCE_MEDIA_TYPES
               = f.input :creator
               = f.input :date, as: :string, input_html: {class: 'datepicker', value: @item.date}
             .col-sm-5

@@ -48,6 +48,7 @@ class SearchHelper::TableItem < SearchHelper::TableBase
     [{header: 'Action', value_method: :action_buttons, unsortable: true},
      {header: 'Mass Action', value_method: ->(decorated_item) { decorated_item.assign_checkbox(project) }, unsortable: true},
      {header: 'Barcode', solr_field: :barcode, value_method: :search_barcode_link, searchable: true},
+     {header: 'Item Number', solr_field: :item_number, value_method: :item_number, searchable: true},
      {header: 'Local Title', solr_field: :local_title, value_method: :local_title, searchable: true},
      {header: 'Batch', solr_field: :batch, value_method: :search_batch_link, searchable: true},
      {header: 'File Count', solr_field: :file_count, value_method: :file_count, searchable: true},
@@ -76,6 +77,7 @@ class SearchHelper::TableItem < SearchHelper::TableBase
      {header: 'Box', solr_field: :box, value_method: :box, searchable: true},
      {header: 'Folder', solr_field: :folder, value_method: :folder, searchable: true},
      {header: 'Item Title', solr_field: :item_title, value_method: :item_title, searchable: true},
+     {header: 'Source Media', solr_field: :source_media, value_method: :source_media, searchable: true},
      {header: 'Creator', solr_field: :creator, value_method: :creator, searchable: true},
      {header: 'Date', solr_field: :date, value_method: :date, searchable: true},
      {header: 'Rights Information', solr_field: :rights_information, value_method: :rights_information, searchable: true}

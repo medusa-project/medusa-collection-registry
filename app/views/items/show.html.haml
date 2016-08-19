@@ -3,6 +3,7 @@
   .row
     .col-md-4
       = show_field @item, :barcode
+      = show_field @item, :item_number
       = show_field @item, :local_title
       = show_value link_to(@item.batch, project_path(@project, batch: @item.batch)), 'Batch'
       = show_field @item, :file_count
@@ -29,6 +30,7 @@
       = show_field @item, :box
       = show_field @item, :folder
       = show_field @item, :item_title
+      = show_field @item, :source_media
       = show_field @item, :creator
       = show_field @item, :date
       = show_field @item, :rights_information

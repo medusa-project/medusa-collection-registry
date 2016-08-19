@@ -27,6 +27,7 @@ class ItemCsvParser < Object
       publisher_date: nil,
       location_code: nil,
       item_barcode: [:barcode, ->(val) { val.present? ? val : '' }],
+      item_number: :item_number,
       digitization_date: [:reformatting_date, -> (val) { self.parse_date(val) }],
       operator: :reformatting_operator,
       special_notes: :notes,
@@ -55,6 +56,7 @@ class ItemCsvParser < Object
       box: :box,
       folder: :folder,
       item_title: :item_title,
+      source_media: :source_media,
       creator: :creator,
       date: :date,
       notes: :notes,
@@ -63,7 +65,7 @@ class ItemCsvParser < Object
       foldouts_present: [:foldout_present, ->(val) { self.convert_to_boolean(val) }],
       foldout_present: [:foldout_present, ->(val) { self.convert_to_boolean(val) }],
       foldout_done: [:foldout_done, ->(val) { self.convert_to_boolean(val) }],
-      item_done: [:item_done, ->(val) { self.convert_to_boolean(val) }],
+      item_done: [:item_done, ->(val) { self.convert_to_boolean(val) }]
   }
 
   #the column mapping maps positions to the spec for what to do with that data, either directly use it for the given field

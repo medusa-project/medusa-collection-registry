@@ -2472,7 +2472,9 @@ CREATE TABLE items (
     item_done boolean DEFAULT false NOT NULL,
     creator character varying,
     date character varying,
-    rights_information text
+    rights_information text,
+    item_number character varying,
+    source_media character varying
 );
 
 
@@ -7249,4 +7251,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160805193842');
 INSERT INTO schema_migrations (version) VALUES ('20160805200045');
 
 INSERT INTO schema_migrations (version) VALUES ('20160815185511');
+
+INSERT INTO schema_migrations (version) VALUES ('20160819153537');
 

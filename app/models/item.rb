@@ -7,7 +7,9 @@ class Item < ActiveRecord::Base
 
   STATUSES = ['Sent to Conservation', 'Sent to Preservation', 'Sent to IPM', 'Sent for cataloging', 'Send to IA for digitization']
   EQUIPMENT_TYPES = ['BC100', 'RCAM', 'Canon Sheetfed', 'Epson Flatbed']
+  SOURCE_MEDIA_TYPES = ['DVD', 'Floppy Disk', 'Hard Disk']
   validates :status, inclusion: STATUSES, allow_blank: true
+  validates :source_media, inclusion: SOURCE_MEDIA_TYPES, allow_blank: true
   validates :barcode, allow_blank: true, format: /\d{14}/
 
   searchable include: :project do
@@ -17,7 +19,7 @@ class Item < ActiveRecord::Base
     end
     %i(some_title bib_id call_number author record_series_id oclc_number imprint local_title local_description
 reformatting_operator archival_management_system_url series sub_series box folder item_title creator date
-rights_information status equipment unique_identifier).each do |field|
+rights_information status equipment unique_identifier item_number source_media).each do |field|
       text field
       string field
     end
