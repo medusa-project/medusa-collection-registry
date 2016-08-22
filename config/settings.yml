@@ -1,0 +1,19 @@
+#The following are config for specific classes, using the convention classes.<class_name>.<setting_name>
+classes:
+  item:
+    source_media_types:
+      - DVD
+      - Floppy Disk
+      - Hard Disk
+    equipment_types:
+      - BC100
+      - RCAM
+      - Canon Sheetfed
+      - Epson Flatbed
+    statuses:
+      - Sent to Conservation
+      - Sent to Preservation
+      - Sent to IPM
+      - Sent for cataloging
+      - Send to IA for digitization
+

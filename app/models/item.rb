@@ -1,15 +1,14 @@
 class Item < ActiveRecord::Base
   belongs_to :project, touch: true
   delegate :title, to: :project, prefix: true
+  delegate :source_media_types, to: :class
 
   before_validation :ensure_barcode
   auto_strip_attributes :barcode, nullify: false
 
-  STATUSES = ['Sent to Conservation', 'Sent to Preservation', 'Sent to IPM', 'Sent for cataloging', 'Send to IA for digitization']
-  EQUIPMENT_TYPES = ['BC100', 'RCAM', 'Canon Sheetfed', 'Epson Flatbed']
-  SOURCE_MEDIA_TYPES = ['DVD', 'Floppy Disk', 'Hard Disk']
-  validates :status, inclusion: STATUSES, allow_blank: true
-  validates :source_media, inclusion: SOURCE_MEDIA_TYPES, allow_blank: true
+  expose_class_config :source_media_types, :equipment_types, :statuses
+  validates :status, inclusion: {in: :statuses}, allow_blank: true
+  validates :source_media, inclusion: {in: :source_media_types}, allow_blank: true
   validates :barcode, allow_blank: true, format: /\d{14}/
 
   searchable include: :project do
