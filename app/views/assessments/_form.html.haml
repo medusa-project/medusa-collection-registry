@@ -12,11 +12,11 @@
           = f.input :assessable_id, as: :hidden, input_html: {value: @assessable.id}
           = f.input :assessable_type, as: :hidden, input_html: {value: @assessable.class.name}
           = f.input :date, as: :string, input_html: {class: 'datepicker', value: (@assessment.date.if_blank(Date.today)).to_s}
-          = f.input :assessment_type, as: :select, collection: Assessment::ASSESSMENT_TYPES, include_blank: false
+          = f.input :assessment_type, as: :select, collection: Assessment.assessment_types, include_blank: false
         #base.tab-pane
           = f.input :last_access_date, as: :string, input_html: {class: 'datepicker'}
           = f.input :storage_medium_id, collection: storage_media_select_collection
-          = f.input :preservation_risk_level, as: :select, collection: Assessment::RISK_LEVELS, include_blank: false
+          = f.input :preservation_risk_level, as: :select, collection: Assessment.risk_levels, include_blank: false
           = f.input :file_format
           = f.input :total_file_size, label: 'Total file size (GB)'
           = f.input :total_files

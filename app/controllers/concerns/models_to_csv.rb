@@ -43,7 +43,7 @@ module ModelsToCsv
               acquisition_method: 'Acquistion method',
               collection_id: 'Collection Id', collection_title: 'Collection title',
               repository_id: 'Repository Id', repository_title: 'Repository title'}
-    FitsData::ALL_FIELDS.each do |field|
+    FitsData::all_fields.each do |field|
       fields[:"fits_data_#{field}"] = field.to_s.titlecase
     end
     models_to_csv(file_format_tests, fields, csv_options)

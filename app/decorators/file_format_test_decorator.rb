@@ -6,7 +6,7 @@ class FileFormatTestDecorator < BaseDecorator
   end
   delegate :acquisition_method, to: :file_group
 
-  FitsData::ALL_FIELDS.each do |field|
+  FitsData::all_fields.each do |field|
     delegate :"fits_data_#{field}", to: :cfs_file
   end
 

@@ -1,5 +1,50 @@
 #The following are config for specific classes, using the convention classes.<class_name>.<setting_name>
 classes:
+  assessment:
+    assessment_types:
+      - external_files
+    risk_levels:
+      - low
+      - medium
+      - high
+      - urgent
+  file_group:
+    acquisition_methods:
+      - internal digitization
+      - vendor digitization
+      - electronic records acquisition
+      - external deposit
+  fits_data:
+    simple_string_fields:
+      :file_format: fits/identification/identity/@format
+      :file_format_version: fits/identification/identity/version
+      :mime_type: fits/identification/identity/@mimetype
+      :pronom_id: fits/identification/identity/externalIdentifier[@type="puid"]
+      :file_size: fits/fileinfo/size
+      :creating_application: fits/fileinfo/creatingApplicationName
+      :well_formed: fits/filestatus/well-formed
+      :is_valid: fits/filestatus/valid
+      :message: fits/filestatus/message
+      :audio_bit_depth: fits/metadata/audio/bitDepth
+      :audio_byte_order: fits/metadata/audio/byteOrder
+      :audio_data_encoding: fits/metadata/audio/audioDataEncoding
+      :audio_sample_rate: fits/metadata/audio/sampleRate
+      :document_protection: fits/metadata/document/isProtected
+      :document_rights_management: fits/metadata/document/isRightsManaged
+      :image_bits_per_sample: fits/metadata/image/bitsPerSample
+      :image_byte_order: fits/metadata/image/byteOrder
+      :image_color_space: fits/metadata/image/colorSpace
+      :image_compression_scheme: fits/metadata/image/compressionScheme
+      :text_character_set: fits/metadata/text/charset
+      :text_markup_basis: fits/metadata/text/markupBasis
+      :text_markup_basis_version: fits/metadata/text/markupBasisVersion
+      :video_bit_depth: fits/metadata/video/bitDepth
+      :video_compressor: fits/metadata/video/videoCompressor
+      :video_compression_scheme: fits/metadata/video/compressionScheme
+      :video_sample_rate: fits/metadata/video/sampleRate
+    date_fields:
+      :last_modified_date: fits/fileinfo/lastmodified
+      :creation_date: fits/fileinfo/created
   item:
     source_media_types:
       - DVD
