@@ -20,6 +20,7 @@ gem 'auto_strip_attributes'
 gem 'dalli'
 gem 'valid_email'
 gem 'rsync'
+gem 'config'
 
 gem 'logger'
 #need slightly patched version of this

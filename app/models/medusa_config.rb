@@ -1,4 +1,4 @@
-class Config < Object
+class MedusaConfig < Object
 
   attr_accessor :config
 

@@ -1,5 +1,5 @@
 Application.medusa_config =
-  Config.new(YAML.load_file(File.join(Rails.root, 'config', 'medusa.yml'))[Rails.env])
+  MedusaConfig.new(YAML.load_file(File.join(Rails.root, 'config', 'medusa.yml'))[Rails.env])
 
 if defined?(PhusionPassenger)
   PhusionPassenger.on_event(:starting_worker_process) do |forked|
