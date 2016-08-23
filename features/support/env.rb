@@ -18,6 +18,8 @@ Capybara.default_selector = :css
 #This preserves compatibility with Capybara 1.x, under which we started developing
 Capybara.match = :prefer_exact
 
+Capybara.server = :puma
+
 #set drivers
 Capybara.javascript_driver = :poltergeist
 #Capybara.javascript_driver = :webkit
@@ -75,4 +77,3 @@ end
 require 'capybara/email'
 World(Capybara::Email::DSL)
 
-Capybara.server = :puma
