@@ -30,7 +30,15 @@ downloader:
   #Bunny style amqp connection options - note that these are distinct from the main amqp options because the downloader
   #may be on a different vhost/etc.
   amqp:
-#email delivery settings
+fits:
+  #default size to do
+  batch_size: 1000
+  #In certain cases it may be advantageous to call a fits binary directly, but this is optional
+  binary: /path/to/fits/binary
+  #url for fits server
+  server_url: http://localhost:4567
+  #location to store generated fits
+  storage: /Users/hding2/repos/medusa-collection-registry/tmp/storage-dev/fits
 handle_client:
   #medusa_host is used by the models to help generate the appropriate URLs to
   #pass to the handle server
@@ -48,6 +56,14 @@ iiif:
   #this is the path from the loris server's base path, e.g. /usr/local/share/images for the docker version, to
   #the cfs root for this environment
   root: dev
+ldap:
+  host: ad.uillinois.edu
+  port: 389
+  protocol: tls
+  user: your_ldap_user
+  passwd: your_password
+  base: DC=ad,DC=uillinois,DC=edu
+  search: ^CN=([^,]+),((CN|OU)=[^,]+,)*DC=ad,DC=uillinois,DC=edu$
 #general medusa configuration
 medusa:
   #medusa server information for generating certain urls that need more than just the path
@@ -92,19 +108,6 @@ medusa:
     feedback: hding2@illinois.edu
     dev: hding2@illinois.edu
     noreply: medusa-noreply@medusatest.library.illinois.edu
-  fits_batch_size: 1000
-  fits_server_url: http://localhost:4567
-  #In certain cases it may be advantageous to call a fits binary directly
-  fits_binary: /path/to/fits/binary
-  fits_storage: /Users/hding2/repos/medusa-collection-registry/tmp/storage-dev/fits
-  ldap:
-    host: ad.uillinois.edu
-    port: 389
-    protocol: tls
-    user: your_ldap_user
-    passwd: your_password
-    base: DC=ad,DC=uillinois,DC=edu
-    search: ^CN=([^,]+),((CN|OU)=[^,]+,)*DC=ad,DC=uillinois,DC=edu$
 #configuration for Omniauth::Shibboleth
 shibboleth:
   host: medusatest.library.illinois.edu
