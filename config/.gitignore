@@ -1,7 +1,4 @@
 database.yml
 sunspot.yml
-handle_client.yml
 medusa.yml
-smtp.yml
 newrelic.yml
-downloader.yml

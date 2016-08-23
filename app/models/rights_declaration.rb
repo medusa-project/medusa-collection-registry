@@ -8,10 +8,12 @@ class RightsDeclaration < ActiveRecord::Base
 
   #initialization of fields
   def self.load_rights_data
-    rights_yaml = YAML.load_file(File.join(Rails.root, 'config', 'rights_fields.yml'))
-    %w(rights_bases default_rights_basis copyright_jurisdictions default_copyright_jurisdiction
+    rights_yaml = Settings.rights_fields.to_h
+    %i(rights_bases default_rights_basis copyright_jurisdictions default_copyright_jurisdiction
 copyright_statements default_copyright_statement access_restrictions default_access_restrictions).each do |field|
-      self.send("#{field}=", rights_yaml[field])
+      value = rights_yaml[field]
+      value = value.to_h.stringify_keys if value.is_a?(Config::Options)
+      self.send("#{field}=", value)
     end
   end
 

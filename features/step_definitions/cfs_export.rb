@@ -10,11 +10,11 @@ And(/^there should be a (.*) download request for the export of the cfs director
   cfs_directory = cfs_root.find_directory_at_relative_path(path)
   request = Downloader::Request.find_by(cfs_directory: cfs_directory)
   expect(request).to be_truthy
-  AmqpConnector.connector(:downloader).with_parsed_message(Application.downloader_config.outgoing_queue) do |message|
+  AmqpConnector.connector(:downloader).with_parsed_message(Settings.downloader.outgoing_queue) do |message|
     expect(message['action']).to eq('export')
     expect(message['client_id']).to eq(request.id.to_s)
-    expect(message['return_queue']).to eq(Application.downloader_config.incoming_queue.to_s)
-    expect(message['root']).to eq(Application.downloader_config.root)
+    expect(message['return_queue']).to eq(Settings.downloader.incoming_queue.to_s)
+    expect(message['root']).to eq(Settings.downloader.root)
     expect(message['zip_name']).to eq(File.basename(cfs_directory.path))
     targets = message['targets']
     expect(targets.length).to eq(1)

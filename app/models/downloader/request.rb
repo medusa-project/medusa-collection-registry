@@ -6,7 +6,7 @@ class Downloader::Request < ActiveRecord::Base
   validates :status, inclusion: STATUSES, allow_blank: false
 
   def self.listen
-    config = Application.downloader_config
+    config = Settings.downloader
     AmqpListener.new(amqp_config: config.amqp, name: 'downloader',
                      queue_name: config.incoming_queue,
                      action_callback: ->(payload) {handle_response(payload)}).listen
@@ -55,11 +55,11 @@ class Downloader::Request < ActiveRecord::Base
   end
 
   def send_export_request(recursive: false)
-    AmqpConnector.connector(:downloader).send_message(Application.downloader_config.outgoing_queue, export_request_message(recursive: recursive))
+    AmqpConnector.connector(:downloader).send_message(Settings.downloader.outgoing_queue, export_request_message(recursive: recursive))
   end
 
   def export_request_message(recursive: false)
-    config = Application.downloader_config
+    config = Settings.downloader
     Hash.new.tap do |h|
       h[:action] = :export
       h[:client_id] = self.id.to_s

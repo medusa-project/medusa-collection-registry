@@ -17,6 +17,50 @@ amqp_accrual:
     #whether or not to return some extra information in amqp messages - this may be restructured to allow clients to be
     #configured to get exactly the information they want
     return_directory_information: true
+#settings for communication with downloader
+downloader:
+  #downloader root - configured on the other side as well
+  root: medusa
+  #queues to use
+  incoming_queue: downloader_to_medusa_dev
+  outgoing_queue: client_to_downloader_dev
+  #Bunny style amqp connection options - note that these are distinct from the main amqp options because the downloader
+  #may be on a different vhost/etc.
+  amqp:
+#email delivery settings
+handle_client:
+  #medusa_host is used by the models to help generate the appropriate URLs to
+  #pass to the handle server
+  medusa_host: medusa.library.illinois.edu
+  #these are the connection parameters to the handle server itself
+  handle_server:
+    host: media.library.uiuc.edu
+    port: 8080
+    user_name: handle_user
+    password: handle_user_password
+#configuration for Omniauth::Shibboleth
+shibboleth:
+  host: medusatest.library.illinois.edu
+  uid_field: eppn
+  extra_fields:
+    - eppn
+    - givenName
+    - mail
+    - org_dn
+    - sn
+    - telephoneNumber
+    - uid
+    - entitlement
+    - unscoped_affiliation
+  request_type: header
+  info_fields:
+    email: mail
+smtp:
+  #These are settings as expected for ActionMailer::Base.smtp_settings
+  smtp_settings:
+    address: express-smtp.cites.uiuc.edu
+  #used by mailer to construct urls
+  web_host: "localhost:3000"
 #settings for triple store integration
 triple_store:
   triple_store_base_url: http://localhost:3030/test
