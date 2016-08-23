@@ -1,3 +1,24 @@
+#This controls how files are previewed
+cfs_file_viewers:
+  mime_types:
+    image:
+      - image/jpeg
+      - image/tiff
+      - image/png
+      - image/gif
+    video:
+      - video/mp4
+  extensions:
+    image:
+      - tif
+      - jpg
+      - tiff
+      - jpeg
+      - png
+      - gif
+      - jp2
+    video:
+      - mp4
 #The following are config for specific classes, using the convention classes.<class_name>.<setting_name>
 classes:
   assessment:

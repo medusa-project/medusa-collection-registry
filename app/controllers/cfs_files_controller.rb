@@ -130,9 +130,8 @@ class CfsFilesController < ApplicationController
 
   def self.ensure_viewer_hashes
     return if self.mime_type_viewers.present? and self.extension_viewers.present?
-    viewer_hash = YAML.load_file(File.join(Rails.root, 'config', 'cfs_file_viewers.yaml'))
-    self.mime_type_viewers = invert_hash_of_arrays(viewer_hash['mime_types'])
-    self.extension_viewers = invert_hash_of_arrays(viewer_hash['extensions'])
+    self.mime_type_viewers = invert_hash_of_arrays(Settings.cfs_file_viewers.mime_types)
+    self.extension_viewers = invert_hash_of_arrays(Settings.cfs_file_viewers.extensions)
   end
 
   def self.invert_hash_of_arrays(hash_of_arrays)
