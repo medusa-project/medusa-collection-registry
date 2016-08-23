@@ -29,7 +29,7 @@ module BookTracker
 
       begin
         pathname = get_hathifile(task)
-        nuc_code = Application.medusa_config.book_tracker_library_nuc_code
+        nuc_code = Settings.book_tracker.library_nuc_code
 
         task.name = "Checking HathiTrust: Scanning the HathiFile for "\
         "#{nuc_code} records..."

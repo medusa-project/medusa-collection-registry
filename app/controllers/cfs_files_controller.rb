@@ -216,7 +216,7 @@ class CfsFilesController < ApplicationController
   end
 
   def image_server_config
-    Application.medusa_config.iiif_config
+    Settings.iiif.to_h
   end
 
 end

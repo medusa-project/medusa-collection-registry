@@ -3,19 +3,19 @@ class MedusaBaseMailer < ActionMailer::Base
   delegate :feedback_address, :dev_address, :no_reply_address, :admin_address, to: :class
 
   def self.feedback_address
-    Application.medusa_config.feedback_email
+    Settings.medusa.email.feedback
   end
 
   def self.dev_address
-    Application.medusa_config.dev_email
+    Settings.medusa.email.dev
   end
 
   def self.no_reply_address
-    Application.medusa_config.noreply_email
+    Settings.medusa.email.noreply
   end
 
   def self.admin_address
-    Application.medusa_config.admin_email
+    Settings.medusa.email.admin
   end
 
   default from: self.no_reply_address

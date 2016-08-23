@@ -14,7 +14,6 @@ module MedusaCollectionRegistry
     attr_accessor :shibboleth_host
     attr_accessor :handle_client, :medusa_host
     attr_accessor :bit_file_tmp_dir
-    attr_accessor :medusa_config
     attr_accessor :group_resolver
 
     # Settings in config/environments/* take precedence over those specified here.

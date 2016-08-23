@@ -9,7 +9,7 @@ class FitsResult < Object
   end
 
   def self.storage_root
-    Application.medusa_config.fits_storage
+    Settings.medusa.fits_storage
   end
 
   def storage_directory

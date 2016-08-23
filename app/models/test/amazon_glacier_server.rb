@@ -10,8 +10,8 @@ module Test
 
     def initialize
       #note that these are reversed because the config is from the perspective of the app, not the glacier server
-      self.incoming_queue = Application.medusa_config.amazon_outgoing_queue
-      self.outgoing_queue = Application.medusa_config.amazon_incoming_queue
+      self.incoming_queue = Settings.medusa.amazon.outgoing_queue
+      self.outgoing_queue = Settings.medusa.amazon.incoming_queue
     end
 
     def import_succeed

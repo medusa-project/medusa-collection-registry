@@ -4,7 +4,7 @@ module Fits::Runner
   module_function
 
   def fits_binary_path
-    Application.medusa_config.fits_binary.tap do |path|
+    Settings.medusa.fits_binary.tap do |path|
       raise RuntimeError, 'No fits binary configured' if path.blank?
     end
   end

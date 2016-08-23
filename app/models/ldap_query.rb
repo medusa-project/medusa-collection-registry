@@ -4,7 +4,7 @@ class LdapQuery < Object
                 :connection
 
   def initialize
-    config = Application.medusa_config.ldap
+    config = Settings.medusa.ldap
     self.host = config['host']
     self.port = config['port']
     self.protocol = config['protocol']

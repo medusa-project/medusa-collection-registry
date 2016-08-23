@@ -241,11 +241,11 @@ class CfsDirectory < ActiveRecord::Base
   end
 
   def self.export_root
-    Application.medusa_config.cfs_export_root
+    Settings.medusa.cfs.export_root
   end
 
   def self.export_autoclean
-    Application.medusa_config.cfs_export_autoclean
+    Settings.medusa.cfs.export_autoclean
   end
 
   def public?

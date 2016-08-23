@@ -1,5 +1,5 @@
 #Represent AMQP connection and provide convenience methods.
-#The amqp section of medusa.yml can contain any option appropriate for Bunny.new.
+#The amqp section of Settings.medusa can contain any option appropriate for Bunny.new.
 require 'set'
 
 class AmqpConnector < Object
@@ -19,7 +19,6 @@ class AmqpConnector < Object
   end
 
   def reinitialize
-    #config = Application.medusa_config.amqp(default: {}).symbolize_keys
     self.known_queues = Set.new
     self.connection.close if self.connection
     self.connection = Bunny.new(self.config)

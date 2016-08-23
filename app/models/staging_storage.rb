@@ -6,8 +6,8 @@ class StagingStorage < Object
   attr_reader :roots
 
   def initialize
-    config_roots = Application.medusa_config.staging_storage_roots(default: [])
-    @roots = config_roots.collect {|root_hash| StagingStorageRoot.new(root_hash)}
+    config_roots = Settings.storage.staging.roots.if_blank(Array.new)
+    @roots = config_roots.collect {|root_config| StagingStorageRoot.new(root_config.to_h.stringify_keys)}
   end
 
   def root_named(name)

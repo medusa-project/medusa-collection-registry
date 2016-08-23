@@ -16,7 +16,7 @@ class Job::FitsFileExtensionBatch < ActiveRecord::Base
   end
 
   def perform
-    size = Application.medusa_config.fits_batch_size(default: BATCH_MAX_SIZE)
+    size = Settings.medusa.fits_batch_size.if_blank(BATCH_MAX_SIZE)
     cfs_files = file_extension.cfs_files.where(fits_serialized: false).limit(size)
     missing_files = Array.new
     already_done_files = Array.new

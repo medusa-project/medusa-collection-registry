@@ -6,12 +6,11 @@ require 'pathname'
 class CfsRoot
   include Singleton
 
-  attr_accessor :path, :config, :tmp_path
+  attr_accessor :path, :tmp_path
 
   def initialize
-    self.config = Application.medusa_config.cfs
-    self.path = config['root']
-    self.tmp_path = config['tmp'] || '/tmp'
+    self.path = Settings.medusa.cfs.root
+    self.tmp_path = Settings.medusa.cfs.tmp.if_blank('/tmp')
   end
 
   #Return a list of roots from the file system that are not currently being
