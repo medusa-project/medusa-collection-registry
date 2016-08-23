@@ -42,7 +42,7 @@ And(/^I click on and confirm '(.*)'$/) do |link_name|
 end
 
 And /^I click consecutively on:$/ do |table|
-  table.headers.each {|header| click_on(header)}
+  table.headers.each {|header| click_on(header) ; sleep 0.5}
 end
 
 And /^within '(.*)' I click on '(.*)'$/ do |locator, link_name|
