@@ -23,14 +23,14 @@ Feature: Project items mass edit
     And I check 'mass_action_update_equipment'
     And I click on 'Mass update'
     And I wait 2 seconds
-    Then the item with fields should exist:
+    Then I should see 'batch_3'
+    And I should see none of:
+      | batch_1 | batch_2 |
+    And the item with fields should exist:
       | barcode        | batch   | reformatting_operator | equipment |
       | 30012323456789 | batch_3 | Dee                   | RCAM      |
       | 30045623456789 | batch_3 | Dee                   | RCAM      |
       | 30078923456789 | batch_3 | Dee                   | RCAM      |
-    And I should see 'batch_3'
-    And I should see none of:
-      | batch_1 | batch_2 |
 
   Scenario: Mass edit project items doesn't change blank items when unchecked
     Given I am logged in as an admin
