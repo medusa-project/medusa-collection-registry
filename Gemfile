@@ -110,9 +110,9 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl'
   gem 'shoulda-matchers'
-  gem 'thin'
   gem 'sunspot_solr'
   gem 'byebug'
+  gem 'puma'
 end
 
 group :development do
@@ -126,14 +126,13 @@ group :test do
   gem 'simplecov'
   gem 'json_spec'
   gem 'capybara'
-  gem 'capybara-puma'
   gem 'capybara-email'
   gem 'launchy'
   #testing with javascript - requires phantomjs to be installed on the test machine
   gem 'poltergeist'
   #other js testing options
   gem 'selenium-webdriver'
-  gem 'capybara-webkit'
+  #gem 'capybara-webkit'
   gem 'sunspot_test'
   gem 'connection_pool'
 end

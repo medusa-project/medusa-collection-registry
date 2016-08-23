@@ -20,6 +20,7 @@ Capybara.match = :prefer_exact
 
 #set drivers
 Capybara.javascript_driver = :poltergeist
+#Capybara.javascript_driver = :webkit
 #Capybara.javascript_driver = :selenium
 Capybara.default_driver = :rack_test
 
@@ -63,14 +64,15 @@ def last_json
 end
 
 Around('@selenium') do |scenario, block|
-  old_js_driver = Capybara.javascript_driver
   begin
-    Capybara.javascript_driver = :selenium
+    Capybara.current_driver = :selenium
     block.call
   ensure
-    Capybara.javascript_driver = old_js_driver
+    Capybara.use_default_driver
   end
 end
 
 require 'capybara/email'
 World(Capybara::Email::DSL)
+
+Capybara.server = :puma

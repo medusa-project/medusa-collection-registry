@@ -65,19 +65,6 @@ Feature: Project Items
       | title | foldout_present | foldout_done | item_done |
       | Toys  | true            | true         | true      |
 
-  Scenario: Create a new item
-    Given I am logged in as a manager
-    When I view the project with title 'Scanning'
-    And I click on 'Add Item'
-    And I fill in fields:
-      | Barcode | 30045623456789 |
-      | Title   | Catch-22       |
-      | Author  | Heller         |
-    And I click on 'Create and Exit'
-    Then I should see all of:
-      | 30045623456789 | Catch-22 | Heller |
-    And I should be on the view page for the project with title 'Scanning'
-
   Scenario: Create a new item with javascript interface
     Given I am logged in as a manager
     When I view the project with title 'Scanning'

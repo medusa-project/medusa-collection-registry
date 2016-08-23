@@ -51,7 +51,7 @@ iiif:
 #general medusa configuration
 medusa:
   #medusa server information for generating certain urls that need more than just the path
-    server: http://localhost:3000
+  server: http://localhost:3000
   #'cfs' staging file config. Note that this doesn't strictly need to be a dx/cfs file system,
   #but we use that name in order to distinguish from our internal bit file stuff for now.
   cfs:
