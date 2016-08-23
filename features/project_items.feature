@@ -85,6 +85,7 @@ Feature: Project Items
     And I click on 'Add Item'
     And I fill in fields:
       | Barcode | 30112017234789 |
+    And I wait 1 second
     Then I should see all of:
       | Use | Kleinian groups |
     When I click on 'Create'
