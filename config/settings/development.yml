@@ -1,0 +1,24 @@
+#allowed amqp accrual clients
+amqp_accrual:
+  idb:
+    #set to false to turn off this accrual client
+    active: true
+    #set to true to allow deletion messages to work
+    allow_delete: false
+    #queue for processing accruals
+    delayed_job_queue: idb
+    #amqp queues for exchanging messages about accruals with this client
+    incoming_queue: idb_to_medusa
+    outgoing_queue: medusa_to_idb
+    #file group that will take content from this accrual client
+    file_group_id: 1401
+    #where content from this client is staged
+    staging_directory: <%= Rails.root %>/tmp/idb-staging/development
+    #whether or not to return some extra information in amqp messages - this may be restructured to allow clients to be
+    #configured to get exactly the information they want
+    return_directory_information: true
+#settings for triple store integration
+triple_store:
+  triple_store_base_url: http://localhost:3030/test
+  medusa_base_url: http://localhost:3000
+  medusa_rdf_prefix: https://medusa.library.illinois.edu/terms/

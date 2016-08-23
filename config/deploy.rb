@@ -27,10 +27,12 @@ set :rails_env, 'production'
 
 # Default value for :linked_files is []
 set :linked_files, %w(config/database.yml config/shibboleth.yml config/handle_client.yml
-  config/medusa.yml config/smtp.yml config/sunspot.yml config/idb.yml config/downloader.yml config/amqp_accrual.yml)
+  config/medusa.yml config/smtp.yml config/sunspot.yml config/downloader.yml
+  config/settings/production.local.yml)
 
 # Default value for linked_dirs is []
-set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'tmp/item_upload_csv')
+set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle',
+                                               'public/system', 'tmp/item_upload_csv')
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }

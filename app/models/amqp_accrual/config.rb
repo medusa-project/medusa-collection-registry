@@ -3,11 +3,10 @@ require 'singleton'
 class AmqpAccrual::Config < Object
   include Singleton
 
-  #attr_accessor :incoming_queue, :outgoing_queue, :idb_file_group_id, :staging_directory, :active
   attr_accessor :config
 
   def initialize
-    self.config = YAML.load_file(File.join(Rails.root, 'config', 'amqp_accrual.yml'))[Rails.env]
+    self.config = Settings.amqp_accrual
   end
 
   ACCESSORS = [:incoming_queue, :outgoing_queue, :file_group_id, :staging_directory, :active, :delayed_job_queue,

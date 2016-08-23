@@ -1,12 +1,7 @@
 database.yml
-fedora.yml
 sunspot.yml
 handle_client.yml
-dx.yml
-fits_service.yml
 medusa.yml
 smtp.yml
 newrelic.yml
-idb.yml
 downloader.yml
-amqp_accrual.yml
