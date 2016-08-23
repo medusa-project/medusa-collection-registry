@@ -29,6 +29,9 @@ Then bundle install
 
 In the config directory if there is a xyz.yml.template but no xyz.yml then copy the template over and edit it
 appropriately. For some of these no editing is necessary, but if there are passwords, etc. there may be something to do.
+Most of the config is done in settings.yml and the environment files in settings/<env>.yml. These are used with the 
+Config gem. settings/development.yml can be used as a template for <env>.local.yml, which is where you probably want
+to customize the most for server settings, passwords, etc. settings.yml itself may be customized, but needn't be.
 
 #Create database
 
