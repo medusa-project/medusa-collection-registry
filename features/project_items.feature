@@ -8,7 +8,7 @@ Feature: Project Items
     Given the project with title 'Scanning' has child items with fields:
       | barcode        | bib_id | title | author | notes       | call_number | batch   | local_title | item_title | item_number | source_media |
       | 30012323456789 | 54321  | Dogs  | Ruthie | My note     | XYZ123      | batch_1 |             |            |             |              |
-      | 30078923456789 | 98765  |       | CatCat | My cat note | ABC789      | batch_2 | Cats        |            | 0001        | Floppy Disk  |
+      | 30078923456789 | 98765  |       | CatCat | My cat note | ABC789      | batch_2 | Cats        |            | 0001        | DVD  |
       | 30045623456789 | 76543  |       | Buster |             |             | batch_1 |             | Bustard    |             |              |
 
   Scenario: Project page contains a table of items
@@ -18,7 +18,7 @@ Feature: Project Items
     And I should see all of:
       | 30012323456789 | Dogs | Ruthie | My note | XYZ123 | batch_1 | 54321 |
     And I should see all of:
-      | 30078923456789 | CatCat | My cat note | ABC789 | batch_2 | Cats | 98765 | 0001 | Floppy Disk |
+      | 30078923456789 | CatCat | My cat note | ABC789 | batch_2 | Cats | 98765 | 0001 | DVD |
     And I should see 'Bustard'
 
   Scenario: Obtain CSV file of items
@@ -27,7 +27,7 @@ Feature: Project Items
     And I click on 'Export'
     And I click on 'CSV'
     Then I should receive a file 'items.csv' of type 'text/csv' matching:
-      | 30012323456789 | 54321 | Dogs | Ruthie | 30078923456789 | 98765 | Cats | CatCat | 0001 | Floppy Disk |
+      | 30012323456789 | 54321 | Dogs | Ruthie | 30078923456789 | 98765 | Cats | CatCat | 0001 | DVD |
 
   Scenario: View individual item page
     Given I am logged in as a manager
@@ -48,7 +48,7 @@ Feature: Project Items
       | Rights information | Rights stuff |
       | Item number        | 9876         |
     And I select 'RCAM' from 'Equipment'
-    And I select 'Floppy Disk' from 'Source media'
+    And I select 'DVD' from 'Source media'
     And I check 'Foldout present'
     And I check 'Foldout done'
     And I check 'Item done'
@@ -60,7 +60,7 @@ Feature: Project Items
       | Dogs | Ruthie |
     When I view the item with barcode '30012323456789'
     Then I should see all of:
-      | Toys | Buster | abc123 | RCAM | Joebob | 1999-10-17 | Rights stuff | 9876 | Floppy Disk |
+      | Toys | Buster | abc123 | RCAM | Joebob | 1999-10-17 | Rights stuff | 9876 | DVD |
     And the item with fields should exist:
       | title | foldout_present | foldout_done | item_done |
       | Toys  | true            | true         | true      |

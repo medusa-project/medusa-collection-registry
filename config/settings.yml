@@ -68,9 +68,38 @@ classes:
       :creation_date: fits/fileinfo/created
   item:
     source_media_types:
+      - BD-Videodisc
+      - CD
+      - CD-R
+      - CompactFlash card
+      - Data cartridge
+      - Desktop Computer
+      - Digital Linear Tape
       - DVD
-      - Floppy Disk
-      - Hard Disk
+      - DVD-R
+      - Flash Memory
+      - 'Flash Memory: USB'
+      - 'Floppy disk: 3 1/2 inch'
+      - 'Floppy disk: 5 1/4 inch'
+      - 'Floppy disk: 8 inch'
+      - 'Hard Drive: eSATA'
+      - 'Hard Drive: Firewire'
+      - 'Hard Drive: Firewire 400'
+      - 'Hard Drive: Firewire 800'
+      - 'Hard Drive: PATA'
+      - 'Hard Drive: SCSI'
+      - 'Hard Drive: USB'
+      - Jaz disk
+      - 'Laptop Computer '
+      - LTO
+      - Magneto-Optical Disk
+      - Memory Card
+      - Open Reel Data Tape
+      - Punch Cards
+      - SD card
+      - Sy-Quest diskette
+      - Sy-Quest drive
+      - Zip disk
     equipment_types:
       - BC100
       - RCAM
