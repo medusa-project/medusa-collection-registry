@@ -9,8 +9,8 @@ Feature: File format notes and normalization paths
       | note         |
       | My tiff note |
     And the file format with name 'tiff' has child file format normalization path with fields:
-      | name                 | potential_for_loss    |
-      | Normalization Path 1 | Big potential to lose |
+      | name                 | potential_for_loss    | notes        |
+      | Normalization Path 1 | Big potential to lose | Another note |
 
   Scenario: See notes when viewing file format
     When I view the file format with name 'tiff'
@@ -52,10 +52,12 @@ Feature: File format notes and normalization paths
     When I view the file format with name 'tiff'
     And I click on 'Add Normalization Path'
     And I fill in fields:
-      | Name | My new path |
+      | Name  | My new path |
+      | Notes | My new note |
     And I click on 'Create'
-    Then I should see 'My new path'
-    And a file format normalization path with name 'My new path' should exist
+    Then I should see all of:
+      | My new path |
+    And a file format normalization path with notes 'My new note' should exist
 
   Scenario: Delete normalization path from file format
     Given I am logged in as an admin
@@ -71,17 +73,19 @@ Feature: File format notes and normalization paths
     When I view the file format with name 'tiff'
     And I click on 'Edit Normalization Path'
     And I fill in fields:
-      | Software | Photoshop |
+      | Software | Photoshop   |
+      | Notes    | My new note |
     And I select 'jp2' from 'Output format'
     And I click on 'Update'
     And I wait 1 second
     Then I should see all of:
       | Photoshop | jp2 |
     And the file format normalization path with fields should exist:
-      | name                 | software  |
-      | Normalization Path 1 | Photoshop |
+      | name                 | software  | notes       |
+      | Normalization Path 1 | Photoshop | My new note |
 
   Scenario: View normalization path
     When I view the file format with name 'tiff'
     And I click on 'Normalization Path 1'
-    Then I should see 'Big potential to lose'
+    Then I should see all of:
+      | Big potential to lose | Another note |

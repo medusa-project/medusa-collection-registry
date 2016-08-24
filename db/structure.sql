@@ -2011,7 +2011,8 @@ CREATE TABLE file_format_normalization_paths (
     potential_for_loss text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    output_format_id integer
+    output_format_id integer,
+    notes text
 );
 
 
@@ -7253,4 +7254,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160805200045');
 INSERT INTO schema_migrations (version) VALUES ('20160815185511');
 
 INSERT INTO schema_migrations (version) VALUES ('20160819153537');
+
+INSERT INTO schema_migrations (version) VALUES ('20160824143252');
 
