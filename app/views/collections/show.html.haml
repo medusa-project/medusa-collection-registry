@@ -14,3 +14,12 @@
         .row
           %h2 Projects
           = render 'projects/index_table'
+      %hr
+      .row
+        #file-statistics
+          Loading...
+          :javascript
+            $("#file-statistics").load("#{show_file_stats_collection_path(@collection)}", function () {
+              initialize_data_table("table#file_stats_content_type", {});
+              initialize_data_table("table#file_stats_file_extension", {});
+              });

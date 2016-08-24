@@ -31,7 +31,9 @@ MedusaCollectionRegistry::Application.routes.draw do
   concern :fixity_checkable, Proc.new { member { post 'fixity_check' } }
   concern :autocomplete_email, Proc.new { collection { get :autocomplete_user_email } }
 
-  resources :collections, concerns: %i(eventable red_flaggable public assessable attachable)
+  resources :collections, concerns: %i(eventable red_flaggable public assessable attachable) do
+    get :show_file_stats, on: :member
+  end
 
   resources :repositories, concerns: %i(eventable red_flaggable assessable collection_indexer) do
     get :edit_ldap_admins, on: :collection

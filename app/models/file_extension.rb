@@ -25,6 +25,8 @@ class FileExtension < ActiveRecord::Base
     elsif args[:repository_id].present?
       file_group_ids = Repository.find(args[:repository_id]).collections.collect{|c| c.file_group_ids}.flatten
       self.random_cfs_file(file_group_ids: file_group_ids)
+    elsif args[:collection_id].present?
+      self.random_cfs_file(file_group_ids: Collection.find(args[:collection_id]).file_group_ids)
     elsif args[:virtual_repository_id].present?
       file_group_ids = VirtualRepository.find(args[:virtual_repository_id]).collections.collect{|c| c.file_group_ids}.flatten
       self.random_cfs_file(file_group_ids: file_group_ids)

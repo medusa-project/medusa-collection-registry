@@ -5,6 +5,7 @@ class ContentTypesController < ApplicationController
   def cfs_files
     @repository_id = params[:repository_id]
     @virtual_repository_id = params[:virtual_repository_id]
+    @collection_id = params[:collection_id]
     @cfs_files = if @repository_id
                    @content_type.cfs_files.
                        joins(cfs_directory: {root_cfs_directory: {parent_file_group: :collection}}).
@@ -15,6 +16,10 @@ class ContentTypesController < ApplicationController
                        joins(cfs_directory: {root_cfs_directory: {parent_file_group: :collection}}).
                        where('collections.id': @virtual_repository.collection_ids).order('cfs_files.name asc').
                        page(params[:page]).per_page(params[:per_page] || 25)
+                 elsif @collection_id
+                   @content_type.cfs_files.
+                       joins(cfs_directory: {root_cfs_directory: :parent_file_group}).
+                       where('file_groups.collection_id = ?', @collection_id).order('cfs_files.name asc').page(params[:page]).per_page(params[:per_page] || 25)
                  else
                    @content_type.cfs_files.order('name asc').page(params[:page]).per_page(params[:per_page] || 25)
                  end
@@ -31,7 +36,7 @@ class ContentTypesController < ApplicationController
   end
 
   def random_cfs_file
-    redirect_to @content_type.random_cfs_file(params.slice(:repository_id, :virtual_repository_id))
+    redirect_to @content_type.random_cfs_file(params.slice(:repository_id, :virtual_repository_id, :collection_id))
   end
 
   protected
