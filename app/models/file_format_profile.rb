@@ -1,3 +1,5 @@
+#Note that we now label these in the interface as File Rendering Profiles, but
+#we haven't changed the model name, etc.
 class FileFormatProfile < ActiveRecord::Base
 
   STATUSES = %w(active inactive)

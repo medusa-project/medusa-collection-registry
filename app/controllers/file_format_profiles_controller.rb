@@ -50,7 +50,7 @@ class FileFormatProfilesController < ApplicationController
     if @file_format_profile.destroy
       redirect_to file_format_profiles_path
     else
-      redirect_to :back, alert: 'Unable to destroy this file format profile'
+      redirect_to :back, alert: 'Unable to destroy this file rendering profile'
     end
   end
 

@@ -19,7 +19,7 @@ Feature: File Format Profiles
 
   Scenario: Go to index from global nav
     When I go to the dashboard
-    And I click on 'File Format Profiles'
+    And I click on 'File Rendering Profiles'
     Then I should be on the file format profiles index page
 
   Scenario: Public can see file format profiles
@@ -94,7 +94,7 @@ Feature: File Format Profiles
 
   Scenario: Create file format profile from index
     When I go to the file format profiles index page
-    And I click on 'Add File Format Profile'
+    And I click on 'Add File Rendering Profile'
     And I fill in fields:
       | Name             | pictures         |
       | Software         | Picturemart      |
