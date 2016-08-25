@@ -5,9 +5,9 @@ Feature: File Format to File Format Profile association
 
   Background:
     Given every file format with fields exists:
-      | name | pronom_id | policy_summary                  |
-      | tiff | fmt/353   | what we do with TIFF files      |
-      | jp2  | fmt/392   | what we do with JPEG 2000 files |
+      | name | policy_summary                  |
+      | tiff | what we do with TIFF files      |
+      | jp2  | what we do with JPEG 2000 files |
     And each file format profile with name exists:
       | TIFF1 | TIFF2 | JPEG |
 

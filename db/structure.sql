@@ -2273,7 +2273,6 @@ ALTER SEQUENCE file_format_tests_id_seq OWNED BY file_format_tests.id;
 CREATE TABLE file_formats (
     id integer NOT NULL,
     name character varying NOT NULL,
-    pronom_id character varying,
     policy_summary text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -3122,6 +3121,39 @@ CREATE SEQUENCE projects_id_seq
 --
 
 ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
+
+
+--
+-- Name: pronoms; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE pronoms (
+    id integer NOT NULL,
+    file_format_id integer,
+    pronom_id character varying,
+    version character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: pronoms_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE pronoms_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pronoms_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE pronoms_id_seq OWNED BY pronoms.id;
 
 
 --
@@ -4366,6 +4398,13 @@ ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY pronoms ALTER COLUMN id SET DEFAULT nextval('pronoms_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY red_flags ALTER COLUMN id SET DEFAULT nextval('red_flags_id_seq'::regclass);
 
 
@@ -4918,6 +4957,14 @@ ALTER TABLE ONLY producers
 
 ALTER TABLE ONLY projects
     ADD CONSTRAINT projects_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pronoms_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY pronoms
+    ADD CONSTRAINT pronoms_pkey PRIMARY KEY (id);
 
 
 --
@@ -5890,6 +5937,13 @@ CREATE INDEX index_projects_on_collection_id ON projects USING btree (collection
 
 
 --
+-- Name: index_pronoms_on_file_format_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pronoms_on_file_format_id ON pronoms USING btree (file_format_id);
+
+
+--
 -- Name: index_red_flags_on_priority; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6802,6 +6856,14 @@ ALTER TABLE ONLY workflow_accrual_jobs
 
 
 --
+-- Name: fk_rails_fdd3dd4403; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY pronoms
+    ADD CONSTRAINT fk_rails_fdd3dd4403 FOREIGN KEY (file_format_id) REFERENCES file_formats(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -7256,4 +7318,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160815185511');
 INSERT INTO schema_migrations (version) VALUES ('20160819153537');
 
 INSERT INTO schema_migrations (version) VALUES ('20160824143252');
+
+INSERT INTO schema_migrations (version) VALUES ('20160825144956');
 

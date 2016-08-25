@@ -1,3 +1,3 @@
 - cache(cache_key_for_all(FileFormat)) do
-  = render layout: 'layouts/standard_table', locals: {id: :file_formats, headers: ['Name', 'Pronom ID', 'Policy Summary', '']} do
+  = render layout: 'layouts/standard_table', locals: {id: :file_formats, headers: ['Name', 'Pronom', 'Policy Summary', '']} do
     = render partial: 'index_table_row', collection: @file_formats, as: :file_format, cached: true

@@ -4,7 +4,8 @@
     .col-xs-12
       .well
         = show_field @file_format, :name
-        = show_value @file_format.pronom_link, "Pronom ID"
+        .span#pronon_links
+          = show_value @file_format.pronom_links, "Pronom"
         = show_field @file_format, :policy_summary
   .row
     .col-xs-12
