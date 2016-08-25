@@ -11,5 +11,5 @@ When /^I wait ([\d|\.]+) seconds?$/ do |seconds|
 end
 
 And(/^I screenshot to '(.*)'$/) do |file|
-  page.save_screenshot(file, full: true)
+  page.save_screenshot(File.join(Rails.root, file), full: true)
 end
