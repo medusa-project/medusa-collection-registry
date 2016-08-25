@@ -1,0 +1,2 @@
+$("#pronom_#{@pronom.id}").remove();
+$("#file_format_metadata").replaceWith("#{escape_javascript(render(partial: 'file_formats/metadata', locals: {file_format: @pronom.file_format}))}");

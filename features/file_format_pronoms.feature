@@ -29,14 +29,15 @@ Feature: File Format Pronoms
     And I fill in fields:
       | Pronom ID | x-fmt/387 |
       | Version   | 2.2       |
+    And I wait 1 second
     And I click on 'Create'
-    Then I should see 'x-fmt/387 (2.2)
+    Then I should see 'x-fmt/387 (2.2)'
     And a pronom with version '2.2' should exist
 
   Scenario: Delete Pronom
     When I view the file format with name 'tiff'
     And I click on 'Delete Pronom'
-    Then there should be no pronom with version '2.1'
-    And I should see none of:
+    Then I should see none of:
       | 2.1 | fmt/360 |
+    And there should be no pronom with version '2.1'
 

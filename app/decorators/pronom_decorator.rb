@@ -1,7 +1,7 @@
 class PronomDecorator < BaseDecorator
 
-  def link
-    h.link_to(link_text, url)
+  def link(args = {})
+    h.link_to(link_text, url, args).html_safe
   end
 
   def url

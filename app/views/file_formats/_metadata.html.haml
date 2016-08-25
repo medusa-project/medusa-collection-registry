@@ -1,0 +1,6 @@
+-# must pass file_format
+- file_format = file_format.decorate
+.well#file_format_metadata
+  = show_field file_format, :name
+  = show_value file_format.pronom_links.html_safe, "Pronom"
+  = show_field file_format, :policy_summary

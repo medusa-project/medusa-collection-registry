@@ -1,0 +1,5 @@
+- if @created
+  $("#file_format_pronoms .panel-body tbody").append("#{escape_javascript(render(partial: 'table_row', locals: {pronom: @pronom}))}");
+  $("#file_format_metadata").replaceWith("#{escape_javascript(render(partial: 'file_formats/metadata', locals: {file_format: @pronom.file_format}))}");
+- else
+  alert("Error creating Pronom!");

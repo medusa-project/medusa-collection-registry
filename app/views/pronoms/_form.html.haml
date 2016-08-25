@@ -1,0 +1,8 @@
+- url = @pronom.new_record? ? file_format_pronoms_path(@file_format) : pronom_path(@pronom)
+= render layout: 'layouts/bootstrap_modal', locals: {id: 'modal_item_form'} do
+  = simple_form_for @pronom, url: url, remote: true, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
+    .row
+      = render partial: 'form_sidebar', locals: {f: f, object: @pronom}
+      .col-sm-10
+        = f.input :pronom_id, label: 'Pronom ID'
+        = f.input :version

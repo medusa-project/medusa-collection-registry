@@ -2,11 +2,7 @@
 
   .row
     .col-xs-12
-      .well
-        = show_field @file_format, :name
-        .span#pronon_links
-          = show_value @file_format.pronom_links, "Pronom"
-        = show_field @file_format, :policy_summary
+      = render partial: 'metadata', locals: {file_format: @file_format}
   .row
     .col-xs-12
       .panel.panel-default
@@ -19,6 +15,15 @@
               = render partial: 'file_format_profiles/index_table_row', collection: @file_format.file_format_profiles, as: :file_format_profile
         - else
           .panel-body None
+  .row
+    .col-xs-12
+      #file_format_pronoms.panel.panel-default
+        .panel-heading
+          .pull-right
+            = link_to "Add", new_file_format_pronom_path(@file_format), class: 'btn btn-xs btn-default', remote: true, title: 'Create Pronom'
+          %h4 Pronoms
+        .panel-body
+          = render partial: 'pronoms/table'
   .row
     .col-xs-12
       #file_format_notes.panel.panel-default

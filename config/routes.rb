@@ -108,6 +108,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :file_formats do
     resources :file_format_notes, shallow: true, as: :notes
     resources :file_format_normalization_paths, shallow: true, as: :normalization_paths
+    resources :pronoms, shallow: true
   end
   resources :file_format_profiles do
     post :clone, on: :member
