@@ -58,7 +58,6 @@ MedusaCollectionRegistry::Application.routes.draw do
         post action, on: :member
       end if file_group_type == :bit_level_file_groups
       if file_group_type == :external_file_groups
-        post :ingest, on: :member
         post :create_bit_level, on: :member
       end
       post :bulk_amazon_backup, on: :collection

@@ -1,7 +1,5 @@
 class ExternalFileGroup < FileGroup
 
-  has_one :workflow_ingest, class_name: 'Workflow::Ingest'
-
   validates_absence_of :cfs_directory
 
   def storage_level
@@ -27,8 +25,7 @@ class ExternalFileGroup < FileGroup
 
   def ready_for_bit_level_ingest?
     self.has_staged_directory? and
-        !self.target_file_groups.present? and
-        !self.workflow_ingest
+        !self.target_file_groups.present?
   end
 
   def lacks_related_bit_level_file_group?

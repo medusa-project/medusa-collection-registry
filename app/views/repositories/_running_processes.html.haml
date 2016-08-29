@@ -19,11 +19,3 @@
         %td= file_group.cfs_directory.relative_path
         %td= link_to(file_group.title, polymorphic_path(file_group))
         %td= file_group.running_initial_assessments_file_count
-
-= render layout: 'layouts/standard_table', locals: {id: :running_ingests, classes: %w(table-bordered table-condensed), caption: 'Ingests', headers: ['File Group', 'Status']} do
-  - %w(copying amazon_backup).each do |state|
-    - Workflow::Ingest.for_repository(@repository).where(state: state).includes(:bit_level_file_group).each do |ingest|
-      - if ingest.most_advanced_file_group.present?
-        %tr
-          %td= link_to ingest.most_advanced_file_group.title, ingest.most_advanced_file_group
-          %td= ingest_state_text(state)

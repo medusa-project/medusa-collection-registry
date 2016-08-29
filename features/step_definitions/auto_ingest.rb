@@ -46,12 +46,6 @@ And(/^the external file group with title '([^']*)' should have a related bit lev
   expect(external_file_group.target_file_group_joins.where(target_file_group_id: bit_level_file_group.id).first.note).to eq(note)
 end
 
-And(/^I am ingesting (\d+) file groups with status '([^']*)'$/) do |count, status|
-  count.to_i.times do
-    FactoryGirl.create(:"#{status}_workflow_ingest")
-  end
-end
-
 And(/^there should be a staging deletion job for the external file group titled '([^']*)'$/) do |title|
   external_file_group = ExternalFileGroup.find_by(title: title)
   expect(Job::IngestStagingDelete.find_by(external_file_group_id: external_file_group.id)).to be_truthy
