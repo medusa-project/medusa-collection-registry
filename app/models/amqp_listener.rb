@@ -8,7 +8,7 @@ class AmqpListener
   cattr_accessor :listeners
 
   def initialize(amqp_config:, queue_name:, name:, action_callback:)
-    self.amqp_config = amqp_config
+    self.amqp_config = amqp_config.present? ? amqp_config.to_h : Hash.new
     self.queue_name = queue_name
     self.name = name
     self.action_callback = action_callback
