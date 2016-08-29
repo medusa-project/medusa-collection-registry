@@ -1,12 +1,10 @@
 class FileGroupsController < ApplicationController
 
-  before_action :public_view_enabled?, only: [:public]
-  before_action :require_medusa_user, except: [:show, :public]
+  before_action :require_medusa_user, except: [:show]
   before_action :require_medusa_user_or_basic_auth, only: [:show]
   before_action :find_file_group_and_collection, only: [:show, :destroy, :edit, :update, :create_cfs_fits,
-                                                        :create_virus_scan, :red_flags, :public, :attachments,
+                                                        :create_virus_scan, :red_flags, :attachments,
                                                         :assessments]
-  layout 'public', only: [:public]
   respond_to :html, :js, :json
 
   def show
@@ -16,12 +14,6 @@ class FileGroupsController < ApplicationController
       format.html
       format.json
     end
-  end
-
-  def public
-    @collection = @file_group.collection
-    @public_object = @file_group
-    redirect_to unauthorized_path unless @file_group.public?
   end
 
   def destroy

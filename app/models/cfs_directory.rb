@@ -248,10 +248,6 @@ class CfsDirectory < ActiveRecord::Base
     Settings.medusa.cfs.export_autoclean
   end
 
-  def public?
-    self.file_group.try(:public?)
-  end
-
   def handle_cfs_assessment
     #It is important to do the following in order
 

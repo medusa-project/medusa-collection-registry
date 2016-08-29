@@ -8,8 +8,6 @@
       %small #{@file.name}
   .col-xs-5
     .btn-group.pull-right
-      - if @file.public? and public_view_on?
-        = link_to 'Public View', public_cfs_file_path(@file), class: 'btn btn-default'
       = events_button(events_cfs_file_path(@file))
       .btn-group
         %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Run', href: '#'}

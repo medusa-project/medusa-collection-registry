@@ -30,7 +30,6 @@ class FileGroup < ActiveRecord::Base
   before_validation :initialize_file_info
 
   delegate :repository, to: :collection
-  delegate :public?, to: :rights_declaration
 
   validates_uniqueness_of :cfs_root, allow_blank: true
   validates_presence_of :title, :total_files, :total_file_size

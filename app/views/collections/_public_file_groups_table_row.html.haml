@@ -1,9 +1,0 @@
--# must pass 'file_group'
-- cache(file_group) do
-  %tr
-    %td
-      #{link_to file_group.title, public_file_group_path(file_group)}
-      - if file_group.supports_cfs and file_group.cfs_directory.present?
-        %div= link_to 'View Files', public_cfs_directory_path(file_group.cfs_directory)
-    %td #{file_group.file_count.to_s(:delimited) rescue ''}
-    %td #{file_group.file_size.to_s(:rounded, precision: 2, delimiter: ',')}

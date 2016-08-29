@@ -23,7 +23,6 @@ MedusaCollectionRegistry::Application.routes.draw do
 
   concern :eventable, Proc.new { member { get 'events' } }
   concern :red_flaggable, Proc.new { member { get 'red_flags' } }
-  concern :public, Proc.new { member { get 'public' } }
   concern :assessable, Proc.new { member { get 'assessments' } }
   concern :attachable, Proc.new { member { get 'attachments' } }
   concern :downloadable, Proc.new { member { get 'download' } }
@@ -31,7 +30,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   concern :fixity_checkable, Proc.new { member { post 'fixity_check' } }
   concern :autocomplete_email, Proc.new { collection { get :autocomplete_user_email } }
 
-  resources :collections, concerns: %i(eventable red_flaggable public assessable attachable) do
+  resources :collections, concerns: %i(eventable red_flaggable assessable attachable) do
     get :show_file_stats, on: :member
   end
 
@@ -53,7 +52,7 @@ MedusaCollectionRegistry::Application.routes.draw do
 
   [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
     resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy],
-              concerns: %i(eventable red_flaggable public assessable attachable) do
+              concerns: %i(eventable red_flaggable assessable attachable) do
       %i(create_cfs_fits create_virus_scan create_amazon_backup fixity_check create_initial_cfs_assessment).each do |action|
         post action, on: :member
       end if file_group_type == :bit_level_file_groups
@@ -83,14 +82,13 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :package_profiles, concerns: :collection_indexer
   resources :virus_scans, only: :show
 
-  resources :cfs_files, only: :show, concerns: %i(public downloadable eventable fixity_checkable) do
-    %i(public_download public_view create_fits_xml fits view preview_image public_preview_image preview_video).each { |action| get action, on: :member }
+  resources :cfs_files, only: :show, concerns: %i(downloadable eventable fixity_checkable) do
+    %i(create_fits_xml fits view preview_image preview_video).each { |action| get action, on: :member }
     get :random, on: :collection
   end
   get 'cfs_files/:id/preview_iiif_image/*iiif_parameters', to: 'cfs_files#preview_iiif_image', as: 'preview_iiif_image_cfs_file'
-  get 'cfs_files/:id/public_preview_iiif_image/*iiif_parameters', to: 'cfs_files#public_preview_iiif_image', as: 'public_preview_iiif_image_cfs_file'
 
-  resources :cfs_directories, only: :show, concerns: %i(public fixity_checkable eventable) do
+  resources :cfs_directories, only: :show, concerns: %i(fixity_checkable eventable) do
     %i(create_fits_for_tree export export_tree).each { |action| post action, on: :member }
     get :show_tree, on: :member
   end

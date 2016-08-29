@@ -1,7 +1,0 @@
-= show_present_field @file_group, :title
-= show_present_field @file_group, :external_id, 'External ID'
-= show_present_field @file_group, :file_format
-= show_present_value (@file_group.file_size * 1.gigabyte).to_formatted_s(:human_size, precision: 3), 'Total file size'
-= show_present_value @file_group.file_count.to_s(:delimited), 'Total files'
-= show_present_field @file_group, :description
-= show_present_field @file_group, :provenance_note

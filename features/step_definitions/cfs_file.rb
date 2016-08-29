@@ -92,12 +92,6 @@ Then(/^I should be viewing the cfs file for the file group titled '([^']*)' for 
   end
 end
 
-Then(/^I should be public viewing the cfs file for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
-  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
-    expect(current_path).to eq(public_cfs_file_path(cfs_file))
-  end
-end
-
 And(/^the cfs file at path '([^']*)' for the file group titled '([^']*)' should have (\d+) red flags?$/) do |path, title, count|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     expect(cfs_file.red_flags.count).to eq(count.to_i)
@@ -107,11 +101,6 @@ end
 When(/^I view the cfs file for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
   visit cfs_file_path(file_group.find_file_at_relative_path(path))
-end
-
-Given(/^I public view the cfs file for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
-  file_group = FileGroup.find_by(title: title)
-  visit public_cfs_file_path(file_group.find_file_at_relative_path(path))
 end
 
 When(/^I run an initial cfs file assessment on the file group titled '([^']*)'$/) do |title|

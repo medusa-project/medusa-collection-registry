@@ -19,7 +19,7 @@ class CfsFile < ActiveRecord::Base
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
 
-  delegate :repository, :collection, :file_group, :public?, to: :cfs_directory
+  delegate :repository, :collection, :file_group, to: :cfs_directory
   delegate :name, to: :content_type, prefix: true, allow_nil: true
   FitsData::all_fields.each do |field|
     delegate field, to: :fits_data, prefix: true, allow_nil: true

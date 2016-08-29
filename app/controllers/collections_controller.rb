@@ -1,12 +1,10 @@
 class CollectionsController < ApplicationController
 
-  before_action :public_view_enabled?, only: [:public]
-  before_action :require_medusa_user, except: [:show, :public, :index]
+  before_action :require_medusa_user, except: [:show, :index]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :index]
   before_action :find_collection_and_repository, only: [:show, :destroy, :edit, :update, :red_flags,
-                                                        :public, :assessments, :attachments, :events,
+                                                        :assessments, :attachments, :events,
                                                         :show_file_stats]
-  layout 'public', only: [:public]
 
   helper_method :load_collection_file_extension_stats, :load_collection_content_type_stats
 
@@ -28,12 +26,6 @@ class CollectionsController < ApplicationController
   def assessments
     @assessable = @collection
     @assessments = @assessable.recursive_assessments
-  end
-
-  def public
-    redirect_to unauthorized_path unless @collection.public?
-    @public_object = @collection
-    @public_file_groups = @collection.file_groups.order('created_at').select { |file_group| file_group.public? and file_group.is_a?(BitLevelFileGroup) }
   end
 
   def destroy

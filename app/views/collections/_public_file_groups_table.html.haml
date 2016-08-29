@@ -1,5 +1,0 @@
-%h2 File Groups
-
-- if @public_file_groups.present?
-  = render layout: 'layouts/standard_table', locals: {id: :file_groups, headers: ['Name', 'Total files', 'Total file size (GB)']} do
-    = render partial: 'public_file_groups_table_row', collection: @public_file_groups, as: :file_group

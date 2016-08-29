@@ -1,10 +1,8 @@
 class CfsDirectoriesController < ApplicationController
 
-  before_action :public_view_enabled?, only: [:public]
-  before_action :require_medusa_user, except: [:show, :public, :show_tree]
+  before_action :require_medusa_user, except: [:show, :show_tree]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :show_tree]
   before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :fixity_check, :show_tree]
-  layout 'public', only: [:public]
 
   def show
     @directory = CfsDirectory.includes(:subdirectories, :cfs_files).find(params[:id])
@@ -17,14 +15,6 @@ class CfsDirectoriesController < ApplicationController
       end
       format.json
     end
-  end
-
-  def public
-    @directory = CfsDirectory.includes(:subdirectories, :cfs_files).find(params[:id])
-    redirect_to unauthorized_path unless @directory.public?
-    @file_group = @directory.file_group
-    @collection = @file_group.collection
-    @public_object = @directory
   end
 
   def create_fits_for_tree

@@ -26,7 +26,6 @@ class Collection < ActiveRecord::Base
   has_many :projects
   has_many :collection_virtual_repository_joins, dependent: :destroy
 
-  delegate :public?, to: :rights_declaration
   delegate :title, to: :repository, prefix: true
   delegate :name, to: :preservation_priority, prefix: true, allow_nil: true
 

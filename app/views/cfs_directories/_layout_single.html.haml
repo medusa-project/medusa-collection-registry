@@ -8,8 +8,6 @@
     #export_message
   .col-xs-7
     .btn-group.pull-right
-      - if @directory.public? and public_view_on?
-        = link_to 'Public View', public_cfs_directory_path(@directory), class: 'btn btn-default'
       = events_button(events_cfs_directory_path(@directory))
       .btn-group
         %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Run', value: 'Run'}

@@ -1,6 +1,4 @@
 .btn-group
-  - if @file_group.public? and public_view_on?
-    = link_to 'Public View', public_file_group_path(@file_group), class: 'btn btn-default'
   = assessments_button(assessments_file_group_path(@file_group))
   .btn-group
     %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Events'}

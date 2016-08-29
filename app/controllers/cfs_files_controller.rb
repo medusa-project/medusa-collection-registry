@@ -1,15 +1,11 @@
 require 'net/http'
 class CfsFilesController < ApplicationController
 
-  PUBLIC_ACTIONS = [:public, :public_view, :public_download, :public_preview_image, :public_preview_iiif_image]
 
-  before_action :public_view_enabled?, only: PUBLIC_ACTIONS
-  before_action :require_medusa_user, except: [:show] + PUBLIC_ACTIONS
+  before_action :require_medusa_user, except: [:show]
   before_action :require_medusa_user_or_basic_auth, only: [:show]
   before_action :find_file, only: [:show, :create_fits_xml, :fits, :download, :view,
-                                   :preview_image, :preview_video, :fixity_check, :events, :preview_iiif_image] + PUBLIC_ACTIONS
-  before_action :require_public_file, only: PUBLIC_ACTIONS
-  layout 'public', only: [:public]
+                                   :preview_image, :preview_video, :fixity_check, :events, :preview_iiif_image]
 
   cattr_accessor :mime_type_viewers, :extension_viewers
   helper_method :is_iiif_compatible?
@@ -23,15 +19,6 @@ class CfsFilesController < ApplicationController
       format.html
       format.json
     end
-  end
-
-  def public
-    redirect_to unauthorized_path unless @file.public?
-    @directory = @file.cfs_directory
-    @file_group = @file.file_group
-    @collection = @file_group.collection
-    @public_object = @file
-    @preview_viewer_type = find_preview_viewer_type(@file)
   end
 
   def create_fits_xml
@@ -78,25 +65,9 @@ class CfsFilesController < ApplicationController
     send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
   end
 
-  def public_download
-    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
-  end
-
-  def public_view
-    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
-  end
-
   def preview_image
     authorize! :download, @file.file_group
     common_image_preview
-  end
-
-  def public_preview_image
-    common_image_preview
-  end
-
-  def public_preview_iiif_image
-    common_preview_iiif_image
   end
 
   def preview_iiif_image
@@ -209,10 +180,6 @@ class CfsFilesController < ApplicationController
   def iiif_base_url(file)
     image_server_base_url = "http://#{image_server_config['host'] || 'localhost'}:#{image_server_config['port'] || 3000}/#{image_server_config['root']}"
     "#{image_server_base_url}/#{CGI.escape(file.relative_path)}"
-  end
-
-  def require_public_file
-    redirect_to unauthorized_path unless @file.public?
   end
 
   def image_server_config
