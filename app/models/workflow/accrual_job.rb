@@ -76,7 +76,7 @@ class Workflow::AccrualJob < Workflow::Base
         f.puts 'Differences:'
         comparator.different_sizes_paths.each {|p| f.puts p}
         f.puts 'Suggested remediation:'
-        comparator.target_only_path.each do |p|
+        comparator.target_only_paths.each do |p|
           puts "rm -f #{File.join(staging_remote_path, p)}"
         end
         (comparator.source_only_paths + comparator.different_sizes_paths).each do |p|
