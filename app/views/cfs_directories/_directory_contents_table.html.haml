@@ -23,7 +23,9 @@
 
 .galleria
 
-:javascript
-  var galleria_data = #{galleria_data_hashes(@directory).to_json};
-  Galleria.run('.galleria', {'dataSource' : galleria_data});
+- data_hashes = galleria_data_hashes(@directory)
+- if data_hashes.present?
+  :javascript
+    var galleria_data = #{data_hashes.to_json};
+    Galleria.run('.galleria', {'dataSource' : galleria_data});
 
