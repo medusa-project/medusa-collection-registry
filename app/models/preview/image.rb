@@ -67,14 +67,37 @@ module Preview
         VIPS::Image.new(cfs_file.absolute_path)
         width = image.x_size
         height = image.y_size
-        if width > 300 or height > 300
-          factor = ([height, width].max / 300.0).ceil
+        if [width, height].max > Settings.cfs_file_viewers.default_image_size
+          factor = ([height, width].max / Settings.cfs_file_viewers.default_image_size.to_f).ceil
           image = image.shrink(factor)
         end
         image.jpeg.to_memory
       else
         File.open(File.join(Rails.root, 'public', 'images', 'image_not_found.jpg'))
       end
+    end
+
+    def thumbnail_data
+      if is_iiif_compatible?
+        iiif_thumbnail_data
+      else
+        default_thumbnail_data
+      end
+    end
+
+    def default_thumbnail_data
+      VIPS::Image.new(cfs_file.absolute_path)
+      width = image.x_size
+      height = image.y_size
+      if [width, height].max > Settings.cfs_file_viewers.thumbnail_size
+        factor = ([height, width].max / Settings.cfs_file_viewers.thumbnail_size.to_d).ceil
+        image = image.shrink(factor)
+      end
+      image.jpeg.to_memory
+    end
+
+    def iiif_thumbnail_data
+      Net::HTTP.get(URI.parse(iiif_url("full/!#{Settings.cfs_file_viewers.thumbnail_size},#{Settings.cfs_file_viewers.thumbnail_size}/0/default", 'jpg')))
     end
 
   end
