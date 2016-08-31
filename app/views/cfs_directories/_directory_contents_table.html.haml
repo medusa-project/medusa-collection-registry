@@ -10,11 +10,12 @@
       %td
   - @directory.cfs_files.includes(:content_type, :file_extension).decorate.each do |file|
     %tr
-      -#%td
-      -#  %span{'data-thumb-path':  thumbnail_cfs_file_path(file), 'data-thumb-alt': file.name}
       %td
         - if Preview::Resolver.instance.find_preview_viewer_type(file) == :image
-          %img{src: thumbnail_cfs_file_path(file), alt: file.name}
+          %span.delayed-thumbnail{'data-thumb-path':  thumbnail_cfs_file_path(file), 'data-thumb-alt': file.name}
+      -#%td
+      -#  - if Preview::Resolver.instance.find_preview_viewer_type(file) == :image
+      -#    %img{src: thumbnail_cfs_file_path(file), alt: file.name}
       %td{'data-sort': "b-#{file.name}"}
         = fa_icon 'file'
         = link_to file.name, cfs_file_path(file)
