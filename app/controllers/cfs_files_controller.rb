@@ -7,13 +7,12 @@ class CfsFilesController < ApplicationController
   before_action :find_file, only: [:show, :create_fits_xml, :fits, :download, :view,
                                    :preview_image, :preview_video, :fixity_check, :events, :preview_iiif_image]
 
-  cattr_accessor :mime_type_viewers, :extension_viewers
   helper_method :is_iiif_compatible?
 
   def show
     @file_group = @file.file_group
     @directory = @file.cfs_directory
-    @preview_viewer_type = find_preview_viewer_type(@file)
+    @preview_viewer_type = Preview::Resolver.instance.find_preview_viewer_type(@file)
     @file_format_test = @file.file_format_test
     respond_to do |format|
       format.html
@@ -91,27 +90,6 @@ class CfsFilesController < ApplicationController
     @breadcrumbable = @file
   end
 
-  #return a symbol that will be used to select the right viewer
-  def find_preview_viewer_type(cfs_file)
-    self.class.ensure_viewer_hashes
-    self.class.mime_type_viewers[cfs_file.content_type_name] ||
-        self.class.extension_viewers[File.extname(cfs_file.name).sub(/^\./, '').downcase] ||
-        :none
-  end
-
-  def self.ensure_viewer_hashes
-    return if self.mime_type_viewers.present? and self.extension_viewers.present?
-    self.mime_type_viewers = invert_hash_of_arrays(Settings.cfs_file_viewers.mime_types)
-    self.extension_viewers = invert_hash_of_arrays(Settings.cfs_file_viewers.extensions)
-  end
-
-  def self.invert_hash_of_arrays(hash_of_arrays)
-    Hash.new.tap do |h|
-      hash_of_arrays.each do |key, values|
-        values.each { |value| h[value] = key.to_sym }
-      end
-    end
-  end
 
   def safe_content_type(cfs_file)
     cfs_file.content_type_name || 'application/octet-stream'
