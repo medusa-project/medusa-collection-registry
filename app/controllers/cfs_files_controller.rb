@@ -5,8 +5,8 @@ class CfsFilesController < ApplicationController
   before_action :require_medusa_user, except: [:show]
   before_action :require_medusa_user_or_basic_auth, only: [:show]
   before_action :find_file, only: [:show, :create_fits_xml, :fits, :download, :view, :fixity_check, :events,
-                                   :preview_image, :preview_video, :preview_iiif_image, :thumbnail]
-  before_action :find_previewer, only: [:show, :preview_image, :preview_video, :preview_iiif_image, :thumbnail]
+                                   :preview_image, :preview_video, :preview_iiif_image, :thumbnail, :galleria]
+  before_action :find_previewer, only: [:show, :preview_image, :preview_video, :preview_iiif_image, :thumbnail, :galleria]
 
   def show
     @file_group = @file.file_group
@@ -78,6 +78,13 @@ class CfsFilesController < ApplicationController
     render nothing: true, status: 404 unless @previewer.respond_to?(:thumbnail_data) and @file.exists_on_filesystem?
     send_data @previewer.thumbnail_data, type: 'image/jpeg', disposition: 'inline'
   end
+
+  def galleria
+    authorize! :download, @file.file_group
+    render nothing: true, status: 404 unless @previewer.respond_to?(:galleria_data) and @file.exists_on_filesystem?
+    send_data @previewer.galleria_data, type: 'image/jpeg', disposition: 'inline'
+  end
+
 
   def preview_video
     authorize! :download, @file.file_group

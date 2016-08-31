@@ -100,5 +100,29 @@ module Preview
       Net::HTTP.get(URI.parse(iiif_url("full/!#{Settings.cfs_file_viewers.thumbnail_size},#{Settings.cfs_file_viewers.thumbnail_size}/0/default", 'jpg')))
     end
 
+    def galleria_data
+      if is_iiif_compatible?
+        iiif_galleria_data
+      else
+        default_galleria_data
+      end
+    end
+
+    def default_galleria_data
+      VIPS::Image.new(cfs_file.absolute_path)
+      width = image.x_size
+      height = image.y_size
+      if [width, height].max > Settings.cfs_file_viewers.galleria_size
+        factor = ([height, width].max / Settings.cfs_file_viewers.galleria_height.to_d).ceil
+        image = image.shrink(factor)
+      end
+      image.jpeg.to_memory
+    end
+
+    def iiif_galleria_data
+      Net::HTTP.get(URI.parse(iiif_url("full/!1000,#{Settings.cfs_file_viewers.galleria_height}/0/default", 'jpg')))
+    end
+
+
   end
 end
