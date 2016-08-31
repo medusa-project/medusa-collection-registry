@@ -15,7 +15,7 @@ Galleria.addTheme({
     name: 'classic',
     author: 'Galleria',
     /* css: 'galleria.classic.css', */
-    css: '...',
+    css: false,
     defaults: {
         transition: 'slide',
         thumbCrop:  'height',
