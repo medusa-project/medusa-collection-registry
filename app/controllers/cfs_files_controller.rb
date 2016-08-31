@@ -75,7 +75,7 @@ class CfsFilesController < ApplicationController
 
   def thumbnail
     authorize! :download, @file.file_group
-    render nothing: true, status: 404 unless @previewer.is_a?(Preview::Image) and @file.exists_on_filesystem?
+    render nothing: true, status: 404 unless @previewer.respond_to?(:thumbnail_data) and @file.exists_on_filesystem?
     send_data @previewer.thumbnail_data, type: 'image/jpeg', disposition: 'inline'
   end
 
