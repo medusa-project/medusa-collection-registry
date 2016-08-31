@@ -21,6 +21,7 @@ cfs_file_viewers:
       - mp4
   thumbnail_size: 90
   galleria_height: 400
+  galleria_width: 1000
   default_image_size: 300
 #The following are config for specific classes, using the convention classes.<class_name>.<setting_name>
 classes:

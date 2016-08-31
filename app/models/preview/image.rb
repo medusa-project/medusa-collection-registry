@@ -120,7 +120,7 @@ module Preview
     end
 
     def iiif_galleria_data
-      Net::HTTP.get(URI.parse(iiif_url("full/!1000,#{Settings.cfs_file_viewers.galleria_height}/0/default", 'jpg')))
+      Net::HTTP.get(URI.parse(iiif_url("full/!#{Settings.cfs_file_viewers.galleria_width},#{Settings.cfs_file_viewers.galleria_height}/0/default", 'jpg')))
     end
 
 

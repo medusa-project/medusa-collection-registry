@@ -11,7 +11,7 @@
   - @directory.cfs_files.includes(:content_type, :file_extension).decorate.each do |file|
     %tr
       %td
-        - if Preview::Resolver.instance.find_preview_viewer_type(file) == :image
+        - if file.preview_type_is_image?
           = link_to cfs_file_path(file) do
             %span.delayed-thumbnail{'data-thumb-path':  thumbnail_cfs_file_path(file), 'data-thumb-alt': file.name}
       %td{'data-sort': "b-#{file.name}"}
@@ -23,7 +23,7 @@
 
 .galleria
 
-- image_files = @directory.cfs_files.includes(:content_type, :file_extension).select {|f| Preview::Resolver.instance.find_preview_viewer_type(f) == :image}
+- image_files = @directory.cfs_files.includes(:content_type, :file_extension).select {|f| f.preview_type_is_image?}
 - data_hashes = image_files.collect {|f| {image: galleria_cfs_file_path(f), thumb: thumbnail_cfs_file_path(f), link: cfs_file_path(f)}}
 
 :javascript
