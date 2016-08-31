@@ -25,7 +25,7 @@
             - @file.red_flags.each do |red_flag|
               %li= red_flag.message
     .col-sm-8
-      = render "preview_viewer_#{@preview_viewer_type}"
+      = render @previewer.view_partial
 
   - if @file_format_test.present?
     %hr
