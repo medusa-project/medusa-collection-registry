@@ -103,7 +103,7 @@ class CfsFilesController < ApplicationController
   end
 
   def find_previewer
-    @previewer = Preview::Resolver.instance.find_previewer(@file)
+    @previewer = @file.previewer
   end
 
   def safe_content_type(cfs_file)

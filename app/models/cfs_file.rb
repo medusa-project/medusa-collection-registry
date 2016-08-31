@@ -268,6 +268,18 @@ class CfsFile < ActiveRecord::Base
     @fits_result ||= FitsResult.new(self)
   end
 
+  def previewer
+    Preview::Resolver.instance.find_previewer(self)
+  end
+
+  def previewer_type
+    Preview::Resolver.instance.find_preview_viewer_type(self)
+  end
+
+  def preview_type_is_image?
+    previewer_type == :image
+  end
+
   protected
 
   def get_fits_xml
