@@ -23,10 +23,7 @@
 
 .galleria
 
-- image_files = @directory.cfs_files.includes(:content_type, :file_extension).select {|f| f.preview_type_is_image?}
-- data_hashes = image_files.collect {|f| {image: galleria_cfs_file_path(f), thumb: thumbnail_cfs_file_path(f), link: cfs_file_path(f)}}
-
 :javascript
-  var galleria_data = #{data_hashes.to_json};
+  var galleria_data = #{galleria_data_hashes(@directory).to_json};
   Galleria.run('.galleria', {'dataSource' : galleria_data});
 
