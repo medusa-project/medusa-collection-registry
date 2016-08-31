@@ -17,6 +17,20 @@ module Preview
           :none
     end
 
+    def find_previewer(cfs_file)
+      previewer_class = case find_preview_viewer_type(cfs_file)
+        when :image
+          Image
+        when :video
+          Video
+        when :none
+          Default
+        else
+          raise RuntimeError, 'Unrecognized previewer type'
+                        end
+      previewer_class.new(cfs_file)
+    end
+
     protected
 
     def invert_hash_of_arrays(hash_of_arrays)
