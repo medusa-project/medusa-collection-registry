@@ -1,15 +1,21 @@
-= render layout: 'layouts/standard_table', locals: {id: :files, headers: ['Name', 'Size', 'Last Modified', 'FITS']} do
+= render layout: 'layouts/standard_table', locals: {id: :files, headers: ['Thumbnail', 'Name', 'Size', 'Last Modified', 'FITS']} do
   - @directory.subdirectories.order(:path).each do |subdirectory|
     %tr
-      %td{'data-sort' => "a-#{subdirectory.path}"}
+      %td
+      %td{'data-sort': "a-#{subdirectory.path}"}
         = fa_icon 'folder-o'
         = link_to subdirectory.path, cfs_directory_path(subdirectory)
       %td
       %td
       %td
-  - @directory.cfs_files.decorate.each do |file|
+  - @directory.cfs_files.includes(:content_type, :file_extension).decorate.each do |file|
     %tr
-      %td{'data-sort' => "b-#{file.name}"}
+      -#%td
+      -#  %span{'data-thumb-path':  thumbnail_cfs_file_path(file), 'data-thumb-alt': file.name}
+      %td
+        - if Preview::Resolver.instance.find_preview_viewer_type(file) == :image
+          %img{src: thumbnail_cfs_file_path(file), alt: file.name}
+      %td{'data-sort': "b-#{file.name}"}
         = fa_icon 'file'
         = link_to file.name, cfs_file_path(file)
       %td= file.size
