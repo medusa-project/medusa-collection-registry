@@ -183,7 +183,7 @@ class CfsFilesController < ApplicationController
   end
 
   def image_server_config
-    Settings.iiif.to_h
+    Settings.iiif.to_h.stringify_keys
   end
 
 end
