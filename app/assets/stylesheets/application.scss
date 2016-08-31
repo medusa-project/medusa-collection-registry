@@ -23,6 +23,7 @@
 @import 'library_header';
 @import 'book_tracker/items';
 @import 'search';
+@import 'galleria_classic';
 
 #file_stats_summary {
   td, th {
@@ -96,4 +97,8 @@ label.checkbox {
 
 .modal .simple_form {
   padding: 15px;
+}
+
+.galleria {
+  height: 500px;
 }
