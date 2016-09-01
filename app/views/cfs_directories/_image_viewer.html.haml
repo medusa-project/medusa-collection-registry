@@ -3,4 +3,5 @@
   .galleria
   :javascript
     var galleria_data = #{data_hashes.to_json};
-    Galleria.run('.galleria', {'dataSource' : galleria_data, 'height': 600});
+    Galleria.run('.galleria', {dataSource: galleria_data, height: 600,
+                                popupLinks: true, thumbCrop: false});
