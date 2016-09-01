@@ -1,7 +1,6 @@
-.galleria
-
 - data_hashes = galleria_data_hashes(@directory)
 - if data_hashes.present?
+  .galleria
   :javascript
     var galleria_data = #{data_hashes.to_json};
     Galleria.run('.galleria', {'dataSource' : galleria_data});
