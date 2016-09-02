@@ -3,20 +3,7 @@
 
   = simple_form_for :file_group, url: bulk_amazon_backup_bit_level_file_groups_path, method: :post do |f|
     %div
-      - headers = ['ID', 'Name', 'Collection', 'Repository', 'Total Files', 'Total GB', 'Last Backup', 'Completed', 'Backup']
-      = render layout: 'layouts/standard_table', locals: {id: 'amazon-backups-table', classes: 'table-condensed', headers: headers} do
-        - @amazon_info.each do |id, info|
-          - cache(info) do
-            %tr
-              %td= id
-              %td= link_to(info[:title], file_group_path(id))
-              %td= link_to(info[:collection_title], collection_path(info[:collection_id]))
-              %td= link_to(info[:repository_title], repository_path(info[:repository_id]))
-              %td= info[:total_files].to_i.to_formatted_s(:delimited)
-              %td= info[:total_file_size].to_d.to_formatted_s(:rounded, precision: 3)
-              %td= info[:backup_date]
-              %td= info[:backup_completed]
-              %td= check_box_tag('bit_level_file_groups[]', id, false, id: "bit_level_file_groups_#{id}", class: 'amazon-backup-checkbox') if info[:backup_date] == 'None'
+      = render 'shared/amazon_backup_table'
 
     %br
 

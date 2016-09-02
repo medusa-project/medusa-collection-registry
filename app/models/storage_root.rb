@@ -1,4 +1,4 @@
-class AccrualStorageRoot < Object
+class StorageRoot < Object
   attr_reader :local_path, :remote_path, :name
 
   def initialize(root_hash)
