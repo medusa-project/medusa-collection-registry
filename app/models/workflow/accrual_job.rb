@@ -63,7 +63,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_check_sync
-    comparator = DirectoryTreeComparator.new(staging_remote_path, staging_local_path)
+    comparator = DirectoryTreeComparator.new(staging_local_path, staging_remote_path)
     if comparator.directories_equal?
       be_in_state_and_requeue('check')
     else
