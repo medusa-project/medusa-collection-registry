@@ -2,6 +2,7 @@ class Accrual
   include Draper::Decoratable
 
   attr_accessor :cfs_directory, :staging_path
+  delegate :id, to: :cfs_directory, prefix: true
 
   def initialize(args = {})
     self.cfs_directory = args[:cfs_directory]
@@ -10,10 +11,6 @@ class Accrual
 
   def at_root?
     self.staging_path == '/'
-  end
-
-  def cfs_directory_id
-    self.cfs_directory.id
   end
 
   def path_up

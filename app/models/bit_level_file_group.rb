@@ -133,7 +133,7 @@ class BitLevelFileGroup < FileGroup
   end
 
   def check_emptiness
-    unless self.pristine?
+    unless pristine?
       errors.add(:base, 'This file group has content and cannot be deleted. Please contact Medusa administrators to have it removed.')
       return false
     end
@@ -141,7 +141,7 @@ class BitLevelFileGroup < FileGroup
   end
 
   def self.aggregate_size
-    self.sum('total_file_size')
+    sum('total_file_size')
   end
 
 end

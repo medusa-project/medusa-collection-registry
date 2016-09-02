@@ -14,7 +14,7 @@ class Attachment < ActiveRecord::Base
   before_destroy :destroy_attachment
 
   def destroy_attachment
-    self.attachment.destroy if self.attachment
+    self.attachment.try(:destroy)
   end
 
 end
