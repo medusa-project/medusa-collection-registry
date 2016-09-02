@@ -9,18 +9,12 @@ Before do
     end
   end
 
-  StagingStorage.instance.roots.each do |root|
-    if File.directory?(root.local_path)
-      Dir[File.join(root.local_path, '*')].each do |dir|
-        FileUtils.rm_rf(dir)
-      end
-    end
-  end
-
-  AccrualStorage.instance.roots.each do |root|
-    if File.directory?(root.local_path)
-      Dir[File.join(root.local_path, '*')].each do |dir|
-        FileUtils.rm_rf(dir)
+  [StagingStorage, AccrualStorage].each do |storage|
+    storage.instance.roots.each do |root|
+      if File.directory?(root.local_path)
+        Dir[File.join(root.local_path, '*')].each do |dir|
+          FileUtils.rm_rf(dir)
+        end
       end
     end
   end

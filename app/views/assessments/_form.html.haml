@@ -1,7 +1,6 @@
 = simple_form_for @assessment, html: {class: 'form-horizontal'} do |f|
   .row
     = render partial: 'shared/form_sidebar', locals: {f: f, object: @assessment, cancel_return: (@assessable if @assessment.new_record?)}
-
     .col-sm-9
       .tabbable
       = render partial: 'shared/tab_header', locals: {id: 'edit-tabs', tabs: assessment_form_tab_list}
