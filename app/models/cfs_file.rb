@@ -127,6 +127,20 @@ class CfsFile < ActiveRecord::Base
     self.fixity_check_time = Time.now
   end
 
+  def update_fixity_status_with_event(md5sum: nil, actor_email: nil)
+    update_fixity_status_not_found_with_event(actor_email: actor_email) and return unless exists_on_filesystem?
+    md5sum ||= self.file_system_md5_sum
+    if self.md5_sum.present?
+      if self.md5_sum == md5sum
+        update_fixity_status_ok_with_event(actor_email: actor_email)
+      else
+        update_fixity_status_bad_with_event(actor_email: actor_email)
+      end
+    else
+      update_fixity_status_ok_with_event(actor_email: actor_email)
+    end
+  end
+
   def update_fixity_status_ok_with_event(actor_email: nil)
     actor_email ||= MedusaBaseMailer.admin_address
     create_fixity_event(cascadable: false, note: 'OK', actor_email: actor_email)
