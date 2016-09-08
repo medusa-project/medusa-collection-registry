@@ -1,0 +1,17 @@
+%h3 Yearly
+= render layout: 'layouts/standard_table', locals: {id: :yearly_timeline, headers: ['Period', 'Count', 'Size']} do
+  - @yearly_stats.each do |info|
+    %tr
+      %td #{info[:start]} to #{info[:finish] - 1.day}
+      %td #{number_with_delimiter(info[:count])}
+      %td #{number_with_delimiter(info[:size])} (#{number_to_human_size(info[:size])})
+
+%hr
+
+%h3 Monthly
+= render layout: 'layouts/standard_table', locals: {id: :monthly_timeline, headers: ['Period', 'Count', 'Size']} do
+  - @monthly_stats.each do |info|
+    %tr
+      %td #{info[:start]} to #{info[:finish] - 1.day}
+      %td #{number_with_delimiter(info[:count])}
+      %td #{number_with_delimiter(info[:size])} (#{number_to_human_size(info[:size])})
