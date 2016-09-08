@@ -1,0 +1,5 @@
+-# must pass info hash
+%tr
+  %td #{info[:start]} to #{info[:finish] - 1.day}
+  %td #{number_with_delimiter(info[:count])}
+  %td #{number_with_delimiter(info[:size])} (#{number_to_human_size(info[:size])})
