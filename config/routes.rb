@@ -134,6 +134,8 @@ MedusaCollectionRegistry::Application.routes.draw do
   match '/dashboard/amazon', to: 'dashboard#amazon', as: :amazon_dashboard, via: :get
   match '/dashboard/accruals', to: 'dashboard#accruals', as: :accruals_dashboard, via: :get
 
+  match '/timeline', to: 'timeline#show', as: :timeline, via: :get
+
   namespace :book_tracker do
     match 'items', to: 'items#index', as: :items, via: [:get, :post]
     match 'items/:id', to: 'items#show', as: :item, via: :get

@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.3
+-- Dumped from database version 9.5.4
 -- Dumped by pg_dump version 9.5.4
 
 SET statement_timeout = 0;
@@ -5426,6 +5426,13 @@ CREATE INDEX index_cfs_files_on_content_type_id_and_name ON cfs_files USING btre
 
 
 --
+-- Name: index_cfs_files_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cfs_files_on_created_at ON cfs_files USING btree (created_at);
+
+
+--
 -- Name: index_cfs_files_on_file_extension_id_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7320,4 +7327,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160819153537');
 INSERT INTO schema_migrations (version) VALUES ('20160824143252');
 
 INSERT INTO schema_migrations (version) VALUES ('20160825144956');
+
+INSERT INTO schema_migrations (version) VALUES ('20160908173523');
 
