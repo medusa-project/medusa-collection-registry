@@ -23,6 +23,7 @@ class ContentTypesController < ApplicationController
                  else
                    @content_type.cfs_files.order('name asc').page(params[:page]).per_page(params[:per_page] || 25)
                  end
+    @cfs_files = @cfs_files.includes(cfs_directory: {root_cfs_directory: {parent: :collection}})
   end
 
   def fits_batch
