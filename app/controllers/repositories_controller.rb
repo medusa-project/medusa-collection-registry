@@ -81,7 +81,7 @@ class RepositoriesController < ApplicationController
   end
 
   def index
-    @repositories = Repository.all.includes(collections: {file_groups: :cfs_directory}).includes(:contact)
+    @repositories = Repository.all.includes(collections: :bit_level_file_groups).includes(:contact)
     respond_to do |format|
       format.html
       format.csv { send_data repositories_to_csv(@repositories), type: 'text/csv', filename: 'repositories.csv' }
