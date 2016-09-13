@@ -46,10 +46,7 @@ class PackageProfilesController < ApplicationController
   end
 
   def collections
-    file_groups = @package_profile.file_groups.includes(collection: :repository)
-    @collections = file_groups.collect do |file_group|
-      file_group.collection
-    end.uniq.sort_by(&:title)
+    @collections = @package_profile.collections.order(:title)
   end
 
   protected
