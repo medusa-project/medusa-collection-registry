@@ -34,7 +34,7 @@ module FitsDatetimeParser
       when %r[^\d{1,2}/\d{1,2}/\d{4} \d{1,2}:\d{2}:\d{2}$]
         Time.strptime(datetime_string, '%m/%d/%Y %H:%M:%S')
       when %r[^\d{1,2}/\d{1,2}/\d{2} \d{1,2}:\d{2}:\d{2}$]
-        Time.strptime(datetime_string, '%m/%d/%y %H:%M:%S')
+        Time.strptime(datetime_string, '%m/%d/%y %H:%M:%S') rescue Time.strptime(datetime_string, '%d/%m/%y %H:%M:%S')
       when %r[^\d{1,2}:\d{2}:\d{2} \d{1,2}/\d{1,2}/\d{2}$]
         Time.strptime(datetime_string, '%H:%M:%S %m/%d/%Y')
       when %r[^\d{1,2}/\d{1,2}/\d{2} \d{1,2}:\d{2} (A|P)M$]
@@ -50,7 +50,7 @@ module FitsDatetimeParser
       when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}(\+|-)\d{2}:\d{2}$]
         Time.strptime(datetime_string, '%Y:%m:%d %H:%M%:z')
       when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}(\.\d{3})?Z?$]
-        Time.strptime(datetime_string, '%Y:%m:%d %H:%M:%S')
+        Time.strptime(datetime_string, '%Y:%m:%d %H:%M:%S') rescue Time.strptime(datetime_string, '%Y:%d:%m %H:%M:%S')
       when %r[^\d{4}:\d{2}:\d{2} \d{2}:\d{2}Z?$]
         Time.strptime(datetime_string, '%Y:%m:%d %H:%M')
       when %r[^D:(\d+)Z?]
