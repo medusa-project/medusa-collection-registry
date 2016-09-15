@@ -13,7 +13,7 @@ namespace :fixity do
         cfs_file.update_fixity_status_with_event
         unless cfs_file.fixity_check_status == 'ok'
           puts "#{cfs_file.id}: #{cfs_file.fixity_check_status}"
-          case cfs_file_fixity_check_status
+          case cfs_file.fixity_check_status
             when 'bad'
               errors[cfs_file] = 'Bad fixity'
             when 'nf'
