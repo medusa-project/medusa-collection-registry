@@ -1,14 +1,14 @@
 class ProducersController < ApplicationController
 
   before_action :require_medusa_user
-  before_action :find_producer, only: [:show, :destroy, :edit, :update]
+  before_action :find_producer, only: [:destroy, :edit, :update]
 
   def index
-    @producers = Producer.all
+    @producers = Producer.includes(:administrator).all
   end
 
   def show
-
+    @producer = Producer.includes(file_groups: {collection: [:contact, :repository, :bit_level_file_groups, :preservation_priority]}).find(params[:id])
   end
 
   def destroy

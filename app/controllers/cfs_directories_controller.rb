@@ -2,10 +2,9 @@ class CfsDirectoriesController < ApplicationController
 
   before_action :require_medusa_user, except: [:show, :show_tree]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :show_tree]
-  before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :fixity_check, :show_tree]
+  before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :fixity_check, :show_tree, :show]
 
   def show
-    @directory = CfsDirectory.includes(:subdirectories, :cfs_files).find(params[:id])
     @accrual = Accrual.new(cfs_directory: @directory).decorate
     @breadcrumbable = @directory
     @file_group = @directory.file_group

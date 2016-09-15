@@ -64,7 +64,11 @@ GEM
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+    brakeman (3.4.0)
     builder (3.2.2)
+    bullet (5.4.0)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.10.0)
     bunny (2.4.0)
       amq-protocol (>= 2.0.1)
     byebug (9.0.5)
@@ -270,6 +274,8 @@ GEM
       options (~> 2.3.0)
     puma (3.4.0)
     rack (1.6.4)
+    rack-mini-profiler (0.10.1)
+      rack (>= 1.2.0)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
@@ -388,12 +394,15 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
+    traceroute (0.5.0)
+      rails (>= 3.0.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
     underscore-rails (1.8.3)
     underscore-string-rails (0.0.2)
+    uniform_notifier (1.10.0)
     uuid (2.3.8)
       macaddr (~> 1.0)
     valid_email (0.0.13)
@@ -417,6 +426,8 @@ DEPENDENCIES
   auto_html (~> 1.6.4)
   auto_strip_attributes
   bootstrap-sass
+  brakeman
+  bullet
   bunny
   byebug
   cancan
@@ -468,6 +479,7 @@ DEPENDENCIES
   poltergeist
   progress_bar
   puma
+  rack-mini-profiler
   rails (~> 4.2)
   rails-jquery-autocomplete
   render_anywhere
@@ -486,6 +498,7 @@ DEPENDENCIES
   sunspot_rails
   sunspot_solr
   sunspot_test
+  traceroute
   uglifier
   underscore-rails
   underscore-string-rails

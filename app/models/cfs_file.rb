@@ -56,11 +56,15 @@ class CfsFile < ActiveRecord::Base
   end
 
   def self.with_fits
-    where(fits_serialized: true).order('id asc')
+    where(fits_serialized: true)
   end
 
   def self.without_fits
-    where(fits_serialized: false).order('id asc')
+    where(fits_serialized: false)
+  end
+
+  def self.id_order
+    order('id asc')
   end
 
   def relative_path
