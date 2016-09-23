@@ -3,7 +3,7 @@ require 'fileutils'
 namespace :fixity do
 
   DEFAULT_BATCH_SIZE = 10000
-  STOP_FILE = 'fixity_stop.txt'
+  STOP_FILE = File.join(Rails.root, 'fixity_stop.txt')
   desc "Run fixity on a number of files. BATCH_SIZE sets number (default #{DEFAULT_BATCH_SIZE})"
   task run_batch: :environment do
     batch_size = (ENV['BATCH_SIZE'] || DEFAULT_BATCH_SIZE).to_i

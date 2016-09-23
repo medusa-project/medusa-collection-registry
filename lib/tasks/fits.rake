@@ -4,7 +4,7 @@ require 'fileutils'
 namespace :fits do
 
   DEFAULT_FITS_BATCH_SIZE = 1000
-  STOP_FILE = 'fits_stop.txt'
+  STOP_FILE = File.join(Rails.root, 'fits_stop.txt')
   desc "Run fits on a number of currently unchecked files. FITS_BATCH_SIZE sets number (default #{DEFAULT_FITS_BATCH_SIZE})"
   task run_batch: :environment do
     batch_size = (ENV['FITS_BATCH_SIZE'] || ENV['BATCH_SIZE'] || DEFAULT_FITS_BATCH_SIZE).to_i
