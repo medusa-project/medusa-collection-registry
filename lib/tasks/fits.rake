@@ -22,7 +22,7 @@ namespace :fits do
           begin
            Fits::Runner.update_cfs_file(cfs_file)
           rescue Exception => fits_runner_error
-            error[cfs_file.id] = fits_runner_error
+            errors[cfs_file.id] = fits_runner_error
           end
         else
           errors[cfs_file.id] = e
