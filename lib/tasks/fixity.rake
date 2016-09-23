@@ -3,14 +3,14 @@ require 'fileutils'
 namespace :fixity do
 
   DEFAULT_BATCH_SIZE = 10000
-  STOP_FILE = File.join(Rails.root, 'fixity_stop.txt')
+  FIXITY_STOP_FILE = File.join(Rails.root, 'fixity_stop.txt')
   desc "Run fixity on a number of files. BATCH_SIZE sets number (default #{DEFAULT_BATCH_SIZE})"
   task run_batch: :environment do
     batch_size = (ENV['BATCH_SIZE'] || DEFAULT_BATCH_SIZE).to_i
     errors = Hash.new
     bar = ProgressBar.new(batch_size)
     fixity_files(batch_size).each do |cfs_file|
-      break if File.exist?(STOP_FILE)
+      break if File.exist?(FIXITY_STOP_FILE)
       begin
         cfs_file.update_fixity_status_with_event
         unless cfs_file.fixity_check_status == 'ok'
@@ -27,7 +27,7 @@ namespace :fixity do
         bar.increment!
       rescue RSolr::Error::Http => e
         errors[cfs_file] = e.to_s
-        FileUtils.touch(STOP_FILE)
+        FileUtils.touch(FIXITY_STOP_FILE)
       rescue Exception => e
         errors[cfs_file] = e.to_s
       end
