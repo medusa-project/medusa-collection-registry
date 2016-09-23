@@ -1,16 +1,22 @@
 require 'rake'
+require 'fileutils'
 
 namespace :fits do
 
   DEFAULT_FITS_BATCH_SIZE = 1000
+  STOP_FILE = 'fits_stop.txt'
   desc "Run fits on a number of currently unchecked files. FITS_BATCH_SIZE sets number (default #{DEFAULT_FITS_BATCH_SIZE})"
   task run_batch: :environment do
     batch_size = (ENV['FITS_BATCH_SIZE'] || DEFAULT_FITS_BATCH_SIZE).to_i
     errors = Hash.new
     bar = ProgressBar.new(batch_size)
     CfsFile.without_fits.id_order.where('size is not null').limit(batch_size).each do |cfs_file|
+      break if File.exist?(STOP_FILE)
       begin
         cfs_file.ensure_fits_xml
+      rescue RSolr::Error::Http => e
+        FileUtils.touch(STOP_FILE)
+        errors[cfs_file.id] = e
       rescue Exception => e
         if e.to_s.match('Code 500')
           begin
