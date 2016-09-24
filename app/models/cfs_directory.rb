@@ -226,6 +226,7 @@ class CfsDirectory < ActiveRecord::Base
     make_initial_entries
     self.cfs_files(true).each { |cfs_file| cfs_file.run_initial_assessment }
     self.subdirectories(true).each {|subdirectory| subdirectory.schedule_assessment_job} if recursive
+    Sunspot.commit
   end
 
   def schedule_fits
