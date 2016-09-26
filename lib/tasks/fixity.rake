@@ -9,7 +9,7 @@ namespace :fixity do
     batch_size = (ENV['BATCH_SIZE'] || DEFAULT_BATCH_SIZE).to_i
     errors = Hash.new
     bar = ProgressBar.new(batch_size)
-    fixity_files(batch_size).each do |cfs_file|
+    fixity_files(batch_size).each.with_index do |cfs_file, i|
       break if File.exist?(FIXITY_STOP_FILE)
       begin
         cfs_file.update_fixity_status_with_event
@@ -31,6 +31,7 @@ namespace :fixity do
       rescue Exception => e
         errors[cfs_file] = e.to_s
       end
+      Sunspot.commit if (i % 100).zero?
     end
     if errors.present?
       error_string = StringIO.new
