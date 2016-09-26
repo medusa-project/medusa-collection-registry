@@ -34,7 +34,7 @@ class CfsFile < ActiveRecord::Base
   validates_inclusion_of :fixity_check_status, in: FIXITY_STATUSES, allow_nil: true
 
   before_validation :ensure_current_file_extension
-  after_save :ensure_fits_xml_for_large_file
+  #after_save :ensure_fits_xml_for_large_file
   before_destroy :remove_fits_xml_on_destroy
 
   breadcrumbs parent: :cfs_directory, label: :name
