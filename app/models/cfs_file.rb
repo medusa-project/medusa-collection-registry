@@ -181,8 +181,9 @@ class CfsFile < ActiveRecord::Base
     self.delay(priority: 70).ensure_fits_xml if !fits_serialized? and self.size.present? and self.size > 5.gigabytes
   end
 
-  def update_fits_xml
-    self.fits_xml = self.get_fits_xml
+  def update_fits_xml(xml: nil)
+    xml ||= get_fits_xml
+    self.fits_xml = xml
     self.update_fields_from_fits
     self.save!
   end
