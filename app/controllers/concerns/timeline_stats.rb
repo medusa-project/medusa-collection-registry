@@ -23,9 +23,9 @@ module TimelineStats
     start = CfsFile.order('created_at asc').first.created_at.to_date
     current = Date.today
     last_start_of_year = if current.month >= 7
-                           current.change(day: 1, month: 7)
+                           current.change(day: 1, month: 7, year: current.year + 1)
                          else
-                           current.change(day: 1, month: 7, year: current.year - 1)
+                           current.change(day: 1, month: 7, year: current.year)
                          end
     Array.new.tap do |years|
       while last_start_of_year >= start
