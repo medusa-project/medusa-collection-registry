@@ -34,7 +34,7 @@ class CfsFile < ActiveRecord::Base
   validates_inclusion_of :fixity_check_status, in: FIXITY_STATUSES, allow_nil: true
 
   before_validation :ensure_current_file_extension
-  after_save :ensure_fits_xml_for_large_file
+  #after_save :ensure_fits_xml_for_large_file
   before_destroy :remove_fits_xml_on_destroy
 
   breadcrumbs parent: :cfs_directory, label: :name
@@ -181,8 +181,9 @@ class CfsFile < ActiveRecord::Base
     self.delay(priority: 70).ensure_fits_xml if !fits_serialized? and self.size.present? and self.size > 5.gigabytes
   end
 
-  def update_fits_xml
-    self.fits_xml = self.get_fits_xml
+  def update_fits_xml(xml: nil)
+    xml ||= get_fits_xml
+    self.fits_xml = xml
     self.update_fields_from_fits
     self.save!
   end

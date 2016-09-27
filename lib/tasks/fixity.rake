@@ -1,14 +1,16 @@
 require 'rake'
-
+require 'fileutils'
 namespace :fixity do
 
   DEFAULT_BATCH_SIZE = 10000
+  FIXITY_STOP_FILE = File.join(Rails.root, 'fixity_stop.txt')
   desc "Run fixity on a number of files. BATCH_SIZE sets number (default #{DEFAULT_BATCH_SIZE})"
   task run_batch: :environment do
     batch_size = (ENV['BATCH_SIZE'] || DEFAULT_BATCH_SIZE).to_i
     errors = Hash.new
     bar = ProgressBar.new(batch_size)
-    fixity_files(batch_size).each do |cfs_file|
+    fixity_files(batch_size).each.with_index do |cfs_file, i|
+      break if File.exist?(FIXITY_STOP_FILE)
       begin
         cfs_file.update_fixity_status_with_event
         unless cfs_file.fixity_check_status == 'ok'
@@ -23,9 +25,13 @@ namespace :fixity do
           end
         end
         bar.increment!
+      rescue RSolr::Error::Http => e
+        errors[cfs_file] = e.to_s
+        FileUtils.touch(FIXITY_STOP_FILE)
       rescue Exception => e
         errors[cfs_file] = e.to_s
       end
+      Sunspot.commit if (i % 100).zero?
     end
     if errors.present?
       error_string = StringIO.new
@@ -35,6 +41,7 @@ namespace :fixity do
       end
       GenericErrorMailer.error(error_string.string).deliver_now
     end
+    Sunspot.commit
   end
 end
 

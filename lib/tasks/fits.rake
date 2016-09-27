@@ -1,22 +1,28 @@
 require 'rake'
+require 'fileutils'
 
 namespace :fits do
 
   DEFAULT_FITS_BATCH_SIZE = 1000
-  desc "Run fits on a number of currently unchecked files. FITS_BATCH_SIZE sets number (default #{DEFAULT_FITS_BATCH_SIZE})"
+  FITS_STOP_FILE = File.join(Rails.root, 'fits_stop.txt')
+  desc "Run fits on a number of currently unchecked files. [FITS_]BATCH_SIZE sets number (default #{DEFAULT_FITS_BATCH_SIZE})"
   task run_batch: :environment do
-    batch_size = (ENV['FITS_BATCH_SIZE'] || DEFAULT_FITS_BATCH_SIZE).to_i
+    batch_size = (ENV['FITS_BATCH_SIZE'] || ENV['BATCH_SIZE'] || DEFAULT_FITS_BATCH_SIZE).to_i
     errors = Hash.new
     bar = ProgressBar.new(batch_size)
     CfsFile.without_fits.id_order.where('size is not null').limit(batch_size).each do |cfs_file|
+      break if File.exist?(FITS_STOP_FILE)
       begin
         cfs_file.ensure_fits_xml
+      rescue RSolr::Error::Http => e
+        FileUtils.touch(FITS_STOP_FILE)
+        errors[cfs_file.id] = e
       rescue Exception => e
         if e.to_s.match('Code 500')
           begin
-           Fits::Runner.update_cfs_file(cfs_file)
+            Fits::Runner.update_cfs_file(cfs_file)
           rescue Exception => fits_runner_error
-            error[cfs_file.id] = fits_runner_error
+            errors[cfs_file.id] = fits_runner_error
           end
         else
           errors[cfs_file.id] = e
@@ -35,5 +41,78 @@ namespace :fits do
     end
     Sunspot.commit
   end
+
+  desc "Run fits via AMQP on a number of currently unchecked files. [FITS_]BATCH_SIZE sets number (default #{DEFAULT_FITS_BATCH_SIZE})"
+  task run_amqp_batch: :environment do
+    errors = Hash.new
+    messages_to_handle = if outgoing_message_count.zero?
+                           request_fits_amqp
+                         else
+                           incoming_message_count
+                         end
+    bar = ProgressBar.new([messages_to_handle, 1].max)
+    while messages_to_handle > 0 or incoming_message_count > 0 do
+      break if File.exist?(FITS_STOP_FILE)
+      AmqpConnector.connector(:medusa).with_parsed_message(Settings.fits.incoming_queue) do |message|
+        if message
+          messages_to_handle -= 1
+          cfs_file = CfsFile.find(message['pass_through']['cfs_file_id'])
+          #puts "Handling: #{cfs_file.id}"
+          begin
+            if message['status'] == 'success'
+              cfs_file.update_fits_xml(xml: message['parameters']['fits_xml'])
+            else
+              Fits::Runner.update_cfs_file(cfs_file)
+            end
+          rescue RSolr::Error::Http => e
+            FileUtils.touch(FITS_STOP_FILE)
+            errors[cfs_file.id] = e
+          rescue Exception => e
+            errors[cfs_file.id] = e
+          end
+          bar.increment!
+        else
+          sleep 10
+        end
+      end
+    end
+    if errors.present?
+      error_string = StringIO.new
+      error_string << "Fits Errors\n\n"
+      errors.each do |id, error|
+        error_string.puts "#{id}: #{error}"
+      end
+      GenericErrorMailer.error(error_string.string).deliver_now
+    end
+    Sunspot.commit
+  end
+
+  def incoming_message_count
+    AmqpConnector.connector(:medusa).with_queue(Settings.fits.incoming_queue) { |q| q.message_count }
+  end
+
+  def outgoing_message_count
+    AmqpConnector.connector(:medusa).with_queue(Settings.fits.outgoing_queue) { |q| q.message_count }
+  end
+
+  #returns number of requests sent
+  def request_fits_amqp
+    batch_size = (ENV['FITS_BATCH_SIZE'] || ENV['BATCH_SIZE'] || DEFAULT_FITS_BATCH_SIZE).to_i
+    files = CfsFile.without_fits.id_order.where('size is not null').limit(batch_size)
+    count = 0 #keep separately, since we might not get batch_size
+    files.each do |cfs_file|
+      #puts "Requesting: #{cfs_file.id}"
+      AmqpConnector.connector(:medusa).send_message(Settings.fits.outgoing_queue, fits_request(cfs_file))
+      count += 1
+    end
+    return count
+  end
+
+  def fits_request(cfs_file)
+    {action: 'fits',
+     pass_through: {cfs_file_id: cfs_file.id},
+     parameters: {path: cfs_file.relative_path}}
+  end
+
 end
 
