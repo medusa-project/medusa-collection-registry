@@ -4,7 +4,7 @@
 
 %hr
 
-%h3 Monthly
+%h3 Monthly (Past year)
 = render layout: 'layouts/standard_table', locals: {id: :monthly_timeline, headers: ['Period', 'Count', 'Size']} do
   = render partial: 'table_row', collection: @monthly_stats, as: :info
   

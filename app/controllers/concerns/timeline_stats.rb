@@ -22,17 +22,22 @@ module TimelineStats
   def years_for_stats
     start = CfsFile.order('created_at asc').first.created_at.to_date
     current = Date.today
+    last_start_of_year = if current.month >= 7
+                           current.change(day: 1, month: 7)
+                         else
+                           current.change(day: 1, month: 7, year: current.year - 1)
+                         end
     Array.new.tap do |years|
-      while current >= start
-        years.unshift(current)
-        current = current - 1.year
+      while last_start_of_year >= start
+        years.unshift(last_start_of_year)
+        last_start_of_year = last_start_of_year - 1.year
       end
-    end.collect {|x| x - 1.year}
+    end.collect { |x| x - 1.year }
   end
 
   def months_for_stats
     start = Date.today.change(day: 1)
-    (0..11).collect {|offset| start - offset.months}.reverse
+    (0..11).collect { |offset| start - offset.months }.reverse
   end
 
   def stats_for_period(start, finish)
