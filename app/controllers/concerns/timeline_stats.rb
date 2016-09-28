@@ -41,7 +41,11 @@ module TimelineStats
   end
 
   def stats_for_period(start, finish)
-    sql = CfsFile.where('created_at >= ?', start).where('created_at < ?', finish).select('COUNT(*) AS count, SUM(size) AS size').to_sql
+    sql = <<SQL
+    SELECT COALESCE(SUM(COALESCE(count,0)), 0) AS count, COALESCE(SUM(COALESCE(size,0)),0) AS size FROM timeline_stats
+    WHERE month >= '#{start}' AND month < '#{finish}'
+SQL
+    #sql = CfsFile.where('created_at >= ?', start).where('created_at < ?', finish).select('COUNT(*) AS count, SUM(size) AS size').to_sql
     CfsFile.connection.select_all(sql).first.to_hash.merge(start: start, finish: finish).with_indifferent_access.tap do |hash|
       hash[:size] ||= 0
       hash[:size] = hash[:size].to_i
