@@ -1,3 +1,5 @@
+%p These statistics are generated daily and hence may be slightly out of date.
+
 %h3 Yearly
 = render layout: 'layouts/standard_table', locals: {id: :yearly_timeline, headers: ['Period', 'Count', 'Size']} do
   = render partial: 'table_row', collection: @yearly_stats, as: :info
