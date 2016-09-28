@@ -32,8 +32,8 @@ ActiveRecord::Base.transaction do
     end
   end
 
-#load all views used by the application
-  Dir.chdir(File.join(Rails.root, 'db', 'views')) do
+#load all views and functions used by the application
+  Dir.chdir(File.join(Rails.root, 'db', 'views_and_functions')) do
     Dir['*.sql'].sort.each do |view_file|
       ActiveRecord::Base.connection.execute(File.read(view_file))
     end
