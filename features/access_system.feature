@@ -7,20 +7,20 @@ Feature: Access Systems
     Given I am logged in as an admin
     And every access system with fields exists:
       | name      | service_owner | application_manager |
-      | ContentDM | Tim           | Mike                |
+      | ContentDM | Timothy       | Mike                |
       | Dspace    | Sarah         | Seth                |
 
   Scenario: View index
     When I go to the access system index page
     Then I should be on the access system index page
     And I should see all of:
-      | ContentDM | Tim | Mike | Dspace | Sarah | Seth |
+      | ContentDM | Timothy | Mike | Dspace | Sarah | Seth |
 
   Scenario: View an access system
     When I view the access system with name 'ContentDM'
     Then I should be on the view page for the access system with name 'ContentDM'
     And I should see all of:
-      | Name | Service Owner | Application Manager | ContentDM | Tim | Mike |
+      | Name | Service Owner | Application Manager | ContentDM | Timothy | Mike |
 
   Scenario: Edit an access system
     When I edit the access system with name 'ContentDM'
@@ -34,7 +34,7 @@ Feature: Access Systems
     And I should see all of:
       | Cole | Tang | Blacklight |
     And I should see none of:
-      | Tim | Mike | ContentDB |
+      | Timothy | Mike | ContentDB |
 
   Scenario: Invalid edit of an access system
     When I edit the access system with name 'ContentDM'
@@ -93,7 +93,7 @@ Feature: Access Systems
     When I go to the access system index page
     And I click on 'ContentDM'
     Then I should see all of:
-      | Dogs | Cats | Collections |ContentDM |
+      | Dogs | Cats | Collections | ContentDM |
     And I should not see 'Bats'
 
   Scenario: View collections associated with an access system as a manager
