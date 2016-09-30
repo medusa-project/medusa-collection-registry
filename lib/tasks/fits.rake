@@ -70,6 +70,7 @@ namespace :fits do
           rescue Exception => e
             errors[cfs_file.id] = e
           end
+          Sunspot.commit if (messages_to_handle % 100).zero?
           bar.increment!
         else
           sleep 10
