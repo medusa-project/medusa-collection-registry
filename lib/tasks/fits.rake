@@ -44,13 +44,39 @@ namespace :fits do
 
   desc "Run fits via AMQP on a number of currently unchecked files. [FITS_]BATCH_SIZE sets number (default #{DEFAULT_FITS_BATCH_SIZE})"
   task run_amqp_batch: :environment do
-    errors = Hash.new
     messages_to_handle = if outgoing_message_count.zero?
                            request_fits_amqp
                          else
                            incoming_message_count
                          end
-    bar = ProgressBar.new([messages_to_handle, 1].max)
+    errors = handle_incoming_messages(messages_to_handle)
+    if errors.present?
+      error_string = StringIO.new
+      error_string << "Fits Errors\n\n"
+      errors.each do |id, error|
+        error_string.puts "#{id}: #{error}"
+      end
+      GenericErrorMailer.error(error_string.string).deliver_now
+    end
+  end
+
+  desc "Handle incoming fits amqp messages."
+  task handle_incoming_amqp_messages: :environment do
+    errors = handle_incoming_messages(incoming_message_count)
+    if errors.present?
+      error_string = StringIO.new
+      error_string << "Fits Errors\n\n"
+      errors.each do |id, error|
+        error_string.puts "#{id}: #{error}"
+      end
+      GenericErrorMailer.error(error_string.string).deliver_now
+    end
+  end
+
+  #return a hash of any errors
+  def handle_incoming_messages(messages_to_handle)
+    bar ||= ProgressBar.new([messages_to_handle, 1].max)
+    errors = Hash.new
     while messages_to_handle > 0 or incoming_message_count > 0 do
       break if File.exist?(FITS_STOP_FILE)
       AmqpConnector.connector(:medusa).with_parsed_message(Settings.fits.incoming_queue) do |message|
@@ -77,15 +103,8 @@ namespace :fits do
         end
       end
     end
-    if errors.present?
-      error_string = StringIO.new
-      error_string << "Fits Errors\n\n"
-      errors.each do |id, error|
-        error_string.puts "#{id}: #{error}"
-      end
-      GenericErrorMailer.error(error_string.string).deliver_now
-    end
     Sunspot.commit
+    return errors
   end
 
   def incoming_message_count
