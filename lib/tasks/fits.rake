@@ -50,27 +50,13 @@ namespace :fits do
                            incoming_message_count
                          end
     errors = handle_incoming_messages(messages_to_handle)
-    if errors.present?
-      error_string = StringIO.new
-      error_string << "Fits Errors\n\n"
-      errors.each do |id, error|
-        error_string.puts "#{id}: #{error}"
-      end
-      GenericErrorMailer.error(error_string.string).deliver_now
-    end
+    report_errors(errors)
   end
 
   desc "Handle incoming fits amqp messages."
   task handle_incoming_amqp_messages: :environment do
     errors = handle_incoming_messages(incoming_message_count)
-    if errors.present?
-      error_string = StringIO.new
-      error_string << "Fits Errors\n\n"
-      errors.each do |id, error|
-        error_string.puts "#{id}: #{error}"
-      end
-      GenericErrorMailer.error(error_string.string).deliver_now
-    end
+    report_errors(errors)
   end
 
   #return a hash of any errors
@@ -105,6 +91,17 @@ namespace :fits do
     end
     Sunspot.commit
     return errors
+  end
+
+  def report_errors(errors)
+    if errors.present?
+      error_string = StringIO.new
+      error_string << "Fits Errors\n\n"
+      errors.each do |id, error|
+        error_string.puts "#{id}: #{error}"
+      end
+      GenericErrorMailer.error(error_string.string).deliver_now
+    end
   end
 
   def incoming_message_count
