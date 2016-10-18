@@ -9,4 +9,11 @@
 %h3 Monthly (Past year)
 = render layout: 'layouts/standard_table', locals: {id: :monthly_timeline, headers: ['Period', 'Count', 'Size']} do
   = render partial: 'table_row', collection: @monthly_stats, as: :info
-  
+
+%hr
+
+%h3 Monthly Size Graph
+= line_chart @all_monthly_stats.collect {|k,v| [k, v[:size] / 1.terabyte.to_f]}, xtitle: 'Month', ytitle: 'Size (TB)'
+
+%h3 Monthly Count Graph
+= line_chart @all_monthly_stats.collect {|k,v| [k, v[:count] / 1000000.0]}, xtitle: 'Month', ytitle: 'Count (Millions)'

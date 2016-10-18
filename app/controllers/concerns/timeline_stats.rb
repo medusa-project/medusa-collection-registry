@@ -17,6 +17,24 @@ module TimelineStats
     end
   end
 
+  def all_monthly_stats
+    db_stats = stats_by_month
+    count = 0
+    size = 0
+    date = db_stats.keys.first
+    Hash.new.tap do |h|
+      while true
+        if db_stats[date]
+          count += db_stats[date][:count]
+          size += db_stats[date][:size]
+        end
+        h[date] = {count: count, size: size}
+        date = date + 1.month
+        break if date > Date.today
+      end
+    end
+  end
+
   protected
 
   def years_for_stats
@@ -45,10 +63,23 @@ module TimelineStats
     SELECT COALESCE(SUM(COALESCE(count,0)), 0) AS count, COALESCE(SUM(COALESCE(size,0)),0) AS size FROM timeline_stats
     WHERE month >= '#{start}' AND month < '#{finish}'
 SQL
-    #sql = CfsFile.where('created_at >= ?', start).where('created_at < ?', finish).select('COUNT(*) AS count, SUM(size) AS size').to_sql
     CfsFile.connection.select_all(sql).first.to_hash.merge(start: start, finish: finish).with_indifferent_access.tap do |hash|
       hash[:size] ||= 0
       hash[:size] = hash[:size].to_i
+    end
+  end
+
+  #this gets us the size and count by month (in order) as a hash keyed on the month
+  def stats_by_month
+    sql = <<SQL
+    SELECT month, count, size FROM timeline_stats ORDER BY month ASC
+SQL
+    hashes = CfsFile.connection.select_all(sql).to_hash
+    Hash.new.tap do |h|
+      hashes.each do |month_info|
+        day = Date.parse(month_info['month'])
+        h[day] = {count: month_info['count'].to_i, size: month_info['size'].to_i}
+      end
     end
   end
 

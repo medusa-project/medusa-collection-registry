@@ -40,8 +40,12 @@ gem 'daemons-rails'
 #image processing for file previews
 #problem installing 1.0.0 - couldn't compile dependency glib2(3.0.8) on the servers
 #revisit this later
+#I think that this may have to wait until we get off RHEL 6 on these servers - even by
+#hand I can't install the necessary libraries because of old dependencies.
 #It also appears that ruby-vips -> 1.0.0 corresponds to vips7 -> vips8, which
 #introduces some API changes and other complications - see the ruby-vips github page
+#Alternately, we may just decide that Cantaloupe is good enough and get rid of the fallback, or revert
+#the fallback to ImageMagick.
 gem 'ruby-vips', '~>0.3.14', require: 'vips'
 
 #AMQP communication
@@ -105,6 +109,8 @@ gem 'render_anywhere', require: false
 
 gem 'os'
 gem 'leveldb'
+
+gem 'chartkick'
 
 group :development, :test do
   gem 'rspec-rails'
