@@ -57,7 +57,7 @@ class FitsResult < Object
     File.open(storage_file, 'w') do |f|
       f.write(string)
     end
-    self.cfs_file.update_attribute(:fits_serialized, true)
+    self.cfs_file.update_attribute(:fits_serialized, true) unless self.cfs_file.fits_serialized
   end
 
   def new?
