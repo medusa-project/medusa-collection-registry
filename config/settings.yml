@@ -142,6 +142,7 @@ events:
   cfs_file:
     fixity_check_run: Fixity check run
     fixity_result: Fixity result
+    fixity_reset: Fixity reset
 rights_fields:
   default_rights_basis: copyright
   rights_bases:

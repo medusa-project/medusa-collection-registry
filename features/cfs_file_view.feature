@@ -78,7 +78,7 @@ Feature: Viewing CFS file information and content
     And the cfs file with name 'grass.jpg' should have fits data matching:
       | file_format              | JPEG File Interchange Format                              |
       | file_format_version      | 1.01                                                      |
-      | file_size                | 169804.0                                                    |
+      | file_size                | 169804.0                                                  |
       | creating_application     | CREATOR: gd-jpeg v1.0 (using IJG JPEG v62), quality = 100 |
       | well_formed              | true                                                      |
       | is_valid                 | true                                                      |
@@ -92,3 +92,8 @@ Feature: Viewing CFS file information and content
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
     And I click on 'View' in the cfs file metadata
     Then I should be on the fits info page for the cfs file at path 'grass.jpg' for the file group titled 'Dogs'
+
+  Scenario: Reset fixity/FITS information for a file
+    Given the cfs file at path 'grass.jpg' for the file group titled 'Dogs' has fits attached
+    When I reset fixity and FITS information for the cfs file named 'grass.jpg'
+    Then the cfs file at path 'grass.jpg' for the file group titled 'Dogs' should have been fixity and fits reset

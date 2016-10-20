@@ -299,6 +299,23 @@ class CfsFile < ActiveRecord::Base
     previewer_type == :image
   end
 
+  def reset_fixity_and_fits!(actor_email: nil)
+    actor_email ||= Settings.medusa.email.admin
+    transaction do
+      self.md5_sum = nil
+      self.size = nil
+      self.mtime = nil
+      self.content_type = nil
+      self.fixity_check_time = nil
+      self.fixity_check_status = nil
+      self.fits_data.destroy!
+      self.events.create(key: :fixity_reset, note: 'Overwriting accrual', cascadable: false, actor_email: actor_email)
+      #we do this one last because it has an effect outside the database, viz. removing the fits file
+      self.fits_result.remove_serialized_xml
+      save!
+    end
+  end
+
   protected
 
   def get_fits_xml

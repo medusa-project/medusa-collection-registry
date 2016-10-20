@@ -166,6 +166,16 @@ And(/^the cfs file at path '([^']*)' for the file group titled '([^']*)' has fit
   end
 end
 
+And(/^the cfs file at path '([^']*)' for the file group titled '([^']*)' should have been fixity and fits reset$/) do |path, title|
+  with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
+    %i(md5_sum size mtime content_type_id fixity_check_time fixity_check_status fits_xml fits_data).each do |field|
+      expect(cfs_file.send(field)).to be_nil
+    end
+    expect(cfs_file.fits_serialized).to eq(false)
+    expect(cfs_file.events.where(key: 'fixity_reset').count).to eql(1)
+  end
+end
+
 And(/^the cfs file at path '([^']*)' for the file group titled '([^']*)' has fits rerun$/) do |path, title|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     cfs_file.update_fits_xml
@@ -192,4 +202,8 @@ Then(/^I should see a table of cfs files with (\d+) rows?$/) do |count|
   within('#cfs_files') do
     expect(page).to have_css('tbody tr', count: count.to_i)
   end
+end
+
+When(/^I reset fixity and FITS information for the cfs file named '(.*)'$/) do |name|
+  CfsFile.find_by(name: name).reset_fixity_and_fits!
 end

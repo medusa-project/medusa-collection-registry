@@ -5,3 +5,4 @@ And(/^the cfs file with name '([^']*)' should have fits data matching:$/) do |na
     expect(fits_data.send(field).to_s).to eq(value)
   end
 end
+
