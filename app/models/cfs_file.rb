@@ -308,7 +308,7 @@ class CfsFile < ActiveRecord::Base
       self.content_type = nil
       self.fixity_check_time = nil
       self.fixity_check_status = nil
-      self.fits_data.destroy!
+      self.fits_data.try(:destroy!)
       self.events.create(key: :fixity_reset, note: 'Overwriting accrual', cascadable: false, actor_email: actor_email)
       #we do this one last because it has an effect outside the database, viz. removing the fits file
       self.fits_result.remove_serialized_xml

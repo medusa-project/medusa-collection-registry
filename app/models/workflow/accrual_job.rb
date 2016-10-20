@@ -180,12 +180,17 @@ Paths are stored for inspection in #{tmpfile} on the server.
 
   def perform_copying
     if has_serious_conflicts?
+      reset_conflict_fixities_and_fits
       internal_perform_copying(overwrite: true)
     else
       internal_perform_copying(overwrite: false)
     end
     cfs_directory.events.create!(key: 'deposit_completed', cascadable: true,
                                  note: "Accrual from #{staging_path}", actor_email: user.email)
+  end
+
+  def reset_conflict_fixities_and_fits
+    workflow_accrual_conflicts.where(different: true).find_each {|conflict| conflict.reset_cfs_file}
   end
 
   def staging_local_path

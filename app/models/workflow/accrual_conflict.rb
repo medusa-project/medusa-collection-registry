@@ -9,4 +9,13 @@ class Workflow::AccrualConflict < ActiveRecord::Base
     where(different: true)
   end
 
+  def cfs_file
+    workflow_accrual_job.cfs_directory.find_file_at_relative_path(path)
+  end
+
+  def reset_cfs_file
+    file = self.try(:cfs_file)
+    file.reset_fixity_and_fits!(actor_email: workflow_accrual_job.user.email) if file
+  end
+
 end

@@ -222,6 +222,8 @@ Feature: File accrual
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'pugs/description.txt' matching 'Changed Description text.'
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt' matching 'Changed Intro text.'
+    And the cfs_file with name 'intro.txt' should have an event with key 'fixity_reset' performed by 'manager@example.com'
+    And the cfs_file with name 'description.txt' should have an event with key 'fixity_reset' performed by 'manager@example.com'
     And accrual amazon backup for file group 'Dogs' and user 'manager@example.com' should happen
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
