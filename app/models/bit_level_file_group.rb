@@ -88,11 +88,7 @@ class BitLevelFileGroup < FileGroup
   end
 
   def amazon_backups
-    if self.cfs_directory.present?
-      self.cfs_directory.amazon_backups
-    else
-      []
-    end
+    self.cfs_directory.present? ? self.cfs_directory.amazon_backups : []
   end
 
   def last_amazon_backup

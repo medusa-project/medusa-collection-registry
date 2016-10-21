@@ -18,7 +18,8 @@ class Collection < ActiveRecord::Base
 
   has_many :assessments, dependent: :destroy, as: :assessable
   has_many :file_groups, dependent: :destroy
-  has_many :bit_level_file_groups, -> {where('type = ?', 'BitLevelFileGroup')}, class_name: 'FileGroup'
+  has_many :file_group_assessments, through: :file_groups, source: :assessments
+  has_many :bit_level_file_groups, -> { where('type = ?', 'BitLevelFileGroup') }, class_name: 'FileGroup'
   has_many :access_system_collection_joins, dependent: :destroy
   has_many :access_systems, through: :access_system_collection_joins
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
@@ -58,11 +59,11 @@ class Collection < ActiveRecord::Base
   end
 
   def total_size
-    self.bit_level_file_groups.collect { |fg| fg.file_size }.sum
+    self.bit_level_file_groups.sum('COALESCE(file_groups.total_file_size, 0)')
   end
 
   def total_files
-    self.bit_level_file_groups.collect { |fg| fg.total_files }.sum
+    self.bit_level_file_groups.sum('file_groups.total_files')
   end
 
   def medusa_url
@@ -70,12 +71,11 @@ class Collection < ActiveRecord::Base
   end
 
   def ensure_rights_declaration
-    self.rights_declaration ||= RightsDeclaration.new(rights_declarable_id: self.id,
-                                                      rights_declarable_type: 'Collection')
+    self.rights_declaration ||= self.build_rights_declaration
   end
 
   def recursive_assessments
-    (self.assessments + self.file_groups.collect { |file_group| file_group.assessments }.flatten)
+    self.assessments + self.file_group_assessments
   end
 
   def to_mods
