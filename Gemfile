@@ -124,9 +124,9 @@ end
 group :development do
   #gem 'newrelic_rpm'
   gem 'traceroute'
-  gem 'rack-mini-profiler'
-  gem 'bullet'
-  gem 'brakeman', require: false
+  #gem 'rack-mini-profiler'
+  #gem 'bullet'
+  #gem 'brakeman', require: false
 end
 
 group :test do

@@ -5,6 +5,17 @@
       = show_field @collection, :description_html, 'Description'
       = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
       = show_field @collection, :resource_type_names, 'Type of Resource'
+    - if @collection.child_collections.present?
+      .well
+        %h3 Child Collections
+        - @collection.child_collections.each do |child|
+          %p= link_to child.title, child
+    - if @collection.parent_collections.present?
+      .well
+        %h3 Parent Collections
+        - @collection.parent_collections.each do |parent|
+          %p= link_to parent.title, parent
+
   .col-md-4
     .well
       %h3 Administrative metadata

@@ -58,5 +58,3 @@ And(/^I submit the new event form on the collection view page$/) do
     click_on 'Create Event'
   end
 end
-
-
