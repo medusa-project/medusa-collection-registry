@@ -18,13 +18,18 @@ class Collection < ActiveRecord::Base
 
   has_many :assessments, dependent: :destroy, as: :assessable
   has_many :file_groups, dependent: :destroy
-  has_many :bit_level_file_groups, -> {where('type = ?', 'BitLevelFileGroup')}, class_name: 'FileGroup'
+  has_many :bit_level_file_groups, -> { where('type = ?', 'BitLevelFileGroup') }, class_name: 'FileGroup'
   has_many :access_system_collection_joins, dependent: :destroy
   has_many :access_systems, through: :access_system_collection_joins
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
   has_many :attachments, as: :attachable, dependent: :destroy
   has_many :projects
   has_many :collection_virtual_repository_joins, dependent: :destroy
+
+  has_many :child_collection_joins, class_name: 'SubcollectionJoin', foreign_key: :parent_collection_id, dependent: :destroy
+  has_many :child_collections, -> { order('title ASC') }, through: :child_collection_joins
+  has_many :parent_collection_joins, class_name: 'SubcollectionJoin', foreign_key: :child_collection_id, dependent: :destroy
+  has_many :parent_collections, -> { order('title ASC') }, through: :parent_collection_joins
 
   delegate :title, to: :repository, prefix: true
   delegate :name, to: :preservation_priority, prefix: true, allow_nil: true
@@ -84,6 +89,10 @@ class Collection < ActiveRecord::Base
 
   def metadata_helper
     MetadataHelper::Collection.new(self)
+  end
+
+  def peer_collections
+    repository.collections.order('title ASC').where.not(id: id)
   end
 
 end

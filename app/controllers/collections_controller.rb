@@ -117,7 +117,7 @@ class CollectionsController < ApplicationController
                                :preservation_priority_id, :package_profile_id, :contact_email, :external_id,
                                rights_declaration_attributes: [:rights_basis, :copyright_jurisdiction, :copyright_statement,
                                                                :access_restrictions, :custom_copyright_statement, :id],
-                               resource_type_ids: [], access_system_ids: []
+                               resource_type_ids: [], access_system_ids: [], child_collection_ids: []
     )
   end
 

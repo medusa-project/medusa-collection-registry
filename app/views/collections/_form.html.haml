@@ -23,3 +23,5 @@
             = f.input :notes
           #rights-metadata.tab-pane
             = render partial: 'rights_declarations/nested_form', locals: {containing_form: f, rights_declaration: @collection.rights_declaration}
+          #subcollections.tab-pane
+            = f.association :child_collections, as: :check_boxes, collection: @collection.peer_collections, label: false

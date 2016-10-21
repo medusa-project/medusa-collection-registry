@@ -13,7 +13,7 @@ module CollectionsHelper
   end
 
   def collection_form_tab_list
-    %w(descriptive-metadata administrative-metadata rights-metadata)
+    %w(descriptive-metadata administrative-metadata rights-metadata subcollections)
   end
 
   #map collection id to total size
