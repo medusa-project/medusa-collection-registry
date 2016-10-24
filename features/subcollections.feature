@@ -49,12 +49,16 @@ Feature: Subcollections
   Scenario: See parent collections in child JSON
     Given I provide basic authentication
     When I view JSON for the collection with title 'Dogs'
-    Then the JSON at "child_collection_ids" should have 1 entry
-    And the JSON at "child_collection_ids/0" should be 103
+    Then the JSON at "child_collections" should have 1 entry
+    And the JSON at "child_collections/0/id" should be 103
+    And the JSON at "child_collections/0/path" should be "/collections/103.json"
+    And the JSON at "child_collections/0/uuid" should be a string
 
   Scenario: See child collections in parent JSON
     Given I provide basic authentication
     When I view JSON for the collection with title 'Toys'
-    Then the JSON at "parent_collection_ids" should have 1 entry
-    And the JSON at "parent_collection_ids/0" should be 101
+    Then the JSON at "parent_collections" should have 1 entry
+    And the JSON at "parent_collections/0/id" should be 101
+    And the JSON at "parent_collections/0/path" should be "/collections/101.json"
+    And the JSON at "parent_collections/0/uuid" should be a string
 
