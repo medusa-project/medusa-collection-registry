@@ -86,11 +86,12 @@ namespace :fits do
           continue = false
         end
         id = store[:ids].pop
-        cfs_file = CfsFile.find(id)
-        xml = cfs_file.fits_xml
-        doc = Nokogiri::XML(xml)
-        doc.css('fits toolOutput').remove
-        cfs_file.fits_result.xml = doc.to_xml
+        if cfs_file = CfsFile.find_by(id: id)
+          xml = cfs_file.fits_xml
+          doc = Nokogiri::XML(xml)
+          doc.css('fits toolOutput').remove
+          cfs_file.fits_result.xml = doc.to_xml
+        end
         bar.increment!
       end
     end
@@ -106,7 +107,7 @@ namespace :fits do
     end
     store = PStore.new(store_file)
     store.ultra_safe = true
-    count = store.transaction {store[:ids].count}
+    count = store.transaction { store[:ids].count }
     puts "#{count} long fits files remaining"
   end
 
