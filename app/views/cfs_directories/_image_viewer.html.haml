@@ -3,5 +3,8 @@
   .galleria
   :javascript
     var galleria_data = #{data_hashes.to_json};
+    Galleria.ready(function (options) {
+      this.lazyLoadChunks(10, 2000);
+    });
     Galleria.run('.galleria', {dataSource: galleria_data, height: 600,
-                                popupLinks: true, thumbCrop: false});
+                                popupLinks: true, thumbCrop: false, thumbnails: 'lazy'});
