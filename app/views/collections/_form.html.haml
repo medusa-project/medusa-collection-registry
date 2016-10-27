@@ -10,6 +10,7 @@
             = f.association :repository, collection: repository_select_collection, include_blank: false, selected: @repository.id
             = f.input :description
             = f.input :access_url, as: :string, label: 'Access URL'
+            = f.input :physical_collection_url, as: :string, label: 'Physical collection URL'
             = f.association :resource_types, as: :check_boxes, wrapper_html: {id: 'resource_types'}, wrapper: :horizontal_radio_and_checkboxes
           #administrative-metadata.tab-pane
             = f.input :external_id, label: 'External ID'

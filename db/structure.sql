@@ -1855,7 +1855,8 @@ CREATE TABLE collections (
     external_id character varying(255),
     publish boolean DEFAULT false,
     representative_image character varying DEFAULT ''::character varying,
-    representative_item character varying DEFAULT ''::character varying
+    representative_item character varying DEFAULT ''::character varying,
+    physical_collection_url character varying
 );
 
 
@@ -7456,4 +7457,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160915141932');
 INSERT INTO schema_migrations (version) VALUES ('20160919141735');
 
 INSERT INTO schema_migrations (version) VALUES ('20161021160022');
+
+INSERT INTO schema_migrations (version) VALUES ('20161027171950');
 

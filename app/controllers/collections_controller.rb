@@ -111,7 +111,7 @@ class CollectionsController < ApplicationController
   end
 
   def allowed_params
-    params[:collection].permit(:access_url, :description, :private_description, :end_date, :notes,
+    params[:collection].permit(:access_url, :physical_collection_url, :description, :private_description, :end_date, :notes,
                                :repository_id, :start_date, :title,
                                :publish, :representative_image, :representative_item,
                                :preservation_priority_id, :package_profile_id, :contact_email, :external_id,

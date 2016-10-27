@@ -39,16 +39,17 @@ Feature: Collection description
   Scenario: Edit a collection
     When I edit the collection with title 'dogs'
     And I fill in fields:
-      | Description          | Puppy stuff          |
-      | Private description  | Internal puppy stuff |
-      | External ID          | external-puppy-id    |
-      | Representative image | my_image_url         |
-      | Representative item  | my_item_url          |
+      | Description             | Puppy stuff                    |
+      | Private description     | Internal puppy stuff           |
+      | External ID             | external-puppy-id              |
+      | Representative image    | my_image_url                   |
+      | Representative item     | my_item_url                    |
+      | Physical collection URL | http://physical.collection.url |
     And I check 'Publish'
     And I press 'Update'
     Then I should be on the view page for the collection with title 'dogs'
     And I should see all of:
-      | Puppy stuff | Internal puppy stuff | external-puppy-id | my_image_url | my_item_url |
+      | Puppy stuff | Internal puppy stuff | external-puppy-id | my_image_url | my_item_url | http://physical.collection.url |
     And I should see none of:
       | Dog stuff | external-dogs-id |
 

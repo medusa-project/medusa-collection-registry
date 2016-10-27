@@ -4,6 +4,7 @@
       %h3 Descriptive metadata
       = show_field @collection, :description_html, 'Description'
       = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
+      = show_value link_to_external(@collection.physical_collection_url, @collection.physical_collection_url), 'Physical collection URL'
       = show_field @collection, :resource_type_names, 'Type of Resource'
     - if @collection.child_collections.present?
       .well
