@@ -22,8 +22,10 @@ class DirectoryTreeComparator < Object
 
   def analyze
     uuid = UUID.generate
-    db_dir = File.join(Dir.tmpdir, "leveldb-#{uuid}")
-    db = LevelDB::DB.new(db_dir)
+    db_dir = File.join(Dir.tmpdir, "lmdb-#{uuid}")
+    FileUtils.mkdir_p(db_dir)
+    env = LMDB.new(db_dir)
+    db = env.database
     with_all_files_and_sizes(source_directory) do |path, source_size|
       db[path] = source_size
     end
@@ -37,9 +39,9 @@ class DirectoryTreeComparator < Object
         target_only_paths << path
       end
     end
-    self.source_only_paths = db.keys.to_set
+    self.source_only_paths = db.collect{|k, v| k}.to_set
   ensure
-    db.close if db
+    env.close if env
     FileUtils.rm_rf(db_dir) if db_dir and Dir.exist?(db_dir)
   end
 

@@ -73,8 +73,8 @@ gem 'nokogiri'
 gem 'omniauth'
 gem 'omniauth-shibboleth'
 gem 'cancan'
-#gem 'handle-server', '~> 1.0.1', git: 'git://github.com/medusa-project/handle-server.git'
-#gem 'httparty'
+gem 'handle-server', '~> 1.0.1', git: 'git://github.com/medusa-project/handle-server.git'
+gem 'httparty'
 gem 'net-ldap'
 
 # Deploy with Capistrano
@@ -93,58 +93,58 @@ gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'draper'
 
-# gem 'uuid'
-# gem 'paperclip'#, git: 'git://github.com/thoughtbot/paperclip.git'
-#
-# gem 'font-awesome-rails'
-#
+gem 'uuid'
+gem 'paperclip'#, git: 'git://github.com/thoughtbot/paperclip.git'
+
+gem 'font-awesome-rails'
+
 gem 'multi_json'
 gem 'yajl-ruby'
 gem 'csv_builder'
-#
-# #search
-# gem 'sunspot_rails'
-# gem 'progress_bar'
-#
-# gem 'render_anywhere', require: false
-#
-# gem 'os'
-# gem 'leveldb'
-#
-# gem 'chartkick'
-#
-# group :development, :test do
-#   gem 'rspec-rails'
-#   gem 'factory_girl'
-#   gem 'shoulda-matchers'
-#   gem 'sunspot_solr'
-#   gem 'byebug'
-#   gem 'puma'
-# end
-#
-# group :development do
-#   #gem 'newrelic_rpm'
-#   gem 'traceroute'
-#   #gem 'rack-mini-profiler'
-#   #gem 'bullet'
-#   #gem 'brakeman', require: false
-# end
-#
-# group :test do
-#   #gem 'cucumber', '~> 2.0'
-#   gem 'cucumber-rails', require: false
-#   gem 'database_cleaner'
-#   gem 'simplecov'
-#   gem 'json_spec'
-#   gem 'capybara'
-#   gem 'capybara-email'
-#   gem 'launchy'
-#   #testing with javascript - requires phantomjs to be installed on the test machine
-#   gem 'poltergeist'
-#   #other js testing options
-#   gem 'selenium-webdriver'
-#   #We can start using this again when it support capybara 2.8
-#   #gem 'capybara-webkit'
-#   gem 'sunspot_test'
-#   gem 'connection_pool'
-# end
+
+#search
+gem 'sunspot_rails'
+gem 'progress_bar'
+
+gem 'render_anywhere', require: false
+
+gem 'os'
+gem 'lmdb'
+
+gem 'chartkick'
+
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_girl'
+  gem 'shoulda-matchers'
+  gem 'sunspot_solr'
+  gem 'byebug'
+  gem 'puma'
+end
+
+group :development do
+  #gem 'newrelic_rpm'
+  gem 'traceroute'
+  #gem 'rack-mini-profiler'
+  #gem 'bullet'
+  #gem 'brakeman', require: false
+end
+
+group :test do
+  #gem 'cucumber', '~> 2.0'
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
+  gem 'simplecov'
+  gem 'json_spec'
+  gem 'capybara'
+  gem 'capybara-email'
+  gem 'launchy'
+  #testing with javascript - requires phantomjs to be installed on the test machine
+  gem 'poltergeist'
+  #other js testing options
+  gem 'selenium-webdriver'
+  #We can start using this again when it support capybara 2.8
+  #gem 'capybara-webkit'
+  gem 'sunspot_test'
+  gem 'connection_pool'
+end
