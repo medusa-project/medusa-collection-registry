@@ -235,9 +235,8 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (3.2.0)
-    nokogiri (1.6.8)
+    nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
-      pkg-config (~> 1.1.7)
     oink (0.10.1)
       activerecord
       hodel_3000_compliant_logger
@@ -259,7 +258,6 @@ GEM
       rack
       rake (>= 0.8.1)
     pg (0.18.4)
-    pkg-config (1.1.7)
     poltergeist (1.9.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -269,7 +267,7 @@ GEM
     progress_bar (1.0.5)
       highline (~> 1.6)
       options (~> 2.3.0)
-    puma (3.4.0)
+    puma (3.6.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -501,4 +499,4 @@ DEPENDENCIES
   yajl-ruby
 
 BUNDLED WITH
-   1.12.5
+   1.13.6
