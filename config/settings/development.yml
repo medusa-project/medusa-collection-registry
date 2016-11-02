@@ -107,6 +107,7 @@ medusa:
   #a single email to a list is preferable for mass distribution. noreply is the address used for from when
   #appropriate
   email:
+    admin: hding2@illinois.edu
     feedback: hding2@illinois.edu
     dev: hding2@illinois.edu
     noreply: medusa-noreply@medusatest.library.illinois.edu

@@ -43,6 +43,13 @@ namespace :fixity do
     end
     Sunspot.commit
   end
+
+  desc "Email about any bad fixity reports"
+  task report_problems: :environment do
+    if CfsFile.not_found_fixity.count > 0 or CfsFile.bad_fixity.count > 0
+      FixityErrorMailer.report_problems.deliver_now
+    end
+  end
 end
 
 def fixity_files(batch_size)

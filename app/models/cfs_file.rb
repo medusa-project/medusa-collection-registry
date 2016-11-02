@@ -63,6 +63,14 @@ class CfsFile < ActiveRecord::Base
     where(fits_serialized: false)
   end
 
+  def self.bad_fixity
+    where(fixity_check_status: 'bad')
+  end
+
+  def self.not_found_fixity
+    where(fixity_check_status: 'nf')
+  end
+
   def self.id_order
     order('id asc')
   end
