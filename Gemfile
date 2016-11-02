@@ -58,41 +58,41 @@ gem 'html5shiv-js-rails'
 #make sure node.js is installed for asset compilation - no longer use therubyracer
 
 gem 'uglifier'
-#
-# gem 'bootstrap-sass'
-#
-# gem 'jquery-rails'
-# gem 'jquery-ui-rails'
-# gem 'rails-jquery-autocomplete'
-# gem 'clipboard-rails'
-# gem 'underscore-rails'
-# gem 'underscore-string-rails'
-#
-# gem 'nokogiri'
+
+gem 'bootstrap-sass'
+
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'rails-jquery-autocomplete'
+gem 'clipboard-rails'
+gem 'underscore-rails'
+gem 'underscore-string-rails'
+
+gem 'nokogiri'
 
 gem 'omniauth'
 gem 'omniauth-shibboleth'
-# gem 'cancan'
-# gem 'handle-server', '~> 1.0.1', git: 'git://github.com/medusa-project/handle-server.git'
-# gem 'httparty'
-# gem 'net-ldap'
-#
-# # Deploy with Capistrano
-# gem 'capistrano-rails'
-# gem 'capistrano-bundler'
-# gem 'capistrano-rvm'
-# gem 'capistrano-passenger'
-#
+gem 'cancan'
+#gem 'handle-server', '~> 1.0.1', git: 'git://github.com/medusa-project/handle-server.git'
+#gem 'httparty'
+gem 'net-ldap'
+
+# Deploy with Capistrano
+gem 'capistrano-rails'
+gem 'capistrano-bundler'
+gem 'capistrano-rvm'
+gem 'capistrano-passenger'
+
 #memory/active record usage monitoring
 gem 'oink'
-#
-# # Medusa Book Tracker compatibility
-# gem 'local_time'
-#
-# gem 'will_paginate'
-# gem 'will_paginate-bootstrap'
-# gem 'draper'
-#
+
+# Medusa Book Tracker compatibility
+gem 'local_time'
+
+gem 'will_paginate'
+gem 'will_paginate-bootstrap'
+gem 'draper'
+
 # gem 'uuid'
 # gem 'paperclip'#, git: 'git://github.com/thoughtbot/paperclip.git'
 #
