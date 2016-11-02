@@ -346,7 +346,7 @@ GEM
     sexp_processor (4.7.0)
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
-    simple_form (3.3.1)
+    simple_form (3.2.1)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
     simple_memoize (1.1.2)
@@ -479,7 +479,7 @@ DEPENDENCIES
   sass-rails
   selenium-webdriver
   shoulda-matchers
-  simple_form
+  simple_form (~> 3.2.1)
   simple_memoize
   simplecov
   sunspot_rails
