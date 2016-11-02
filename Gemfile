@@ -18,46 +18,46 @@ gem 'ckeditor'
 gem 'simple_memoize'
 gem 'auto_strip_attributes'
 gem 'dalli'
-# gem 'valid_email'
-# gem 'rsync'
+gem 'valid_email'
+gem 'rsync'
 gem 'config'
-#
-# gem 'logger'
-# #need slightly patched version of this
+
+gem 'logger'
+#need slightly patched version of this
 gem 'net-http-digest_auth', git: 'git://github.com/medusa-project/net-http-digest_auth.git'
-#
-# #pinned for a problem compiling 0.7.1 on our servers
-# gem 'ruby-filemagic', '0.7.0', require: 'filemagic'
-#
-# gem 'jbuilder'
-#
+
+#pinned for a problem compiling 0.7.1 on our servers
+gem 'ruby-filemagic', '0.7.0', require: 'filemagic'
+
+gem 'jbuilder'
+
 gem 'delayed_job_active_record'
 #Pin because later versions seem to have a problem with doing actions on the delayed jobs - they are aware of the problem
 gem 'delayed_job_web', '1.2.5'
-# gem 'daemons'
-# gem 'daemons-rails'
-#
-# #image processing for file previews
-# #problem installing 1.0.0 - couldn't compile dependency glib2(3.0.8) on the servers
-# #revisit this later
-# #I think that this may have to wait until we get off RHEL 6 on these servers - even by
-# #hand I can't install the necessary libraries because of old dependencies.
-# #It also appears that ruby-vips -> 1.0.0 corresponds to vips7 -> vips8, which
-# #introduces some API changes and other complications - see the ruby-vips github page
-# #Alternately, we may just decide that Cantaloupe is good enough and get rid of the fallback, or revert
-# #the fallback to ImageMagick.
-# gem 'ruby-vips', '~>0.3.14', require: 'vips'
-#
-# #AMQP communication
+gem 'daemons'
+gem 'daemons-rails'
+
+#image processing for file previews
+#problem installing 1.0.0 - couldn't compile dependency glib2(3.0.8) on the servers
+#revisit this later
+#I think that this may have to wait until we get off RHEL 6 on these servers - even by
+#hand I can't install the necessary libraries because of old dependencies.
+#It also appears that ruby-vips -> 1.0.0 corresponds to vips7 -> vips8, which
+#introduces some API changes and other complications - see the ruby-vips github page
+#Alternately, we may just decide that Cantaloupe is good enough and get rid of the fallback, or revert
+#the fallback to ImageMagick.
+gem 'ruby-vips', '~>0.3.14', require: 'vips'
+
+#AMQP communication
 gem 'bunny'
-#
-# gem 'sass-rails'
-# gem 'coffee-rails'
-# gem 'html5shiv-js-rails'
-#
-# #make sure node.js is installed for asset compilation - no longer use therubyracer
-#
-# gem 'uglifier'
+
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'html5shiv-js-rails'
+
+#make sure node.js is installed for asset compilation - no longer use therubyracer
+
+gem 'uglifier'
 #
 # gem 'bootstrap-sass'
 #
