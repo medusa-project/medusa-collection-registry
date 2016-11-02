@@ -11,6 +11,8 @@ gem 'passenger'
 gem 'haml'
 gem 'haml-rails'
 #simple_form 3.3.1 was giving a problem with include_blank: false still including blanks, so we're pinning it back here
+#cf https://github.com/plataformatec/simple_form/issues/1427
+#cf https://github.com/plataformatec/simple_form/issues/1423
 gem 'simple_form', '~> 3.2.1'
 #auto_html 2.0 is breaking - need to fix up code before going, though right now I don't see that there is
 #an improvment worth doing it for
