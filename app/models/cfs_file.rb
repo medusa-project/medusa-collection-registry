@@ -70,11 +70,7 @@ class CfsFile < ActiveRecord::Base
   def self.not_found_fixity
     where(fixity_check_status: 'nf')
   end
-
-  def self.id_order
-    order('id asc')
-  end
-
+  
   def relative_path
     File.join(self.cfs_directory.relative_path, self.name)
   end
