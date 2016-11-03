@@ -5219,20 +5219,6 @@ CREATE UNIQUE INDEX cfs_directory_parent_idx ON cfs_directories USING btree (par
 
 
 --
--- Name: cfs_files_fits_serialized_false_ids; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX cfs_files_fits_serialized_false_ids ON cfs_files USING btree (id) WHERE (fits_serialized IS FALSE);
-
-
---
--- Name: cfs_files_fits_serialized_true_ids; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX cfs_files_fits_serialized_true_ids ON cfs_files USING btree (id) WHERE (fits_serialized IS TRUE);
-
-
---
 -- Name: collection_virtual_repository_join_collection_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5541,13 +5527,6 @@ CREATE INDEX index_cfs_files_on_content_type_id_and_name ON cfs_files USING btre
 
 
 --
--- Name: index_cfs_files_on_created_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cfs_files_on_created_at ON cfs_files USING btree (created_at);
-
-
---
 -- Name: index_cfs_files_on_file_extension_id_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5569,31 +5548,10 @@ CREATE INDEX index_cfs_files_on_fixity_check_time ON cfs_files USING btree (fixi
 
 
 --
--- Name: index_cfs_files_on_mtime; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cfs_files_on_mtime ON cfs_files USING btree (mtime);
-
-
---
 -- Name: index_cfs_files_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_cfs_files_on_name ON cfs_files USING btree (name);
-
-
---
--- Name: index_cfs_files_on_size; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cfs_files_on_size ON cfs_files USING btree (size);
-
-
---
--- Name: index_cfs_files_on_updated_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cfs_files_on_updated_at ON cfs_files USING btree (updated_at);
 
 
 --
@@ -7459,4 +7417,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160919141735');
 INSERT INTO schema_migrations (version) VALUES ('20161021160022');
 
 INSERT INTO schema_migrations (version) VALUES ('20161027171950');
+
+INSERT INTO schema_migrations (version) VALUES ('20161103195200');
 
