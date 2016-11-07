@@ -5527,6 +5527,13 @@ CREATE INDEX index_cfs_files_on_content_type_id_and_name ON cfs_files USING btre
 
 
 --
+-- Name: index_cfs_files_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cfs_files_on_created_at ON cfs_files USING btree (created_at);
+
+
+--
 -- Name: index_cfs_files_on_file_extension_id_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5552,6 +5559,20 @@ CREATE INDEX index_cfs_files_on_fixity_check_time ON cfs_files USING btree (fixi
 --
 
 CREATE INDEX index_cfs_files_on_name ON cfs_files USING btree (name);
+
+
+--
+-- Name: index_cfs_files_on_size; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cfs_files_on_size ON cfs_files USING btree (size);
+
+
+--
+-- Name: index_cfs_files_on_updated_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cfs_files_on_updated_at ON cfs_files USING btree (updated_at);
 
 
 --
@@ -7419,4 +7440,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161021160022');
 INSERT INTO schema_migrations (version) VALUES ('20161027171950');
 
 INSERT INTO schema_migrations (version) VALUES ('20161103195200');
+
+INSERT INTO schema_migrations (version) VALUES ('20161107150831');
 
