@@ -10,28 +10,27 @@ namespace :fits do
     batch_size = (ENV['FITS_BATCH_SIZE'] || ENV['BATCH_SIZE'] || DEFAULT_FITS_BATCH_SIZE).to_i
     errors = Hash.new
     bar = ProgressBar.new(batch_size)
-    ids = CfsFile.without_fits.where('size is not null').limit(batch_size).pluck(:id)
-    ids.each do |id|
-      cfs_file = CfsFile.find_by(id: id)
-      next unless cfs_file
-      break if File.exist?(FITS_STOP_FILE)
-      begin
-        cfs_file.ensure_fits_xml
-      rescue RSolr::Error::Http => e
-        FileUtils.touch(FITS_STOP_FILE)
-        errors[cfs_file.id] = e
-      rescue Exception => e
-        if e.to_s.match('Code 500')
-          begin
-            Fits::Runner.update_cfs_file(cfs_file)
-          rescue Exception => fits_runner_error
-            errors[cfs_file.id] = fits_runner_error
-          end
-        else
+    CfsFile.without_fits.where('size is not null').limit(batch_size).pluck(:id).in_groups_of(500) do |group|
+      CfsFile.where(id: group).each do |cfs_file|
+        break if File.exist?(FITS_STOP_FILE)
+        begin
+          cfs_file.ensure_fits_xml
+        rescue RSolr::Error::Http => e
+          FileUtils.touch(FITS_STOP_FILE)
           errors[cfs_file.id] = e
+        rescue Exception => e
+          if e.to_s.match('Code 500')
+            begin
+              Fits::Runner.update_cfs_file(cfs_file)
+            rescue Exception => fits_runner_error
+              errors[cfs_file.id] = fits_runner_error
+            end
+          else
+            errors[cfs_file.id] = e
+          end
+        ensure
+          bar.increment!
         end
-      ensure
-        bar.increment!
       end
     end
     if errors.present?
