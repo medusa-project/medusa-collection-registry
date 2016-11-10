@@ -118,11 +118,13 @@ namespace :fits do
   def handle_incoming_messages(messages_to_handle)
     bar ||= ProgressBar.new([messages_to_handle, 1].max)
     errors = Hash.new
+    sleeps = 0
     while messages_to_handle > 0 or incoming_message_count > 0 do
       break if File.exist?(FITS_STOP_FILE)
       AmqpConnector.connector(:medusa).with_parsed_message(Settings.fits.incoming_queue) do |message|
         if message
           messages_to_handle -= 1
+          sleeps = 0
           cfs_file = CfsFile.find(message['pass_through']['cfs_file_id'])
           #puts "Handling: #{cfs_file.id}"
           begin
@@ -140,6 +142,11 @@ namespace :fits do
           Sunspot.commit if (messages_to_handle % 100).zero?
           bar.increment!
         else
+          sleeps = sleeps + 1
+          if sleeps == 60
+            puts "Slept for 10 minutes - breaking"
+            break
+          end
           sleep 10
         end
       end
@@ -170,12 +177,12 @@ namespace :fits do
   #returns number of requests sent
   def request_fits_amqp
     batch_size = (ENV['FITS_BATCH_SIZE'] || ENV['BATCH_SIZE'] || DEFAULT_FITS_BATCH_SIZE).to_i
-    files = CfsFile.without_fits.id_order.where('size is not null').limit(batch_size)
     count = 0 #keep separately, since we might not get batch_size
-    files.each do |cfs_file|
-      #puts "Requesting: #{cfs_file.id}"
-      AmqpConnector.connector(:medusa).send_message(Settings.fits.outgoing_queue, fits_request(cfs_file))
-      count += 1
+    CfsFile.without_fits.where('size is not null').limit(batch_size).pluck(:id).in_groups_of(500) do |group|
+      CfsFile.where(id: group).each do |cfs_file|
+        AmqpConnector.connector(:medusa).send_message(Settings.fits.outgoing_queue, fits_request(cfs_file))
+        count += 1
+      end
     end
     return count
   end
