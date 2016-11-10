@@ -39,7 +39,7 @@ namespace :fits do
       errors.each do |id, error|
         error_string.puts "#{id}: #{error}"
       end
-      GenericErrorMailer.error(error_string.string).deliver_now
+      GenericErrorMailer.error(error_string.string, subject: 'FITS batch error').deliver_now
     end
     Sunspot.commit
   end
@@ -162,7 +162,7 @@ namespace :fits do
       errors.each do |id, error|
         error_string.puts "#{id}: #{error}"
       end
-      GenericErrorMailer.error(error_string.string).deliver_now
+      GenericErrorMailer.error(error_string.string, subject: 'FITS AMQP batch error').deliver_now
     end
   end
 

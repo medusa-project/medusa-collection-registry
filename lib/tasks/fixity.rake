@@ -39,7 +39,7 @@ namespace :fixity do
       errors.each do |k, v|
         error_string.puts "#{k.id}: #{v}"
       end
-      GenericErrorMailer.error(error_string.string).deliver_now
+      GenericErrorMailer.error(error_string.string, subject: 'Fixity batch error').deliver_now
     end
     Sunspot.commit
   end

@@ -36,7 +36,7 @@ class FitsData < ActiveRecord::Base
     parse_datetime(datetime_string, toolname)
   rescue Exception => e
     Rails.logger.error e.to_s
-    GenericErrorMailer.error("#{e}\nFits data id:#{self.id}\nCfs File id:#{self.cfs_file.id}").deliver_now
+    GenericErrorMailer.error("#{e}\nFits data id:#{self.id}\nCfs File id:#{self.cfs_file.id}", subject: 'FITS date parse error').deliver_now
     return nil
   end
 

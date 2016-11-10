@@ -14,11 +14,13 @@ namespace :medusa do
             AmazonBackup.create_and_schedule(User.find_by_uid('hding2@illinois.edu'), file_group.cfs_directory_id)
           end
         rescue Exception => e
-          GenericErrorMailer.error("Unable to create Amazon Backup for AMQP accrual group: #{file_group.cfs_directory_id}. Details: #{e}")
+          GenericErrorMailer.error("Unable to create Amazon Backup for AMQP accrual group: #{file_group.cfs_directory_id}. Details: #{e}",
+                                   subject: 'AMQP/Amazon Error').deliver_now
         end
       end
     rescue Exception => e
-      GenericErrorMailer.error("Unknown problem creating Amazon Backup for AMQP accrual group. Details: #{e}")
+      GenericErrorMailer.error("Unknown problem creating Amazon Backup for AMQP accrual group. Details: #{e}",
+                               subject: 'AMQP/Amazon Error').deliver_now
     end
   end
 end

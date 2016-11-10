@@ -70,11 +70,11 @@ class Workflow::AccrualJob < Workflow::Base
       tmpfile = File.join(Dir.tmpdir, "check_sync-#{self.id}-#{Time.now}")
       File.open(tmpfile, 'w') do |f|
         f.puts 'Source only:'
-        comparator.source_only_paths.each {|p| f.puts p}
+        comparator.source_only_paths.each { |p| f.puts p }
         f.puts 'Target only:'
-        comparator.target_only_paths.each {|p| f.puts p}
+        comparator.target_only_paths.each { |p| f.puts p }
         f.puts 'Differences:'
-        comparator.different_sizes_paths.each {|p| f.puts p}
+        comparator.different_sizes_paths.each { |p| f.puts p }
         f.puts 'Suggested remediation:'
         comparator.target_only_paths.each do |p|
           puts "rm -f #{File.join(staging_remote_path, p)}"
@@ -83,7 +83,8 @@ class Workflow::AccrualJob < Workflow::Base
           puts "cp -f #{File.join(staging_local_path, p)} #{File.join(staging_remote_path, p)}"
         end
       end
-      GenericErrorMailer.error("Check sync failed for accrual_job: #{self.id}.\n See #{tmpfile} for details.").deliver_now
+      GenericErrorMailer.error("Check sync failed for accrual_job: #{self.id}.\n See #{tmpfile} for details.",
+                               subject: 'Accrual Check Sync Error').deliver_now
       raise RuntimeError,
             %Q(storage.library and condo copies of accrual directory are not in sync.
 #{comparator.source_only_paths.count} files are only present in the source copy
@@ -190,7 +191,7 @@ Paths are stored for inspection in #{tmpfile} on the server.
   end
 
   def reset_conflict_fixities_and_fits
-    workflow_accrual_conflicts.where(different: true).find_each {|conflict| conflict.reset_cfs_file}
+    workflow_accrual_conflicts.where(different: true).find_each { |conflict| conflict.reset_cfs_file }
   end
 
   def staging_local_path
