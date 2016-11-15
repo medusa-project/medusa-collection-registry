@@ -24,7 +24,7 @@ class DirectoryTreeComparator < Object
     uuid = UUID.generate
     db_dir = File.join(Dir.tmpdir, "lmdb-#{uuid}")
     FileUtils.mkdir_p(db_dir)
-    env = LMDB.new(db_dir)
+    env = LMDB.new(db_dir, mapsize: 4.gigabytes)
     db = env.database
     with_all_files_and_sizes(source_directory) do |path, source_size|
       db[path] = source_size
