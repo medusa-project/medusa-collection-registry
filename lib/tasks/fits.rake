@@ -46,7 +46,7 @@ namespace :fits do
 
   desc "Run fits via AMQP on a number of currently unchecked files. [FITS_]BATCH_SIZE sets number (default #{DEFAULT_FITS_BATCH_SIZE})"
   task run_amqp_batch: :environment do
-    messages_to_handle = if outgoing_message_count.zero?
+    messages_to_handle = if outgoing_message_count.zero? and incoming_message_count.zero?
                            request_fits_amqp
                          else
                            incoming_message_count
