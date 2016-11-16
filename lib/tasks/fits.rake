@@ -107,7 +107,7 @@ namespace :fits do
     puts "#{count} long fits files remaining"
   end
 
-  MAX_SLEEPS = 60
+  MAX_SLEEPS = 12
   SLEEP_TIME = 10
   #return a hash of any errors
   def handle_incoming_messages
