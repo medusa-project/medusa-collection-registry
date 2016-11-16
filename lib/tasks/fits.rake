@@ -46,19 +46,13 @@ namespace :fits do
 
   desc "Run fits via AMQP on a number of currently unchecked files. [FITS_]BATCH_SIZE sets number (default #{DEFAULT_FITS_BATCH_SIZE})"
   task run_amqp_batch: :environment do
-    messages_to_handle = if outgoing_message_count.zero? and incoming_message_count.zero?
-                           request_fits_amqp
-                         else
-                           incoming_message_count
-                         end
-    errors = handle_incoming_messages(messages_to_handle)
-    report_errors(errors)
+    request_fits_amqp if outgoing_message_count.zero? and incoming_message_count.zero?
+    report_errors(handle_incoming_messages) if incoming_message_count > 0
   end
 
   desc "Handle incoming fits amqp messages."
   task handle_incoming_amqp_messages: :environment do
-    errors = handle_incoming_messages(incoming_message_count)
-    report_errors(errors)
+    report_errors(handle_incoming_messages) if incoming_message_count > 0
   end
 
   #TODO: We just need this temporarily, until we've fixed all this stuff up
@@ -113,20 +107,21 @@ namespace :fits do
     puts "#{count} long fits files remaining"
   end
 
-
+  MAX_SLEEPS = 60
+  SLEEP_TIME = 10
   #return a hash of any errors
-  def handle_incoming_messages(messages_to_handle)
-    bar ||= ProgressBar.new([messages_to_handle, 1].max)
+  def handle_incoming_messages
+    bar ||= ProgressBar.new([incoming_message_count, 1].max)
     errors = Hash.new
     sleeps = 0
-    while messages_to_handle > 0 or incoming_message_count > 0 do
+    messages_handled = 0
+    while incoming_message_count > 0 and sleeps < MAX_SLEEPS do
       break if File.exist?(FITS_STOP_FILE)
       AmqpConnector.connector(:medusa).with_parsed_message(Settings.fits.incoming_queue) do |message|
         if message
-          messages_to_handle -= 1
           sleeps = 0
+          messages_handled += 1
           cfs_file = CfsFile.find(message['pass_through']['cfs_file_id'])
-          #puts "Handling: #{cfs_file.id}"
           begin
             if message['status'] == 'success'
               cfs_file.update_fits_xml(xml: message['parameters']['fits_xml'])
@@ -139,18 +134,15 @@ namespace :fits do
           rescue Exception => e
             errors[cfs_file.id] = e
           end
-          Sunspot.commit if (messages_to_handle % 100).zero?
+          Sunspot.commit if (messages_handled % 100).zero?
           bar.increment!
         else
           sleeps = sleeps + 1
-          if sleeps == 60
-            puts "Slept for 10 minutes - breaking"
-            break
-          end
-          sleep 10
+          sleep SLEEP_TIME
         end
       end
     end
+    puts "Slept for #{MAX_SLEEPS * SLEEP_TIME} seconds - breaking" if sleeps >= MAX_SLEEPS
     Sunspot.commit
     return errors
   end
