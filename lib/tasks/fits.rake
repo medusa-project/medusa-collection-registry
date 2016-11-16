@@ -111,7 +111,6 @@ namespace :fits do
   SLEEP_TIME = 10
   #return a hash of any errors
   def handle_incoming_messages
-    bar ||= ProgressBar.new([incoming_message_count, 1].max)
     errors = Hash.new
     sleeps = 0
     messages_handled = 0
@@ -134,8 +133,10 @@ namespace :fits do
           rescue Exception => e
             errors[cfs_file.id] = e
           end
-          Sunspot.commit if (messages_handled % 100).zero?
-          bar.increment!
+          if (messages_handled % 100).zero?
+            Sunspot.commit
+            puts "Handled #{messages_handled} incoming messages"
+          end
         else
           sleeps = sleeps + 1
           sleep SLEEP_TIME
