@@ -320,6 +320,11 @@ class CfsFile < ActiveRecord::Base
     end
   end
 
+  def create_amqp_accrual_event(actor_email: nil)
+    actor_email ||= Settings.medusa.email.admin
+    events.create(key: :amqp_accrual, note: 'Initial accrual', cascadable: true, actor_email: actor_email)
+  end
+
   protected
 
   def get_fits_xml

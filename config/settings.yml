@@ -143,6 +143,7 @@ events:
     fixity_check_run: Fixity check run
     fixity_result: Fixity result
     fixity_reset: Fixity reset
+    amqp_accrual: Accrued via amqp
 rights_fields:
   default_rights_basis: copyright
   rights_bases:

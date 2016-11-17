@@ -82,6 +82,7 @@ MESSAGE
   def create_cfs_file
     transaction do
       file = immediate_parent_directory.cfs_files.find_or_create_by!(name: file_name)
+      file.create_amqp_accrual_event
       file.uuid = uuid
     end
   end

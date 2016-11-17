@@ -33,6 +33,9 @@ Then(/^the IDB files should be present in medusa storage$/) do
     expect(file.name).to eq('file.txt')
     expect(File.read(file.absolute_path)).to match('Staging text')
   end
+  file = CfsFile.find_by(name: 'file.txt')
+  expect(file).to be_a(CfsFile)
+  expect(file.events.where(key: 'amqp_accrual').count).to eq(1)
 end
 
 And(/^Medusa should have sent an ingest return message to IDB$/) do
