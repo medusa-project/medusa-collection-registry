@@ -21,7 +21,7 @@ class AmqpAccrual::IngestJob < Job::Base
     ensure_directories
     rsync_file
     create_cfs_file
-    schedule_assessments
+    do_assessment
     send_return_message
   rescue Exception => e
     Rails.logger.error("Error ingesting Amqp Accrual file. Job: #{self.id}\nError: #{e}")
@@ -91,8 +91,8 @@ MESSAGE
     AmqpAccrual::Config.cfs_directory(client).find_directory_at_relative_path(target_directory)
   end
 
-  def schedule_assessments
-    immediate_parent_directory.make_and_assess_tree
+  def do_assessment
+    immediate_parent_directory.cfs_files.find_by(name: file_name).try(:run_initial_assessment)
   end
 
   def send_return_message
