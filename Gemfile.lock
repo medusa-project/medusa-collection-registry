@@ -1,9 +1,10 @@
 GIT
   remote: git://github.com/medusa-project/amqp_helper.git
-  revision: 7e548e8f1bb3ed130ab05bf4b1253048eb6ebf11
+  revision: c8be2b59d662c9f7e90fe125c2c8a2fe10b0636a
   specs:
-    amqp_helper (0.1.0)
+    amqp_helper (0.1.4)
       bunny
+      bunny-mock
 
 GIT
   remote: git://github.com/medusa-project/handle-server.git
@@ -17,6 +18,13 @@ GIT
   revision: 4816df9f44f27c774ea8172fab66eae74dd304ba
   specs:
     net-http-digest_auth (1.4)
+
+GIT
+  remote: git@github.com:hading/bunny-mock.git
+  revision: f1bbe862760b2e1d7b354c260a93829a22ee6f9c
+  specs:
+    bunny-mock (1.5.0)
+      bunny (>= 1.7)
 
 GEM
   remote: https://rubygems.org/
@@ -418,11 +426,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  amqp_helper!
+  amqp_helper (~> 0.1.4)!
   auto_html (~> 1.6.4)
   auto_strip_attributes
   bootstrap-sass
-  bunny
+  bunny-mock!
   byebug
   cancan
   capistrano-bundler

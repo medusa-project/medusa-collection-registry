@@ -30,8 +30,6 @@ Before('@idb') do
   Dir[File.join(AmqpAccrual::Config.staging_directory('idb'), '*')].each do |dir|
     FileUtils.rm_rf(dir)
   end
-  #clear idb queues
-  AmqpHelper::Connector[:medusa].clear_queues(AmqpAccrual::Config.all_queues('idb'))
 end
 
 Around('@idb-no-deletions') do |scenario, block|

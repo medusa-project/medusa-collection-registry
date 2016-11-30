@@ -51,9 +51,10 @@ gem 'daemons-rails'
 #the fallback to ImageMagick.
 gem 'ruby-vips', '~>0.3.14', require: 'vips'
 
-#AMQP communication
-gem 'bunny'
-gem 'amqp_helper', git: 'git://github.com/medusa-project/amqp_helper.git'
+#AMQP communication - implicitly uses Bunny
+gem 'amqp_helper', '~>0.1.4', git: 'git://github.com/medusa-project/amqp_helper.git'
+#need my version of bunny-mock where the default exchange works as expected
+gem 'bunny-mock', git: 'git@github.com:hading/bunny-mock.git'
 
 gem 'sass-rails'
 gem 'coffee-rails'
