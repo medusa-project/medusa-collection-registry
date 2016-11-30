@@ -1,7 +1,7 @@
 #steps for idb file ingest
 
 When(/^IDB sends an ingest request$/) do
-  AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.incoming_queue('idb'), IdbTestHelper.idb_ingest_message)
+  AmqpHelper::Connector[:medusa].send_message(AmqpAccrual::Config.incoming_queue('idb'), IdbTestHelper.idb_ingest_message)
 end
 
 And(/^Medusa picks up the IDB AMQP request$/) do
@@ -39,7 +39,7 @@ Then(/^the IDB files should be present in medusa storage$/) do
 end
 
 And(/^Medusa should have sent an ingest return message to IDB$/) do
-  AmqpConnector.connector(:medusa).with_message(AmqpAccrual::Config.outgoing_queue('idb')) do |raw_message|
+  AmqpHelper::Connector[:medusa].with_message(AmqpAccrual::Config.outgoing_queue('idb')) do |raw_message|
     message = JSON.parse(raw_message)
     expect(message['operation']).to eq('ingest')
     expect(message['status']).to eq('ok')

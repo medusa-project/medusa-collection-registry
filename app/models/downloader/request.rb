@@ -55,7 +55,7 @@ class Downloader::Request < ActiveRecord::Base
   end
 
   def send_export_request(recursive: false)
-    AmqpConnector.connector(:downloader).send_message(Settings.downloader.outgoing_queue, export_request_message(recursive: recursive))
+    AmqpHelper::Connector[:downloader].send_message(Settings.downloader.outgoing_queue, export_request_message(recursive: recursive))
   end
 
   def export_request_message(recursive: false)

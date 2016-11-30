@@ -1,5 +1,7 @@
 class AmqpAccrual::DeleteJob < Job::Base
 
+  delegate :amqp_connector, to: :class
+
   def self.create_for(client, message)
     unless AmqpAccrual::Config.allow_delete?(client)
       send_delete_not_permitted_message(client, message)
@@ -45,7 +47,7 @@ class AmqpAccrual::DeleteJob < Job::Base
   end
 
   def self.send_unknown_error_message(client, incoming_message, error)
-    AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), unknown_error_message(incoming_message, error))
+    amqp_connector.send_message(AmqpAccrual::Config.outgoing_queue(client), unknown_error_message(incoming_message, error))
   end
 
   def self.delete_not_permitted_message(incoming_message)
@@ -54,7 +56,7 @@ class AmqpAccrual::DeleteJob < Job::Base
   end
 
   def self.send_delete_not_permitted_message(client, incoming_message)
-    AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), delete_not_permitted_message(incoming_message))
+    amqp_connector.send_message(AmqpAccrual::Config.outgoing_queue(client), delete_not_permitted_message(incoming_message))
   end
 
   def wrong_file_group_message
@@ -63,7 +65,7 @@ class AmqpAccrual::DeleteJob < Job::Base
   end
 
   def send_wrong_file_group_message
-    AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), wrong_file_group_message)
+    amqp_connector.send_message(AmqpAccrual::Config.outgoing_queue(client), wrong_file_group_message)
   end
 
   def file_not_found_message
@@ -72,7 +74,7 @@ class AmqpAccrual::DeleteJob < Job::Base
   end
 
   def send_file_not_found_message
-    AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), file_not_found_message)
+    amqp_connector.send_message(AmqpAccrual::Config.outgoing_queue(client), file_not_found_message)
   end
 
   def success_message
@@ -81,8 +83,11 @@ class AmqpAccrual::DeleteJob < Job::Base
   end
 
   def send_success_message
-    AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), success_message)
+    amqp_connector.send_message(AmqpAccrual::Config.outgoing_queue(client), success_message)
   end
 
+  def self.amqp_connector
+    AmqpHelper::Connector[:medusa]
+  end
 
 end

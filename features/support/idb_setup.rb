@@ -31,7 +31,7 @@ Before('@idb') do
     FileUtils.rm_rf(dir)
   end
   #clear idb queues
-  AmqpConnector.connector(:medusa).clear_queues(AmqpAccrual::Config.all_queues('idb'))
+  AmqpHelper::Connector[:medusa].clear_queues(AmqpAccrual::Config.all_queues('idb'))
 end
 
 Around('@idb-no-deletions') do |scenario, block|

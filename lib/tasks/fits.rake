@@ -1,6 +1,10 @@
 require 'rake'
 require 'fileutils'
 
+def amqp_connector
+  AmqpHelper::Connector[:medusa]
+end
+
 namespace :fits do
 
   DEFAULT_FITS_BATCH_SIZE = 1000
@@ -116,7 +120,7 @@ namespace :fits do
     messages_handled = 0
     while incoming_message_count > 0 and sleeps < MAX_SLEEPS do
       break if File.exist?(FITS_STOP_FILE)
-      AmqpConnector.connector(:medusa).with_parsed_message(Settings.fits.incoming_queue) do |message|
+      amqp_connector.with_parsed_message(Settings.fits.incoming_queue) do |message|
         if message
           sleeps = 0
           messages_handled += 1
@@ -160,11 +164,11 @@ namespace :fits do
   end
 
   def incoming_message_count
-    AmqpConnector.connector(:medusa).with_queue(Settings.fits.incoming_queue) { |q| q.message_count }
+    amqp_connector.with_queue(Settings.fits.incoming_queue) { |q| q.message_count }
   end
 
   def outgoing_message_count
-    AmqpConnector.connector(:medusa).with_queue(Settings.fits.outgoing_queue) { |q| q.message_count }
+    amqp_connector.with_queue(Settings.fits.outgoing_queue) { |q| q.message_count }
   end
 
   #returns number of requests sent
@@ -173,7 +177,7 @@ namespace :fits do
     count = 0 #keep separately, since we might not get batch_size
     CfsFile.without_fits.where('size is not null').limit(batch_size).pluck(:id).in_groups_of(500) do |group|
       CfsFile.where(id: group).each do |cfs_file|
-        AmqpConnector.connector(:medusa).send_message(Settings.fits.outgoing_queue, fits_request(cfs_file))
+        amqp_connector.send_message(Settings.fits.outgoing_queue, fits_request(cfs_file))
         count += 1
       end
     end

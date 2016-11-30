@@ -2,6 +2,8 @@ require 'open3'
 
 class AmqpAccrual::IngestJob < Job::Base
 
+  delegate :amqp_connector, to: :class
+
   def self.create_for(client, message)
     job = self.new(staging_path: message['staging_path'], client: client)
     if find_by(staging_path: job.staging_path, client: client) or File.exist?(job.absolute_target_file) or job.staging_path.blank?
@@ -96,7 +98,7 @@ MESSAGE
   end
 
   def send_return_message
-    AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), return_message)
+    amqp_connector.send_message(AmqpAccrual::Config.outgoing_queue(client), return_message)
   end
 
   def return_message
@@ -137,11 +139,16 @@ MESSAGE
   end
 
   def self.send_duplicate_file_message(client, incoming_message)
-    AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), duplicate_file_message(incoming_message))
+    amqp_connector.send_message(AmqpAccrual::Config.outgoing_queue(client), duplicate_file_message(incoming_message))
   end
 
   def self.send_unknown_error_message(client, incoming_message, error)
-    AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.outgoing_queue(client), unknown_error_message(incoming_message, error))
+    amqp_connector.send_message(AmqpAccrual::Config.outgoing_queue(client), unknown_error_message(incoming_message, error))
   end
+
+  def self.amqp_connector
+    AmqpHelper::Connector[:medusa]
+  end
+
 
 end

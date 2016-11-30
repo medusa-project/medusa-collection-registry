@@ -15,17 +15,21 @@ module Test
     end
 
     def import_succeed
-      AmqpConnector.connector(:medusa).with_parsed_message(self.incoming_queue) do |message|
+      amqp_connector.with_parsed_message(self.incoming_queue) do |message|
         return_message = {pass_through: message['pass_through'], status: 'success',
                           parameters: {archive_ids: [UUID.generate]}, action: 'upload_directory'}
-        AmqpConnector.connector(:medusa).send_message(self.outgoing_queue, return_message)
+        amqp_connector.send_message(self.outgoing_queue, return_message)
       end
     end
 
+    def amqp_connector
+      AmqpHelper::Connector[:medusa]
+    end
+
     def import_fail
-      AmqpConnector.connector(:medusa).with_parsed_message(self.incoming_queue) do |message|
+      amqp_connector.with_parsed_message(self.incoming_queue) do |message|
         return_message = {pass_through: message['pass_through'], status: 'failure', error_message: 'test_error', action: 'upload_directory'}
-        AmqpConnector.connector(:medusa).send_message(self.outgoing_queue, return_message)
+        amqp_connector.send_message(self.outgoing_queue, return_message)
       end
     end
 

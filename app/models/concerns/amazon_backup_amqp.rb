@@ -20,7 +20,7 @@ module AmazonBackupAmqp
 
   def send_backup_request_message
     date = self.previous_backup.try(:date)
-    AmqpConnector.connector(:medusa).send_message(self.outgoing_queue, create_backup_request_message(date))
+    amqp_connector.send_message(self.outgoing_queue, create_backup_request_message(date))
   end
 
   def create_backup_request_message(date)
@@ -78,7 +78,12 @@ module AmazonBackupAmqp
   end
 
   def send_delete_request_message(archive_id)
-    AmqpConnector.connector(:medusa).send_message(self.outgoing_queue, create_delete_request_message(archive_id))
+    amqp_connector.send_message(self.outgoing_queue, create_delete_request_message(archive_id))
   end
+
+  def amqp_connector
+    AmqpHelper::Connector[:medusa]
+  end
+
 
 end

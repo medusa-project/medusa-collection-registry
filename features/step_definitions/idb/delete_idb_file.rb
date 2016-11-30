@@ -1,5 +1,5 @@
 When(/^IDB sends an delete request$/) do
-  AmqpConnector.connector(:medusa).send_message(AmqpAccrual::Config.incoming_queue('idb'), IdbTestHelper.idb_delete_message)
+  AmqpHelper::Connector[:medusa].send_message(AmqpAccrual::Config.incoming_queue('idb'), IdbTestHelper.idb_delete_message)
 end
 
 Then(/^there should be an IDB delete delayed job reflecting the delete request$/) do
@@ -27,7 +27,7 @@ Then(/^no IDB file should be deleted$/) do
 end
 
 Then(/^Medusa should have sent an error return message to IDB matching '(.*)'$/) do |text|
-  AmqpConnector.connector(:medusa).with_message(AmqpAccrual::Config.outgoing_queue('idb')) do |raw_message|
+  AmqpHelper::Connector[:medusa].with_message(AmqpAccrual::Config.outgoing_queue('idb')) do |raw_message|
     message = JSON.parse(raw_message)
     expect(message['operation']).to eq('delete')
     expect(message['status']).to eq('error')
@@ -70,7 +70,7 @@ Then(/^the IDB file should have been deleted$/) do
 end
 
 And(/^Medusa should have sent a valid delete return message to IDB$/) do
-  AmqpConnector.connector(:medusa).with_message(AmqpAccrual::Config.outgoing_queue('idb')) do |raw_message|
+  AmqpHelper::Connector[:medusa].with_message(AmqpAccrual::Config.outgoing_queue('idb')) do |raw_message|
     message = JSON.parse(raw_message)
     expect(message['operation']).to eq('delete')
     expect(message['status']).to eq('ok')

@@ -49,7 +49,7 @@ class AmqpResponse::Base < Object
 
   #redundant except for testing
   def self.handle_responses
-    AmqpConnector.connector(self.connector_key).with_queue(incoming_queue) do |queue|
+    amqp_connector.with_queue(incoming_queue) do |queue|
       while true
         delivery_info, properties, raw_payload = queue.pop
         break unless raw_payload
@@ -58,8 +58,12 @@ class AmqpResponse::Base < Object
     end
   end
 
+  def self.amqp_connector
+    AmqpHelper::Connector[self.connector_key]
+  end
+
   def self.listen
-    amqp_config = AmqpConnector.connector(self.connector_key).config
+    amqp_config = amqp_connector.config
     AmqpListener.new(amqp_config: amqp_config, name: listener_name,
                      queue_name: incoming_queue,
                      action_callback: ->(payload) {handle_response(payload)}).listen
