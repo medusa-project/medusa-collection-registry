@@ -1,6 +1,6 @@
 class AmqpAccrual::DeleteJob < Job::Base
-
-  delegate :amqp_connector, to: :class
+  include AmqpConnector
+  use_amqp_connector :medusa
 
   def self.create_for(client, message)
     unless AmqpAccrual::Config.allow_delete?(client)
@@ -84,10 +84,6 @@ class AmqpAccrual::DeleteJob < Job::Base
 
   def send_success_message
     amqp_connector.send_message(AmqpAccrual::Config.outgoing_queue(client), success_message)
-  end
-
-  def self.amqp_connector
-    AmqpHelper::Connector[:medusa]
   end
 
 end

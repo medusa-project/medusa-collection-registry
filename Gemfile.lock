@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/medusa-project/amqp_helper.git
+  revision: 7e548e8f1bb3ed130ab05bf4b1253048eb6ebf11
+  specs:
+    amqp_helper (0.1.0)
+      bunny
+
+GIT
   remote: git://github.com/medusa-project/handle-server.git
   revision: d4f9632d60601073e06d0905c9ab9b1bff05b2fe
   specs:
@@ -411,6 +418,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  amqp_helper!
   auto_html (~> 1.6.4)
   auto_strip_attributes
   bootstrap-sass

@@ -53,6 +53,7 @@ gem 'ruby-vips', '~>0.3.14', require: 'vips'
 
 #AMQP communication
 gem 'bunny'
+gem 'amqp_helper', git: 'git://github.com/medusa-project/amqp_helper.git'
 
 gem 'sass-rails'
 gem 'coffee-rails'

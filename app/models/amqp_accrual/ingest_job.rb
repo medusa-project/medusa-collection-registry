@@ -1,8 +1,8 @@
 require 'open3'
 
 class AmqpAccrual::IngestJob < Job::Base
-
-  delegate :amqp_connector, to: :class
+  include AmqpConnector
+  use_amqp_connector :medusa
 
   def self.create_for(client, message)
     job = self.new(staging_path: message['staging_path'], client: client)
@@ -145,10 +145,5 @@ MESSAGE
   def self.send_unknown_error_message(client, incoming_message, error)
     amqp_connector.send_message(AmqpAccrual::Config.outgoing_queue(client), unknown_error_message(incoming_message, error))
   end
-
-  def self.amqp_connector
-    AmqpHelper::Connector[:medusa]
-  end
-
 
 end

@@ -5,6 +5,8 @@ require 'singleton'
 module Test
   class AmazonGlacierServer
     include Singleton
+    include AmqpConnector
+    use_amqp_connector :medusa
 
     attr_accessor :outgoing_queue, :incoming_queue
 
@@ -20,10 +22,6 @@ module Test
                           parameters: {archive_ids: [UUID.generate]}, action: 'upload_directory'}
         amqp_connector.send_message(self.outgoing_queue, return_message)
       end
-    end
-
-    def amqp_connector
-      AmqpHelper::Connector[:medusa]
     end
 
     def import_fail

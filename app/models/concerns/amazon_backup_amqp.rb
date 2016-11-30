@@ -2,9 +2,11 @@ require 'active_support/concern'
 
 module AmazonBackupAmqp
   extend ActiveSupport::Concern
+  include AmqpConnector
 
   included do
     delegate :incoming_queue, :outgoing_queue, to: :class
+    use_amqp_connector :medusa
   end
 
   module ClassMethods
@@ -80,10 +82,5 @@ module AmazonBackupAmqp
   def send_delete_request_message(archive_id)
     amqp_connector.send_message(self.outgoing_queue, create_delete_request_message(archive_id))
   end
-
-  def amqp_connector
-    AmqpHelper::Connector[:medusa]
-  end
-
 
 end

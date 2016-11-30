@@ -1,5 +1,7 @@
 module AmqpAccrual
   class Receiver < Object
+    include AmqpConnector
+    use_amqp_connector :medusa
 
     def self.listen(client)
       AmqpListener.new(amqp_config: amqp_connector.config,
@@ -32,12 +34,6 @@ module AmqpAccrual
           handle_message(client, raw_payload)
         end
       end
-    end
-
-    protected
-
-    def self.amqp_connector
-      AmqpHelper::Connector[:medusa]
     end
 
   end
