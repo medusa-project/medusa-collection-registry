@@ -64,9 +64,9 @@ class AmqpResponse::Base < Object
 
   def self.listen
     amqp_config = amqp_connector.config
-    AmqpListener.new(amqp_config: amqp_config, name: listener_name,
-                     queue_name: incoming_queue,
-                     action_callback: ->(payload) {handle_response(payload)}).listen
+    AmqpHelper::Listener.new(amqp_config: amqp_config, name: listener_name,
+                             queue_name: incoming_queue,
+                             action_callback: ->(payload) { handle_response(payload) }).listen
   end
 
   def self.handle_response(raw_payload)

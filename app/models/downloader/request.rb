@@ -7,7 +7,7 @@ class Downloader::Request < ActiveRecord::Base
 
   def self.listen
     config = Settings.downloader
-    AmqpListener.new(amqp_config: config.amqp, name: 'downloader',
+    AmqpHelper::Listener.new(amqp_config: config.amqp, name: 'downloader',
                      queue_name: config.incoming_queue,
                      action_callback: ->(payload) {handle_response(payload)}).listen
   end

@@ -4,10 +4,10 @@ module AmqpAccrual
     use_amqp_connector :medusa
 
     def self.listen(client)
-      AmqpListener.new(amqp_config: amqp_connector.config,
-                       name: client,
-                       queue_name: AmqpAccrual::Config.incoming_queue(client),
-                       action_callback: ->(payload) { self.handle_message(client, payload) }).listen
+      AmqpHelper::Listener.new(amqp_config: amqp_connector.config,
+                               name: client,
+                               queue_name: AmqpAccrual::Config.incoming_queue(client),
+                               action_callback: ->(payload) { self.handle_message(client, payload) }).listen
     end
 
     def self.handle_message(client, payload)
