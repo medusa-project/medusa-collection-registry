@@ -154,5 +154,5 @@ group :test do
   gem 'sunspot_test'
   gem 'connection_pool'
   #need my version of bunny-mock where the default exchange works as expected. Wait to see if the fix gets merged
-  gem 'bunny-mock', git: 'git//github.com:hading/bunny-mock.git'
+  gem 'bunny-mock', git: 'git://github.com:hading/bunny-mock.git'
 end
