@@ -118,7 +118,7 @@ namespace :fits do
     errors = Hash.new
     sleeps = 0
     messages_handled = 0
-    while incoming_message_count > 0 and sleeps < MAX_SLEEPS do
+    while sleeps < MAX_SLEEPS do
       break if File.exist?(FITS_STOP_FILE)
       amqp_connector.with_parsed_message(Settings.fits.incoming_queue) do |message|
         if message
