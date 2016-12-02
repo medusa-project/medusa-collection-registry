@@ -53,8 +53,6 @@ gem 'ruby-vips', '~>0.3.14', require: 'vips'
 
 #AMQP communication - implicitly uses Bunny
 gem 'amqp_helper', '~>0.1.4', git: 'git://github.com/medusa-project/amqp_helper.git'
-#need my version of bunny-mock where the default exchange works as expected
-gem 'bunny-mock', git: 'git@github.com:hading/bunny-mock.git'
 
 gem 'sass-rails'
 gem 'coffee-rails'
@@ -155,4 +153,6 @@ group :test do
   #gem 'capybara-webkit'
   gem 'sunspot_test'
   gem 'connection_pool'
+  #need my version of bunny-mock where the default exchange works as expected. Wait to see if the fix gets merged
+  gem 'bunny-mock', git: 'git@github.com:hading/bunny-mock.git'
 end
