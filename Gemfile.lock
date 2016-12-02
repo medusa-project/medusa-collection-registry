@@ -115,6 +115,7 @@ GEM
     chartkick (2.1.1)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
+    chronic (0.10.2)
     ckeditor (4.2.0)
       cocaine
       orm_adapter (~> 0.5.0)
@@ -440,6 +441,7 @@ DEPENDENCIES
   capybara
   capybara-email
   chartkick
+  chronic
   ckeditor
   clipboard-rails
   coffee-rails

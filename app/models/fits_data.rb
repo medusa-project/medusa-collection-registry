@@ -1,5 +1,4 @@
 class FitsData < ActiveRecord::Base
-  include FitsDatetimeParser
 
   belongs_to :cfs_file
 
@@ -33,7 +32,7 @@ class FitsData < ActiveRecord::Base
   end
 
   def safe_parse_datetime(datetime_string, toolname)
-    parse_datetime(datetime_string, toolname)
+    Chronic.parse(datetime_string)
   rescue Exception => e
     Rails.logger.error e.to_s
     GenericErrorMailer.error("#{e}\nFits data id:#{self.id}\nCfs File id:#{self.cfs_file.id}", subject: 'FITS date parse error').deliver_now

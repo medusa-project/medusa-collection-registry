@@ -118,6 +118,9 @@ gem 'lmdb'
 
 gem 'chartkick'
 
+#date parsing
+gem 'chronic'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl'
