@@ -64,7 +64,7 @@ module Preview
 
     def default_image_response_info
       if cfs_file.exists_on_filesystem?
-        VIPS::Image.new(cfs_file.absolute_path)
+        image = VIPS::Image.new(cfs_file.absolute_path)
         width = image.x_size
         height = image.y_size
         if [width, height].max > Settings.cfs_file_viewers.default_image_size
