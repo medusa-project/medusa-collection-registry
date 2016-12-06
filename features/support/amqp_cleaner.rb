@@ -1,6 +1,4 @@
-require 'fileutils'
-
-#before each test make sure that the amazon AMQP queues are clean
+#before each test mock the amqp queues
 Before do
   AmqpHelper::Connector.mock_all
 end
