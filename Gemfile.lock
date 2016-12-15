@@ -275,6 +275,8 @@ GEM
       capybara (~> 2.1)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
+    postgresql_cursor (0.6.1)
+      activerecord (>= 3.1.0)
     pr_geohash (1.0.0)
     progress_bar (1.0.5)
       highline (~> 1.6)
@@ -483,6 +485,7 @@ DEPENDENCIES
   passenger
   pg
   poltergeist
+  postgresql_cursor
   progress_bar
   puma
   rails (~> 4.2)

@@ -5,6 +5,7 @@ gem 'rails', "~> 4.2"
 gem 'responders'
 
 gem 'pg'
+gem 'postgresql_cursor'
 
 #deployment webserver
 gem 'passenger'
