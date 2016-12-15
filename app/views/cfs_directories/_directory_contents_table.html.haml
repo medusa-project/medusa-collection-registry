@@ -10,7 +10,8 @@
       %td
       %td
       %td
-  - @directory.cfs_files.decorate.each do |file|
+  - @directory.cfs_files.each_instance do |file|
+    - file = file.decorate
     %tr
       %td
         - if file.preview_type_is_image?
