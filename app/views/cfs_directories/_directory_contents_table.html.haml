@@ -1,7 +1,7 @@
 = render 'cfs_directories/image_viewer'
 
 = render layout: 'layouts/standard_table', locals: {id: :files, headers: ['Thumbnail', 'Name', 'Size', 'Last Modified', 'FITS']} do
-  - @directory.subdirectories.sort(&:path).each do |subdirectory|
+  - @directory.subdirectories.order('path asc').each do |subdirectory|
     %tr
       %td
       %td{'data-sort': "a-#{subdirectory.path}"}
