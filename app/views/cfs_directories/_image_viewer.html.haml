@@ -3,8 +3,21 @@
   .galleria
   :javascript
     var galleria_data = #{data_hashes.to_json};
+    var galleria_image_count = #{data_hashes.count};
+    var galleria_thumbnails_loaded_count = 0;
+    var galleria_thumbnail_batch_load_size = 20;
     Galleria.ready(function (options) {
-      this.lazyLoadChunks(10, 2000);
+      var galleria = this;
+      function load_some_thumbs () {
+        if (galleria_thumbnails_loaded_count < galleria_image_count) {
+          galleria.lazyLoad(_.range(galleria_thumbnails_loaded_count, galleria_thumbnails_loaded_count + galleria_thumbnail_batch_load_size));
+          galleria_thumbnails_loaded_count = galleria_thumbnails_loaded_count + galleria_thumbnail_batch_load_size;
+        }
+      }
+      load_some_thumbs();
+      $('.galleria-thumb-nav-right').click(function () {
+        load_some_thumbs();
+      });
     });
     Galleria.run('.galleria', {dataSource: galleria_data, height: 600,
                                 popupLinks: true, thumbCrop: false, thumbnails: 'lazy'});
