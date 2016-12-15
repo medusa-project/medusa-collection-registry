@@ -8,7 +8,9 @@ class FileGroupsController < ApplicationController
   respond_to :html, :js, :json
 
   def show
+    #This is a little funky to get the includes when we can
     @directory = @file_group.cfs_directory
+    @directory = CfsDirectory.includes(:subdirectories, {cfs_files: [:content_type, :file_extension]}).find(@directory.id) if @directory.present?
     @accrual = create_accrual
     respond_to do |format|
       format.html
