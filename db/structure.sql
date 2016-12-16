@@ -2,11 +2,12 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.4
--- Dumped by pg_dump version 9.5.4
+-- Dumped from database version 9.6.1
+-- Dumped by pg_dump version 9.6.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -2504,7 +2505,8 @@ CREATE TABLE items (
     date character varying,
     rights_information text,
     item_number character varying,
-    source_media character varying
+    source_media character varying,
+    ingested boolean DEFAULT false
 );
 
 
@@ -4110,518 +4112,518 @@ ALTER SEQUENCE workflow_ingests_id_seq OWNED BY workflow_ingests.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: access_system_collection_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY access_system_collection_joins ALTER COLUMN id SET DEFAULT nextval('access_system_collection_joins_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: access_systems id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY access_systems ALTER COLUMN id SET DEFAULT nextval('access_systems_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: amazon_backups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY amazon_backups ALTER COLUMN id SET DEFAULT nextval('amazon_backups_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: amqp_accrual_delete_jobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY amqp_accrual_delete_jobs ALTER COLUMN id SET DEFAULT nextval('amqp_accrual_delete_jobs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: amqp_accrual_ingest_jobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY amqp_accrual_ingest_jobs ALTER COLUMN id SET DEFAULT nextval('amqp_accrual_ingest_jobs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: archived_accrual_jobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY archived_accrual_jobs ALTER COLUMN id SET DEFAULT nextval('archived_accrual_jobs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: assessments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY assessments ALTER COLUMN id SET DEFAULT nextval('assessments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: attachments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY attachments ALTER COLUMN id SET DEFAULT nextval('attachments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: book_tracker_items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY book_tracker_items ALTER COLUMN id SET DEFAULT nextval('book_tracker_items_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: book_tracker_tasks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY book_tracker_tasks ALTER COLUMN id SET DEFAULT nextval('book_tracker_tasks_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: cascaded_event_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cascaded_event_joins ALTER COLUMN id SET DEFAULT nextval('cascaded_event_joins_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: cascaded_red_flag_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cascaded_red_flag_joins ALTER COLUMN id SET DEFAULT nextval('cascaded_red_flag_joins_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: cfs_directories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cfs_directories ALTER COLUMN id SET DEFAULT nextval('cfs_directories_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: cfs_files id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cfs_files ALTER COLUMN id SET DEFAULT nextval('cfs_files_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: collection_virtual_repository_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY collection_virtual_repository_joins ALTER COLUMN id SET DEFAULT nextval('collection_virtual_repository_joins_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: collections id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY collections ALTER COLUMN id SET DEFAULT nextval('collections_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: content_types id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY content_types ALTER COLUMN id SET DEFAULT nextval('content_types_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: delayed_jobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY delayed_jobs ALTER COLUMN id SET DEFAULT nextval('delayed_jobs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: downloader_requests id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY downloader_requests ALTER COLUMN id SET DEFAULT nextval('downloader_requests_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file_extensions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_extensions ALTER COLUMN id SET DEFAULT nextval('file_extensions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file_format_normalization_paths id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_normalization_paths ALTER COLUMN id SET DEFAULT nextval('file_format_normalization_paths_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file_format_notes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_notes ALTER COLUMN id SET DEFAULT nextval('file_format_notes_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file_format_profiles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles ALTER COLUMN id SET DEFAULT nextval('file_format_profiles_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file_format_profiles_content_types_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles_content_types_joins ALTER COLUMN id SET DEFAULT nextval('file_format_profiles_content_types_joins_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file_format_profiles_file_extensions_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles_file_extensions_joins ALTER COLUMN id SET DEFAULT nextval('file_format_profiles_file_extensions_joins_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file_format_test_reasons id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_test_reasons ALTER COLUMN id SET DEFAULT nextval('file_format_test_reasons_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file_format_tests id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_tests ALTER COLUMN id SET DEFAULT nextval('file_format_tests_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file_format_tests_file_format_test_reasons_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins ALTER COLUMN id SET DEFAULT nextval('file_format_tests_file_format_test_reasons_joins_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file_formats id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_formats ALTER COLUMN id SET DEFAULT nextval('file_formats_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file_groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_groups ALTER COLUMN id SET DEFAULT nextval('file_groups_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: fits_data id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY fits_data ALTER COLUMN id SET DEFAULT nextval('fits_data_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: institutions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY institutions ALTER COLUMN id SET DEFAULT nextval('institutions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY items ALTER COLUMN id SET DEFAULT nextval('items_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_amazon_backups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_amazon_backups ALTER COLUMN id SET DEFAULT nextval('job_amazon_backups_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_cfs_directory_export_cleanups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_cfs_directory_export_cleanups ALTER COLUMN id SET DEFAULT nextval('job_cfs_directory_export_cleanups_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_cfs_directory_exports id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_cfs_directory_exports ALTER COLUMN id SET DEFAULT nextval('job_cfs_directory_exports_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_cfs_initial_directory_assessments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_cfs_initial_directory_assessments ALTER COLUMN id SET DEFAULT nextval('job_cfs_initial_directory_assessments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_cfs_initial_file_group_assessments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_cfs_initial_file_group_assessments ALTER COLUMN id SET DEFAULT nextval('job_cfs_initial_file_group_assessments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_fits_content_type_batches id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_content_type_batches ALTER COLUMN id SET DEFAULT nextval('job_fits_content_type_batches_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_fits_directories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_directories ALTER COLUMN id SET DEFAULT nextval('job_fits_directories_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_fits_directory_trees id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_directory_trees ALTER COLUMN id SET DEFAULT nextval('job_fits_directory_trees_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_fits_file_extension_batches id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_file_extension_batches ALTER COLUMN id SET DEFAULT nextval('job_fits_file_extension_batches_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_fixity_checks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fixity_checks ALTER COLUMN id SET DEFAULT nextval('job_fixity_checks_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_ingest_staging_deletes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_ingest_staging_deletes ALTER COLUMN id SET DEFAULT nextval('job_ingest_staging_deletes_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_item_bulk_imports id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_item_bulk_imports ALTER COLUMN id SET DEFAULT nextval('job_item_bulk_imports_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: job_virus_scans id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_virus_scans ALTER COLUMN id SET DEFAULT nextval('job_virus_scans_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: medusa_uuids id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY medusa_uuids ALTER COLUMN id SET DEFAULT nextval('medusa_uuids_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: package_profiles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY package_profiles ALTER COLUMN id SET DEFAULT nextval('package_profiles_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: people id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY people ALTER COLUMN id SET DEFAULT nextval('people_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: preservation_priorities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY preservation_priorities ALTER COLUMN id SET DEFAULT nextval('preservation_priorities_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: producers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY producers ALTER COLUMN id SET DEFAULT nextval('production_units_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: projects id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: pronoms id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY pronoms ALTER COLUMN id SET DEFAULT nextval('pronoms_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: red_flags id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY red_flags ALTER COLUMN id SET DEFAULT nextval('red_flags_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: related_file_group_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY related_file_group_joins ALTER COLUMN id SET DEFAULT nextval('related_file_group_joins_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: repositories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY repositories ALTER COLUMN id SET DEFAULT nextval('repositories_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: resource_typeable_resource_type_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY resource_typeable_resource_type_joins ALTER COLUMN id SET DEFAULT nextval('resource_typeable_resource_type_joins_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: resource_types id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY resource_types ALTER COLUMN id SET DEFAULT nextval('resource_types_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: rights_declarations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY rights_declarations ALTER COLUMN id SET DEFAULT nextval('rights_declarations_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: sessions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY sessions ALTER COLUMN id SET DEFAULT nextval('sessions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: static_pages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY static_pages ALTER COLUMN id SET DEFAULT nextval('static_pages_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: storage_media id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY storage_media ALTER COLUMN id SET DEFAULT nextval('storage_media_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: subcollection_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY subcollection_joins ALTER COLUMN id SET DEFAULT nextval('subcollection_joins_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: virtual_repositories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY virtual_repositories ALTER COLUMN id SET DEFAULT nextval('virtual_repositories_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: virus_scans id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY virus_scans ALTER COLUMN id SET DEFAULT nextval('virus_scans_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: workflow_accrual_comments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_comments ALTER COLUMN id SET DEFAULT nextval('workflow_accrual_comments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: workflow_accrual_conflicts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_conflicts ALTER COLUMN id SET DEFAULT nextval('workflow_accrual_conflicts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: workflow_accrual_directories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_directories ALTER COLUMN id SET DEFAULT nextval('workflow_accrual_directories_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: workflow_accrual_files id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_files ALTER COLUMN id SET DEFAULT nextval('workflow_accrual_files_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: workflow_accrual_jobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_jobs ALTER COLUMN id SET DEFAULT nextval('workflow_accrual_jobs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: workflow_ingests id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_ingests ALTER COLUMN id SET DEFAULT nextval('workflow_ingests_id_seq'::regclass);
 
 
 --
--- Name: access_system_collection_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: access_system_collection_joins access_system_collection_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY access_system_collection_joins
@@ -4629,7 +4631,7 @@ ALTER TABLE ONLY access_system_collection_joins
 
 
 --
--- Name: access_systems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: access_systems access_systems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY access_systems
@@ -4637,7 +4639,7 @@ ALTER TABLE ONLY access_systems
 
 
 --
--- Name: amazon_backups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: amazon_backups amazon_backups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY amazon_backups
@@ -4645,7 +4647,7 @@ ALTER TABLE ONLY amazon_backups
 
 
 --
--- Name: amqp_accrual_delete_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: amqp_accrual_delete_jobs amqp_accrual_delete_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY amqp_accrual_delete_jobs
@@ -4653,7 +4655,7 @@ ALTER TABLE ONLY amqp_accrual_delete_jobs
 
 
 --
--- Name: amqp_accrual_ingest_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: amqp_accrual_ingest_jobs amqp_accrual_ingest_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY amqp_accrual_ingest_jobs
@@ -4661,7 +4663,7 @@ ALTER TABLE ONLY amqp_accrual_ingest_jobs
 
 
 --
--- Name: archived_accrual_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: archived_accrual_jobs archived_accrual_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY archived_accrual_jobs
@@ -4669,7 +4671,7 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 
 --
--- Name: assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: assessments assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY assessments
@@ -4677,7 +4679,7 @@ ALTER TABLE ONLY assessments
 
 
 --
--- Name: attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: attachments attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY attachments
@@ -4685,7 +4687,7 @@ ALTER TABLE ONLY attachments
 
 
 --
--- Name: book_tracker_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: book_tracker_items book_tracker_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY book_tracker_items
@@ -4693,7 +4695,7 @@ ALTER TABLE ONLY book_tracker_items
 
 
 --
--- Name: book_tracker_tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: book_tracker_tasks book_tracker_tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY book_tracker_tasks
@@ -4701,7 +4703,7 @@ ALTER TABLE ONLY book_tracker_tasks
 
 
 --
--- Name: cascaded_event_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: cascaded_event_joins cascaded_event_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cascaded_event_joins
@@ -4709,7 +4711,7 @@ ALTER TABLE ONLY cascaded_event_joins
 
 
 --
--- Name: cascaded_red_flag_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: cascaded_red_flag_joins cascaded_red_flag_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cascaded_red_flag_joins
@@ -4717,7 +4719,7 @@ ALTER TABLE ONLY cascaded_red_flag_joins
 
 
 --
--- Name: cfs_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: cfs_directories cfs_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cfs_directories
@@ -4725,7 +4727,7 @@ ALTER TABLE ONLY cfs_directories
 
 
 --
--- Name: cfs_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: cfs_files cfs_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cfs_files
@@ -4733,7 +4735,7 @@ ALTER TABLE ONLY cfs_files
 
 
 --
--- Name: collection_virtual_repository_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: collection_virtual_repository_joins collection_virtual_repository_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY collection_virtual_repository_joins
@@ -4741,7 +4743,7 @@ ALTER TABLE ONLY collection_virtual_repository_joins
 
 
 --
--- Name: collections_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: collections collections_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY collections
@@ -4749,7 +4751,7 @@ ALTER TABLE ONLY collections
 
 
 --
--- Name: content_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: content_types content_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY content_types
@@ -4757,7 +4759,7 @@ ALTER TABLE ONLY content_types
 
 
 --
--- Name: delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: delayed_jobs delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY delayed_jobs
@@ -4765,7 +4767,7 @@ ALTER TABLE ONLY delayed_jobs
 
 
 --
--- Name: downloader_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: downloader_requests downloader_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY downloader_requests
@@ -4773,7 +4775,7 @@ ALTER TABLE ONLY downloader_requests
 
 
 --
--- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY events
@@ -4781,7 +4783,7 @@ ALTER TABLE ONLY events
 
 
 --
--- Name: file_extensions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file_extensions file_extensions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_extensions
@@ -4789,7 +4791,7 @@ ALTER TABLE ONLY file_extensions
 
 
 --
--- Name: file_format_normalization_paths_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_normalization_paths file_format_normalization_paths_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_normalization_paths
@@ -4797,7 +4799,7 @@ ALTER TABLE ONLY file_format_normalization_paths
 
 
 --
--- Name: file_format_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_notes file_format_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_notes
@@ -4805,7 +4807,7 @@ ALTER TABLE ONLY file_format_notes
 
 
 --
--- Name: file_format_profiles_content_types_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_profiles_content_types_joins file_format_profiles_content_types_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles_content_types_joins
@@ -4813,7 +4815,7 @@ ALTER TABLE ONLY file_format_profiles_content_types_joins
 
 
 --
--- Name: file_format_profiles_file_extensions_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_profiles_file_extensions_joins file_format_profiles_file_extensions_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles_file_extensions_joins
@@ -4821,7 +4823,7 @@ ALTER TABLE ONLY file_format_profiles_file_extensions_joins
 
 
 --
--- Name: file_format_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_profiles file_format_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles
@@ -4829,7 +4831,7 @@ ALTER TABLE ONLY file_format_profiles
 
 
 --
--- Name: file_format_test_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_test_reasons file_format_test_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_test_reasons
@@ -4837,7 +4839,7 @@ ALTER TABLE ONLY file_format_test_reasons
 
 
 --
--- Name: file_format_tests_file_format_test_reasons_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_tests_file_format_test_reasons_joins file_format_tests_file_format_test_reasons_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
@@ -4845,7 +4847,7 @@ ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
 
 
 --
--- Name: file_format_tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_tests file_format_tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_tests
@@ -4853,7 +4855,7 @@ ALTER TABLE ONLY file_format_tests
 
 
 --
--- Name: file_formats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file_formats file_formats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_formats
@@ -4861,7 +4863,7 @@ ALTER TABLE ONLY file_formats
 
 
 --
--- Name: file_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file_groups file_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_groups
@@ -4869,7 +4871,7 @@ ALTER TABLE ONLY file_groups
 
 
 --
--- Name: fits_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: fits_data fits_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY fits_data
@@ -4877,7 +4879,7 @@ ALTER TABLE ONLY fits_data
 
 
 --
--- Name: institutions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: institutions institutions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY institutions
@@ -4885,7 +4887,7 @@ ALTER TABLE ONLY institutions
 
 
 --
--- Name: items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: items items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY items
@@ -4893,7 +4895,7 @@ ALTER TABLE ONLY items
 
 
 --
--- Name: job_amazon_backups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_amazon_backups job_amazon_backups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_amazon_backups
@@ -4901,7 +4903,7 @@ ALTER TABLE ONLY job_amazon_backups
 
 
 --
--- Name: job_cfs_directory_export_cleanups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_cfs_directory_export_cleanups job_cfs_directory_export_cleanups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_cfs_directory_export_cleanups
@@ -4909,7 +4911,7 @@ ALTER TABLE ONLY job_cfs_directory_export_cleanups
 
 
 --
--- Name: job_cfs_directory_exports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_cfs_directory_exports job_cfs_directory_exports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_cfs_directory_exports
@@ -4917,7 +4919,7 @@ ALTER TABLE ONLY job_cfs_directory_exports
 
 
 --
--- Name: job_cfs_initial_directory_assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_cfs_initial_directory_assessments job_cfs_initial_directory_assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_cfs_initial_directory_assessments
@@ -4925,7 +4927,7 @@ ALTER TABLE ONLY job_cfs_initial_directory_assessments
 
 
 --
--- Name: job_cfs_initial_file_group_assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_cfs_initial_file_group_assessments job_cfs_initial_file_group_assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_cfs_initial_file_group_assessments
@@ -4933,7 +4935,7 @@ ALTER TABLE ONLY job_cfs_initial_file_group_assessments
 
 
 --
--- Name: job_fits_content_type_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_fits_content_type_batches job_fits_content_type_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_content_type_batches
@@ -4941,7 +4943,7 @@ ALTER TABLE ONLY job_fits_content_type_batches
 
 
 --
--- Name: job_fits_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_fits_directories job_fits_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_directories
@@ -4949,7 +4951,7 @@ ALTER TABLE ONLY job_fits_directories
 
 
 --
--- Name: job_fits_directory_trees_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_fits_directory_trees job_fits_directory_trees_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_directory_trees
@@ -4957,7 +4959,7 @@ ALTER TABLE ONLY job_fits_directory_trees
 
 
 --
--- Name: job_fits_file_extension_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_fits_file_extension_batches job_fits_file_extension_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_file_extension_batches
@@ -4965,7 +4967,7 @@ ALTER TABLE ONLY job_fits_file_extension_batches
 
 
 --
--- Name: job_fixity_checks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_fixity_checks job_fixity_checks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fixity_checks
@@ -4973,7 +4975,7 @@ ALTER TABLE ONLY job_fixity_checks
 
 
 --
--- Name: job_ingest_staging_deletes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_ingest_staging_deletes job_ingest_staging_deletes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_ingest_staging_deletes
@@ -4981,7 +4983,7 @@ ALTER TABLE ONLY job_ingest_staging_deletes
 
 
 --
--- Name: job_item_bulk_imports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_item_bulk_imports job_item_bulk_imports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_item_bulk_imports
@@ -4989,7 +4991,7 @@ ALTER TABLE ONLY job_item_bulk_imports
 
 
 --
--- Name: job_virus_scans_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_virus_scans job_virus_scans_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_virus_scans
@@ -4997,7 +4999,7 @@ ALTER TABLE ONLY job_virus_scans
 
 
 --
--- Name: medusa_uuids_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: medusa_uuids medusa_uuids_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY medusa_uuids
@@ -5005,7 +5007,7 @@ ALTER TABLE ONLY medusa_uuids
 
 
 --
--- Name: package_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: package_profiles package_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY package_profiles
@@ -5013,7 +5015,7 @@ ALTER TABLE ONLY package_profiles
 
 
 --
--- Name: people_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: people people_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY people
@@ -5021,7 +5023,7 @@ ALTER TABLE ONLY people
 
 
 --
--- Name: preservation_priorities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: preservation_priorities preservation_priorities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY preservation_priorities
@@ -5029,7 +5031,7 @@ ALTER TABLE ONLY preservation_priorities
 
 
 --
--- Name: production_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: producers production_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY producers
@@ -5037,7 +5039,7 @@ ALTER TABLE ONLY producers
 
 
 --
--- Name: projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY projects
@@ -5045,7 +5047,7 @@ ALTER TABLE ONLY projects
 
 
 --
--- Name: pronoms_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: pronoms pronoms_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY pronoms
@@ -5053,7 +5055,7 @@ ALTER TABLE ONLY pronoms
 
 
 --
--- Name: red_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: red_flags red_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY red_flags
@@ -5061,7 +5063,7 @@ ALTER TABLE ONLY red_flags
 
 
 --
--- Name: related_file_group_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: related_file_group_joins related_file_group_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY related_file_group_joins
@@ -5069,7 +5071,7 @@ ALTER TABLE ONLY related_file_group_joins
 
 
 --
--- Name: repositories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: repositories repositories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY repositories
@@ -5077,7 +5079,7 @@ ALTER TABLE ONLY repositories
 
 
 --
--- Name: resource_typeable_resource_type_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: resource_typeable_resource_type_joins resource_typeable_resource_type_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY resource_typeable_resource_type_joins
@@ -5085,7 +5087,7 @@ ALTER TABLE ONLY resource_typeable_resource_type_joins
 
 
 --
--- Name: resource_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: resource_types resource_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY resource_types
@@ -5093,7 +5095,7 @@ ALTER TABLE ONLY resource_types
 
 
 --
--- Name: rights_declarations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: rights_declarations rights_declarations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY rights_declarations
@@ -5101,7 +5103,7 @@ ALTER TABLE ONLY rights_declarations
 
 
 --
--- Name: sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY sessions
@@ -5109,7 +5111,7 @@ ALTER TABLE ONLY sessions
 
 
 --
--- Name: static_pages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: static_pages static_pages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY static_pages
@@ -5117,7 +5119,7 @@ ALTER TABLE ONLY static_pages
 
 
 --
--- Name: storage_media_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: storage_media storage_media_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY storage_media
@@ -5125,7 +5127,7 @@ ALTER TABLE ONLY storage_media
 
 
 --
--- Name: subcollection_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: subcollection_joins subcollection_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY subcollection_joins
@@ -5133,7 +5135,7 @@ ALTER TABLE ONLY subcollection_joins
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -5141,7 +5143,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: virtual_repositories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: virtual_repositories virtual_repositories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY virtual_repositories
@@ -5149,7 +5151,7 @@ ALTER TABLE ONLY virtual_repositories
 
 
 --
--- Name: virus_scans_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: virus_scans virus_scans_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY virus_scans
@@ -5157,7 +5159,7 @@ ALTER TABLE ONLY virus_scans
 
 
 --
--- Name: workflow_accrual_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_comments workflow_accrual_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_comments
@@ -5165,7 +5167,7 @@ ALTER TABLE ONLY workflow_accrual_comments
 
 
 --
--- Name: workflow_accrual_conflicts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_conflicts workflow_accrual_conflicts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_conflicts
@@ -5173,7 +5175,7 @@ ALTER TABLE ONLY workflow_accrual_conflicts
 
 
 --
--- Name: workflow_accrual_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_directories workflow_accrual_directories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_directories
@@ -5181,7 +5183,7 @@ ALTER TABLE ONLY workflow_accrual_directories
 
 
 --
--- Name: workflow_accrual_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_files workflow_accrual_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_files
@@ -5189,7 +5191,7 @@ ALTER TABLE ONLY workflow_accrual_files
 
 
 --
--- Name: workflow_accrual_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_jobs workflow_accrual_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_jobs
@@ -5197,7 +5199,7 @@ ALTER TABLE ONLY workflow_accrual_jobs
 
 
 --
--- Name: workflow_ingests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_ingests workflow_ingests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_ingests
@@ -6367,308 +6369,308 @@ CREATE UNIQUE INDEX wfaj_cfs_dir_id_and_staging_path_idx ON workflow_accrual_job
 
 
 --
--- Name: access_system_collection_joins_touch_access_system_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: access_system_collection_joins access_system_collection_joins_touch_access_system_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER access_system_collection_joins_touch_access_system_trigger AFTER INSERT OR DELETE OR UPDATE ON access_system_collection_joins FOR EACH ROW EXECUTE PROCEDURE access_system_collection_joins_touch_access_system();
 
 
 --
--- Name: access_system_collection_joins_touch_collection_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: access_system_collection_joins access_system_collection_joins_touch_collection_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER access_system_collection_joins_touch_collection_trigger AFTER INSERT OR DELETE OR UPDATE ON access_system_collection_joins FOR EACH ROW EXECUTE PROCEDURE access_system_collection_joins_touch_collection();
 
 
 --
--- Name: amazon_backups_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: amazon_backups amazon_backups_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER amazon_backups_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON amazon_backups FOR EACH ROW EXECUTE PROCEDURE amazon_backups_touch_cfs_directory();
 
 
 --
--- Name: amazon_backups_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: amazon_backups amazon_backups_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER amazon_backups_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON amazon_backups FOR EACH ROW EXECUTE PROCEDURE amazon_backups_touch_user();
 
 
 --
--- Name: assessments_touch_storage_medium_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: assessments assessments_touch_storage_medium_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER assessments_touch_storage_medium_trigger AFTER INSERT OR DELETE OR UPDATE ON assessments FOR EACH ROW EXECUTE PROCEDURE assessments_touch_storage_medium();
 
 
 --
--- Name: cfs_dir_update_bit_level_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: cfs_directories cfs_dir_update_bit_level_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER cfs_dir_update_bit_level_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON cfs_directories FOR EACH ROW EXECUTE PROCEDURE cfs_dir_update_bit_level_file_group();
 
 
 --
--- Name: cfs_dir_update_cfs_dir_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: cfs_directories cfs_dir_update_cfs_dir_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER cfs_dir_update_cfs_dir_trigger AFTER INSERT OR DELETE OR UPDATE ON cfs_directories FOR EACH ROW EXECUTE PROCEDURE cfs_dir_update_cfs_dir();
 
 
 --
--- Name: cfs_file_update_cfs_directory_and_extension_and_content_type_tr; Type: TRIGGER; Schema: public; Owner: -
+-- Name: cfs_files cfs_file_update_cfs_directory_and_extension_and_content_type_tr; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER cfs_file_update_cfs_directory_and_extension_and_content_type_tr AFTER INSERT OR DELETE OR UPDATE ON cfs_files FOR EACH ROW EXECUTE PROCEDURE cfs_file_update_cfs_directory_and_extension_and_content_type();
 
 
 --
--- Name: cfs_files_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: cfs_files cfs_files_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER cfs_files_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON cfs_files FOR EACH ROW EXECUTE PROCEDURE cfs_files_touch_cfs_directory();
 
 
 --
--- Name: cfs_files_touch_content_type_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: cfs_files cfs_files_touch_content_type_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER cfs_files_touch_content_type_trigger AFTER INSERT OR DELETE OR UPDATE ON cfs_files FOR EACH ROW EXECUTE PROCEDURE cfs_files_touch_content_type();
 
 
 --
--- Name: cfs_files_touch_file_extension_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: cfs_files cfs_files_touch_file_extension_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER cfs_files_touch_file_extension_trigger AFTER INSERT OR DELETE OR UPDATE ON cfs_files FOR EACH ROW EXECUTE PROCEDURE cfs_files_touch_file_extension();
 
 
 --
--- Name: collections_touch_preservation_priority_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: collections collections_touch_preservation_priority_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER collections_touch_preservation_priority_trigger AFTER INSERT OR DELETE OR UPDATE ON collections FOR EACH ROW EXECUTE PROCEDURE collections_touch_preservation_priority();
 
 
 --
--- Name: collections_touch_repository_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: collections collections_touch_repository_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER collections_touch_repository_trigger AFTER INSERT OR DELETE OR UPDATE ON collections FOR EACH ROW EXECUTE PROCEDURE collections_touch_repository();
 
 
 --
--- Name: file_groups_touch_collection_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: file_groups file_groups_touch_collection_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER file_groups_touch_collection_trigger AFTER INSERT OR DELETE OR UPDATE ON file_groups FOR EACH ROW EXECUTE PROCEDURE file_groups_touch_collection();
 
 
 --
--- Name: file_groups_touch_package_profile_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: file_groups file_groups_touch_package_profile_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER file_groups_touch_package_profile_trigger AFTER INSERT OR DELETE OR UPDATE ON file_groups FOR EACH ROW EXECUTE PROCEDURE file_groups_touch_package_profile();
 
 
 --
--- Name: file_groups_touch_producer_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: file_groups file_groups_touch_producer_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER file_groups_touch_producer_trigger AFTER INSERT OR DELETE OR UPDATE ON file_groups FOR EACH ROW EXECUTE PROCEDURE file_groups_touch_producer();
 
 
 --
--- Name: job_cfs_directory_exports_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: job_cfs_directory_exports job_cfs_directory_exports_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER job_cfs_directory_exports_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON job_cfs_directory_exports FOR EACH ROW EXECUTE PROCEDURE job_cfs_directory_exports_touch_cfs_directory();
 
 
 --
--- Name: job_cfs_directory_exports_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: job_cfs_directory_exports job_cfs_directory_exports_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER job_cfs_directory_exports_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON job_cfs_directory_exports FOR EACH ROW EXECUTE PROCEDURE job_cfs_directory_exports_touch_user();
 
 
 --
--- Name: job_cfs_initial_file_group_assessments_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: job_cfs_initial_file_group_assessments job_cfs_initial_file_group_assessments_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER job_cfs_initial_file_group_assessments_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON job_cfs_initial_file_group_assessments FOR EACH ROW EXECUTE PROCEDURE job_cfs_initial_file_group_assessments_touch_file_group();
 
 
 --
--- Name: job_fits_directories_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: job_fits_directories job_fits_directories_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER job_fits_directories_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON job_fits_directories FOR EACH ROW EXECUTE PROCEDURE job_fits_directories_touch_cfs_directory();
 
 
 --
--- Name: job_fits_directories_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: job_fits_directories job_fits_directories_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER job_fits_directories_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON job_fits_directories FOR EACH ROW EXECUTE PROCEDURE job_fits_directories_touch_file_group();
 
 
 --
--- Name: job_fits_directory_trees_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: job_fits_directory_trees job_fits_directory_trees_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER job_fits_directory_trees_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON job_fits_directory_trees FOR EACH ROW EXECUTE PROCEDURE job_fits_directory_trees_touch_cfs_directory();
 
 
 --
--- Name: job_fits_directory_trees_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: job_fits_directory_trees job_fits_directory_trees_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER job_fits_directory_trees_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON job_fits_directory_trees FOR EACH ROW EXECUTE PROCEDURE job_fits_directory_trees_touch_file_group();
 
 
 --
--- Name: job_ingest_staging_deletes_touch_external_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: job_ingest_staging_deletes job_ingest_staging_deletes_touch_external_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER job_ingest_staging_deletes_touch_external_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON job_ingest_staging_deletes FOR EACH ROW EXECUTE PROCEDURE job_ingest_staging_deletes_touch_external_file_group();
 
 
 --
--- Name: job_ingest_staging_deletes_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: job_ingest_staging_deletes job_ingest_staging_deletes_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER job_ingest_staging_deletes_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON job_ingest_staging_deletes FOR EACH ROW EXECUTE PROCEDURE job_ingest_staging_deletes_touch_user();
 
 
 --
--- Name: job_virus_scans_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: job_virus_scans job_virus_scans_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER job_virus_scans_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON job_virus_scans FOR EACH ROW EXECUTE PROCEDURE job_virus_scans_touch_file_group();
 
 
 --
--- Name: projects_touch_collection_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: projects projects_touch_collection_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER projects_touch_collection_trigger AFTER INSERT OR DELETE OR UPDATE ON projects FOR EACH ROW EXECUTE PROCEDURE projects_touch_collection();
 
 
 --
--- Name: related_file_group_joins_touch_source_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: related_file_group_joins related_file_group_joins_touch_source_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER related_file_group_joins_touch_source_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON related_file_group_joins FOR EACH ROW EXECUTE PROCEDURE related_file_group_joins_touch_source_file_group();
 
 
 --
--- Name: related_file_group_joins_touch_target_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: related_file_group_joins related_file_group_joins_touch_target_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER related_file_group_joins_touch_target_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON related_file_group_joins FOR EACH ROW EXECUTE PROCEDURE related_file_group_joins_touch_target_file_group();
 
 
 --
--- Name: repositories_touch_institution_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: repositories repositories_touch_institution_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER repositories_touch_institution_trigger AFTER INSERT OR DELETE OR UPDATE ON repositories FOR EACH ROW EXECUTE PROCEDURE repositories_touch_institution();
 
 
 --
--- Name: resource_typeable_resource_type_joins_touch_resource_type_trigg; Type: TRIGGER; Schema: public; Owner: -
+-- Name: resource_typeable_resource_type_joins resource_typeable_resource_type_joins_touch_resource_type_trigg; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER resource_typeable_resource_type_joins_touch_resource_type_trigg AFTER INSERT OR DELETE OR UPDATE ON resource_typeable_resource_type_joins FOR EACH ROW EXECUTE PROCEDURE resource_typeable_resource_type_joins_touch_resource_type();
 
 
 --
--- Name: virus_scans_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: virus_scans virus_scans_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER virus_scans_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON virus_scans FOR EACH ROW EXECUTE PROCEDURE virus_scans_touch_file_group();
 
 
 --
--- Name: workflow_accrual_comments_touch_workflow_accrual_job_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: workflow_accrual_comments workflow_accrual_comments_touch_workflow_accrual_job_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER workflow_accrual_comments_touch_workflow_accrual_job_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_accrual_comments FOR EACH ROW EXECUTE PROCEDURE workflow_accrual_comments_touch_workflow_accrual_job();
 
 
 --
--- Name: workflow_accrual_conflicts_touch_workflow_accrual_job_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: workflow_accrual_conflicts workflow_accrual_conflicts_touch_workflow_accrual_job_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER workflow_accrual_conflicts_touch_workflow_accrual_job_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_accrual_conflicts FOR EACH ROW EXECUTE PROCEDURE workflow_accrual_conflicts_touch_workflow_accrual_job();
 
 
 --
--- Name: workflow_accrual_directories_touch_workflow_accrual_job_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: workflow_accrual_directories workflow_accrual_directories_touch_workflow_accrual_job_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER workflow_accrual_directories_touch_workflow_accrual_job_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_accrual_directories FOR EACH ROW EXECUTE PROCEDURE workflow_accrual_directories_touch_workflow_accrual_job();
 
 
 --
--- Name: workflow_accrual_files_touch_workflow_accrual_job_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: workflow_accrual_files workflow_accrual_files_touch_workflow_accrual_job_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER workflow_accrual_files_touch_workflow_accrual_job_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_accrual_files FOR EACH ROW EXECUTE PROCEDURE workflow_accrual_files_touch_workflow_accrual_job();
 
 
 --
--- Name: workflow_accrual_jobs_touch_amazon_backup_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: workflow_accrual_jobs workflow_accrual_jobs_touch_amazon_backup_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER workflow_accrual_jobs_touch_amazon_backup_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_accrual_jobs FOR EACH ROW EXECUTE PROCEDURE workflow_accrual_jobs_touch_amazon_backup();
 
 
 --
--- Name: workflow_accrual_jobs_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: workflow_accrual_jobs workflow_accrual_jobs_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER workflow_accrual_jobs_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_accrual_jobs FOR EACH ROW EXECUTE PROCEDURE workflow_accrual_jobs_touch_cfs_directory();
 
 
 --
--- Name: workflow_accrual_jobs_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: workflow_accrual_jobs workflow_accrual_jobs_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER workflow_accrual_jobs_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_accrual_jobs FOR EACH ROW EXECUTE PROCEDURE workflow_accrual_jobs_touch_user();
 
 
 --
--- Name: workflow_ingests_touch_amazon_backup_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: workflow_ingests workflow_ingests_touch_amazon_backup_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER workflow_ingests_touch_amazon_backup_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_ingests FOR EACH ROW EXECUTE PROCEDURE workflow_ingests_touch_amazon_backup();
 
 
 --
--- Name: workflow_ingests_touch_bit_level_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: workflow_ingests workflow_ingests_touch_bit_level_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER workflow_ingests_touch_bit_level_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_ingests FOR EACH ROW EXECUTE PROCEDURE workflow_ingests_touch_bit_level_file_group();
 
 
 --
--- Name: workflow_ingests_touch_external_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: workflow_ingests workflow_ingests_touch_external_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER workflow_ingests_touch_external_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_ingests FOR EACH ROW EXECUTE PROCEDURE workflow_ingests_touch_external_file_group();
 
 
 --
--- Name: workflow_ingests_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
+-- Name: workflow_ingests workflow_ingests_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER workflow_ingests_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON workflow_ingests FOR EACH ROW EXECUTE PROCEDURE workflow_ingests_touch_user();
 
 
 --
--- Name: fk_rails_04822aba51; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_profiles_file_extensions_joins fk_rails_04822aba51; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles_file_extensions_joins
@@ -6676,7 +6678,7 @@ ALTER TABLE ONLY file_format_profiles_file_extensions_joins
 
 
 --
--- Name: fk_rails_07ebf5783f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_conflicts fk_rails_07ebf5783f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_conflicts
@@ -6684,7 +6686,7 @@ ALTER TABLE ONLY workflow_accrual_conflicts
 
 
 --
--- Name: fk_rails_0d41a20552; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_jobs fk_rails_0d41a20552; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_jobs
@@ -6692,7 +6694,7 @@ ALTER TABLE ONLY workflow_accrual_jobs
 
 
 --
--- Name: fk_rails_1db34f98ff; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_tests_file_format_test_reasons_joins fk_rails_1db34f98ff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
@@ -6700,7 +6702,7 @@ ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
 
 
 --
--- Name: fk_rails_2214d78ff1; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: job_fits_file_extension_batches fk_rails_2214d78ff1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_file_extension_batches
@@ -6708,7 +6710,7 @@ ALTER TABLE ONLY job_fits_file_extension_batches
 
 
 --
--- Name: fk_rails_2258e947c4; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_comments fk_rails_2258e947c4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_comments
@@ -6716,7 +6718,7 @@ ALTER TABLE ONLY workflow_accrual_comments
 
 
 --
--- Name: fk_rails_2307b1ca05; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_jobs fk_rails_2307b1ca05; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_jobs
@@ -6724,7 +6726,7 @@ ALTER TABLE ONLY workflow_accrual_jobs
 
 
 --
--- Name: fk_rails_23d6ecdef7; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_notes fk_rails_23d6ecdef7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_notes
@@ -6732,7 +6734,7 @@ ALTER TABLE ONLY file_format_notes
 
 
 --
--- Name: fk_rails_242362ff14; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: archived_accrual_jobs fk_rails_242362ff14; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY archived_accrual_jobs
@@ -6740,7 +6742,7 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 
 --
--- Name: fk_rails_264edd65c3; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_profiles_file_extensions_joins fk_rails_264edd65c3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles_file_extensions_joins
@@ -6748,7 +6750,7 @@ ALTER TABLE ONLY file_format_profiles_file_extensions_joins
 
 
 --
--- Name: fk_rails_2c4d650843; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_tests_file_format_test_reasons_joins fk_rails_2c4d650843; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
@@ -6756,7 +6758,7 @@ ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
 
 
 --
--- Name: fk_rails_2d8d8e95f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: cfs_files fk_rails_2d8d8e95f6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cfs_files
@@ -6764,7 +6766,7 @@ ALTER TABLE ONLY cfs_files
 
 
 --
--- Name: fk_rails_321123b6a8; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_files fk_rails_321123b6a8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_files
@@ -6772,7 +6774,7 @@ ALTER TABLE ONLY workflow_accrual_files
 
 
 --
--- Name: fk_rails_3c52875c13; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: collection_virtual_repository_joins fk_rails_3c52875c13; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY collection_virtual_repository_joins
@@ -6780,7 +6782,7 @@ ALTER TABLE ONLY collection_virtual_repository_joins
 
 
 --
--- Name: fk_rails_49490359d8; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: job_fits_content_type_batches fk_rails_49490359d8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_content_type_batches
@@ -6788,7 +6790,7 @@ ALTER TABLE ONLY job_fits_content_type_batches
 
 
 --
--- Name: fk_rails_5f90452cff; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: cascaded_event_joins fk_rails_5f90452cff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cascaded_event_joins
@@ -6796,7 +6798,7 @@ ALTER TABLE ONLY cascaded_event_joins
 
 
 --
--- Name: fk_rails_62dc01f91f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: archived_accrual_jobs fk_rails_62dc01f91f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY archived_accrual_jobs
@@ -6804,7 +6806,7 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 
 --
--- Name: fk_rails_75f09068b2; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: job_fits_file_extension_batches fk_rails_75f09068b2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_file_extension_batches
@@ -6812,7 +6814,7 @@ ALTER TABLE ONLY job_fits_file_extension_batches
 
 
 --
--- Name: fk_rails_7a05f7a57b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: collection_virtual_repository_joins fk_rails_7a05f7a57b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY collection_virtual_repository_joins
@@ -6820,7 +6822,7 @@ ALTER TABLE ONLY collection_virtual_repository_joins
 
 
 --
--- Name: fk_rails_7fe769aa60; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: job_item_bulk_imports fk_rails_7fe769aa60; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_item_bulk_imports
@@ -6828,7 +6830,7 @@ ALTER TABLE ONLY job_item_bulk_imports
 
 
 --
--- Name: fk_rails_814510e4f4; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_directories fk_rails_814510e4f4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_directories
@@ -6836,7 +6838,7 @@ ALTER TABLE ONLY workflow_accrual_directories
 
 
 --
--- Name: fk_rails_8aaf1a7eb8; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_comments fk_rails_8aaf1a7eb8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_comments
@@ -6844,7 +6846,7 @@ ALTER TABLE ONLY workflow_accrual_comments
 
 
 --
--- Name: fk_rails_8c3cd8e21a; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_tests fk_rails_8c3cd8e21a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_tests
@@ -6852,7 +6854,7 @@ ALTER TABLE ONLY file_format_tests
 
 
 --
--- Name: fk_rails_9a724fc755; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_notes fk_rails_9a724fc755; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_notes
@@ -6860,7 +6862,7 @@ ALTER TABLE ONLY file_format_notes
 
 
 --
--- Name: fk_rails_a920535132; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: job_fixity_checks fk_rails_a920535132; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fixity_checks
@@ -6868,7 +6870,7 @@ ALTER TABLE ONLY job_fixity_checks
 
 
 --
--- Name: fk_rails_ac902747ea; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: job_item_bulk_imports fk_rails_ac902747ea; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_item_bulk_imports
@@ -6876,7 +6878,7 @@ ALTER TABLE ONLY job_item_bulk_imports
 
 
 --
--- Name: fk_rails_c986487b1e; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_tests fk_rails_c986487b1e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_tests
@@ -6884,7 +6886,7 @@ ALTER TABLE ONLY file_format_tests
 
 
 --
--- Name: fk_rails_cf395e5550; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_jobs fk_rails_cf395e5550; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_jobs
@@ -6892,7 +6894,7 @@ ALTER TABLE ONLY workflow_accrual_jobs
 
 
 --
--- Name: fk_rails_cfaf129e28; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: cfs_files fk_rails_cfaf129e28; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cfs_files
@@ -6900,7 +6902,7 @@ ALTER TABLE ONLY cfs_files
 
 
 --
--- Name: fk_rails_d1c1c35cf5; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_profiles_content_types_joins fk_rails_d1c1c35cf5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles_content_types_joins
@@ -6908,7 +6910,7 @@ ALTER TABLE ONLY file_format_profiles_content_types_joins
 
 
 --
--- Name: fk_rails_d5e71e625f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: projects fk_rails_d5e71e625f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY projects
@@ -6916,7 +6918,7 @@ ALTER TABLE ONLY projects
 
 
 --
--- Name: fk_rails_d7b90994ef; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: job_fits_content_type_batches fk_rails_d7b90994ef; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY job_fits_content_type_batches
@@ -6924,7 +6926,7 @@ ALTER TABLE ONLY job_fits_content_type_batches
 
 
 --
--- Name: fk_rails_d8a84160a7; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: archived_accrual_jobs fk_rails_d8a84160a7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY archived_accrual_jobs
@@ -6932,7 +6934,7 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 
 --
--- Name: fk_rails_f411565e2a; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_profiles_content_types_joins fk_rails_f411565e2a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_profiles_content_types_joins
@@ -6940,7 +6942,7 @@ ALTER TABLE ONLY file_format_profiles_content_types_joins
 
 
 --
--- Name: fk_rails_f4f83033da; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_normalization_paths fk_rails_f4f83033da; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_normalization_paths
@@ -6948,7 +6950,7 @@ ALTER TABLE ONLY file_format_normalization_paths
 
 
 --
--- Name: fk_rails_f584154b33; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: archived_accrual_jobs fk_rails_f584154b33; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY archived_accrual_jobs
@@ -6956,7 +6958,7 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 
 --
--- Name: fk_rails_f6abf55b81; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: items fk_rails_f6abf55b81; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY items
@@ -6964,7 +6966,7 @@ ALTER TABLE ONLY items
 
 
 --
--- Name: fk_rails_fdd3dd4403; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: pronoms fk_rails_fdd3dd4403; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY pronoms
@@ -7442,4 +7444,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161027171950');
 INSERT INTO schema_migrations (version) VALUES ('20161103195200');
 
 INSERT INTO schema_migrations (version) VALUES ('20161107150831');
+
+INSERT INTO schema_migrations (version) VALUES ('20161216185129');
 

@@ -59,6 +59,7 @@ class SearchHelper::TableItem < SearchHelper::TableBase
      {header: 'Foldout Present', solr_field: :foldout_present, value_method: :foldout_present},
      {header: 'Foldout Done', solr_field: :foldout_done, value_method: :foldout_done},
      {header: 'Item Done', solr_field: :item_done, value_method: :item_done},
+     {header: 'Ingested', value_method: :ingested, unsortable: true},
      {header: 'Unique Identifier', solr_field: :unique_identifier, value_method: :unique_identifier, searchable: true},
      {header: 'Notes', solr_field: :notes, value_method: :notes, searchable: true},
      {header: 'Local Description', solr_field: :local_description, value_method: :local_description, searchable: true},

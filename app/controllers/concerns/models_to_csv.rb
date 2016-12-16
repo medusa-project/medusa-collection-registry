@@ -29,7 +29,8 @@ module ModelsToCsv
     models_to_csv(items, {barcode: 'Barcode', item_number: 'Item Number', local_title: 'Local Title', local_description: 'Local Description',
                           notes: 'Notes', batch: 'Batch', file_count: 'File Count', status: 'Status',
                           reformatting_date: 'Reformatting Date', reformatting_operator: 'Reformatting Operator',
-                          equipment: 'Equipment', foldout_present: 'Foldout Present', unique_identifier: 'Unique Identifier', source_media: 'Source Media',
+                          equipment: 'Equipment', foldout_present: 'Foldout Present', ingested: 'Ingested',
+                          unique_identifier: 'Unique Identifier', source_media: 'Source Media',
                           call_number: 'Call Number', title: 'Title', author: 'Author', imprint: 'Imprint', bib_id: 'BibId', oclc_number: 'OCLC number',
                           record_series_id: 'Record Series Id', archival_management_system_url: 'Archival Management System URL',
                           series: 'Series', sub_series: 'Sub-series', box: 'Box', folder: 'Folder', item_title: 'Item Title'})
