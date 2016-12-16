@@ -3132,7 +3132,9 @@ CREATE TABLE projects (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     collection_id integer,
-    external_id character varying DEFAULT ''::character varying
+    external_id character varying DEFAULT ''::character varying,
+    ingest_folder character varying,
+    destination_folder_uuid character varying
 );
 
 
@@ -7446,4 +7448,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161103195200');
 INSERT INTO schema_migrations (version) VALUES ('20161107150831');
 
 INSERT INTO schema_migrations (version) VALUES ('20161216185129');
+
+INSERT INTO schema_migrations (version) VALUES ('20161216205814');
 

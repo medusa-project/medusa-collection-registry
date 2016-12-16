@@ -8,6 +8,8 @@
       = f.input :manager_email, required: true, as: :autocomplete, url: autocomplete_user_email_projects_path
       = f.input :owner_email, required: true, as: :autocomplete, url: autocomplete_user_email_projects_path
       = f.input :start_date, as: :string, input_html: {class: 'datepicker', value: (@project.start_date.if_blank(Date.today)).to_s}
+      = f.input :ingest_folder
+      = f.input :destination_folder_uuid
       = f.input :status, as: :select, collection: Project::STATUSES, include_blank: false
       = f.input :summary, as: :ckeditor, input_html: {ckeditor: {toolbar: 'Full'}}
       = f.input :specifications, as: :ckeditor, input_html: {ckeditor: {toolbar: 'Full'}}

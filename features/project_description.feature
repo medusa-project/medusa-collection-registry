@@ -6,8 +6,8 @@ Feature: Project description
   Background:
     Given every project with fields exists:
       | title            | manager_email       | owner_email         | start_date | status    | specifications | summary          | external_id |
-      | Book Scanning    | scanman@example.com | scanown@example.com | 2015-09-16 | active    | Scanning specs | Scanning summary | Buch001    |
-      | Image Conversion | convman@example.com | convown@example.com | 2015-06-29 | completed | Image specs    | Image summary    | Bild002    |
+      | Book Scanning    | scanman@example.com | scanown@example.com | 2015-09-16 | active    | Scanning specs | Scanning summary | Buch001     |
+      | Image Conversion | convman@example.com | convown@example.com | 2015-06-29 | completed | Image specs    | Image summary    | Bild002     |
 
   Scenario: Navigate to project index from header links
     Given I am logged in as a user
@@ -54,12 +54,14 @@ Feature: Project description
     Given I am logged in as an admin
     When I edit the project with title 'Image Conversion'
     And I fill in fields:
-      | Specifications | New specs  |
-      | Start date     | 2017-01-04 |
+      | Specifications          | New specs               |
+      | Start date              | 2017-01-04              |
+      | Ingest folder           | my/ingest/location      |
+      | Destination folder uuid | destination-folder-uuid |
     And I select 'active' from 'Status'
     And I click on 'Update'
     Then I should see all of:
-      | New specs | 2017-01-04 | active |
+      | New specs | 2017-01-04 | active | my/ingest/location | destination-folder-uuid |
     And I should see none of:
       | 2015-06-29 | completed | Image specs |
 

@@ -58,7 +58,7 @@ Feature: Project items mass edit
       | Reformatting operator | Dee |
       | Batch                 |     |
     And I click on 'Mass update'
-    And I wait 2 seconds
+    When I view the project with title 'Scanning'
     Then the item with fields should exist:
       | barcode        | batch | reformatting_operator |
       | 30012323456789 |       | Dee                   |

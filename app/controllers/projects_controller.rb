@@ -60,7 +60,7 @@ class ProjectsController < ApplicationController
         raise RuntimeError, 'Unexpected mass action on project items'
     end
     respond_to do |format|
-      format.html {redirect_to @project}
+      format.html { redirect_to @project }
       format.js
     end
 
@@ -130,7 +130,8 @@ class ProjectsController < ApplicationController
 
   def allowed_params
     params[:project].permit(:title, :manager_email, :owner_email, :start_date,
-                            :status, :specifications, :summary, :collection_id, :external_id)
+                            :status, :specifications, :summary, :collection_id, :external_id,
+                            :ingest_folder, :destination_folder_uuid)
   end
 
   def assign_batch(batch, items)
@@ -159,6 +160,7 @@ class ProjectsController < ApplicationController
 
   MASS_UPDATE_FIELDS = [:batch, :reformatting_operator, :reformatting_date, :equipment]
   MASS_UPDATE_BOOLEANS = [:foldout_present, :foldout_done, :item_done, :ingested]
+
   def mass_update(params)
     item_ids = params[:item_ids].split(',')
     items = @project.items.where(id: item_ids)
@@ -169,7 +171,7 @@ class ProjectsController < ApplicationController
       MASS_UPDATE_BOOLEANS.each do |field|
         updates[field] = true if params[field] == 'Yes'
         updates[field] = false if params[field] == 'No'
-     end
+      end
     end
     items.each do |item|
       item.update!(update_hash)
