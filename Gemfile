@@ -71,6 +71,7 @@ gem 'rails-jquery-autocomplete'
 gem 'clipboard-rails'
 gem 'underscore-rails'
 gem 'underscore-string-rails'
+gem 'react-rails'
 
 gem 'nokogiri'
 
