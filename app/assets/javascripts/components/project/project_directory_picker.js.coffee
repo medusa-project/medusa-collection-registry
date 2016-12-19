@@ -37,6 +37,7 @@
             'Up'
         @state.current
       React.DOM.ul
+        className: null,
         for child in @state.children
           React.createElement ProjectDirectoryRow, key: child, name: child, onUse: @setDirectory, onDown: @getChildDirectoryInfo
           

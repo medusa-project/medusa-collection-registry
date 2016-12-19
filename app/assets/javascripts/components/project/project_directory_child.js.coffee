@@ -7,7 +7,7 @@
     @props.onDown(@props.name)
   render: ->
     React.DOM.li key: @props.name,
-      React.DOM.a
+      React.DOM.p
         className: 'btn btn-xs btn-default'
         onClick: @handleUse
         'Use'
