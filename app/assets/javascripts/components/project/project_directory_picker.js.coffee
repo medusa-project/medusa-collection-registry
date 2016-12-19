@@ -21,9 +21,10 @@
           className: 'btn btn-xs btn-default'
           onClick: @handleUse
           'Use'
-        React.DOM.a
-          className: 'btn btn-xs btn-default'
-          'Up'
+        unless @state.current == '/'
+          React.DOM.a
+            className: 'btn btn-xs btn-default'
+            'Up'
         @state.current
       React.DOM.ul
         for child in @state.children
