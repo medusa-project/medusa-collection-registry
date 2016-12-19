@@ -23,5 +23,5 @@
               'Use'
             React.DOM.a
               className: 'btn btn-xs btn-default'
-              'Up'
+              'Down'
             child
