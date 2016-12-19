@@ -2,6 +2,9 @@
   handleUse: (e) ->
     e.preventDefault()
     @props.onUse(@props.name)
+  handleDown: (e) ->
+    e.preventDefault()
+    @props.onDown(@props.name)
   render: ->
     React.DOM.li key: @props.name,
       React.DOM.a
@@ -10,5 +13,6 @@
         'Use'
       React.DOM.a
         className: 'btn btn-xs btn-default'
+        onClick: @handleDown
         'Down'
       @props.name

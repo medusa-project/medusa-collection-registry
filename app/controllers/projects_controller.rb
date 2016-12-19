@@ -124,6 +124,13 @@ class ProjectsController < ApplicationController
     end
   end
 
+  #TODO make this really work
+  def ingest_path_info
+    respond_to do |format|
+      format.json { render json: ingest_directory_info(params[:path])}
+    end
+  end
+
   protected
 
   def find_project
@@ -180,11 +187,33 @@ class ProjectsController < ApplicationController
     end
   end
 
-  #TODO make this really work - this is just to get the view stuff going
   def initialize_ingest_directory_info
-    @ingest_directory_info = {current: '/',
-                              children: %w(child_1/ child_2/),
-                              parent: nil}
+    @ingest_directory_info = ingest_directory_info('/')
+  end
+
+  #path is the relative path from a configured project staging root
+  #make the full path
+  #if it is in the project staging root then proceed naturally
+  #if not then proceed from the project staging root - could just use a recursive call with '/' as the path
+  def ingest_directory_info(path)
+    root_path = Pathname.new(Settings.project_staging_directory).expand_path
+    new_path = Pathname.new(File.join(Settings.project_staging_directory, path)).expand_path
+    unless new_path.to_s.start_with?(root_path.to_s)
+      return ingest_directory_info('/')
+    end
+    if new_path == root_path
+      Hash.new.tap do |h|
+        h[:current] = '/'
+        h[:children] = root_path.children.select {|c| c.directory?}.collect {|d| File.join(d.basename, '/')} rescue []
+        h[:parent] = '/'
+      end
+    else
+      Hash.new.tap do |h|
+        h[:current] = File.join(new_path.relative_path_from(root_path).to_s, '/')
+        h[:children] = new_path.children.select {|c| c.directory?}.collect {|d| File.join(d.basename, '/')}
+        h[:parent] = new_path.parent + '/'
+      end
+    end
   end
 
 end

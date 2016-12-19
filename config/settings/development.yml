@@ -111,6 +111,8 @@ medusa:
     feedback: hding2@illinois.edu
     dev: hding2@illinois.edu
     noreply: medusa-noreply@medusatest.library.illinois.edu
+#where project content for automatic ingest is staged
+project_staging_directory: /project/staging/directory
 #configuration for Omniauth::Shibboleth
 shibboleth:
   host: medusatest.library.illinois.edu

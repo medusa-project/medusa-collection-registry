@@ -3,6 +3,12 @@
     current: @props.data.current
     children: @props.data.children
     parent: @props.data.parent
+  getDirectoryInfo: (path) ->
+    $.get '/projects/ingest_path_info', {path: path},
+      (data) -> console.log(data),
+      'JSON'
+  getChildDirectoryInfo: (child_path) ->
+    @getDirectoryInfo(@state.current + child_path)
   setDirectory: (child_path) ->
     path = @state.current
     if child_path
@@ -12,6 +18,9 @@
   handleUse: (e) ->
     e.preventDefault()
     @setDirectory(null)
+  handleUp: (e) ->
+    e.preventDefault()
+    @getDirectoryInfo(parent)
   render: ->
     React.DOM.div
       className: 'project-directory-picker'
@@ -24,9 +33,10 @@
         unless @state.current == '/'
           React.DOM.a
             className: 'btn btn-xs btn-default'
+            onClick: @handleUp
             'Up'
         @state.current
       React.DOM.ul
         for child in @state.children
-          React.createElement ProjectDirectoryRow, key: child, name: child, onUse: @setDirectory
+          React.createElement ProjectDirectoryRow, key: child, name: child, onUse: @setDirectory, onDown: @getChildDirectoryInfo
           
