@@ -8,9 +8,23 @@
       = f.input :manager_email, required: true, as: :autocomplete, url: autocomplete_user_email_projects_path
       = f.input :owner_email, required: true, as: :autocomplete, url: autocomplete_user_email_projects_path
       = f.input :start_date, as: :string, input_html: {class: 'datepicker', value: (@project.start_date.if_blank(Date.today)).to_s}
-      = f.input :ingest_folder
+      - @label = capture do
+        %a{'data-toggle': :modal, 'data-target': '#directory-picker'} Ingest folder
+      = f.input :ingest_folder, label: @label
       = f.input :destination_folder_uuid
       = f.input :status, as: :select, collection: Project::STATUSES, include_blank: false
       = f.input :summary, as: :ckeditor, input_html: {ckeditor: {toolbar: 'Full'}}
       = f.input :specifications, as: :ckeditor, input_html: {ckeditor: {toolbar: 'Full'}}
+    #directory-picker.modal.fade{role: 'dialog', 'aria-labelledby': 'directory picker', 'aria-hidden': true}
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %a.close{href: '#', type: :button, 'data-dismiss': :modal, 'aria-label': :Close}
+              %span{'aria-hidden': true}
+                &times;
+            %h4.modal-title Directory Picker
+          .modal-body
+            My body text
+          .modal-footer
+            %a.btn.btn-default{href: '#', type: :button, 'data-dismiss': :modal} Close
       
