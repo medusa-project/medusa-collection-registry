@@ -24,7 +24,8 @@
                 &times;
             %h4.modal-title Directory Picker
           .modal-body
-            My body text
+            %p
+              #{react_component('IngestDirectoryPicker', data: @ingest_directory_info)}
           .modal-footer
             %a.btn.btn-default{href: '#', type: :button, 'data-dismiss': :modal} Close
       

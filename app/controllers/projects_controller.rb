@@ -3,6 +3,8 @@ class ProjectsController < ApplicationController
   before_action :require_medusa_user, except: [:index, :show, :public_show]
   before_action :find_project, only: [:show, :public_show, :edit, :update, :destroy, :attachments,
                                       :mass_action, :start_items_upload, :upload_items, :items]
+  before_action :initialize_ingest_directory_info, only: [:new, :edit]
+
   include ModelsToCsv
 
   autocomplete :user, :email
@@ -176,6 +178,13 @@ class ProjectsController < ApplicationController
     items.each do |item|
       item.update!(update_hash)
     end
+  end
+
+  #TODO make this really work - this is just to get the view stuff going
+  def initialize_ingest_directory_info
+    @ingest_directory_info = {current: '/',
+                              children: %w(child_1 child_2),
+                              parent: nil}
   end
 
 end
