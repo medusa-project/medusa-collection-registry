@@ -3,13 +3,15 @@
     current: @props.data.current
     children: @props.data.children
     parent: @props.data.parent
-  setDirectory: (e) ->
-    e.preventDefault()
+  setDirectory: (child_path) ->
     path = @state.current
-    if e.target.dataset.name
-      path = path + e.target.dataset.name
+    if child_path
+      path = path + child_path
     $('#project_ingest_folder').val(path)
     $('#directory-picker').modal('hide')
+  handleUse: (e) ->
+    e.preventDefault()
+    @setDirectory(null)
   render: ->
     React.DOM.div
       className: 'project-directory-picker'
@@ -17,7 +19,7 @@
         className: null
         React.DOM.a
           className: 'btn btn-xs btn-default'
-          onClick: @setDirectory
+          onClick: @handleUse
           'Use'
         React.DOM.a
           className: 'btn btn-xs btn-default'
@@ -25,5 +27,5 @@
         @state.current
       React.DOM.ul
         for child in @state.children
-          React.createElement ProjectDirectoryRow, key: child, name: child, handleUse: @setDirectory
+          React.createElement ProjectDirectoryRow, key: child, name: child, onUse: @setDirectory
           
