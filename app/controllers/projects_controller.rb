@@ -204,13 +204,13 @@ class ProjectsController < ApplicationController
     if new_path == root_path
       Hash.new.tap do |h|
         h[:current] = '/'
-        h[:children] = root_path.children.select {|c| c.directory?}.collect {|d| File.join(d.basename, '/')} rescue []
+        h[:children] = root_path.children.select {|c| c.directory?}.collect {|d| File.join(d.basename, '/')}.sort rescue []
         h[:parent] = '/'
       end
     else
       Hash.new.tap do |h|
         h[:current] = File.join(new_path.relative_path_from(root_path).to_s, '/')
-        h[:children] = new_path.children.select {|c| c.directory?}.collect {|d| File.join(d.basename, '/')}
+        h[:children] = new_path.children.select {|c| c.directory?}.collect {|d| File.join(d.basename, '/')}.sort
         h[:parent] = File.join(new_path.parent.relative_path_from(root_path).to_s, '/')
         h[:parent] = '/' if h[:parent] == './'
         x = 1
