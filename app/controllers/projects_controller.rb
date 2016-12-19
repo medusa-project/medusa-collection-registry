@@ -183,7 +183,7 @@ class ProjectsController < ApplicationController
   #TODO make this really work - this is just to get the view stuff going
   def initialize_ingest_directory_info
     @ingest_directory_info = {current: '/',
-                              children: %w(child_1 child_2),
+                              children: %w(child_1/ child_2/),
                               parent: nil}
   end
 
