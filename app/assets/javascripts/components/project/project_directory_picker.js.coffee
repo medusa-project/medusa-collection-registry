@@ -5,7 +5,7 @@
     parent: @props.data.parent
   getDirectoryInfo: (path) ->
     $.get '/projects/ingest_path_info', {path: path},
-      (data) -> console.log(data),
+      (data) => @replaceState data,
       'JSON'
   getChildDirectoryInfo: (child_path) ->
     @getDirectoryInfo(@state.current + child_path)
@@ -20,7 +20,7 @@
     @setDirectory(null)
   handleUp: (e) ->
     e.preventDefault()
-    @getDirectoryInfo(parent)
+    @getDirectoryInfo(@state.parent)
   render: ->
     React.DOM.div
       className: 'project-directory-picker'

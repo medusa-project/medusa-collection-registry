@@ -211,7 +211,9 @@ class ProjectsController < ApplicationController
       Hash.new.tap do |h|
         h[:current] = File.join(new_path.relative_path_from(root_path).to_s, '/')
         h[:children] = new_path.children.select {|c| c.directory?}.collect {|d| File.join(d.basename, '/')}
-        h[:parent] = new_path.parent + '/'
+        h[:parent] = File.join(new_path.parent.relative_path_from(root_path).to_s, '/')
+        h[:parent] = '/' if h[:parent] == './'
+        x = 1
       end
     end
   end
