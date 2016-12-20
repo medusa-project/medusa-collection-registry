@@ -3,10 +3,14 @@
     %h4 Add files
   .modal-body
     = simple_form_for :accrual, url: submit_accruals_path, html: {id: 'add-files-form'} do |f|
-      .btn-group
-        = link_to 'Up', @accrual.parent_display_path, class: "btn btn-default", id: 'add-files-up-link', remote: true
-        = link_to 'Toggle Directories', '#', onclick: 'toggle_accrual_directories();', class: 'btn btn-default'
-        = link_to 'Toggle Files', '#', onclick: 'toggle_accrual_files();', class: 'btn btn-default'
+      .btn-toolbar
+        .btn-group
+          = link_to 'Up', @accrual.parent_display_path, class: "btn btn-default", id: 'add-files-up-link', remote: true
+          = link_to 'Toggle Directories', '#', onclick: 'toggle_accrual_directories();', class: 'btn btn-default'
+          = link_to 'Toggle Files', '#', onclick: 'toggle_accrual_files();', class: 'btn btn-default'
+        .btn-group
+          = f.button :submit, class: 'btn btn-primary', value: 'Ingest'
+          = link_to 'Cancel', '#', class: 'btn btn-default', 'data-toggle' => 'modal', 'data-target' => '#add-files-dialog'
       = f.input :cfs_directory_id, as: :hidden
       = f.input :staging_path, as: :hidden
       #add-files-listing
