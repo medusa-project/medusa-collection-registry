@@ -1,6 +1,4 @@
-#This may look a bit odd, but is made for significant compatibility with FileTreeComparator
-#In fact they can probably be refactored to some extent
-class FileComparator < Object
+class Comparator::SingleFile < Comparator::FsBase
 
   attr_accessor :source_directory, :target_directory, :filename, :source_only_paths,
                 :target_only_paths, :different_sizes_paths

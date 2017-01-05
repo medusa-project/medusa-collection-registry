@@ -6,7 +6,7 @@ require 'open3'
 require 'set'
 require 'fileutils'
 require 'tmpdir'
-class DirectoryTreeComparator < Object
+class Comparator::DirectoryTree < Comparator::FsBase
 
   attr_accessor :source_directory, :target_directory, :source_only_paths,
                 :target_only_paths, :different_sizes_paths

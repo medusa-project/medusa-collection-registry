@@ -100,11 +100,11 @@ class Workflow::AccrualJob < Workflow::Base
 
   def perform_check_sync
     directory_comparators = workflow_accrual_directories.collect do |workflow_accrual_directory|
-      DirectoryTreeComparator.new(File.join(staging_local_path, workflow_accrual_directory.name),
-                                  File.join(staging_remote_path, workflow_accrual_directory.name))
+      Comparator::DirectoryTree.new(File.join(staging_local_path, workflow_accrual_directory.name),
+                                   File.join(staging_remote_path, workflow_accrual_directory.name))
     end
     file_comparators = workflow_accrual_files.collect do |workflow_accrual_file|
-      FileComparator.new(staging_local_path, staging_remote_path, workflow_accrual_file.name)
+      Comparator::SingleFile.new(staging_local_path, staging_remote_path, workflow_accrual_file.name)
     end
     comparators = directory_comparators + file_comparators
     if comparators.all? { |comparator| comparator.objects_equal? }
