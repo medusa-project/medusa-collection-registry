@@ -39,7 +39,7 @@ class DirectoryTreeComparator < Object
         target_only_paths << path
       end
     end
-    self.source_only_paths = db.collect{|k, v| k}.to_set
+    self.source_only_paths = db.collect { |k, v| k }.to_set
   ensure
     env.close if env
     FileUtils.rm_rf(db_dir) if db_dir and Dir.exist?(db_dir)
@@ -77,8 +77,29 @@ class DirectoryTreeComparator < Object
     end
   end
 
-  def directories_equal?
+  def objects_equal?
     source_only_paths.blank? and target_only_paths.blank? and different_sizes_paths.blank?
+  end
+
+  def augmented_source_only_paths
+    augment_paths(source_only_paths)
+  end
+
+  def augmented_target_only_paths
+    augment_paths(target_only_paths)
+  end
+
+  def augmented_different_sizes_paths
+    augment_paths(different_sizes_paths)
+  end
+
+  protected
+
+  def augment_paths(path_collection)
+    base = File.basename(source_directory)
+    path_collection.collect do |path|
+      File.join(base, path)
+    end
   end
 
 end
