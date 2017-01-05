@@ -28,6 +28,7 @@ class Comparator::DirectoryTree < Comparator::FsBase
       end
     end
     self.source_only_paths = db.collect { |k, v| k }.to_set
+    self
   ensure
     env.close if env
     FileUtils.rm_rf(db_dir) if db_dir and Dir.exist?(db_dir)

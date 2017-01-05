@@ -13,8 +13,9 @@ class Comparator::FsBase < Object
   end
 
   #This is the method that should fill in the source only, target only, different sized paths appropriately
+  #It should return self
   def analyze
-    raise RuntimeError, "SubclassResponsibility"
+    self
   end
 
   def objects_equal?

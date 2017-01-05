@@ -24,6 +24,7 @@ class Comparator::SingleFile < Comparator::FsBase
     else
       self.source_only_paths << filename
     end
+    self
   end
 
 end
