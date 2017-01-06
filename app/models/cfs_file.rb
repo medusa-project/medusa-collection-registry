@@ -53,6 +53,9 @@ class CfsFile < ActiveRecord::Base
     string :file_group_title do
       file_group.try(:title)
     end
+    time :mtime
+    double :size
+    integer :cfs_directory_id
   end
 
   def self.with_fits
