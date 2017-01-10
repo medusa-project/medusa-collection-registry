@@ -63,8 +63,13 @@ class CfsDirectoriesController < ApplicationController
   end
 
   def events
-    @eventable = @directory
-    @events = @eventable.cascaded_events
+    @helper = SearchHelper::TableEvent.new(params: params, cascaded_eventable: @directory)
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: @helper.json_response
+      end
+    end
   end
 
   protected
