@@ -1,26 +1,51 @@
 = render 'cfs_directories/image_viewer'
 
-= render layout: 'layouts/standard_table', locals: {id: :files, headers: ['Thumbnail', 'Name', 'Size', 'Last Modified', 'FITS']} do
-  - @directory.subdirectories.order('path asc').each do |subdirectory|
-    %tr
-      %td
-      %td{'data-sort': "a-#{subdirectory.path}"}
-        = fa_icon 'folder-o'
-        = link_to subdirectory.path, cfs_directory_path(subdirectory)
-      %td
-      %td
-      %td
-  - @directory.cfs_files.each_instance do |file|
-    - file = file.decorate
-    %tr
-      %td
-        - if file.preview_type_is_image?
-          = link_to cfs_file_path(file) do
-            %span.delayed-thumbnail{'data-thumb-path':  thumbnail_cfs_file_path(file), 'data-thumb-alt': file.name}
-      %td{'data-sort': "b-#{file.name}"}
-        = fa_icon 'file'
-        = link_to file.name, cfs_file_path(file)
-      %td= file.size
-      %td= file.mtime
-      %td= file.fits_button
+- unless @directory.subdirectories.empty?
+  = render layout: 'layouts/standard_table', locals: {id: :subdirectories, headers: ['Name']} do
+    - @directory.subdirectories.order('path asc').each do |subdirectory|
+      %tr
+        %td{'data-sort': "a-#{subdirectory.path}"}
+          = fa_icon 'folder-o'
+          = link_to subdirectory.path, cfs_directory_path(subdirectory)
+-unless @directory.cfs_files.empty?
+  %table.table.table-striped#files_for_directory
+    %thead
+      %tr
+        - @helper.headers.each do |header|
+          %th= header
+:javascript
+  $(function() {
+    $('#files_for_directory').DataTable({
+      'processing': true,
+      'serverSide': true,
+      'pageLength': 25,
+      'order': [],
+      'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+      'search': {
+        'search': ""
+      },
+      'stateSave': true,
+      'ajax': {
+        'url': "#{@helper.url}"
+      },
+      'columnDefs': [
+        {'orderable': false, 'targets': #{@helper.unsortable_columns}}
+      ]
+    })
+  })
+
+-#= render layout: 'layouts/standard_table', locals: {id: :files, headers: ['Thumbnail', 'Name', 'Size', 'Last Modified', 'FITS']} do
+-#  - @directory.cfs_files.each_instance do |file|
+-#    - file = file.decorate
+-#    %tr
+-#      %td
+-#        - if file.preview_type_is_image?
+-#          = link_to cfs_file_path(file) do
+-#            %span.delayed-thumbnail{'data-thumb-path':  thumbnail_cfs_file_path(file), 'data-thumb-alt': file.name}
+-#      %td{'data-sort': "b-#{file.name}"}
+-#        = fa_icon 'file'
+-#        = link_to file.name, cfs_file_path(file)
+-#      %td= file.size
+-#      %td= file.mtime
+-#      %td= file.fits_button
 

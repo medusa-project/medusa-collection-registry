@@ -2,7 +2,7 @@ class CfsDirectoriesController < ApplicationController
 
   before_action :require_medusa_user, except: [:show, :show_tree]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :show_tree]
-  before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :fixity_check, :show_tree]
+  before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :fixity_check, :show_tree, :cfs_files]
   before_action :find_directory_with_includes, only: [:show]
 
   def show
@@ -10,6 +10,7 @@ class CfsDirectoriesController < ApplicationController
     @file_group = @directory.file_group
     respond_to do |format|
       format.html do
+        @helper = SearchHelper::TableCfsFile.new(cfs_directory: @directory)
         redirect_to @file_group and return if @directory.root? and @file_group.present?
       end
       format.json
@@ -65,6 +66,14 @@ class CfsDirectoriesController < ApplicationController
   def events
     @eventable = @directory
     @events = @eventable.cascaded_events
+  end
+
+  def cfs_files
+    respond_to do |format|
+      format.json do
+        render json: SearchHelper::TableCfsFile.new(params: params, cfs_directory: @directory).json_response
+      end
+    end
   end
 
   protected
