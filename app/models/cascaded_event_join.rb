@@ -1,7 +1,7 @@
 class CascadedEventJoin < ActiveRecord::Base
   belongs_to :cascaded_eventable, polymorphic: true
   belongs_to :event
-  delegate :created_at, :actor_email, :message, :note, to: :event, prefix: true
+  delegate :created_at, :actor_email, :message, :note, :date, to: :event, prefix: true
 
   validates_presence_of :event_id, :cascaded_eventable_id, :cascaded_eventable_type
 
