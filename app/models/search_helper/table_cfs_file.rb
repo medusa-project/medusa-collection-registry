@@ -12,7 +12,7 @@ class SearchHelper::TableCfsFile < SearchHelper::TableBase
   end
 
   def table_id
-    'files_for_directory'
+    'directory_files'
   end
 
   def url

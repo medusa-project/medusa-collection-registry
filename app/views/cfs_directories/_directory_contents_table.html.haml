@@ -8,14 +8,14 @@
           = fa_icon 'folder-o'
           = link_to subdirectory.path, cfs_directory_path(subdirectory)
 -unless @directory.cfs_files.empty?
-  %table.table.table-striped#files_for_directory
+  %table.table.table-striped#directory_files
     %thead
       %tr
         - @helper.headers.each do |header|
           %th= header
 :javascript
   $(function() {
-    $('#files_for_directory').DataTable({
+    $('#directory_files').DataTable({
       'processing': true,
       'serverSide': true,
       'pageLength': 25,
