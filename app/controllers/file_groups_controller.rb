@@ -13,7 +13,9 @@ class FileGroupsController < ApplicationController
     @directory = CfsDirectory.includes(:subdirectories, {cfs_files: [:content_type, :file_extension]}).find(@directory.id) if @directory.present?
     @accrual = create_accrual
     respond_to do |format|
-      format.html
+      format.html do
+        @helper = SearchHelper::TableCfsFile.new(cfs_directory: @directory)
+      end
       format.json
     end
   end
