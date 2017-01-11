@@ -22,16 +22,19 @@ class Event < ActiveRecord::Base
   #better to do this way so that we can get all events for an object directly from
   #the cascaded events join table.
   def maybe_cascade
-    CascadedEventJoin.find_or_create_by(cascaded_eventable: self, event_id: self.id)
+    CascadedEventJoin.find_or_create_by(cascaded_eventable: self.eventable, event_id: self.id)
     if self.cascadable and self.eventable.respond_to?(:cascade_event)
       self.eventable.cascade_event(self)
     end
   end
 
+  #TODO - can we do this in SQL to make it run in a reasonable amount of time? Or at least speed it up somehow?
   def self.rebuild_cascaded_event_cache
     CascadedEventJoin.delete_all
-    self.find_each do |event|
-      event.maybe_cascade
+    self.includes(:eventable).find_each do |event|
+      transaction do
+        event.maybe_cascade
+      end
     end
   end
 
