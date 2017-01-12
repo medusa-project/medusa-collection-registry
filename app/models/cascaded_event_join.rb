@@ -24,15 +24,15 @@ class CascadedEventJoin < ActiveRecord::Base
   end
 
   def eventable_label
-    event.eventable.decorate.label
+    event.eventable.decorate.label if event.eventable
   end
 
   def eventable_type
-    event.eventable.decorate.decorated_class_human
+    event.eventable.decorate.decorated_class_human if event.eventable
   end
 
   def eventable_parent_label
-    event.eventable.parent.decorate.label
+    event.eventable.parent.decorate.label if event.eventable and event.eventable.parent
   end
 
 end
