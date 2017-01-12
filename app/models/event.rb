@@ -29,9 +29,16 @@ class Event < ActiveRecord::Base
   end
 
   #TODO - can we do this in SQL to make it run in a reasonable amount of time? Or at least speed it up somehow?
+  #Maybe we could do all the initial level ones via sql, then reindex them in solr, then create the cascading ones as we do now
   def self.rebuild_cascaded_event_cache
     CascadedEventJoin.delete_all
-    self.includes(:eventable).find_each do |event|
+    sql = <<SQL
+    INSERT INTO cascaded_event_joins (cascaded_eventable_id, cascaded_eventable_type, event_id, created_at, updated_at)
+    SELECT eventable_id, eventable_type, id, now(), now() FROM events
+SQL
+    CascadedEventJoin.connection.execute(sql)
+    CascadedEventJoin.reindex
+    self.includes(:eventable).where(cascadable: true).find_each(batch_size: 100) do |event|
       transaction do
         event.maybe_cascade
       end
