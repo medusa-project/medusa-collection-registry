@@ -4,7 +4,7 @@ class FileGroupsController < ApplicationController
   before_action :require_medusa_user_or_basic_auth, only: [:show]
   before_action :find_file_group_and_collection, only: [:show, :destroy, :edit, :update, :create_cfs_fits,
                                                         :create_virus_scan, :red_flags, :attachments,
-                                                        :assessments]
+                                                        :assessments, :events]
   respond_to :html, :js, :json
 
   def show
@@ -83,9 +83,13 @@ class FileGroupsController < ApplicationController
   end
 
   def events
-    @eventable = FileGroup.find(params[:id])
-    @file_group = @eventable
-    @events = @eventable.cascaded_events
+    @helper = SearchHelper::TableEvent.new(params: params, cascaded_eventable: @file_group)
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: @helper.json_response
+      end
+    end
   end
 
   def red_flags

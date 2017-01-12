@@ -54,7 +54,7 @@ module ButtonsHelper
   end
 
   def events_button(url)
-    fa_icon_link_to 'Events', 'newspaper-o', url, class: 'btn btn-default'
+    fa_icon_link_to 'Events', 'newspaper-o', url, class: 'btn btn-default', value: 'Events'
   end
 
   def assessments_button(url)
