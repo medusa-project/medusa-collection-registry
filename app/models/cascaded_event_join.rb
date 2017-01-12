@@ -29,21 +29,21 @@ class CascadedEventJoin < ActiveRecord::Base
   end
 
   def eventable_label
-    event.eventable.decorate.label
+    cascaded_eventable.decorate.label
   rescue Exception => e
     GenericErrorMailer.error("No eventable label\n\nCascadedEventJoin: #{self.id}\n\n#{e}\n", subject: 'Cascaded Event error').deliver_now
     return nil
   end
 
   def eventable_type
-    event.eventable.decorate.decorated_class_human
+    cascaded_eventable.decorate.decorated_class_human
   rescue Exception => e
     GenericErrorMailer.error("No eventable type\n\nCascadedEventJoin: #{self.id}\n\n#{e}\n", subject: 'Cascaded Event error').deliver_now
     return nil
   end
 
   def eventable_parent_label
-    event.eventable.parent.decorate.label
+    cascaded_eventable.parent.decorate.label
   rescue Exception => e
     GenericErrorMailer.error("No eventable parent label\n\nCascadedEventJoin: #{self.id}\n\n#{e}\n", subject: 'Cascaded Event error').deliver_now
     return nil
