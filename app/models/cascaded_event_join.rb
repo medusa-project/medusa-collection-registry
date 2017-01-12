@@ -21,6 +21,7 @@ class CascadedEventJoin < ActiveRecord::Base
     string :event_note
     integer :cascaded_eventable_id
     string :cascaded_eventable_type
+    integer :event_id
   end
 
   def eventable_label
