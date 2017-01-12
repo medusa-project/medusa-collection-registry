@@ -11,7 +11,7 @@ class Event < ActiveRecord::Base
   after_update :recascade
 
   def message
-    self.eventable.event_message(self.key)
+    self.eventable.event_message(self.key) rescue ''
   end
 
   def ensure_date
