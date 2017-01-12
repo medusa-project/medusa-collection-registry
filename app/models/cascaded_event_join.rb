@@ -9,8 +9,6 @@ class CascadedEventJoin < ActiveRecord::Base
     time :event_created_at
     text :eventable_label
     string :eventable_label
-    text :eventable_type
-    string :eventable_type
     text :eventable_parent_label
     string :eventable_parent_label
     text :event_actor_email
@@ -20,6 +18,7 @@ class CascadedEventJoin < ActiveRecord::Base
     text :event_note
     string :event_note
     integer :cascaded_eventable_id
+    text :cascaded_eventable_type
     string :cascaded_eventable_type
     integer :event_id
   end

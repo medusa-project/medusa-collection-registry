@@ -47,7 +47,7 @@ class SearchHelper::TableEvent < SearchHelper::TableBase
     [
         {header: 'Time', solr_field: :event_created_at, value_method: :event_date},
         {header: 'Label', solr_field: :eventable_label, value_method: :search_eventable_link, searchable: true},
-        {header: 'Type', solr_field: :eventable_type, value_method: :eventable_type, searchable: true},
+        {header: 'Type', solr_field: :cascaded_eventable_type, value_method: :cascaded_eventable_type, searchable: true},
         {header: 'Parent', solr_field: :eventable_parent_label, value_method: :search_eventable_parent_link, searchable: true},
         {header: 'User', solr_field: :event_actor_email, value_method: :event_actor_email, searchable: true},
         {header: 'Message', solr_field: :event_message, value_method: :event_message, searchable: true},
