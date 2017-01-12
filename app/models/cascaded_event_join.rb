@@ -43,7 +43,7 @@ class CascadedEventJoin < ActiveRecord::Base
   end
 
   def eventable_parent_label
-    cascaded_eventable.parent.decorate.label
+    cascaded_eventable.parent.decorate.label if cascaded_eventable.parent.present?
   rescue Exception => e
     GenericErrorMailer.error("No eventable parent label\n\nCascadedEventJoin: #{self.id}\n\n#{e}\n", subject: 'Cascaded Event error').deliver_now
     return nil

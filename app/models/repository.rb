@@ -51,4 +51,8 @@ class Repository < ActiveRecord::Base
     self
   end
 
+  def parent
+    nil
+  end
+  
 end
