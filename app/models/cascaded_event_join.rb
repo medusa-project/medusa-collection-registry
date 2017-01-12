@@ -6,21 +6,26 @@ class CascadedEventJoin < ActiveRecord::Base
   validates_presence_of :event_id, :cascaded_eventable_id, :cascaded_eventable_type
 
   searchable include: [{event: :eventable}, :cascaded_eventable] do
-    time :event_created_at
+    #base fields to identify and restrict searches
+    text :cascaded_eventable_type
+    string :cascaded_eventable_type
+    integer :cascaded_eventable_id
+    integer :event_id
+
+    #eventable fields
     text :eventable_label
     string :eventable_label
     text :eventable_parent_label
     string :eventable_parent_label
+
+    #event fields
+    time :event_created_at
     text :event_actor_email
     string :event_actor_email
     text :event_message
     string :event_message
     text :event_note
     string :event_note
-    integer :cascaded_eventable_id
-    text :cascaded_eventable_type
-    string :cascaded_eventable_type
-    integer :event_id
   end
 
   def eventable_label
