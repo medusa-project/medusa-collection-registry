@@ -8,6 +8,7 @@ class Event < ActiveRecord::Base
 
   before_validation :ensure_date
   after_create :maybe_cascade
+  after_update :recascade
 
   def message
     self.eventable.event_message(self.key)
@@ -43,6 +44,11 @@ SQL
         event.maybe_cascade
       end
     end
+  end
+
+  def recascade
+    cascaded_event_joins.destroy_all
+    maybe_cascade
   end
 
 end
