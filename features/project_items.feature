@@ -77,8 +77,8 @@ Feature: Project Items
     And I check 'Ingested'
     And I click on 'Create'
     And I wait for 4 of 'Item' to exist
-    Then I should be on the view page for the project with title 'Scanning'
-    And I should see all of:
+    When I view the project with title 'Scanning'
+    Then I should see all of:
       | 30045623456781 | Catch-22 | Heller |
     And the item with fields should exist:
       | barcode        | title    | author | ingested |

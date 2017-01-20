@@ -22,7 +22,6 @@ Feature: Project Item Accrual
       | item_4 |
     And the project item ingest workflow for the project with title 'Scanning' should have user 'manager@example.com'
 
-
   #TODO more information about the ingest request
   Scenario: Receive email that ingest is starting
     Given the user 'manager@example.com' has a project item ingest workflow in state 'email_started'
