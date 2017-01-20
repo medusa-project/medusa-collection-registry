@@ -74,6 +74,15 @@ Around('@selenium') do |scenario, block|
   end
 end
 
+Around('@webkit') do |scenario, block|
+  begin
+    Capybara.current_driver = :webkit
+    block.call
+  ensure
+    Capybara.use_default_driver
+  end
+end
+
 require 'capybara/email'
 World(Capybara::Email::DSL)
 

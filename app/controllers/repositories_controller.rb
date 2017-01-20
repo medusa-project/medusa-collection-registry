@@ -114,8 +114,13 @@ class RepositoriesController < ApplicationController
   end
 
   def events
-    @eventable = Repository.find(params[:id])
-    @events = @eventable.cascaded_events
+    @helper = SearchHelper::TableEvent.new(params: params, cascaded_eventable: @repository)
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: @helper.json_response
+      end
+    end
   end
 
   def edit_ldap_admins

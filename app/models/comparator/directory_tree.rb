@@ -6,19 +6,7 @@ require 'open3'
 require 'set'
 require 'fileutils'
 require 'tmpdir'
-class DirectoryTreeComparator < Object
-
-  attr_accessor :source_directory, :target_directory, :source_only_paths,
-                :target_only_paths, :different_sizes_paths
-
-  def initialize(source_directory, target_directory)
-    self.source_directory = source_directory
-    self.target_directory = target_directory
-    self.source_only_paths = Set.new
-    self.target_only_paths = Set.new
-    self.different_sizes_paths = Set.new
-    self.analyze
-  end
+class Comparator::DirectoryTree < Comparator::FsBase
 
   def analyze
     uuid = UUID.generate
@@ -39,7 +27,8 @@ class DirectoryTreeComparator < Object
         target_only_paths << path
       end
     end
-    self.source_only_paths = db.collect{|k, v| k}.to_set
+    self.source_only_paths = db.collect { |k, v| k }.to_set
+    self
   ensure
     env.close if env
     FileUtils.rm_rf(db_dir) if db_dir and Dir.exist?(db_dir)
@@ -77,8 +66,13 @@ class DirectoryTreeComparator < Object
     end
   end
 
-  def directories_equal?
-    source_only_paths.blank? and target_only_paths.blank? and different_sizes_paths.blank?
+  protected
+
+  def augment_paths(path_collection)
+    base = File.basename(source_directory)
+    path_collection.collect do |path|
+      File.join(base, path)
+    end
   end
 
 end

@@ -48,8 +48,13 @@ class CfsFilesController < ApplicationController
   end
 
   def events
-    @eventable = @file
-    @events = @file.events
+    @helper = SearchHelper::TableEvent.new(params: params, cascaded_eventable: @file)
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: @helper.json_response
+      end
+    end
   end
 
   def download

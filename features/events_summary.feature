@@ -36,45 +36,50 @@ Feature: Events Summary
       | note        |
       | corn note 1 |
 
+  @javascript @search
   Scenario: View collection events
     When I view the collection with title 'Dogs'
     And I click on 'Events'
-    Then I should see the events table
+    Then I should see the cascaded_events table
     And I should see all of:
       | toy note 1 | toy note 2 | hot note 1 |
     And I should see none of:
       | cool note 1 | corn note 1 |
 
+  @javascript @search
   Scenario: View collection events as a manager
     Given I relogin as a manager
     When I view the collection with title 'Dogs'
     And I click on 'Events'
-    Then I should see the events table
+    Then I should see the cascaded_events table
     And I should see all of:
       | toy note 1 | toy note 2 | hot note 1 |
     And I should see none of:
       | cool note 1 | corn note 1 |
 
+  @javascript @search
   Scenario: View collection events as a user
     Given I relogin as a user
     When I view the collection with title 'Dogs'
     And I click on 'Events'
-    Then I should see the events table
+    Then I should see the cascaded_events table
     And I should see all of:
       | toy note 1 | toy note 2 | hot note 1 |
     And I should see none of:
       | cool note 1 | corn note 1 |
 
+  @javascript @search
   Scenario: Navigate from events list to owning object of an event
     When I view the collection with title 'Dogs'
     And I click on 'Events'
     And I click on 'Toys'
     Then I should be on the view page for the file group with title 'Toys'
-    
+
+  @javascript @search
   Scenario: View repository events
     When I view the repository with title 'Animals'
     And I click on 'Events'
-    Then I should see the events table
+    Then I should see the cascaded_events table
     And I should see all of:
       | toy note 1 | toy note 2 | hot note 1 | cool note 1 |
     And I should see none of:

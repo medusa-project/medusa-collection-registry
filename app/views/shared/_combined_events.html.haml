@@ -1,2 +1,27 @@
 .row
-  = render 'events/index'
+  %table.table.table-striped#cascaded_events
+    %thead
+      %tr
+        - @helper.headers.each do |header|
+          %th= header
+:javascript
+  $(function() {
+    $('#cascaded_events').DataTable({
+      'processing': true,
+      'serverSide': true,
+      'pageLength': 25,
+      'order': [],
+      'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+      'search': {
+        'search': ""
+      },
+      'stateSave': true,
+      'ajax': {
+        'url': "#{@helper.url}"
+      },
+      'columnDefs': [
+        {'orderable': false, 'targets': #{@helper.unsortable_columns}}
+      ]
+    })
+  })
+

@@ -116,6 +116,9 @@ GEM
     capybara-email (2.5.0)
       capybara (~> 2.4)
       mail
+    capybara-webkit (1.1.0)
+      capybara (~> 2.0, >= 2.0.2)
+      json
     chartkick (2.1.1)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
@@ -291,6 +294,9 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
+    rack_session_access (0.1.1)
+      builder (>= 2.0.0)
+      rack (>= 1.0.0)
     rails (4.2.7.1)
       actionmailer (= 4.2.7.1)
       actionpack (= 4.2.7.1)
@@ -453,6 +459,7 @@ DEPENDENCIES
   capistrano-rvm
   capybara
   capybara-email
+  capybara-webkit
   chartkick
   chronic
   ckeditor
@@ -499,6 +506,7 @@ DEPENDENCIES
   postgresql_cursor
   progress_bar
   puma
+  rack_session_access
   rails (~> 4.2)
   rails-jquery-autocomplete
   react-rails

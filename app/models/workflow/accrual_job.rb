@@ -62,34 +62,39 @@ class Workflow::AccrualJob < Workflow::Base
     be_in_state_and_requeue('check_sync')
   end
 
+
   def perform_check_sync
-    comparator = DirectoryTreeComparator.new(staging_local_path, staging_remote_path)
-    if comparator.directories_equal?
+    comparators = (workflow_accrual_directories + workflow_accrual_files).collect {|obj| obj.comparator.analyze}
+    if comparators.all? { |comparator| comparator.objects_equal? }
       be_in_state_and_requeue('check')
     else
       tmpfile = File.join(Dir.tmpdir, "check_sync-#{self.id}-#{Time.now}")
       File.open(tmpfile, 'w') do |f|
         f.puts 'Source only:'
-        comparator.source_only_paths.each { |p| f.puts p }
+        comparators.each { |comparator| comparator.augmented_source_only_paths.each { |p| f.puts p } }
         f.puts 'Target only:'
-        comparator.target_only_paths.each { |p| f.puts p }
+        comparators.each { |comparator| comparator.augmented_target_only_paths.each { |p| f.puts p } }
         f.puts 'Differences:'
-        comparator.different_sizes_paths.each { |p| f.puts p }
+        comparators.each { |comparator| comparator.augmented_different_sizes_paths.each { |p| f.puts p } }
         f.puts 'Suggested remediation:'
-        comparator.target_only_paths.each do |p|
-          puts "rm -f #{File.join(staging_remote_path, p)}"
+        comparators.each do |comparator|
+          comparator.augmented_target_only_paths.each do |p|
+            puts Shellwords.escape("rm -f #{File.join(staging_remote_path, p)}")
+          end
         end
-        (comparator.source_only_paths + comparator.different_sizes_paths).each do |p|
-          puts "cp -f #{File.join(staging_local_path, p)} #{File.join(staging_remote_path, p)}"
+        comparator.each do |comparator|
+          (comparator.augmented_source_only_paths + comparator.augmented_different_sizes_paths).each do |p|
+            puts Shellwords.escape("cp -f #{File.join(staging_local_path, p)} #{File.join(staging_remote_path, p)}")
+          end
         end
       end
       GenericErrorMailer.error("Check sync failed for accrual_job: #{self.id}.\n See #{tmpfile} for details.",
                                subject: 'Accrual Check Sync Error').deliver_now
       raise RuntimeError,
             %Q(storage.library and condo copies of accrual directory are not in sync.
-#{comparator.source_only_paths.count} files are only present in the source copy
-#{comparator.target_only_paths.count} files are only present in the target copy
-#{comparator.different_sizes_paths.count} files are present in both copies but with different sizes
+#{comparators.collect{|comparator| comparator.source_only_paths.count}.sum} files are only present in the source copy
+#{comparators.collect{|comparator| comparator.target_only_paths.count}.sum} files are only present in the target copy
+#{comparators.collect{|comparator| comparator.different_sizes_paths.count}.sum} files are present in both copies but with different sizes
 Paths are stored for inspection in #{tmpfile} on the server.
 )
     end
