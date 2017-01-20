@@ -3,8 +3,8 @@ Feature: Project Item Accrual
   As digitization staff
   I want to be able to import project items as they are finished
 
-  Background:
-    When PENDING
+#  Background:
+#    When PENDING
 
   Scenario: Create project item ingest from the project page
     When PENDING
@@ -12,10 +12,11 @@ Feature: Project Item Accrual
     #check that workflow is created
 
   Scenario: Receive email that ingest is starting
-    When PENDING
-    #workflow in appropriate state
-    #perform
-    #make sure email is sent, workflow is in new state
+    Given the user 'manager@example.com' has a project item ingest workflow in state 'email_started'
+    When I perform project item ingest workflows
+    Then 'manager@example.com' should receive an email with subject 'Project Item ingest started'
+    And there should be 1 project item ingest workflows in state 'ingest'
+    And there should be 1 delayed job
 
   Scenario: Ingest items with no errors
     When PENDING
@@ -26,6 +27,7 @@ Feature: Project Item Accrual
     #we've recorded item status for email
 
   Scenario: Ingest items with existing items
+    When PENDING
     #workflow in appropriate state
     #perform
     #make sure that duplicate items are not ingested
@@ -39,7 +41,6 @@ Feature: Project Item Accrual
     #email is sent, workflow is in new state
 
   Scenario: Remove finished ingest job
-    When PENDING
-    #workflow in appropriate state
-    #perform
-    #job is removed
+    Given there is a project item ingest workflow in state 'end'
+    When I perform project item ingest workflows
+    Then there should be 0 project item ingest workflows

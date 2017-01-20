@@ -2963,6 +2963,65 @@ ALTER SEQUENCE medusa_uuids_id_seq OWNED BY medusa_uuids.id;
 
 
 --
+-- Name: repositories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE repositories (
+    id integer NOT NULL,
+    title character varying(255),
+    url character varying(255),
+    notes text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    address_1 character varying(255),
+    address_2 character varying(255),
+    city character varying(255),
+    state character varying(255),
+    zip character varying(255),
+    phone_number character varying(255),
+    email character varying(255),
+    contact_id integer,
+    notes_html text,
+    active_start_date date,
+    active_end_date date,
+    ldap_admin_domain character varying(255),
+    ldap_admin_group character varying(255),
+    institution_id integer
+);
+
+
+--
+-- Name: orphaned_events; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW orphaned_events AS
+ SELECT e.id
+   FROM (events e
+     LEFT JOIN cfs_files evt ON ((e.eventable_id = evt.id)))
+  WHERE (((e.eventable_type)::text = 'CfsFile'::text) AND (evt.id IS NULL))
+UNION
+ SELECT e.id
+   FROM (events e
+     LEFT JOIN cfs_directories evt ON ((e.eventable_id = evt.id)))
+  WHERE (((e.eventable_type)::text = 'CfsDirectory'::text) AND (evt.id IS NULL))
+UNION
+ SELECT e.id
+   FROM (events e
+     LEFT JOIN file_groups evt ON ((e.eventable_id = evt.id)))
+  WHERE (((e.eventable_type)::text = 'FileGroup'::text) AND (evt.id IS NULL))
+UNION
+ SELECT e.id
+   FROM (events e
+     LEFT JOIN collections evt ON ((e.eventable_id = evt.id)))
+  WHERE (((e.eventable_type)::text = 'Collection'::text) AND (evt.id IS NULL))
+UNION
+ SELECT e.id
+   FROM (events e
+     LEFT JOIN repositories evt ON ((e.eventable_id = evt.id)))
+  WHERE (((e.eventable_type)::text = 'Repository'::text) AND (evt.id IS NULL));
+
+
+--
 -- Name: package_profiles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3243,34 +3302,6 @@ CREATE SEQUENCE related_file_group_joins_id_seq
 --
 
 ALTER SEQUENCE related_file_group_joins_id_seq OWNED BY related_file_group_joins.id;
-
-
---
--- Name: repositories; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE repositories (
-    id integer NOT NULL,
-    title character varying(255),
-    url character varying(255),
-    notes text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    address_1 character varying(255),
-    address_2 character varying(255),
-    city character varying(255),
-    state character varying(255),
-    zip character varying(255),
-    phone_number character varying(255),
-    email character varying(255),
-    contact_id integer,
-    notes_html text,
-    active_start_date date,
-    active_end_date date,
-    ldap_admin_domain character varying(255),
-    ldap_admin_group character varying(255),
-    institution_id integer
-);
 
 
 --
@@ -4085,6 +4116,39 @@ ALTER SEQUENCE workflow_ingests_id_seq OWNED BY workflow_ingests.id;
 
 
 --
+-- Name: workflow_project_item_ingests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE workflow_project_item_ingests (
+    id integer NOT NULL,
+    state character varying NOT NULL,
+    project_id integer,
+    user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: workflow_project_item_ingests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE workflow_project_item_ingests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: workflow_project_item_ingests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE workflow_project_item_ingests_id_seq OWNED BY workflow_project_item_ingests.id;
+
+
+--
 -- Name: access_system_collection_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4593,6 +4657,13 @@ ALTER TABLE ONLY workflow_accrual_jobs ALTER COLUMN id SET DEFAULT nextval('work
 --
 
 ALTER TABLE ONLY workflow_ingests ALTER COLUMN id SET DEFAULT nextval('workflow_ingests_id_seq'::regclass);
+
+
+--
+-- Name: workflow_project_item_ingests id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_project_item_ingests ALTER COLUMN id SET DEFAULT nextval('workflow_project_item_ingests_id_seq'::regclass);
 
 
 --
@@ -5177,6 +5248,14 @@ ALTER TABLE ONLY workflow_accrual_jobs
 
 ALTER TABLE ONLY workflow_ingests
     ADD CONSTRAINT workflow_ingests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_project_item_ingests workflow_project_item_ingests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_project_item_ingests
+    ADD CONSTRAINT workflow_project_item_ingests_pkey PRIMARY KEY (id);
 
 
 --
@@ -7421,4 +7500,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161107150831');
 INSERT INTO schema_migrations (version) VALUES ('20161216185129');
 
 INSERT INTO schema_migrations (version) VALUES ('20161216205814');
+
+INSERT INTO schema_migrations (version) VALUES ('20170120170335');
 
