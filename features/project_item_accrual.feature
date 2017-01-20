@@ -21,7 +21,7 @@ Feature: Project Item Accrual
     When PENDING
     #workflow in appropriate state
     #perform
-    #make sure that items are ingested
+    #make sure that items are ingested and marked as such
     #workflow is in new state
     #we've recorded item status for email
 
