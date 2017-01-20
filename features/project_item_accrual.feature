@@ -11,12 +11,13 @@ Feature: Project Item Accrual
     #go to page, check some items, hit button
     #check that workflow is created
 
+  #TODO more information about the ingest request
   Scenario: Receive email that ingest is starting
     Given the user 'manager@example.com' has a project item ingest workflow in state 'email_started'
     When I perform project item ingest workflows
     Then 'manager@example.com' should receive an email with subject 'Project Item ingest started'
-    And there should be 1 project item ingest workflows in state 'ingest'
-    And there should be 1 delayed job
+    And there should be 1 project item ingest workflow in state 'ingest'
+    And there should be 1 project item ingest workflow delayed job
 
   Scenario: Ingest items with no errors
     When PENDING
@@ -35,10 +36,11 @@ Feature: Project Item Accrual
     #we've recorded item status for email
 
   Scenario: Receive email that ingest has happened
-    When PENDING
-    #workflow in appropriate state
-    #perform
-    #email is sent, workflow is in new state
+    Given the user 'manager@example.com' has a project item ingest workflow in state 'email_done'
+    When I perform project item ingest workflows
+    Then 'manager@example.com' should receive an email with subject 'Project Item ingest completed'
+    And there should be 1 project item ingest workflow in state 'end'
+    And there should be 1 project item ingest workflows delayed job
 
   Scenario: Remove finished ingest job
     Given there is a project item ingest workflow in state 'end'
