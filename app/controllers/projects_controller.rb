@@ -52,12 +52,15 @@ class ProjectsController < ApplicationController
 
   def mass_action
     #authorize! :update, @project
-    items = @project.items.where(id: params[:mass_action][:item])
+    x = params[:mass_action]
     case params[:commit]
       when 'Mass update'
         mass_update(params[:mass_action])
       when 'Delete checked'
+        items = @project.items.where(id: params[:mass_action][:item])
         items.destroy_all
+      when 'Ingest items'
+        ingest_items(params[:mass_action])
       else
         raise RuntimeError, 'Unexpected mass action on project items'
     end
@@ -127,7 +130,7 @@ class ProjectsController < ApplicationController
   #TODO make this really work
   def ingest_path_info
     respond_to do |format|
-      format.json { render json: ingest_directory_info(params[:path])}
+      format.json { render json: ingest_directory_info(params[:path]) }
     end
   end
 
@@ -187,6 +190,18 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def ingest_items(params)
+    item_ids = params[:item]
+    items = @project.items.where(ingested: false, id: item_ids).reject { |item| item.workflow_item_ingest_request.present? }
+    @project.transaction do
+      workflow = Workflow::ProjectItemIngest.create!(project: @project, user: current_user, state: 'start')
+      items.each do |item|
+        workflow.workflow_item_ingest_requests.create!(item_id: item.id)
+      end
+      workflow.put_in_queue
+    end
+  end
+
   def initialize_ingest_directory_info
     @ingest_directory_info = ingest_directory_info('/')
   end
@@ -204,13 +219,13 @@ class ProjectsController < ApplicationController
     if new_path == root_path
       Hash.new.tap do |h|
         h[:current] = '/'
-        h[:children] = root_path.children.select {|c| c.directory?}.collect {|d| File.join(d.basename, '/')}.sort rescue []
+        h[:children] = root_path.children.select { |c| c.directory? }.collect { |d| File.join(d.basename, '/') }.sort rescue []
         h[:parent] = '/'
       end
     else
       Hash.new.tap do |h|
         h[:current] = File.join(new_path.relative_path_from(root_path).to_s, '/')
-        h[:children] = new_path.children.select {|c| c.directory?}.collect {|d| File.join(d.basename, '/')}.sort
+        h[:children] = new_path.children.select { |c| c.directory? }.collect { |d| File.join(d.basename, '/') }.sort
         h[:parent] = File.join(new_path.parent.relative_path_from(root_path).to_s, '/')
         h[:parent] = '/' if h[:parent] == './'
         x = 1

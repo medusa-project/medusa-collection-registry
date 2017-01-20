@@ -3,13 +3,26 @@ Feature: Project Item Accrual
   As digitization staff
   I want to be able to import project items as they are finished
 
-#  Background:
-#    When PENDING
-
+  @javascript @search
   Scenario: Create project item ingest from the project page
-    When PENDING
-    #go to page, check some items, hit button
-    #check that workflow is created
+    Given the project with title 'Scanning' has child items with fields:
+      | id | unique_identifier | ingested |
+      | 1  | item_1            | false    |
+      | 2  | item_2            | false    |
+      | 3  | item_3            | false    |
+      | 4  | item_4            | true     |
+    And I am logged in as a manager
+    When I view the project with title 'Scanning'
+    And I click on 'check_all'
+    And I click on 'Ingest items'
+    And I wait 2 seconds
+    #And I wait for 1 of 'Workflow::ProjectItemIngest' to exist
+    Then the project item ingest workflow for the project with title 'Scanning' should have items with unique_identifier:
+      | item_1 | item_2 | item_3 |
+    And the project item ingest workflow for the project with title 'Scanning' should not have items with unique_identifier:
+      | item_4 |
+    And the project item ingest workflow for the project with title 'Scanning' should have user 'manager@example.com'
+
 
   #TODO more information about the ingest request
   Scenario: Receive email that ingest is starting

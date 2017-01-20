@@ -24,3 +24,22 @@ end
 And(/^there should be (\d+) project item ingest workflows? delayed job$/) do |count|
   expect(Workflow::ProjectItemIngest.all.collect(&:delayed_jobs).flatten.count).to eq(count.to_i)
 end
+
+Then(/^the project item ingest workflow for the project with title '(.*)' should have items with unique_identifier:$/) do |title, table|
+  workflow = Project.find_by(title: title).workflow_project_item_ingests.first
+  table.headers.each do |item_unique_id|
+    expect(workflow.items.find_by(unique_identifier: item_unique_id)).to be_truthy
+  end
+end
+
+Then(/^the project item ingest workflow for the project with title '(.*)' should not have items with unique_identifier:$/) do |title, table|
+  workflow = Project.find_by(title: title).workflow_project_item_ingests.first
+  table.headers.each do |item_unique_id|
+    expect(workflow.items.find_by(unique_identifier: item_unique_id)).to be_falsey
+  end
+end
+
+And(/^the project item ingest workflow for the project with title '(.*)' should have user '(.*)'$/) do |title, uid|
+  workflow = Project.find_by(title: title).workflow_project_item_ingests.first
+  expect(workflow.user.uid).to eq(uid)
+end

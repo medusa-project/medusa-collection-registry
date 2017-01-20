@@ -2,6 +2,8 @@ class Workflow::ProjectItemIngest < Workflow::Base
 
   belongs_to :user
   belongs_to :project
+  has_many :workflow_item_ingest_requests, :class_name => 'Workflow::ItemIngestRequest', dependent: :destroy, foreign_key: :workflow_project_item_ingest_id
+  has_many :items, through: :workflow_item_ingest_requests
 
   STATES = %w(start email_started ingest email_done end)
 

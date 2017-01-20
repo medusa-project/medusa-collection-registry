@@ -7,6 +7,7 @@ class Project < ActiveRecord::Base
 
   has_many :attachments, as: :attachable, dependent: :destroy
   has_many :items, -> {order 'created_at desc'}, dependent: :destroy
+  has_many :workflow_project_item_ingests, :class_name => 'Workflow::ProjectItemIngest', dependent: :destroy
   belongs_to :collection
 
   STATUSES = %w(active inactive completed)

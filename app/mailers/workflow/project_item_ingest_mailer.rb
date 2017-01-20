@@ -10,3 +10,4 @@ class Workflow::ProjectItemIngestMailer < MedusaBaseMailer
     mail to: workflow.user.email, subject: 'Project Item ingest completed'
   end
 end
+0

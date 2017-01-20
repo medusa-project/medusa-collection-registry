@@ -1,5 +1,6 @@
 class Item < ActiveRecord::Base
   belongs_to :project, touch: true
+  has_one :workflow_item_ingest_request, :class_name => 'Workflow::ItemIngestRequest', dependent: :destroy
   delegate :title, to: :project, prefix: true
   delegate :source_media_types, to: :class
 
