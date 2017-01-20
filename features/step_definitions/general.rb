@@ -16,7 +16,11 @@ end
 
 And(/^I wait for (\d+) of '(.*)' to exist$/) do |count, class_name|
   klass = Kernel.const_get(class_name)
-  while klass.count < count.to_i
-    sleep 0.05
+  time = 0
+  timeout = 5
+  interval = 0.05
+  while klass.count < count.to_i and time < timeout
+    time += interval
+    sleep interval
   end
 end
