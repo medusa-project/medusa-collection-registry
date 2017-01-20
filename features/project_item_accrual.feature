@@ -15,8 +15,7 @@ Feature: Project Item Accrual
     When I view the project with title 'Scanning'
     And I click on 'check_all'
     And I click on 'Ingest items'
-    And I wait 2 seconds
-    #And I wait for 1 of 'Workflow::ProjectItemIngest' to exist
+    And I wait for 1 of 'Workflow::ProjectItemIngest' to exist
     Then the project item ingest workflow for the project with title 'Scanning' should have items with unique_identifier:
       | item_1 | item_2 | item_3 |
     And the project item ingest workflow for the project with title 'Scanning' should not have items with unique_identifier:
