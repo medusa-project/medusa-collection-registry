@@ -82,7 +82,7 @@ class Workflow::AccrualJob < Workflow::Base
             puts Shellwords.escape("rm -f #{File.join(staging_remote_path, p)}")
           end
         end
-        comparator.each do |comparator|
+        comparators.each do |comparator|
           (comparator.augmented_source_only_paths + comparator.augmented_different_sizes_paths).each do |p|
             puts Shellwords.escape("cp -f #{File.join(staging_local_path, p)} #{File.join(staging_remote_path, p)}")
           end
