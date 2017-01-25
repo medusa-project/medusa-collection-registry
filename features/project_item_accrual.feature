@@ -32,7 +32,9 @@ Feature: Project Item Accrual
 
   Scenario: Ingest items with no errors
     When PENDING
-    #workflow in appropriate state
+    #set up - we need a project with items with content on the file system
+    #- a file group/directory to accrue to and a workflow request in the system
+    #at the end we want to see the right stuff in the db and on the file system
     #perform
     #make sure that items are ingested and marked as such
     #workflow is in new state
