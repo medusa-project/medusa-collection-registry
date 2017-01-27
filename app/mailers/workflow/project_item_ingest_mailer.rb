@@ -9,5 +9,14 @@ class Workflow::ProjectItemIngestMailer < MedusaBaseMailer
     @workflow = workflow
     mail to: workflow.user.email, subject: 'Project Item ingest completed'
   end
+
+  def staging_directory_missing(workflow)
+    @workflow = workflow
+    mail to: workflow.user.email, subject: 'Project Item ingest error'
+  end
+
+  def target_directory_missing(workflow)
+    @workflow = workflow
+    mail to: workflow.user.email, subject: 'Project Item ingest error'
+  end
 end
-0

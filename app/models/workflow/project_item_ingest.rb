@@ -5,7 +5,7 @@ class Workflow::ProjectItemIngest < Workflow::Base
   has_many :workflow_item_ingest_requests, :class_name => 'Workflow::ItemIngestRequest', dependent: :destroy, foreign_key: :workflow_project_item_ingest_id
   has_many :items, through: :workflow_item_ingest_requests
 
-  STATES = %w(start email_started ingest email_done end)
+  STATES = %w(start email_started ingest email_done email_staging_directory_missing email_target_directory_missing end)
 
   validates_inclusion_of :state, in: STATES, allow_blank: false
 
@@ -20,10 +20,22 @@ class Workflow::ProjectItemIngest < Workflow::Base
   end
 
   def perform_ingest
+    be_in_state_and_requeue('email_staging_directory_missing') and return unless project.ingest_folder.present? and Dir.exist?(project.staging_directory)
+    be_in_state_and_requeue('email_target_directory_missing') and return unless safe_target_directory.present?
     items.each do |item|
-      ingest_item(item) unless item.ingested
+      ingest_item(item) if !item.ingested and Dir.exist?(item.staging_directory)
     end
     be_in_state_and_requeue('email_done')
+  end
+
+  def perform_email_staging_directory_missing
+    Workflow::ProjectItemIngestMailer.staging_directory_missing(self).deliver_now
+    be_in_state_and_requeue('end')
+  end
+
+  def perform_email_target_directory_missing
+    Workflow::ProjectItemIngestMailer.target_directory_missing(self).deliver_now
+    be_in_state_and_requeue('end')
   end
 
   def perform_end
@@ -64,6 +76,10 @@ MESSAGE
 
   def exclude_file_path
     File.join(Rails.root, 'config', 'accrual_rsync_exclude.txt')
+  end
+
+  def safe_target_directory
+    project.target_cfs_directory rescue nil
   end
 
 end
