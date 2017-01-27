@@ -19,4 +19,24 @@ class Project < ActiveRecord::Base
 
   standard_auto_html(:specifications, :summary)
 
+  def staging_directory
+    raise RuntimeError, "No ingest folder specified" unless ingest_folder.present?
+    File.join(staging_root, ingest_folder)
+  end
+
+  def staging_root
+    Settings.project_staging_directory
+  end
+
+  def target_cfs_directory
+    MedusaUuid.find_by(uuid: destination_folder_uuid).try(:uuidable).tap do |cfs_directory|
+      raise RuntimeError, "Destination cfs directory not found for project #{id}" unless cfs_directory.is_a?(CfsDirectory)
+      raise RuntimeError, "Destination cfs directory is not in the correct collection for project #{id}" unless cfs_directory.collection == collection
+    end
+  end
+
+  def target_cfs_directory_path
+    target_cfs_directory.absolute_path
+  end
+
 end

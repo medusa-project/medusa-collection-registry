@@ -43,3 +43,21 @@ And(/^the project item ingest workflow for the project with title '(.*)' should 
   workflow = Project.find_by(title: title).workflow_project_item_ingests.first
   expect(workflow.user.uid).to eq(uid)
 end
+
+And(/^there exists staged content for the items with unique identifiers:$/) do |table|
+  table.headers.each do |id|
+    item = Item.find_by(unique_identifier: id)
+    FileUtils.mkdir_p(item.staging_directory)
+    File.open(File.join(item.staging_directory, 'content.txt'), 'w') do |f|
+      f.puts item.unique_identifier
+      f.puts 'content'
+    end
+  end
+end
+
+And(/^there is a project item ingest workflow for the project with title '(.*)' in state '(.*)' for items with unique identifier:$/) do |title, state, table|
+  workflow = FactoryGirl.create(:workflow_project_item_ingest, state: state, project: Project.find_by(title: title))
+  table.headers.each do |unique_identifier|
+    workflow.items << Item.find_by(unique_identifier: unique_identifier)
+  end
+end

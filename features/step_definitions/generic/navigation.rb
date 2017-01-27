@@ -52,7 +52,7 @@ def generic_collection_path(object_type, prefix = nil)
 end
 
 def class_for_object_type(object_type)
-  Kernel.const_get(object_type.gsub(' ', '_').camelize)
+  Kernel.const_get(object_type.gsub(' ', '_').camelize.singularize)
 end
 
 def find_object(object_type, key, value)

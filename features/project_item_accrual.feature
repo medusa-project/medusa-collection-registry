@@ -30,15 +30,40 @@ Feature: Project Item Accrual
     And there should be 1 project item ingest workflow in state 'ingest'
     And there should be 1 project item ingest workflow delayed job
 
+  #this requires quite a bit of setup
   Scenario: Ingest items with no errors
-    When PENDING
-    #set up - we need a project with items with content on the file system
-    #- a file group/directory to accrue to and a workflow request in the system
-    #at the end we want to see the right stuff in the db and on the file system
-    #perform
-    #make sure that items are ingested and marked as such
-    #workflow is in new state
-    #we've recorded item status for email
+    Given every collection with fields exists:
+      | title   | id |
+      | Animals | 1  |
+    Given every bit level file group with fields exists:
+      | title | collection_id | id |
+      | Dogs  | 1             | 1  |
+    And the uuid of the cfs directory with path '1/1' is '2c90f940-c6e1-0134-cb7e-0c4de9bac164-5'
+    And every project with fields exists:
+      | title   | ingest_folder | destination_folder_uuid                | collection_id |
+      | Animals | dog_ingest    | 2c90f940-c6e1-0134-cb7e-0c4de9bac164-5 | 1             |
+    And the project with title 'Animals' has child items with fields:
+      | unique_identifier |
+      | item_1            |
+      | item_2            |
+      | item_3            |
+    And there exists staged content for the items with unique identifiers:
+      | item_1 | item_2 |
+    And there is a project item ingest workflow for the project with title 'Animals' in state 'ingest' for items with unique identifier:
+      | item_1 | item_2 |
+    When I perform project item ingest workflows
+    And delayed jobs are run
+    Then the items with fields should exist:
+      | unique_identifier | ingested |
+      | item_1            | true     |
+      | item_2            | true     |
+      | item_3            | false    |
+    And the cfs directory with path '1/1' should have associated subdirectories with field path:
+      | item_1 | item_2 |
+    And the cfs directory with path 'item_1' should have associated cfs files with field name:
+      | content.txt |
+    And the cfs directory with path 'item_2' should have associated cfs files with field name:
+      | content.txt |
 
   Scenario: Ingest items with existing items
     When PENDING
