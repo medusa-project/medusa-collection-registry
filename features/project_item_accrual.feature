@@ -52,7 +52,6 @@ Feature: Project Item Accrual
     And there is a project item ingest workflow for the project with title 'Animals' in state 'ingest' for items with unique identifier:
       | item_1 | item_2 |
     When I perform project item ingest workflows
-    And delayed jobs are run
     Then the items with fields should exist:
       | unique_identifier | ingested |
       | item_1            | true     |
@@ -64,14 +63,16 @@ Feature: Project Item Accrual
       | content.txt |
     And the cfs directory with path 'item_2' should have associated cfs files with field name:
       | content.txt |
+    And there should be 1 project item ingest workflows in state 'email_done'
 
-  Scenario: Ingest items with existing items
+  Scenario: Try ingest with staging directory not existing
     When PENDING
-    #workflow in appropriate state
-    #perform
-    #make sure that duplicate items are not ingested
-    #workflow is in new state
-    #we've recorded item status for email
+
+  Scenario: Try ingest with target cfs directory not specified or not existing
+    When PENDING
+
+  Scenario: Try to ingest item without staging directory
+    When PENDING
 
   Scenario: Receive email that ingest has happened
     Given the user 'manager@example.com' has a project item ingest workflow in state 'email_done'

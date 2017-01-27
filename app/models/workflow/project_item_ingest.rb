@@ -23,6 +23,7 @@ class Workflow::ProjectItemIngest < Workflow::Base
     items.each do |item|
       ingest_item(item) unless item.ingested
     end
+    be_in_state_and_requeue('email_done')
   end
 
   def perform_end
@@ -33,6 +34,7 @@ class Workflow::ProjectItemIngest < Workflow::Base
 
   def ingest_item(item)
     rsync_item(item)
+    create_and_assess_item_cfs_directory(item)
     item.ingested = true
     item.save!
   end
@@ -55,7 +57,8 @@ MESSAGE
   end
 
   def create_and_assess_item_cfs_directory(item)
-    cfs_directory = project.target_cfs_directory.subdirectories.find_or_create_by(path: item.unique_identifier)
+    target_cfs_directory = project.target_cfs_directory
+    cfs_directory = target_cfs_directory.subdirectories.find_or_create_by!(path: item.unique_identifier, root_cfs_directory: target_cfs_directory.root_cfs_directory)
     cfs_directory.run_initial_assessment
   end
 
