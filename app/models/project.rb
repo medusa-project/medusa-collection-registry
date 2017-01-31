@@ -6,7 +6,7 @@ class Project < ActiveRecord::Base
   email_person_association(:owner)
 
   has_many :attachments, as: :attachable, dependent: :destroy
-  has_many :items, -> {order 'created_at desc'}, dependent: :destroy
+  has_many :items, -> { order 'created_at desc' }, dependent: :destroy
   has_many :workflow_project_item_ingests, :class_name => 'Workflow::ProjectItemIngest', dependent: :destroy
   belongs_to :collection
 
@@ -29,10 +29,11 @@ class Project < ActiveRecord::Base
   end
 
   def target_cfs_directory
-    MedusaUuid.find_by(uuid: destination_folder_uuid).try(:uuidable).tap do |cfs_directory|
-      raise RuntimeError, "Destination cfs directory not found for project #{id}" unless cfs_directory.is_a?(CfsDirectory)
-      raise RuntimeError, "Destination cfs directory is not in the correct collection for project #{id}" unless cfs_directory.collection == collection
-    end
+    target = MedusaUuid.find_by(uuid: destination_folder_uuid).try(:uuidable)
+    target = target.cfs_directory if target.is_a?(BitLevelFileGroup)
+    raise RuntimeError, "Destination cfs directory not found for project #{id}" unless target.is_a?(CfsDirectory)
+    raise RuntimeError, "Destination cfs directory is not in the correct collection for project #{id}" unless target.collection == collection
+    return target
   end
 
   def target_cfs_directory_path
