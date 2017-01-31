@@ -69,7 +69,7 @@ class Workflow::AccrualJob < Workflow::Base
       be_in_state_and_requeue('check')
     else
       tmpfile = File.join(Dir.tmpdir, "check_sync-#{self.id}-#{Time.now}")
-      File.open(tmpfile, 'w') do |f|
+      File.open(tmpfile, 'wb') do |f|
         f.puts 'Source only:'
         comparators.each { |comparator| comparator.augmented_source_only_paths.each { |p| f.puts p } }
         f.puts 'Target only:'
@@ -82,7 +82,7 @@ class Workflow::AccrualJob < Workflow::Base
             puts Shellwords.escape("rm -f #{File.join(staging_remote_path, p)}")
           end
         end
-        comparator.each do |comparator|
+        comparators.each do |comparator|
           (comparator.augmented_source_only_paths + comparator.augmented_different_sizes_paths).each do |p|
             puts Shellwords.escape("cp -f #{File.join(staging_local_path, p)} #{File.join(staging_remote_path, p)}")
           end
