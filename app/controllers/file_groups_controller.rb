@@ -12,6 +12,7 @@ class FileGroupsController < ApplicationController
     @directory = @file_group.cfs_directory
     @directory = CfsDirectory.includes(:subdirectories, {cfs_files: [:content_type, :file_extension]}).find(@directory.id) if @directory.present?
     @accrual = create_accrual
+    @suppress_gallery_viewer = cookies[:suppress_gallery_viewer] == "1"
     respond_to do |format|
       format.html
       format.json
