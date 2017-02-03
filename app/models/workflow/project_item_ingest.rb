@@ -1,3 +1,4 @@
+require 'open3'
 class Workflow::ProjectItemIngest < Workflow::Base
 
   belongs_to :user
@@ -8,6 +9,10 @@ class Workflow::ProjectItemIngest < Workflow::Base
   STATES = %w(start email_started ingest email_done email_staging_directory_missing email_target_directory_missing end)
 
   validates_inclusion_of :state, in: STATES, allow_blank: false
+
+  def perform_start
+    be_in_state_and_requeue('email_started')
+  end
 
   def perform_email_started
     Workflow::ProjectItemIngestMailer.started(self).deliver_now

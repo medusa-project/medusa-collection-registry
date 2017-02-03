@@ -10,7 +10,7 @@
       = f.input :start_date, as: :string, input_html: {class: 'datepicker', value: (@project.start_date.if_blank(Date.today)).to_s}
       - @label = capture do
         %a{'data-toggle': :modal, 'data-target': '#directory-picker'} Ingest folder
-      = f.input :ingest_folder, label: @label, placeholder: 'Click label to select', disabled: !Rails.env.test?
+      = f.input :ingest_folder, label: @label, placeholder: 'Click label to select'
       = f.input :destination_folder_uuid
       = f.input :status, as: :select, collection: Project::STATUSES, include_blank: false
       = f.input :summary, as: :ckeditor, input_html: {ckeditor: {toolbar: 'Full'}}
