@@ -6,8 +6,8 @@ Feature: Project description
   Background:
     Given every project with fields exists:
       | title            | manager_email       | owner_email         | start_date | status    | specifications | summary          | external_id |
-      | Book Scanning    | scanman@example.com | scanown@example.com | 2015-09-16 | active    | Scanning specs | Scanning summary | Buch001    |
-      | Image Conversion | convman@example.com | convown@example.com | 2015-06-29 | completed | Image specs    | Image summary    | Bild002    |
+      | Book Scanning    | scanman@example.com | scanown@example.com | 2015-09-16 | active    | Scanning specs | Scanning summary | Buch001     |
+      | Image Conversion | convman@example.com | convown@example.com | 2015-06-29 | completed | Image specs    | Image summary    | Bild002     |
 
   Scenario: Navigate to project index from header links
     Given I am logged in as a user
@@ -62,6 +62,12 @@ Feature: Project description
       | New specs | 2017-01-04 | active |
     And I should see none of:
       | 2015-06-29 | completed | Image specs |
+
+  Scenario: Cancel project edit
+    Given I am logged in as an admin
+    When I edit the project with title 'Image Conversion'
+    And I click on 'Cancel'
+    Then I should be on the view page for the project with title 'Image Conversion'
 
   Scenario: Delete project
     Given I am logged in as an admin

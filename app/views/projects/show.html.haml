@@ -15,6 +15,7 @@
         = show_field @project, :owner_email
         = show_field @project, :start_date
         = show_field @project, :status
+        = show_value link_to(@project.collection.title, @project.collection), 'Collection'
     .col-md-8
       %h4 Summary
       .well
