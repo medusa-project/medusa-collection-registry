@@ -1,6 +1,6 @@
 = simple_form_for @project, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
   .row
-    = render partial: 'shared/form_sidebar', locals: {f: f, object: @project, cancel_return: @project.new_record? ? projects_path : project_path(@project)}
+    = render partial: 'shared/form_sidebar', locals: {f: f, object: @project, cancel_return: (projects_path if @project.new_record?)}
     .col-sm-9
       = f.input :collection_id, as: :hidden, input_html: {value: @collection.id}
       = f.input :title
