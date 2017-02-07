@@ -6,19 +6,19 @@ Feature: Project Item Accrual
   @javascript @search
   Scenario: Create project item ingest from the project page
     Given the project with title 'Scanning' has child items with fields:
-      | id | unique_identifier | ingested |
-      | 1  | item_1            | false    |
-      | 2  | item_2            | false    |
-      | 3  | item_3            | false    |
-      | 4  | item_4            | true     |
+      | id | unique_identifier | bib_id | ingested |
+      | 1  | item_1            |        | false    |
+      | 2  |                   | item_2 | false    |
+      | 3  | item_3            |        | false    |
+      | 4  | item_4            |        | true     |
     And I am logged in as a manager
     When I view the project with title 'Scanning'
     And I click on 'check_all'
     And I click on 'Ingest items'
     And I wait for 1 of 'Workflow::ProjectItemIngest' to exist
-    Then the project item ingest workflow for the project with title 'Scanning' should have items with unique_identifier:
+    Then the project item ingest workflow for the project with title 'Scanning' should have items with ingest identifier:
       | item_1 | item_2 | item_3 |
-    And the project item ingest workflow for the project with title 'Scanning' should not have items with unique_identifier:
+    And the project item ingest workflow for the project with title 'Scanning' should not have items with ingest identifier:
       | item_4 |
     And the project item ingest workflow for the project with title 'Scanning' should have user 'manager@example.com'
 
@@ -42,20 +42,20 @@ Feature: Project Item Accrual
       | title   | ingest_folder | destination_folder_uuid                | collection_id |
       | Animals | dog_ingest    | 2c90f940-c6e1-0134-cb7e-0c4de9bac164-5 | 1             |
     And the project with title 'Animals' has child items with fields:
-      | unique_identifier |
-      | item_1            |
-      | item_2            |
-      | item_3            |
-    And there is a project item ingest workflow for the project with title 'Animals' in state 'ingest' for items with unique identifier:
+      | unique_identifier | bib_id |
+      | item_1            |        |
+      |                   | item_2 |
+      | item_3            |        |
+    And there is a project item ingest workflow for the project with title 'Animals' in state 'ingest' for items with ingest identifier:
       | item_1 | item_2 |
-    And there exists staged content for the items with unique identifiers:
+    And there exists staged content for the items with ingest identifiers:
       | item_1 | item_2 |
     When I perform project item ingest workflows
     Then the items with fields should exist:
-      | unique_identifier | ingested |
-      | item_1            | true     |
-      | item_2            | true     |
-      | item_3            | false    |
+      | unique_identifier | bib_id | ingested |
+      | item_1            |        | true     |
+      |                   | item_2 | true     |
+      | item_3            |        | false    |
     And the cfs directory with path '1/1' should have associated subdirectories with field path:
       | item_1 | item_2 |
     And the cfs directory with path 'item_1' should have associated cfs files with field name:
@@ -78,7 +78,7 @@ Feature: Project Item Accrual
     And the project with title 'Animals' has child items with fields:
       | unique_identifier |
       | item_1            |
-    And there is a project item ingest workflow for the project with title 'Animals' in state 'ingest' for items with unique identifier:
+    And there is a project item ingest workflow for the project with title 'Animals' in state 'ingest' for items with ingest identifier:
       | item_1 |
     When I perform project item ingest workflows
     Then there should be 1 project item ingest workflow in state 'email_staging_directory_missing'
@@ -105,9 +105,9 @@ Feature: Project Item Accrual
     And the project with title 'Animals' has child items with fields:
       | unique_identifier |
       | item_1            |
-    And there is a project item ingest workflow for the project with title 'Animals' in state 'ingest' for items with unique identifier:
+    And there is a project item ingest workflow for the project with title 'Animals' in state 'ingest' for items with ingest identifier:
       | item_1 |
-    And there exists staged content for the items with unique identifiers:
+    And there exists staged content for the items with ingest identifiers:
       | item_1 |
     When I perform project item ingest workflows
     Then there should be 1 project item ingest workflow in state 'email_target_directory_missing'
@@ -134,9 +134,9 @@ Feature: Project Item Accrual
       | unique_identifier |
       | item_1            |
       | item_2            |
-    And there is a project item ingest workflow for the project with title 'Animals' in state 'ingest' for items with unique identifier:
+    And there is a project item ingest workflow for the project with title 'Animals' in state 'ingest' for items with ingest identifier:
       | item_1 |
-    And there exists staged content for the items with unique identifiers:
+    And there exists staged content for the items with ingest identifiers:
       | item_2 |
     When I perform project item ingest workflows
     Then the items with fields should exist:

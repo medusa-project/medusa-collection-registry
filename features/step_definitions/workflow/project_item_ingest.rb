@@ -25,17 +25,19 @@ And(/^there should be (\d+) project item ingest workflows? delayed job$/) do |co
   expect(Workflow::ProjectItemIngest.all.collect(&:delayed_jobs).flatten.count).to eq(count.to_i)
 end
 
-Then(/^the project item ingest workflow for the project with title '(.*)' should have items with unique_identifier:$/) do |title, table|
+Then(/^the project item ingest workflow for the project with title '(.*)' should have items with ingest identifier:$/) do |title, table|
   workflow = Project.find_by(title: title).workflow_project_item_ingests.first
-  table.headers.each do |item_unique_id|
-    expect(workflow.items.find_by(unique_identifier: item_unique_id)).to be_truthy
+  table.headers.each do |ingest_id|
+    item = workflow.items.find_by_ingest_identifier(ingest_id)
+    expect(item).to be_truthy
   end
 end
 
-Then(/^the project item ingest workflow for the project with title '(.*)' should not have items with unique_identifier:$/) do |title, table|
+Then(/^the project item ingest workflow for the project with title '(.*)' should not have items with ingest identifier:$/) do |title, table|
   workflow = Project.find_by(title: title).workflow_project_item_ingests.first
-  table.headers.each do |item_unique_id|
-    expect(workflow.items.find_by(unique_identifier: item_unique_id)).to be_falsey
+  table.headers.each do |ingest_id|
+    item = workflow.items.find_by_ingest_identifier(ingest_id)
+    expect(item).to be_falsey
   end
 end
 
@@ -44,20 +46,21 @@ And(/^the project item ingest workflow for the project with title '(.*)' should 
   expect(workflow.user.uid).to eq(uid)
 end
 
-And(/^there exists staged content for the items with unique identifiers:$/) do |table|
-  table.headers.each do |id|
-    item = Item.find_by(unique_identifier: id)
+And(/^there exists staged content for the items with ingest identifiers:$/) do |table|
+  table.headers.each do |ingest_id|
+    item = Item.find_by(unique_identifier: ingest_id) || Item.find_by(bib_id: ingest_id)
     FileUtils.mkdir_p(item.staging_directory)
     File.open(File.join(item.staging_directory, 'content.txt'), 'w') do |f|
-      f.puts item.unique_identifier
+      f.puts item.ingest_identifier
       f.puts 'content'
     end
   end
 end
 
-And(/^there is a project item ingest workflow for the project with title '(.*)' in state '(.*)' for items with unique identifier:$/) do |title, state, table|
+And(/^there is a project item ingest workflow for the project with title '(.*)' in state '(.*)' for items with ingest identifier:$/) do |title, state, table|
   workflow = FactoryGirl.create(:workflow_project_item_ingest, state: state, project: Project.find_by(title: title))
-  table.headers.each do |unique_identifier|
-    workflow.items << Item.find_by(unique_identifier: unique_identifier)
+  table.headers.each do |ingest_id|
+    item = Item.find_by_ingest_identifier(ingest_id)
+    workflow.items << item if item
   end
 end

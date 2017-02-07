@@ -43,7 +43,15 @@ rights_information status equipment unique_identifier item_number source_media).
   end
 
   def staging_directory
-    File.join(project.staging_directory, unique_identifier)
+    File.join(project.staging_directory, ingest_identifier)
+  end
+
+  def ingest_identifier
+    unique_identifier.if_blank(bib_id)
+  end
+
+  def self.find_by_ingest_identifier(ingest_identifier)
+    find_by(unique_identifier: ingest_identifier).if_blank(find_by(bib_id: ingest_identifier))
   end
 
 end

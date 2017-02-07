@@ -65,6 +65,12 @@ Feature: Project description
     And I should see none of:
       | 2015-06-29 | completed | Image specs |
 
+  Scenario: Cancel project edit
+    Given I am logged in as an admin
+    When I edit the project with title 'Image Conversion'
+    And I click on 'Cancel'
+    Then I should be on the view page for the project with title 'Image Conversion'
+
   Scenario: Delete project
     Given I am logged in as an admin
     When I edit the project with title 'Book Scanning'

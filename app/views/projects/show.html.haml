@@ -17,6 +17,7 @@
         = show_field @project, :ingest_folder
         = show_field @project, :destination_folder_uuid
         = show_field @project, :status
+        = show_value link_to(@project.collection.title, @project.collection), 'Collection'
     .col-md-8
       %h4 Summary
       .well
