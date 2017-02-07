@@ -75,7 +75,8 @@ MESSAGE
 
   def create_and_assess_item_cfs_directory(item)
     target_cfs_directory = project.target_cfs_directory
-    cfs_directory = target_cfs_directory.subdirectories.find_or_create_by!(path: item.ingest_identifier, root_cfs_directory: target_cfs_directory.root_cfs_directory)
+    cfs_directory = target_cfs_directory.subdirectories.find_or_create_by!(path: item.ingest_identifier,
+                                                                           root_cfs_directory: target_cfs_directory.root_cfs_directory)
     cfs_directory.run_initial_assessment
   end
 

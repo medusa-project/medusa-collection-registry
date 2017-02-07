@@ -47,7 +47,7 @@ rights_information status equipment unique_identifier item_number source_media).
   end
 
   def ingest_identifier
-    unique_identifier
+    unique_identifier.if_blank(bib_id)
   end
 
 end
