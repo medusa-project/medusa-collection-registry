@@ -70,7 +70,7 @@ Rescheduling.
 MESSAGE
       Rails.logger.error message
       raise RuntimeError, message
-      end
+    end
   end
 
   def create_and_assess_item_cfs_directory(item)
