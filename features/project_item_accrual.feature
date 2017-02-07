@@ -62,6 +62,9 @@ Feature: Project Item Accrual
       | content.txt |
     And the cfs directory with path 'item_2' should have associated cfs files with field name:
       | content.txt |
+    And the bit level file group with title 'Dogs' should have events with fields:
+      | key                 |
+      | project_item_ingest |
     And there should be 1 project item ingest workflow in state 'email_done'
 
   Scenario: Try ingest with staging directory not existing

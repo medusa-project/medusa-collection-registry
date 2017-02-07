@@ -30,6 +30,7 @@ class Workflow::ProjectItemIngest < Workflow::Base
     items.each do |item|
       ingest_item(item) if !item.ingested and Dir.exist?(item.staging_directory)
     end
+    add_file_group_event
     be_in_state_and_requeue('email_done')
   end
 
@@ -86,6 +87,12 @@ MESSAGE
 
   def safe_target_directory
     project.target_cfs_directory rescue nil
+  end
+
+  def add_file_group_event
+    file_group = project.target_cfs_directory.file_group
+    note = "Ingested items: #{item_ids.join(',')}"
+    file_group.events.create(key: :project_item_ingest, actor_email: user.email, cascadable: true, note: note)
   end
 
 end
