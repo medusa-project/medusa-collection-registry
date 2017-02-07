@@ -6,7 +6,11 @@ class Project < ActiveRecord::Base
   email_person_association(:owner)
 
   has_many :attachments, as: :attachable, dependent: :destroy
-  has_many :items, -> { order 'created_at desc' }, dependent: :destroy
+  has_many :items, -> { order 'created_at desc' }, dependent: :destroy do
+    def find_by_ingest_identifier(ingest_identifier)
+      find_by(unique_identifier: ingest_identifier).if_blank(find_by(bib_id: ingest_identifier))
+    end
+  end
   has_many :workflow_project_item_ingests, :class_name => 'Workflow::ProjectItemIngest', dependent: :destroy
   belongs_to :collection
 

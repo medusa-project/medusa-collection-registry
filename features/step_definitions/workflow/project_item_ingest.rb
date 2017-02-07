@@ -28,7 +28,7 @@ end
 Then(/^the project item ingest workflow for the project with title '(.*)' should have items with ingest identifier:$/) do |title, table|
   workflow = Project.find_by(title: title).workflow_project_item_ingests.first
   table.headers.each do |ingest_id|
-    item = workflow.items.find_by(unique_identifier: ingest_id) || workflow.items.find_by(bib_id: ingest_id)
+    item = workflow.items.find_by_ingest_identifier(ingest_id)
     expect(item).to be_truthy
   end
 end
@@ -36,7 +36,7 @@ end
 Then(/^the project item ingest workflow for the project with title '(.*)' should not have items with ingest identifier:$/) do |title, table|
   workflow = Project.find_by(title: title).workflow_project_item_ingests.first
   table.headers.each do |ingest_id|
-    item = workflow.items.find_by(unique_identifier: ingest_id) || workflow.items.find_by(bib_id: ingest_id)
+    item = workflow.items.find_by_ingest_identifier(ingest_id)
     expect(item).to be_falsey
   end
 end
@@ -60,7 +60,7 @@ end
 And(/^there is a project item ingest workflow for the project with title '(.*)' in state '(.*)' for items with ingest identifier:$/) do |title, state, table|
   workflow = FactoryGirl.create(:workflow_project_item_ingest, state: state, project: Project.find_by(title: title))
   table.headers.each do |ingest_id|
-    item = Item.find_by(unique_identifier: ingest_id) || Item.find_by(bib_id: ingest_id)
+    item = Item.find_by_ingest_identifier(ingest_id)
     workflow.items << item if item
   end
 end
