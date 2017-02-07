@@ -43,7 +43,11 @@ rights_information status equipment unique_identifier item_number source_media).
   end
 
   def staging_directory
-    File.join(project.staging_directory, unique_identifier)
+    File.join(project.staging_directory, ingest_identifier)
+  end
+
+  def ingest_identifier
+    unique_identifier
   end
 
 end
