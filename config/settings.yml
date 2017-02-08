@@ -135,6 +135,7 @@ events:
     amazon_backup_completed: Amazon Glacier backup completed
     fixity_check_scheduled: Fixity check scheduled
     fixity_check_completed: Fixity check completed
+    project_item_ingest: Project Items ingested
   cfs_directory:
     fixity_check_scheduled: Fixity check scheduled
     fixity_check_completed: Fixity check completed

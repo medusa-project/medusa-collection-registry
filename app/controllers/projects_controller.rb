@@ -52,7 +52,6 @@ class ProjectsController < ApplicationController
 
   def mass_action
     #authorize! :update, @project
-    x = params[:mass_action]
     case params[:commit]
       when 'Mass update'
         mass_update(params[:mass_action])
@@ -65,7 +64,9 @@ class ProjectsController < ApplicationController
         raise RuntimeError, 'Unexpected mass action on project items'
     end
     respond_to do |format|
-      format.html { redirect_to @project }
+      format.html do
+        redirect_to @project
+      end
       format.js
     end
 
@@ -191,15 +192,30 @@ class ProjectsController < ApplicationController
   end
 
   def ingest_items(params)
-    item_ids = params[:item]
+    item_ids = params[:item] rescue Array.new
     items = @project.items.where(ingested: false, id: item_ids).reject { |item| item.workflow_item_ingest_request.present? }
-    @project.transaction do
-      workflow = Workflow::ProjectItemIngest.create!(project: @project, user: current_user, state: 'start')
-      items.each do |item|
-        workflow.workflow_item_ingest_requests.create!(item_id: item.id)
+    if items.count > 0
+      @project.transaction do
+        workflow = Workflow::ProjectItemIngest.create!(project: @project, user: current_user, state: 'start')
+        items.each do |item|
+          workflow.workflow_item_ingest_requests.create!(item_id: item.id)
+        end
+        workflow.put_in_queue
       end
-      workflow.put_in_queue
     end
+    make_ingest_alert(@project, item_ids, items)
+  end
+
+  def make_ingest_alert(project, item_ids, items)
+    to_do_count = items.count
+    already_ingested_count = project.items.where(ingested: true, id: item_ids).count
+    in_process_count = Workflow::ItemIngestRequest.where(item_id: item_ids).count
+    @alert = <<ALERT
+    Your ingest request has been received. There are:
+    #{to_do_count} currently uningested items that will be ingested
+    #{in_process_count} items already in the process of being ingested
+    #{already_ingested_count} items already ingested
+ALERT
   end
 
   def initialize_ingest_directory_info
