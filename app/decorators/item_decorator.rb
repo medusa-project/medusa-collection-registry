@@ -29,4 +29,13 @@ class ItemDecorator < BaseDecorator
     end
   end
 
+  INFO_FIELDS = %i(title author imprint item_title series sub_series box folder creator source_media date)
+  def item_information
+    INFO_FIELDS.collect do |field|
+      object.send(field)
+    end.reject do |value|
+      value.blank?
+    end.join('; ')
+  end
+
 end
