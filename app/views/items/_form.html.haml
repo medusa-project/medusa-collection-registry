@@ -23,7 +23,6 @@
               = f.input :foldout_present, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
               = f.input :foldout_done, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
               = f.input :item_done, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
-              = f.input :unique_identifier
             .col-sm-5
               = f.input :notes
               = f.input :local_description
@@ -39,6 +38,7 @@
         .row
           = field_set_tag('Archival Metadata') do
             .col-sm-5
+              = f.input :unique_identifier
               = f.input :record_series_id, label: 'Record Series Id'
               = f.input :archival_management_system_url
               = f.input :series
