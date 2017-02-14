@@ -58,7 +58,8 @@
         'url': "#{@helper.url}"
       },
       'columnDefs': [
-        {'orderable': false, 'targets': #{@helper.unsortable_columns}}
+        {'orderable': false, 'targets': #{@helper.unsortable_columns}},
+        {'targets': [2, 7, 21, 22, 23, 24, 25], 'render': $.fn.dataTable.render.ellipsis(25)}
       ]
     })
   })
