@@ -78,6 +78,10 @@ class SearchHelper::Base < Object
     columns.each.with_index.collect {|spec, index| [spec, index]}.select {|pair| pair.first[:unsortable]}.collect {|pair| pair.second}
   end
 
+  def shortened_columns
+    columns.each.with_index.collect {|spec, index| [spec, index]}.select {|pair| pair.first[:shorten]}.collect {|pair| pair.second}
+  end
+
   def search
     raise NotImplementedError, 'Subclass responsibility'
   end

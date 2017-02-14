@@ -59,7 +59,7 @@
       },
       'columnDefs': [
         {'orderable': false, 'targets': #{@helper.unsortable_columns}},
-        {'targets': [2, 7, 21, 22, 23, 24, 25], 'render': $.fn.dataTable.render.ellipsis(25)}
+        {'targets': #{@helper.shortened_columns}, 'render': $.fn.dataTable.render.ellipsis(25)}
       ]
     })
   })
