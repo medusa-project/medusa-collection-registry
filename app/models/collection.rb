@@ -95,5 +95,9 @@ class Collection < ActiveRecord::Base
     repository.collections.order('title ASC').where.not(id: id)
   end
 
+  def parent
+    repository
+  end
+  
 end
 

@@ -8,6 +8,7 @@ class CfsDirectoriesController < ApplicationController
   def show
     @accrual = Accrual.new(cfs_directory: @directory).decorate
     @file_group = @directory.file_group
+    @suppress_gallery_viewer = cookies[:suppress_gallery_viewer] == "1"
     respond_to do |format|
       format.html do
         @helper = SearchHelper::TableCfsFile.new(cfs_directory: @directory)
@@ -64,8 +65,18 @@ class CfsDirectoriesController < ApplicationController
   end
 
   def events
-    @eventable = @directory
-    @events = @eventable.cascaded_events
+    @helper = SearchHelper::TableEvent.new(params: params, cascaded_eventable: @directory)
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: @helper.json_response
+      end
+    end
+  end
+
+  def toggle_gallery_viewer
+    cookies.permanent[:suppress_gallery_viewer] = (cookies[:suppress_gallery_viewer] == "1" ? "0" : "1")
+    redirect_to :back
   end
 
   def cfs_files

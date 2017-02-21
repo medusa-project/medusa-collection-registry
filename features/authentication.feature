@@ -11,7 +11,8 @@ Feature: Authentication
 
   Scenario: Log out
     Given I am logged in as an admin
-    When I click on 'Logout' in the global navigation bar
+    When I go to the site home
+    And I click on 'Logout' in the global navigation bar
     And I should be on the site home page
 
   Scenario: There is a login link for those not logged in

@@ -28,6 +28,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   concern :downloadable, Proc.new { member { get 'download' } }
   concern :collection_indexer, Proc.new { member { get 'collections' } }
   concern :fixity_checkable, Proc.new { member { post 'fixity_check' } }
+  concern :gallery_viewer, Proc.new {member {post 'toggle_gallery_viewer'}}
   concern :autocomplete_email, Proc.new { collection { get :autocomplete_user_email } }
 
   resources :collections, concerns: %i(eventable red_flaggable assessable attachable) do
@@ -88,7 +89,7 @@ MedusaCollectionRegistry::Application.routes.draw do
   end
   get 'cfs_files/:id/preview_iiif_image/*iiif_parameters', to: 'cfs_files#preview_iiif_image', as: 'preview_iiif_image_cfs_file'
 
-  resources :cfs_directories, only: :show, concerns: %i(fixity_checkable eventable) do
+  resources :cfs_directories, only: :show, concerns: %i(fixity_checkable eventable gallery_viewer) do
     %i(create_fits_for_tree export export_tree).each { |action| post action, on: :member }
     get :show_tree, on: :member
     get :cfs_files, on: :member

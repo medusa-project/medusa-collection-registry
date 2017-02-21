@@ -146,7 +146,7 @@ class ItemCsvParser < Object
   def self.parse_date(date_string)
     return '' unless date_string.present?
     potential_dates = Set.new
-    DATE_SPECS.each do |regexp, format_string|'%Y-%m-%d'
+    DATE_SPECS.each do |regexp, format_string|
       date_string.scan(regexp).each do |match|
         potential_dates << (Date.strptime(match, format_string) rescue nil)
       end

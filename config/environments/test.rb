@@ -31,4 +31,9 @@ MedusaCollectionRegistry::Application.configure do
 
   config.eager_load = false
   config.cache_store = :dalli_store
+
+  config.colorize_logging = false
+
+  config.middleware.use RackSessionAccess::Middleware
+
 end

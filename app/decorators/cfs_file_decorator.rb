@@ -52,4 +52,8 @@ class CfsFileDecorator < BaseDecorator
     cfs_directory.path
   end
 
+  def events_path(args = {})
+    h.events_cfs_file_path(object, args)
+  end
+
 end
