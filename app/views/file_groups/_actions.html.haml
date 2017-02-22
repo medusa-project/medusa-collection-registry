@@ -31,8 +31,8 @@
         %span.caret
       %ul.dropdown-menu.dropdown-menu-right
         - if can?(:export, @file_group)
-          %li= link_to 'Download Files', export_cfs_directory_path(@directory), method: :post, remote: true
-          %li= link_to 'Download Files and All Subdirectories', export_tree_cfs_directory_path(@directory), method: :post, remote: true
+          %li= link_to 'Download Files - Omit Subfolders', export_cfs_directory_path(@directory), method: :post, remote: true
+          %li= link_to 'Download Files - Include Subfolders', export_tree_cfs_directory_path(@directory), method: :post, remote: true
         %li= link_to 'TSV', show_tree_cfs_directory_path(@directory, format: :tsv)
         %li= link_to 'JSON Tree', show_tree_cfs_directory_path(@directory, format: :json)
 

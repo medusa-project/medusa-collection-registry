@@ -23,7 +23,7 @@ Feature: Cfs directory export
   Scenario: Request an export of a directory tree
     Given I am logged in as a manager
     When I view the cfs directory for the file group titled 'Dogs' for the path '.'
-    And I click on 'Download Files and All Subdirectories'
+    And I click on 'Download Files - Include Subfolders'
     Then I should see 'Your directory tree has been scheduled for export. You will be notified by email when the export is complete.'
     And there should be a recursive download request for the export of the cfs directory for the file group titled 'Dogs' for the path '.'
 
