@@ -15,7 +15,8 @@ class FileGroupsController < ApplicationController
     @suppress_gallery_viewer = cookies[:suppress_gallery_viewer] == "1"
     respond_to do |format|
       format.html do
-        @helper = SearchHelper::TableCfsFile.new(cfs_directory: @directory)
+        @directories_helper = SearchHelper::TableCfsDirectory.new(cfs_directory: @directory)
+        @files_helper = SearchHelper::TableCfsFile.new(cfs_directory: @directory)
       end
       format.json
     end

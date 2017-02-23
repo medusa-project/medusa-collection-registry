@@ -93,6 +93,7 @@ MedusaCollectionRegistry::Application.routes.draw do
     %i(create_fits_for_tree export export_tree).each { |action| post action, on: :member }
     get :show_tree, on: :member
     get :cfs_files, on: :member
+    get :cfs_directories, on: :member
   end
   resources :content_types, only: [] do
     get :cfs_files, on: :member

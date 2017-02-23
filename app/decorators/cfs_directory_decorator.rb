@@ -8,6 +8,10 @@ class CfsDirectoryDecorator < BaseDecorator
     h.link_to(self.path, h.cfs_directory_path(self))
   end
 
+  def search_cfs_directory_link_with_icon
+    h.fa_icon('folder-o') + ' ' + search_cfs_directory_link
+  end
+
   def search_file_group_link
     if file_group = try(:file_group)
       h.link_to(file_group.title, h.file_group_path(file_group))

@@ -48,6 +48,8 @@ class CfsDirectory < ActiveRecord::Base
     string :file_group_title do
       file_group.try(:title)
     end
+    integer :parent_id
+    string :parent_type
   end
 
   #ensures that for FileGroup subclasses that we use FileGroup so that STI/polymorphism combination works properly
