@@ -2,6 +2,7 @@ initialize_data_table("table#assessments", {});
 initialize_data_table("table#attachments", {});
 initialize_data_table("table#file_groups", {
   "order": [
+    [2, "asc"],
     [0, "desc"]
   ]
 });
