@@ -92,7 +92,7 @@ MESSAGE
   def add_file_group_event
     file_group = project.target_cfs_directory.file_group
     note = "Ingested items: #{item_ids.join(',')}"
-    file_group.events.create(key: :project_item_ingest, actor_email: user.email, cascadable: true, note: note)
+    file_group.events.create!(key: :project_item_ingest, actor_email: user.email, cascadable: true, note: note)
   end
 
 end
