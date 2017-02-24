@@ -13,4 +13,27 @@ class CascadedEventJoinDecorator < BaseDecorator
     h.link_to(event.eventable.parent.decorate.label, event.eventable.parent)
   end
 
+  #If the note requires special handling based on the key then we can provide it; otherwise just use it as is
+  #For example, for a project item ingest event we know the note has the item database ids, so we can link them
+  #with a little extra processing.
+  def render_event_note
+    case event.key
+      when 'project_item_ingest'
+        render_project_item_ingest_note(event.note)
+      else
+        event.note
+    end
+  end
+
+  def render_project_item_ingest_note(note)
+    note.match(/^(\D+)(.*)$/)
+    prefix = $1
+    item_list = $2
+    item_ids = item_list.split(',')
+    item_links = item_ids.collect {|item| h.link_to(item, h.item_path(item))}.join(',')
+    "#{prefix}#{item_links}"
+  rescue
+    note
+  end
+
 end
