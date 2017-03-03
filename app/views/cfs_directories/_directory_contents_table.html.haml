@@ -1,26 +1,32 @@
 = render 'cfs_directories/image_viewer'
 
-= render layout: 'layouts/standard_table', locals: {id: :files, headers: ['Thumbnail', 'Name', 'Size', 'Last Modified', 'FITS']} do
-  - @directory.subdirectories.order('path asc').each do |subdirectory|
-    %tr
-      %td
-      %td{'data-sort': "a-#{subdirectory.path}"}
-        = fa_icon 'folder-o'
-        = link_to subdirectory.path, cfs_directory_path(subdirectory)
-      %td
-      %td
-      %td
-  - @directory.cfs_files.each_instance do |file|
-    - file = file.decorate
-    %tr
-      %td
-        - if file.preview_type_is_image?
-          = link_to cfs_file_path(file) do
-            %span.delayed-thumbnail{'data-thumb-path':  thumbnail_cfs_file_path(file), 'data-thumb-alt': file.name}
-      %td{'data-sort': "b-#{file.name}"}
-        = fa_icon 'file'
-        = link_to file.name, cfs_file_path(file)
-      %td= file.size
-      %td= file.mtime
-      %td= file.fits_button
+%hr
+
+- dir_tab_active = @directories_helper.full_count.positive?
+- dir_tab_class = dir_tab_active ? 'active' : ''
+- file_tab_class = dir_tab_active ? '' : 'active'
+%div
+  %ul.nav.nav-tabs{role: :tablist}
+    %li{role: :presentation, class: dir_tab_class}
+      %a{role: :tab, href: '#subdirectories_tab', 'data-toggle': :tab, 'aria-controls': 'subdirectories_tab'}
+        Folders
+        %span.indicator-icon
+          - if @directories_helper.full_count.positive?
+            = fa_icon('check', class: 'search-hit')
+          - else
+            = fa_icon('times', class: 'search-missed')
+    %li{role: :presentation, class: file_tab_class}
+      %a{role: :tab, href: '#files_tab', 'data-toggle': :tab, 'aria-controls': 'files_tab'}
+        Files
+        %span.indicator-icon
+        - if @files_helper.full_count.positive?
+          = fa_icon('check', class: 'search-hit')
+        - else
+          = fa_icon('times', class: 'search-missed')
+
+  .tab-content
+    #subdirectories_tab.tab-pane{role: :tabpanel, class: dir_tab_class}
+      = render 'cfs_directories/subdirectories_table'
+    #files_tab.tab-pane{role: :tabpanel, class: file_tab_class}
+      = render 'cfs_directories/files_table'
 

@@ -14,6 +14,7 @@ Feature: CFS FITS integration
       | Toys | BitLevelFileGroup |
     And the file group titled 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
 
+  @javascript @search
   Scenario: Run fits on a file
     Given I am logged in as an admin
     When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
@@ -21,6 +22,7 @@ Feature: CFS FITS integration
     Then I should be viewing the cfs directory for the file group titled 'Toys' for the path 'pictures'
     And the file group titled 'Toys' should have a cfs file for the path 'pictures/picture.txt' with fits attached
 
+  @javascript @search
   Scenario: Run fits on a file as a manager
     Given I am logged in as a manager
     When I view the cfs directory for the file group titled 'Toys' for the path 'pictures'
@@ -34,6 +36,7 @@ Feature: CFS FITS integration
     And I click on 'Create'
     Then I should be unauthorized
 
+  @javascript @search
   Scenario: View fits on a file as an admin
     Given I am logged in as an admin
     And the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys' has fits attached
@@ -41,6 +44,7 @@ Feature: CFS FITS integration
     And I click on 'View'
     Then I should be on the fits info page for the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys'
 
+  @javascript @search
   Scenario: View fits on a file as a manager
     Given I am logged in as a manager
     And the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys' has fits attached
@@ -48,6 +52,7 @@ Feature: CFS FITS integration
     And I click on 'View'
     Then I should be on the fits info page for the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys'
 
+  @javascript @search
   Scenario: View fits on a file as a user
     Given I am logged in as a user
     And the cfs file at path 'pictures/picture.txt' for the file group titled 'Toys' has fits attached

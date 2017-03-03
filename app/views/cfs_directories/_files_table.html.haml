@@ -1,0 +1,29 @@
+- if @files_helper.full_count > 0
+  %table.table.table-striped#directory_files
+    %thead
+      %tr
+        - @files_helper.headers.each do |header|
+          %th= header
+  :javascript
+    $(function() {
+      $('#directory_files').DataTable({
+        'processing': true,
+        'serverSide': true,
+        'pageLength': 25,
+        'order': [],
+        'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+        'search': {
+          'search': ""
+        },
+        'stateSave': true,
+        'ajax': {
+          'url': "#{@files_helper.url}"
+        },
+        'columnDefs': [
+          {'orderable': false, 'targets': #{@files_helper.unsortable_columns}}
+        ]
+      })
+    })
+- else
+  %p
+    No files
