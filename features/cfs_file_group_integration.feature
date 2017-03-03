@@ -6,18 +6,19 @@ Feature: CFS file group integration
   Background:
     Given I am logged in as an admin
     And I clear the cfs root directory
-    And the physical cfs directory 'dogs/toy-dogs' has a file 'picture.jpg' with contents 'does not matter'
+    And the physical cfs directory 'dogs/toy-dogs' has a file 'document.doc' with contents 'does not matter'
     And the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'also irrelevant'
     And the collection with title 'Dogs' has child file groups with fields:
       | title | type              |
       | Toys  | BitLevelFileGroup |
     And the file group titled 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
 
+  @javascript @search
   Scenario: See file group's cfs root directory contents when viewing file group
     When I view the file group with title 'Toys'
-    Then I should see the files table
+    Then I should see the directory_files table
     And I should see all of:
-      | picture.jpg | yorkies |
+      | document.doc | yorkies |
 
   Scenario: Set file group's cfs root from file group edit view
     Given there is a physical cfs directory 'englishmen/yorkies'
@@ -40,6 +41,6 @@ Feature: CFS file group integration
     Then I should be on the view page for the file group with title 'Toys'
 
   Scenario: Navigate from a cfs file to the owning file group
-    And I view the cfs file for the file group titled 'Toys' for the path 'picture.jpg'
+    And I view the cfs file for the file group titled 'Toys' for the path 'document.doc'
     And I click on 'Toys'
     Then I should be on the view page for the file group with title 'Toys'
