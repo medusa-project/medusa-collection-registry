@@ -52,7 +52,8 @@ class Workflow::ProjectItemIngest < Workflow::Base
 
   def ingest_item(item)
     rsync_item(item)
-    create_and_assess_item_cfs_directory(item)
+    item_cfs_directory = create_and_assess_item_cfs_directory(item)
+    item.cfs_directory = item_cfs_directory
     item.ingested = true
     item.save!
   end
@@ -74,11 +75,14 @@ MESSAGE
     end
   end
 
+  #return the cfs directory corresponding to the item
   def create_and_assess_item_cfs_directory(item)
     target_cfs_directory = project.target_cfs_directory
-    cfs_directory = target_cfs_directory.subdirectories.find_or_create_by!(path: item.ingest_identifier,
-                                                                           root_cfs_directory: target_cfs_directory.root_cfs_directory)
-    cfs_directory.run_initial_assessment
+    target_cfs_directory.subdirectories.find_or_create_by!(path: item.ingest_identifier,
+                                                           root_cfs_directory: target_cfs_directory.root_cfs_directory).tap do |cfs_directory|
+      cfs_directory.run_initial_assessment
+    end
+
   end
 
   def exclude_file_path

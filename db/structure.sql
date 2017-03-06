@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.1
--- Dumped by pg_dump version 9.6.1
+-- Dumped from database version 9.6.2
+-- Dumped by pg_dump version 9.6.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2506,7 +2506,8 @@ CREATE TABLE items (
     rights_information text,
     item_number character varying,
     source_media character varying,
-    ingested boolean DEFAULT false
+    ingested boolean DEFAULT false,
+    cfs_directory_id integer
 );
 
 
@@ -5944,6 +5945,13 @@ CREATE INDEX index_items_on_call_number ON items USING btree (call_number);
 
 
 --
+-- Name: index_items_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_items_on_cfs_directory_id ON items USING btree (cfs_directory_id);
+
+
+--
 -- Name: index_items_on_oclc_number; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7610,4 +7618,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161216205814');
 INSERT INTO schema_migrations (version) VALUES ('20170120170335');
 
 INSERT INTO schema_migrations (version) VALUES ('20170120200604');
+
+INSERT INTO schema_migrations (version) VALUES ('20170306185148');
 
