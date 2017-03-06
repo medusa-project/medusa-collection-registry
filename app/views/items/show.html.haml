@@ -15,6 +15,8 @@
       = show_field @item, :foldout_done
       = show_field @item, :item_done
       = show_field @item, :ingested
+      - if @item.cfs_directory
+        = show_value link_to(@item.cfs_directory.path, @item.cfs_directory), 'Cfs Directory'
       %hr
       = show_field @item, :call_number
       = show_field @item, :title
