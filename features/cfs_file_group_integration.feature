@@ -16,9 +16,11 @@ Feature: CFS file group integration
   @javascript @search
   Scenario: See file group's cfs root directory contents when viewing file group
     When I view the file group with title 'Toys'
+    Then I should see 'yorkies'
+    When I click on 'Files'
     Then I should see the directory_files table
     And I should see all of:
-      | document.doc | yorkies |
+      | document.doc |
 
   Scenario: Set file group's cfs root from file group edit view
     Given there is a physical cfs directory 'englishmen/yorkies'

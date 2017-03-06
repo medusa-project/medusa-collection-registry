@@ -30,10 +30,24 @@ class CascadedEventJoinDecorator < BaseDecorator
     prefix = $1
     item_list = $2
     item_ids = item_list.split(',')
-    item_links = item_ids.collect {|item| h.link_to(item, h.item_path(item))}.join(',')
+    items = Item.where(id: item_ids).includes(:cfs_directory)
+    item_links = items.collect { |item| item_link(item) }.join(',')
     "#{prefix}#{item_links}"
   rescue
     note
+  end
+
+  protected
+
+  def item_link(item)
+    path = if item.cfs_directory
+             h.cfs_directory_path(item.cfs_directory)
+           else
+             h.item_path(item)
+           end
+    h.link_to(item.id, path)
+  rescue Exception
+    item.id.to_s
   end
 
 end
