@@ -40,7 +40,7 @@ Feature: CFS integration
     Then I should see 'pugs'
     When I click on 'Files'
     Then I should see 'intro.txt'
-    
+
   Scenario: View CFS directory as a public user
     Given I am not logged in
     When I view the cfs directory for the file group titled 'Dogs' for the path '.'
