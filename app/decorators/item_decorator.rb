@@ -1,5 +1,7 @@
 class ItemDecorator < BaseDecorator
 
+  delegate :item_information_separator, to: :class
+
   def search_barcode_link
     h.link_to(self.barcode.if_blank('<no barcode>'), h.item_path(self))
   end
@@ -29,13 +31,16 @@ class ItemDecorator < BaseDecorator
     end
   end
 
-  ITEM_INFORMATION_SEPARATOR = '|$^'
+  def self.item_information_separator
+    '|$^'
+  end
+
 
   def item_information
     full_info_string = full_item_information
     truncated_info_string = truncated_item_information
     truncated_info_string = full_info_string.first(35) if truncated_info_string.blank?
-    return "#{truncated_info_string}#{ITEM_INFORMATION_SEPARATOR}#{full_info_string}"
+    return "#{truncated_info_string}#{item_information_separator}#{full_info_string}"
   end
 
   INFO_FIELDS = %i(title author imprint item_title series sub_series box folder creator source_media date)

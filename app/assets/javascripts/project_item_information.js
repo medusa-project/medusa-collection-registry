@@ -1,8 +1,7 @@
 //This is based off of the ellipsis.js plugin for datatables
 //Instead of truncating at a certain point we want to separate on a
 //conventionally defined string then display one part and use the rest as the title for mouseovers.
-jQuery.fn.dataTable.render.item_information= function () {
-  var separator = "|$^";
+jQuery.fn.dataTable.render.item_information= function (separator) {
   var esc = function ( t ) {
     return t
       .replace( /&/g, '&amp;' )
