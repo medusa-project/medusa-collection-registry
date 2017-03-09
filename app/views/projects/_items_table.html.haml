@@ -59,7 +59,8 @@
       },
       'columnDefs': [
         {'orderable': false, 'targets': #{@helper.unsortable_columns}},
-        {'targets': #{@helper.shortened_columns}, 'render': $.fn.dataTable.render.ellipsis(25)}
+        {'targets': #{@helper.shortened_columns}, 'render': $.fn.dataTable.render.ellipsis(35)},
+        {'targets': #{@helper.item_info_columns}, 'render': $.fn.dataTable.render.item_information()}
       ]
     })
   })

@@ -44,10 +44,14 @@ class SearchHelper::TableItem < SearchHelper::TableBase
     end
   end
 
+  def item_info_columns
+    columns.each.with_index.collect {|spec, index| [spec, index]}.select {|pair| pair.first[:item_info]}.collect {|pair| pair.second}
+  end
+
   def columns
     [{header: 'Action', value_method: :action_buttons, unsortable: true},
      {header: 'Mass Action', value_method: ->(decorated_item) { decorated_item.assign_checkbox(project) }, unsortable: true},
-     {header: 'Item information', value_method: :item_information, unsortable: true, shorten: true},
+     {header: 'Item information', value_method: :item_information, unsortable: true, item_info: true},
      {header: 'Unique Identifier', solr_field: :unique_identifier, value_method: :unique_identifier, searchable: true},
      {header: 'Batch', solr_field: :batch, value_method: :search_batch_link, searchable: true},
      {header: 'Barcode', solr_field: :barcode, value_method: :search_barcode_link, searchable: true},
