@@ -1,0 +1,5 @@
+= simple_form_for @workflow, url: admin_record_decision_workflow_file_group_delete_path(@workflow), method: :post do |f|
+  = f.input :requester_reason, disabled: true
+  = f.input :approver_reason
+  = f.submit 'Approve', class: 'btn btn-primary'
+  = f.submit 'Reject', class: 'btn btn-primary'

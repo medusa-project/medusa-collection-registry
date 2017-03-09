@@ -19,7 +19,7 @@ Feature: File Group Deletion
     Given the user 'manager@example.com' has a file group deletion workflow with fields:
       | state         | requester_reason |
       | wait_decision | No longer needed |
-    And I am logged in as a superuser
+    And I am logged in as 'superuser@example.com'
     When I admin decide on the file group delete workflow
     And I click on 'Approve'
     And there should be 1 file group deletion workflow in state 'email_requester_accept'
@@ -61,7 +61,7 @@ Feature: File Group Deletion
     Given the user 'manager@example.com' has a file group deletion workflow with fields:
       | state         | requester_reason |
       | wait_decision | No longer needed |
-    And I am logged in as a superuser
+    And I am logged in as 'superuser@example.com'
     When I admin decide on the file group delete workflow
     And I click on 'Reject'
     And there should be 1 file group deletion workflow in state 'email_requester_reject'

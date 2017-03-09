@@ -54,6 +54,13 @@ class Ability
     can [:create_file_format_test, :update_file_format_test, :create_file_format_test_reason], CfsFile do |cfs_file|
       repository_manager?(user, cfs_file)
     end
+    cannot [:decide], Workflow::FileGroupDelete do |workflow|
+      !superuser?(user)
+    end
+  end
+
+  def superuser?(user)
+    false
   end
 
   def medusa_admin?(user)
