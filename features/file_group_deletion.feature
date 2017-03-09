@@ -3,8 +3,6 @@ Feature: File Group Deletion
   As an admin
   I want to have a workflow that very conservatively allows deletion of file groups
 
-  #When I perform file group deletion workflows
-
   Scenario: Delete external file group
     When PENDING
 
@@ -18,10 +16,23 @@ Feature: File Group Deletion
     When PENDING
 
   Scenario: File group delete workflow in wait_decision is accepted by admin
-    When PENDING
+    Given the user 'manager@example.com' has a file group deletion workflow with fields:
+      | state         | requester_reason |
+      | wait_decision | No longer needed |
+    And I am logged in as a superuser
+    When I admin decide on the file group delete workflow
+    And I click on 'Approve'
+    And there should be 1 file group deletion workflow in state 'email_requester_accept'
+    And there should be 1 file group deletion workflow delayed job
 
   Scenario: File group delete workflow in state email_requester_accept is run
-    When PENDING
+    Given the user 'manager@example.com' has a file group deletion workflow with fields:
+      | state                  |
+      | email_requester_accept |
+    When I perform file group deletion workflows
+    Then 'manager@example.com' should receive an email with subject 'Medusa File Group deletion approved'
+    And there should be 1 file group deletion workflow in state 'move_content'
+    And there should be 1 file group deletion workflow delayed job
 
   Scenario: File group delete workflow in state move_content is run
     When PENDING
@@ -30,13 +41,38 @@ Feature: File Group Deletion
     When PENDING
 
   Scenario: File group delete workflow in state email_requester_final_delete is run
-    When PENDING
+    Given the user 'manager@example.com' has a file group deletion workflow with fields:
+      | state                         | cached_file_group_title |
+      | email_requester_final_removal | My File Group Title     |
+    When I perform file group deletion workflows
+    Then 'manager@example.com' should receive an email with subject 'Medusa File Group final deletion completed' containing all of:
+      | My File Group Title |
+    And there should be 1 file group deletion workflow in state 'end'
+    And there should be 1 file group deletion workflow delayed job
 
   Scenario: File group delete workflow in state end is run
-    When PENDING
+    Given the user 'manager@example.com' has a file group deletion workflow with fields:
+      | state |
+      | end   |
+    When I perform file group deletion workflows
+    Then there should be 0 file group deletion workflows
 
   Scenario: File group delete workflow in wait_decision is rejected by admin
-    When PENDING
+    Given the user 'manager@example.com' has a file group deletion workflow with fields:
+      | state         | requester_reason |
+      | wait_decision | No longer needed |
+    And I am logged in as a superuser
+    When I admin decide on the file group delete workflow
+    And I click on 'Reject'
+    And there should be 1 file group deletion workflow in state 'email_requester_reject'
+    And there should be 1 file group deletion workflow delayed job
 
   Scenario: File group delete workflow in state email_requester_reject is run
-    When PENDING
+    Given the user 'manager@example.com' has a file group deletion workflow with fields:
+      | state                  | approver_reason |
+      | email_requester_reject | Still using     |
+    When I perform file group deletion workflows
+    Then 'manager@example.com' should receive an email with subject 'Medusa File Group deletion rejected' containing all of:
+      | Still using |
+    And there should be 1 file group deletion workflow in state 'end'
+    And there should be 1 file group deletion workflow delayed job
