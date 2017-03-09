@@ -107,3 +107,11 @@ label.checkbox {
     margin-right: 5px;
   }
 }
+
+/* css for wider monitors, e.g. DCC monitors */
+.container {
+  @include container-fixed;
+  @media (min-width: 1600px) {
+    width: 90vw;
+  }
+}
