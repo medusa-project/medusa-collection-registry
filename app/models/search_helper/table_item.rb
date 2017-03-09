@@ -44,10 +44,6 @@ class SearchHelper::TableItem < SearchHelper::TableBase
     end
   end
 
-  def item_info_columns
-    columns.each.with_index.collect {|spec, index| [spec, index]}.select {|pair| pair.first[:item_info]}.collect {|pair| pair.second}
-  end
-
   def columns
     [{header: 'Action', value_method: :action_buttons, unsortable: true},
      {header: 'Mass Action', value_method: ->(decorated_item) { decorated_item.assign_checkbox(project) }, unsortable: true},

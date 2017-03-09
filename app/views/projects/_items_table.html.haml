@@ -58,9 +58,9 @@
         'url': "#{@helper.url}"
       },
       'columnDefs': [
-        {'orderable': false, 'targets': #{@helper.unsortable_columns}},
-        {'targets': #{@helper.shortened_columns}, 'render': $.fn.dataTable.render.ellipsis(35)},
-        {'targets': #{@helper.item_info_columns}, 'render': $.fn.dataTable.render.item_information("#{ItemDecorator.item_information_separator}")}
+        {'targets': #{@helper.columns_tagged(:unsortable)}, 'orderable': false },
+        {'targets': #{@helper.columns_tagged(:shorten)}, 'render': $.fn.dataTable.render.ellipsis(35)},
+        {'targets': #{@helper.columns_tagged(:item_info)}, 'render': $.fn.dataTable.render.item_information("#{ItemDecorator.item_information_separator}")}
       ]
     })
   })

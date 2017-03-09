@@ -74,12 +74,10 @@ class SearchHelper::Base < Object
     nil
   end
 
-  def unsortable_columns
-    columns.each.with_index.collect {|spec, index| [spec, index]}.select {|pair| pair.first[:unsortable]}.collect {|pair| pair.second}
-  end
-
-  def shortened_columns
-    columns.each.with_index.collect {|spec, index| [spec, index]}.select {|pair| pair.first[:shorten]}.collect {|pair| pair.second}
+  #this provides a general way to select the indexes of a set of columns - just make the symbol present in the column spec hash
+  #for datatables often it is useful to have such an array of indexes
+  def columns_tagged(symbol)
+    columns.each.with_index.collect { |spec, index| [spec, index] }.select { |pair| pair.first[:symbol].present? }.collect { |pair| pair.second }
   end
 
   def search

@@ -24,7 +24,7 @@
               "search": "#{helper.initial_search_string}"
             },
             'columnDefs': [
-              {'orderable': false, 'targets': #{helper.unsortable_columns}}
+              {'orderable': false, 'targets': #{helper.columns_tagged(:unsortable)}}
             ],
             "ajax": {
               "url": "#{helper.url}",
