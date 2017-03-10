@@ -9,6 +9,7 @@ class CreateWorkflowFileGroupDeletes < ActiveRecord::Migration
       t.text :approver_reason
       t.string :cached_file_group_title
       t.integer :cached_collection_id
+      t.integer :cached_cfs_directory_id
 
       t.timestamps null: false
     end

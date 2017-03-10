@@ -48,6 +48,7 @@ class Workflow::FileGroupDelete < Workflow::Base
   def cache_fields
     self.cached_file_group_title ||= file_group.title
     self.cached_collection_id ||= file_group.collection_id
+    self.cached_cfs_directory_id ||= file_group.cfs_directory_id
   end
 
 end
