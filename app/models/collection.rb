@@ -10,6 +10,7 @@ class Collection < ActiveRecord::Base
   include CascadedRedFlaggable
   include ResourceTypeable
   include EmailPersonAssociator
+  include Eventable
 
   email_person_association(:contact)
 

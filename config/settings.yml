@@ -119,6 +119,9 @@ classes:
 #For the loading to work correctly the base key has to be the class where Eventable is included.
 #So for STI like file group we can't have different events available for each type; it has to be the base class here
 events:
+  collection:
+    file_group_delete_moved: File group deleted - content moved
+    file_group_delete_final: File group completely deleted
   file_group:
     created: File group created
     external_staged: External file group staged

@@ -34,13 +34,9 @@ class Workflow::FileGroupDelete < Workflow::Base
   end
 
   def perform_move_content
-    #create backup tables in db
-    #move content
-    FileUtils.mkdir_p(Settings.medusa.cfs.fg_delete_holding)
-    FileUtils.move(file_group.cfs_directory.absolute_path, File.join(Settings.medusa.cfs.fg_delete_holding, file_group.id.to_s))
-    #destroy db objects
-    file_group.cfs_directory.destroy_tree_from_leaves
-    file_group.destroy!
+    create_db_backup_tables
+    move_physical_content
+    destroy_db_objects
     be_in_state_and_requeue('delete_content')
   end
 
@@ -63,4 +59,24 @@ class Workflow::FileGroupDelete < Workflow::Base
     self.cached_cfs_directory_id ||= file_group.cfs_directory_id
   end
 
+  protected
+
+  def move_physical_content
+    FileUtils.mkdir_p(Settings.medusa.cfs.fg_delete_holding)
+    FileUtils.move(file_group.cfs_directory.absolute_path, File.join(Settings.medusa.cfs.fg_delete_holding, file_group.id.to_s))
+  end
+
+  def destroy_db_objects
+    file_group.cfs_directory.destroy_tree_from_leaves
+    transaction do
+      file_group.destroy!
+      Event.create!(eventable: file_group.collection, key: :file_group_delete_moved, actor_email: requester.email,
+                    note: "File Group #{file_group.id} - #{file_group.title} | Collection: #{file_group.collection.id}")
+    end
+  end
+
+  def create_db_backup_tables
+
+  end
+  
 end
