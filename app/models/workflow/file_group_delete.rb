@@ -1,3 +1,4 @@
+require 'fileutils'
 class Workflow::FileGroupDelete < Workflow::Base
 
   belongs_to :file_group
@@ -6,7 +7,7 @@ class Workflow::FileGroupDelete < Workflow::Base
 
   before_create :cache_fields
 
-  STATES = %w(start email_superusers wait_decision email_requester_accept email_requester_reject move_content email_requester_final_removal end)
+  STATES = %w(start email_superusers wait_decision email_requester_accept email_requester_reject move_content delete_content email_requester_final_removal end)
   validates_inclusion_of :state, in: STATES, allow_blank: false
 
   def perform_start
@@ -30,6 +31,17 @@ class Workflow::FileGroupDelete < Workflow::Base
   def perform_email_requester_reject
     Workflow::FileGroupDeleteMailer.requester_reject(self).deliver_now
     be_in_state_and_requeue('end')
+  end
+
+  def perform_move_content
+    #create backup tables in db
+    #move content
+    FileUtils.mkdir_p(Settings.medusa.cfs.fg_delete_holding)
+    FileUtils.move(file_group.cfs_directory.absolute_path, File.join(Settings.medusa.cfs.fg_delete_holding, file_group.id.to_s))
+    #destroy db objects
+    file_group.cfs_directory.destroy_tree_from_leaves
+    file_group.destroy!
+    be_in_state_and_requeue('delete_content')
   end
 
   def perform_email_requester_final_removal

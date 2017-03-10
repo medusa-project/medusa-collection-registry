@@ -30,7 +30,7 @@ class BitLevelFileGroup < FileGroup
   #ONLY IF they are empty
   def maybe_destroy_cfs_directories
     physical_cfs_directory_path = expected_absolute_cfs_root_directory
-    if Dir.entries(physical_cfs_directory_path).to_set == %w(. ..).to_set
+    if Dir.exist?(physical_cfs_directory_path) and (Dir.entries(physical_cfs_directory_path).to_set == %w(. ..).to_set)
       Dir.unlink(physical_cfs_directory_path) rescue nil
     end
     if cfs_directory.try(:is_empty?)
