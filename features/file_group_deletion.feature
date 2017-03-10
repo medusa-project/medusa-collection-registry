@@ -13,7 +13,7 @@ Feature: File Group Deletion
     When PENDING
     #visit fg, click, get redirected to make new workflow, fill in form, submit, check
     #that workflow exists in the start state
-  
+
   Scenario: File group delete workflow moves from start to email_superusers
     Given the user 'manager@example.com' has a file group deletion workflow with fields:
       | state |
@@ -32,13 +32,20 @@ Feature: File Group Deletion
     And there should be 1 file group deletion workflow in state 'wait_decision'
     And there should be 0 file group deletion workflow delayed jobs
 
+  @javascript
   Scenario: File group delete workflow in wait_decision is accepted by admin
     Given the user 'manager@example.com' has a file group deletion workflow with fields:
       | state         | requester_reason |
       | wait_decision | No longer needed |
     And I am logged in as 'superadmin@example.com'
-    When I admin decide on the file group delete workflow
+    When I go to the dashboard
+    And I click on 'File Group Deletions'
+    And I click on 'Decide'
+    And I fill in fields:
+      | Approver reason | Time for this to go |
     And I click on 'Approve'
+#    When I admin decide on the file group delete workflow
+#    And I click on 'Approve'
     And there should be 1 file group deletion workflow in state 'email_requester_accept'
     And there should be 1 file group deletion workflow delayed job
 
@@ -74,13 +81,20 @@ Feature: File Group Deletion
     When I perform file group deletion workflows
     Then there should be 0 file group deletion workflows
 
+  @javascript
   Scenario: File group delete workflow in wait_decision is rejected by admin
     Given the user 'manager@example.com' has a file group deletion workflow with fields:
       | state         | requester_reason |
       | wait_decision | No longer needed |
     And I am logged in as 'superadmin@example.com'
-    When I admin decide on the file group delete workflow
+    When I go to the dashboard
+    And I click on 'File Group Deletions'
+    And I click on 'Decide'
+    And I fill in fields:
+      | Approver reason | Still needed |
     And I click on 'Reject'
+#    When I admin decide on the file group delete workflow
+#    And I click on 'Reject'
     And there should be 1 file group deletion workflow in state 'email_requester_reject'
     And there should be 1 file group deletion workflow delayed job
 

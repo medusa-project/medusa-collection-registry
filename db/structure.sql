@@ -4119,6 +4119,7 @@ CREATE TABLE workflow_file_group_deletes (
     requester_reason text,
     approver_reason text,
     cached_file_group_title character varying,
+    cached_collection_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

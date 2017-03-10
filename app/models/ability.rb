@@ -55,12 +55,8 @@ class Ability
       repository_manager?(user, cfs_file)
     end
     cannot [:decide], Workflow::FileGroupDelete do |workflow|
-      !superuser?(user)
+      !user.superuser?
     end
-  end
-
-  def superuser?(user)
-    Settings.superusers.include?(user.email)
   end
 
   def medusa_admin?(user)

@@ -4,7 +4,7 @@ class Workflow::FileGroupDelete < Workflow::Base
   belongs_to :requester, class_name: 'User'
   belongs_to :approver, class_name: 'User'
 
-  before_create :cache_file_group_title
+  before_create :cache_fields
 
   STATES = %w(start email_superusers wait_decision email_requester_accept email_requester_reject move_content email_requester_final_removal end)
   validates_inclusion_of :state, in: STATES, allow_blank: false
@@ -45,8 +45,9 @@ class Workflow::FileGroupDelete < Workflow::Base
     approver.present? ? approver.email : 'Unknown'
   end
 
-  def cache_file_group_title
+  def cache_fields
     self.cached_file_group_title ||= file_group.title
+    self.cached_collection_id ||= file_group.collection_id
   end
 
 end

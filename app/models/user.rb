@@ -16,4 +16,8 @@ class User < ActiveRecord::Base
     Person.find_or_create_by!(email: self.email)
   end
 
+  def superuser?
+    Settings.superusers.include?(self.email)
+  end
+
 end

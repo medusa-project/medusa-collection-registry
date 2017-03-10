@@ -12,6 +12,7 @@ class Workflow::FileGroupDeletesController < ApplicationController
     authorize! :decide, @workflow
     if @workflow.state == 'wait_decision'
       @workflow.approver_reason = params[:workflow_file_group_delete][:approver_reason]
+      @workflow.approver = current_user
       @workflow.state = case params[:commit]
                           when 'Approve'
                             'email_requester_accept'
