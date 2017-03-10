@@ -20,3 +20,10 @@ end
 Then(/^there should be (\d+) file group deletion workflows?$/) do |count|
   expect(Workflow::FileGroupDelete.count).to eq(count.to_i)
 end
+
+And(/^there should be a physical file group delete holding directory '(.*)' with (\d+) files$/) do |path, count|
+  holding_directory = File.join(Settings.medusa.cfs.fg_delete_holding, path)
+  expect(Dir.exist?(holding_directory)).to be_truthy
+  tree_file_count = Dir[File.join(holding_directory, '**', '*')].count { |file| File.file?(file) }
+  expect(tree_file_count).to eq(count.to_i)
+end

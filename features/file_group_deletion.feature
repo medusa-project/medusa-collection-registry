@@ -94,6 +94,8 @@ Feature: File Group Deletion
     And there should be no cfs directory with path 'dogs'
     And there should be no file group with title 'Dogs'
     And there should be no cfs file with name 'intro.txt'
+    And there should be no physical cfs directory 'dogs'
+    And there should be a physical file group delete holding directory '1' with 3 files
     #TODO and lots of other things - don't forget the event!
 
   Scenario: File group delete workflow in state delete_content is run
