@@ -75,8 +75,46 @@ class Workflow::FileGroupDelete < Workflow::Base
     end
   end
 
-  def create_db_backup_tables
-
+  def db_backup_schema_name
+    "fg_holding_#{file_group_id}"
   end
-  
+
+  def db_backup_schema_exists?
+    connection.table_exists? "#{db_backup_schema_name}.file_groups"
+  end
+
+  #This is the big one
+  #First we check to see if we've already done this step. To do this just look for a table in the right schema,
+  #e.g. db_backup_schema_name.file_groups
+  #If that is not found, then create and run the SQL to do a huge transaction that will:
+  #- Save file group info to db_backup_schema_name.file_groups - just select based on id
+  #- Save cfs directory info to db_backup_schema_name.cfs_directories - use root cfs dir id to get all of them
+  #- Save cfs file info to db_backup_schema_name.cfs_files - all that belong to the above dirs
+  #- Save event info to db_backup_schema_name.events - three selects, one for each of the file group, dirs, and files
+  #- Save rights declaration to db_backup_schema_name.rights_declaration - select based on file group id
+  #- Save assessments to db_backup_schema_name.assessments - select based on file group id
+  # these will be create table via selects except for two of the events which will be insert into table via selects
+  def create_db_backup_tables
+    return if db_backup_schema_exists?
+    transaction do
+      connection.execute(create_db_backup_tables_sql)
+    end
+  end
+
+  #All we should have to do here is execute a cascaded delete of the schema
+  def delete_db_backup_tables
+    connection.execute("DROP SCHEMA #{db_backup_schema_name} CASCADE")
+  end
+
+  def create_db_backup_tables_sql
+    cfs_directory_id = file_group.cfs_directory.id
+    <<SQL
+CREATE SCHEMA #{db_backup_schema_name};
+CREATE TABLE #{db_backup_schema_name}.file_groups AS SELECT * FROM file_groups WHERE id=#{file_group_id};
+
+
+
+SQL
+  end
+
 end
