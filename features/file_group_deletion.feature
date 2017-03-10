@@ -64,8 +64,6 @@ Feature: File Group Deletion
     And I fill in fields:
       | Approver reason | Time for this to go |
     And I click on 'Approve'
-#    When I admin decide on the file group delete workflow
-#    And I click on 'Approve'
     And there should be 1 file group deletion workflow in state 'email_requester_accept'
     And there should be 1 file group deletion workflow delayed job
 
@@ -113,8 +111,6 @@ Feature: File Group Deletion
     And I fill in fields:
       | Approver reason | Still needed |
     And I click on 'Reject'
-#    When I admin decide on the file group delete workflow
-#    And I click on 'Reject'
     And there should be 1 file group deletion workflow in state 'email_requester_reject'
     And there should be 1 file group deletion workflow delayed job
 
