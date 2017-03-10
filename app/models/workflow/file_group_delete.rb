@@ -90,9 +90,9 @@ class Workflow::FileGroupDelete < Workflow::Base
   #- Save file group info to db_backup_schema_name.file_groups - just select based on id
   #- Save cfs directory info to db_backup_schema_name.cfs_directories - use root cfs dir id to get all of them
   #- Save cfs file info to db_backup_schema_name.cfs_files - all that belong to the above dirs
-  #- Save event info to db_backup_schema_name.events - three selects, one for each of the file group, dirs, and files
   #- Save rights declaration to db_backup_schema_name.rights_declaration - select based on file group id
   #- Save assessments to db_backup_schema_name.assessments - select based on file group id
+  #- Save event info to db_backup_schema_name.events - three selects, one for each of the file group, dirs, and files
   # these will be create table via selects except for two of the events which will be insert into table via selects
   def create_db_backup_tables
     return if db_backup_schema_exists?
@@ -107,13 +107,27 @@ class Workflow::FileGroupDelete < Workflow::Base
   end
 
   def create_db_backup_tables_sql
-    cfs_directory_id = file_group.cfs_directory.id
+    root_cfs_directory_id = file_group.cfs_directory.id
     <<SQL
 CREATE SCHEMA #{db_backup_schema_name};
-CREATE TABLE #{db_backup_schema_name}.file_groups AS SELECT * FROM file_groups WHERE id=#{file_group_id};
-
-
-
+CREATE TABLE #{db_backup_schema_name}.file_groups AS 
+  SELECT * FROM file_groups WHERE id=#{file_group_id};
+CREATE TABLE #{db_backup_schema_name}.cfs_directories AS 
+  SELECT * FROM cfs_directories WHERE root_cfs_directory_id=#{root_cfs_directory_id};
+CREATE TABLE #{db_backup_schema_name}.cfs_files AS
+  SELECT * FROM cfs_files WHERE cfs_directory_id IN (SELECT id FROM #{db_backup_schema_name}.cfs_directories);
+CREATE TABLE #{db_backup_schema_name}.rights_declarations AS
+  SELECT * FROM rights_declarations WHERE rights_declarable_id=#{file_group_id} AND rights_declarable_type='FileGroup';
+CREATE TABLE #{db_backup_schema_name}.assessments AS
+  SELECT * FROM assessments WHERE assessable_id=#{file_group_id} AND assessable_type='FileGroup';
+CREATE TABLE #{db_backup_schema_name}.events AS
+  SELECT * FROM events WHERE eventable_id=#{file_group_id} AND eventable_type='FileGroup';
+INSERT INTO #{db_backup_schema_name}.events
+  SELECT * FROM events WHERE eventable_id IN (SELECT id FROM #{db_backup_schema_name}.cfs_directories)
+                        AND eventable_type='CfsDirectory';
+INSERT INTO #{db_backup_schema_name}.events
+  SELECT * FROM events WHERE eventable_id IN (SELECT id FROM #{db_backup_schema_name}.cfs_files)
+                        AND eventable_type='CfsFile';
 SQL
   end
 
