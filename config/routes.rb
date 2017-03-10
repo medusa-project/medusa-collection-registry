@@ -156,7 +156,7 @@ MedusaCollectionRegistry::Application.routes.draw do
       get :abort_form, on: :member
       get :view_report, on: :member
     end
-    resources 'file_group_deletes', only: [] do
+    resources 'file_group_deletes', only: [:new, :create] do
       get :admin_decide, on: :member
       post :admin_record_decision, on: :member
     end

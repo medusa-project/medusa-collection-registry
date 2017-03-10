@@ -27,4 +27,25 @@ class Workflow::FileGroupDeletesController < ApplicationController
     redirect_to dashboard_path
   end
 
+  def new
+    @file_group = FileGroup.find(params[:file_group_id])
+    authorize! :destroy, @file_group
+    @workflow = Workflow::FileGroupDelete.new(file_group_id: @file_group.id)
+  end
+
+  def create
+    workflow_params = params[:workflow_file_group_delete]
+    @file_group = FileGroup.find(workflow_params[:file_group_id])
+    authorize! :destroy, @file_group
+    @workflow = Workflow::FileGroupDelete.new(file_group_id: @file_group.id, requester: current_user,
+                                             requester_reason: workflow_params[:requester_reason], state: 'start')
+    if @workflow.save
+      @workflow.put_in_queue
+      flash[:notice] = 'Your request to delete this file group has been created'
+      redirect_to @file_group
+    else
+      render 'new'
+    end
+  end
+
 end

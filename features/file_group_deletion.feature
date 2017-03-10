@@ -18,9 +18,21 @@ Feature: File Group Deletion
     Then there should be no file group with title 'Dogs'
 
   Scenario: Start delete process for non-pristine bit level file group
-    When PENDING
-    #visit fg, click, get redirected to make new workflow, fill in form, submit, check
-    #that workflow exists in the start state
+    Given I clear the cfs root directory
+    And the physical cfs directory 'dogs' has a file 'intro.txt' with contents 'anything'
+    And the collection with title 'Animals' has child file groups with fields:
+      | title | type              |
+      | Dogs  | BitLevelFileGroup |
+    And the file group titled 'Dogs' has cfs root 'dogs' and delayed jobs are run
+    And I am logged in as a manager
+    When I edit the file group with title 'Dogs'
+    And I click on 'Delete'
+    When I fill in fields:
+      | Requester reason | This stuff needs to go |
+    And I click on 'Create'
+    Then there should be 1 file group deletion workflow in state 'start'
+    And there should be 1 file group deletion workflow delayed job
+    And I should see 'Your request to delete this file group has been created'
 
   Scenario: File group delete workflow moves from start to email_superusers
     Given the user 'manager@example.com' has a file group deletion workflow with fields:
