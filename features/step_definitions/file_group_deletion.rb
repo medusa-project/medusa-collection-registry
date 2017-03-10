@@ -20,8 +20,3 @@ end
 Then(/^there should be (\d+) file group deletion workflows?$/) do |count|
   expect(Workflow::FileGroupDelete.count).to eq(count.to_i)
 end
-
-When(/^I admin decide on the file group delete workflow$/) do
-  workflow = Workflow::FileGroupDelete.first
-  visit(admin_decide_workflow_file_group_delete_path(workflow))
-end
