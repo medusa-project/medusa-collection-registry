@@ -1760,49 +1760,6 @@ ALTER SEQUENCE cfs_files_id_seq OWNED BY cfs_files.id;
 
 
 --
--- Name: file_groups; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE file_groups (
-    id integer NOT NULL,
-    external_file_location character varying(255),
-    file_format character varying(255),
-    total_file_size numeric,
-    total_files integer,
-    collection_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    producer_id integer,
-    description text,
-    provenance_note text,
-    title character varying(255),
-    staged_file_location character varying(255),
-    cfs_root character varying(255),
-    type character varying(255),
-    package_profile_id integer,
-    external_id character varying(255),
-    private_description text,
-    access_url character varying,
-    contact_id integer,
-    acquisition_method character varying
-);
-
-
---
--- Name: cfs_files_to_file_groups; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW cfs_files_to_file_groups AS
- SELECT f.id AS cfs_file_id,
-    fg.id AS file_group_id
-   FROM cfs_files f,
-    cfs_directories d,
-    cfs_directories rd,
-    file_groups fg
-  WHERE ((f.cfs_directory_id = d.id) AND (d.root_cfs_directory_id = rd.id) AND (rd.parent_id = fg.id));
-
-
---
 -- Name: collection_virtual_repository_joins; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2359,6 +2316,35 @@ ALTER SEQUENCE file_formats_id_seq OWNED BY file_formats.id;
 
 
 --
+-- Name: file_groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE file_groups (
+    id integer NOT NULL,
+    external_file_location character varying(255),
+    file_format character varying(255),
+    total_file_size numeric,
+    total_files integer,
+    collection_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    producer_id integer,
+    description text,
+    provenance_note text,
+    title character varying(255),
+    staged_file_location character varying(255),
+    cfs_root character varying(255),
+    type character varying(255),
+    package_profile_id integer,
+    external_id character varying(255),
+    private_description text,
+    access_url character varying(255),
+    contact_id integer,
+    acquisition_method character varying
+);
+
+
+--
 -- Name: file_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2505,7 +2491,9 @@ CREATE TABLE items (
     date character varying,
     rights_information text,
     item_number character varying,
-    source_media character varying
+    source_media character varying,
+    ingested boolean DEFAULT false,
+    cfs_directory_id integer
 );
 
 
@@ -2976,65 +2964,6 @@ ALTER SEQUENCE medusa_uuids_id_seq OWNED BY medusa_uuids.id;
 
 
 --
--- Name: repositories; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE repositories (
-    id integer NOT NULL,
-    title character varying(255),
-    url character varying(255),
-    notes text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    address_1 character varying(255),
-    address_2 character varying(255),
-    city character varying(255),
-    state character varying(255),
-    zip character varying(255),
-    phone_number character varying(255),
-    email character varying(255),
-    contact_id integer,
-    notes_html text,
-    active_start_date date,
-    active_end_date date,
-    ldap_admin_domain character varying(255),
-    ldap_admin_group character varying(255),
-    institution_id integer
-);
-
-
---
--- Name: orphaned_events; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW orphaned_events AS
- SELECT e.id
-   FROM (events e
-     LEFT JOIN cfs_files evt ON ((e.eventable_id = evt.id)))
-  WHERE (((e.eventable_type)::text = 'CfsFile'::text) AND (evt.id IS NULL))
-UNION
- SELECT e.id
-   FROM (events e
-     LEFT JOIN cfs_directories evt ON ((e.eventable_id = evt.id)))
-  WHERE (((e.eventable_type)::text = 'CfsDirectory'::text) AND (evt.id IS NULL))
-UNION
- SELECT e.id
-   FROM (events e
-     LEFT JOIN file_groups evt ON ((e.eventable_id = evt.id)))
-  WHERE (((e.eventable_type)::text = 'FileGroup'::text) AND (evt.id IS NULL))
-UNION
- SELECT e.id
-   FROM (events e
-     LEFT JOIN collections evt ON ((e.eventable_id = evt.id)))
-  WHERE (((e.eventable_type)::text = 'Collection'::text) AND (evt.id IS NULL))
-UNION
- SELECT e.id
-   FROM (events e
-     LEFT JOIN repositories evt ON ((e.eventable_id = evt.id)))
-  WHERE (((e.eventable_type)::text = 'Repository'::text) AND (evt.id IS NULL));
-
-
---
 -- Name: package_profiles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3190,7 +3119,9 @@ CREATE TABLE projects (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     collection_id integer,
-    external_id character varying DEFAULT ''::character varying
+    external_id character varying DEFAULT ''::character varying,
+    ingest_folder character varying,
+    destination_folder_uuid character varying
 );
 
 
@@ -3316,6 +3247,34 @@ ALTER SEQUENCE related_file_group_joins_id_seq OWNED BY related_file_group_joins
 
 
 --
+-- Name: repositories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE repositories (
+    id integer NOT NULL,
+    title character varying(255),
+    url character varying(255),
+    notes text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    address_1 character varying(255),
+    address_2 character varying(255),
+    city character varying(255),
+    state character varying(255),
+    zip character varying(255),
+    phone_number character varying(255),
+    email character varying(255),
+    contact_id integer,
+    notes_html text,
+    active_start_date date,
+    active_end_date date,
+    ldap_admin_domain character varying(255),
+    ldap_admin_group character varying(255),
+    institution_id integer
+);
+
+
+--
 -- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -3344,7 +3303,7 @@ CREATE TABLE resource_typeable_resource_type_joins (
     resource_type_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    resource_typeable_type character varying
+    resource_typeable_type character varying(255)
 );
 
 
@@ -3860,21 +3819,6 @@ CREATE VIEW view_tested_file_file_extension_counts_by_collection AS
 
 
 --
--- Name: view_tested_file_stats; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW view_tested_file_stats AS
- SELECT f.id,
-    f.content_type_id,
-    f.file_extension_id,
-    p.repository_id
-   FROM ((file_format_tests fft
-     JOIN cfs_files f ON ((fft.cfs_file_id = f.id)))
-     JOIN view_cfs_files_to_parents p ON ((f.id = p.cfs_file_id)))
- LIMIT 10;
-
-
---
 -- Name: virtual_repositories; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4177,6 +4121,71 @@ CREATE SEQUENCE workflow_ingests_id_seq
 --
 
 ALTER SEQUENCE workflow_ingests_id_seq OWNED BY workflow_ingests.id;
+
+
+--
+-- Name: workflow_item_ingest_requests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE workflow_item_ingest_requests (
+    id integer NOT NULL,
+    workflow_project_item_ingest_id integer,
+    item_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: workflow_item_ingest_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE workflow_item_ingest_requests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: workflow_item_ingest_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE workflow_item_ingest_requests_id_seq OWNED BY workflow_item_ingest_requests.id;
+
+
+--
+-- Name: workflow_project_item_ingests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE workflow_project_item_ingests (
+    id integer NOT NULL,
+    state character varying NOT NULL,
+    project_id integer,
+    user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: workflow_project_item_ingests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE workflow_project_item_ingests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: workflow_project_item_ingests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE workflow_project_item_ingests_id_seq OWNED BY workflow_project_item_ingests.id;
 
 
 --
@@ -4698,6 +4707,20 @@ ALTER TABLE ONLY workflow_ingests ALTER COLUMN id SET DEFAULT nextval('workflow_
 
 
 --
+-- Name: workflow_item_ingest_requests id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_item_ingest_requests ALTER COLUMN id SET DEFAULT nextval('workflow_item_ingest_requests_id_seq'::regclass);
+
+
+--
+-- Name: workflow_project_item_ingests id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_project_item_ingests ALTER COLUMN id SET DEFAULT nextval('workflow_project_item_ingests_id_seq'::regclass);
+
+
+--
 -- Name: access_system_collection_joins access_system_collection_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4807,6 +4830,14 @@ ALTER TABLE ONLY cfs_directories
 
 ALTER TABLE ONLY cfs_files
     ADD CONSTRAINT cfs_files_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resource_typeable_resource_type_joins collection_resource_type_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY resource_typeable_resource_type_joins
+    ADD CONSTRAINT collection_resource_type_joins_pkey PRIMARY KEY (id);
 
 
 --
@@ -5154,14 +5185,6 @@ ALTER TABLE ONLY repositories
 
 
 --
--- Name: resource_typeable_resource_type_joins resource_typeable_resource_type_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY resource_typeable_resource_type_joins
-    ADD CONSTRAINT resource_typeable_resource_type_joins_pkey PRIMARY KEY (id);
-
-
---
 -- Name: resource_types resource_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5287,6 +5310,22 @@ ALTER TABLE ONLY workflow_file_group_deletes
 
 ALTER TABLE ONLY workflow_ingests
     ADD CONSTRAINT workflow_ingests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_item_ingest_requests workflow_item_ingest_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_item_ingest_requests
+    ADD CONSTRAINT workflow_item_ingest_requests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_project_item_ingests workflow_project_item_ingests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_project_item_ingests
+    ADD CONSTRAINT workflow_project_item_ingests_pkey PRIMARY KEY (id);
 
 
 --
@@ -5899,6 +5938,13 @@ CREATE INDEX index_items_on_call_number ON items USING btree (call_number);
 
 
 --
+-- Name: index_items_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_items_on_cfs_directory_id ON items USING btree (cfs_directory_id);
+
+
+--
 -- Name: index_items_on_oclc_number; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6480,6 +6526,20 @@ CREATE UNIQUE INDEX wfaj_cfs_dir_id_and_staging_path_idx ON workflow_accrual_job
 
 
 --
+-- Name: workflow_item_ingest_requests_item_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX workflow_item_ingest_requests_item_index ON workflow_item_ingest_requests USING btree (item_id);
+
+
+--
+-- Name: workflow_item_ingest_requests_pii_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX workflow_item_ingest_requests_pii_index ON workflow_item_ingest_requests USING btree (workflow_project_item_ingest_id);
+
+
+--
 -- Name: access_system_collection_joins access_system_collection_joins_touch_access_system_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -6781,27 +6841,11 @@ CREATE TRIGGER workflow_ingests_touch_user_trigger AFTER INSERT OR DELETE OR UPD
 
 
 --
--- Name: file_format_profiles_file_extensions_joins fk_rails_04822aba51; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: cascaded_event_joins fk_rails_05018793e6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY file_format_profiles_file_extensions_joins
-    ADD CONSTRAINT fk_rails_04822aba51 FOREIGN KEY (file_extension_id) REFERENCES file_extensions(id);
-
-
---
--- Name: workflow_accrual_conflicts fk_rails_07ebf5783f; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflow_accrual_conflicts
-    ADD CONSTRAINT fk_rails_07ebf5783f FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
-
-
---
--- Name: workflow_accrual_jobs fk_rails_0d41a20552; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflow_accrual_jobs
-    ADD CONSTRAINT fk_rails_0d41a20552 FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE ONLY cascaded_event_joins
+    ADD CONSTRAINT fk_rails_05018793e6 FOREIGN KEY (event_id) REFERENCES events(id);
 
 
 --
@@ -6813,27 +6857,11 @@ ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
 
 
 --
--- Name: job_fits_file_extension_batches fk_rails_2214d78ff1; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY job_fits_file_extension_batches
-    ADD CONSTRAINT fk_rails_2214d78ff1 FOREIGN KEY (file_extension_id) REFERENCES file_extensions(id);
-
-
---
 -- Name: workflow_accrual_comments fk_rails_2258e947c4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_accrual_comments
     ADD CONSTRAINT fk_rails_2258e947c4 FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
-
-
---
--- Name: workflow_accrual_jobs fk_rails_2307b1ca05; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflow_accrual_jobs
-    ADD CONSTRAINT fk_rails_2307b1ca05 FOREIGN KEY (amazon_backup_id) REFERENCES amazon_backups(id);
 
 
 --
@@ -6853,35 +6881,11 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 
 --
--- Name: file_format_profiles_file_extensions_joins fk_rails_264edd65c3; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY file_format_profiles_file_extensions_joins
-    ADD CONSTRAINT fk_rails_264edd65c3 FOREIGN KEY (file_format_profile_id) REFERENCES file_format_profiles(id);
-
-
---
 -- Name: file_format_tests_file_format_test_reasons_joins fk_rails_2c4d650843; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_tests_file_format_test_reasons_joins
     ADD CONSTRAINT fk_rails_2c4d650843 FOREIGN KEY (file_format_test_reason_id) REFERENCES file_format_test_reasons(id);
-
-
---
--- Name: cfs_files fk_rails_2d8d8e95f6; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY cfs_files
-    ADD CONSTRAINT fk_rails_2d8d8e95f6 FOREIGN KEY (file_extension_id) REFERENCES file_extensions(id);
-
-
---
--- Name: workflow_accrual_files fk_rails_321123b6a8; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflow_accrual_files
-    ADD CONSTRAINT fk_rails_321123b6a8 FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
 
 
 --
@@ -6893,19 +6897,27 @@ ALTER TABLE ONLY collection_virtual_repository_joins
 
 
 --
--- Name: job_fits_content_type_batches fk_rails_49490359d8; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_profiles_file_extensions_joins fk_rails_4f056ac37d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY job_fits_content_type_batches
-    ADD CONSTRAINT fk_rails_49490359d8 FOREIGN KEY (content_type_id) REFERENCES content_types(id);
+ALTER TABLE ONLY file_format_profiles_file_extensions_joins
+    ADD CONSTRAINT fk_rails_4f056ac37d FOREIGN KEY (file_format_profile_id) REFERENCES file_format_profiles(id);
 
 
 --
--- Name: cascaded_event_joins fk_rails_5f90452cff; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_item_ingest_requests fk_rails_5409004c7a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY cascaded_event_joins
-    ADD CONSTRAINT fk_rails_5f90452cff FOREIGN KEY (event_id) REFERENCES events(id);
+ALTER TABLE ONLY workflow_item_ingest_requests
+    ADD CONSTRAINT fk_rails_5409004c7a FOREIGN KEY (workflow_project_item_ingest_id) REFERENCES workflow_project_item_ingests(id);
+
+
+--
+-- Name: workflow_accrual_files fk_rails_607f94da7e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_accrual_files
+    ADD CONSTRAINT fk_rails_607f94da7e FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
 
 
 --
@@ -6917,11 +6929,27 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 
 --
--- Name: job_fits_file_extension_batches fk_rails_75f09068b2; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file_format_profiles_content_types_joins fk_rails_64a0ab5e2a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY job_fits_file_extension_batches
-    ADD CONSTRAINT fk_rails_75f09068b2 FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE ONLY file_format_profiles_content_types_joins
+    ADD CONSTRAINT fk_rails_64a0ab5e2a FOREIGN KEY (content_type_id) REFERENCES content_types(id);
+
+
+--
+-- Name: workflow_accrual_directories fk_rails_65d86c9570; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_accrual_directories
+    ADD CONSTRAINT fk_rails_65d86c9570 FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
+
+
+--
+-- Name: workflow_accrual_jobs fk_rails_714fa9a746; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_accrual_jobs
+    ADD CONSTRAINT fk_rails_714fa9a746 FOREIGN KEY (cfs_directory_id) REFERENCES cfs_directories(id);
 
 
 --
@@ -6933,6 +6961,14 @@ ALTER TABLE ONLY collection_virtual_repository_joins
 
 
 --
+-- Name: file_format_profiles_content_types_joins fk_rails_7bca99061f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_profiles_content_types_joins
+    ADD CONSTRAINT fk_rails_7bca99061f FOREIGN KEY (file_format_profile_id) REFERENCES file_format_profiles(id);
+
+
+--
 -- Name: job_item_bulk_imports fk_rails_7fe769aa60; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6941,11 +6977,11 @@ ALTER TABLE ONLY job_item_bulk_imports
 
 
 --
--- Name: workflow_accrual_directories fk_rails_814510e4f4; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: job_fits_content_type_batches fk_rails_89fc58d755; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY workflow_accrual_directories
-    ADD CONSTRAINT fk_rails_814510e4f4 FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
+ALTER TABLE ONLY job_fits_content_type_batches
+    ADD CONSTRAINT fk_rails_89fc58d755 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -6965,6 +7001,14 @@ ALTER TABLE ONLY file_format_tests
 
 
 --
+-- Name: workflow_accrual_conflicts fk_rails_96a254d3f1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_accrual_conflicts
+    ADD CONSTRAINT fk_rails_96a254d3f1 FOREIGN KEY (workflow_accrual_job_id) REFERENCES workflow_accrual_jobs(id);
+
+
+--
 -- Name: file_format_notes fk_rails_9a724fc755; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6973,11 +7017,11 @@ ALTER TABLE ONLY file_format_notes
 
 
 --
--- Name: job_fixity_checks fk_rails_a920535132; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: workflow_accrual_jobs fk_rails_9fe508decd; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY job_fixity_checks
-    ADD CONSTRAINT fk_rails_a920535132 FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE ONLY workflow_accrual_jobs
+    ADD CONSTRAINT fk_rails_9fe508decd FOREIGN KEY (amazon_backup_id) REFERENCES amazon_backups(id);
 
 
 --
@@ -6989,35 +7033,35 @@ ALTER TABLE ONLY job_item_bulk_imports
 
 
 --
+-- Name: job_fits_file_extension_batches fk_rails_ad920efa96; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY job_fits_file_extension_batches
+    ADD CONSTRAINT fk_rails_ad920efa96 FOREIGN KEY (file_extension_id) REFERENCES file_extensions(id);
+
+
+--
+-- Name: job_fits_file_extension_batches fk_rails_b46749d78d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY job_fits_file_extension_batches
+    ADD CONSTRAINT fk_rails_b46749d78d FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: workflow_item_ingest_requests fk_rails_b54106f343; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_item_ingest_requests
+    ADD CONSTRAINT fk_rails_b54106f343 FOREIGN KEY (item_id) REFERENCES items(id);
+
+
+--
 -- Name: file_format_tests fk_rails_c986487b1e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY file_format_tests
     ADD CONSTRAINT fk_rails_c986487b1e FOREIGN KEY (file_format_profile_id) REFERENCES file_format_profiles(id);
-
-
---
--- Name: workflow_accrual_jobs fk_rails_cf395e5550; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflow_accrual_jobs
-    ADD CONSTRAINT fk_rails_cf395e5550 FOREIGN KEY (cfs_directory_id) REFERENCES cfs_directories(id);
-
-
---
--- Name: cfs_files fk_rails_cfaf129e28; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY cfs_files
-    ADD CONSTRAINT fk_rails_cfaf129e28 FOREIGN KEY (content_type_id) REFERENCES content_types(id);
-
-
---
--- Name: file_format_profiles_content_types_joins fk_rails_d1c1c35cf5; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY file_format_profiles_content_types_joins
-    ADD CONSTRAINT fk_rails_d1c1c35cf5 FOREIGN KEY (file_format_profile_id) REFERENCES file_format_profiles(id);
 
 
 --
@@ -7029,14 +7073,6 @@ ALTER TABLE ONLY projects
 
 
 --
--- Name: job_fits_content_type_batches fk_rails_d7b90994ef; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY job_fits_content_type_batches
-    ADD CONSTRAINT fk_rails_d7b90994ef FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
 -- Name: archived_accrual_jobs fk_rails_d8a84160a7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7045,11 +7081,43 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 
 --
--- Name: file_format_profiles_content_types_joins fk_rails_f411565e2a; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: job_fits_content_type_batches fk_rails_dbc5e7d3a2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY file_format_profiles_content_types_joins
-    ADD CONSTRAINT fk_rails_f411565e2a FOREIGN KEY (content_type_id) REFERENCES content_types(id);
+ALTER TABLE ONLY job_fits_content_type_batches
+    ADD CONSTRAINT fk_rails_dbc5e7d3a2 FOREIGN KEY (content_type_id) REFERENCES content_types(id);
+
+
+--
+-- Name: file_format_profiles_file_extensions_joins fk_rails_e77d7e4911; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_format_profiles_file_extensions_joins
+    ADD CONSTRAINT fk_rails_e77d7e4911 FOREIGN KEY (file_extension_id) REFERENCES file_extensions(id);
+
+
+--
+-- Name: cfs_files fk_rails_e8d155be25; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY cfs_files
+    ADD CONSTRAINT fk_rails_e8d155be25 FOREIGN KEY (content_type_id) REFERENCES content_types(id);
+
+
+--
+-- Name: cfs_files fk_rails_ed83b6871f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY cfs_files
+    ADD CONSTRAINT fk_rails_ed83b6871f FOREIGN KEY (file_extension_id) REFERENCES file_extensions(id);
+
+
+--
+-- Name: job_fixity_checks fk_rails_f4de0ef7ac; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY job_fixity_checks
+    ADD CONSTRAINT fk_rails_f4de0ef7ac FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -7074,6 +7142,14 @@ ALTER TABLE ONLY archived_accrual_jobs
 
 ALTER TABLE ONLY items
     ADD CONSTRAINT fk_rails_f6abf55b81 FOREIGN KEY (project_id) REFERENCES projects(id);
+
+
+--
+-- Name: workflow_accrual_jobs fk_rails_fa4c2c0a3b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_accrual_jobs
+    ADD CONSTRAINT fk_rails_fa4c2c0a3b FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -7555,6 +7631,16 @@ INSERT INTO schema_migrations (version) VALUES ('20161027171950');
 INSERT INTO schema_migrations (version) VALUES ('20161103195200');
 
 INSERT INTO schema_migrations (version) VALUES ('20161107150831');
+
+INSERT INTO schema_migrations (version) VALUES ('20161216185129');
+
+INSERT INTO schema_migrations (version) VALUES ('20161216205814');
+
+INSERT INTO schema_migrations (version) VALUES ('20170120170335');
+
+INSERT INTO schema_migrations (version) VALUES ('20170120200604');
+
+INSERT INTO schema_migrations (version) VALUES ('20170306185148');
 
 INSERT INTO schema_migrations (version) VALUES ('20170309204228');
 

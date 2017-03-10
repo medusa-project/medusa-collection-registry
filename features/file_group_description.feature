@@ -84,7 +84,7 @@ Feature: File Group description
     Then I should be on the edit page for the file group with title 'images'
 
   Scenario: Delete file group from edit page
-    Given I am logged in as an admin
+    Given I am logged in as a manager
     When I edit the file group with title 'images'
     And I click on 'Delete'
     Then I should be on the view page for the collection with title 'Dogs'

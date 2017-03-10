@@ -4,10 +4,18 @@ Feature: File Group Deletion
   I want to have a workflow that very conservatively allows deletion of file groups
 
   Scenario: Delete external file group
-    When PENDING
+    Given the external file group with title 'Dogs' exists
+    And I am logged in as an manager
+    When I edit the file group with title 'Dogs'
+    And I click on 'Delete'
+    Then there should be no file group with title 'Dogs'
 
   Scenario: Delete pristine bit level file group
-    When PENDING
+    Given the bit level file group with title 'Dogs' exists
+    And I am logged in as a manager
+    When I edit the file group with title 'Dogs'
+    And I click on 'Delete'
+    Then there should be no file group with title 'Dogs'
 
   Scenario: Start delete process for non-pristine bit level file group
     When PENDING

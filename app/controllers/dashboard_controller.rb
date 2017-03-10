@@ -72,6 +72,11 @@ SQL
     render partial: 'accruals/accruals', layout: false
   end
 
+  def file_group_deletions
+    @workflows = Workflow::FileGroupDelete.all
+    render partial: 'file_group_deletes', layout: false
+  end
+
   protected
 
   def setup_bit_level_storage_summary

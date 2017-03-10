@@ -1,0 +1,16 @@
+%table.table.table-bordered.table-condensed#file_group_deletes
+  %thead
+    %tr
+      %th File Group
+      %th Requester
+      %th State
+      %th Actions
+  %tbody
+    - @workflows.each do |workflow|
+      %tr
+        %td= link_to(workflow.cached_file_group_title, file_group_path(workflow.file_group_id))
+        %td= workflow.requester.email
+        %td= workflow.state
+        %td
+          - if workflow.state == 'wait_decision'
+            = link_to('Decide', admin_decide_workflow_file_group_delete_path(workflow), class: 'btn btn-default btn-xs')

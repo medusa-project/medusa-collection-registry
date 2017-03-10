@@ -39,3 +39,10 @@
         $("#accruals").load("#{accruals_dashboard_path}", function () {
           initialize_data_table("table#accruals_table", {});
         });
+    - if current_user and current_user.superuser?
+      #file-group-deletions.tab-pane
+        Loading...
+        :javascript
+          $("#file-group-deletions").load("#{file_group_deletions_dashboard_path}", function () {
+            initialize_data_table("table#file_group_deletions_table", {});
+          });
