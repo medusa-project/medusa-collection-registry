@@ -157,6 +157,8 @@ storage:
       - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-root-2
         remote_path: /staging-root-2
         name: staging-2
+superusers:
+  - superadmin@example.com
 #settings for triple store integration
 triple_store:
   triple_store_base_url: http://localhost:3030/test

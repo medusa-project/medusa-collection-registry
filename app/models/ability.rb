@@ -60,7 +60,7 @@ class Ability
   end
 
   def superuser?(user)
-    false
+    Settings.superusers.include?(user.email)
   end
 
   def medusa_admin?(user)

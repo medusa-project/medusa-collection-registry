@@ -161,6 +161,7 @@ MedusaCollectionRegistry::Application.routes.draw do
     end
     resources 'file_group_deletes', only: [] do
       get :admin_decide, on: :member
+      post :admin_record_decision, on: :member
     end
   end
   resources :archived_accrual_jobs, only: [:show, :index]
