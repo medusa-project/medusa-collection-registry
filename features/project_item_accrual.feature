@@ -154,7 +154,7 @@ Feature: Project Item Accrual
     When I perform project item ingest workflows
     Then 'manager@example.com' should receive an email with subject 'Project Item ingest completed'
     And there should be 1 project item ingest workflow in state 'end'
-    And there should be 1 project item ingest workflows delayed job
+    And there should be 1 project item ingest workflow delayed job
 
   Scenario: Remove finished ingest job
     Given there is a project item ingest workflow in state 'end'

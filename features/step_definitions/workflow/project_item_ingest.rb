@@ -21,7 +21,7 @@ And(/^there should be (\d+) project item ingest workflows? in state '(.*)'$/) do
   expect(Workflow::ProjectItemIngest.where(state: state).count).to eq(count.to_i)
 end
 
-And(/^there should be (\d+) project item ingest workflows? delayed job$/) do |count|
+And(/^there should be (\d+) project item ingest workflow delayed jobs?$/) do |count|
   expect(Workflow::ProjectItemIngest.all.collect(&:delayed_jobs).flatten.count).to eq(count.to_i)
 end
 
