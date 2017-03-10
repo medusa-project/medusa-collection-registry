@@ -83,6 +83,10 @@ And(/^the physical cfs directory '([^']*)' has a file '([^']*)' with contents '(
   end
 end
 
+And(/^there should be no physical cfs directory '(.*)'$/) do |path|
+  expect(Dir.exist?(File.join(CfsRoot.instance.path, path))).to be_falsey
+end
+
 def ensure_cfs_path(path)
   FileUtils.mkdir_p(File.join(CfsRoot.instance.path, path))
 end
@@ -95,6 +99,3 @@ def bag_path(name)
   File.join(Rails.root, 'features', 'fixtures', 'bags', name)
 end
 
-And(/^there should be no physical cfs directory '(.*)'$/) do |path|
-  expect(Dir.exist?(File.join(CfsRoot.instance.path, path))).to be_falsey
-end
