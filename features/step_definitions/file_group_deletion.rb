@@ -27,3 +27,9 @@ And(/^there should be a physical file group delete holding directory '(.*)' with
   tree_file_count = Dir[File.join(holding_directory, '**', '*')].count { |file| File.file?(file) }
   expect(tree_file_count).to eq(count.to_i)
 end
+
+And(/^there should be file group delete backup tables:$/) do |table|
+  table.headers.each do |table_name|
+    ActiveRecord::Base.connection.table_exists? table_name
+  end
+end

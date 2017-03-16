@@ -80,7 +80,7 @@ class Workflow::FileGroupDelete < Workflow::Base
   end
 
   def db_backup_schema_exists?
-    connection.table_exists? "#{db_backup_schema_name}.file_groups"
+    ActiveRecord::Base.connection.table_exists? "#{db_backup_schema_name}.file_groups"
   end
 
   #This is the big one
@@ -97,7 +97,7 @@ class Workflow::FileGroupDelete < Workflow::Base
   def create_db_backup_tables
     return if db_backup_schema_exists?
     transaction do
-      connection.execute(create_db_backup_tables_sql)
+      ActiveRecord::Base.connection.execute(create_db_backup_tables_sql)
     end
   end
 

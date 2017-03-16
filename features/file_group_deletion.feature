@@ -97,8 +97,8 @@ Feature: File Group Deletion
     And there should be no physical cfs directory 'dogs'
     And there should be a physical file group delete holding directory '1' with 3 files
     And the collection with title 'Animals' should have an event with key 'file_group_delete_moved' performed by 'manager@example.com'
-    And PENDING
-    #TODO check the creation of the backup tables
+    And there should be file group delete backup tables:
+      | fg_holding_1.file_groups | fg_holding_1.cfs_directories | fg_holding_1.cfs_files | fg_holding_1.rights_declarations | fg_holding_1.assessments | fg_holding_1.events |
 
   Scenario: File group delete workflow in state delete_content is run
     When PENDING
