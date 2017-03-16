@@ -40,6 +40,14 @@ class Workflow::FileGroupDelete < Workflow::Base
     be_in_state_and_requeue('delete_content')
   end
 
+  def perform_delete_content
+    delete_db_backup_tables
+    FileUtils.rm_rf(holding_directory_path)
+    collection = Collection.find_by(id: cached_collection_id)
+    Event.create!(eventable: collection, key: :file_group_delete_final, actor_email: requester.email,
+                  note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{cached_collection_id}") if collection.present?
+  end
+
   def perform_email_requester_final_removal
     Workflow::FileGroupDeleteMailer.requester_final_removal(self).deliver_now
     be_in_state_and_requeue('end')
@@ -63,8 +71,13 @@ class Workflow::FileGroupDelete < Workflow::Base
 
   def move_physical_content
     FileUtils.mkdir_p(Settings.medusa.cfs.fg_delete_holding)
-    FileUtils.move(file_group.cfs_directory.absolute_path, File.join(Settings.medusa.cfs.fg_delete_holding, file_group.id.to_s))
+    FileUtils.move(file_group.cfs_directory.absolute_path, holding_directory_path)
   end
+
+  def holding_directory_path
+    File.join(Settings.medusa.cfs.fg_delete_holding, file_group_id.to_s)
+  end
+
 
   def destroy_db_objects
     file_group.cfs_directory.destroy_tree_from_leaves
@@ -101,9 +114,8 @@ class Workflow::FileGroupDelete < Workflow::Base
     end
   end
 
-  #All we should have to do here is execute a cascaded delete of the schema
   def delete_db_backup_tables
-    connection.execute("DROP SCHEMA #{db_backup_schema_name} CASCADE")
+    ActiveRecord::Base.connection.execute("DROP SCHEMA IF EXISTS #{db_backup_schema_name} CASCADE")
   end
 
   def create_db_backup_tables_sql

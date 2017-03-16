@@ -28,8 +28,20 @@ And(/^there should be a physical file group delete holding directory '(.*)' with
   expect(tree_file_count).to eq(count.to_i)
 end
 
+And(/^there should not be a physical file group delete holding directory '(.*)'$/) do |path|
+  holding_directory = File.join(Settings.medusa.cfs.fg_delete_holding, path)
+  expect(Dir.exist?(holding_directory)).to be_falsey
+end
+
 And(/^there should be file group delete backup tables:$/) do |table|
   table.headers.each do |table_name|
-    ActiveRecord::Base.connection.table_exists? table_name
+    expect(ActiveRecord::Base.connection.table_exists?(table_name)).to be_truthy
   end
 end
+
+Then(/^there should not be file group delete backup tables:$/) do |table|
+  table.headers.each do |table_name|
+    expect(ActiveRecord::Base.connection.table_exists?(table_name)).to be_falsey
+  end
+end
+
