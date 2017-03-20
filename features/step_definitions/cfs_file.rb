@@ -103,6 +103,12 @@ When(/^I view the cfs file for the file group titled '([^']*)' for the path '([^
   visit cfs_file_path(file_group.find_file_at_relative_path(path))
 end
 
+When(/^I download the cfs file for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
+  file_group = FileGroup.find_by(title: title)
+  visit download_cfs_file_path(file_group.find_file_at_relative_path(path))
+end
+
+
 When(/^I run an initial cfs file assessment on the file group titled '([^']*)'$/) do |title|
   FileGroup.find_by(title: title).schedule_initial_cfs_assessment
 end
