@@ -58,7 +58,12 @@ class CfsFilesController < ApplicationController
   end
 
   def download
-    authorize!(:download, @file.file_group) if current_user.present?
+    if current_user.present?
+      authorize!(:download, @file.file_group)
+    else
+      #basic auth
+      redirect_to(login_path) unless basic_auth?
+    end
     send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
   end
 
