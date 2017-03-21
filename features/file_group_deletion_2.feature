@@ -40,10 +40,14 @@ Feature: File Group Deletion Part Two
       | fg_holding_1.file_groups | fg_holding_1.cfs_directories | fg_holding_1.cfs_files | fg_holding_1.rights_declarations | fg_holding_1.assessments | fg_holding_1.events |
     And the collection with title 'Animals' should have an event with key 'file_group_delete_final' performed by 'manager@example.com'
     And there should not be a physical file group delete holding directory '1'
-
+    And there should be 1 file group deletion workflow in state 'email_requester_final_removal'
 
   Scenario: File group delete workflow in state delete_content is restored
     #This puts it into the delete_content state with everything set up
     When I perform file group deletion workflows
+    #Do the reversion
+    #Check that the right things are present, and that the backups are gone, and that we're in the right state
+    #Notably, we need to cascade all the event stuff after restoring it - or would it be better to just back that
+    #up too? It might actually be simpler to do it that way and also restore it with SQL.
     When PENDING
 

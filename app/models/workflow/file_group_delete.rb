@@ -37,7 +37,7 @@ class Workflow::FileGroupDelete < Workflow::Base
     create_db_backup_tables
     move_physical_content
     destroy_db_objects
-    be_in_state_and_requeue('delete_content')
+    be_in_state_and_requeue('delete_content', run_at: Time.now + 120.days)
   end
 
   def perform_delete_content
@@ -46,6 +46,7 @@ class Workflow::FileGroupDelete < Workflow::Base
     collection = Collection.find_by(id: cached_collection_id)
     Event.create!(eventable: collection, key: :file_group_delete_final, actor_email: requester.email,
                   note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{cached_collection_id}") if collection.present?
+    be_in_state_and_requeue('email_requester_final_removal')
   end
 
   def perform_email_requester_final_removal
