@@ -29,6 +29,12 @@ Feature: Viewing CFS file information and content
     And I click on 'Download'
     Then I should have downloaded the fixture file 'grass.jpg'
 
+  Scenario: Download cfs file as a basic auth user
+    Given I logout
+    And I provide basic authentication
+    When I download the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
+    Then I should have downloaded the fixture file 'grass.jpg'
+
   Scenario: View cfs file
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
     And I click on 'View'
