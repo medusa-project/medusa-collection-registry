@@ -1,0 +1,28 @@
+- if @directories_helper.full_count > 0
+  %table.table.table-striped#directory_subdirectories
+    %thead
+      %tr
+        - @directories_helper.headers.each do |header|
+          %th= header
+  :javascript
+    $(function() {
+      $('#directory_subdirectories').DataTable({
+        'processing': true,
+        'serverSide': true,
+        'pageLength': 25,
+        'order': [],
+        'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+        'search': {
+          'search': ""
+        },
+        'stateSave': true,
+        'ajax': {
+          'url': "#{@directories_helper.url}"
+        },
+        'columnDefs': [
+          {'orderable': false, 'targets': #{@directories_helper.unsortable_columns}}
+        ]
+      })
+    })
+- else
+  %p No Folders
