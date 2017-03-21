@@ -49,5 +49,7 @@ Feature: File Group Deletion Part Two
     #Check that the right things are present, and that the backups are gone, and that we're in the right state
     #Notably, we need to cascade all the event stuff after restoring it - or would it be better to just back that
     #up too? It might actually be simpler to do it that way and also restore it with SQL.
+    #Note however, that this _does_ run the risk of having cascaded events that refer to objects that have
+    #been deleted
     When PENDING
 
