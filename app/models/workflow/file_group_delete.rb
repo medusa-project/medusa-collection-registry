@@ -43,6 +43,7 @@ class Workflow::FileGroupDelete < Workflow::Base
   def perform_delete_content
     delete_db_backup_tables
     FileUtils.rm_rf(holding_directory_path)
+    delete_amazon_backups
     collection = Collection.find_by(id: cached_collection_id)
     Event.create!(eventable: collection, key: :file_group_delete_final, actor_email: requester.email,
                   note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{cached_collection_id}") if collection.present?
@@ -142,6 +143,12 @@ INSERT INTO #{db_backup_schema_name}.events
   SELECT * FROM events WHERE eventable_id IN (SELECT id FROM #{db_backup_schema_name}.cfs_files)
                         AND eventable_type='CfsFile';
 SQL
+  end
+
+  def delete_amazon_backups
+    AmazonBackup.where(cfs_directory_id: cached_cfs_directory_id).each do |amazon_backup|
+      amazon_backup.delete_archives_and_self
+    end
   end
 
 end

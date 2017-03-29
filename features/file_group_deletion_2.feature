@@ -35,6 +35,7 @@ Feature: File Group Deletion Part Two
   Scenario: File group delete workflow in state delete_content is run
     #This puts it into the delete_content state with everything set up
     When I perform file group deletion workflows
+    #Then the real test
     And I perform file group deletion workflows
     Then there should not be file group delete backup tables:
       | fg_holding_1.file_groups | fg_holding_1.cfs_directories | fg_holding_1.cfs_files | fg_holding_1.rights_declarations | fg_holding_1.assessments | fg_holding_1.events |
