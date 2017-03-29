@@ -1,2 +1,16 @@
 #see development.yml for a template.
-#You should use the settings/<env>.local.yml for actual configuration
+#You should use the settings/<env>.local.yml for actual configuration, with the exception of a few
+#settings below that are expected for the tests#
+
+#TODO by setting up the tests correctly we could probably remove this dependence - i.e. have the tests
+#take this information directly out of the settings instead of hard coding it
+
+medusa:
+  basic_auth: machine_user:machine_password
+  email:
+    feedback: medusa-feedback@example.com
+    dev: medusa-dev@example.com
+    noreply: medusa-noreply@example.com
+    admin: medusa-admin@example.com
+superusers:
+  - superadmin@example.com
