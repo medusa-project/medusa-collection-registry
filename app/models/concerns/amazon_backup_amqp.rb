@@ -42,6 +42,7 @@ module AmazonBackupAmqp
         if self.completed?
           self.job_amazon_backup.try(:destroy)
           self.workflow_accrual_jobs.each { |job| job.try(:complete_current_action) }
+          self.workflow_project_item_ingests.each {|job| job.try(:complete_current_action)}
         end
       when 'delete_archive'
         archive_id = response.parameter_field(:archive_id)

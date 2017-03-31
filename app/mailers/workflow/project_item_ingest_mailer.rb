@@ -5,6 +5,11 @@ class Workflow::ProjectItemIngestMailer < MedusaBaseMailer
     mail to: workflow.user.email, subject: 'Project Item ingest started'
   end
 
+  def progress(workflow)
+    @workflow = workflow
+    mail to: workflow.user.email, subject: 'Project Item ingest progress'
+  end
+
   def done(workflow)
     @workflow = workflow
     mail to: workflow.user.email, subject: 'Project Item ingest completed'

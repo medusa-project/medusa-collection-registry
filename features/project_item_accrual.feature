@@ -34,7 +34,7 @@ Feature: Project Item Accrual
     Given every collection with fields exists:
       | title   | id |
       | Animals | 1  |
-    Given every bit level file group with fields exists:
+    And every bit level file group with fields exists:
       | title | collection_id | id |
       | Dogs  | 1             | 1  |
     And the uuid of the cfs directory with path '1/1' is '2c90f940-c6e1-0134-cb7e-0c4de9bac164-5'
@@ -65,7 +65,48 @@ Feature: Project Item Accrual
     And the bit level file group with title 'Dogs' should have events with fields:
       | key                 |
       | project_item_ingest |
+    And there should be 1 project item ingest workflow in state 'email_progress'
+
+  Scenario: Email progress
+    Given the user 'manager@example.com' has a project item ingest workflow in state 'email_progress'
+    When I perform project item ingest workflows
+    Then 'manager@example.com' should receive an email with subject 'Project Item ingest progress'
+    And there should be 1 project item ingest workflow in state 'amazon_backup'
+    And there should be 1 project item ingest workflow delayed job
+
+    #Since the setup is a little complex we combine the test for requesting and receive notice of amazon backup
+  Scenario: Ingest request amazon backup and receive notice of amazon backup
+    Given every collection with fields exists:
+      | title   | id |
+      | Animals | 1  |
+    And every bit level file group with fields exists:
+      | title | collection_id | id |
+      | Dogs  | 1             | 1  |
+    And the uuid of the cfs directory with path '1/1' is '2c90f940-c6e1-0134-cb7e-0c4de9bac164-5'
+    And every project with fields exists:
+      | title   | destination_folder_uuid                | collection_id |
+      | Animals | 2c90f940-c6e1-0134-cb7e-0c4de9bac164-5 | 1             |
+    And the project with title 'Animals' has child items with fields:
+      | unique_identifier |
+      | item_1            |
+    And there is a project item ingest workflow for the project with title 'Animals' in state 'amazon_backup' for items with ingest identifier:
+      | item_1 |
+    When I perform project item ingest workflows
+    Then there should be 1 project item ingest workflow in state 'amazon_backup'
+    And there should be 0 project item ingest workflow delayed jobs
+    And there should be 1 amazon backup delayed job
+    When delayed jobs are run
+    And amazon backup runs successfully
+    Then there should be 1 project item ingest workflow in state 'amazon_backup_completed'
+    Then there should be 0 project item ingest workflows in state 'amazon_backup'
+    And there should be 1 project item ingest workflow delayed job
+    And the file group titled 'Dogs' should have a completed Amazon backup
+
+  Scenario: Ingest process amazon backup completed
+    Given the user 'manager@example.com' has a project item ingest workflow in state 'amazon_backup_completed'
+    When I perform project item ingest workflows
     And there should be 1 project item ingest workflow in state 'email_done'
+    And there should be 1 project item ingest workflow delayed job
 
   Scenario: Try ingest with staging directory not existing
     Given every collection with fields exists:
@@ -147,7 +188,7 @@ Feature: Project Item Accrual
       | item_1            | false    |
     And the cfs directory with path '1/1' should not have associated subdirectories with field path:
       | item_1 |
-    And there should be 1 project item ingest workflow in state 'email_done'
+    And there should be 1 project item ingest workflow in state 'email_progress'
 
   Scenario: Receive email that ingest has happened
     Given the user 'manager@example.com' has a project item ingest workflow in state 'email_done'
