@@ -54,12 +54,14 @@ Feature: Project description
     Given I am logged in as an admin
     When I edit the project with title 'Image Conversion'
     And I fill in fields:
-      | Specifications | New specs  |
-      | Start date     | 2017-01-04 |
+      | Specifications          | New specs               |
+      | Start date              | 2017-01-04              |
+      | Ingest folder           | my/ingest/location      |
+      | Destination folder uuid | destination-folder-uuid |
     And I select 'active' from 'Status'
     And I click on 'Update'
     Then I should see all of:
-      | New specs | 2017-01-04 | active |
+      | New specs | 2017-01-04 | active | my/ingest/location | destination-folder-uuid |
     And I should see none of:
       | 2015-06-29 | completed | Image specs |
 

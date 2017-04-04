@@ -1,4 +1,4 @@
-class MedusaBaseMailer < ActionMailer::Base
+class MedusaBaseMailer < ApplicationMailer
 
   delegate :feedback_address, :dev_address, :no_reply_address, :admin_address, to: :class
 

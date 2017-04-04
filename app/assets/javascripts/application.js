@@ -24,4 +24,7 @@
 //= require underscore.string
 //= require Chart.bundle
 //= require chartkick
+//= require react
+//= require react_ujs
+//= require components
 //= require_tree .

@@ -20,7 +20,7 @@
           'url': "#{@directories_helper.url}"
         },
         'columnDefs': [
-          {'orderable': false, 'targets': #{@directories_helper.unsortable_columns}}
+          {'orderable': false, 'targets': #{@directories_helper.columns_tagged(:unsortable)}}
         ]
       })
     })

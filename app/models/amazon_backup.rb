@@ -11,6 +11,7 @@ class AmazonBackup < ActiveRecord::Base
 
   has_one :job_amazon_backup, class_name: 'Job::AmazonBackup', dependent: :destroy
   has_many :workflow_accrual_jobs, :class_name => 'Workflow::AccrualJob'
+  has_many :workflow_project_item_ingests, :class_name => 'Workflow::ProjectItemIngest'
 
   #Only allow one backup per day for a file group
   validates_uniqueness_of :date, scope: :cfs_directory_id

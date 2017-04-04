@@ -22,7 +22,7 @@ Feature: Project items mass edit
     And I select 'RCAM' from 'Equipment'
     And I check 'mass_action_update_equipment'
     And I click on 'Mass update'
-    And I wait 2 seconds
+    And I view the project with title 'Scanning'
     Then I should see 'batch_3'
     And I should see none of:
       | batch_1 | batch_2 |
@@ -58,7 +58,7 @@ Feature: Project items mass edit
       | Reformatting operator | Dee |
       | Batch                 |     |
     And I click on 'Mass update'
-    And I wait 2 seconds
+    When I view the project with title 'Scanning'
     Then the item with fields should exist:
       | barcode        | batch | reformatting_operator |
       | 30012323456789 |       | Dee                   |

@@ -20,27 +20,33 @@ Feature: CFS integration
     And the uuid of the cfs directory with path 'pugs' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
     When I view the cfs directory for the file group titled 'Dogs' for the path 'pugs'
     Then I should see all of:
-      | document.doc | description.txt | toys | 3da0fae0-e3fa-012f-ac10-005056b22849-8 |
+      | toys | 3da0fae0-e3fa-012f-ac10-005056b22849-8 |
+    When I click on 'Files'
+    Then I should see all of:
+      | document.doc | description.txt |
 
   @javascript @search
   Scenario: View CFS directory as a manager
     Given I am logged in as a manager
     When I view the cfs directory for the file group titled 'Dogs' for the path '.'
-    Then I should see all of:
-      | intro.txt | pugs |
+    Then I should see 'pugs'
+    When I click on 'Files'
+    Then I should see 'intro.txt'
 
   @javascript @search
   Scenario: View CFS directory as a user
     Given I am logged in as a user
     When I view the cfs directory for the file group titled 'Dogs' for the path '.'
-    Then I should see all of:
-      | intro.txt | pugs |
+    Then I should see 'pugs'
+    When I click on 'Files'
+    Then I should see 'intro.txt'
 
   Scenario: View CFS directory as a public user
     Given I am not logged in
     When I view the cfs directory for the file group titled 'Dogs' for the path '.'
     Then I should be on the login page
 
+  @javascript @search
   Scenario: Navigate CFS directory down
     Given I am logged in as an admin
     When I view the cfs directory for the file group titled 'Dogs' for the path '.'

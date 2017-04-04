@@ -20,7 +20,7 @@
           'url': "#{@files_helper.url}"
         },
         'columnDefs': [
-          {'orderable': false, 'targets': #{@files_helper.unsortable_columns}}
+          {'orderable': false, 'targets': #{@files_helper.columns_tagged(:unsortable)}}
         ]
       })
     })

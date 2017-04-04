@@ -25,8 +25,7 @@ class ItemsController < ApplicationController
       @source_item = Item.find(params[:source_id])
       @project = @source_item.project
       authorize! :create_item, @project
-      @item = @source_item.dup
-      @item.barcode = nil
+      @item = clone_item(@source_item)
     else
       @project = Project.find(params[:project_id])
       authorize! :create_item, @project
@@ -84,10 +83,17 @@ class ItemsController < ApplicationController
 
   def allowed_params
     params[:item].permit(:barcode, :item_number, :local_title, :local_description, :notes, :batch, :file_count, :status, :reformatting_date,
-                         :reformatting_operator, :equipment, :foldout_present, :foldout_done, :item_done, :unique_identifier, :source_media,
+                         :reformatting_operator, :equipment, :foldout_present, :foldout_done, :item_done, :ingested, :unique_identifier, :source_media,
                          :call_number, :title, :author, :imprint, :bib_id, :oclc_number,
                          :record_series_id, :archival_management_system_url, :series, :sub_series, :box, :folder,
                          :item_title, :creator, :date, :rights_information)
+  end
+
+  def clone_item(source)
+    source.dup.tap do |clone|
+      clone.barcode = nil
+      clone.ingested = false
+    end
   end
 
 end

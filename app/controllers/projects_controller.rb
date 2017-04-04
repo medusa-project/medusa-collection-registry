@@ -3,6 +3,8 @@ class ProjectsController < ApplicationController
   before_action :require_medusa_user, except: [:index, :show, :public_show]
   before_action :find_project, only: [:show, :public_show, :edit, :update, :destroy, :attachments,
                                       :mass_action, :start_items_upload, :upload_items, :items]
+  before_action :initialize_ingest_directory_info, only: [:new, :edit]
+
   include ModelsToCsv
 
   autocomplete :user, :email
@@ -50,17 +52,21 @@ class ProjectsController < ApplicationController
 
   def mass_action
     #authorize! :update, @project
-    items = @project.items.where(id: params[:mass_action][:item])
     case params[:commit]
       when 'Mass update'
         mass_update(params[:mass_action])
       when 'Delete checked'
+        items = @project.items.where(id: params[:mass_action][:item])
         items.destroy_all
+      when 'Ingest items'
+        ingest_items(params[:mass_action])
       else
         raise RuntimeError, 'Unexpected mass action on project items'
     end
     respond_to do |format|
-      format.html {redirect_to @project}
+      format.html do
+        redirect_to @project
+      end
       format.js
     end
 
@@ -122,6 +128,13 @@ class ProjectsController < ApplicationController
     end
   end
 
+  #TODO make this really work
+  def ingest_path_info
+    respond_to do |format|
+      format.json { render json: ingest_directory_info(params[:path]) }
+    end
+  end
+
   protected
 
   def find_project
@@ -130,7 +143,8 @@ class ProjectsController < ApplicationController
 
   def allowed_params
     params[:project].permit(:title, :manager_email, :owner_email, :start_date,
-                            :status, :specifications, :summary, :collection_id, :external_id)
+                            :status, :specifications, :summary, :collection_id, :external_id,
+                            :ingest_folder, :destination_folder_uuid)
   end
 
   def assign_batch(batch, items)
@@ -158,7 +172,8 @@ class ProjectsController < ApplicationController
   end
 
   MASS_UPDATE_FIELDS = [:batch, :reformatting_operator, :reformatting_date, :equipment]
-  MASS_UPDATE_BOOLEANS = [:foldout_present, :foldout_done, :item_done]
+  MASS_UPDATE_BOOLEANS = [:foldout_present, :foldout_done, :item_done, :ingested]
+
   def mass_update(params)
     item_ids = params[:item_ids].split(',')
     items = @project.items.where(id: item_ids)
@@ -169,10 +184,68 @@ class ProjectsController < ApplicationController
       MASS_UPDATE_BOOLEANS.each do |field|
         updates[field] = true if params[field] == 'Yes'
         updates[field] = false if params[field] == 'No'
-     end
+      end
     end
     items.each do |item|
       item.update!(update_hash)
+    end
+  end
+
+  def ingest_items(params)
+    item_ids = params[:item] rescue Array.new
+    items = @project.items.where(ingested: false, id: item_ids).reject { |item| item.workflow_item_ingest_request.present? }
+    if items.count > 0
+      @project.transaction do
+        workflow = Workflow::ProjectItemIngest.create!(project: @project, user: current_user, state: 'start')
+        items.each do |item|
+          workflow.workflow_item_ingest_requests.create!(item_id: item.id)
+        end
+        workflow.put_in_queue
+      end
+    end
+    make_ingest_alert(@project, item_ids, items)
+  end
+
+  def make_ingest_alert(project, item_ids, items)
+    to_do_count = items.count
+    already_ingested_count = project.items.where(ingested: true, id: item_ids).count
+    in_process_count = Workflow::ItemIngestRequest.where(item_id: item_ids).count
+    @alert = <<ALERT
+    Your ingest request has been received. There are:
+    #{to_do_count} currently uningested items that will be ingested
+    #{in_process_count} items already in the process of being ingested
+    #{already_ingested_count} items already ingested
+ALERT
+  end
+
+  def initialize_ingest_directory_info
+    @ingest_directory_info = ingest_directory_info('/')
+  end
+
+  #path is the relative path from a configured project staging root
+  #make the full path
+  #if it is in the project staging root then proceed naturally
+  #if not then proceed from the project staging root - could just use a recursive call with '/' as the path
+  def ingest_directory_info(path)
+    root_path = Pathname.new(Settings.project_staging_directory).expand_path
+    new_path = Pathname.new(File.join(Settings.project_staging_directory, path)).expand_path
+    unless new_path.to_s.start_with?(root_path.to_s)
+      return ingest_directory_info('/')
+    end
+    if new_path == root_path
+      Hash.new.tap do |h|
+        h[:current] = '/'
+        h[:children] = root_path.children.select { |c| c.directory? }.collect { |d| File.join(d.basename, '/') }.sort rescue []
+        h[:parent] = '/'
+      end
+    else
+      Hash.new.tap do |h|
+        h[:current] = File.join(new_path.relative_path_from(root_path).to_s, '/')
+        h[:children] = new_path.children.select { |c| c.directory? }.collect { |d| File.join(d.basename, '/') }.sort
+        h[:parent] = File.join(new_path.parent.relative_path_from(root_path).to_s, '/')
+        h[:parent] = '/' if h[:parent] == './'
+        x = 1
+      end
     end
   end
 

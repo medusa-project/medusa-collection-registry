@@ -98,3 +98,20 @@ label.checkbox {
 .modal .simple_form {
   padding: 15px;
 }
+
+#directory-picker {
+  ul {
+    list-style: none;
+  }
+  .btn {
+    margin-right: 5px;
+  }
+}
+
+/* css for wider monitors, e.g. DCC monitors */
+.container {
+  @include container-fixed;
+  @media (min-width: 1600px) {
+    width: 90vw;
+  }
+}

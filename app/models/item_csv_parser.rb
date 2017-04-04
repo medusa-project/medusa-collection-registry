@@ -65,7 +65,8 @@ class ItemCsvParser < Object
       foldouts_present: [:foldout_present, ->(val) { self.convert_to_boolean(val) }],
       foldout_present: [:foldout_present, ->(val) { self.convert_to_boolean(val) }],
       foldout_done: [:foldout_done, ->(val) { self.convert_to_boolean(val) }],
-      item_done: [:item_done, ->(val) { self.convert_to_boolean(val) }]
+      item_done: [:item_done, ->(val) { self.convert_to_boolean(val) }],
+      ingested: [:ingested, ->(val) {self.convert_to_boolean(val)}]
   }
 
   #the column mapping maps positions to the spec for what to do with that data, either directly use it for the given field

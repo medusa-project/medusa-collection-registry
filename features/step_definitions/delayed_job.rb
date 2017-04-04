@@ -7,3 +7,7 @@
 And /^delayed jobs are run$/ do
   Delayed::Worker.new.work_off
 end
+
+And(/^there should be (\d+) delayed jobs?$/) do |count|
+  expect(Delayed::Job.count).to eq(count.to_i)
+end

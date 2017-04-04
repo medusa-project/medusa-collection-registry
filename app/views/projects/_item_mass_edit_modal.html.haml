@@ -28,6 +28,7 @@
         = render 'projects/item_mass_edit_radio_row', f: f, field: :foldout_present
         = render 'projects/item_mass_edit_radio_row', f: f, field: :foldout_done
         = render 'projects/item_mass_edit_radio_row', f: f, field: :item_done
+        = render 'projects/item_mass_edit_radio_row', f: f, field: :ingested
         .row
           = link_to 'Close', '#', class: 'btn btn-default', 'data-dismiss': 'modal'
           = link_to 'Reset', '#', class: 'btn btn-default', onclick: 'reset_item_mass_edit_form();'

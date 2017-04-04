@@ -82,3 +82,16 @@ When(/^I destroy the (.*) with (.*) '([^']*)'$/) do |object_type, key, value|
   find_object(object_type, key, value).destroy
 end
 
+And /^the (.*) with (.*) '([^']*)' should have associated (.*) with field (.*):$/ do |parent_object_type, parent_key, parent_value, child_object_type, child_key, table|
+  parent_object = find_object(parent_object_type, parent_key, parent_value)
+  table.headers.each do |value|
+    expect(parent_object.send(child_object_type.gsub(' ', '_').pluralize).find_by(child_key.gsub(' ', '_') => value)).to be_truthy
+  end
+end
+
+And /^the (.*) with (.*) '([^']*)' should not have associated (.*) with field (.*):$/ do |parent_object_type, parent_key, parent_value, child_object_type, child_key, table|
+  parent_object = find_object(parent_object_type, parent_key, parent_value)
+  table.headers.each do |value|
+    expect(parent_object.send(child_object_type.gsub(' ', '_').pluralize).find_by(child_key.gsub(' ', '_') => value)).to be_falsey
+  end
+end

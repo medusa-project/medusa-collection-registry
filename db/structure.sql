@@ -2505,7 +2505,9 @@ CREATE TABLE items (
     date character varying,
     rights_information text,
     item_number character varying,
-    source_media character varying
+    source_media character varying,
+    ingested boolean DEFAULT false,
+    cfs_directory_id integer
 );
 
 
@@ -3190,7 +3192,9 @@ CREATE TABLE projects (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     collection_id integer,
-    external_id character varying DEFAULT ''::character varying
+    external_id character varying DEFAULT ''::character varying,
+    ingest_folder character varying,
+    destination_folder_uuid character varying
 );
 
 
@@ -4107,45 +4111,6 @@ ALTER SEQUENCE workflow_accrual_jobs_id_seq OWNED BY workflow_accrual_jobs.id;
 
 
 --
--- Name: workflow_file_group_deletes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE workflow_file_group_deletes (
-    id integer NOT NULL,
-    requester_id integer,
-    approver_id integer,
-    file_group_id integer,
-    state character varying,
-    requester_reason text,
-    approver_reason text,
-    cached_file_group_title character varying,
-    cached_collection_id integer,
-    cached_cfs_directory_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: workflow_file_group_deletes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE workflow_file_group_deletes_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: workflow_file_group_deletes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE workflow_file_group_deletes_id_seq OWNED BY workflow_file_group_deletes.id;
-
-
---
 -- Name: workflow_ingests; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4178,6 +4143,72 @@ CREATE SEQUENCE workflow_ingests_id_seq
 --
 
 ALTER SEQUENCE workflow_ingests_id_seq OWNED BY workflow_ingests.id;
+
+
+--
+-- Name: workflow_item_ingest_requests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE workflow_item_ingest_requests (
+    id integer NOT NULL,
+    workflow_project_item_ingest_id integer,
+    item_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: workflow_item_ingest_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE workflow_item_ingest_requests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: workflow_item_ingest_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE workflow_item_ingest_requests_id_seq OWNED BY workflow_item_ingest_requests.id;
+
+
+--
+-- Name: workflow_project_item_ingests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE workflow_project_item_ingests (
+    id integer NOT NULL,
+    state character varying NOT NULL,
+    project_id integer,
+    user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    amazon_backup_id integer
+);
+
+
+--
+-- Name: workflow_project_item_ingests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE workflow_project_item_ingests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: workflow_project_item_ingests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE workflow_project_item_ingests_id_seq OWNED BY workflow_project_item_ingests.id;
 
 
 --
@@ -4685,17 +4716,24 @@ ALTER TABLE ONLY workflow_accrual_jobs ALTER COLUMN id SET DEFAULT nextval('work
 
 
 --
--- Name: workflow_file_group_deletes id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflow_file_group_deletes ALTER COLUMN id SET DEFAULT nextval('workflow_file_group_deletes_id_seq'::regclass);
-
-
---
 -- Name: workflow_ingests id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_ingests ALTER COLUMN id SET DEFAULT nextval('workflow_ingests_id_seq'::regclass);
+
+
+--
+-- Name: workflow_item_ingest_requests id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_item_ingest_requests ALTER COLUMN id SET DEFAULT nextval('workflow_item_ingest_requests_id_seq'::regclass);
+
+
+--
+-- Name: workflow_project_item_ingests id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_project_item_ingests ALTER COLUMN id SET DEFAULT nextval('workflow_project_item_ingests_id_seq'::regclass);
 
 
 --
@@ -5275,19 +5313,27 @@ ALTER TABLE ONLY workflow_accrual_jobs
 
 
 --
--- Name: workflow_file_group_deletes workflow_file_group_deletes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflow_file_group_deletes
-    ADD CONSTRAINT workflow_file_group_deletes_pkey PRIMARY KEY (id);
-
-
---
 -- Name: workflow_ingests workflow_ingests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_ingests
     ADD CONSTRAINT workflow_ingests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_item_ingest_requests workflow_item_ingest_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_item_ingest_requests
+    ADD CONSTRAINT workflow_item_ingest_requests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_project_item_ingests workflow_project_item_ingests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_project_item_ingests
+    ADD CONSTRAINT workflow_project_item_ingests_pkey PRIMARY KEY (id);
 
 
 --
@@ -5900,6 +5946,13 @@ CREATE INDEX index_items_on_call_number ON items USING btree (call_number);
 
 
 --
+-- Name: index_items_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_items_on_cfs_directory_id ON items USING btree (cfs_directory_id);
+
+
+--
 -- Name: index_items_on_oclc_number; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6376,34 +6429,6 @@ CREATE INDEX index_workflow_accrual_jobs_on_user_id ON workflow_accrual_jobs USI
 
 
 --
--- Name: index_workflow_file_group_deletes_on_approver_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workflow_file_group_deletes_on_approver_id ON workflow_file_group_deletes USING btree (approver_id);
-
-
---
--- Name: index_workflow_file_group_deletes_on_file_group_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workflow_file_group_deletes_on_file_group_id ON workflow_file_group_deletes USING btree (file_group_id);
-
-
---
--- Name: index_workflow_file_group_deletes_on_requester_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workflow_file_group_deletes_on_requester_id ON workflow_file_group_deletes USING btree (requester_id);
-
-
---
--- Name: index_workflow_file_group_deletes_on_state; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workflow_file_group_deletes_on_state ON workflow_file_group_deletes USING btree (state);
-
-
---
 -- Name: index_workflow_ingests_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6478,6 +6503,20 @@ CREATE UNIQUE INDEX wfaf_job_and_name_idx ON workflow_accrual_files USING btree 
 --
 
 CREATE UNIQUE INDEX wfaj_cfs_dir_id_and_staging_path_idx ON workflow_accrual_jobs USING btree (cfs_directory_id, staging_path);
+
+
+--
+-- Name: workflow_item_ingest_requests_item_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX workflow_item_ingest_requests_item_index ON workflow_item_ingest_requests USING btree (item_id);
+
+
+--
+-- Name: workflow_item_ingest_requests_pii_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX workflow_item_ingest_requests_pii_index ON workflow_item_ingest_requests USING btree (workflow_project_item_ingest_id);
 
 
 --
@@ -6902,6 +6941,14 @@ ALTER TABLE ONLY job_fits_content_type_batches
 
 
 --
+-- Name: workflow_item_ingest_requests fk_rails_5409004c7a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_item_ingest_requests
+    ADD CONSTRAINT fk_rails_5409004c7a FOREIGN KEY (workflow_project_item_ingest_id) REFERENCES workflow_project_item_ingests(id);
+
+
+--
 -- Name: cascaded_event_joins fk_rails_5f90452cff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6987,6 +7034,14 @@ ALTER TABLE ONLY job_fixity_checks
 
 ALTER TABLE ONLY job_item_bulk_imports
     ADD CONSTRAINT fk_rails_ac902747ea FOREIGN KEY (project_id) REFERENCES projects(id);
+
+
+--
+-- Name: workflow_item_ingest_requests fk_rails_b54106f343; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY workflow_item_ingest_requests
+    ADD CONSTRAINT fk_rails_b54106f343 FOREIGN KEY (item_id) REFERENCES items(id);
 
 
 --
@@ -7557,5 +7612,15 @@ INSERT INTO schema_migrations (version) VALUES ('20161103195200');
 
 INSERT INTO schema_migrations (version) VALUES ('20161107150831');
 
-INSERT INTO schema_migrations (version) VALUES ('20170309204228');
+INSERT INTO schema_migrations (version) VALUES ('20161216185129');
+
+INSERT INTO schema_migrations (version) VALUES ('20161216205814');
+
+INSERT INTO schema_migrations (version) VALUES ('20170120170335');
+
+INSERT INTO schema_migrations (version) VALUES ('20170120200604');
+
+INSERT INTO schema_migrations (version) VALUES ('20170306185148');
+
+INSERT INTO schema_migrations (version) VALUES ('20170331185713');
 
