@@ -46,7 +46,7 @@ Feature: File Group Deletion Part Two
   Scenario: File group delete workflow in state delete_content is restored
     #This puts it into the delete_content state with everything set up
     When I perform file group deletion workflows
-    #Do the reversion
+    #Do the reversion - through the interface? Or separate step here?
     #Check that the right things are present, and that the backups are gone, and that we're in the right state
     #Notably, we need to cascade all the event stuff after restoring it - or would it be better to just back that
     #up too? It might actually be simpler to do it that way and also restore it with SQL.
