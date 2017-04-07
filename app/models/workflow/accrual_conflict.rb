@@ -14,7 +14,7 @@ class Workflow::AccrualConflict < ActiveRecord::Base
   end
 
   def reset_cfs_file
-    file = self.try(:cfs_file)
+    file = try(:cfs_file)
     file.reset_fixity_and_fits!(actor_email: workflow_accrual_job.user.email) if file
   end
 
