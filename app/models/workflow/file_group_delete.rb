@@ -7,7 +7,7 @@ class Workflow::FileGroupDelete < Workflow::Base
 
   before_create :cache_fields
 
-  STATES = %w(start email_superusers wait_decision email_requester_accept email_requester_reject move_content delete_content email_restored_content email_requester_final_removal end)
+  STATES = %w(start email_superusers wait_decision email_requester_accept email_requester_reject move_content delete_content restore_content email_restored_content email_requester_final_removal end)
   validates_inclusion_of :state, in: STATES, allow_blank: false
 
   def perform_start
@@ -47,7 +47,14 @@ class Workflow::FileGroupDelete < Workflow::Base
     collection = Collection.find_by(id: cached_collection_id)
     Event.create!(eventable: collection, key: :file_group_delete_final, actor_email: requester.email,
                   note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{cached_collection_id}") if collection.present?
+    e = Event.all.to_a
     be_in_state_and_requeue('email_requester_final_removal')
+  end
+
+  def perform_restore_content
+    restore_physical_content
+    restore_db_content
+    be_in_state_and_requeue('email_restored_content')
   end
 
   def perform_email_requester_final_removal
@@ -68,6 +75,11 @@ class Workflow::FileGroupDelete < Workflow::Base
     approver.present? ? approver.email : 'Unknown'
   end
 
+  def restore_content_requested
+    destroy_queued_jobs
+    be_in_state_and_requeue('restore_content')
+  end
+
   def cache_fields
     self.cached_file_group_title ||= file_group.title
     self.cached_collection_id ||= file_group.collection_id
@@ -79,6 +91,14 @@ class Workflow::FileGroupDelete < Workflow::Base
   def move_physical_content
     FileUtils.mkdir_p(Settings.medusa.cfs.fg_delete_holding)
     FileUtils.move(file_group.cfs_directory.absolute_path, holding_directory_path)
+  end
+
+  def restore_physical_content
+    restore_path = File.join(CfsRoot.instance.path, cached_collection_id.to_s, file_group_id.to_s)
+    unless Dir.exist?(restore_path)
+      FileUtils.mkdir_p(File.join(CfsRoot.instance.path, cached_collection_id.to_s))
+      FileUtils.move(holding_directory_path, restore_path)
+    end
   end
 
   def holding_directory_path
@@ -147,6 +167,30 @@ INSERT INTO #{db_backup_schema_name}.events
 INSERT INTO #{db_backup_schema_name}.events
   SELECT * FROM events WHERE eventable_id IN (SELECT id FROM #{db_backup_schema_name}.cfs_files)
                         AND eventable_type='CfsFile';
+SQL
+  end
+
+  def restore_db_content
+    return unless db_backup_schema_exists?
+    transaction do
+      ActiveRecord::Base.connection.execute(restore_db_backup_tables_sql)
+    end
+    file_group.after_restore
+    AmazonBackup.create_and_schedule(requester, file_group.cfs_directory)
+    Event.create!(eventable: file_group.collection, key: :file_group_delete_restored, actor_email: requester.email,
+                  note: "File Group #{file_group.id} - #{file_group.title} | Collection: #{file_group.collection.id}")
+  end
+
+  def restore_db_backup_tables_sql
+    <<SQL
+    INSERT INTO file_groups SELECT * FROM #{db_backup_schema_name}.file_groups;
+    INSERT INTO cfs_directories SELECT * FROM #{db_backup_schema_name}.cfs_directories;
+    UPDATE #{db_backup_schema_name}.cfs_files SET fits_serialized = 'f';
+    INSERT INTO cfs_files SELECT * FROM #{db_backup_schema_name}.cfs_files;
+    INSERT INTO rights_declarations SELECT * FROM #{db_backup_schema_name}.rights_declarations;
+    INSERT INTO assessments SELECT * FROM #{db_backup_schema_name}.assessments;
+    INSERT INTO events SELECT * FROM #{db_backup_schema_name}.events;
+    DROP SCHEMA IF EXISTS #{db_backup_schema_name} CASCADE;
 SQL
   end
 

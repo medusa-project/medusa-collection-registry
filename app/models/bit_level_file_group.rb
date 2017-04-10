@@ -140,4 +140,13 @@ class BitLevelFileGroup < FileGroup
     sum('total_file_size')
   end
 
+  def after_restore
+    Sunspot.index self
+    events.find_each do |event|
+      event.recascade
+    end
+    events.reset
+    cfs_directory.after_restore
+  end
+
 end

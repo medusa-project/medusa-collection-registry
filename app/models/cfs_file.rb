@@ -328,6 +328,13 @@ class CfsFile < ActiveRecord::Base
     events.create(key: :amqp_accrual, note: 'Initial accrual', cascadable: true, actor_email: actor_email)
   end
 
+  def after_restore
+    Sunspot.index self
+    events.find_each do |event|
+      event.recascade
+    end
+  end
+
   protected
 
   def get_fits_xml

@@ -43,28 +43,30 @@ Feature: File Group Deletion Part Two
     And there should not be a physical file group delete holding directory '1'
     And there should be 1 file group deletion workflow in state 'email_requester_final_removal'
 
+  @javascript
   Scenario: File group delete workflow in state delete_content is restored
     #This puts it into the delete_content state with everything set up
     When I perform file group deletion workflows
-    #Do the reversion - through the interface? Or separate step here?
-    #Check that the right things are present, and that the backups are gone, and that we're in the right state
-    #Notably, we need to cascade all the event stuff after restoring it - or would it be better to just back that
-    #up too? It might actually be simpler to do it that way and also restore it with SQL.
-    #Note however, that this _does_ run the risk of having cascaded events that refer to objects that have
-    #been deleted
     Given I am logged in as 'superadmin@example.com'
     When I go to the dashboard
     And I click on 'File Group Deletions'
     And I click on 'Restore'
-    Then there should be 1 file group deletion workflow in state 'restore_content'
+    Then I should see 'Starting to restore content'
+    And there should be 1 file group deletion workflow in state 'restore_content'
     And there should be 1 file group deletion workflow delayed job
     When I perform file group deletion workflows
     Then there should be 1 file group deletion workflow in state 'email_restored_content'
     #the content should be restored on the file system
-    #the content should be restored in the database
-    #we have to SOLR reindex everything
-    #we have to add the cascaded events back in
-    #the backup schema should be gone
-    When PENDING
-
-
+    And there should not be a physical file group delete holding directory '1'
+    And there is a physical cfs directory 'dogs'
+    #the content should be restored in the database and the backup tables gone
+    And there should not be file group delete backup tables:
+      | fg_holding_1.file_groups | fg_holding_1.cfs_directories | fg_holding_1.cfs_files | fg_holding_1.rights_declarations | fg_holding_1.assessments | fg_holding_1.events |
+    And a file group with title 'Dogs' should exist
+    And each cfs directory with path exists:
+      | dogs | pugs |
+    And each cfs file with name exists:
+      | intro.txt | picture.jpg | description.txt |
+    And 0 cfs files should have fits attached
+    And the collection with title 'Animals' should have an event with key 'file_group_delete_restored' performed by 'manager@example.com'
+    And there should be 1 amazon backup delayed job

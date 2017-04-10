@@ -3,10 +3,14 @@ class Job::Base < ActiveRecord::Base
   self.abstract_class = true
 
   def destroy_queued_jobs_and_self
+    destroy_queued_jobs
+    self.destroy
+  end
+
+  def destroy_queued_jobs
     self.delayed_jobs.each do |job|
       job.destroy
     end
-    self.destroy
   end
 
   def delayed_jobs

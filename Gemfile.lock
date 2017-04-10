@@ -68,6 +68,8 @@ GEM
     airbrussh (1.1.1)
       sshkit (>= 1.6.1, != 1.7.0)
     amq-protocol (2.0.1)
+    archive-zip (0.7.0)
+      io-like (~> 0.3.0)
     arel (6.0.3)
     auto_html (1.6.4)
       redcarpet (~> 3.1)
@@ -122,6 +124,9 @@ GEM
     chartkick (2.1.1)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
+    chromedriver-helper (1.1.0)
+      archive-zip (~> 0.7.0)
+      nokogiri (~> 1.6)
     chronic (0.10.2)
     ckeditor (4.2.0)
       cocaine
@@ -217,6 +222,7 @@ GEM
     httparty (0.14.0)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
+    io-like (0.3.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -461,6 +467,7 @@ DEPENDENCIES
   capybara-email
   capybara-webkit
   chartkick
+  chromedriver-helper
   chronic
   ckeditor
   clipboard-rails

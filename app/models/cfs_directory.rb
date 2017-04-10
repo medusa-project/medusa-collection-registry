@@ -336,6 +336,22 @@ class CfsDirectory < ActiveRecord::Base
     end
   end
 
+  def after_restore
+    Sunspot.index self
+    events.find_each do |event|
+      event.recascade
+    end
+    events.reset
+    cfs_files.find_each do |f|
+      f.after_restore
+    end
+    cfs_files.reset
+    subdirectories.find_each do |d|
+      d.after_restore
+    end
+    subdirectories.reset
+  end
+
   protected
 
   def find_file_with_directory_components(file_name, path_components)

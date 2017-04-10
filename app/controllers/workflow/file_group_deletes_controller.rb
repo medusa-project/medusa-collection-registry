@@ -48,4 +48,13 @@ class Workflow::FileGroupDeletesController < ApplicationController
     end
   end
 
+  def restore_content
+    @workflow = Workflow::FileGroupDelete.find(params[:id])
+    authorize! :decide, @workflow
+    @workflow.restore_content_requested
+    #TODO reset the workflow
+    flash[:notice] = 'Starting to restore content'
+    redirect_to dashboard_path
+  end
+
 end

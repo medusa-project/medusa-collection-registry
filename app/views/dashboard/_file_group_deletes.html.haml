@@ -12,5 +12,8 @@
         %td= workflow.requester.email
         %td= workflow.state
         %td
+          - x = workflow.state
           - if workflow.state == 'wait_decision'
             = link_to('Decide', admin_decide_workflow_file_group_delete_path(workflow), class: 'btn btn-default btn-xs')
+          - elsif workflow.state == 'delete_content'
+            = link_to('Restore', restore_content_workflow_file_group_delete_path(workflow), class: 'btn btn-default btn-xs', method: :post)

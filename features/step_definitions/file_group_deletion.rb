@@ -39,7 +39,7 @@ And(/^there should be file group delete backup tables:$/) do |table|
   end
 end
 
-Then(/^there should not be file group delete backup tables:$/) do |table|
+And(/^there should not be file group delete backup tables:$/) do |table|
   table.headers.each do |table_name|
     expect(ActiveRecord::Base.connection.table_exists?(table_name)).to be_falsey
   end

@@ -162,6 +162,7 @@ MedusaCollectionRegistry::Application.routes.draw do
     resources 'file_group_deletes', only: [:new, :create] do
       get :admin_decide, on: :member
       post :admin_record_decision, on: :member
+      post :restore_content, on: :member
     end
   end
   resources :archived_accrual_jobs, only: [:show, :index]
