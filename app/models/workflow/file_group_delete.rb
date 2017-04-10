@@ -112,7 +112,7 @@ class Workflow::FileGroupDelete < Workflow::Base
 
 
   def destroy_db_objects
-    file_group.cfs_directory.destroy_tree_from_leaves
+    file_group.cfs_directory.destroy_tree_from_leaves if file_group.cfs_directory.present?
     transaction do
       file_group.destroy!
       Event.create!(eventable: file_group.collection, key: :file_group_delete_moved, actor_email: requester.email,
