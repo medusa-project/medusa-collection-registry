@@ -37,7 +37,7 @@ class Workflow::FileGroupDelete < Workflow::Base
     create_db_backup_tables
     move_physical_content
     destroy_db_objects
-    be_in_state_and_requeue('delete_content', run_at: Time.now + 120.days)
+    be_in_state_and_requeue('delete_content', run_at: Time.now + Settings.medusa.fg_delete.final_deletion_interval)
   end
 
   def perform_delete_content
@@ -47,13 +47,16 @@ class Workflow::FileGroupDelete < Workflow::Base
     collection = Collection.find_by(id: cached_collection_id)
     Event.create!(eventable: collection, key: :file_group_delete_final, actor_email: requester.email,
                   note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{cached_collection_id}") if collection.present?
-    e = Event.all.to_a
     be_in_state_and_requeue('email_requester_final_removal')
   end
 
   def perform_restore_content
     restore_physical_content
     restore_db_content
+    file_group.after_restore
+    AmazonBackup.create_and_schedule(requester, file_group.cfs_directory) if Settings.medusa.fg_delete.amazon_backup_on_restore
+    Event.create!(eventable: file_group.collection, key: :file_group_delete_restored, actor_email: requester.email,
+                  note: "File Group #{file_group.id} - #{file_group.title} | Collection: #{file_group.collection.id}")
     be_in_state_and_requeue('email_restored_content')
   end
 
@@ -175,10 +178,6 @@ SQL
     transaction do
       ActiveRecord::Base.connection.execute(restore_db_backup_tables_sql)
     end
-    file_group.after_restore
-    AmazonBackup.create_and_schedule(requester, file_group.cfs_directory)
-    Event.create!(eventable: file_group.collection, key: :file_group_delete_restored, actor_email: requester.email,
-                  note: "File Group #{file_group.id} - #{file_group.title} | Collection: #{file_group.collection.id}")
   end
 
   def restore_db_backup_tables_sql

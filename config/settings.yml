@@ -121,6 +121,7 @@ classes:
 events:
   collection:
     file_group_delete_moved: File group deleted - content moved
+    file_group_delete_restored: File group restored
     file_group_delete_final: File group completely deleted
   file_group:
     created: File group created
@@ -184,6 +185,9 @@ rights_fields:
     DISSEMINATE/DISALLOW: Access is restricted.
     DISSEMINATE/CAMPUS_ONLY: Access is restricted to campus use only.
     DISSEMINATE/LIBRARY_ONLY: Access is restricted to library use only.
-
+medusa:
+  fg_delete:
+    amazon_backup_on_restore: true
+    final_deletion_interval: <%= 120.days %>
 
 
