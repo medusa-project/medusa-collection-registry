@@ -12,6 +12,7 @@ class CfsDirectory < ActiveRecord::Base
   has_many :cfs_files, dependent: :destroy
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
   has_many :amazon_backups, -> { order 'date desc' }
+  has_many :archived_accrual_jobs, dependent: :destroy
   belongs_to :parent, polymorphic: true, touch: true
   #This is only useful when you _know_ the object is a root cfs dir and the parent is therefore a file group. But
   #it's needed for some queries.
