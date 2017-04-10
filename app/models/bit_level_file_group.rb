@@ -10,7 +10,7 @@ class BitLevelFileGroup < FileGroup
   after_destroy :maybe_destroy_cfs_directories
   before_destroy :check_emptiness
 
-  delegate :pristine?, :ensure_file_at_absolute_path, :ensure_file_at_relative_path,
+  delegate :ensure_file_at_absolute_path, :ensure_file_at_relative_path,
            :find_directory_at_relative_path, :find_file_at_relative_path, to: :cfs_directory
 
   def ensure_cfs_directory
@@ -77,6 +77,11 @@ class BitLevelFileGroup < FileGroup
 
   def running_initial_assessments_file_count
     Job::CfsInitialDirectoryAssessment.where(file_group_id: self.id).sum(:file_count)
+  end
+
+  def pristine?
+    return true unless cfs_directory.present?
+    return cfs_directory.pristine?
   end
 
   def file_size
