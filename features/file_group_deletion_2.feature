@@ -52,5 +52,19 @@ Feature: File Group Deletion Part Two
     #up too? It might actually be simpler to do it that way and also restore it with SQL.
     #Note however, that this _does_ run the risk of having cascaded events that refer to objects that have
     #been deleted
+    Given I am logged in as 'superadmin@example.com'
+    When I go to the dashboard
+    And I click on 'File Group Deletions'
+    And I click on 'Restore'
+    Then there should be 1 file group deletion workflow in state 'restore_content'
+    And there should be 1 file group deletion workflow delayed job
+    When I perform file group deletion workflows
+    Then there should be 1 file group deletion workflow in state 'email_restored_content'
+    #the content should be restored on the file system
+    #the content should be restored in the database
+    #we have to SOLR reindex everything
+    #we have to add the cascaded events back in
+    #the backup schema should be gone
     When PENDING
+
 

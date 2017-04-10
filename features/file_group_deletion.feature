@@ -117,3 +117,14 @@ Feature: File Group Deletion
       | Still using |
     And there should be 1 file group deletion workflow in state 'end'
     And there should be 1 file group deletion workflow delayed job
+
+  Scenario: File group delete workflow in state email_restored_content is run
+    Given the user 'manager@example.com' has a file group deletion workflow with fields:
+      | state                  |
+      | email_restored_content |
+    When I perform file group deletion workflows
+    Then 'manager@example.com' should receive an email with subject 'Medusa File Group deletion cancelled - content restored'
+    And 'superadmin@example.com' should receive an email with subject 'Medusa File Group deletion cancelled - content restored'
+    And there should be 1 file group deletion workflow in state 'end'
+    And there should be 1 file group deletion workflow delayed job
+

@@ -7,7 +7,7 @@ class Workflow::FileGroupDelete < Workflow::Base
 
   before_create :cache_fields
 
-  STATES = %w(start email_superusers wait_decision email_requester_accept email_requester_reject move_content delete_content email_requester_final_removal end)
+  STATES = %w(start email_superusers wait_decision email_requester_accept email_requester_reject move_content delete_content email_restored_content email_requester_final_removal end)
   validates_inclusion_of :state, in: STATES, allow_blank: false
 
   def perform_start
@@ -52,6 +52,11 @@ class Workflow::FileGroupDelete < Workflow::Base
 
   def perform_email_requester_final_removal
     Workflow::FileGroupDeleteMailer.requester_final_removal(self).deliver_now
+    be_in_state_and_requeue('end')
+  end
+
+  def perform_email_restored_content
+    Workflow::FileGroupDeleteMailer.restored_content(self).deliver_now
     be_in_state_and_requeue('end')
   end
 
