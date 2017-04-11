@@ -192,6 +192,12 @@ SQL
   end
 
   def restore_db_backup_tables_sql
+    #Note that we need to reset a few things
+    #We set fits_serialized to false since we threw that out when we deleted. We can regenerate with normal
+    #processes.
+    #We set the size/count cache fields to 0 for files group/cfs directories and then when the
+    #cfs files are restored the triggers set them to the correct values again.
+    #When updating this method in the future be cognizant of this kind of effect.
     <<SQL
     INSERT INTO medusa_uuids (SELECT * FROM #{db_backup_schema_name}.medusa_uuids);
     UPDATE #{db_backup_schema_name}.file_groups SET total_files = 0, total_file_size = 0;
