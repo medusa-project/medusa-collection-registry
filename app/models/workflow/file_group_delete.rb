@@ -92,7 +92,7 @@ class Workflow::FileGroupDelete < Workflow::Base
   protected
 
   def move_physical_content
-    if Dir.exist?(file_group.cfs_directory.absolute_path)
+    if file_group.cfs_directory.present? and Dir.exist?(file_group.cfs_directory.absolute_path)
       FileUtils.mkdir_p(Settings.medusa.cfs.fg_delete_holding)
       FileUtils.move(file_group.cfs_directory.absolute_path, holding_directory_path)
     end
