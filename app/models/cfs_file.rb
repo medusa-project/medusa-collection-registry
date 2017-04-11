@@ -287,7 +287,7 @@ class CfsFile < ActiveRecord::Base
   end
 
   def remove_fits_xml_on_destroy
-    self.fits_result.remove_serialized_xml(update_cfs_file: false)
+    self.fits_result.remove_serialized_xml(update_cfs_file: false) rescue nil
   end
 
   def fits_result

@@ -135,6 +135,7 @@ class Workflow::FileGroupDelete < Workflow::Base
   #- Save file group info to db_backup_schema_name.file_groups - just select based on id
   #- Save cfs directory info to db_backup_schema_name.cfs_directories - use root cfs dir id to get all of them
   #- Save cfs file info to db_backup_schema_name.cfs_files - all that belong to the above dirs
+  #- Save uuids for file groups, cfs directories, and cfs files
   #- Save rights declaration to db_backup_schema_name.rights_declaration - select based on file group id
   #- Save assessments to db_backup_schema_name.assessments - select based on file group id
   #- Save event info to db_backup_schema_name.events - three selects, one for each of the file group, dirs, and files
@@ -160,6 +161,14 @@ CREATE TABLE #{db_backup_schema_name}.cfs_directories AS
   SELECT * FROM cfs_directories WHERE root_cfs_directory_id=#{root_cfs_directory_id};
 CREATE TABLE #{db_backup_schema_name}.cfs_files AS
   SELECT * FROM cfs_files WHERE cfs_directory_id IN (SELECT id FROM #{db_backup_schema_name}.cfs_directories);
+CREATE TABLE #{db_backup_schema_name}.medusa_uuids AS
+  SELECT * FROM medusa_uuids WHERE uuidable_id=#{file_group_id} AND uuidable_type='FileGroup';
+INSERT INTO #{db_backup_schema_name}.medusa_uuids 
+  SELECT * FROM medusa_uuids WHERE uuidable_id IN (SELECT id FROM #{db_backup_schema_name}.cfs_directories)
+                             AND uuidable_type='CfsDirectory';
+INSERT INTO #{db_backup_schema_name}.medusa_uuids 
+  SELECT * FROM medusa_uuids WHERE uuidable_id IN (SELECT id FROM #{db_backup_schema_name}.cfs_files)
+                             AND uuidable_type='CfsFile';
 CREATE TABLE #{db_backup_schema_name}.rights_declarations AS
   SELECT * FROM rights_declarations WHERE rights_declarable_id=#{file_group_id} AND rights_declarable_type='FileGroup';
 CREATE TABLE #{db_backup_schema_name}.assessments AS
@@ -184,13 +193,14 @@ SQL
 
   def restore_db_backup_tables_sql
     <<SQL
-    INSERT INTO file_groups SELECT * FROM #{db_backup_schema_name}.file_groups;
-    INSERT INTO cfs_directories SELECT * FROM #{db_backup_schema_name}.cfs_directories;
+    INSERT INTO medusa_uuids (SELECT * FROM #{db_backup_schema_name}.medusa_uuids);
+    INSERT INTO file_groups (SELECT * FROM #{db_backup_schema_name}.file_groups);
+    INSERT INTO cfs_directories (SELECT * FROM #{db_backup_schema_name}.cfs_directories);
     UPDATE #{db_backup_schema_name}.cfs_files SET fits_serialized = 'f';
-    INSERT INTO cfs_files SELECT * FROM #{db_backup_schema_name}.cfs_files;
-    INSERT INTO rights_declarations SELECT * FROM #{db_backup_schema_name}.rights_declarations;
-    INSERT INTO assessments SELECT * FROM #{db_backup_schema_name}.assessments;
-    INSERT INTO events SELECT * FROM #{db_backup_schema_name}.events;
+    INSERT INTO cfs_files (SELECT * FROM #{db_backup_schema_name}.cfs_files);
+    INSERT INTO rights_declarations (SELECT * FROM #{db_backup_schema_name}.rights_declarations);
+    INSERT INTO assessments (SELECT * FROM #{db_backup_schema_name}.assessments);
+    INSERT INTO events (SELECT * FROM #{db_backup_schema_name}.events);
     DROP SCHEMA IF EXISTS #{db_backup_schema_name} CASCADE;
 SQL
   end
