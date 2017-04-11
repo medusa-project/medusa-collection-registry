@@ -4,7 +4,9 @@
 
 #TODO by setting up the tests correctly we could probably remove this dependence - i.e. have the tests
 #take this information directly out of the settings instead of hard coding it
-
+download_users:
+  joe_downloader_user:
+    - 1
 medusa:
   basic_auth: machine_user:machine_password
   email:

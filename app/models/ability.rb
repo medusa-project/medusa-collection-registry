@@ -35,8 +35,11 @@ class Ability
     end
     #File groups - do for all subclasses, though I'm not sure this is strictly necessary
     [FileGroup, BitLevelFileGroup, ObjectLevelFileGroup, ExternalFileGroup].each do |klass|
-      can [:update, :create, :create_cfs_fits, :create_virus_scan, :download, :export], klass do |file_group|
+      can [:update, :create, :create_cfs_fits, :create_virus_scan], klass do |file_group|
         repository_manager?(user, file_group)
+      end
+      can [:download, :export], klass do |file_group|
+        repository_manager?(user, file_group) or downloader?(user, file_group)
       end
     end
     can :update, RedFlag do |red_flag|
@@ -63,6 +66,14 @@ class Ability
   def repository_manager?(user, object)
     repository = object.repository
     repository and repository.manager?(user)
+  end
+
+  def downloader?(user, file_group)
+    return false unless Settings.download_users.present?
+    return false unless permissible_collection_ids = Settings.download_users[user.netid]
+    permissible_collection_ids.include?(file_group.collection_id)
+  rescue
+    false
   end
 
 end

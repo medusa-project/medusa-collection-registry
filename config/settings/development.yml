@@ -20,6 +20,9 @@ amqp_accrual:
 book_tracker:
   import_path: ~/Projects/mbt_marcxml
   library_nuc_code: UIU
+#this is a map of netids to an array of collection ids - the users will get
+#download and export permissions on files in that collection
+download_users: {}
 #settings for communication with downloader
 downloader:
   #downloader root - configured on the other side as well

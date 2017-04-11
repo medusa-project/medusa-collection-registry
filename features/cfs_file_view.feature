@@ -7,6 +7,9 @@ Feature: Viewing CFS file information and content
     Given I am logged in as an admin
     And I clear the cfs root directory
     And the cfs directory 'dogs/places' contains cfs fixture file 'grass.jpg'
+    And every collection with fields exists:
+      | title   | id |
+      | Animals | 1  |
     And the collection with title 'Animals' has child file groups with fields:
       | title | type              |
       | Dogs  | BitLevelFileGroup |
@@ -25,6 +28,13 @@ Feature: Viewing CFS file information and content
 
   Scenario: Download cfs file as a manager
     Given I relogin as a manager
+    When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
+    And I click on 'Download'
+    Then I should have downloaded the fixture file 'grass.jpg'
+
+  Scenario: Download cfs file as a configured downloader
+    Given I logout
+    And I am logged in as 'joe_downloader_user@example.com'
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
     And I click on 'Download'
     Then I should have downloaded the fixture file 'grass.jpg'
