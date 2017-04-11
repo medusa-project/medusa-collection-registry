@@ -194,7 +194,9 @@ SQL
   def restore_db_backup_tables_sql
     <<SQL
     INSERT INTO medusa_uuids (SELECT * FROM #{db_backup_schema_name}.medusa_uuids);
+    UPDATE #{db_backup_schema_name}.file_groups SET total_files = 0, total_file_size = 0;
     INSERT INTO file_groups (SELECT * FROM #{db_backup_schema_name}.file_groups);
+    UPDATE #{db_backup_schema_name}.cfs_directories SET tree_size = 0, tree_count = 0;
     INSERT INTO cfs_directories (SELECT * FROM #{db_backup_schema_name}.cfs_directories);
     UPDATE #{db_backup_schema_name}.cfs_files SET fits_serialized = 'f';
     INSERT INTO cfs_files (SELECT * FROM #{db_backup_schema_name}.cfs_files);

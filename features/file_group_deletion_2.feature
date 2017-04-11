@@ -62,9 +62,13 @@ Feature: File Group Deletion Part Two
     #the content should be restored in the database and the backup tables gone
     And there should not be file group delete backup tables:
       | fg_holding_1.file_groups | fg_holding_1.cfs_directories | fg_holding_1.cfs_files | fg_holding_1.rights_declarations | fg_holding_1.assessments | fg_holding_1.events |
-    And a file group with title 'Dogs' should exist
-    And each cfs directory with path exists:
-      | dogs | pugs |
+    And the file groups with fields should exist:
+      | title | total_files |
+      | Dogs  | 3           |
+    And the cfs directory with fields should exist:
+      | path | tree_size | tree_count |
+      | dogs | 24        | 3          |
+      | pugs | 16        | 2          |
     And each cfs file with name exists:
       | intro.txt | picture.jpg | description.txt |
     And 0 cfs files should have fits attached

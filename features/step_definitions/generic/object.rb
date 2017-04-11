@@ -10,6 +10,7 @@ end
 
 Then /^the (.*)s? with fields should exist:?$/ do |object_type, table|
   klass = class_for_object_type(object_type)
+  all = klass.all.to_a
   table.hashes.each do |hash|
     expect(klass.find_by(hash)).not_to be_nil
   end
