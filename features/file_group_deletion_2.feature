@@ -21,7 +21,7 @@ Feature: File Group Deletion Part Two
 
   Scenario: File group delete workflow in state move_content is run
     When I perform file group deletion workflows
-    Then there should be 1 file group deletion workflow in state 'delete_content'
+    Then there should be 1 file group deletion workflow in state 'wait_delete_content'
     And there should be 1 file group deletion workflow delayed job
     And there should be no cfs directory with path 'dogs'
     And there should be no file group with title 'Dogs'
@@ -35,7 +35,8 @@ Feature: File Group Deletion Part Two
   Scenario: File group delete workflow in state delete_content is run
     #This puts it into the delete_content state with everything set up
     When I perform file group deletion workflows
-    #Then the real test
+    #Then the real test - go from wait_delete_content to delete_content and run that
+    And I perform file group deletion workflows
     And I perform file group deletion workflows
     Then there should not be file group delete backup tables:
       | fg_holding_1.file_groups | fg_holding_1.cfs_directories | fg_holding_1.cfs_files | fg_holding_1.rights_declarations | fg_holding_1.assessments | fg_holding_1.events |

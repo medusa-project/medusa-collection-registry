@@ -38,7 +38,7 @@ class Workflow::FileGroupDeletesController < ApplicationController
     @file_group = FileGroup.find(workflow_params[:file_group_id])
     authorize! :destroy, @file_group
     @workflow = Workflow::FileGroupDelete.new(file_group_id: @file_group.id, requester: current_user,
-                                             requester_reason: workflow_params[:requester_reason], state: 'start')
+                                              requester_reason: workflow_params[:requester_reason], state: 'start')
     if @workflow.save
       @workflow.put_in_queue
       flash[:notice] = 'Your request to delete this file group has been created'
@@ -51,9 +51,7 @@ class Workflow::FileGroupDeletesController < ApplicationController
   def restore_content
     @workflow = Workflow::FileGroupDelete.find(params[:id])
     authorize! :decide, @workflow
-    @workflow.restore_content_requested
-    #TODO reset the workflow
-    flash[:notice] = 'Starting to restore content'
+    flash[:notice] = @workflow.restore_content_requested
     redirect_to dashboard_path
   end
 

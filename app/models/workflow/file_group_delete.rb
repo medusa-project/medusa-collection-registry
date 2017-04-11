@@ -7,7 +7,8 @@ class Workflow::FileGroupDelete < Workflow::Base
 
   before_create :cache_fields
 
-  STATES = %w(start email_superusers wait_decision email_requester_accept email_requester_reject move_content delete_content restore_content email_restored_content email_requester_final_removal end)
+  STATES = %w(start email_superusers wait_decision email_requester_accept email_requester_reject move_content
+wait_delete_content delete_content restore_content email_restored_content email_requester_final_removal end)
   validates_inclusion_of :state, in: STATES, allow_blank: false
 
   def perform_start
@@ -37,7 +38,11 @@ class Workflow::FileGroupDelete < Workflow::Base
     create_db_backup_tables
     move_physical_content
     destroy_db_objects
-    be_in_state_and_requeue('delete_content', run_at: Time.now + Settings.medusa.fg_delete.final_deletion_interval)
+    be_in_state_and_requeue('wait_delete_content', run_at: Time.now + Settings.medusa.fg_delete.final_deletion_interval)
+  end
+
+  def perform_wait_delete_content
+    be_in_state_and_requeue('delete_content')
   end
 
   def perform_delete_content
@@ -79,8 +84,15 @@ class Workflow::FileGroupDelete < Workflow::Base
   end
 
   def restore_content_requested
-    destroy_queued_jobs
-    be_in_state_and_requeue('restore_content')
+    if state == 'wait_delete_content'
+      destroy_queued_jobs
+      be_in_state_and_requeue('restore_content')
+      'Starting to restore content'
+    elsif state== 'delete_content'
+      'Unable to restore content - deletion has already begun'
+    else
+      'Workflow in an unexpected state - not restoring content'
+    end
   end
 
   def cache_fields
