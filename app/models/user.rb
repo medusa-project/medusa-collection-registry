@@ -17,7 +17,8 @@ class User < ActiveRecord::Base
   end
 
   def superuser?
-    Settings.superusers.include?(self.email)
+    Application.group_resolver.is_ad_superuser?(self)
   end
+
 
 end

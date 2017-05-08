@@ -8,12 +8,20 @@ class GroupResolver::Base < Object
     Settings.medusa.medusa_admins_group
   end
 
+  def superuser_ad_group
+    Settings.medusa.medusa_superusers_group
+  end
+
   def is_ad_user?(user)
     user and is_member_of?(user_ad_group, user)
   end
 
   def is_ad_admin?(user)
     user and is_member_of?(admin_ad_group, user)
+  end
+
+  def is_ad_superuser?(user)
+    user and is_member_of?(superuser_ad_group, user)
   end
 
   def is_member_of?(ad_group, user)
