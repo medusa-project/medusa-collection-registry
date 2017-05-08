@@ -5,7 +5,7 @@ Feature: Item Bulk Upload
 
   Background:
     Given the project with title 'dogs' exists
-    And I am logged in as a manager
+    And I am logged in as a project_mgr
 
   Scenario: Upload valid item csv
     When I view the project with title 'dogs'
@@ -13,7 +13,7 @@ Feature: Item Bulk Upload
     And I attach fixture file 'good-items.txt' to 'Items file'
     And I click on 'Upload' and delayed jobs are run
     Then the project with title 'dogs' should have 5 items
-    And 'manager@example.com' should receive an email with subject 'Project items uploaded' containing all of:
+    And 'project_mgr@example.com' should receive an email with subject 'Project items uploaded' containing all of:
       | good-items.txt | dogs |
 
   Scenario: Upload invalid item csv
@@ -22,7 +22,7 @@ Feature: Item Bulk Upload
     And I attach fixture file 'bad-items.txt' to 'Items file'
     And I click on 'Upload' and delayed jobs are run
     Then the project with title 'dogs' should have 0 items
-    And 'manager@example.com' should receive an email with subject 'Error uploading project items' containing all of:
+    And 'project_mgr@example.com' should receive an email with subject 'Error uploading project items' containing all of:
       | bad-items.txt | dogs |
 
 

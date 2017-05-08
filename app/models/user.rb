@@ -16,4 +16,8 @@ class User < ActiveRecord::Base
     Person.find_or_create_by!(email: self.email)
   end
 
+  def project_admin?
+    Application.group_resolver.is_project_admin?(self)
+  end
+
 end

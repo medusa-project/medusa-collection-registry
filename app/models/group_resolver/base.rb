@@ -8,8 +8,16 @@ class GroupResolver::Base < Object
     Settings.medusa.medusa_admins_group
   end
 
+  def project_admin_ad_group
+    Settings.medusa.medusa_project_admins_group
+  end
+
   def is_ad_user?(user)
     user and is_member_of?(user_ad_group, user)
+  end
+
+  def is_project_admin?(user)
+    user and is_member_of?(project_admin_ad_group, user)
   end
 
   def is_ad_admin?(user)

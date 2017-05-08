@@ -12,7 +12,7 @@ Feature: Project Items
       | 30045623456789 | 76543  |       | Buster |             |             | batch_1 |             | Bustard    |             |              | true     |
 
   Scenario: Project page contains a table of items
-    Given I am logged in as a manager
+    Given I am logged in as a project_mgr
     When I view the project with title 'Scanning'
     Then I should see the items table
     And I should see all of:
@@ -22,7 +22,7 @@ Feature: Project Items
     And I should see 'Bustard'
 
   Scenario: Obtain CSV file of items
-    Given I am logged in as a manager
+    Given I am logged in as a project_mgr
     When I view the project with title 'Scanning'
     And I click on 'Export'
     And I click on 'CSV'
@@ -30,13 +30,13 @@ Feature: Project Items
       | 30012323456789 | 54321 | Dogs | Ruthie | 30078923456789 | 98765 | Cats | CatCat | 0001 | DVD | true |
 
   Scenario: View individual item page
-    Given I am logged in as a manager
+    Given I am logged in as a project_mgr
     When I view the item with barcode '30012323456789'
     Then I should see all of:
       | 30012323456789 | 54321 | Dogs | Ruthie | true |
 
   Scenario: Edit an existing item
-    Given I am logged in as a manager
+    Given I am logged in as a project_mgr
     When I view the item with barcode '30012323456789'
     And I click on 'Edit'
     And I fill in fields:
@@ -67,7 +67,7 @@ Feature: Project Items
       | 30012323456789 | Toys  | true            | true         | true      | false    |
 
   Scenario: Create a new item with javascript interface
-    Given I am logged in as a manager
+    Given I am logged in as a project_mgr
     When I view the project with title 'Scanning'
     And I click on 'Add Item'
     And I fill in fields:
@@ -86,7 +86,7 @@ Feature: Project Items
 
   #Note that this looks up this item in the live catalog
   Scenario: Use auto barcode lookup with javascript interface
-    Given I am logged in as a manager
+    Given I am logged in as a project_mgr
     When I view the project with title 'Scanning'
     And I click on 'Add Item'
     And I fill in fields:
@@ -99,7 +99,7 @@ Feature: Project Items
       | Maskit | Bernard | 1153448 | 515 M379K |
 
   Scenario: See items from a batch
-    Given I am logged in as a manager
+    Given I am logged in as a project_mgr
     When I view the project with title 'Scanning'
     And I click on 'batch_1'
     Then I should see all of:
@@ -108,7 +108,7 @@ Feature: Project Items
       | 30078923456789 |
 
   Scenario: Clone an item from view page
-    Given I am logged in as a manager
+    Given I am logged in as a project_mgr
     When I view the item with title 'Dogs'
     And I click on 'Clone'
     Then I should be on the new item page
@@ -118,7 +118,7 @@ Feature: Project Items
       | 30012323456789 |
 
   Scenario: Clone an item from edit page
-    Given I am logged in as a manager
+    Given I am logged in as a project_mgr
     When I view the project with title 'Scanning'
     And I click on 'Clone'
     Then I should be on the new item page

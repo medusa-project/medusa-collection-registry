@@ -31,7 +31,7 @@ Feature: Project description
       | Book Scanning | scanman@example.com | scanown@example.com | 2015-09-16 | active | Scanning specs | Scanning summary | Image Conversion | convman@example.com | convown@example.com | 2015-06-29 | completed | Image specs | Image summary | Buch001 | Bild002 |
 
   Scenario: Create project
-    Given I am logged in as an admin
+    Given I am logged in as a project_mgr
     And the collection with title 'Dogs' exists
     When I view the collection with title 'Dogs'
     And I click on 'Add Project'
@@ -51,7 +51,8 @@ Feature: Project description
     And the collection with title 'Dogs' should have 1 project with title 'Audio'
 
   Scenario: Edit and update project
-    Given I am logged in as an admin
+    Given I am logged in as a project_mgr
+    #Given I am logged in as an admin
     When I edit the project with title 'Image Conversion'
     And I fill in fields:
       | Specifications          | New specs               |
@@ -66,13 +67,13 @@ Feature: Project description
       | 2015-06-29 | completed | Image specs |
 
   Scenario: Cancel project edit
-    Given I am logged in as an admin
+    Given I am logged in as a project_mgr
     When I edit the project with title 'Image Conversion'
     And I click on 'Cancel'
     Then I should be on the view page for the project with title 'Image Conversion'
 
   Scenario: Delete project
-    Given I am logged in as an admin
+    Given I am logged in as a project_mgr
     When I edit the project with title 'Book Scanning'
     And I click on 'Delete'
     Then I should be on the project index page
@@ -85,7 +86,7 @@ Feature: Project description
       | Book Scanning | scanman@example.com | scanown@example.com | 2015-09-16 | active | Scanning specs | Scanning summary | Buch001 |
 
   Scenario: Navigate from index page to edit page
-    Given I am logged in as an admin
+    Given I am logged in as an project_mgr
     When I go to the project index page
     And I click on 'Edit'
     Then I should be on the edit page for the project with title 'Book Scanning'

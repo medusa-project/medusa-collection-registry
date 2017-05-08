@@ -61,7 +61,7 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    authorize! :delete_item, @project
+    authorize! :destroy_item, @project
     @item.destroy!
     redirect_to @item.project
   end

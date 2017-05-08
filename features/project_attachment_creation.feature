@@ -4,7 +4,7 @@ Feature: Project attachments
   I want to attach files to projects
 
   Scenario: Attach file as manager
-    Given I am logged in as a manager
+    Given I am logged in as a project_mgr
     And the project with title 'Dogs' exists
     And I view the project with title 'Dogs'
     And I click on 'Attachments'
