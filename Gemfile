@@ -133,6 +133,7 @@ end
 group :development do
   #gem 'newrelic_rpm'
   gem 'traceroute'
+  gem 'routler'
   #gem 'rack-mini-profiler'
   #gem 'bullet'
   #gem 'brakeman', require: false
