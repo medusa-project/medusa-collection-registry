@@ -10,7 +10,7 @@ class BitLevelFileGroup < FileGroup
   after_destroy :maybe_destroy_cfs_directories
   before_destroy :check_emptiness
 
-  delegate :pristine?, :ensure_file_at_absolute_path, :ensure_file_at_relative_path,
+  delegate :ensure_file_at_absolute_path, :ensure_file_at_relative_path,
            :find_directory_at_relative_path, :find_file_at_relative_path, to: :cfs_directory
 
   def ensure_cfs_directory
@@ -30,7 +30,7 @@ class BitLevelFileGroup < FileGroup
   #ONLY IF they are empty
   def maybe_destroy_cfs_directories
     physical_cfs_directory_path = expected_absolute_cfs_root_directory
-    if Dir.entries(physical_cfs_directory_path).to_set == %w(. ..).to_set
+    if Dir.exist?(physical_cfs_directory_path) and (Dir.entries(physical_cfs_directory_path).to_set == %w(. ..).to_set)
       Dir.unlink(physical_cfs_directory_path) rescue nil
     end
     if cfs_directory.try(:is_empty?)
@@ -77,6 +77,11 @@ class BitLevelFileGroup < FileGroup
 
   def running_initial_assessments_file_count
     Job::CfsInitialDirectoryAssessment.where(file_group_id: self.id).sum(:file_count)
+  end
+
+  def pristine?
+    return true unless cfs_directory.present?
+    return cfs_directory.pristine?
   end
 
   def file_size
@@ -138,6 +143,15 @@ class BitLevelFileGroup < FileGroup
 
   def self.aggregate_size
     sum('total_file_size')
+  end
+
+  def after_restore
+    Sunspot.index self
+    events.find_each do |event|
+      event.recascade
+    end
+    events.reset
+    cfs_directory.after_restore
   end
 
 end

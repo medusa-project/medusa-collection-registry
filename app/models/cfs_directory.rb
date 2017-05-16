@@ -12,6 +12,7 @@ class CfsDirectory < ActiveRecord::Base
   has_many :cfs_files, dependent: :destroy
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
   has_many :amazon_backups, -> { order 'date desc' }
+  has_many :archived_accrual_jobs, dependent: :destroy
   belongs_to :parent, polymorphic: true, touch: true
   #This is only useful when you _know_ the object is a root cfs dir and the parent is therefore a file group. But
   #it's needed for some queries.
@@ -334,6 +335,22 @@ class CfsDirectory < ActiveRecord::Base
       CfsDirectoryDiskComparison.new(cfs_directory: self,
                                      disk_directory_missing: true)
     end
+  end
+
+  def after_restore
+    Sunspot.index self
+    events.find_each do |event|
+      event.recascade
+    end
+    events.reset
+    cfs_files.find_each do |f|
+      f.after_restore
+    end
+    cfs_files.reset
+    subdirectories.find_each do |d|
+      d.after_restore
+    end
+    subdirectories.reset
   end
 
   protected

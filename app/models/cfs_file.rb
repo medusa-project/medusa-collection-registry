@@ -287,7 +287,7 @@ class CfsFile < ActiveRecord::Base
   end
 
   def remove_fits_xml_on_destroy
-    self.fits_result.remove_serialized_xml(update_cfs_file: false)
+    self.fits_result.remove_serialized_xml(update_cfs_file: false) rescue nil
   end
 
   def fits_result
@@ -326,6 +326,13 @@ class CfsFile < ActiveRecord::Base
   def create_amqp_accrual_event(actor_email: nil)
     actor_email ||= Settings.medusa.email.admin
     events.create(key: :amqp_accrual, note: 'Initial accrual', cascadable: true, actor_email: actor_email)
+  end
+
+  def after_restore
+    Sunspot.index self
+    events.find_each do |event|
+      event.recascade
+    end
   end
 
   protected

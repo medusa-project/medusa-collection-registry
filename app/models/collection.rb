@@ -10,10 +10,12 @@ class Collection < ActiveRecord::Base
   include CascadedRedFlaggable
   include ResourceTypeable
   include EmailPersonAssociator
+  include Eventable
 
   email_person_association(:contact)
 
   belongs_to :repository
+  belongs_to :parent, class_name: 'Repository', foreign_key: 'repository_id'
   belongs_to :preservation_priority
 
   has_many :assessments, dependent: :destroy, as: :assessable
@@ -95,9 +97,5 @@ class Collection < ActiveRecord::Base
     repository.collections.order('title ASC').where.not(id: id)
   end
 
-  def parent
-    repository
-  end
-  
 end
 

@@ -9,7 +9,7 @@
       = link_to('Cancel', '#', class: 'btn btn-default', onclick: "$('.modal').modal('hide'); false;")
     - else
       = link_to('Cancel', cancel_return, class: 'btn btn-default')
-    - if object.persisted? and safe_can?(:delete, object)
+    - if object.persisted? and safe_can?(:destroy, object)
       = delete_button(object)
 
   - if content_for?(:form_sidebar_extra)

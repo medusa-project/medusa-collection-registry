@@ -21,9 +21,13 @@ Capybara.match = :prefer_exact
 Capybara.server = :puma
 
 #set drivers
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
 Capybara.javascript_driver = :poltergeist
 #Capybara.javascript_driver = :webkit
 #Capybara.javascript_driver = :selenium
+#Capybara.javascript_driver = :chrome
 Capybara.default_driver = :rack_test
 
 # By default, any exception happening in your Rails application will bubble up

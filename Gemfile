@@ -152,6 +152,7 @@ group :test do
   gem 'poltergeist'
   #other js testing options
   gem 'selenium-webdriver'
+  gem 'chromedriver-helper'
   #We can start using this again when it support capybara 2.8
   gem 'capybara-webkit'
   gem 'sunspot_test'

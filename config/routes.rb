@@ -131,12 +131,9 @@ MedusaCollectionRegistry::Application.routes.draw do
   resources :uuids, only: [:show]
 
   match '/dashboard', to: 'dashboard#show', as: :dashboard, via: [:get, :post]
-  match '/dashboard/running_processes', to: 'dashboard#running_processes', as: :running_processes_dashboard, via: :get
-  match '/dashboard/file_stats', to: 'dashboard#file_stats', as: :file_stats_dashboard, via: :get
-  match '/dashboard/red_flags', to: 'dashboard#red_flags', as: :red_flags_dashboard, via: :get
-  match '/dashboard/events', to: 'dashboard#events', as: :events_dashboard, via: :get
-  match '/dashboard/amazon', to: 'dashboard#amazon', as: :amazon_dashboard, via: :get
-  match '/dashboard/accruals', to: 'dashboard#accruals', as: :accruals_dashboard, via: :get
+  %w(running_processes file_stats red_flags events amazon accruals file_group_deletions).each do |action|
+    match "/dashboard/#{action}", to: "dashboard##{action}", as: :"#{action}_dashboard", via: :get
+  end
 
   match '/timeline', to: 'timeline#show', as: :timeline, via: :get
 
@@ -161,6 +158,11 @@ MedusaCollectionRegistry::Application.routes.draw do
       post :abort, on: :member
       get :abort_form, on: :member
       get :view_report, on: :member
+    end
+    resources 'file_group_deletes', only: [:new, :create] do
+      get :admin_decide, on: :member
+      post :admin_record_decision, on: :member
+      post :restore_content, on: :member
     end
   end
   resources :archived_accrual_jobs, only: [:show, :index]

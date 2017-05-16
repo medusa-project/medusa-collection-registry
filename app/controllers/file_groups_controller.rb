@@ -24,11 +24,15 @@ class FileGroupsController < ApplicationController
 
   def destroy
     authorize! :destroy, @file_group
-    if @file_group.destroy
-      redirect_to collection_path(@collection)
+    if @file_group.is_a?(ExternalFileGroup) or (@file_group.is_a?(BitLevelFileGroup) and @file_group.pristine?)
+      if @file_group.destroy
+        redirect_to collection_path(@collection)
+      else
+        flash[:notice] = @file_group.errors.full_messages.join('\n')
+        redirect_to :back
+      end
     else
-      flash[:notice] = @file_group.errors.full_messages.join('\n')
-      redirect_to :back
+      redirect_to new_workflow_file_group_delete_path(file_group_id: @file_group.id)
     end
   end
 

@@ -79,7 +79,6 @@ Feature: File format notes and normalization paths
       | Notes    | My new note |
     And I select 'jp2' from 'Output format'
     And I click on 'Update'
-    And I wait 1 second
     Then I should see all of:
       | Photoshop | jp2 |
     And the file format normalization path with fields should exist:

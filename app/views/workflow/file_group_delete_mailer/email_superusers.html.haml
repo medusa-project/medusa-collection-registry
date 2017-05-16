@@ -1,0 +1,10 @@
+%p
+  #{@workflow.requester.email} has requested
+  deletion of the file group "#{@workflow.file_group.title}"
+  from the collection "#{@workflow.file_group.collection.title}".
+
+%p
+  Reason: #{@workflow.requester_reason}
+
+%p
+  Visit the medusa dashboard to approve or reject.
