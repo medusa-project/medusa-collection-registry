@@ -1,7 +1,7 @@
 class FileFormatTestsController < ApplicationController
   include ModelsToCsv
 
-  before_filter :require_medusa_user
+  before_action :require_medusa_user
   before_action :find_file_format_test, only: [:edit, :update]
 
   def edit

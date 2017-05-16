@@ -137,7 +137,7 @@ wait_delete_content delete_content restore_content email_restored_content email_
   end
 
   def db_backup_schema_exists?
-    ActiveRecord::Base.connection.table_exists? "#{db_backup_schema_name}.file_groups"
+    ActiveRecord::Base.connection.data_source_exists? "#{db_backup_schema_name}.file_groups"
   end
 
   #This is the big one

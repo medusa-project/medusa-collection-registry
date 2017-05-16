@@ -227,8 +227,8 @@ class CfsDirectory < ApplicationRecord
 
   def run_initial_assessment(recursive: true)
     make_initial_entries
-    self.cfs_files(true).each { |cfs_file| cfs_file.run_initial_assessment }
-    self.subdirectories(true).each {|subdirectory| subdirectory.schedule_assessment_job} if recursive
+    self.cfs_files.reload.each { |cfs_file| cfs_file.run_initial_assessment }
+    self.subdirectories.reload.each {|subdirectory| subdirectory.schedule_assessment_job} if recursive
     Sunspot.commit
   end
 
@@ -267,7 +267,7 @@ class CfsDirectory < ApplicationRecord
     end
     #If there is a new, present value for file_group_id then schedule the cfs assessment
     if parent_type == 'FileGroup' and parent_id_changed?
-      self.parent(true).schedule_initial_cfs_assessment
+      self.reload_parent.schedule_initial_cfs_assessment
     end
   end
 
@@ -280,11 +280,11 @@ class CfsDirectory < ApplicationRecord
     self.subdirectories.each do |subdirectory|
       subdirectory.destroy_tree_from_leaves
     end
-    self.subdirectories(true)
+    self.subdirectories.reload
     self.cfs_files.each do |cfs_file|
       cfs_file.destroy!
     end
-    self.cfs_files(true)
+    self.cfs_files.reload
     self.destroy!
   end
 

@@ -48,7 +48,7 @@ class ItemsController < ApplicationController
           redirect_to @do_another ? new_item_path : @project
         end
         format.js do
-          @items = @project.items(true)
+          @items = @project.items.reload
         end
       else
         format.html { render 'new' }

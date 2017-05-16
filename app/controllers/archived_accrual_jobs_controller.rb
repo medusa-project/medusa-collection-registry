@@ -1,6 +1,6 @@
 class ArchivedAccrualJobsController < ApplicationController
 
-  before_filter :require_medusa_user
+  before_action :require_medusa_user
 
   def show
     @archived_accrual_job = ArchivedAccrualJob.find(params[:id])

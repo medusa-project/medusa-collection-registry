@@ -35,13 +35,13 @@ end
 
 And(/^there should be file group delete backup tables:$/) do |table|
   table.headers.each do |table_name|
-    expect(ActiveRecord::Base.connection.table_exists?(table_name)).to be_truthy
+    expect(ActiveRecord::Base.connection.data_source_exists?(table_name)).to be_truthy
   end
 end
 
 And(/^there should not be file group delete backup tables:$/) do |table|
   table.headers.each do |table_name|
-    expect(ActiveRecord::Base.connection.table_exists?(table_name)).to be_falsey
+    expect(ActiveRecord::Base.connection.data_source_exists?(table_name)).to be_falsey
   end
 end
 

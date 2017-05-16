@@ -12,7 +12,7 @@ module Uuidable
     unless self.medusa_uuid.present?
       MedusaUuid.generate_for(self)
     end
-    self.medusa_uuid(true)
+    self.reload_medusa_uuid
   end
 
   def uuid

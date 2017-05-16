@@ -21,7 +21,7 @@ class CfsFilesController < ApplicationController
   def create_fits_xml
     authorize! :create_cfs_fits, @file.file_group
     @file.ensure_fits_xml
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def fits

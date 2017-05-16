@@ -16,7 +16,7 @@ class ProducersController < ApplicationController
     if @producer.destroy
       redirect_to producers_path
     else
-      redirect_to :back, alert: 'Producers with associated file groups cannot be deleted.'
+      redirect_back(fallback_location: root_path, alert: 'Producers with associated file groups cannot be deleted.')
     end
   end
 

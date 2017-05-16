@@ -125,7 +125,7 @@ class BitLevelFileGroup < FileGroup
         new_cfs_directory.save!
       end
     end
-    self.cfs_directory(true)
+    self.cfs_directory.reload if self.cfs_directory.present?
   end
 
   def accrual_unstarted?

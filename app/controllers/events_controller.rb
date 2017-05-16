@@ -19,7 +19,7 @@ class EventsController < ApplicationController
       if request.xhr?
         respond_to { |format| format.js }
       else
-        redirect_to :back
+        redirect_back(fallback_location: root_path)
       end
     else
       @errors = event.errors.full_messages.join('\n')
@@ -27,7 +27,7 @@ class EventsController < ApplicationController
         respond_to {|format| format.js}
       else
         flash[:notice] = 'Invalid event parameters: \n' + @errors
-        redirect_to :back
+        redirect_back(fallback_location: root_path)
       end
     end
   end
@@ -35,7 +35,7 @@ class EventsController < ApplicationController
   def destroy
     authorize! :delete_event, @event.eventable
     @event.destroy!
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def edit

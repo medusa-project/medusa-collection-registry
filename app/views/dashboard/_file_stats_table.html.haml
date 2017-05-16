@@ -14,10 +14,10 @@
         - @content_type_hashes.each do |info|
           %tr
             %td= link_to info['name'], cfs_files_content_type_path(info['content_type_id'])
-            %td= info['file_count'].to_i.to_formatted_s(:delimited)
+            %td= info['file_count'].to_i.to_s(:delimited)
             - percent = info['tested_count'].to_d / info['file_count'].to_d * 100
-            %td= "#{info['tested_count'].to_i.to_formatted_s(:delimited)}&nbsp;(#{percent.to_formatted_s(:percentage, precision: 3)})".html_safe
-            %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_formatted_s(:human_size, precision: 3).sub(' ', '&nbsp;').html_safe
+            %td= "#{info['tested_count'].to_i.to_s(:delimited)}&nbsp;(#{percent.to_s(:percentage, precision: 3)})".html_safe
+            %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_s(:human_size, precision: 3).sub(' ', '&nbsp;').html_safe
 
   .col-sm-6
     - cache(cache_key_for_all(FileExtension)) do
@@ -26,7 +26,7 @@
         - @file_extension_hashes.each do |info|
           %tr
             %td= link_to info['extension'].if_blank('<no extension>'), cfs_files_file_extension_path(info['file_extension_id'])
-            %td= info['file_count'].to_i.to_formatted_s(:delimited)
+            %td= info['file_count'].to_i.to_s(:delimited)
             - percent = info['tested_count'].to_d / info['file_count'].to_d * 100
-            %td= "#{info['tested_count'].to_i.to_formatted_s(:delimited)}&nbsp;(#{percent.to_formatted_s(:percentage, precision: 3)})".html_safe
-            %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_formatted_s(:human_size, precision: 3).sub(' ', '&nbsp;').html_safe
+            %td= "#{info['tested_count'].to_i.to_s(:delimited)}&nbsp;(#{percent.to_s(:percentage, precision: 3)})".html_safe
+            %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_s(:human_size, precision: 3).sub(' ', '&nbsp;').html_safe

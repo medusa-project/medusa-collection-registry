@@ -33,7 +33,7 @@ class ContentTypesController < ApplicationController
     else
       flash[:notice] = "There is already a FITS batch scheduled for mime type '#{@content_type.name}'"
     end
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def random_cfs_file

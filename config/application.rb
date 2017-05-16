@@ -56,8 +56,6 @@ module MedusaCollectionRegistry
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.3'
 
-    config.active_record.raise_in_transactional_callbacks = true
-
     config.react.addons = true
 
     #TODO: Rails 4.2 -> 5.0. Need to explicitly throw(:abort) to halt ActiveRecord callback chains

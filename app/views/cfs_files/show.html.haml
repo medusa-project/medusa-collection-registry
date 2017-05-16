@@ -18,7 +18,7 @@
           %strong Belongs to:
           #{link_to(@file_group.title, @file_group)}
       - if @file.size
-        = show_value @file.size.to_formatted_s(:human_size, precision: 3), 'File size'
+        = show_value @file.size.to_s(:human_size, precision: 3), 'File size'
       = show_value @file.content_type_name, 'Mimetype'
       - if @file.red_flags.present?
         %div

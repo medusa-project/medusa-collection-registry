@@ -6,7 +6,7 @@ When(/^I touch a model the associated model's timestamp is updated for:$/) do |t
       source = FactoryGirl.create(source_factory.to_sym, updated_at: Time.now - 1.day)
       source.touch
       #reload the target
-      associated = source.send(target, true)
+      associated = source.send("reload_#{target}")
       expect(associated.updated_at).to be >= source.updated_at
     end
   end

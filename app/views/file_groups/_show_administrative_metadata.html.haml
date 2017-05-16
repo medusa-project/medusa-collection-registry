@@ -28,5 +28,5 @@
   - if package_profile = @file_group.package_profile
     = link_to package_profile.name, package_profile_path(package_profile)
     (#{link_to package_profile.url, package_profile.url})
-= show_value (@file_group.file_size * 1.gigabyte).to_formatted_s(:human_size, precision: 3), 'Total file size'
+= show_value (@file_group.file_size * 1.gigabyte).to_s(:human_size, precision: 3), 'Total file size'
 = show_value @file_group.file_count.to_s(:delimited), 'Total files'
