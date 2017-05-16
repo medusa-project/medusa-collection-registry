@@ -34,8 +34,7 @@ gem 'ruby-filemagic', '0.7.0', require: 'filemagic'
 gem 'jbuilder'
 
 gem 'delayed_job_active_record'
-#Pin because later versions seem to have a problem with doing actions on the delayed jobs - they are aware of the problem
-gem 'delayed_job_web', '1.2.5'
+gem 'delayed_job_web'
 gem 'daemons'
 gem 'daemons-rails'
 
@@ -55,7 +54,6 @@ gem 'amqp_helper', '~>0.1.4', git: 'git://github.com/medusa-project/amqp_helper.
 
 gem 'sass-rails'
 gem 'coffee-rails'
-gem 'html5shiv-js-rails'
 
 #make sure node.js is installed for asset compilation - no longer use therubyracer
 
@@ -97,7 +95,7 @@ gem 'will_paginate-bootstrap'
 gem 'draper'
 
 gem 'uuid'
-gem 'paperclip'#, git: 'git://github.com/thoughtbot/paperclip.git'
+gem 'paperclip'
 
 gem 'font-awesome-rails'
 
