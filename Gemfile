@@ -15,9 +15,7 @@ gem 'haml-rails'
 #cf https://github.com/plataformatec/simple_form/issues/1427
 #cf https://github.com/plataformatec/simple_form/issues/1423
 gem 'simple_form', '~> 3.2.1'
-#auto_html 2.0 is breaking - need to fix up code before going, though right now I don't see that there is
-#an improvment worth doing it for
-gem 'auto_html', '~> 1.6.4'
+gem 'auto_html'
 gem 'ckeditor'
 gem 'simple_memoize'
 gem 'auto_strip_attributes'
