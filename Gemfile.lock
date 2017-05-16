@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/hading/bunny-mock.git
-  revision: f1bbe862760b2e1d7b354c260a93829a22ee6f9c
+  revision: 182a44a52d53b835eaf379e7562883b7bba9c11e
   specs:
-    bunny-mock (1.5.0)
+    bunny-mock (1.6.0)
       bunny (>= 1.7)
 
 GIT
