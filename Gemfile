@@ -42,7 +42,7 @@ gem 'daemons'
 gem 'daemons-rails'
 
 #image processing for file previews
-#problem installing 1.0.0 - couldn't compile dependency glib2(3.0.8) on the servers
+#problem installing 1.0.5 - couldn't compile dependency glib2(3.0.8) on the servers
 #revisit this later
 #I think that this may have to wait until we get off RHEL 6 on these servers - even by
 #hand I can't install the necessary libraries because of old dependencies.
