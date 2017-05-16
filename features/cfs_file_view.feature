@@ -99,7 +99,7 @@ Feature: Viewing CFS file information and content
       | well_formed              | true                                                      |
       | is_valid                 | true                                                      |
       | image_byte_order         | big endian                                                |
-      | image_compression_scheme | JPEG (old-style)                                          |
+      | image_compression_scheme | JPEG                                          |
       | image_color_space        | YCbCr                                                     |
 
 

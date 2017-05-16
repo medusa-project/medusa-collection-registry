@@ -19,7 +19,7 @@ class FitsData < ApplicationRecord
     simple_string_fields.each do |field, xpath|
       node = doc.at_xpath(xpath)
       value = node.present? ? node.text : nil
-      send("#{field}=", value.chomp)
+      send("#{field}=", value.try(:chomp))
     end
   end
 
