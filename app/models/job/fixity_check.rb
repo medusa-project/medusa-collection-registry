@@ -1,6 +1,6 @@
 require 'tempfile'
 
-class Job::FixityCheck < ActiveRecord::Base
+class Job::FixityCheck < ApplicationRecord
   belongs_to :user
   belongs_to :fixity_checkable, polymorphic: true
   belongs_to :cfs_directory

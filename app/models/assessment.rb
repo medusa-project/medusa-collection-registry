@@ -1,4 +1,4 @@
-class Assessment < ActiveRecord::Base
+class Assessment < ApplicationRecord
   include MedusaAutoHtml
   include EmailPersonAssociator
 

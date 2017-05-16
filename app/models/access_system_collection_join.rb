@@ -1,4 +1,4 @@
-class AccessSystemCollectionJoin < ActiveRecord::Base
+class AccessSystemCollectionJoin < ApplicationRecord
   belongs_to :access_system
   belongs_to :collection
 end

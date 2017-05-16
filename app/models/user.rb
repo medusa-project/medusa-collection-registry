@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
 
   validates_uniqueness_of :uid, allow_blank: false
   validates :email, allow_blank: false, uniqueness: true, email: true

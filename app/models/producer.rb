@@ -1,4 +1,4 @@
-class Producer < ActiveRecord::Base
+class Producer < ApplicationRecord
   include ActiveDateChecker
   include EmailPersonAssociator
   include MedusaAutoHtml

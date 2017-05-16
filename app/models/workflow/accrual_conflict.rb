@@ -1,4 +1,4 @@
-class Workflow::AccrualConflict < ActiveRecord::Base
+class Workflow::AccrualConflict < ApplicationRecord
   belongs_to :workflow_accrual_job,  class_name: 'Workflow::AccrualJob', foreign_key: 'workflow_accrual_job_id'
 
   def self.not_serious

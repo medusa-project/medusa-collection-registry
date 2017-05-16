@@ -1,4 +1,4 @@
-class Repository < ActiveRecord::Base
+class Repository < ApplicationRecord
   include ActiveDateChecker
   include Breadcrumb
   include CascadedEventable

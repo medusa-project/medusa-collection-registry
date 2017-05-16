@@ -1,4 +1,4 @@
-class FileExtension < ActiveRecord::Base
+class FileExtension < ApplicationRecord
   include RandomCfsFile
 
   validates_uniqueness_of :extension, allow_nil: false

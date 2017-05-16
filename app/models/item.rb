@@ -1,4 +1,4 @@
-class Item < ActiveRecord::Base
+class Item < ApplicationRecord
   belongs_to :project, touch: true
   has_one :workflow_item_ingest_request, :class_name => 'Workflow::ItemIngestRequest', dependent: :destroy
   belongs_to :cfs_directory

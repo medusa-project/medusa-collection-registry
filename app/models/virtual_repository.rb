@@ -1,4 +1,4 @@
-class VirtualRepository < ActiveRecord::Base
+class VirtualRepository < ApplicationRecord
   include Breadcrumb
 
   belongs_to :repository

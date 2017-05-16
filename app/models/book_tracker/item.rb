@@ -1,6 +1,6 @@
 module BookTracker
 
-  class Item < ActiveRecord::Base
+  class Item < ApplicationRecord
 
     CSV_HEADER = ['Bib ID', 'Medusa ID', 'OCLC Number', 'Object ID', 'Title',
                   'Author', 'Volume', 'Date', 'IA Identifier',

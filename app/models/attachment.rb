@@ -1,4 +1,4 @@
-class Attachment < ActiveRecord::Base
+class Attachment < ApplicationRecord
   include EmailPersonAssociator
 	email_person_association(:author)
 

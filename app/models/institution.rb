@@ -1,4 +1,4 @@
-class Institution < ActiveRecord::Base
+class Institution < ApplicationRecord
   has_many :repositories, dependent: :destroy
   validates :name, uniqueness: true, presence: true
 

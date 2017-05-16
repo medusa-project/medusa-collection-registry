@@ -1,4 +1,4 @@
-class FileGroup < ActiveRecord::Base
+class FileGroup < ApplicationRecord
   include Eventable
   include CascadedEventable
   include CascadedRedFlaggable

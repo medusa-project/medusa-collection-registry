@@ -1,4 +1,4 @@
-class Event < ActiveRecord::Base
+class Event < ApplicationRecord
   belongs_to :eventable, polymorphic: true, touch: true
   has_many :cascaded_event_joins, dependent: :destroy
 

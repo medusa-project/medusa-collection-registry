@@ -1,6 +1,6 @@
 module BookTracker
 
-  class Task < ActiveRecord::Base
+  class Task < ApplicationRecord
 
     after_initialize :init
     before_save :constrain_progress, :auto_complete

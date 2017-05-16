@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'sass'
-gem 'rails', "~> 4.2"
+gem 'rails', "~> 5.0"
 gem 'responders'
 
 gem 'pg'

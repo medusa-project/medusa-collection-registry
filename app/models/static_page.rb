@@ -1,3 +1,3 @@
-class StaticPage < ActiveRecord::Base
+class StaticPage < ApplicationRecord
 
 end

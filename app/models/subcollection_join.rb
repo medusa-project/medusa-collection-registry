@@ -1,4 +1,4 @@
-class SubcollectionJoin < ActiveRecord::Base
+class SubcollectionJoin < ApplicationRecord
 
   belongs_to :parent_collection, class_name: 'Collection', touch: true
   belongs_to :child_collection, class_name: 'Collection', touch: true

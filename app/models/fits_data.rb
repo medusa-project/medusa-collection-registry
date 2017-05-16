@@ -1,4 +1,4 @@
-class FitsData < ActiveRecord::Base
+class FitsData < ApplicationRecord
 
   belongs_to :cfs_file
 

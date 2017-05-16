@@ -1,4 +1,4 @@
-class CollectionVirtualRepositoryJoin < ActiveRecord::Base
+class CollectionVirtualRepositoryJoin < ApplicationRecord
   belongs_to :collection
   belongs_to :virtual_repository
 

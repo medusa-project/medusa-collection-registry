@@ -1,6 +1,6 @@
 require 'pathname'
 require 'set'
-class CfsDirectory < ActiveRecord::Base
+class CfsDirectory < ApplicationRecord
 
   include Uuidable
   include Breadcrumb

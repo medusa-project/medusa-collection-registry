@@ -1,4 +1,4 @@
-class FileFormatTestReason < ActiveRecord::Base
+class FileFormatTestReason < ApplicationRecord
 
   validates :label, uniqueness: true, presence: true
 

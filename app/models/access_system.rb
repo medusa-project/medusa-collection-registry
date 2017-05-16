@@ -1,4 +1,4 @@
-class AccessSystem < ActiveRecord::Base
+class AccessSystem < ApplicationRecord
   has_many :access_system_collection_joins, dependent: :destroy
   has_many :collections, through: :access_system_collection_joins
 

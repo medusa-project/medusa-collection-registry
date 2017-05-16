@@ -1,4 +1,4 @@
-class RedFlag < ActiveRecord::Base
+class RedFlag < ApplicationRecord
   belongs_to :red_flaggable, polymorphic: true, touch: true
 
   delegate :repository, to: :red_flaggable

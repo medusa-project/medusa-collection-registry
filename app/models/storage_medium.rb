@@ -1,3 +1,3 @@
-class StorageMedium < ActiveRecord::Base
+class StorageMedium < ApplicationRecord
 
 end

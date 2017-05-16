@@ -1,4 +1,4 @@
-class CascadedRedFlagJoin < ActiveRecord::Base
+class CascadedRedFlagJoin < ApplicationRecord
   belongs_to :cascaded_red_flaggable, polymorphic: true
   belongs_to :red_flag
 

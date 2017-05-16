@@ -1,4 +1,4 @@
-class PackageProfile < ActiveRecord::Base
+class PackageProfile < ApplicationRecord
   has_many :file_groups
   has_many :collections, -> {distinct}, through: :file_groups
 

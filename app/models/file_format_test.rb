@@ -1,4 +1,4 @@
-class FileFormatTest < ActiveRecord::Base
+class FileFormatTest < ApplicationRecord
 
   belongs_to :cfs_file, touch: true
   belongs_to :file_format_profile

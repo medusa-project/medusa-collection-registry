@@ -1,7 +1,7 @@
 require 'digest/md5'
 require 'set'
 
-class CfsFile < ActiveRecord::Base
+class CfsFile < ApplicationRecord
 
   include Eventable
   include CascadedEventable

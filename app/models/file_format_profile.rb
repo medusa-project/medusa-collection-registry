@@ -1,6 +1,6 @@
 #Note that we now label these in the interface as File Rendering Profiles, but
 #we haven't changed the model name, etc.
-class FileFormatProfile < ActiveRecord::Base
+class FileFormatProfile < ApplicationRecord
 
   STATUSES = %w(active inactive)
   validates_uniqueness_of :name, allow_blank: false

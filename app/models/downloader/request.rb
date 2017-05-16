@@ -1,4 +1,4 @@
-class Downloader::Request < ActiveRecord::Base
+class Downloader::Request < ApplicationRecord
 
   belongs_to :cfs_directory
 

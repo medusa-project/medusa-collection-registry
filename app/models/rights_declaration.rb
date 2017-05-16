@@ -1,4 +1,4 @@
-class RightsDeclaration < ActiveRecord::Base
+class RightsDeclaration < ApplicationRecord
   belongs_to :rights_declarable, polymorphic: true, touch: true
   before_validation :set_defaults
   before_validation :maybe_clear_custom_copyright

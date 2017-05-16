@@ -60,6 +60,10 @@ module MedusaCollectionRegistry
 
     config.react.addons = true
 
+    #TODO: Rails 4.2 -> 5.0. Need to explicitly throw(:abort) to halt ActiveRecord callback chains
+    #When that is fixed in the code this can be uncommented
+    #ActiveSupport.halt_callback_chains_on_return_false = false
+
   end
 end
 

@@ -1,4 +1,4 @@
-class Job::FitsFileExtensionBatch < ActiveRecord::Base
+class Job::FitsFileExtensionBatch < ApplicationRecord
   belongs_to :user
   belongs_to :file_extension
 

@@ -1,4 +1,4 @@
-class Job::FitsContentTypeBatch < ActiveRecord::Base
+class Job::FitsContentTypeBatch < ApplicationRecord
   belongs_to :user
   belongs_to :content_type
 

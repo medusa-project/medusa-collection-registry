@@ -1,4 +1,4 @@
-class ArchivedAccrualJob < ActiveRecord::Base
+class ArchivedAccrualJob < ApplicationRecord
   belongs_to :user
   belongs_to :file_group
   belongs_to :amazon_backup

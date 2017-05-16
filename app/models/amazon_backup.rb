@@ -1,5 +1,5 @@
 require 'fileutils'
-class AmazonBackup < ActiveRecord::Base
+class AmazonBackup < ApplicationRecord
   include AmazonBackupAmqp
 
   serialize :archive_ids

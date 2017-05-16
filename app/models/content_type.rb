@@ -1,4 +1,4 @@
-class ContentType < ActiveRecord::Base
+class ContentType < ApplicationRecord
   include RandomCfsFile
 
   validates_uniqueness_of :name, allow_blank: nil

@@ -1,7 +1,7 @@
 require 'registers_handle'
 require 'mods_helper'
 
-class Collection < ActiveRecord::Base
+class Collection < ApplicationRecord
   include MedusaAutoHtml
   include RegistersHandle
   include Uuidable

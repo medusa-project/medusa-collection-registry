@@ -1,4 +1,4 @@
-class Job::Base < ActiveRecord::Base
+class Job::Base < ApplicationRecord
 
   self.abstract_class = true
 

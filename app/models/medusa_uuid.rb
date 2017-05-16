@@ -1,6 +1,6 @@
 require 'utils/luhn'
 
-class MedusaUuid < ActiveRecord::Base
+class MedusaUuid < ApplicationRecord
   belongs_to :uuidable, polymorphic: true
 
   validates_uniqueness_of :uuidable_type, scope: :uuidable_id
