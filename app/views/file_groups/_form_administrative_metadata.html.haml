@@ -2,14 +2,14 @@
 = f.input :collection_id, as: :hidden, input_html: {value: @collection.id}
 = f.input :external_id, label: 'External ID'
 = f.input :contact_email, label: 'Contact Person Email', type: :email
-= f.input :producer_id, collection: producers_select_collection, required: :true, include_blank: false
+= f.input :producer_id, collection: producers_select_collection, include_blank: false
 - if @file_group.new_record? or @file_group.supports_cfs
   = f.input :cfs_directory_id, as: :select, include_blank: true, collection: cfs_file_group_root_select_collection(@file_group), label: 'Cfs root'
 = f.input :private_description
 = f.input :provenance_note, label: 'Provenance Note'
 = f.input :acquisition_method, label: 'Acquisition method', as: :select, include_blank: true, collection: FileGroup.acquisition_methods
 - if @file_group.new_record?
-  = f.input :storage_level, as: :select, include_blank: false, collection: FileGroup.storage_levels, required: true
+  = f.input :storage_level, as: :select, include_blank: false, collection: FileGroup.storage_levels
   %p
     Related file groups can only be defined for an already saved file group.
 - else
