@@ -15,7 +15,7 @@ gem 'haml-rails'
 #simple_form 3.3.1 was giving a problem with include_blank: false still including blanks, so we're pinning it back here
 #cf https://github.com/plataformatec/simple_form/issues/1427
 #cf https://github.com/plataformatec/simple_form/issues/1423
-gem 'simple_form'#, '~> 3.2.1'
+gem 'simple_form'
 gem 'auto_html'
 gem 'ckeditor'
 gem 'simple_memoize'
