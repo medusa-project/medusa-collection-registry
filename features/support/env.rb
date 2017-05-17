@@ -69,7 +69,7 @@ def last_json
   page.source
 end
 
-%i(selenium chrome webkit).each do |driver|
+%i(selenium chrome).each do |driver|
   Around("@#{driver}") do |scenario, block|
     begin
       Capybara.current_driver = driver

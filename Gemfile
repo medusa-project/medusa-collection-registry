@@ -150,8 +150,6 @@ group :test do
   #other js testing options
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
-  #We can start using this again when it support capybara 2.8
-  gem 'capybara-webkit'
   gem 'sunspot_test'
   gem 'connection_pool'
   #need my version of bunny-mock where the default exchange works as expected. Wait to see if the fix gets merged
