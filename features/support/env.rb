@@ -21,7 +21,7 @@ Capybara.match = :prefer_exact
 Capybara.server = :puma
 
 #set drivers
-Capybara.register_driver :selenium do |app|
+Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
 Capybara.javascript_driver = :poltergeist
@@ -69,21 +69,14 @@ def last_json
   page.source
 end
 
-Around('@selenium') do |scenario, block|
-  begin
-    Capybara.current_driver = :selenium
-    block.call
-  ensure
-    Capybara.use_default_driver
-  end
-end
-
-Around('@webkit') do |scenario, block|
-  begin
-    Capybara.current_driver = :webkit
-    block.call
-  ensure
-    Capybara.use_default_driver
+%w(selenium chrome webkit).each do |driver|
+  Around("@#{driver}") do |scenario, block|
+    begin
+      Capybara.current_driver = driver.to_sym
+      block.call
+    ensure
+      Capybara.use_default_driver
+    end
   end
 end
 
