@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.2
+-- Dumped from database version 9.6.3
 -- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
@@ -2976,6 +2976,65 @@ ALTER SEQUENCE medusa_uuids_id_seq OWNED BY medusa_uuids.id;
 
 
 --
+-- Name: repositories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE repositories (
+    id integer NOT NULL,
+    title character varying(255),
+    url character varying(255),
+    notes text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    address_1 character varying(255),
+    address_2 character varying(255),
+    city character varying(255),
+    state character varying(255),
+    zip character varying(255),
+    phone_number character varying(255),
+    email character varying(255),
+    contact_id integer,
+    notes_html text,
+    active_start_date date,
+    active_end_date date,
+    ldap_admin_domain character varying(255),
+    ldap_admin_group character varying(255),
+    institution_id integer
+);
+
+
+--
+-- Name: orphaned_events; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW orphaned_events AS
+ SELECT e.id
+   FROM (events e
+     LEFT JOIN cfs_files evt ON ((e.eventable_id = evt.id)))
+  WHERE (((e.eventable_type)::text = 'CfsFile'::text) AND (evt.id IS NULL))
+UNION
+ SELECT e.id
+   FROM (events e
+     LEFT JOIN cfs_directories evt ON ((e.eventable_id = evt.id)))
+  WHERE (((e.eventable_type)::text = 'CfsDirectory'::text) AND (evt.id IS NULL))
+UNION
+ SELECT e.id
+   FROM (events e
+     LEFT JOIN file_groups evt ON ((e.eventable_id = evt.id)))
+  WHERE (((e.eventable_type)::text = 'FileGroup'::text) AND (evt.id IS NULL))
+UNION
+ SELECT e.id
+   FROM (events e
+     LEFT JOIN collections evt ON ((e.eventable_id = evt.id)))
+  WHERE (((e.eventable_type)::text = 'Collection'::text) AND (evt.id IS NULL))
+UNION
+ SELECT e.id
+   FROM (events e
+     LEFT JOIN repositories evt ON ((e.eventable_id = evt.id)))
+  WHERE (((e.eventable_type)::text = 'Repository'::text) AND (evt.id IS NULL));
+
+
+--
 -- Name: package_profiles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3258,34 +3317,6 @@ CREATE SEQUENCE related_file_group_joins_id_seq
 --
 
 ALTER SEQUENCE related_file_group_joins_id_seq OWNED BY related_file_group_joins.id;
-
-
---
--- Name: repositories; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE repositories (
-    id integer NOT NULL,
-    title character varying(255),
-    url character varying(255),
-    notes text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    address_1 character varying(255),
-    address_2 character varying(255),
-    city character varying(255),
-    state character varying(255),
-    zip character varying(255),
-    phone_number character varying(255),
-    email character varying(255),
-    contact_id integer,
-    notes_html text,
-    active_start_date date,
-    active_end_date date,
-    ldap_admin_domain character varying(255),
-    ldap_admin_group character varying(255),
-    institution_id integer
-);
 
 
 --
