@@ -87,6 +87,7 @@ medusa:
   medusa_users_group: Library Medusa Users
   medusa_admins_group: Library Medusa Admins
   medusa_project_admins_group: Library Medusa Projects
+  medusa_superusers_group: Library Medusa Super Admins
   #Configuration for the amazon backup
   amazon:
     #AMQP queues to communicate with glacier server

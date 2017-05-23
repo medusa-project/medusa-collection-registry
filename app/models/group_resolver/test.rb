@@ -10,6 +10,7 @@ class GroupResolver::Test < GroupResolver::Base
   def is_member_of?(group, user)
     net_id = user.net_id rescue ''
     return false if group.blank?
+    return true if net_id.match(/super/) and (group == superuser_ad_group or group == user_ad_group)
     return true if net_id.match(/admin/) and (group == admin_ad_group or group == user_ad_group)
     return true if net_id.match(/project/) and (group == project_admin_ad_group or group == user_ad_group)
     return true if net_id.match(/manager/) and (group == user_ad_group or group.match(/manager/))
