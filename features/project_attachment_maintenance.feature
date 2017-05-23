@@ -4,7 +4,7 @@ Feature: Project attachment maintenance
   I want to maintain files attached to projects
 
   Background:
-    Given I am logged in as an admin
+    Given I am logged in as an project_mgr
     And the project with title 'Dogs' exists
     And I view the project with title 'Dogs'
     And I click on 'Attachments'
@@ -29,7 +29,6 @@ Feature: Project attachment maintenance
     And the project with title 'Dogs' should have 0 attachments
 
   Scenario: Update attachment from project as a manager
-    Given I relogin as a manager
     When I view the project with title 'Dogs'
     And I click on 'Attachments'
     And I click on 'Edit' in the attachments section

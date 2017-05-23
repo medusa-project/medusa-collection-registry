@@ -12,7 +12,7 @@ Feature: Project items mass edit
       | 30045623456789 | 76543  |       | Buster |             |             | batch_1 |             | Bustard    |
 
   Scenario: Mass edit project items
-    Given I am logged in as an admin
+    Given I am logged in as a project_mgr
     When I view the project with title 'Scanning'
     And I click on 'check_all'
     And I click on 'Mass edit'
@@ -33,7 +33,7 @@ Feature: Project items mass edit
       | 30078923456789 | batch_3 | Dee                   | RCAM      |
 
   Scenario: Mass edit project items doesn't change blank items when unchecked
-    Given I am logged in as an admin
+    Given I am logged in as a project_mgr
     When I view the project with title 'Scanning'
     And I click on 'check_all'
     And I click on 'Mass edit'
@@ -50,7 +50,7 @@ Feature: Project items mass edit
       | batch_1 | batch_2 |
 
   Scenario: Mass edit project items does change blank items when checked
-    Given I am logged in as an admin
+    Given I am logged in as a project_mgr
     When I view the project with title 'Scanning'
     And I click on 'check_all'
     And I click on 'Mass edit'

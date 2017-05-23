@@ -11,6 +11,7 @@ class GroupResolver::Test < GroupResolver::Base
     net_id = user.net_id rescue ''
     return false if group.blank?
     return true if net_id.match(/admin/) and (group == admin_ad_group or group == user_ad_group)
+    return true if net_id.match(/project/) and (group == project_admin_ad_group or group == user_ad_group)
     return true if net_id.match(/manager/) and (group == user_ad_group or group.match(/manager/))
     return true if net_id.match(/user/) and group == user_ad_group
     return false if net_id.match(/user/) or net_id.match(/outsider/) or net_id.match(/visitor/)

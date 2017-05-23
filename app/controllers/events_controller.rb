@@ -33,7 +33,7 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    authorize! :delete_event, @event.eventable
+    authorize! :destroy_event, @event.eventable
     @event.destroy!
     redirect_back(fallback_location: root_path)
   end

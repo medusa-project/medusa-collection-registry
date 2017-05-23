@@ -11,7 +11,7 @@ Feature: Project Item Accrual
       | 2  |                   | item_2 | false    |
       | 3  | item_3            |        | false    |
       | 4  | item_4            |        | true     |
-    And I am logged in as a manager
+    And I am logged in as a project_mgr
     When I view the project with title 'Scanning'
     And I click on 'check_all'
     And I click on 'Ingest items'
@@ -20,7 +20,7 @@ Feature: Project Item Accrual
       | item_1 | item_2 | item_3 |
     And the project item ingest workflow for the project with title 'Scanning' should not have items with ingest identifier:
       | item_4 |
-    And the project item ingest workflow for the project with title 'Scanning' should have user 'manager@example.com'
+    And the project item ingest workflow for the project with title 'Scanning' should have user 'project_mgr@example.com'
 
   Scenario: Receive email that ingest is starting
     Given the user 'manager@example.com' has a project item ingest workflow in state 'email_started'

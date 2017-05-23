@@ -20,4 +20,8 @@ class User < ApplicationRecord
     Settings.superusers.include?(self.email)
   end
 
+  def project_admin?
+    Application.group_resolver.is_project_admin?(self)
+  end
+
 end

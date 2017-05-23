@@ -86,6 +86,7 @@ medusa:
   #AD groups used to allow use and full administration of medusa
   medusa_users_group: Library Medusa Users
   medusa_admins_group: Library Medusa Admins
+  medusa_project_admins_group: Library Medusa Projects
   #Configuration for the amazon backup
   amazon:
     #AMQP queues to communicate with glacier server

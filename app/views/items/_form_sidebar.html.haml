@@ -11,7 +11,7 @@
       = link_to('Cancel', cancel_return, class: 'btn btn-default btn-sm')
     - if object.new_record?
       = f.button :submit, class: 'btn btn-primary btn-sm', value: 'Create and Exit', onclick: "$('.modal').modal('hide');"
-    - if object.persisted? and safe_can?(:delete, object)
+    - if object.persisted? and safe_can?(:destroy, object)
       = delete_button(object, options: {class: 'btn btn-danger btn-sm'})
 
   - if content_for?(:form_sidebar_extra)

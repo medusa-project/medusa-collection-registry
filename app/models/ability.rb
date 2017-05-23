@@ -2,7 +2,7 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    #medusa admins can do anything
+    #medusa admins can do almost anything - exceptions are explicitly removed later
     can :manage, :all if medusa_admin?(user)
     #Assessments - must be done for each assessable, where the real check occurs
     [Collection, FileGroup, ExternalFileGroup, BitLevelFileGroup, ObjectLevelFileGroup, Repository].each do |klass|
@@ -16,6 +16,9 @@ class Ability
         (attachable.is_a?(klass) and repository_manager?(user, attachable))
       end
     end
+    can [:create_attachment, :update_attachment, :destroy_attachment], Project do |project|
+      project_admin?(user)
+    end
     #Cfs controller - need to see if requested path belongs to a file group managed by user
     #The FitsRequest object is a helper for this
     can :create_fits, FitsRequest do |request|
@@ -24,12 +27,15 @@ class Ability
     can [:update, :create], Collection do |collection|
       repository_manager?(user, collection)
     end
-    can [:create, :update, :edit_item, :create_item, :delete_item], Project do |project|
-      repository_manager?(user, project)
+    can [:create, :update, :edit_item, :create_item, :destroy_item], Project do |project|
+      project_admin?(user) or repository_manager?(user, project)
+    end
+    can [:destroy], Project do |project|
+      project_admin?(user)
     end
     #Events - must be done for each eventable, where the real check occurs
     [FileGroup, BitLevelFileGroup, ObjectLevelFileGroup, ExternalFileGroup].each do |klass|
-      can [:create_event, :delete_event, :update_event], klass do |eventable|
+      can [:create_event, :destroy_event, :update_event], klass do |eventable|
         repository_manager?(user, eventable)
       end
     end
@@ -64,6 +70,10 @@ class Ability
 
   def medusa_admin?(user)
     Application.group_resolver.is_ad_admin?(user)
+  end
+
+  def project_admin?(user)
+    user.project_admin?
   end
 
   def repository_manager?(user, object)
