@@ -128,7 +128,7 @@ wait_delete_content delete_content restore_content email_restored_content email_
     transaction do
       file_group.destroy!
       Event.create!(eventable: file_group.collection, key: :file_group_delete_moved, actor_email: requester.email,
-                    note: "File Group #{file_group.id} - #{file_group.title} | Collection: #{file_group.collection.id}")
+                    note: "File Group #{file_group.id} - #{file_group.title} | Collection: #{file_group.collection.id} | Reason: #{requester_reason}")
     end
   end
 
