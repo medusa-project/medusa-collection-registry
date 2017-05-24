@@ -35,3 +35,12 @@ Feature: UUID resolution
     And the uuid of the cfs file with name 'dogs' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
     When I visit the object with uuid '3da0fae0-e3fa-012f-ac10-005056b22849-8'
     Then I should be on the view page for the cfs file with name 'dogs'
+
+  Scenario: Format is retained after redirection
+    Given PENDING
+    Given I am logged in as an admin
+    And the cfs file with name 'dogs' exists
+    And the uuid of the cfs file with name 'dogs' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
+    When I visit the object with uuid '3da0fae0-e3fa-012f-ac10-005056b22849-8' with format 'json'
+    Then I should be on the view page for the cfs file with name 'dogs' with format 'json'
+
