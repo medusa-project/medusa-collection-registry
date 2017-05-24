@@ -11,7 +11,7 @@ class UuidsController < ApplicationController
       return
     end
     object = uuid.uuidable
-    redirect_to polymorphic_path(object, params.slice(:format))
+    redirect_to polymorphic_path(object, format: params[:format])
   end
 
 end
