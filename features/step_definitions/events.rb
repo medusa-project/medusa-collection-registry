@@ -32,11 +32,11 @@ Then(/^the (.*) with (.*) '([^']*)' should have cascadable events with fields:$/
 end
 
 When(/^I view events for the (.*) with (.*) '([^']*)'$/) do |object_type, key, value|
-  visit specific_object_path(object_type, key, value, 'events')
+  visit specific_object_path(object_type, key, value, prefix: 'events')
 end
 
 Then /^I should be viewing events for the (.*) with (.*) '([^']*)'$/ do |object_type, key, value|
-  expect(current_path).to eq(specific_object_path(object_type, key, value, 'events'))
+  expect(current_path).to eq(specific_object_path(object_type, key, value, prefix: 'events'))
 end
 
 Then /^a (.*) is unauthorized to create an event for the file group titled '([^']*)'$/ do |user_type, title|

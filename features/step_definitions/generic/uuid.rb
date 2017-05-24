@@ -8,6 +8,11 @@ When(/^I visit the object with uuid '([^']*)'$/) do |uuid|
   visit uuid_path(uuid)
 end
 
+When(/^I visit the object with uuid '([^']*)' with format '([^']*)'$/) do |uuid, format|
+  visit uuid_path(uuid, format: format)
+end
+
+
 And /^I should see the uuid of the (.*) with (.*) '([^']*)'$/ do |object_type, key, value|
   steps "Then I should see '#{find_object(object_type, key, value).uuid}'"
 end

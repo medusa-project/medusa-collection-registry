@@ -34,7 +34,7 @@ Then /^a user is unauthorized to create an assessment for the collection titled 
 end
 
 Then /^I should be viewing assessments for the (.*) with (.*) '([^']*)'$/ do |object_type, key, value|
-  expect(current_path).to eq(specific_object_path(object_type, key, value, 'assessments'))
+  expect(current_path).to eq(specific_object_path(object_type, key, value, prefix: 'assessments'))
 end
 
 private
