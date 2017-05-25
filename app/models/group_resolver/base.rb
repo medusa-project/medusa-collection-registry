@@ -20,7 +20,7 @@ class GroupResolver::Base < Object
     user and is_member_of?(user_ad_group, user)
   end
 
-  def is_project_admin?(user)
+  def is_ad_project_admin?(user)
     user and is_member_of?(project_admin_ad_group, user)
   end
 

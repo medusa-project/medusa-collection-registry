@@ -21,7 +21,7 @@ class User < ApplicationRecord
   end
 
   def project_admin?
-    Application.group_resolver.is_project_admin?(self)
+    Application.group_resolver.is_ad_project_admin?(self)
   end
 
 end
