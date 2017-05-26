@@ -14,5 +14,14 @@ namespace :medusa do
       CfsDirectory.update_all_tree_stats_from_db
     end
   end
+
+  namespace :ct_and_fe_stats do
+    desc "Refresh cache tables for content types and file extensions"
+    task refresh: :environment do
+      DbCacheUpdater.update_content_type_cache
+      DbCacheUpdater.update_file_extension_cache
+    end
+  end
+
 end
 
