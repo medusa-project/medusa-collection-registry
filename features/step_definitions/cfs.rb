@@ -89,6 +89,11 @@ And(/^there should be no physical cfs directory '(.*)'$/) do |path|
   expect(Dir.exist?(File.join(CfsRoot.instance.path, path))).to be_falsey
 end
 
+And(/^there should be a physical cfs directory '(.*)'$/) do |path|
+  expect(Dir.exist?(File.join(CfsRoot.instance.path, path))).to be_truthy
+end
+
+
 def ensure_cfs_path(path)
   FileUtils.mkdir_p(File.join(CfsRoot.instance.path, path))
 end
