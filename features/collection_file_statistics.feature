@@ -19,7 +19,8 @@ Feature: Collection file statistics
 
 
   Scenario: View file statistics section of collection
-    When I view the collection with title 'Animals'
+    When I refresh file stat caches
+    And I view the collection with title 'Animals'
     Then I should see the file stats by content type table
     And I should see the file stats by file extension table
     And I should see all of:
