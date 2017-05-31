@@ -4,7 +4,7 @@
 class ReAddFitsSerializedIndexToCfsFiles < ActiveRecord::Migration[5.0]
   INDEX_NAME = 'idx_cfs_files_fits_serialized'
   def up
-    sql = "CREATE INDEX IF NOT EXISTS #{INDEX_NAME}  ON cfs_files (id) WHERE NOT fits_serialized"
+    sql = "CREATE INDEX #{INDEX_NAME}  ON cfs_files (id) WHERE NOT fits_serialized"
     ActiveRecord::Base.connection.execute(sql)
   end
 
