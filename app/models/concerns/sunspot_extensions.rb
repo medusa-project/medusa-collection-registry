@@ -6,6 +6,8 @@ module SunspotExtensions
 
   module ClassMethods
 
+    #use solr to get a row count - for classes with a large number of objects
+    #this should be faster than Class.count
     def solr_count
       solr_search do
         fulltext ''
