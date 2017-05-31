@@ -360,7 +360,11 @@ class CfsFile < ApplicationRecord
   end
 
   def self.random
-    self.offset(rand(self.count)).first
+    self.offset(rand(self.fast_count)).first
+  end
+
+  def self.fast_count
+    BitLevelFileGroup.sum(:total_files)
   end
 
 end

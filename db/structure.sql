@@ -933,6 +933,32 @@ $$;
 
 
 --
+-- Name: update_cache_content_type_stats_by_collection(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION update_cache_content_type_stats_by_collection() RETURNS void
+    LANGUAGE sql
+    AS $$
+    DELETE FROM cache_content_type_stats_by_collection;
+    INSERT INTO cache_content_type_stats_by_collection (collection_id, content_type_id, name, file_count, file_size)
+      (SELECT collection_id, content_type_id, name, file_count, file_size FROM view_file_content_type_stats_by_collection);
+$$;
+
+
+--
+-- Name: update_cache_file_extension_stats_by_collection(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION update_cache_file_extension_stats_by_collection() RETURNS void
+    LANGUAGE sql
+    AS $$
+    DELETE FROM cache_file_extension_stats_by_collection;
+    INSERT INTO cache_file_extension_stats_by_collection (collection_id, file_extension_id, extension, file_count, file_size)
+      (SELECT collection_id, file_extension_id, extension, file_count, file_size FROM view_file_extension_stats_by_collection);
+$$;
+
+
+--
 -- Name: virus_scans_touch_file_group(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1627,6 +1653,32 @@ CREATE SEQUENCE book_tracker_tasks_id_seq
 --
 
 ALTER SEQUENCE book_tracker_tasks_id_seq OWNED BY book_tracker_tasks.id;
+
+
+--
+-- Name: cache_content_type_stats_by_collection; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE cache_content_type_stats_by_collection (
+    collection_id integer,
+    content_type_id integer,
+    name character varying,
+    file_count integer,
+    file_size numeric
+);
+
+
+--
+-- Name: cache_file_extension_stats_by_collection; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE cache_file_extension_stats_by_collection (
+    collection_id integer,
+    file_extension_id integer,
+    extension character varying,
+    file_count integer,
+    file_size numeric
+);
 
 
 --
@@ -3693,16 +3745,16 @@ CREATE VIEW view_cfs_files_to_parents AS
 --
 
 CREATE VIEW view_file_content_type_stats_by_collection AS
- SELECT ct.id AS content_type_id,
+ SELECT v.collection_id,
+    ct.id AS content_type_id,
     ct.name,
-    p.collection_id,
-    COALESCE(sum(COALESCE(f.size, (0)::numeric)), (0)::numeric) AS file_size,
-    count(f.id) AS file_count
-   FROM ((content_types ct
-     JOIN cfs_files f ON ((ct.id = f.content_type_id)))
-     JOIN view_cfs_files_to_parents p ON ((f.id = p.cfs_file_id)))
-  GROUP BY ct.id, ct.name, p.collection_id
-  ORDER BY ct.name;
+    count(*) AS file_count,
+    COALESCE(sum(COALESCE(f.size, (0)::numeric))) AS file_size
+   FROM cfs_files f,
+    view_cfs_files_to_parents v,
+    content_types ct
+  WHERE ((f.id = v.cfs_file_id) AND (f.content_type_id = ct.id))
+  GROUP BY v.collection_id, ct.id, ct.name;
 
 
 --
@@ -3727,16 +3779,16 @@ CREATE VIEW view_file_content_type_stats_by_repository AS
 --
 
 CREATE VIEW view_file_extension_stats_by_collection AS
- SELECT fe.id AS file_extension_id,
+ SELECT v.collection_id,
+    fe.id AS file_extension_id,
     fe.extension,
-    p.collection_id,
-    COALESCE(sum(COALESCE(f.size, (0)::numeric)), (0)::numeric) AS file_size,
-    count(f.id) AS file_count
-   FROM ((file_extensions fe
-     JOIN cfs_files f ON ((fe.id = f.file_extension_id)))
-     JOIN view_cfs_files_to_parents p ON ((f.id = p.cfs_file_id)))
-  GROUP BY fe.id, fe.extension, p.collection_id
-  ORDER BY fe.extension;
+    count(*) AS file_count,
+    COALESCE(sum(COALESCE(f.size, (0)::numeric))) AS file_size
+   FROM cfs_files f,
+    view_cfs_files_to_parents v,
+    file_extensions fe
+  WHERE ((f.id = v.cfs_file_id) AND (f.file_extension_id = fe.id))
+  GROUP BY v.collection_id, fe.id, fe.extension;
 
 
 --
@@ -5468,6 +5520,13 @@ CREATE UNIQUE INDEX fixity_object ON job_fixity_checks USING btree (fixity_check
 
 
 --
+-- Name: idx_cfs_files_fits_serialized; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_cfs_files_fits_serialized ON cfs_files USING btree (id) WHERE (NOT fits_serialized);
+
+
+--
 -- Name: idx_cfs_files_lower_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5654,6 +5713,34 @@ CREATE INDEX index_book_tracker_items_on_title ON book_tracker_items USING btree
 --
 
 CREATE INDEX index_book_tracker_items_on_volume ON book_tracker_items USING btree (volume);
+
+
+--
+-- Name: index_cache_content_type_stats_by_collection_on_collection_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cache_content_type_stats_by_collection_on_collection_id ON cache_content_type_stats_by_collection USING btree (collection_id);
+
+
+--
+-- Name: index_cache_content_type_stats_by_collection_on_content_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cache_content_type_stats_by_collection_on_content_type_id ON cache_content_type_stats_by_collection USING btree (content_type_id);
+
+
+--
+-- Name: index_cache_file_extension_stats_by_collection_fe_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cache_file_extension_stats_by_collection_fe_id ON cache_file_extension_stats_by_collection USING btree (file_extension_id);
+
+
+--
+-- Name: index_cache_file_extension_stats_by_collection_on_collection_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cache_file_extension_stats_by_collection_on_collection_id ON cache_file_extension_stats_by_collection USING btree (collection_id);
 
 
 --
@@ -7462,6 +7549,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170306185148'),
 ('20170309204228'),
 ('20170331185713'),
-('20170516212747');
+('20170516212747'),
+('20170526185604'),
+('20170526185618'),
+('20170531152741');
 
 

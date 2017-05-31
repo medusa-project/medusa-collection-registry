@@ -16,7 +16,7 @@ class Producer < ApplicationRecord
   standard_auto_html :notes
 
   def destroyable?
-    throw(:abort) if self.file_groups.count > 0
+    throw(:abort) unless self.file_groups.empty?
     true
   end
 

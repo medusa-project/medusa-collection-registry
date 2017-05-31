@@ -95,7 +95,7 @@ SELECT STATS.content_type_id, STATS.name, STATS.file_size, STATS.file_count, COA
 FROM
   (SELECT content_type_id, name, SUM(file_size) AS file_size,
       SUM(file_count) AS file_count
-   FROM view_file_content_type_stats_by_collection
+   FROM cache_content_type_stats_by_collection
    WHERE collection_id IN #{id_string}
    GROUP BY content_type_id, name) STATS
 LEFT JOIN
@@ -114,7 +114,7 @@ SELECT STATS.file_extension_id, STATS.extension, STATS.file_size, STATS.file_cou
 FROM
   (SELECT file_extension_id, extension, SUM(file_size) AS file_size,
       SUM(file_count) AS file_count
-   FROM view_file_extension_stats_by_collection
+   FROM cache_file_extension_stats_by_collection
    WHERE collection_id IN #{id_string}
    GROUP BY file_extension_id, extension) STATS
 LEFT JOIN
