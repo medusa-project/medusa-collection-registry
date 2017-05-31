@@ -19,7 +19,7 @@ module SunspotExtensions
     #then read the files back in keeping track of differences in two sets. Then we can
     #trigger the appropriate action on each set.
     #We also provide the option to just generate the files and leave them on the filesystem
-    #for processing by diff, etc.
+    #for processing by comm, diff
     def solr_sync(generate_files_only: true)
       working_directory = File.join(Dir.tmpdir, "solr_sync_#{self.to_s}_#{UUID.generate}")
       FileUtils.mkdir_p(working_directory)
@@ -28,14 +28,14 @@ module SunspotExtensions
       sorted_solr_ids_file = File.join(working_directory, 'sorted_solr_ids')
       db_ids_file = File.join(working_directory, 'db_ids')
       sorted_db_ids_file = File.join(working_directory, 'sorted_db_ids')
+      only_solr_ids_file = File.join(working_directory, 'only_solr_ids')
+      only_db_ids_file = File.join(working_directory, 'only_db_ids')
       get_solr_ids(solr_ids_file, sorted_solr_ids_file)
       get_db_ids(db_ids_file, sorted_db_ids_file)
-      solr_ids_set = Set.new
-      db_ids_set = Set.new
       if generate_files_only
         puts "Sync files in: #{working_directory} for manual inspection."
       else
-        analyze_ids(sorted_solr_ids_file, sorted_db_ids_file, solr_ids_set, db_ids_set)
+        analyze_ids(sorted_solr_ids_file, sorted_db_ids_file, only_solr_ids_file, only_db_ids_file)
         remove_orphans(solr_ids_set)
         add_missing(db_ids_set)
       end
@@ -57,7 +57,7 @@ module SunspotExtensions
           cursor = search.results.next_page_cursor
         end
       end
-      system('sort', '-n', '-o', sorted_file, unsorted_file)
+      system('sort', '-o', sorted_file, unsorted_file)
     end
 
     def get_solr_ids_search(cursor)
@@ -74,18 +74,17 @@ module SunspotExtensions
           f.puts row['id'].to_s
         end
       end
-      system('sort', '-n', '-o', sorted_file, unsorted_file)
+      system('sort', '-o', sorted_file, unsorted_file)
     end
 
-    #The main challenge here is to do this somewhat efficiently, i.e. without blowing up
-    #memory. Since the files are numerically sorted we can do this. We might also be able
-    #to do it with something like diff.
-    def analyze_ids(solr_ids_file, db_ids_file, solr_ids_set, db_ids_set)
-      raise RuntimeError, 'Not yet implemented'
+    def analyze_ids(solr_ids_file, db_ids_file, only_solr_ids_file, only_db_ids_file)
+      system("comm -2 -3 '#{solr_ids_file}' #{db_ids_file} > #{only_solr_ids_file}")
+      system("comm -1 -3 '#{solr_ids_file}' #{db_ids_file} > #{only_db_ids_file}")
     end
 
-    def remove_orphans(solr_ids_set)
-      solr_ids_set.each do |id|
+    def remove_orphans(only_solr_ids_file)
+      File.open(only_solr_ids_file).each_line do |id|
+        id.chomp!
         new.tap do |object|
           new.id = id
           object.solr_remove_from_index
@@ -94,8 +93,9 @@ module SunspotExtensions
       Sunspot.commit
     end
 
-    def add_missing(db_ids_set)
-      db_ids_set.each do |id|
+    def add_missing(only_db_ids_file)
+      File.open(only_db_ids_file).each_line do |id|
+        id.chomp!
         Sunspot.index find(id)
       end
       Sunspot.commit
