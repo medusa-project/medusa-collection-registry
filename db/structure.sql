@@ -5520,6 +5520,13 @@ CREATE UNIQUE INDEX fixity_object ON job_fixity_checks USING btree (fixity_check
 
 
 --
+-- Name: idx_cfs_files_fits_serialized; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_cfs_files_fits_serialized ON cfs_files USING btree (id) WHERE (NOT fits_serialized);
+
+
+--
 -- Name: idx_cfs_files_lower_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7544,6 +7551,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170331185713'),
 ('20170516212747'),
 ('20170526185604'),
-('20170526185618');
+('20170526185618'),
+('20170531152741');
 
 
