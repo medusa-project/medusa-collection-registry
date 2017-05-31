@@ -28,7 +28,7 @@ class CfsDirectoriesController < ApplicationController
 
   def export
     authorize! :export, @directory.file_group
-    @files_present = @directory.cfs_files.count > 0
+    @files_present = !@directory.cfs_files.empty?
     Downloader::Request.create_for(@directory, current_user, recursive: false) if @files_present
   end
 
