@@ -1,8 +1,9 @@
 .row
   .col-sm-6
     %h3
-      - now = Time.now.strftime('%m/%d/%Y, %I:%M:%S%P %Z')
-      File Statistics (as of #{now})
+      File Statistics
+      %p
+        Some statistics are cached and may be slightly out of date.
   .col-sm-6
     .pull-right
       = link_to 'CSV', file_stats_dashboard_path(format: :csv), class: 'btn btn-default'
