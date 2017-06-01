@@ -1,8 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'sass'
-#TODO: going to 5.1 is blocked by delayed_job_active_record - 4.1.1 doesn't yet support it
-gem 'rails', "~> 5.0"
+gem 'rails', "~> 5.1"
 gem 'responders'
 
 gem 'pg'

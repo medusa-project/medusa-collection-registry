@@ -10,7 +10,7 @@ module EmailPersonAssociator
 
   module ClassMethods
     def email_person_association(attr_name)
-      belongs_to attr_name, class_name: Person
+      belongs_to attr_name, class_name: 'Person'
       define_method :"#{attr_name}_email" do
         self.send(attr_name).try(:email)
       end

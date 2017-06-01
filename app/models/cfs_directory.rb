@@ -257,16 +257,16 @@ class CfsDirectory < ApplicationRecord
 
     #If the cfs directory had a present value for file_group_id before saving
     #and it changed then cancel the jobs in the old assessment.
-    if parent_type_was == 'FileGroup' and parent_id_changed?
-      Job::CfsInitialFileGroupAssessment.where(file_group_id: parent_id_was).each do |assessment|
+    if parent_type_before_last_save == 'FileGroup' and saved_change_to_parent_id?
+      Job::CfsInitialFileGroupAssessment.where(file_group_id: parent_id_before_last_save).each do |assessment|
         assessment.destroy_queued_jobs_and_self
       end
-      Job::CfsInitialDirectoryAssessment.where(file_group_id: parent_id_was, cfs_directory_id: self.id).each do |assessment|
+      Job::CfsInitialDirectoryAssessment.where(file_group_id: parent_id_before_last_save, cfs_directory_id: self.id).each do |assessment|
         assessment.destroy_queued_jobs_and_self
       end
     end
     #If there is a new, present value for file_group_id then schedule the cfs assessment
-    if parent_type == 'FileGroup' and parent_id_changed?
+    if parent_type == 'FileGroup' and saved_change_to_parent_id?
       self.reload_parent.schedule_initial_cfs_assessment
     end
   end
