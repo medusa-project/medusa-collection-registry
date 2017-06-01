@@ -22,4 +22,4 @@
 .row
   = simple_form_for :upload_items, html: {multipart: true, class: 'form-horizontal'}, url: upload_items_project_path(@project)  do |f|
     = f.input :items, as: :file, label: 'Items file', required: false
-    = f.button :submit, class: 'btn btn-primary', value: "Upload"
+    = f.button :submit, class: 'btn btn-primary', value: 'Upload'

@@ -97,7 +97,7 @@
       %span.glyphicon.glyphicon-export
       Export as CSV
 
-%input{type: "hidden", name: "num_results", value: "#{@items.total_entries}"}
+%input{type: 'hidden', name: 'num_results', value: "#{@items.total_entries}"}
 
 #items_list
   = render partial: 'items', locals: { items: @items, next_page_url: @next_page_url }

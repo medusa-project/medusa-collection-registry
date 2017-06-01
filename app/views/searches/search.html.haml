@@ -1,5 +1,5 @@
 %ul.nav.nav-tabs#search_tables
-  - @helpers.each.with_index do |helper, i|
+  - @helpers.each do |helper|
     %li
       %a{href: "##{helper.tab_id}", 'data-toggle' => 'tab', title: helper.tab_label}
         = helper.tab_label

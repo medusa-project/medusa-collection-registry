@@ -12,7 +12,7 @@
           .col-sm-2
             = f.label :reformatting_date, required: false
           .col-sm-1
-            = f.input :"update_reformatting_date", label: false, as: :boolean
+            = f.input :'update_reformatting_date', label: false, as: :boolean
           .col-sm-7
             = f.input :reformatting_date, label: false, required: false, as: :string, input_html: {class: 'datepicker', value: ''}
         = render 'item_mass_edit_field_row', f: f, field: :reformatting_operator
@@ -20,7 +20,7 @@
           .col-sm-2
             = f.label :equipment, required: false
           .col-sm-1
-            = f.input :"update_equipment", label: false, as: :boolean
+            = f.input :'update_equipment', label: false, as: :boolean
           .col-sm-9
             = f.input :equipment, label: false, required: false, as: :select, collection: Item.equipment_types, allow_blank: true
         .row
