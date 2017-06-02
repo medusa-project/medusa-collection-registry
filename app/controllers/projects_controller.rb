@@ -51,7 +51,7 @@ class ProjectsController < ApplicationController
   end
 
   def mass_action
-    #authorize! :update, @project
+    authorize! :update, @project
     case params[:commit]
       when 'Mass update'
         mass_update(params[:mass_action])

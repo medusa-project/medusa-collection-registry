@@ -48,7 +48,14 @@ class ApplicationController < ActionController::Base
 
   def redirect_non_logged_in_user
     session[:login_return_uri] = request.env['REQUEST_URI']
-    redirect_to(login_path)
+    respond_to do |format|
+      format.js do
+        render 'shared/unauthenticated'
+      end
+      format.html do
+        redirect_to(login_path)
+      end
+    end
   end
 
   def logged_in?
