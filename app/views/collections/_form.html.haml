@@ -1,13 +1,16 @@
 = simple_form_for @collection, html: { class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
   .row
-    = render partial: 'shared/form_sidebar', locals: {f: f, object: @collection, cancel_return: (@repository if @collection.new_record?)}
+    = render partial: 'shared/form_sidebar', locals: {f: f, object: @collection, cancel_return: (@collection.repository if @collection.new_record?)}
     .col-sm-9
       .tabbable
         = render partial: 'shared/tab_header', locals: {id: 'edit-tabs', tabs: collection_form_tab_list}
         .tab-content
           #descriptive-metadata.tab-pane.active
             = f.input :title
-            = f.association :repository, collection: repository_select_collection, include_blank: false, selected: @repository.id
+            - if @collection.repository
+              = f.association :repository, collection: @repositories, include_blank: false, selected: @collection.repository.id
+            - else
+              = f.association :repository, collection: @repositories, required: true
             = f.input :description
             = f.input :access_url, as: :string, label: 'Access URL'
             = f.input :physical_collection_url, as: :string, label: 'Physical collection URL'
@@ -25,4 +28,7 @@
           #rights-metadata.tab-pane
             = render partial: 'rights_declarations/nested_form', locals: {containing_form: f, rights_declaration: @collection.rights_declaration}
           #subcollections.tab-pane
-            = f.association :child_collections, as: :check_boxes, collection: @collection.peer_collections, label: false
+            - if @collection.repository
+              = f.association :child_collections, as: :check_boxes, collection: @collection.peer_collections, label: false
+            - else
+              No subcollections are available until this collection is saved with a repository.

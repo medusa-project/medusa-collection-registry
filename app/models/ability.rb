@@ -69,7 +69,7 @@ class Ability
   end
 
   def medusa_admin?(user)
-    Application.group_resolver.is_ad_admin?(user)
+    user&.medusa_admin?
   end
 
   def project_admin?(user)

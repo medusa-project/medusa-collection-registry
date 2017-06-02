@@ -24,4 +24,8 @@ class User < ApplicationRecord
     Application.group_resolver.is_ad_project_admin?(self)
   end
 
+  def medusa_admin?
+    Application.group_resolver.is_ad_admin?(self)
+  end
+
 end

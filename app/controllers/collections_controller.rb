@@ -14,7 +14,7 @@ class CollectionsController < ApplicationController
     @projects = @collection.projects
     respond_to do |format|
       format.html
-      format.xml { render xml: @collection.to_mods }
+      format.xml {render xml: @collection.to_mods}
       format.json
     end
   end
@@ -35,6 +35,7 @@ class CollectionsController < ApplicationController
   end
 
   def edit
+    @repositories = repository_select_collection(current_user)
     authorize! :update, @collection
   end
 
@@ -50,20 +51,30 @@ class CollectionsController < ApplicationController
   def new
     @collection = Collection.new
     @collection.rights_declaration = RightsDeclaration.new(rights_declarable_type: 'Collection')
-    @repository = Repository.find(params[:repository_id]) rescue Repository.order(:title).first
-    @collection.repository = @repository
-    authorize! :create, @collection
+    @repositories = repository_select_collection(current_user)
+    if params[:repository_id]
+      repository = Repository.find(params[:repository_id]) if params[:repository_id]
+      @collection.repository = repository
+      authorize! :create, @collection
+    else
+      if @repositories.blank?
+        raise CanCan::AccessDenied.new('Not authorized to create collections in any repository.', :create, Repository)
+      end
+    end
   end
 
   def create
     #this is a tiny bit unintuitive, but we have to do enough at the start to perform authorization
-    @repository = Repository.find(params[:collection][:repository_id]) rescue Repository.order(:title).first
     @collection = Collection.new
-    @collection.repository = @repository
-    authorize! :create, @collection
-    if @collection.update_attributes(allowed_params)
+    @collection.repository = Repository.find(params[:collection][:repository_id]) rescue nil
+    authorize! :create, @collection if @collection.repository
+    if @collection.repository and @collection.update_attributes(allowed_params)
       redirect_to collection_path(@collection)
     else
+      @repositories = repository_select_collection(current_user)
+      if @repositories.blank?
+        raise CanCan::AccessDenied.new('Not authorized to create collections in any repository.', :create, Repository)
+      end
       render 'new'
     end
   end
@@ -75,8 +86,8 @@ class CollectionsController < ApplicationController
     @collections = Collection.order(:title).includes(:repository, :preservation_priority, :contact)
     respond_to do |format|
       format.html
-      format.csv { send_data collections_to_csv(@collections), type: 'text/csv', filename: 'collections.csv' }
-      format.json { @collections.includes(:medusa_uuid) }
+      format.csv {send_data collections_to_csv(@collections), type: 'text/csv', filename: 'collections.csv'}
+      format.json {@collections.includes(:medusa_uuid)}
     end
   end
 
@@ -97,7 +108,7 @@ class CollectionsController < ApplicationController
 
   def show_file_stats
     respond_to do |format|
-      format.html { render partial: 'file_stats_table', layout: false }
+      format.html {render partial: 'file_stats_table', layout: false}
       format.csv do
         content_type_hashes = load_collection_content_type_stats(@collection)
         file_extension_hashes = load_collection_file_extension_stats(@collection)
@@ -156,6 +167,14 @@ SQL
     ON FES.file_extension_id = FEC.file_extension_id
     WHERE collection_id = $1
 SQL
+  end
+
+  def repository_select_collection(user)
+    if user.medusa_admin?
+      Repository.order(:title).collect {|repository| [repository.title, repository.id]}
+    else
+      Repository.order(:title).managed_by(user)
+    end
   end
 
 end

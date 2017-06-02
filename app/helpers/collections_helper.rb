@@ -1,11 +1,7 @@
 module CollectionsHelper
 
   def access_system_select_collection
-    AccessSystem.all.collect { |system| [system.name, system.id] }
-  end
-
-  def repository_select_collection
-    Repository.order(:title).collect { |repository| [repository.title, repository.id] }
+    AccessSystem.all.collect {|system| [system.name, system.id]}
   end
 
   def collection_confirm_message
@@ -28,8 +24,8 @@ module CollectionsHelper
   end
 
   def load_collection_file_stats
-    fe_thread = Thread.new { @file_extension_hashes = load_collection_file_extension_stats(@collection) }
-    ct_thread = Thread.new { @content_type_hashes = load_collection_content_type_stats(@collection) }
+    fe_thread = Thread.new {@file_extension_hashes = load_collection_file_extension_stats(@collection)}
+    ct_thread = Thread.new {@content_type_hashes = load_collection_content_type_stats(@collection)}
     fe_thread.join
     ct_thread.join
   end

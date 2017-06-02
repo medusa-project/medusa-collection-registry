@@ -54,5 +54,9 @@ class Repository < ApplicationRecord
   def parent
     nil
   end
-  
+
+  def self.managed_by(user)
+    order(:title).select {|repository| repository.manager?(user)}
+  end
+
 end
