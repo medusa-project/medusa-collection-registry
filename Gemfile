@@ -83,6 +83,7 @@ gem 'capistrano-rails'
 gem 'capistrano-bundler'
 gem 'capistrano-rvm'
 gem 'capistrano-passenger'
+gem 'capistrano-yarn'
 
 #memory/active record usage monitoring
 gem 'oink'
