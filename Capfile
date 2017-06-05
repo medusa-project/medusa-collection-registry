@@ -25,6 +25,8 @@ require 'capistrano/rails/assets'
 #require 'capistrano/passenger'
 #TODO maybe reinstate when we can have an updated nodejs - 4.0 or higher is required
 #require 'capistrano/yarn'
+require 'capistrano/scm/git'
+install_plugin Capistrano::SCM::Git
 
 # Load custom tasks from `lib/capistrano/tasks' if you have any defined
 Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
