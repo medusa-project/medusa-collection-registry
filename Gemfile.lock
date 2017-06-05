@@ -99,7 +99,7 @@ GEM
     bunny (2.7.0)
       amq-protocol (>= 2.2.0)
     byebug (9.0.6)
-    cancan (1.6.10)
+    cancancan (2.0.0)
     capistrano (3.8.1)
       airbrussh (>= 1.0.0)
       i18n
@@ -478,7 +478,7 @@ DEPENDENCIES
   bootstrap-sass
   bunny-mock!
   byebug
-  cancan
+  cancancan
   capistrano-bundler
   capistrano-passenger
   capistrano-rails

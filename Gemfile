@@ -73,7 +73,7 @@ gem 'nokogiri'
 
 gem 'omniauth'
 gem 'omniauth-shibboleth'
-gem 'cancan'
+gem 'cancancan'
 gem 'handle-server', '~> 1.0.1', git: 'git://github.com/medusa-project/handle-server.git'
 gem 'httparty'
 gem 'net-ldap'
