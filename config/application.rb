@@ -52,15 +52,12 @@ module MedusaCollectionRegistry
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    config.assets.unknown_asset_fallback = false
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.3'
+    config.assets.version = '1.4'
 
     config.react.addons = true
-
-    #TODO: Rails 4.2 -> 5.0. Need to explicitly throw(:abort) to halt ActiveRecord callback chains
-    #When that is fixed in the code this can be uncommented
-    #ActiveSupport.halt_callback_chains_on_return_false = false
 
   end
 end

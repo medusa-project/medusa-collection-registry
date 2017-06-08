@@ -2,6 +2,7 @@ require 'fileutils'
 class Workflow::FileGroupDelete < Workflow::Base
 
   belongs_to :file_group
+  belongs_to :collection, foreign_key: 'cached_collection_id'
   belongs_to :requester, class_name: 'User'
   belongs_to :approver, class_name: 'User'
 
@@ -49,7 +50,6 @@ wait_delete_content delete_content restore_content email_restored_content email_
     delete_db_backup_tables
     FileUtils.rm_rf(holding_directory_path)
     delete_amazon_backups
-    collection = Collection.find_by(id: cached_collection_id)
     Event.create!(eventable: collection, key: :file_group_delete_final, actor_email: requester.email,
                   note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{cached_collection_id}") if collection.present?
     be_in_state_and_requeue('email_requester_final_removal')
@@ -60,8 +60,8 @@ wait_delete_content delete_content restore_content email_restored_content email_
     restore_db_content
     file_group.after_restore
     AmazonBackup.create_and_schedule(requester, file_group.cfs_directory) if Settings.medusa.fg_delete.amazon_backup_on_restore
-    Event.create!(eventable: file_group.collection, key: :file_group_delete_restored, actor_email: requester.email,
-                  note: "File Group #{file_group.id} - #{file_group.title} | Collection: #{file_group.collection.id}")
+    Event.create!(eventable: collection, key: :file_group_delete_restored, actor_email: requester.email,
+                  note: "File Group #{file_group.id} - #{file_group.title} | Collection: #{collection.id}")
     be_in_state_and_requeue('email_restored_content')
   end
 
@@ -127,8 +127,8 @@ wait_delete_content delete_content restore_content email_restored_content email_
     file_group.cfs_directory.destroy_tree_from_leaves if file_group.cfs_directory.present?
     transaction do
       file_group.destroy!
-      Event.create!(eventable: file_group.collection, key: :file_group_delete_moved, actor_email: requester.email,
-                    note: "File Group #{file_group.id} - #{file_group.title} | Collection: #{file_group.collection.id} | Reason: #{requester_reason}")
+      Event.create!(eventable: collection, key: :file_group_delete_moved, actor_email: requester.email,
+                    note: "File Group #{file_group.id} - #{file_group.title} | Collection: #{collection.id} | Reason: #{requester_reason}")
     end
   end
 

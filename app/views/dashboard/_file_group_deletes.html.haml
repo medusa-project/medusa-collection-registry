@@ -1,18 +1,20 @@
-%table.table.table-bordered.table-condensed#file_group_deletes
-  %thead
+- headers = ['File Group (id)', 'Collection (id)', 'Requester', 'State', 'Actions']
+= render layout: 'layouts/standard_table', locals: {id: :file_group_deletes, classes: %w(table-bordered table-condensed), headers: headers} do
+  - @workflows.each do |workflow|
     %tr
-      %th File Group
-      %th Requester
-      %th State
-      %th Actions
-  %tbody
-    - @workflows.each do |workflow|
-      %tr
-        %td= link_to(workflow.cached_file_group_title, file_group_path(workflow.file_group_id))
-        %td= workflow.requester.email
-        %td= workflow.state
+      %td #{link_to(workflow.cached_file_group_title, file_group_path(workflow.file_group_id))} (#{workflow.file_group_id})
+      - if workflow.collection
         %td
-          - if workflow.state == 'wait_decision'
-            = link_to('Decide', admin_decide_workflow_file_group_delete_path(workflow), class: 'btn btn-default btn-xs')
-          - elsif workflow.state == 'wait_delete_content'
-            = link_to('Restore', restore_content_workflow_file_group_delete_path(workflow), class: 'btn btn-default btn-xs', method: :post)
+          #{link_to(workflow.collection.title, collection_path(workflow.collection))} (#{workflow.cached_collection_id})
+      - else
+        %td
+          Owning collection not found: (#{workflow.cached_collection_id})
+      %td= workflow.requester.email
+      %td= workflow.state
+      %td
+        - if workflow.state == 'wait_decision'
+          = link_to('Decide', admin_decide_workflow_file_group_delete_path(workflow), class: 'btn btn-default btn-xs')
+        - elsif workflow.state == 'wait_delete_content'
+          = link_to('Restore', restore_content_workflow_file_group_delete_path(workflow), class: 'btn btn-default btn-xs', method: :post)
+:javascript
+  initialize_data_table("table#file_group_deletes", {});
