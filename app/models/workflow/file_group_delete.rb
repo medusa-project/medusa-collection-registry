@@ -3,6 +3,7 @@ class Workflow::FileGroupDelete < Workflow::Base
 
   belongs_to :file_group
   belongs_to :collection, foreign_key: 'cached_collection_id'
+  belongs_to :cfs_directory, foreign_key: 'cached_cfs_directory_id'
   belongs_to :requester, class_name: 'User'
   belongs_to :approver, class_name: 'User'
 
@@ -104,9 +105,9 @@ wait_delete_content delete_content restore_content email_restored_content email_
   protected
 
   def move_physical_content
-    if file_group.cfs_directory.present? and Dir.exist?(file_group.cfs_directory.absolute_path)
+    if cfs_directory.present? and Dir.exist?(cfs_directory.absolute_path)
       FileUtils.mkdir_p(Settings.medusa.cfs.fg_delete_holding)
-      FileUtils.move(file_group.cfs_directory.absolute_path, holding_directory_path)
+      FileUtils.move(cfs_directory.absolute_path, holding_directory_path)
     end
   end
 
