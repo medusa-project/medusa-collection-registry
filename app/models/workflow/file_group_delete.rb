@@ -125,11 +125,11 @@ wait_delete_content delete_content restore_content email_restored_content email_
 
 
   def destroy_db_objects
-    file_group.cfs_directory.destroy_tree_from_leaves if file_group.cfs_directory.present?
+    cfs_directory.destroy_tree_from_leaves if cfs_directory.present?
     transaction do
-      file_group.destroy!
+      file_group.destroy! if file_group.present?
       Event.create!(eventable: collection, key: :file_group_delete_moved, actor_email: requester.email,
-                    note: "File Group #{file_group.id} - #{file_group.title} | Collection: #{collection.id} | Reason: #{requester_reason}")
+                    note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{collection.id} | Reason: #{requester_reason}")
     end
   end
 
