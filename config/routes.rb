@@ -1,4 +1,4 @@
-MedusaCollectionRegistry::Application.routes.draw do
+Rails.application.routes.draw do
 
   resources :static_pages, only: [:show, :edit, :update], param: :key do
     member do
