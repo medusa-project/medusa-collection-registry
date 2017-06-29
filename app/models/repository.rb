@@ -5,6 +5,7 @@ class Repository < ApplicationRecord
   include CascadedRedFlaggable
   include MedusaAutoHtml
   include EmailPersonAssociator
+  include Eventable
 
   email_person_association(:contact)
   belongs_to :institution

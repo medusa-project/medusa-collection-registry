@@ -75,6 +75,7 @@ Feature: Collection description
     And I click on 'Delete'
     Then I should be on the view page for the repository with title 'Sample Repo'
     And I should not see 'dogs'
+    And the repository with title 'Sample Repo' should have an event with key 'collection_deleted' performed by 'admin@example.com'
 
   Scenario: Create a new collection
     When I start a new collection for the repository titled 'Sample Repo'

@@ -31,6 +31,7 @@ class CollectionsController < ApplicationController
   def destroy
     authorize! :destroy, @collection
     @collection.destroy
+    @repository.events.create!(key: :collection_deleted, actor_email: current_user.email, note: "id: #{@collection.id} title: #{@collection.title}")
     redirect_to repository_path(@repository)
   end
 

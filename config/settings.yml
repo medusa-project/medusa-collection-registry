@@ -149,6 +149,8 @@ events:
     fixity_result: Fixity result
     fixity_reset: Fixity reset
     amqp_accrual: Accrued via amqp
+  repository:
+    collection_deleted: Collection deleted
 rights_fields:
   default_rights_basis: copyright
   rights_bases:
