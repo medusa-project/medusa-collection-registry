@@ -36,9 +36,4 @@ MedusaCollectionRegistry::Application.configure do
 
   config.middleware.use RackSessionAccess::Middleware
 
-  config.assets.compile = true
-  config.assets.compress = false
-  config.assets.debug = false
-  config.assets.digest = false
-
 end
