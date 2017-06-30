@@ -1,7 +1,6 @@
 class EventsController < ApplicationController
 
   before_action :require_medusa_user
-  before_action :find_event, only: [:destroy, :edit, :update]
   helper_method :eventable_events_path
 
   autocomplete :user, :email
@@ -17,7 +16,7 @@ class EventsController < ApplicationController
     event = eventable.events.create(allowed_params)
     if event.valid?
       if request.xhr?
-        respond_to { |format| format.js }
+        respond_to {|format| format.js}
       else
         redirect_back(fallback_location: root_path)
       end
@@ -29,25 +28,6 @@ class EventsController < ApplicationController
         flash[:notice] = 'Invalid event parameters: \n' + @errors
         redirect_back(fallback_location: root_path)
       end
-    end
-  end
-
-  def destroy
-    authorize! :destroy_event, @event.eventable
-    @event.destroy!
-    redirect_back(fallback_location: root_path)
-  end
-
-  def edit
-    authorize! :update_event, @event.eventable
-  end
-
-  def update
-    authorize! :update_event, @event.eventable
-    if @event.update_attributes(allowed_params)
-      redirect_to eventable_events_path(@event)
-    else
-      render 'edit'
     end
   end
 

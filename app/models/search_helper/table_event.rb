@@ -52,7 +52,6 @@ class SearchHelper::TableEvent < SearchHelper::TableBase
         {header: 'User', solr_field: :event_actor_email, value_method: :event_actor_email, searchable: true},
         {header: 'Message', solr_field: :event_message, value_method: :event_message, searchable: true},
         {header: 'Note', solr_field: :event_note, value_method: :render_event_note, searchable: true},
-        {header: 'Actions', value_method: :action_buttons, unsortable: true}
     ]
   end
 
