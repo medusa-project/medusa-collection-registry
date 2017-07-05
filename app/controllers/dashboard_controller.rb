@@ -31,6 +31,7 @@ class DashboardController < ApplicationController
     FROM file_extensions FE
     LEFT JOIN (SELECT F.file_extension_id, COUNT(*) AS count FROM cfs_files F, file_format_tests FFT WHERE F.id = FFT.cfs_file_id GROUP BY F.file_extension_id) FEC
     ON FE.id = FEC.file_extension_id
+    WHERE FE.cfs_file_count > 0
     ORDER BY extension ASC
 SQL
   end
@@ -42,6 +43,7 @@ SQL
     FROM content_types CT
     LEFT JOIN (SELECT F.content_type_id, COUNT(*) AS count FROM cfs_files F, file_format_tests FFT WHERE F.id = FFT.cfs_file_id GROUP BY F.content_type_id) CTC
     ON CT.id = CTC.content_type_id
+    WHERE CT.cfs_file_count > 0
     ORDER BY name ASC
 SQL
   end

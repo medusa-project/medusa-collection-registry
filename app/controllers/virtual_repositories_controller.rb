@@ -104,6 +104,7 @@ LEFT JOIN
    WHERE collection_id IN #{id_string}
    GROUP BY content_type_id) TESTED
 ON STATS.content_type_id = TESTED.content_type_id
+HAVING STATS.file_count > 0
 SQL
   end
 
@@ -123,6 +124,7 @@ LEFT JOIN
    WHERE collection_id in #{id_string}
    GROUP BY file_extension_id) TESTED
 ON STATS.file_extension_id = TESTED.file_extension_id
+HAVING STATS.file_count > 0
 SQL
   end
 

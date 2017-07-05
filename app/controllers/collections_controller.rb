@@ -156,6 +156,7 @@ class CollectionsController < ApplicationController
     LEFT JOIN (SELECT content_type_id, count FROM view_tested_file_content_type_counts_by_collection WHERE collection_id = $1) CTC
     ON CTS.content_type_id = CTC.content_type_id
     WHERE collection_id = $1
+    AND CTS.file_count > 0
 SQL
   end
 
@@ -167,6 +168,7 @@ SQL
     LEFT JOIN (SELECT file_extension_id, count FROM view_tested_file_file_extension_counts_by_collection WHERE collection_id = $1) FEC
     ON FES.file_extension_id = FEC.file_extension_id
     WHERE collection_id = $1
+    AND FES.file_count > 0
 SQL
   end
 
