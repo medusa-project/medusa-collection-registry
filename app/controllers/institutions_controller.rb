@@ -45,7 +45,7 @@ class InstitutionsController < ApplicationController
     if @institution.destroy
       redirect_to institutions_path
     else
-      redirect_to :back, alert: 'Unable to delete institution'
+      redirect_back alert: 'Unable to delete institution', fallback_location: @institution
     end
   end
 

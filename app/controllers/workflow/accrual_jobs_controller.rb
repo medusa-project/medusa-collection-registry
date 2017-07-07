@@ -10,7 +10,7 @@ class Workflow::AccrualJobsController < ApplicationController
     respond_to do |format|
       format.js
       format.html do
-        redirect_to :back
+        redirect_back fallback_location: dashboard_path
       end
     end
   end
@@ -24,7 +24,7 @@ class Workflow::AccrualJobsController < ApplicationController
     respond_to do |format|
       format.js
       format.html do
-        redirect_to :back
+        redirect_back fallback_location: dashboard_path
       end
     end
   end

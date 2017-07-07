@@ -79,7 +79,7 @@ class CfsDirectoriesController < ApplicationController
 
   def toggle_gallery_viewer
     cookies.permanent[:suppress_gallery_viewer] = (cookies[:suppress_gallery_viewer] == "1" ? "0" : "1")
-    redirect_to :back
+    redirect_back(fallback_location: root_url)
   end
 
   def cfs_files

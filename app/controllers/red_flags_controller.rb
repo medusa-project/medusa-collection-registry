@@ -25,7 +25,7 @@ class RedFlagsController < ApplicationController
     if request.xhr?
       respond_to {|format| format.js}
     else
-      redirect_to :back
+      redirect_back fallback_location: @red_flag.red_flagabble
     end
 
   end

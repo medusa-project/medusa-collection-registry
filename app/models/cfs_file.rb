@@ -335,6 +335,11 @@ class CfsFile < ApplicationRecord
     end
   end
 
+  #Get any other cfs files with the same md5_sum. Useful for debugging certain things like moves, etc.
+  def md5_duplicates
+    CfsFile.where(md5_sum: md5_sum).to_a - self
+  end
+
   protected
 
   def get_fits_xml

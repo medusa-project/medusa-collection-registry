@@ -44,7 +44,7 @@ class FileFormatsController < ApplicationController
     if @file_format.destroy
       redirect_to file_formats_path
     else
-      redirect_to :back, alert: 'Unable to destroy this file format'
+      redirect_back alert: 'Unable to destroy this file format', fallback_location: file_formats_path
     end
   end
 

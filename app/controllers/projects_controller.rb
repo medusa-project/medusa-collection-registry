@@ -101,7 +101,7 @@ class ProjectsController < ApplicationController
     if @project.destroy
       redirect_to projects_path
     else
-      redirect_to :back, alert: 'Unknown error deleting project'
+      redirect_back alert: 'Unknown error deleting project', fallback_location: @project
     end
   end
 

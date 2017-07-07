@@ -29,7 +29,7 @@ class FileGroupsController < ApplicationController
         redirect_to collection_path(@collection)
       else
         flash[:notice] = @file_group.errors.full_messages.join('\n')
-        redirect_to :back
+        redirect_back fallback_location: @file_group
       end
     else
       redirect_to new_workflow_file_group_delete_path(file_group_id: @file_group.id)
