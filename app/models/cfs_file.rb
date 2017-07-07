@@ -19,7 +19,7 @@ class CfsFile < ApplicationRecord
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
 
-  delegate :repository, :collection, :file_group, :root_cfs_directory to: :cfs_directory
+  delegate :repository, :collection, :file_group, :root_cfs_directory, to: :cfs_directory
   delegate :name, to: :content_type, prefix: true, allow_nil: true
   FitsData::all_fields.each do |field|
     delegate field, to: :fits_data, prefix: true, allow_nil: true
@@ -225,11 +225,16 @@ class CfsFile < ApplicationRecord
     if self.content_type_name != new_content_type_name
       #For this one we don't report a red flag if this is the first generation of
       #the fits xml overwriting the content type found by the 'file' command
-      unless self.content_type.blank? or self.fits_result.new?
+      if content_type.present? and !fits_result.new? and !valid_content_type_change(content_type_name, new_content_type_name)
         self.red_flags.create(message: "Content Type changed. Old: #{self.content_type_name} New: #{new_content_type_name}")
       end
       self.content_type_name = new_content_type_name
     end
+  end
+
+  #TODO: fill this in
+  def valid_content_type_change(old_name, new_name)
+    return false
   end
 
   def content_type_name=(name)
