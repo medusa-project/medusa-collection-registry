@@ -219,21 +219,30 @@ class CfsFile < ApplicationRecord
     end
   end
 
+  #TODO this and the method it calls are ripe for cleaning up and possibly setting through configuration
   def update_content_type_from_fits(new_content_type_name)
     #don't update something to a less specific content type
-    return if new_content_type_name == 'application/octet-stream' and self.content_type_name.present?
-    if self.content_type_name != new_content_type_name
+    return if new_content_type_name == 'application/octet-stream' and content_type_name.present?
+    return if new_content_type_name == 'text/plain' and content_type_name.present? and content_type_name.start_with?('text/')
+    if content_type_name != new_content_type_name
       #For this one we don't report a red flag if this is the first generation of
       #the fits xml overwriting the content type found by the 'file' command
-      if content_type.present? and !fits_result.new? and !valid_content_type_change(content_type_name, new_content_type_name)
-        self.red_flags.create(message: "Content Type changed. Old: #{self.content_type_name} New: #{new_content_type_name}")
+      if content_type.present? and !fits_result.new? and !expected_content_type_change?(content_type_name, new_content_type_name)
+        self.red_flags.create(message: "Content Type changed. Old: #{content_type_name} New: #{new_content_type_name}")
       end
       self.content_type_name = new_content_type_name
     end
   end
 
-  #TODO: fill this in
-  def valid_content_type_change(old_name, new_name)
+  def expected_content_type_change?(old_name, new_name)
+    return true if old_name == 'application/octet-stream'
+    return true if old_name == 'application/ogg' and new_name == 'audio/ogg'
+    return true if old_name == 'application/vnd.ms-office' and new_name.start_with?('application/vnd.ms-')
+    return true if old_name == 'application/xml' and new_name == 'text/xml'
+    return true if old_name == 'text/html' and new_name == 'text/xml'
+    return true if old_name == 'text/plain' and new_name.start_with?('text/')
+    return true if old_name == 'vido/x-msvideo' and new_name == 'video/avi'
+    return true if new_name.match(old_name)
     return false
   end
 
