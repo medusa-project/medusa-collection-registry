@@ -36,4 +36,6 @@ MedusaCollectionRegistry::Application.configure do
 
   config.middleware.use RackSessionAccess::Middleware
 
+  #config.assets.compile = false
+
 end

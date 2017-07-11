@@ -1,6 +1,5 @@
 #Split this into its own files so that we can have a background that
 #nicely sets things up
-@current
 Feature: File Group Deletion Part Two
   In order to delete file groups safely
   As an admin

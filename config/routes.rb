@@ -79,7 +79,9 @@ Rails.application.routes.draw do
   resources :items do
     get :barcode_lookup, on: :collection
   end
-  resources :producers
+  resources :producers do
+    get :report, on: :member
+  end
   resources :access_systems, concerns: :collection_indexer
   resources :package_profiles, concerns: :collection_indexer
   resources :virus_scans, only: :show

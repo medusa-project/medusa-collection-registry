@@ -24,3 +24,13 @@ And(/^the feedback address should receive an email with subject \/(.*)\/ matchin
     expect(email.body).to match(header)
   end
 end
+
+And(/^'(.*)' should receive an email with attachment '(.*)'$/) do |address, attachment_name|
+  open_email(address)
+  email = current_emails.detect do |email|
+    email.attachments.detect do |attachment|
+      attachment.filename == attachment_name
+    end
+  end
+  expect(email).to be_truthy
+end

@@ -41,6 +41,12 @@ And(/^I click on and confirm '(.*)'$/) do |link_name|
   end
 end
 
+And(/^I click on '(.*)' expecting an alert '(.*)'$/) do |link_name, alert_text|
+  accept_alert(alert_text) do
+    click_on(link_name)
+  end
+end
+
 And /^I click consecutively on:$/ do |table|
   table.headers.each {|header| click_on(header) ; sleep 0.5}
 end
@@ -107,5 +113,4 @@ def complete_form_from_table(table)
     fill_in(row.first, with: row.last)
   end
 end
-
 
