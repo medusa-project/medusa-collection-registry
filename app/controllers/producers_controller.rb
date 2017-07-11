@@ -1,7 +1,7 @@
 class ProducersController < ApplicationController
 
   before_action :require_medusa_user
-  before_action :find_producer, only: [:destroy, :edit, :update]
+  before_action :find_producer, only: [:destroy, :edit, :update, :report]
 
   def index
     @producers = Producer.includes(:administrator).all
@@ -49,6 +49,16 @@ class ProducersController < ApplicationController
 
   end
 
+  def report
+    Job::Report::Producer.create_for(user: current_user, producer: @producer)
+    respond_to do |format|
+      format.js
+      format.html do
+        redirect_to @producer, notice: 'Your report will be emailed to you shortly.'
+      end
+    end
+  end
+
   protected
 
   def find_producer
@@ -57,7 +67,7 @@ class ProducersController < ApplicationController
 
   def allowed_params
     params[:producer].permit(:address_1, :address_2, :city, :email, :notes,
-                             :phone_number, :state, :title, :url, :zip,
-                             :active_start_date, :active_end_date, :administrator_email)
+                                    :phone_number, :state, :title, :url, :zip,
+                                    :active_start_date, :active_end_date, :administrator_email)
   end
 end

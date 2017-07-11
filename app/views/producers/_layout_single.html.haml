@@ -10,5 +10,6 @@
     .btn-group.pull-right
       = index_button(producers_path)
       = edit_button(@producer)
+      = fa_icon_link_to('Report', 'table', report_producer_path(@producer), class: 'btn btn-default', remote: true)
 
 = yield
