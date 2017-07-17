@@ -3,7 +3,7 @@
     .page-header
       %h1.title Items
   .col-sm-2{ 'style' => 'text-align:right' }
-    = form_tag(params.merge(controller: 'items', action: 'index', format: 'json' )) do
+    = form_tag(@allowed_params.merge(controller: 'items', action: 'index', format: 'json' )) do
       = button_tag('JSON', { class: 'btn btn-default', type: 'submit' }) do
         %span.glyphicon.glyphicon-new-window{ 'aria-hidden' => true }
         JSON
@@ -93,7 +93,7 @@
         data: { toggle: 'modal', target: '#bib-ids-modal' },
         title: 'Missing bib IDs')
   .col-sm-4{style: 'text-align:right'}
-    = link_to(params.merge(format: 'csv'), class: 'btn btn-default') do
+    = link_to(@allowed_params.merge(format: 'csv'), class: 'btn btn-default') do
       %span.glyphicon.glyphicon-export
       Export as CSV
 
