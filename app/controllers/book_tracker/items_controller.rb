@@ -82,6 +82,7 @@ module BookTracker
 
       next_page = params[:page].to_i > 1 ? params[:page].to_i + 1 : 2
       # TODO: set this to nil if there is no next page
+      params.permit!
       @next_page_url = book_tracker_items_path(params.merge(page: next_page))
 
       if request.xhr?
