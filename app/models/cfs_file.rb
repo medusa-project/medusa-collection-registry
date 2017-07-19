@@ -241,7 +241,7 @@ class CfsFile < ApplicationRecord
     return true if old_name == 'application/xml' and new_name == 'text/xml'
     return true if old_name == 'text/html' and new_name == 'text/xml'
     return true if old_name == 'text/plain' and new_name.start_with?('text/')
-    return true if old_name == 'vido/x-msvideo' and new_name == 'video/avi'
+    return true if old_name == 'video/x-msvideo' and new_name == 'video/avi'
     return true if new_name.match(old_name)
     return false
   end
