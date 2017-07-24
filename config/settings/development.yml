@@ -93,6 +93,10 @@ medusa:
     #AMQP queues to communicate with glacier server
     outgoing_queue: medusa_to_glacier
     incoming_queue: glacier_to_medusa
+    #If we have direct access to the manifests there is some code that can take advantage of that
+    #to help diagnosing certain issues, e.g. by finding manifests containing a particular file and
+    #showing the checksums
+    manifest_directory: /path/to/glacier/manifests
   #approximate number of days to elapse between fixity checks
   fixity_interval: 90
   fixity_server:
