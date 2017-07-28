@@ -2,7 +2,7 @@ require 'rake'
 require 'fileutils'
 namespace :fixity do
 
-  DEFAULT_BATCH_SIZE = 10000
+  DEFAULT_BATCH_SIZE = 100000
   FIXITY_STOP_FILE = File.join(Rails.root, 'fixity_stop.txt')
   desc "Run fixity on a number of files. BATCH_SIZE sets number (default #{DEFAULT_BATCH_SIZE})"
   task run_batch: :environment do
@@ -52,11 +52,21 @@ namespace :fixity do
   end
 end
 
+# def fixity_files(batch_size)
+#   if CfsFile.where(fixity_check_status: nil).first
+#     CfsFile.where(fixity_check_status: nil).limit(batch_size)
+#   else
+#     timeout = (Settings.medusa.fixity_interval || 90).days
+#     CfsFile.where('fixity_check_time < ?', Time.now - timeout).order('fixity_check_time asc').limit(batch_size)
+#   end
+# end
+
 def fixity_files(batch_size)
   if CfsFile.where(fixity_check_status: nil).first
     CfsFile.where(fixity_check_status: nil).limit(batch_size)
   else
-    timeout = (Settings.medusa.fixity_interval || 90).days
-    CfsFile.where('fixity_check_time < ?', Time.now - timeout).order('fixity_check_time asc').limit(batch_size)
+    #timeout = (Settings.medusa.fixity_interval || 90).days
+    CfsFile.where('fixity_check_time < ?', Date.parse('2017-06-04')).order('fixity_check_time asc').limit(batch_size)
+    #CfsFile.where('fixity_check_time < ?', Time.now - timeout).order('fixity_check_time asc').limit(batch_size)
   end
 end
