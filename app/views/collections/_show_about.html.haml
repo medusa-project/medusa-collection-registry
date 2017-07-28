@@ -2,10 +2,22 @@
   .col-md-4
     .well
       %h3 Descriptive metadata
+      = render 'public_notice'
+      = show_value (@collection.publish ? 'Yes' : 'No'), 'Open collection metadata to public list of collections'
       = show_field @collection, :description_html, 'Description'
       = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
       = show_value link_to_external(@collection.physical_collection_url, @collection.physical_collection_url), 'Physical collection URL'
       = show_field @collection, :resource_type_names, 'Type of Resource'
+      = show_field @collection, :external_id, 'External ID'
+      = show_field @collection, :representative_image
+      = show_field @collection, :representative_item
+      %p
+        %strong Access Systems:
+        %br
+        - if access_systems = @collection.access_systems
+          %ul#access_systems
+            - access_systems.each do |access_system|
+              %li #{link_to access_system.name, access_system}
     - if @collection.child_collections.present?
       .well
         %h3 Child Collections
@@ -21,20 +33,9 @@
     .well
       %h3 Administrative metadata
       = show_field @collection, :uuid, 'UUID'
-      = show_field @collection, :external_id, 'External ID'
       = show_field(@collection, :private_description_html, 'Private Description') if medusa_user?
       = show_field @collection, :contact_email
-      = show_field @collection, :publish
-      = show_field @collection, :representative_image
-      = show_field @collection, :representative_item
       = show_field @collection, :preservation_priority_name, 'Preservation Priority'
-      %p
-        %strong Access Systems:
-        %br
-        - if access_systems = @collection.access_systems
-          %ul#access_systems
-            - access_systems.each do |access_system|
-              %li #{link_to access_system.name, access_system}
       = show_value @collection.total_size.round(3).to_s(:delimited), 'Total Size (GB)'
       = show_field(@collection, :notes_html, 'Notes') if medusa_user?
   .col-md-4

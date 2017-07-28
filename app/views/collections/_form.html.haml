@@ -6,6 +6,7 @@
         = render partial: 'shared/tab_header', locals: {id: 'edit-tabs', tabs: collection_form_tab_list}
         .tab-content
           #descriptive-metadata.tab-pane.active
+            = render 'public_notice'
             = f.input :title
             - if @collection.repository
               = f.association :repository, collection: @repositories, include_blank: false, selected: @collection.repository.id
