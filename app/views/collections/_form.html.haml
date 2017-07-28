@@ -7,6 +7,7 @@
         .tab-content
           #descriptive-metadata.tab-pane.active
             = render 'public_notice'
+            = f.input :publish, wrapper: :horizontal_radio_and_checkboxes, label: 'Open collection metadata to public list of collections'
             = f.input :title
             - if @collection.repository
               = f.association :repository, collection: @repositories, include_blank: false, selected: @collection.repository.id
@@ -15,16 +16,15 @@
             = f.input :description
             = f.input :access_url, as: :string, label: 'Access URL'
             = f.input :physical_collection_url, as: :string, label: 'Physical collection URL'
-            = f.association :resource_types, as: :check_boxes, wrapper_html: {id: 'resource_types'}, wrapper: :horizontal_radio_and_checkboxes
-          #administrative-metadata.tab-pane
             = f.input :external_id, label: 'External ID'
-            = f.input :private_description
-            = f.input :contact_email, label: 'Contact Person Email', type: :email
-            = f.input :publish, wrapper: :horizontal_radio_and_checkboxes
             = f.input :representative_image
             = f.input :representative_item
-            = f.association :preservation_priority, include_blank: false, selected: (@collection.preservation_priority.id rescue PreservationPriority.default.id)
+            = f.association :resource_types, as: :check_boxes, wrapper_html: {id: 'resource_types'}, wrapper: :horizontal_radio_and_checkboxes
             = f.association :access_systems, collection: access_system_select_collection, html: {multiple: true}, as: :check_boxes, wrapper: :horizontal_radio_and_checkboxes
+          #administrative-metadata.tab-pane
+            = f.input :private_description
+            = f.input :contact_email, label: 'Contact Person Email', type: :email
+            = f.association :preservation_priority, include_blank: false, selected: (@collection.preservation_priority.id rescue PreservationPriority.default.id)
             = f.input :notes
           #rights-metadata.tab-pane
             = render partial: 'rights_declarations/nested_form', locals: {containing_form: f, rights_declaration: @collection.rights_declaration}
