@@ -45,7 +45,7 @@ Feature: Collection description
       | Representative image    | my_image_url                   |
       | Representative item     | my_item_url                    |
       | Physical collection URL | http://physical.collection.url |
-    And I check 'Publish'
+    And I check 'Open collection metadata to public list of collections'
     And I press 'Update'
     Then I should be on the view page for the collection with title 'dogs'
     And I should see all of:
