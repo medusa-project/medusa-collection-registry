@@ -81,7 +81,7 @@ gem 'net-ldap'
 # Deploy with Capistrano
 gem 'capistrano-rails'
 gem 'capistrano-bundler'
-gem 'capistrano-rvm'
+gem 'capistrano-rbenv'
 gem 'capistrano-passenger'
 gem 'capistrano-yarn'
 

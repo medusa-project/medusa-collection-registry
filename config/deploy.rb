@@ -7,11 +7,9 @@ set :repo_url, 'https://github.com/medusa-project/medusa-collection-registry.git
 # Default branch is :master
 #ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
-# Default deploy_to directory is /var/www/my_app_name
-set :home, '/services/medusa'
-set :deploy_to, "#{fetch(:home)}/medusa-cr-capistrano"
-set :bin, "#{fetch(:home)}/bin"
 set :rails_env, 'production'
+
+set :bundle_path, nil
 
 # Default value for :scm is :git
 # set :scm, :git
