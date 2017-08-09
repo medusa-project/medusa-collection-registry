@@ -25,11 +25,10 @@ class Job::SunspotReindex < Job::Base
     search = klass.search do
       with(:model_id).greater_than_or_equal_to(start_id)
       with(:model_id).less_than_or_equal_to(last_id)
-      without(:model_id, present_ids.to_a)
       paginate page: 1, per_page: (last_id - start_id + 1)
     end
     potential_bad_ids = search.hits.collect {|hit| hit.primary_key.to_i}
-    bad_ids = potential_bad_ids - klass.where(id: potential_bad_ids).pluck(:id)
+    bad_ids = potential_bad_ids.to_set - klass.where(id: potential_bad_ids).pluck(:id).to_set
     bad_ids.each do |bad_id|
       klass.new(id: bad_id).remove_from_index
     end
