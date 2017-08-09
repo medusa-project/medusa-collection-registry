@@ -20,7 +20,7 @@ namespace :sunspot do
       else
         puts "Starting a reindex for #{model}."
         Job::SunspotReindex.create_for(model, start_id: 1, end_id: model.order('id desc').first.id,
-                                       batch_size: 10000)
+                                       batch_size: 50000)
       end
     end
   end
