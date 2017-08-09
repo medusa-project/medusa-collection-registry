@@ -43,6 +43,7 @@ class FileGroup < ApplicationRecord
   cascades_red_flags parent: :collection
 
   searchable do
+    integer :model_id, using: :id
     text :title
     string :title
     text :description

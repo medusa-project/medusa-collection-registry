@@ -7,6 +7,7 @@ class CascadedEventJoin < ApplicationRecord
 
   searchable include: [{event: :eventable}, :cascaded_eventable] do
     #base fields to identify and restrict searches
+    integer :model_id, using: :id
     text :cascaded_eventable_type
     string :cascaded_eventable_type
     integer :cascaded_eventable_id

@@ -14,6 +14,7 @@ class Item < ApplicationRecord
   validates :barcode, allow_blank: true, format: /\d{14}/
 
   searchable include: :project do
+    integer :model_id, using: :id
     %i(barcode batch).each do |field|
       text field
       string field, stored: true

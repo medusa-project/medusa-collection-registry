@@ -42,6 +42,7 @@ class CfsFile < ApplicationRecord
   cascades_red_flags parent: :cfs_directory
 
   searchable include: {cfs_directory: {root_cfs_directory: {parent_file_group: :collection}}} do
+    integer :model_id, using: :id
     text :name
     string :name, stored: true
     string :path do

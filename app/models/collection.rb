@@ -57,6 +57,7 @@ class Collection < ApplicationRecord
   cascades_red_flags parent: :repository
 
   searchable do
+    integer :model_id, using: :id
     text :title
     string :title
     text :description

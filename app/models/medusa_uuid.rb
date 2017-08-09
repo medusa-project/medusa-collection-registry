@@ -10,6 +10,7 @@ class MedusaUuid < ApplicationRecord
   end
 
   searchable do
+    integer :model_id, using: :id
     text :uuid
     string :uuid
   end
