@@ -3003,6 +3003,40 @@ ALTER SEQUENCE job_report_producers_id_seq OWNED BY job_report_producers.id;
 
 
 --
+-- Name: job_sunspot_reindices; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE job_sunspot_reindices (
+    id bigint NOT NULL,
+    start_id integer,
+    end_id integer,
+    batch_size integer,
+    class_name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: job_sunspot_reindices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE job_sunspot_reindices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: job_sunspot_reindices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE job_sunspot_reindices_id_seq OWNED BY job_sunspot_reindices.id;
+
+
+--
 -- Name: job_virus_scans; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4671,6 +4705,13 @@ ALTER TABLE ONLY job_report_producers ALTER COLUMN id SET DEFAULT nextval('job_r
 
 
 --
+-- Name: job_sunspot_reindices id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY job_sunspot_reindices ALTER COLUMN id SET DEFAULT nextval('job_sunspot_reindices_id_seq'::regclass);
+
+
+--
 -- Name: job_virus_scans id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5262,6 +5303,14 @@ ALTER TABLE ONLY job_item_bulk_imports
 
 ALTER TABLE ONLY job_report_producers
     ADD CONSTRAINT job_report_producers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: job_sunspot_reindices job_sunspot_reindices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY job_sunspot_reindices
+    ADD CONSTRAINT job_sunspot_reindices_pkey PRIMARY KEY (id);
 
 
 --
@@ -7652,6 +7701,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170526185604'),
 ('20170526185618'),
 ('20170531152741'),
-('20170710202254');
+('20170710202254'),
+('20170809162601');
 
 
