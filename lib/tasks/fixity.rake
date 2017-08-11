@@ -9,7 +9,8 @@ namespace :fixity do
     batch_size = (ENV['BATCH_SIZE'] || DEFAULT_BATCH_SIZE).to_i
     errors = Hash.new
     bar = ProgressBar.new(batch_size)
-    fixity_files(batch_size).each.with_index do |cfs_file, i|
+    i = 0
+    fixity_files(batch_size).each_instance do |cfs_file|
       break if File.exist?(FIXITY_STOP_FILE)
       begin
         cfs_file.update_fixity_status_with_event
@@ -30,6 +31,8 @@ namespace :fixity do
         FileUtils.touch(FIXITY_STOP_FILE)
       rescue Exception => e
         errors[cfs_file] = e.to_s
+      ensure
+        i += 1
       end
       Sunspot.commit if (i % 100).zero?
     end
@@ -52,21 +55,13 @@ namespace :fixity do
   end
 end
 
-# def fixity_files(batch_size)
-#   if CfsFile.where(fixity_check_status: nil).first
-#     CfsFile.where(fixity_check_status: nil).limit(batch_size)
-#   else
-#     timeout = (Settings.medusa.fixity_interval || 90).days
-#     CfsFile.where('fixity_check_time < ?', Time.now - timeout).order('fixity_check_time asc').limit(batch_size)
-#   end
-# end
-
 def fixity_files(batch_size)
   if CfsFile.where(fixity_check_status: nil).first
     CfsFile.where(fixity_check_status: nil).limit(batch_size)
   else
-    #timeout = (Settings.medusa.fixity_interval || 90).days
-    CfsFile.where('fixity_check_time < ?', Date.parse('2017-06-04')).order('fixity_check_time asc').limit(batch_size)
-    #CfsFile.where('fixity_check_time < ?', Time.now - timeout).order('fixity_check_time asc').limit(batch_size)
+    timeout = (Settings.medusa.fixity_interval || 90).days
+    CfsFile.where('fixity_check_time < ?', Time.now - timeout).order('fixity_check_time asc').limit(batch_size)
   end
 end
+
+
