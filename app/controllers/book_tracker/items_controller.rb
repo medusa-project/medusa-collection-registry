@@ -122,6 +122,16 @@ module BookTracker
             end
             stream(enumerator, 'items.csv')
           end
+          format.xml do
+            enumerator = Enumerator.new do |y|
+              y << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<export>\n"
+              Item.uncached do
+                @items.find_each { |item| y << item.raw_marcxml + "\n" }
+              end
+              y << '</export>'
+            end
+            stream(enumerator, 'items.xml')
+          end
         end
       end
     end

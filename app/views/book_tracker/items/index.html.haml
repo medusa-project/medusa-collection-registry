@@ -93,9 +93,17 @@
         data: { toggle: 'modal', target: '#bib-ids-modal' },
         title: 'Missing bib IDs')
   .col-sm-4{style: 'text-align:right'}
-    = link_to(@allowed_params.merge(format: 'csv'), class: 'btn btn-default') do
-      %span.glyphicon.glyphicon-export
-      Export as CSV
+    .btn-group
+      %button.btn.btn-default.dropdown-toggle{'aria-expanded' => 'false',
+      'aria-haspopup' => 'true', 'data-toggle' => 'dropdown', :type => 'button'}
+        %span.glyphicon.glyphicon-export
+        Export
+        %span.caret
+      %ul.dropdown-menu.dropdown-menu-right
+        %li
+          = link_to('CSV', @allowed_params.merge(format: 'csv'))
+        %li
+          = link_to('MARCXML', @allowed_params.merge(format: 'xml'))
 
 %input{type: 'hidden', name: 'num_results', value: "#{@items.total_entries}"}
 
