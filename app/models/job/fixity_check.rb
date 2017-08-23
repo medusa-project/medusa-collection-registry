@@ -31,7 +31,7 @@ class Job::FixityCheck < ApplicationRecord
     self.cfs_directory.each_file_in_tree do |cfs_file|
       case results[cfs_file.relative_path]
         when 'OK'
-          cfs_file.update_fixity_status_ok_with_event(actor_email: self.user.email)
+          cfs_file.update_fixity_status_ok
         when 'FAILED'
           cfs_file.update_fixity_status_bad_with_event(actor_email: self.user.email)
         when 'NOT_FOUND'

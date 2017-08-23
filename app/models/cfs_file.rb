@@ -18,6 +18,7 @@ class CfsFile < ApplicationRecord
   has_one :fits_data, dependent: :destroy, autosave: true
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
+  has_many :fixity_check_results, -> {order 'created_at DESC'}, dependent: :destroy
 
   delegate :repository, :collection, :file_group, :root_cfs_directory, to: :cfs_directory
   delegate :name, to: :content_type, prefix: true, allow_nil: true
@@ -74,7 +75,7 @@ class CfsFile < ApplicationRecord
   def self.not_found_fixity
     where(fixity_check_status: 'nf')
   end
-  
+
   def relative_path
     File.join(self.cfs_directory.relative_path, self.name)
   end
@@ -114,66 +115,66 @@ class CfsFile < ApplicationRecord
   def set_fixity(md5sum)
     if self.md5_sum.present?
       if self.md5_sum == md5sum
-        set_fixity_status_ok
+        set_fixity_status('ok')
       else
-        set_fixity_status_bad
+        set_fixity_status('bad')
       end
     else
       self.md5_sum = md5sum
-      set_fixity_status_ok
+      set_fixity_status('ok')
     end
   end
 
-  def set_fixity_status_ok
-    self.fixity_check_status = 'ok'
+  def set_fixity_status(status)
+    self.fixity_check_status = status
     self.fixity_check_time = Time.now
   end
 
-  def set_fixity_status_bad
-    self.fixity_check_status = 'bad'
-    self.fixity_check_time = Time.now
-  end
-
-  def set_fixity_status_not_found
-    self.fixity_check_status = 'nf'
-    self.fixity_check_time = Time.now
-  end
-
+  #TODO - update for new FixityCheckResult scheme
+  #Always generate FixityCheckResult
+  #Only generate event when there is an error
   def update_fixity_status_with_event(md5sum: nil, actor_email: nil)
     update_fixity_status_not_found_with_event(actor_email: actor_email) and return unless exists_on_filesystem?
     md5sum ||= self.file_system_md5_sum
     if self.md5_sum.present?
       if self.md5_sum == md5sum
-        update_fixity_status_ok_with_event(actor_email: actor_email)
+        update_fixity_status_ok
       else
         update_fixity_status_bad_with_event(actor_email: actor_email)
       end
     else
-      update_fixity_status_ok_with_event(actor_email: actor_email)
+      update_fixity_status_ok
     end
   end
 
-  def update_fixity_status_ok_with_event(actor_email: nil)
-    actor_email ||= MedusaBaseMailer.admin_address
-    create_fixity_event(cascadable: false, note: 'OK', actor_email: actor_email)
-    set_fixity_status_ok
-    save!
+  def update_fixity_status_ok
+    transaction do
+      fixity_check_results.create!(status: :ok)
+      set_fixity_status('ok')
+      save!
+    end
   end
 
   def update_fixity_status_bad_with_event(actor_email: nil)
     actor_email ||= MedusaBaseMailer.admin_address
-    create_fixity_event(cascadable: true, note: 'FAILED', actor_email: actor_email)
-    red_flags.create!(message: "Md5 Sum changed. Recorded: #{md5_sum} Current: #{file_system_md5_sum}. Cfs File Id: #{self.id}")
-    set_fixity_status_bad
-    save!
+    transaction do
+      fixity_check_results.create!(status: :bad)
+      create_fixity_event(cascadable: true, note: 'FAILED', actor_email: actor_email)
+      red_flags.create!(message: "Md5 Sum changed. Recorded: #{md5_sum} Current: #{file_system_md5_sum}. Cfs File Id: #{self.id}")
+      set_fixity_status('bad')
+      save!
+    end
   end
 
   def update_fixity_status_not_found_with_event(actor_email: nil)
     actor_email ||= MedusaBaseMailer.admin_address
-    create_fixity_event(cascadable: true, note: 'NOT_FOUND', actor_email: actor_email)
-    red_flags.create!(message: "File not found for fixity check. Cfs File Id: #{self.id}")
-    set_fixity_status_not_found
-    save!
+    transaction do
+      fixity_check_results.create!(status: :not_found)
+      create_fixity_event(cascadable: true, note: 'NOT_FOUND', actor_email: actor_email)
+      red_flags.create!(message: "File not found for fixity check. Cfs File Id: #{self.id}")
+      set_fixity_status('nf')
+      save!
+    end
   end
 
   def create_fixity_event(params = {})

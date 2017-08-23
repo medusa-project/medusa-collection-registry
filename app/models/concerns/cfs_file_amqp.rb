@@ -33,7 +33,7 @@ module CfsFileAmqp
       if response.md5.present?
         incoming_md5 = response.md5
         if incoming_md5 == self.md5_sum
-          self.update_fixity_status_ok_with_event
+          self.update_fixity_status_ok
         else
           self.update_fixity_status_bad_with_event
         end

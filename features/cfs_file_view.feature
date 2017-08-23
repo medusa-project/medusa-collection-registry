@@ -17,9 +17,16 @@ Feature: Viewing CFS file information and content
 
   Scenario: View cfs file
     Given the uuid of the cfs file with name 'grass.jpg' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
+    And the cfs file with name 'grass.jpg' has child fixity check results with fields:
+      | status |
+      | ok     |
+      | bad    |
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
     Then I should see all of:
       | grass.jpg | image/jpeg | b001b52b12fc80ef6145b7655de0b668 | 166 KB | 3da0fae0-e3fa-012f-ac10-005056b22849-8 |
+    And I should see the fixity_check_results table
+    And I should see all of:
+      | ok | bad |
 
   Scenario: Download cfs file
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
@@ -99,7 +106,7 @@ Feature: Viewing CFS file information and content
       | well_formed              | true                                                      |
       | is_valid                 | true                                                      |
       | image_byte_order         | big endian                                                |
-      | image_compression_scheme | JPEG                                          |
+      | image_compression_scheme | JPEG                                                      |
       | image_color_space        | YCbCr                                                     |
 
 

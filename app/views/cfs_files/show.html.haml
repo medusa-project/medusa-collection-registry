@@ -26,8 +26,20 @@
           %ul
             - @file.red_flags.each do |red_flag|
               %li= red_flag.message
-    .col-sm-8
+    .col-sm-5
       = render @previewer.view_partial
+    .col-sm-3
+      %table#fixity_check_results.table.table-bordered.table-striped.table-condensed
+        %caption Fixity Check History
+        %thead
+          %tr
+            %th Date
+            %th Status
+        %tbody
+          - @file.fixity_check_results.each do |fixity_check_result|
+            %tr
+              %td #{fixity_check_result.created_at.to_date}
+              %td #{fixity_check_result.status}
 
   - if @file_format_test.present?
     %hr

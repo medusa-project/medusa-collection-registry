@@ -24,16 +24,13 @@ Feature: Fixity Checking
     And I click on 'Fixity check'
     Then the file group with title 'Toys' should have an event with key 'fixity_check_scheduled' performed by 'admin@example.com'
     When delayed jobs are run
-    Then the cfs file with name 'picture.doc' should have events with fields:
-      | key           | note | cascadable |
-      | fixity_result | OK   | false      |
+    Then the cfs file with name 'picture.doc' should have a fixity check result with status 'ok'
+    And the cfs file with name 'picture.doc' should have 0 events
     And the file group titled 'Toys' should have a cfs file for the path 'picture.doc' with results:
       | fixity_check_status | ok |
-    And the cfs file with name 'something.txt' should have events with fields:
-      | key           | note | cascadable |
-      | fixity_result | OK   | false      |
+    And the cfs file with name 'something.txt' should have a fixity check result with status 'ok'
+    And the cfs file with name 'something.txt' should have 0 events
     And the file group with title 'Toys' should have an event with key 'fixity_check_completed' performed by 'admin@example.com'
-
 
   @javascript @search
   Scenario: Fixity check with changed file from file group level
@@ -44,12 +41,10 @@ Feature: Fixity Checking
     And I click on 'Fixity check'
     Then the file group with title 'Toys' should have an event with key 'fixity_check_scheduled' performed by 'admin@example.com'
     When delayed jobs are run
-    Then the cfs file with name 'picture.doc' should have events with fields:
-      | key           | note | cascadable |
-      | fixity_result | OK   | false      |
     Then the cfs file with name 'something.txt' should have events with fields:
       | key           | note   | cascadable |
       | fixity_result | FAILED | true       |
+    And the cfs file with name 'something.txt' should have a fixity check result with status 'bad'
     And the file group with title 'Toys' should have cascadable events with fields:
       | key           | note   |
       | fixity_result | FAILED |
@@ -73,24 +68,19 @@ Feature: Fixity Checking
     And I click on 'Fixity check'
     Then the cfs directory with path 'yorkies' should have an event with key 'fixity_check_scheduled' performed by 'admin@example.com'
     When delayed jobs are run
-    And the cfs file with name 'something.txt' should have events with fields:
-      | key           | note | cascadable |
-      | fixity_result | OK   | false      |
+    And the cfs file with name 'something.txt' should have a fixity check result with status 'ok'
+    And the cfs file with name 'something.txt' should have 0 events
     And the cfs file with name 'picture.doc' should have 0 events
     And the cfs directory with path 'yorkies' should have an event with key 'fixity_check_completed' performed by 'admin@example.com'
     When I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
     And I click on 'Events'
     Then I should see all of:
       | Fixity check scheduled | Fixity check completed |
-    And I should see none of:
-      | Fixity result | OK |
     When I view the file group with title 'Toys'
     And I click on 'Events'
     And I click on 'View Events'
     Then I should see all of:
       | Fixity check scheduled | Fixity check completed |
-    And I should see none of:
-      | Fixity result | OK |
 
   @javascript @search
   Scenario: Fixity check with changed file from directory level
@@ -117,25 +107,6 @@ Feature: Fixity Checking
     And I click on 'View Events'
     Then I should see all of:
       | Fixity check scheduled | Fixity check completed | Fixity result | FAILED |
-
-  @javascript @search
-  Scenario: Fixity check of unchanged file from file level
-    Given I am logged in as an admin
-    When I view the cfs file for the file group titled 'Toys' for the path 'yorkies/something.txt'
-    And I click on 'Run'
-    And I click on 'Fixity check'
-    And the cfs file with name 'something.txt' should have events with fields:
-      | key              | note | cascadable | actor_email       |
-      | fixity_check_run |      | false      | admin@example.com |
-      | fixity_result    | OK   | false      | admin@example.com |
-    When I view the cfs file for the file group titled 'Toys' for the path 'yorkies/something.txt'
-    And I click on 'Events'
-    Then I should see all of:
-      | Fixity check run | Fixity result | OK |
-    When I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
-    And I click on 'Events'
-    Then I should see none of:
-      | Fixity check run | Fixity result | OK |
 
   @javascript @search
   Scenario: Fixity check of changed file from file level
@@ -175,27 +146,22 @@ Feature: Fixity Checking
     Given the cfs file with name 'something.txt' has events with fields:
       | key           | note   | actor_email       | cascadable |
       | fixity_result | FAILED | admin@example.com | true       |
-      | fixity_result | OK     | admin@example.com | false      |
     And I am logged in as an admin
     When I view the cfs directory for the file group titled 'Toys' for the path '.'
     And I click on 'Events'
     And I click on 'View Events'
     Then I should see all of:
       | Fixity result | FAILED | something.txt |
-    And I should not see 'OK'
     When I view the file group with title 'Toys'
     And I click on 'Events'
     And I click on 'View Events'
     Then I should see all of:
       | Fixity result | FAILED | something.txt |
-    And I should not see 'OK'
     When I view the collection with title 'Dogs'
     And I click on 'Events'
     Then I should see all of:
       | Fixity result | FAILED | something.txt |
-    And I should not see 'OK'
     When I view the repository with title 'Animals'
     And I click on 'Events'
     Then I should see all of:
       | Fixity result | FAILED | something.txt |
-    And I should not see 'OK'

@@ -213,3 +213,8 @@ end
 When(/^I reset fixity and FITS information for the cfs file named '(.*)'$/) do |name|
   CfsFile.find_by(name: name).reset_fixity_and_fits!
 end
+
+Then(/^the cfs file with name '(.*)' should have a fixity check result with status '(.*)'$/) do |name, status|
+  cfs_file = CfsFile.find_by(name: name)
+  expect(cfs_file.fixity_check_results.all.detect {|fcr| fcr.status == status}).to be_truthy
+end
