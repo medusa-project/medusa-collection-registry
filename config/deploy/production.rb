@@ -14,11 +14,13 @@
 # This can be used to drop a more detailed server definition into the
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
-set :home, '/services/medusa'
+#set :home, '/services/medusa'
+set :home, '/home/lib-medusa-collectionregistry'
 set :deploy_to, "#{fetch(:home)}/medusa-cr-capistrano"
 set :bin, "#{fetch(:home)}/bin"
 
-server 'medusa.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
+#server 'medusa.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
+server 'medusa.library.illinois.edu', user: 'lib-medusa-collectionregistry', roles: %w{web app db}, primary: true
 
 
 # Custom SSH Options
