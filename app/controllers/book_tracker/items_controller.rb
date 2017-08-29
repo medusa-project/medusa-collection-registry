@@ -120,7 +120,7 @@ module BookTracker
               # previous find_each batches from being garbage-collected.
               Item.uncached { @items.find_each { |item| y << item.to_csv } }
             end
-            stream(enumerator, 'items.csv')
+            stream(enumerator, 'items.csv', 'text/csv')
           end
           format.xml do
             enumerator = Enumerator.new do |y|
@@ -130,7 +130,7 @@ module BookTracker
               end
               y << '</export>'
             end
-            stream(enumerator, 'items.xml')
+            stream(enumerator, 'items.xml', 'application/xml')
           end
         end
       end
@@ -150,11 +150,11 @@ module BookTracker
     # Sends an Enumerable in chunks as an attachment. Streaming requires a
     # web server capable of it (not WEBrick or Thin).
     #
-    def stream(enumerable, filename)
+    def stream(enumerable, filename, content_type)
       self.response.headers['X-Accel-Buffering'] = 'no'
       self.response.headers['Cache-Control'] ||= 'no-cache'
       self.response.headers['Content-Disposition'] = "attachment; filename=#{filename}"
-      self.response.headers['Content-Type'] = 'text/csv'
+      self.response.headers['Content-Type'] = content_type
       self.response.headers.delete('Content-Length')
       self.response_body = enumerable
     end
