@@ -66,6 +66,7 @@ Rails.application.routes.draw do
 
   resources :red_flags, only: [:show, :edit, :update] do
     post :unflag, on: :member
+    post :mass_unflag, on: :collection
   end
 
   resources :projects, concerns: [:attachable, :autocomplete_email] do

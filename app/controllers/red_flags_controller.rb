@@ -1,6 +1,5 @@
 class RedFlagsController < ApplicationController
 
-  before_action :require_medusa_user
   before_action :find_red_flag, only: [:show, :edit, :update, :unflag]
 
   def show
@@ -28,6 +27,15 @@ class RedFlagsController < ApplicationController
       redirect_back fallback_location: @red_flag.red_flagabble
     end
 
+  end
+
+  def mass_unflag
+    authorize! :unflag, RedFlag
+    @red_flags = RedFlag.find(params[:mass_unflag])
+    @red_flags.each {|rf| rf.unflag!}
+    respond_to do |format|
+      format.js
+    end
   end
 
   protected

@@ -16,11 +16,11 @@ Feature: Red flags
     Given I am logged in as an admin
     And the file group titled 'pictures' has a cfs file for the path 'grass.jpg' with fields:
       | content_type_name |
-      | text/plain   |
+      | text/plain        |
     And the cfs file at path 'grass.jpg' for the file group titled 'pictures' has fits attached
     Then the cfs file at path 'grass.jpg' for the file group titled 'pictures' should have fields:
       | content_type_name |
-      | image/jpeg   |
+      | image/jpeg        |
     And the cfs file at path 'grass.jpg' for the file group titled 'pictures' should have 0 red flags
     And the file group titled 'pictures' should have a cfs file for the path 'grass.jpg' with fits attached
 
@@ -32,25 +32,25 @@ Feature: Red flags
     And the cfs file at path 'grass.jpg' for the file group titled 'pictures' has fits attached
     Then the cfs file at path 'grass.jpg' for the file group titled 'pictures' should have 1 red flag
     And the cfs file at path 'grass.jpg' for the file group titled 'pictures' should have fields:
-      | size   |
+      | size     |
       | 169804.0 |
 
   Scenario: A file with basic properties gets a red flag if md5 sum changes when FITS is run
     Given I am logged in as an admin
     And the file group titled 'pictures' has a cfs file for the path 'grass.jpg' with fields:
-      | md5_sum |
-      |   36dc5ffa0b229e9311cf0c4485b21a54 |
+      | md5_sum                          |
+      | 36dc5ffa0b229e9311cf0c4485b21a54 |
     And the cfs file at path 'grass.jpg' for the file group titled 'pictures' has fits attached
     Then the cfs file at path 'grass.jpg' for the file group titled 'pictures' should have 1 red flag
     And the cfs file at path 'grass.jpg' for the file group titled 'pictures' should have fields:
-      | md5_sum   |
+      | md5_sum                          |
       | b001b52b12fc80ef6145b7655de0b668 |
 
   Scenario: A file with FITS already run gets a red flag when content type, size, or md5 sum changes
     Given I am logged in as an admin
     And the file group titled 'pictures' has a cfs file for the path 'grass.jpg' with fields:
-      |fits_xml|content_type_name|size| md5_sum |
-      |<fits/>|text/plain   |100 |   36dc5ffa0b229e9311cf0c4485b21a54 |
+      | fits_xml | content_type_name | size | md5_sum                          |
+      | <fits/>  | text/plain        | 100  | 36dc5ffa0b229e9311cf0c4485b21a54 |
     And the cfs file at path 'grass.jpg' for the file group titled 'pictures' has fits rerun
     Then the cfs file at path 'grass.jpg' for the file group titled 'pictures' should have 3 red flags
 
@@ -173,3 +173,18 @@ Feature: Red flags
     And I click on 'Unflag' in the red flags table
     Then I should be on the dashboard page
     And I should see 'unflagged'
+
+  @javascript
+  Scenario: Mark multiple red flags as unflagged from index view
+    Given I am logged in as an admin
+    And the file group titled 'pictures' has a cfs file for the path 'grass.jpg' with red flags with fields:
+      | message           | notes               |
+      | Size red flag     | The size is off     |
+      | Checksum red flag | The checksum is off |
+    When I go to the dashboard
+    And I click on 'Red Flags'
+    And I click on 'Check All'
+    And I click on 'Unflag checked'
+    Then I should be on the dashboard page
+    And I should see 'unflagged'
+    And I should not see 'flagged'
