@@ -51,3 +51,9 @@ var red_flag_sorter = {
   }
 };
 
+function update_red_flag_row_for_unflagging(id) {
+    var row = $("#red-flag-" + id);
+    $("span.unflag-link", row).remove();
+    $(".status", row).text('unflagged');
+    $(".mass-unflag-checkbox", row).remove();
+}
