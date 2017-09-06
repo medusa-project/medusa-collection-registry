@@ -57,3 +57,4 @@ function update_red_flag_row_for_unflagging(id) {
     $(".status", row).text('unflagged');
     $(".mass-unflag-checkbox", row).remove();
 }
+

@@ -18,23 +18,27 @@
         = fa_icon 'square-o', text: 'All'
       = f.submit 'Unflag Checked', class: 'btn btn-default btn-primary'
   .row
-    = render layout: 'layouts/standard_table', locals: {id: 'red-flags-table', classes: 'table-condensed', headers: %w(Type Label Priority Status Time Message \  Actions)} do
-      - @red_flags.each do |red_flag|
-        - red_flaggable = red_flag.red_flaggable.decorate
-        %tr{id: "red-flag-#{red_flag.id}"}
-          %td= red_flaggable.cfs_type
-          %td= red_flaggable.cfs_label
-          %td= red_flag.priority
-          %td.status= red_flag.status
-          %td= red_flag.created_at
-          %td= red_flag.message
-          %td
-            - if red_flag.flagged?
-              = check_box_tag('', red_flag.id, false, name: 'mass_unflag[]', id: "mass_unflag_#{red_flag.id}", class: 'mass-unflag-checkbox')
-          %td
-            = small_view_button(red_flag)
-            = small_edit_button(red_flag)
-            - if red_flag.flagged?
-              %span.unflag-link
-                = link_to('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true, class: 'btn btn-default btn-xs')
-  `
+    %div
+      = render layout: 'layouts/standard_table', locals: {id: 'red-flags-table', classes: 'table-condensed', headers: %w(Type Label Priority Status Time Message \  Actions)} do
+        - @red_flags.each do |red_flag|
+          - red_flaggable = red_flag.red_flaggable.decorate
+          %tr{id: "red-flag-#{red_flag.id}"}
+            %td= red_flaggable.cfs_type
+            %td= red_flaggable.cfs_label
+            %td= red_flag.priority
+            %td.status= red_flag.status
+            %td= red_flag.created_at
+            %td= red_flag.message
+            %td
+              - if red_flag.flagged?
+                = check_box_tag('', red_flag.id, false, name: 'mass_unflag[]', id: "mass_unflag_#{red_flag.id}", class: 'mass-unflag-checkbox')
+            %td
+              = small_view_button(red_flag)
+              = small_edit_button(red_flag)
+              - if red_flag.flagged?
+                %span.unflag-link
+                  = link_to('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true, class: 'btn btn-default btn-xs')
+:javascript
+  $(document).ready(function () {
+    $('#red-flags-table').checkboxes('range', true);
+  });

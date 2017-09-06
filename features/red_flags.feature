@@ -184,7 +184,7 @@ Feature: Red flags
     When I go to the dashboard
     And I click on 'Red Flags'
     And I click on 'Check All'
-    And I click on 'Unflag checked'
+    And I click on 'Unflag Checked'
     Then I should be on the dashboard page
     And I should see 'unflagged'
-    And I should not see 'flagged'
+    And the cfs file with name 'grass.jpg' should have 0 red flags with status 'flagged'

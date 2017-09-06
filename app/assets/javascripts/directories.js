@@ -7,7 +7,7 @@ $(document).ready(function () {
     replace_delayed_thumbnail_spans();
     $('#files').on('draw.dt', replace_delayed_thumbnail_spans);
   }
-)
+);
 
 function replace_delayed_thumbnail_spans() {
   $('span.delayed-thumbnail:visible').each(function(i, element) {
