@@ -1,5 +1,6 @@
 class RedFlagsController < ApplicationController
 
+  before_action :require_medusa_user
   before_action :find_red_flag, only: [:show, :edit, :update, :unflag]
 
   def show

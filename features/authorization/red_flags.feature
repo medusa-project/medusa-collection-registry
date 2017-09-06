@@ -8,7 +8,7 @@ Feature: Red flags authorization
     And there is a physical cfs directory 'dogs'
     And the cfs directory 'dogs' contains cfs fixture file 'grass.jpg'
     And the collection with title 'Dogs' has child file groups with fields:
-      | title     | type              |
+      | title    | type              |
       | pictures | BitLevelFileGroup |
     And I set the cfs root of the file group titled 'pictures' to 'dogs'
     And the file group titled 'pictures' has a cfs file for the path 'grass.jpg' with red flags with fields:
@@ -18,5 +18,5 @@ Feature: Red flags authorization
   Scenario: Enforce permissions
     Then deny object permission on the red flag with message 'Size red flag' to users for action with redirection:
       | public user | view, edit, update, unflag(post) | authentication |
-      | user     | edit, update, unflag(post)       | unauthorized  |
+      | user        | edit, update, unflag(post)       | unauthorized   |
 
