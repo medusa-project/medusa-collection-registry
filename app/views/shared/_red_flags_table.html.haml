@@ -11,15 +11,16 @@
     = link_to 'Most Recent', '#', onclick: 'red_flag_sorter.recent(); return false;'
     |
     = link_to 'Most Important', '#', onclick: 'red_flag_sorter.priority(); return false;'
-    .pull-right
-      %a.btn.btn-default#check_all{href: '#red-flags-table', 'data-toggle' => 'checkboxes', 'data-action' => 'check', title: 'Check All'}
-        = fa_icon 'check-square-o', text: 'All'
-      %a.btn.btn-default#uncheck_all{href: '#red-flags-table', 'data-toggle' => 'checkboxes', 'data-action' => 'uncheck', title: 'Uncheck All'}
-        = fa_icon 'square-o', text: 'All'
-      = f.submit 'Unflag Checked', class: 'btn btn-default btn-primary'
+    - if safe_can?(:mass_unflag, RedFlag)
+      .pull-right
+        %a.btn.btn-default#check_all{href: '#red-flags-table', 'data-toggle' => 'checkboxes', 'data-action' => 'check', title: 'Check All'}
+          = fa_icon 'check-square-o', text: 'All'
+        %a.btn.btn-default#uncheck_all{href: '#red-flags-table', 'data-toggle' => 'checkboxes', 'data-action' => 'uncheck', title: 'Uncheck All'}
+          = fa_icon 'square-o', text: 'All'
+        = f.submit 'Unflag Checked', class: 'btn btn-default btn-primary'
   .row
     %div
-      = render layout: 'layouts/standard_table', locals: {id: 'red-flags-table', classes: 'table-condensed', headers: %w(Type Label Priority Status Time Message \  Actions)} do
+      = render layout: 'layouts/standard_table', locals: {id: 'red-flags-table', classes: 'table-condensed', headers: red_flags_table_headers} do
         - @red_flags.each do |red_flag|
           - red_flaggable = red_flag.red_flaggable.decorate
           %tr{id: "red-flag-#{red_flag.id}"}
@@ -29,9 +30,10 @@
             %td.status= red_flag.status
             %td= red_flag.created_at
             %td= red_flag.message
-            %td
-              - if red_flag.flagged?
-                = check_box_tag('', red_flag.id, false, name: 'mass_unflag[]', id: "mass_unflag_#{red_flag.id}", class: 'mass-unflag-checkbox')
+            - if safe_can?(:mass_unflag, RedFlag)
+              %td
+                - if red_flag.flagged?
+                  = check_box_tag('', red_flag.id, false, name: 'mass_unflag[]', id: "mass_unflag_#{red_flag.id}", class: 'mass-unflag-checkbox')
             %td
               = small_view_button(red_flag)
               = small_edit_button(red_flag)
