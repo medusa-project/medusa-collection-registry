@@ -3,38 +3,46 @@ require 'fileutils'
 namespace :fixity do
 
   DEFAULT_BATCH_SIZE = 100000
+  SUB_BATCH_LIMIT = 100
   FIXITY_STOP_FILE = File.join(Rails.root, 'fixity_stop.txt')
   desc "Run fixity on a number of files. BATCH_SIZE sets number (default #{DEFAULT_BATCH_SIZE})"
   task run_batch: :environment do
     batch_size = (ENV['BATCH_SIZE'] || DEFAULT_BATCH_SIZE).to_i
     errors = Hash.new
     bar = ProgressBar.new(batch_size)
-    i = 0
-    fixity_files(batch_size).each_instance do |cfs_file|
-      break if File.exist?(FIXITY_STOP_FILE)
-      begin
-        cfs_file.update_fixity_status_with_event
-        unless cfs_file.fixity_check_status == 'ok'
-          puts "#{cfs_file.id}: #{cfs_file.fixity_check_status}"
-          case cfs_file.fixity_check_status
-            when 'bad'
-              errors[cfs_file] = 'Bad fixity'
-            when 'nf'
-              errors[cfs_file] = 'Not found'
-            else
-              raise RuntimeError, 'Unrecognized fixity check status'
+    sub_batch_size = [batch_size, SUB_BATCH_LIMIT].min
+    batch_size -= sub_batch_size
+    while sub_batch_size > 0
+      fixity_files(sub_batch_size).each do |cfs_file|
+        break if File.exist?(FIXITY_STOP_FILE)
+        begin
+          cfs_file.update_fixity_status_with_event
+          unless cfs_file.fixity_check_status == 'ok'
+            puts "#{cfs_file.id}: #{cfs_file.fixity_check_status}"
+            case cfs_file.fixity_check_status
+              when 'bad'
+                errors[cfs_file] = 'Bad fixity'
+              when 'nf'
+                errors[cfs_file] = 'Not found'
+              else
+                raise RuntimeError, 'Unrecognized fixity check status'
+            end
           end
+          bar.increment!
+        rescue RSolr::Error::Http => e
+          errors[cfs_file] = e.to_s
+          FileUtils.touch(FIXITY_STOP_FILE)
+        rescue Exception => e
+          errors[cfs_file] = e.to_s
+          if errors.length > 25
+            FileUtils.touch(FIXITY_STOP_FILE)
+          end
+        ensure
+          Sunspot.commit
+          sub_batch_size = [batch_size, SUB_BATCH_LIMIT].min
+          batch_size -= sub_batch_size
         end
-        bar.increment!
-      rescue RSolr::Error::Http => e
-        errors[cfs_file] = e.to_s
-        FileUtils.touch(FIXITY_STOP_FILE)
-      rescue Exception => e
-        errors[cfs_file] = e.to_s
-      ensure
-        i += 1
       end
-      Sunspot.commit if (i % 100).zero?
     end
     if errors.present?
       error_string = StringIO.new
@@ -44,7 +52,6 @@ namespace :fixity do
       end
       GenericErrorMailer.error(error_string.string, subject: 'Fixity batch error').deliver_now
     end
-    Sunspot.commit
   end
 
   desc "Email about any bad fixity reports"
