@@ -56,8 +56,8 @@ namespace :fixity do
 end
 
 def fixity_files(batch_size)
-  if CfsFile.where(fixity_check_status: nil).first
-    CfsFile.where(fixity_check_status: nil).limit(batch_size)
+  if CfsFile.where(fixity_check_status: nil).where('size is not null').first
+    CfsFile.where(fixity_check_status: nil).where('size is not null').limit(batch_size)
   else
     timeout = (Settings.medusa.fixity_interval || 90).days
     CfsFile.where('fixity_check_time < ?', Time.now - timeout).order('fixity_check_time asc').limit(batch_size)
