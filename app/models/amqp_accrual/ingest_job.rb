@@ -95,6 +95,7 @@ MESSAGE
 
   def do_assessment
     immediate_parent_directory.cfs_files.find_by(name: file_name).try(:run_initial_assessment)
+    Sunspot.commit
   end
 
   def send_return_message
