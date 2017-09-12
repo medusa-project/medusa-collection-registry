@@ -103,11 +103,13 @@ class CfsFile < ApplicationRecord
     #This won't guarantee that we rerun if the file has changed, but it should pick up most of the cases. mtime only seems to go
     #down to the second
     if self.mtime.blank? or (file_info.mtime > self.mtime) or (file_info.size != self.size)
-      self.size = file_info.size
-      self.mtime = file_info.mtime
-      self.content_type_name = (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream')
-      self.set_fixity(self.file_system_md5_sum)
-      self.save!
+      transaction do
+        self.size = file_info.size
+        self.mtime = file_info.mtime
+        self.content_type_name = (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream')
+        self.set_fixity(self.file_system_md5_sum)
+        self.save!
+      end
     end
   end
 
