@@ -65,6 +65,9 @@ module ApplicationHelper
     current_user and (can?(action, *args))
   end
 
+  #TODO - this can take a long
+  #time for classes with a lot of records! Is there a better way to handle it?
+  #Good enough to use the solr count when available?
   def cache_key_for_all(klass)
     count = klass.count
     max_updated_at = klass.maximum(:updated_at) rescue nil
