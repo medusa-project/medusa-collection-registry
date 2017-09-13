@@ -5,6 +5,7 @@ class BitLevelFileGroup < FileGroup
   has_many :virus_scans, dependent: :destroy, foreign_key: :file_group_id
   has_many :job_fits_directories, class_name: 'Job::FitsDirectory', foreign_key: :file_group_id
   has_many :job_cfs_initial_directory_assessments, class_name: 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
+  has_many :archived_accrual_jobs, dependent: :destroy, foreign_key: :file_group_id
 
   after_create :ensure_cfs_directory
   after_destroy :maybe_destroy_cfs_directories

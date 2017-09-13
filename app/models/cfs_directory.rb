@@ -13,6 +13,7 @@ class CfsDirectory < ApplicationRecord
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
   has_many :amazon_backups, -> { order 'date desc' }
   has_many :archived_accrual_jobs, dependent: :destroy
+  has_many :workflow_accrual_jobs, :class_name => 'Workflow::AccrualJob', dependent: :destroy
   belongs_to :parent, polymorphic: true, touch: true
   #This is only useful when you _know_ the object is a root cfs dir and the parent is therefore a file group. But
   #it's needed for some queries.
