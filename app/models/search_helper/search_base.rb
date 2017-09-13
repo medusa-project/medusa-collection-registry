@@ -17,7 +17,11 @@ class SearchHelper::SearchBase < SearchHelper::Base
   end
 
   def full_count
-    base_class.count
+    if base_class.respond_to?(:search)
+      base_class.search{ keywords ''}.total
+    else
+      base_class.count
+    end
   end
 
   def search
