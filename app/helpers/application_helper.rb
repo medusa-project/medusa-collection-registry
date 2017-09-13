@@ -65,16 +65,23 @@ module ApplicationHelper
     current_user and (can?(action, *args))
   end
 
-  #TODO - this can take a long
-  #time for classes with a lot of records! Is there a better way to handle it?
-  #Good enough to use the solr count when available?
   def cache_key_for_all(klass)
-    count = klass.count
+    count = klass.cache_count
     max_updated_at = klass.maximum(:updated_at) rescue nil
     "#{klass.to_s.pluralize.underscore}/all-#{count}-#{max_updated_at}"
   rescue
     #if there is an error force the cache to clear
     UUID.generate
+  end
+
+  #If available get the count from solr, which is much faster for classes
+  #with a lot of records. Otherwise hit the database.
+  def cache_count(klass)
+    if klass.respond_to?(:search)
+      klass.search {keyword ''}.total
+    else
+      klass.count
+    end
   end
 
   #TODO Obviously this could be much more general in the future
