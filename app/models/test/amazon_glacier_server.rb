@@ -26,7 +26,7 @@ module Test
 
     def import_fail
       amqp_connector.with_parsed_message(self.incoming_queue) do |message|
-        return_message = {pass_through: message['pass_through'], status: 'failure', error_message: 'test_error', action: 'upload_directory'}
+        return_message = {pass_through: message['pass_through'], status: 'failure', message: 'test_error', action: 'upload_directory'}
         amqp_connector.send_message(self.outgoing_queue, return_message)
       end
     end

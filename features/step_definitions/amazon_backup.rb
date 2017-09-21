@@ -21,7 +21,21 @@ When(/^I run a full Amazon backup for the file group titled '([^']*)'$/) do |tit
   step 'amazon backup runs successfully'
 end
 
+When(/^I run a failing Amazon backup for the file group titled '([^']*)'$/) do |title|
+  file_group = BitLevelFileGroup.find_by(title: title)
+  amazon_backup = AmazonBackup.create(user_id: User.first.id, cfs_directory_id: file_group.cfs_directory.id, date: Date.today)
+  Job::AmazonBackup.create_for(amazon_backup)
+  step 'delayed jobs are run'
+  step 'amazon backup runs but fails'
+end
+
+
 When(/^amazon backup runs successfully$/) do
   Test::AmazonGlacierServer.instance.import_succeed
+  AmqpResponse::AmazonBackup.handle_responses
+end
+
+When(/^amazon backup runs but fails$/) do
+  Test::AmazonGlacierServer.instance.import_fail
   AmqpResponse::AmazonBackup.handle_responses
 end
