@@ -32,6 +32,7 @@ module AmazonBackupAmqp
   end
 
   def on_amazon_glacier_succeeded_message(response)
+    Application.glacier_logger.debug("Succeeded: #{response.inspect}")
     case response.action
       when 'upload_directory'
         self.archive_ids = response.archive_ids
@@ -59,6 +60,7 @@ module AmazonBackupAmqp
   end
 
   def on_amazon_glacier_failed_message(response)
+    Application.glacier_logger.debug("Failed: #{response.inspect}")
     AmazonMailer.failure(self, response.error_message).deliver_now
   end
 

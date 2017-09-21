@@ -34,9 +34,7 @@ class AmqpResponse::AmazonBackup < AmqpResponse::Base
   end
 
   def dispatch_result
-    logger = Logger.new(File.join(Rails.root, 'log', 'glacier.log'))
-    logger.level = Logger::DEBUG
-    logger.debug("Dispatching payload: #{payload.inspect}")
+    Application.glacier_logger.debug("Dispatching payload: #{payload.inspect}")
     super
   end
 end
