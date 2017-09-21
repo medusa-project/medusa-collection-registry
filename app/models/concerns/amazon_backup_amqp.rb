@@ -59,11 +59,11 @@ module AmazonBackupAmqp
   end
 
   def on_amazon_glacier_failed_message(response)
-    AmazonMailer.failure(self, response.error_message).deliver
+    AmazonMailer.failure(self, response.error_message).deliver_now
   end
 
   def on_amazon_glacier_unrecognized_message(response)
-    AmazonMailer.failure(self, 'Unrecognized status code in AMQP response').deliver
+    AmazonMailer.failure(self, 'Unrecognized status code in AMQP response').deliver_now
   end
 
   def delete_archives_and_self
