@@ -12,7 +12,7 @@
         - if medusa_user?
           = render partial: 'shared/search'
         - if medusa_user?
-          %li= fa_icon_and_text_link_to 'Logout', 'user', logout_path
+          %li= fa_icon_and_text_link_to "Logout (#{current_user.uid})", 'user', logout_path, title: 'Logout'
         - else
           %li= fa_icon_and_text_link_to 'Login', 'user', login_path
         %li
