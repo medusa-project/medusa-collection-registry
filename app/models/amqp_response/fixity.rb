@@ -1,11 +1,11 @@
 class AmqpResponse::Fixity < AmqpResponse::Base
 
   def pass_through_id_key
-    :cfs_file_id
+    'cfs_file_id'
   end
 
   def pass_through_class_key
-    :cfs_file_class
+    'cfs_file_class'
   end
 
   def self.incoming_queue
