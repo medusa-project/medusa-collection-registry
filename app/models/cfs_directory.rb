@@ -215,6 +215,8 @@ class CfsDirectory < ApplicationRecord
     end
   end
 
+  #TODO - possibly extend this to allow for exclusions specified on (for example) a
+  #Colletion level
   def excluded_file?(entry)
     %w(Thumbs.db .DS_Store).include?(File.basename(entry))
   end
