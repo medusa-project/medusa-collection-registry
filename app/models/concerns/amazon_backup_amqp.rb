@@ -32,6 +32,7 @@ module AmazonBackupAmqp
   end
 
   def on_amazon_glacier_succeeded_message(response)
+    Application.glacier_logger.debug("Succeeded: #{response.inspect}")
     case response.action
       when 'upload_directory'
         self.archive_ids = response.archive_ids
@@ -59,11 +60,12 @@ module AmazonBackupAmqp
   end
 
   def on_amazon_glacier_failed_message(response)
-    AmazonMailer.failure(self, response.error_message).deliver
+    Application.glacier_logger.debug("Failed: #{response.inspect}")
+    AmazonMailer.failure(self, response.error_message).deliver_now
   end
 
   def on_amazon_glacier_unrecognized_message(response)
-    AmazonMailer.failure.deliver(self, 'Unrecognized status code in AMQP response')
+    AmazonMailer.failure(self, 'Unrecognized status code in AMQP response').deliver_now
   end
 
   def delete_archives_and_self

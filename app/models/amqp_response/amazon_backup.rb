@@ -6,11 +6,11 @@ class AmqpResponse::AmazonBackup < AmqpResponse::Base
   end
 
   def pass_through_id_key
-    :backup_job_id
+    'backup_job_id'
   end
 
   def pass_through_class_key
-    :backup_job_class
+    'backup_job_class'
   end
 
   def self.incoming_queue
@@ -33,4 +33,8 @@ class AmqpResponse::AmazonBackup < AmqpResponse::Base
     :on_amazon_glacier_unrecognized_message
   end
 
+  def dispatch_result
+    Application.glacier_logger.debug("Dispatching payload: #{payload.inspect}")
+    super
+  end
 end

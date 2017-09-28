@@ -30,7 +30,7 @@ class Job::Base < ApplicationRecord
   end
 
   def notify_on_error(job, exception = nil)
-    DelayedJobErrorMailer.error(job, exception).deliver if job.attempts >= 5
+    DelayedJobErrorMailer.error(job, exception).deliver_now if job.attempts >= 5
   end
 
 end
