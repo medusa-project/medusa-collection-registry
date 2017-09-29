@@ -7,6 +7,7 @@
       - if file_group.supports_cfs and file_group.cfs_directory.present?
         %div= link_to 'View files', cfs_directory_path(file_group.cfs_directory), class: 'btn btn-xs btn-default'
     %td #{file_group.storage_level}
+    %td #{file_group.created_at.to_date}
     %td #{link_to(file_group.package_profile.name, file_group.package_profile) if file_group.package_profile.present?}
     %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
     %td #{file_group.file_count.to_s(:delimited) rescue ''}

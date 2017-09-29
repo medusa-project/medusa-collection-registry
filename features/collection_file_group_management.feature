@@ -9,14 +9,14 @@ Feature: File Group Management
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | title   | type              |
-      | Main Library           | image/jpeg  | 100             | 1200        | images | ExternalFileGroup |
+      | external_file_location | file_format | total_file_size | total_files | title  | type              | created_at |
+      | Main Library           | image/jpeg  | 100             | 1200        | images | ExternalFileGroup | 2016-09-20 |
 
   Scenario: View file groups of a collection
     When I view the collection with title 'Dogs'
     Then I should see the file groups table
     And I should see all of:
-      | images | 1,200 |
+      | images | 1,200 | 2016-09-20 |
 
   Scenario: Navigate to file group
     When I view the collection with title 'Dogs'
@@ -56,7 +56,7 @@ Feature: File Group Management
   Scenario: See related file group
     Given the collection with title 'Dogs' has child file groups with fields:
       | title | type              |
-      | text | BitLevelFileGroup |
+      | text  | BitLevelFileGroup |
     And the file group titled 'images' has relation note 'text created from images' for the target file group 'text'
     When I view the collection with title 'Dogs'
     Then I should see all of:

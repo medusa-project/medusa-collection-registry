@@ -5,7 +5,7 @@
 = render 'storage_level_filter'
 
 - if @collection.file_groups.present?
-  = render layout: 'layouts/standard_table', locals: {id: :file_groups, headers: ['Id', 'Name', 'Storage Level', 'Profile', 'Producer', 'Total files', 'Total file size (GB)', 'Related File Groups', '']} do
+  = render layout: 'layouts/standard_table', locals: {id: :file_groups, headers: ['Id', 'Name', 'Storage Level', 'Created','Profile', 'Producer', 'Total files', 'Total file size (GB)', 'Related File Groups', '']} do
     = render partial: 'file_groups_table_row', collection: @collection.file_groups.includes(:package_profile, :producer, :source_file_groups, :target_file_groups).order('created_at'), as: :file_group
 
 -# TODO Consider rendering one of each of these forms and adapting to the appropriate file group
