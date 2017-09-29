@@ -123,6 +123,7 @@ events:
     file_group_delete_moved: File group deleted - content moved
     file_group_delete_restored: File group restored
     file_group_delete_final: File group completely deleted
+    file_group_delete_empty: Empty file group deleted
   file_group:
     created: File group created
     external_staged: External file group staged

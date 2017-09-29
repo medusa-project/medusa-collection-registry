@@ -11,11 +11,14 @@ Feature: File Group Deletion
     Then there should be no file group with title 'Dogs'
 
   Scenario: Delete pristine bit level file group
-    Given the bit level file group with title 'Dogs' exists
+    Given the collection with title 'Animals' has child file groups with fields:
+      | title | type              |
+      | Dogs  | BitLevelFileGroup |
     And I am logged in as a manager
     When I edit the file group with title 'Dogs'
     And I click on 'Delete'
     Then there should be no file group with title 'Dogs'
+    And the collection with title 'Animals' should have an event with key 'file_group_delete_empty' performed by 'manager@example.com'
 
   Scenario: Start delete process for non-pristine bit level file group
     Given I clear the cfs root directory

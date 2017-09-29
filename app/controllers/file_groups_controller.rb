@@ -26,6 +26,7 @@ class FileGroupsController < ApplicationController
     authorize! :destroy, @file_group
     if @file_group.is_a?(ExternalFileGroup) or (@file_group.is_a?(BitLevelFileGroup) and @file_group.pristine?)
       if @file_group.destroy
+        @collection.events.create!(key: :file_group_delete_empty, actor_email: current_user.email, note: "Deleted empty file group #{@file_group.id} titled #{@file_group.title}")
         redirect_to collection_path(@collection)
       else
         flash[:notice] = @file_group.errors.full_messages.join('\n')
