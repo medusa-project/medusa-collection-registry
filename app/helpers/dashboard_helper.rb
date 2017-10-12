@@ -41,4 +41,12 @@ module DashboardHelper
     INGEST_STATE_LABELS[state.to_sym] || 'Unknown'
   end
 
+  def accrual_conflict_indicator_class(workflow_accrual_job)
+    if workflow_accrual_job.has_serious_conflicts?
+      "accrual-job-conflict-indicator"
+    else
+      ""
+    end
+  end
+
 end
