@@ -18,6 +18,11 @@ class AccrualDecorator < BaseDecorator
     nil
   end
 
+  #This is a dummy method to streamline simple form
+  def allow_overwrite
+    false
+  end
+
   def file_checkboxes
     h.content_tag(:ul, class: 'accrual-list list-group') do
       h.collection_check_boxes(:accrual, :accrual_files, self.files, :itself, :itself) do |box|

@@ -19,7 +19,8 @@ class AccrualsController < ApplicationController
     staging_path = params[:accrual][:staging_path]
     accrual_directories = params[:accrual][:accrual_directories].select {|d| d.present?}
     accrual_files = params[:accrual][:accrual_files].select {|f| f.present?}
-    Workflow::AccrualJob.create_for(current_user, cfs_directory, staging_path, accrual_files, accrual_directories)
+    allow_overwrite = params[:accrual][:allow_overwrite]
+    Workflow::AccrualJob.create_for(current_user, cfs_directory, staging_path, accrual_files, accrual_directories, allow_overwrite)
     flash[:notice] = submission_notice
     redirect_to cfs_directory
   end

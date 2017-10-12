@@ -4214,7 +4214,8 @@ CREATE TABLE workflow_accrual_jobs (
     user_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    amazon_backup_id integer
+    amazon_backup_id integer,
+    allow_overwrite boolean DEFAULT false
 );
 
 
@@ -7749,6 +7750,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170531152741'),
 ('20170710202254'),
 ('20170809162601'),
-('20170823171242');
+('20170823171242'),
+('20171012153758');
 
 

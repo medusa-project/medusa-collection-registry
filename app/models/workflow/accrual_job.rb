@@ -29,9 +29,9 @@ class Workflow::AccrualJob < Workflow::Base
                 'aborting' => 'Aborting', 'end' => 'Ending'}
   STATES = STATE_HASH.keys
 
-  def self.create_for(user, cfs_directory, staging_path, requested_files, requested_directories)
+  def self.create_for(user, cfs_directory, staging_path, requested_files, requested_directories, allow_overwrite)
     transaction do
-      workflow = self.create!(cfs_directory: cfs_directory, user: user, staging_path: staging_path, state: 'start')
+      workflow = self.create!(cfs_directory: cfs_directory, user: user, staging_path: staging_path, state: 'start', allow_overwrite: allow_overwrite)
       workflow.create_accrual_requests(requested_files, requested_directories)
       workflow.put_in_queue
     end
@@ -107,8 +107,13 @@ Paths are stored for inspection in #{tmpfile} on the server.
       file_changed = file_changed?(duplicate_file, source_path)
       workflow_accrual_conflicts.create!(path: duplicate_file, different: file_changed)
     end
-    be_in_state('initial_approval')
-    Workflow::AccrualMailer.initial_approval(self).deliver_now
+    if has_serious_conflicts? and (not allow_overwrite)
+      Workflow::AccrualMailer.illegal_overwrite(self).deliver_now
+      be_in_state_and_requeue('end')
+    else
+      be_in_state('initial_approval')
+      Workflow::AccrualMailer.initial_approval(self).deliver_now
+    end
   end
 
   def add_stats

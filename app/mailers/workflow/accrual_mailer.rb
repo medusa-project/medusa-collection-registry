@@ -11,6 +11,11 @@ class Workflow::AccrualMailer < MedusaBaseMailer
     mail(to: @workflow_accrual.user.email, subject: 'Medusa accrual pending')
   end
 
+  def illegal_overwrite(workflow_accrual)
+    @workflow_accrual = workflow_accrual
+    mail(to: @workflow_accrual.user.email, subject: 'Medusa accrual cancelled')
+  end
+
   def aborted(workflow_accrual)
     @workflow_accrual = workflow_accrual
     mail(to: @workflow_accrual.user.email, subject: 'Medusa accrual aborted')

@@ -207,7 +207,7 @@ Feature: File accrual
     When I am logged in as a manager
     And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
     And I check all of:
-      | joe.txt | intro.txt | stuff | pugs |
+      | joe.txt | intro.txt | stuff | pugs | Allow overwrite |
     And I click on 'Ingest'
     Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 0 minor conflicts, and 2 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
@@ -229,11 +229,23 @@ Feature: File accrual
     Then 'manager@example.com' should receive an email with subject 'Medusa accrual completed'
 
   @javascript
-  Scenario: Changed conflict accrual, aborted by repository manager
+  Scenario: Changed conflict accrual, requester did not explicity allow overwriting
     When I am logged in as a manager
     And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
     And I check all of:
       | joe.txt | intro.txt | stuff | pugs |
+    And I click on 'Ingest'
+    When delayed jobs are run
+    Then 'manager@example.com' should receive an email with subject 'Medusa accrual cancelled' containing all of:
+      | intro.txt | pugs/description.txt | Overwriting was not permitted. |
+    And the cfs directory with path 'dogs' should not have an accrual job
+
+  @javascript
+  Scenario: Changed conflict accrual, aborted by repository manager
+    When I am logged in as a manager
+    And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
+    And I check all of:
+      | joe.txt | intro.txt | stuff | pugs | Allow overwrite |
     And I click on 'Ingest'
     Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 0 minor conflicts, and 2 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
@@ -251,7 +263,7 @@ Feature: File accrual
     When I am logged in as a manager
     And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
     And I check all of:
-      | joe.txt | intro.txt | stuff | pugs |
+      | joe.txt | intro.txt | stuff | pugs | Allow overwrite |
     And I click on 'Ingest'
     Then accrual assessment for the cfs directory with path 'dogs' has 2 files, 2 directories, 0 minor conflicts, and 2 serious conflicts
     And 'manager@example.com' should receive an email with subject 'Medusa accrual pending' containing all of:
@@ -288,7 +300,7 @@ Feature: File accrual
     When I am logged in as a manager
     And I navigate to my accrual data for bag 'accrual-changed-overlap-bag' at path 'dogs'
     And I check all of:
-      | joe.txt | intro.txt | stuff | pugs |
+      | joe.txt | intro.txt | stuff | pugs | Allow overwrite |
     And I click on 'Ingest'
     And delayed jobs are run
     And I go to the dashboard
