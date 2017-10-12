@@ -2,4 +2,9 @@
   %h1.sr-only University Library, University of Illinois at Urbana-Champaign
   .container-fluid
     %a(href="http://www.library.illinois.edu" target="_blank" )
-      = image_tag('library_wordmark_horizontal.png', class: 'img-responsive banner-image-library')
+      .row
+        .col-sm-1
+          = image_tag('imark.svg', class: 'img-responsive banner-image-imark', alt: "Univeristy of Illinois I-Mark")
+        .col-sm-11
+          = image_tag('university_libraries_wordmark.png', class: 'img-responsive banner-image-library',  alt: "University Library, University of Illinois at Urbana-Champaign")
+      =# image_tag('library_wordmark_horizontal.png', class: 'img-responsive banner-image-library')
