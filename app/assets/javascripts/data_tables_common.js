@@ -1,4 +1,5 @@
 var default_datatable_args = {
+    'dom': "<'row'<'col-sm-2'l><'col-sm-4'B><'col-sm-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
     "order": [
         [0, "asc"]
     ],
@@ -22,7 +23,8 @@ var default_datatable_args = {
         }
     },
     "processing": true,
-    "pagingType": 'full_numbers'
+    "pagingType": 'full_numbers',
+    'buttons' : []
 };
 
 //Make the table selected by the provided CSS selector into a dataTables table using the default_datatable_args with
