@@ -40,10 +40,22 @@ class FileExtensionsController < ApplicationController
     redirect_to @file_extension.random_cfs_file(params.slice(:repository_id, :virtual_repository_id, :collection_id))
   end
 
+  def download_batch
+    cfs_files = @file_extension.cfs_files.order('name asc').page(params[:page]).per_page(params[:per_page] || 25)
+    cfs_files.each do |cfs_file|
+      authorize! :read, cfs_file
+    end
+    create_download_package(cfs_files)
+  end
+
   protected
 
   def find_file_extension
     @file_extension = FileExtension.find(params[:id])
+  end
+
+  def create_download_package(cfs_files)
+    #send a message to downloader to get a package with these files, each to their full path
   end
 
 end

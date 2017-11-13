@@ -107,6 +107,7 @@ Rails.application.routes.draw do
   resources :file_extensions, only: [] do
     get :cfs_files, on: :member
     get :random_cfs_file, on: :member
+    post :download_batch, on: :member
     post :fits_batch, on: :member
   end
   resources :file_formats do
