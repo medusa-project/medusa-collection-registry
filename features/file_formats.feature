@@ -20,6 +20,13 @@ Feature: File Formats
     Then I should see all of:
       | tiff | fmt/360 (2.1) | x-fmt/387 (2.2) | what we do with TIFF files | jp2 | what we do with JPEG 2000 files |
 
+  Scenario: View XML index of file formats
+    Given I am logged in as a visitor
+    When I go to the site home
+    And I click on 'File Formats (XML)'
+    Then I should see all of:
+      | tiff | fmt/360 | 2.1 | x-fmt/387 | 2.2 | what we do with TIFF files | jp2 | what we do with JPEG 2000 files |
+
   Scenario: View file format
     Given I am logged in as a visitor
     When I view the file format with name 'tiff'
