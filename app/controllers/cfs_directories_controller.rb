@@ -29,13 +29,13 @@ class CfsDirectoriesController < ApplicationController
   def export
     authorize! :export, @directory.file_group
     @files_present = !@directory.cfs_files.empty?
-    Downloader::Request.create_for(@directory, current_user, recursive: false) if @files_present
+    Downloader::Request.create_for_directory(@directory, current_user, recursive: false) if @files_present
   end
 
   def export_tree
     authorize! :export, @directory.file_group
     @files_present = @directory.tree_count > 0
-    Downloader::Request.create_for(@directory, current_user, recursive: true) if @files_present
+    Downloader::Request.create_for_directory(@directory, current_user, recursive: true) if @files_present
   end
 
   def show_tree
