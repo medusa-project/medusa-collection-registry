@@ -24,7 +24,7 @@ class FileExtensionsController < ApplicationController
   end
 
   def download_batch
-    cfs_files_query.all.each do |cfs_file|
+    cfs_files_query.each do |cfs_file|
       authorize! :read, cfs_file
     end
     create_download_package(cfs_files_query)
