@@ -54,8 +54,8 @@ class FileExtensionsController < ApplicationController
     @file_extension = FileExtension.find(params[:id])
   end
 
-  def create_download_package(cfs_files)
-    #send a message to downloader to get a package with these files, each to their full path
+  def create_download_package(cfs_files, current_user)
+    Downloader::Request.create_for_file_list(cfs_files)
   end
 
 end

@@ -1,17 +1,13 @@
 class Downloader::DirectoryHandler < Downloader::AbstractHandler
 
   def cfs_directory
-    CfsDirectory.find(request.parameters[:cfs_directory_id])
+    CfsDirectory.find(parameters[:cfs_directory_id])
   end
 
   def export_request_message(recursive: false)
-    config = Settings.downloader
-    Hash.new.tap do |h|
-      h[:action] = :export
-      h[:client_id] = "directory_#{request.id}"
-      h[:return_queue] = config.incoming_queue
-      h[:root] = config.root
+    export_request_message_template.tap do |h|
       h[:zip_name] = File.basename(cfs_directory.path)
+      h[:client_id] = "directory_#{request.id}"
       Hash.new.tap do |target|
         h[:targets] = [target]
         target[:recursive] = recursive
@@ -22,13 +18,30 @@ class Downloader::DirectoryHandler < Downloader::AbstractHandler
     end
   end
 
-  def handle_error(response)
-    CfsMailer.export_error_user(self, response).deliver_now
-    CfsMailer.export_error_admin(self, response).deliver_now
+  def export_complete_text
+    <<TEXT
+  Your download for the directory:
+
+  #{cfs_directory.relative_path}
+
+  is ready. This link should be valid for at least 14 days.
+TEXT
   end
 
-  def handle_request_completed(response)
-    CfsMailer.export_complete(self, response).deliver_now
+  def export_error_text
+    "There has been an error for your download for the directory: #{cfs_directory.relative_path}"
+  end
+
+  def export_admin_error_text
+    <<TEXT
+  There has been an error for the download of the directory:
+
+  #{cfs_directory.relative_path}
+
+  Information:
+
+  #{self.inspect}
+TEXT
   end
 
 end

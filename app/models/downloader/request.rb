@@ -23,8 +23,7 @@ class Downloader::Request < ApplicationRecord
       #The send to request updates status information and so on, the same across all types
       #The send to the handler does other work, like emailing about the response
       method = "handle_#{response['action']}"
-      request.send(method, response)
-      handler.send(method, response) if handler.respond_to?(method)
+      request.send(method, handler, response)
     else
       Rails.logger.error "Unrecognized response from downloader server: #{response}"
       raise RuntimeError, 'Unrecognized response from downloader server'
@@ -44,6 +43,8 @@ class Downloader::Request < ApplicationRecord
     case parameters[:type]
       when 'directory'
         Downloader::DirectoryHandler.new(self)
+      when 'file_list'
+        Downloader::FileListHandler.new(self)
       else
         Rails.logger.error "Unrecognized downloader request type"
         raise RuntimeError, "Unrecognized downloader request type"
@@ -51,29 +52,38 @@ class Downloader::Request < ApplicationRecord
   end
 
   def self.create_for_directory(cfs_directory, user, recursive: false)
-    requeset = self.create!(parameters: {cfs_directory_id: cfs_directory.id, type: 'directory'}, email: user.email, status: 'pending')
-    handler = Downloader::DirectoryHandler.new(requeset)
-    requeset.send_export_request(handler.export_request_message(recursive: recursive))
+    request = self.create!(parameters: {cfs_directory_id: cfs_directory.id, type: 'directory'}, email: user.email, status: 'pending')
+    handler = Downloader::DirectoryHandler.new(request)
+    request.send_export_request(handler.export_request_message(recursive: recursive))
+  end
+
+  def self.create_for_file_list(cfs_file_list, user)
+    request = self.create!(email: user.email, status: 'pending', parameters: {type: 'file_list', cfs_file_ids: cfs_file_list.collect(&:id)})
+    handler = Downloader::FileListHandler.new(request)
+    request.send_export_request(handler.export_request_message(cfs_file_list))
   end
 
   def initialize_parameters
     self.parameters ||= Hash.new
   end
 
-  def handle_request_received(response)
+  def handle_request_received(handler, response)
     self.status = 'request_received'
     self.downloader_id = response['id']
     self.save!
   end
 
-  def handle_error(response)
+  def handle_error(handler, response)
     self.status = 'error'
     self.save!
+    CfsMailer.export_error_user(handler.export_error_text, email, response).deliver_now
+    CfsMailer.export_error_admin(handler.export_admin_error_text, response).deliver_now
   end
 
-  def handle_request_completed(response)
+  def handle_request_completed(handler, response)
     self.status = 'request_completed'
     self.save!
+    CfsMailer.export_complete(handler.export_complete_text, email, response).deliver_now
   end
 
   def send_export_request(message)
