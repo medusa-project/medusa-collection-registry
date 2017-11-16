@@ -5,7 +5,7 @@
   .col-md-8
     .btn-toolbar.pull-right
       = link_to 'Run FITS batch', fits_batch_file_extension_path(@file_extension), class: 'btn btn-default', method: :post
-      = link_to fa_icon('download'), download_batch_file_extension_path(@file_extension, page: params[:page], per_page: params[:per_page]), class: 'btn btn-default', method: :post, remote: true
+      = link_to fa_icon('download'), download_batch_file_extension_path(@file_extension, page: params[:page], per_page: params[:per_page], repository_id: params[:repository_id], virtual_repository_id: params[:virtual_repository_id],  collection_id: params[:collection_id]), class: 'btn btn-default', method: :post, remote: true
       = link_to fa_icon('random'), random_cfs_file_file_extension_path(@file_extension, repository_id: params[:repository_id], virtual_repository_id: params[:virtual_repository_id],  collection_id: params[:collection_id]), class: 'btn btn-default', title: 'Random File'
 .row
   = render 'cfs_files/table'
