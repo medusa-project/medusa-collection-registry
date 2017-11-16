@@ -2157,8 +2157,7 @@ CREATE TABLE file_format_profiles (
     notes text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    status character varying DEFAULT 'active'::character varying NOT NULL,
-    file_format_id integer
+    status character varying DEFAULT 'active'::character varying NOT NULL
 );
 
 
@@ -2351,6 +2350,36 @@ CREATE TABLE file_formats (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
+
+
+--
+-- Name: file_formats_file_format_profiles_joins; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE file_formats_file_format_profiles_joins (
+    id bigint NOT NULL,
+    file_format_id bigint,
+    file_format_profile_id bigint
+);
+
+
+--
+-- Name: file_formats_file_format_profiles_joins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE file_formats_file_format_profiles_joins_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: file_formats_file_format_profiles_joins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE file_formats_file_format_profiles_joins_id_seq OWNED BY file_formats_file_format_profiles_joins.id;
 
 
 --
@@ -4589,6 +4618,13 @@ ALTER TABLE ONLY file_formats ALTER COLUMN id SET DEFAULT nextval('file_formats_
 
 
 --
+-- Name: file_formats_file_format_profiles_joins id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_formats_file_format_profiles_joins ALTER COLUMN id SET DEFAULT nextval('file_formats_file_format_profiles_joins_id_seq'::regclass);
+
+
+--
 -- Name: file_groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5180,6 +5216,14 @@ ALTER TABLE ONLY file_format_tests
 
 
 --
+-- Name: file_formats_file_format_profiles_joins file_formats_file_format_profiles_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_formats_file_format_profiles_joins
+    ADD CONSTRAINT file_formats_file_format_profiles_joins_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: file_formats file_formats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5604,6 +5648,20 @@ CREATE UNIQUE INDEX collection_virtual_repository_join_unique_index ON collectio
 --
 
 CREATE INDEX delayed_jobs_priority ON delayed_jobs USING btree (priority, run_at);
+
+
+--
+-- Name: ffffp_file_format_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX ffffp_file_format_idx ON file_formats_file_format_profiles_joins USING btree (file_format_id);
+
+
+--
+-- Name: ffffp_file_format_profile_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX ffffp_file_format_profile_idx ON file_formats_file_format_profiles_joins USING btree (file_format_profile_id);
 
 
 --
@@ -6094,13 +6152,6 @@ CREATE INDEX index_file_format_notes_on_file_format_id ON file_format_notes USIN
 --
 
 CREATE INDEX index_file_format_notes_on_user_id ON file_format_notes USING btree (user_id);
-
-
---
--- Name: index_file_format_profiles_on_file_format_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_file_format_profiles_on_file_format_id ON file_format_profiles USING btree (file_format_id);
 
 
 --
@@ -7218,6 +7269,14 @@ ALTER TABLE ONLY collection_virtual_repository_joins
 
 
 --
+-- Name: file_formats_file_format_profiles_joins fk_rails_3e0ef5d079; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_formats_file_format_profiles_joins
+    ADD CONSTRAINT fk_rails_3e0ef5d079 FOREIGN KEY (file_format_profile_id) REFERENCES file_format_profiles(id);
+
+
+--
 -- Name: job_report_producers fk_rails_4b642d3bd5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7391,6 +7450,14 @@ ALTER TABLE ONLY job_fits_file_extension_batches
 
 ALTER TABLE ONLY workflow_item_ingest_requests
     ADD CONSTRAINT fk_rails_b54106f343 FOREIGN KEY (item_id) REFERENCES items(id);
+
+
+--
+-- Name: file_formats_file_format_profiles_joins fk_rails_bdfc264c54; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_formats_file_format_profiles_joins
+    ADD CONSTRAINT fk_rails_bdfc264c54 FOREIGN KEY (file_format_id) REFERENCES file_formats(id);
 
 
 --
@@ -7752,6 +7819,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170809162601'),
 ('20170823171242'),
 ('20171012153758'),
-('20171113212259');
+('20171113212259'),
+('20171116203856');
 
 

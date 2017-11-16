@@ -25,6 +25,6 @@ Feature: File Format to File Format Profile association
   Scenario: Mangage file format for file format profile from file format profile edit page
     Given I am logged in as an admin
     When I edit the file format profile with name 'JPEG'
-    And I select 'jp2' from 'File format'
+    And I check 'jp2'
     And I click on 'Update'
     Then I should see 'JPEG'

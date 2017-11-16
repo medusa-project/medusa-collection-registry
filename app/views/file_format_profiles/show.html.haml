@@ -9,8 +9,8 @@
         = show_field @file_format_profile, :os_environment
         = show_field @file_format_profile, :os_version
         = show_field @file_format_profile, :notes
-        - if @file_format
-          = show_value link_to(@file_format.name, @file_format), 'File format'
+        - @file_formats.each do |file_format|
+          = show_value link_to(file_format.name, file_format), 'File format'
   .row
     .col-xs-4
       .panel.panel-default
