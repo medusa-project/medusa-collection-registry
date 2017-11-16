@@ -22,7 +22,7 @@ Feature: File Format to File Format Profile association
       | TIFF1 | TIFF2 |
     And I should not see 'JPEG'
 
-  Scenario: Mangage file format for file format profile from file format profile edit page
+  Scenario: Manage file format for file format profile from file format profile edit page
     Given I am logged in as an admin
     When I edit the file format profile with name 'JPEG'
     And I check 'jp2'
