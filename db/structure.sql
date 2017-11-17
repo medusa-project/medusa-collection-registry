@@ -6015,6 +6015,13 @@ CREATE INDEX index_cfs_files_on_fixity_check_time ON cfs_files USING btree (fixi
 
 
 --
+-- Name: index_cfs_files_on_md5_sum; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cfs_files_on_md5_sum ON cfs_files USING btree (md5_sum);
+
+
+--
 -- Name: index_cfs_files_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7820,6 +7827,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170823171242'),
 ('20171012153758'),
 ('20171113212259'),
-('20171116203856');
+('20171116203856'),
+('20171117201629');
 
 
