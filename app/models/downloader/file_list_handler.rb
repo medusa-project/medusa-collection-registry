@@ -9,7 +9,7 @@ class Downloader::FileListHandler < Downloader::AbstractHandler
         Hash.new.tap do |target|
           target[:type] = 'file'
           target[:path] = path
-          target[:zip_path] = File.dirname(path)
+          target[:zip_path] = File.dirname(path).gsub('/', '|')
         end
       end
     end

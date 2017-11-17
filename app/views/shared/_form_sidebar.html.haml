@@ -2,9 +2,10 @@
 -#Must pass object
 -#May pass cancel_return - object or path to go to if the form is cancelled. Default is to show obj.
 - cancel_return ||= object
+- confirm ||= nil
 .col-sm-3
   .btn-group
-    = f.button :submit, class: 'btn btn-primary', value: (object.new_record? ? 'Create' : 'Update'), onclick: "$('.modal').modal('hide');"
+    = f.button :submit, class: 'btn btn-primary', value: (object.new_record? ? 'Create' : 'Update'), onclick: "$('.modal').modal('hide');", 'data-confirm': confirm
     - if defined?(@remote) and @remote
       = link_to('Cancel', '#', class: 'btn btn-default', onclick: "$('.modal').modal('hide'); false;")
     - else
