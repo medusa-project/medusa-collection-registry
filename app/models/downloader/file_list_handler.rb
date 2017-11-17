@@ -3,7 +3,7 @@ class Downloader::FileListHandler < Downloader::AbstractHandler
   def export_request_message(cfs_file_list)
     export_request_message_template.tap do |h|
       h[:client_id] = "file_list_#{request.id}"
-      #h[:zip_name] = 'medusa_files'
+      h[:zip_name] = 'files'
       h[:targets] = cfs_file_list.collect do |cfs_file|
         path = cfs_file.relative_path
         Hash.new.tap do |target|
