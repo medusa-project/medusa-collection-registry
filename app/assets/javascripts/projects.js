@@ -23,6 +23,10 @@ function watch_item_barcode(barcode_field_selector) {
     });
 }
 
+//TODO
+//If not possible barcode or on successful lookup, clear notification area
+//If possible barcode with a bad lookup (not exactly 1 item) then put message in
+//notification area. Of course, need a notification area!
 function query_barcode(value) {
     if (possible_barcode(value)) {
         $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
