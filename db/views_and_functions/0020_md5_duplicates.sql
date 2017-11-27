@@ -11,7 +11,8 @@ CREATE OR REPLACE VIEW md5_duplicates
       F.name,
       cfs_file_relative_path(F.id) AS relative_path,
       C.name                       AS content_type,
-      F.mtime
+      F.mtime,
+      F.size
     FROM view_cfs_files_to_parents V,
       cfs_files F,
       medusa_uuids U,
