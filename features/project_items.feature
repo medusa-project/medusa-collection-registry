@@ -98,6 +98,15 @@ Feature: Project Items
     Then I should see all of:
       | Maskit | Bernard | 1153448 | 515 M379K |
 
+  Scenario: A barcode with no catalog entry shows a warning message.
+    Given I am logged in as a project_mgr
+    When I view the project with title 'Scanning'
+    And I click on 'Add Item'
+    And I fill in fields:
+      | Barcode | 30112017234788 |
+    And I wait 1 second
+    Then I should see 'Warning! The barcode you are attempting to retrieve is not available in the library catalog.'
+
   Scenario: See items from a batch
     Given I am logged in as a project_mgr
     When I view the project with title 'Scanning'

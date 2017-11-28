@@ -24,9 +24,10 @@ function watch_item_barcode(barcode_field_selector) {
 }
 
 //TODO
-//If not possible barcode or on successful lookup, clear notification area
+//If not possible barcode or on successful lookup, clear notification or put up success message
 //If possible barcode with a bad lookup (not exactly 1 item) then put message in
 //notification area. Of course, need a notification area!
+//Actually, just repurpose 'barcode items' in sidebar
 function query_barcode(value) {
     if (possible_barcode(value)) {
         $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
@@ -34,9 +35,13 @@ function query_barcode(value) {
             populate_barcode_items();
             if (barcode_item_data.length == 1) {
                 insert_barcode_item(0);
+            } else if (barcode_item_data.length == 0) {
+                show_barcode_error();
             }
             prevent_enter_in_barcode_field = false;
         })
+    } else {
+        clear_barcode_items();
     }
 }
 
@@ -44,14 +49,23 @@ function possible_barcode(s) {
     return _.isString(s) && s.length >= 14;
 }
 
-function populate_barcode_items() {
+function clear_barcode_items() {
     $('#barcode_items').html('');
+}
+
+function populate_barcode_items() {
+    clear_barcode_items();
     for (i = 0; i < barcode_item_data.length; i++) {
         if (i != 0) {
             $('#barcode_items').append('<hr/>')
         }
         $('#barcode_items').append(barcode_item_html(i));
     }
+}
+
+function show_barcode_error() {
+    clear_barcode_items();
+    $('#barcode_items').append('<span class="bg-danger">Warning! The barcode you are attempting to retrieve is not available in the library catalog.</span>')
 }
 
 function barcode_item_html(i) {
