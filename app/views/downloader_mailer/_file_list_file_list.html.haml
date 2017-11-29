@@ -1,0 +1,6 @@
+%ul
+  - @cfs_files.limit(25).all.each do |cfs_file|
+    %li
+      = cfs_file.relative_path
+  - if @cfs_files.count > 25
+    %li ...

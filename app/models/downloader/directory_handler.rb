@@ -18,30 +18,13 @@ class Downloader::DirectoryHandler < Downloader::AbstractHandler
     end
   end
 
-  def export_complete_text
-    <<TEXT
-  Your download for the directory:
-
-  #{cfs_directory.relative_path}
-
-  is ready. This link should be valid for at least 14 days.
-TEXT
+  def handle_error(response)
+    DownloaderMailer.directory_error(cfs_directory, email, response).deliver_now
+    DownloaderMailer.directory_error_admin(cfs_directory, self, response).deliver_now
   end
 
-  def export_error_text
-    "There has been an error for your download for the directory: #{cfs_directory.relative_path}"
-  end
-
-  def export_admin_error_text
-    <<TEXT
-  There has been an error for the download of the directory:
-
-  #{cfs_directory.relative_path}
-
-  Information:
-
-  #{self.inspect}
-TEXT
+  def handle_request_completed(response)
+    DownloaderMailer.directory_complete(cfs_directory, email, response).deliver_now
   end
 
 end
