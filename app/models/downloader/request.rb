@@ -71,19 +71,19 @@ class Downloader::Request < ApplicationRecord
     self.status = 'request_received'
     self.downloader_id = response['id']
     self.save!
+    handler.handle_request_received(response)
   end
 
   def handle_error(handler, response)
     self.status = 'error'
     self.save!
-    CfsMailer.export_error_user(handler.export_error_text, email, response).deliver_now
-    CfsMailer.export_error_admin(handler.export_admin_error_text, response).deliver_now
+    handler.handle_error(response)
   end
 
   def handle_request_completed(handler, response)
     self.status = 'request_completed'
     self.save!
-    CfsMailer.export_complete(handler.export_complete_text, email, response).deliver_now
+    handler.handle_request_completed(response)
   end
 
   def send_export_request(message)

@@ -23,4 +23,16 @@ class Downloader::AbstractHandler < Object
     end
   end
 
+  #Abstract
+  def handle_error(response)
+  end
+
+  #Abstract
+  def handle_request_completed(response)
+  end
+
+  #Abstract
+  def handle_request_received(response)
+  end
+
 end

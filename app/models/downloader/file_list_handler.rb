@@ -15,42 +15,16 @@ class Downloader::FileListHandler < Downloader::AbstractHandler
     end
   end
 
-  def export_complete_text
-    <<TEXT
-    Your download for the files:
-
-    #{file_list_text}
-
-    is ready. This link should be valid for at least 14 days.
-TEXT
+  def handle_error(response)
+    DownloaderMailer.file_list_error(cfs_files, email, response).deliver_now
+    DownloaderMailer.file_list_error_admin(cfs_files, response).deliver_now
   end
 
-  def export_error_text
-    <<TEXT
-    There has been an error for your download of the files:
-
-    #{file_list_text}
-TEXT
-  end
-
-  def export_admin_error_text
-    <<TEXT
-  There has been an error for the download of the files: 
-  #{file_list_text}
-
-  Information:
-
-  #{self.inspect}
-TEXT
+  def handle_request_completed(response)
+    DownloaderMailer.file_list_complete(cfs_files, email, response).deliver_now
   end
 
   protected
-
-  def file_list_text
-    file_list = cfs_files.limit(25).collect {|file| file.relative_path}
-    file_list << '...' if cfs_files.count > 25
-    file_list.join('\n')
-  end
 
   def cfs_files
     CfsFile.where(id: parameters[:cfs_file_ids])
