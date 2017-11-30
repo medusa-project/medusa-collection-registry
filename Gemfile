@@ -67,7 +67,12 @@ gem 'rails-jquery-autocomplete'
 gem 'clipboard-rails'
 gem 'underscore-rails'
 gem 'underscore-string-rails'
-gem 'react-rails'
+
+#TODO going to 2.4 seems to break some stuff, for reasons that I suspect are React reasons
+#rather than Rails reasons. Going to 2.3 works but will get you some deprecation messages that
+#I think will help solve this, but I'm not going to worry about that right now. It
+#looks like createClass and PropTypes are modified in how they work.
+gem 'react-rails', '~> 2.2.0'
 
 gem 'nokogiri'
 
