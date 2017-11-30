@@ -83,9 +83,9 @@ GEM
       redcarpet (~> 3.3)
       rinku (~> 1.7)
       tag_helper (~> 0.5)
-    auto_strip_attributes (2.1.0)
+    auto_strip_attributes (2.2.0)
       activerecord (>= 3.0)
-    autoprefixer-rails (7.1.1)
+    autoprefixer-rails (7.1.6)
       execjs
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
