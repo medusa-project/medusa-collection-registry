@@ -71,7 +71,14 @@ gem 'underscore-string-rails'
 #TODO going to 2.4 seems to break some stuff, for reasons that I suspect are React reasons
 #rather than Rails reasons. Going to 2.3 works but will get you some deprecation messages that
 #I think will help solve this, but I'm not going to worry about that right now. It
-#looks like createClass and PropTypes are modified in how they work.
+#looks like createClass and PropTypes are modified in how they work. Changing React.createClass to
+#simple createReactClass is fine, but I still get warnings about accessing PropTypes via the
+#main React package, even though I can't find anywhere that that happens. Something clearly starts
+#to go wrong in the tests, though. It may be worth either rewriting the (very small) React components
+#without coffeescript in a more standard way, or doing without React entirely, as it was basically
+#an experiment and we do something very similar in another way.
+#It might also be worth trying to update the javascript handling to be more how Rails handles it
+#nowdays with webpack and such, but that would be a bigger project.
 gem 'react-rails', '~> 2.2.0'
 
 gem 'nokogiri'
