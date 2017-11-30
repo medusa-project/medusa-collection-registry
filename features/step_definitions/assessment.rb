@@ -1,7 +1,7 @@
 And /^the assessable (.*) with (.*) '([^']*)' has assessments with fields:$/ do |object_type, key, value, table|
   assessable = step "the #{object_type} with #{key} '#{value}' exists"
   table.hashes.each do |hash|
-    FactoryGirl.create(:assessment, hash.merge(assessable: assessable))
+    FactoryBot.create(:assessment, hash.merge(assessable: assessable))
   end
 end
 

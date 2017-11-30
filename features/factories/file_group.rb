@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :file_group do
     sequence(:title) {|n| "File Group #{n}"}
     type 'ExternalFileGroup'

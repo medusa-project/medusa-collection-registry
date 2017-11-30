@@ -1,12 +1,12 @@
 And /^I have repositories with fields:$/ do |table|
   table.hashes.each do |hash|
-    FactoryGirl.create :repository, hash
+    FactoryBot.create :repository, hash
   end
 end
 
 And /^the repository titled '([^']*)' is managed by '([^']*)'$/ do |title, email|
-  person = FactoryGirl.create(:person, email: email,)
-  FactoryGirl.create(:repository, contact: person, title: title)
+  person = FactoryBot.create(:person, email: email,)
+  FactoryBot.create(:repository, contact: person, title: title)
 end
 
 Then /^I should see all repository fields$/ do
@@ -23,15 +23,15 @@ end
 And /^I have some repositories with files totalling '(\d+)' GB$/ do |size|
   size = size.to_i
   raise(RuntimeError, 'Please use an integral value for this test') unless size.integer?
-  repositories = 3.times.collect { FactoryGirl.create(:repository) }
+  repositories = 3.times.collect { FactoryBot.create(:repository) }
   repositories.each do |r|
     3.times do
-      FactoryGirl.create(:collection, repository: r)
+      FactoryBot.create(:collection, repository: r)
     end
   end
   Collection.all.each do |collection|
     2.times do
-      FactoryGirl.create(:bit_level_file_group, collection: collection)
+      FactoryBot.create(:bit_level_file_group, collection: collection)
     end
   end
   file_groups = BitLevelFileGroup.all.to_a

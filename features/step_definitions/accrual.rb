@@ -89,5 +89,5 @@ When /^I navigate to my accrual data for bag '(.*)' at path '(.*)'$/ do |bag_nam
 end
 
 Given(/^there is an accrual workflow job awaiting admin approval$/) do
-  FactoryGirl.create(:workflow_accrual_job, state: 'admin_approval')
+  FactoryBot.create(:workflow_accrual_job, state: 'admin_approval')
 end

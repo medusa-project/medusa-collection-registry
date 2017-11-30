@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :amazon_backup do
     cfs_directory
     user

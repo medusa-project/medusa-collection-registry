@@ -26,7 +26,7 @@ end
 
 Given(/^there are cfs directories with fields:$/) do |table|
   table.hashes.each do |hash|
-    FactoryGirl.create(:cfs_directory, hash)
+    FactoryBot.create(:cfs_directory, hash)
   end
 end
 

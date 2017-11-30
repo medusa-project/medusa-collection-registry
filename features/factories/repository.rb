@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :repository do
     sequence(:title) {|n| "Sample Repository #{n}"}
     sequence(:url) {|n| "http://sample-#{n}.example.com"}

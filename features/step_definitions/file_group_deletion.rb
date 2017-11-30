@@ -13,8 +13,8 @@ And(/^there should be (\d+) file group deletion workflow delayed jobs?$/) do |co
 end
 
 Given(/^the user '(.*)' has a file group deletion workflow with fields:$/) do |user, table|
-  user = User.find_by(email: user) || FactoryGirl.create(:user, uid: user, email: user)
-  FactoryGirl.create(:workflow_file_group_delete, table.hashes.first.merge(requester: user))
+  user = User.find_by(email: user) || FactoryBot.create(:user, uid: user, email: user)
+  FactoryBot.create(:workflow_file_group_delete, table.hashes.first.merge(requester: user))
 end
 
 Then(/^there should be (\d+) file group deletion workflows?$/) do |count|

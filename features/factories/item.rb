@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :item do
     project
     %i(bib_id oclc_number call_number).each do |identifier|

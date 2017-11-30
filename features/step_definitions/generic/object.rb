@@ -37,7 +37,7 @@ end
 And /^the (.*) with (.*) '([^']*)' has child (.*) with fields:$/ do |parent_object_type, parent_key, parent_value, child_object_type, table|
   parent = step "the #{parent_object_type} with #{parent_key} '#{parent_value}' exists"
   table.hashes.each do |child_hash|
-    parent.send(child_object_type.gsub(' ', '_').pluralize) << FactoryGirl.create(child_object_type.gsub(' ', '_').singularize, child_hash)
+    parent.send(child_object_type.gsub(' ', '_').pluralize) << FactoryBot.create(child_object_type.gsub(' ', '_').singularize, child_hash)
   end
 end
 
@@ -54,9 +54,9 @@ And /^the (.*) with (.*) '([^']*)' exists$/ do |object_type, key, value|
   klass = class_for_object_type(object_type) rescue nil
   underscored_key = key.gsub(' ', '_')
   if klass
-    klass.find_by(underscored_key => value) || FactoryGirl.create(object_type.gsub(' ', '_'), underscored_key => value)
+    klass.find_by(underscored_key => value) || FactoryBot.create(object_type.gsub(' ', '_'), underscored_key => value)
   else
-    FactoryGirl.create(object_type.gsub(' ', '_'), underscored_key => value)
+    FactoryBot.create(object_type.gsub(' ', '_'), underscored_key => value)
   end
 
 end
@@ -69,7 +69,7 @@ end
 
 And /^every (.*) with fields exists:$/ do |object_type, table|
   table.hashes.each do |hash|
-    FactoryGirl.create(object_type.gsub(' ', '_'), hash)
+    FactoryBot.create(object_type.gsub(' ', '_'), hash)
   end
 end
 

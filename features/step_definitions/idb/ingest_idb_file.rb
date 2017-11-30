@@ -19,7 +19,7 @@ Given(/^there is an IDB ingest delayed job$/) do
 end
 
 And(/^there is an IDB file group$/) do
-  file_group = FactoryGirl.create(:bit_level_file_group)
+  file_group = FactoryBot.create(:bit_level_file_group)
   AmqpAccrual::Config.set_file_group_id('idb', file_group.id)
 end
 

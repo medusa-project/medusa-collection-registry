@@ -37,7 +37,7 @@ end
 Given(/^there is a downloader request for the export of the cfs directory for the file group titled '(.*)' for the path '(.*)' with fields:$/) do |title, path, table|
   cfs_root = FileGroup.find_by(title: title).cfs_directory
   cfs_directory = cfs_root.find_directory_at_relative_path(path)
-  FactoryGirl.create(:downloader_request, table.hashes.first.merge(parameters: {cfs_directory_id: cfs_directory.id, type: 'directory'}))
+  FactoryBot.create(:downloader_request, table.hashes.first.merge(parameters: {cfs_directory_id: cfs_directory.id, type: 'directory'}))
 end
 
 When(/^a downloader request completed message is received with id '(.*)'$/) do |id|

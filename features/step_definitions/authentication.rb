@@ -31,6 +31,6 @@ private
 
 def login_user(opts = {})
   opts[:email] ||= opts[:uid] if opts[:uid]
-  user = User.find_by(uid: opts[:uid]) || FactoryGirl.create(:user, opts)
+  user = User.find_by(uid: opts[:uid]) || FactoryBot.create(:user, opts)
   page.set_rack_session(current_user_id: user.id)
 end

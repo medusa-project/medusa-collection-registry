@@ -1,5 +1,5 @@
 Given(/^there is a project item ingest workflow in state '(.*)'$/) do |state|
-  FactoryGirl.create(:workflow_project_item_ingest, state: state)
+  FactoryBot.create(:workflow_project_item_ingest, state: state)
 end
 
 And(/^I perform project item ingest workflows$/) do
@@ -13,8 +13,8 @@ Then(/^there should be (\d+) project item ingest workflows?$/) do |count|
 end
 
 Given(/^the user '(.*)' has a project item ingest workflow in state '(.*)'$/) do |user, state|
-  user = FactoryGirl.create(:user, uid: user, email: user)
-  FactoryGirl.create(:workflow_project_item_ingest, state: state, user: user)
+  user = FactoryBot.create(:user, uid: user, email: user)
+  FactoryBot.create(:workflow_project_item_ingest, state: state, user: user)
 end
 
 And(/^there should be (\d+) project item ingest workflows? in state '(.*)'$/) do |count, state|
@@ -58,7 +58,7 @@ And(/^there exists staged content for the items with ingest identifiers:$/) do |
 end
 
 And(/^there is a project item ingest workflow for the project with title '(.*)' in state '(.*)' for items with ingest identifier:$/) do |title, state, table|
-  workflow = FactoryGirl.create(:workflow_project_item_ingest, state: state, project: Project.find_by(title: title))
+  workflow = FactoryBot.create(:workflow_project_item_ingest, state: state, project: Project.find_by(title: title))
   table.headers.each do |ingest_id|
     item = Item.find_by_ingest_identifier(ingest_id)
     workflow.items << item if item

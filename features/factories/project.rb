@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :project do
     sequence(:title) {|n| "Sample Project #{n}"}
     association :manager, factory: :person

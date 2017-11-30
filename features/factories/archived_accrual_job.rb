@@ -1,5 +1,5 @@
 #note that this factory makes no attempt to set up the various associations consistently
-FactoryGirl.define do
+FactoryBot.define do
   factory :archived_accrual_job do
     sequence(:report) {|n| "Report #{n}"}
     file_group

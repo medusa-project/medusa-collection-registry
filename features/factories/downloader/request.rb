@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :downloader_request, class: 'Downloader::Request' do
     email 'user@example.com'
     status 'pending'

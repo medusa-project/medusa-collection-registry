@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :fixity_check_result do
     cfs_file
     status 'ok'

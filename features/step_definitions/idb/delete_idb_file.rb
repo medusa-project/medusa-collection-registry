@@ -9,7 +9,7 @@ end
 
 Given(/^there is a valid IDB delete delayed job$/) do
   idb_file_group = AmqpAccrual::Config.file_group('idb')
-  cfs_file = FactoryGirl.create(:cfs_file, cfs_directory_id: idb_file_group.cfs_directory.id, name: 'test.txt')
+  cfs_file = FactoryBot.create(:cfs_file, cfs_directory_id: idb_file_group.cfs_directory.id, name: 'test.txt')
   File.open(cfs_file.absolute_path, 'w') { |f| f.puts 'Some content' }
   idb_file_group.reload
   @initial_idb_file_count = idb_file_group.total_files
@@ -42,7 +42,7 @@ end
 
 Given(/^there is an IDB delete delayed job for a cfs file in another file group$/) do
   idb_file_group = AmqpAccrual::Config.file_group('idb')
-  cfs_file = FactoryGirl.create(:cfs_file, name: 'test.txt')
+  cfs_file = FactoryBot.create(:cfs_file, name: 'test.txt')
   idb_file_group.reload
   @initial_idb_file_count = idb_file_group.total_files
   @idb_uuid_to_delete = cfs_file.uuid

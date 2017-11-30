@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :file_format_note do
     date {Date.today}
     user

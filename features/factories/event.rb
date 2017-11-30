@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :event do
     sequence(:note) {|n| "Note #{n}"}
     association :eventable, factory: :file_group

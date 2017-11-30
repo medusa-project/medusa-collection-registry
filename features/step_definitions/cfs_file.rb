@@ -190,7 +190,7 @@ end
 
 And(/^there are cfs files with fields:$/) do |table|
   table.hashes.each do |hash|
-    FactoryGirl.create(:cfs_file, hash)
+    FactoryBot.create(:cfs_file, hash)
   end
 end
 

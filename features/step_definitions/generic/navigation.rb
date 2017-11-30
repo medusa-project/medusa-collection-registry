@@ -47,7 +47,7 @@ Then /^I should be on the create (.*) page$/ do |object_type|
 end
 
 Given /^I am editing an? (.*)$/ do |object_type|
-  visit self.send('edit_polymorphic_path', FactoryGirl.create(object_type.gsub(' ', '_')))
+  visit self.send('edit_polymorphic_path', FactoryBot.create(object_type.gsub(' ', '_')))
 end
 
 def generic_collection_path(object_type, prefix: nil)
@@ -65,7 +65,7 @@ def find_object(object_type, key, value)
 end
 
 def find_or_create_object(object_type, key, value)
-  find_object(object_type, key,value) || FactoryGirl.create(object_type.gsub(' ', '_'), key => value)
+  find_object(object_type, key,value) || FactoryBot.create(object_type.gsub(' ', '_'), key => value)
 end
 
 #uses polymorphic path in conjunction with the object to find the path - will usually work, but not for non-standard prefixes

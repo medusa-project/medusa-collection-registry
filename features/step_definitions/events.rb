@@ -9,7 +9,7 @@ end
 And(/^the (.*) with (.*) '([^']*)' has events with fields:$/) do |object_type, key, value, table|
   object = find_or_create_object(object_type, key, value)
   table.hashes.each do |hash|
-    FactoryGirl.create(:event, hash.merge(eventable: object))
+    FactoryBot.create(:event, hash.merge(eventable: object))
   end
 end
 

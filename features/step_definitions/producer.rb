@@ -8,7 +8,7 @@ And /^The collection titled '([^']*)' has (\d+) file groups? produced by '([^']*
   collection = Collection.find_by(title: collection)
   producer = Producer.find_by(title: producer)
   count.to_i.times do
-    FactoryGirl.create(:file_group, collection: collection, producer: producer)
+    FactoryBot.create(:file_group, collection: collection, producer: producer)
   end
 end
 

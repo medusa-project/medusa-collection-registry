@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :fits_directory_job, class: Job::FitsDirectory do
     cfs_directory
     file_group
