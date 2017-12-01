@@ -57,7 +57,7 @@ Feature: File accrual
     Then I should not see 'Add files'
     And I should not see the accrual form and dialog
 
-  @javascript
+  @javascript @selenium_chrome_headless
   Scenario: I can navigate the staging storage
     Given I am logged in as an admin
     And I navigate to my accrual data for bag 'small-bag' at path 'dogs'
