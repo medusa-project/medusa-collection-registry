@@ -68,33 +68,6 @@ gem 'clipboard-rails'
 gem 'underscore-rails'
 gem 'underscore-string-rails'
 
-#TODO going to 2.4 seems to break some stuff, for reasons that I suspect are React reasons
-#rather than Rails reasons. Going to 2.3 works but will get you some deprecation messages that
-#I think will help solve this, but I'm not going to worry about that right now. It
-#looks like createClass and PropTypes are modified in how they work. Changing React.createClass to
-#simple createReactClass is fine, but I still get warnings about accessing PropTypes via the
-#main React package, even though I can't find anywhere that that happens. Something clearly starts
-#to go wrong in the tests, though. It may be worth either rewriting the (very small) React components
-#without coffeescript in a more standard way, or doing without React entirely, as it was basically
-#an experiment and we do something very similar in another way.
-#It might also be worth trying to update the javascript handling to be more how Rails handles it
-#nowdays with webpack and such, but that would be a bigger project.
-# We get a bunch of this sort of thing in the tests:
-#
-# Capybara::Poltergeist::JavascriptError: One or more errors were raised in the Javascript code on the page. If you don't care about these errors, you can ignore them by setting js_errors: false in your Poltergeist configuration (see documentation for details).
-#
-#TypeError: undefined is not a constructor (evaluating '$('#directory_files').DataTable')
-#TypeError: undefined is not a constructor (evaluating '$('#directory_files').DataTable')
-#
-#I suspect these are because of preceding React errors, though, leaving something else undefined
-# I should add that this only appears when running the tests - running through a browser in dev mode seems fine.
-# No console errors or anything.
-# It seems like the real problem here is that PhantomJS is based on relatively old code and can't handle
-# some newer javascript stuff, which is probably being used by the current react-rails. This neatly
-# explains why it works in dev but not test. Unfortunately it's not clear that there is really anything to
-# do about this unless a better (non Qt based) headless JS driver becomes available for capybara
-# Actually the selenium_chrome_headless driver _might_ help, although it may also fail on other tests
-# Okay, I can at least one of these to pass using the selenium driver, so let's try everything
 gem 'react-rails', '~> 2.4.0'
 
 gem 'nokogiri'
