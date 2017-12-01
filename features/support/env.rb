@@ -28,6 +28,7 @@ Capybara.javascript_driver = :poltergeist
 #Capybara.javascript_driver = :webkit
 #Capybara.javascript_driver = :selenium
 #Capybara.javascript_driver = :chrome
+#Capybara.javascript_driver = :selenium_chrome_headless
 Capybara.default_driver = :rack_test
 
 # By default, any exception happening in your Rails application will bubble up
