@@ -94,7 +94,8 @@ gem 'underscore-string-rails'
 # explains why it works in dev but not test. Unfortunately it's not clear that there is really anything to
 # do about this unless a better (non Qt based) headless JS driver becomes available for capybara
 # Actually the selenium_chrome_headless driver _might_ help, although it may also fail on other tests
-gem 'react-rails', '~> 2.2.0'
+# Okay, I can at least one of these to pass using the selenium driver, so let's try everything
+gem 'react-rails', '~> 2.4.0'
 
 gem 'nokogiri'
 
@@ -171,6 +172,7 @@ group :test do
   gem 'json_spec'
   gem 'capybara'
   gem 'capybara-email'
+  gem 'capybara-box', require: false
   gem 'launchy'
   #testing with javascript - requires phantomjs to be installed on the test machine
   gem 'poltergeist'
