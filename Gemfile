@@ -172,13 +172,11 @@ group :test do
   gem 'json_spec'
   gem 'capybara'
   gem 'capybara-email'
-  gem 'capybara-box', require: false
   gem 'launchy'
   #testing with javascript - requires phantomjs to be installed on the test machine
   gem 'poltergeist'
   #other js testing options
   gem 'selenium-webdriver'
-  gem 'chromedriver-helper'
   gem 'sunspot_test'
   gem 'connection_pool'
   #need my version of bunny-mock where the default exchange works as expected. Wait to see if the fix gets merged

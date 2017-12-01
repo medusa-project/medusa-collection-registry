@@ -27,6 +27,7 @@ Feature: Collection file statistics
       | image/jpeg      | 2 | 332 KB  |
       | application/xml | 1 | 2.89 KB |
 
+  @poltergeist
   Scenario: Get CSV version of file statistics for collection
     When I view the collection with title 'Animals'
     And within '#file-statistics' I click on 'CSV'

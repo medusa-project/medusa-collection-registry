@@ -47,12 +47,12 @@ Feature: Project Items
       | Date               | 1999-10-17   |
       | Rights information | Rights stuff |
       | Item number        | 9876         |
-    And I select 'RCAM' from 'Equipment'
-    And I select 'DVD' from 'Source media'
     And I check 'Foldout present'
     And I check 'Foldout done'
     And I check 'Item done'
     And I uncheck 'Ingested'
+    And I select 'RCAM' from 'Equipment'
+    And I select 'DVD' from 'Source media'
     And I click on 'Update'
     Then I should be on the view page for the project with title 'Scanning'
     And I should see all of:

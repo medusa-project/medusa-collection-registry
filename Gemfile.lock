@@ -75,8 +75,6 @@ GEM
     airbrussh (1.3.0)
       sshkit (>= 1.6.1, != 1.7.0)
     amq-protocol (2.2.0)
-    archive-zip (0.7.0)
-      io-like (~> 0.3.0)
     arel (8.0.0)
     auto_html (2.0.0)
       gemoji (~> 2.1)
@@ -125,24 +123,12 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara-box (0.2.1)
-      capybara
-      capybara-screenshot
-      chromedriver-helper
-      rack_session_access
-      selenium-webdriver
     capybara-email (2.5.0)
       capybara (~> 2.4)
       mail
-    capybara-screenshot (1.0.18)
-      capybara (>= 1.0, < 3)
-      launchy
     chartkick (2.2.5)
     childprocess (0.8.0)
       ffi (~> 1.0, >= 1.0.11)
-    chromedriver-helper (1.1.0)
-      archive-zip (~> 0.7.0)
-      nokogiri (~> 1.6)
     chronic (0.10.2)
     ckeditor (4.2.4)
       cocaine
@@ -282,7 +268,6 @@ GEM
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
     inflecto (0.0.2)
-    io-like (0.3.0)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
@@ -541,10 +526,8 @@ DEPENDENCIES
   capistrano-rbenv
   capistrano-yarn
   capybara
-  capybara-box
   capybara-email
   chartkick
-  chromedriver-helper
   chronic
   ckeditor
   clipboard-rails

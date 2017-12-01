@@ -35,7 +35,7 @@ Feature: Amazon backup
     And I click on 'Create backup'
     Then there should be 1 amazon backup delayed job
 
-  @javascript
+  @javascript @poltergeist
   Scenario: Bulk schedule amazon backup of bit level file groups
     Given I am logged in as an admin
     When I go to the dashboard
