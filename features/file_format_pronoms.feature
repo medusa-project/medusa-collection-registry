@@ -1,4 +1,4 @@
-@javascript
+@javascript @poltergeist
 Feature: File Format Pronoms
   In order to use standard language for file formats
   As a librarian

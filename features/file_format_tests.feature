@@ -15,7 +15,7 @@ Feature: File Format Tests
       | tester_email      | date       | pass  | notes       |
       | sugar@example.com | 2015-10-06 | false | Sugie notes |
 
-  @javascript
+  @javascript @poltergeist
   Scenario: Add file format test to cfs file
     Given I am logged in as a manager
     When I view the cfs file with name 'Ruthie'
@@ -35,7 +35,7 @@ Feature: File Format Tests
       | saved with incorrect extension | Pass |
     And the cfs file with name 'Ruthie' should have an associated file format test
 
-  @javascript
+  @javascript @poltergeist
   Scenario: Edit file format test of existing cfs file
     Given I am logged in as a manager
     And the cfs file with name 'Ruthie' is associated with the file format test with tester email 'sugar@example.com'
@@ -69,20 +69,24 @@ Feature: File Format Tests
     Then the checkbox 'corrupt' should be disabled and unchecked
     And the checkbox 'software unavailable' should be disabled and unchecked
 
-  @javascript
+  @javascript @poltergeist
   Scenario: User can add reasons when inputting a file format test
     Given I am logged in as a manager
+    #make sure this isn't left over after an error or something
+    And I destroy the file format test reason with label 'ancient format'
     When I view the cfs file with name 'Ruthie'
     And I click on 'Create File format test'
     And I select 'TIFF' from 'File format profile'
     And I choose 'Fail'
     And I fill in fields:
-      | new_reason_label | expired format |
+      | new_reason_label | ancient format |
     And I click on 'Add Reason'
-    And I check 'expired format'
+    And I check 'ancient format'
     And I click on 'Create'
     Then I should be on the view page for the cfs file with name 'Ruthie'
-    And I should see 'expired format'
+    And I should see 'ancient format'
+    #This is just to clean up - database_cleaner won't get this otherwise
+    And I destroy the file format test reason with label 'ancient format'
 
   Scenario: Inactive file format profiles should not show
     Given I am logged in as a manager

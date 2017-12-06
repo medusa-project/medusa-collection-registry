@@ -80,7 +80,7 @@ Then /^each (.*) with (.*) should exist:$/ do |object_type, key, table|
 end
 
 When(/^I destroy the (.*) with (.*) '([^']*)'$/) do |object_type, key, value|
-  find_object(object_type, key, value).destroy
+  find_object(object_type, key, value).try(:destroy)
 end
 
 And /^the (.*) with (.*) '([^']*)' should have associated (.*) with field (.*):$/ do |parent_object_type, parent_key, parent_value, child_object_type, child_key, table|

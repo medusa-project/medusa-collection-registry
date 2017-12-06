@@ -55,9 +55,9 @@ When /^I select accrual action '([^']*)' with comment '([^']*)'$/ do |action, co
     And I fill in fields:
       | Comment | #{comment} |
     And within '#accrual_comment_form' I click on 'Submit'
-    And I wait 1 second
+    And I wait 0.5 seconds
     When delayed jobs are run
-    And I wait 1 second)
+    And I wait 0.5 seconds)
 end
 
 
@@ -82,7 +82,6 @@ When /^I navigate to my accrual data for bag '(.*)' at path '(.*)'$/ do |bag_nam
   When the bag '#{bag_name}' is staged in the accrual root named 'staging-1' at path '#{path}'
   And I view the bit level file group with title 'Dogs'
   And I click on 'Run'
-  And I wait 1 second
   And I click consecutively on:
     | Add files | staging-1 | dogs |
   And within '#add-files-form' I click on 'data')

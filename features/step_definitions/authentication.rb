@@ -32,5 +32,13 @@ private
 def login_user(opts = {})
   opts[:email] ||= opts[:uid] if opts[:uid]
   user = User.find_by(uid: opts[:uid]) || FactoryBot.create(:user, opts)
-  page.set_rack_session(current_user_id: user.id)
+  case Capybara.javascript_driver.to_s
+    when /selenium/
+      visit(login_path)
+      fill_in('name', with: user.uid)
+      fill_in('email', with: user.email) #this is to accommodate the developer strategy, which uses the email as the UIN
+      click_button('Sign In')
+    else
+      page.set_rack_session(current_user_id: user.id)
+  end
 end

@@ -20,15 +20,15 @@ Capybara.match = :prefer_exact
 
 Capybara.server = :puma
 
-#set drivers
-Capybara.register_driver :chrome do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome)
-end
-Capybara.javascript_driver = :poltergeist
+Capybara.default_driver = :rack_test
+#For this to work chromedriver must be installed on the path. I've
+# taken the gem out of the gemfile since it is generally available and
+# more up to date through brew, npm, or the like
+Capybara.javascript_driver = :selenium_chrome_headless
+#Capybara.javascript_driver = :poltergeist
 #Capybara.javascript_driver = :webkit
 #Capybara.javascript_driver = :selenium
-#Capybara.javascript_driver = :chrome
-Capybara.default_driver = :rack_test
+# Capybara.javascript_driver = :selenium_chrome
 
 # By default, any exception happening in your Rails application will bubble up
 # to Cucumber so that your scenario will fail. This is a different from how
@@ -69,7 +69,7 @@ def last_json
   page.source
 end
 
-%i(selenium chrome).each do |driver|
+%i(selenium chrome selenium_chrome_headless selenium_chrome poltergeist webkit).each do |driver|
   Around("@#{driver}") do |scenario, block|
     begin
       Capybara.current_driver = driver
