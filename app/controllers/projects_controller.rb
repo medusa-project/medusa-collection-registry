@@ -171,7 +171,7 @@ class ProjectsController < ApplicationController
     end.to_json
   end
 
-  MASS_UPDATE_FIELDS = [:batch, :reformatting_operator, :reformatting_date, :equipment]
+  MASS_UPDATE_FIELDS = [:batch, :reformatting_operator, :reformatting_date, :equipment, :notes]
   MASS_UPDATE_BOOLEANS = [:foldout_present, :foldout_done, :item_done, :ingested]
 
   def mass_update(params)

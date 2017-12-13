@@ -28,7 +28,7 @@ Feature: Project items mass edit
     And I should see none of:
       | batch_1 | batch_2 |
     And the item with fields should exist:
-      | barcode        | batch   | reformatting_operator | equipment | Notes   |
+      | barcode        | batch   | reformatting_operator | equipment | notes   |
       | 30012323456789 | batch_3 | Dee                   | RCAM      | My note |
       | 30045623456789 | batch_3 | Dee                   | RCAM      | My note |
       | 30078923456789 | batch_3 | Dee                   | RCAM      | My note |
