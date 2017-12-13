@@ -33,4 +33,13 @@ class Job::Base < ApplicationRecord
     DelayedJobErrorMailer.error(job, exception).deliver_now if job.attempts >= 5
   end
 
+  #to be used manually when there is a failure to get the jobs to retry immediately
+  def reset_delayed_jobs
+    self.delayed_jobs.where('attempts > 0').each do |job|
+      job.attempts = job.attempts - 1
+      job.run_at = Time.now
+      job.save!
+    end
+  end
+
 end
