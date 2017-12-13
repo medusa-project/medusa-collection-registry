@@ -1,0 +1,8 @@
+-# must pass in field, f (form)
+.row
+  .col-sm-2
+    = f.label field, required: false
+  .col-sm-1
+    = f.input :"allow_blank_#{field}", label: false, as: :boolean
+  .col-sm-7
+    = f.input field, label: false, required: false, as: :text
