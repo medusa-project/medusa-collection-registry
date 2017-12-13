@@ -7,9 +7,9 @@ GIT
 
 GIT
   remote: git://github.com/medusa-project/amqp_helper.git
-  revision: c8be2b59d662c9f7e90fe125c2c8a2fe10b0636a
+  revision: da0d46b8a37b612bd2e6544278bdb79474da3718
   specs:
-    amqp_helper (0.1.4)
+    amqp_helper (0.1.5)
       bunny
       bunny-mock
 
