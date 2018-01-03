@@ -1,65 +1,40 @@
+require 'uri'
 class LdapQuery < Object
 
-  attr_accessor :host, :port, :protocol, :user, :passwd, :base, :search,
-                :connection
+  delegate :ldap_cache_key, to: :class
 
   def initialize
-    config = Settings.ldap
-    self.host = config['host']
-    self.port = config['port']
-    self.protocol = config['protocol']
-    self.user = config['user']
-    self.passwd = config['passwd']
-    self.base = config['base']
-    self.search = config['search']
-    self.connect
+
   end
 
   def is_member_of?(group, net_id)
-    cached_groups(net_id).include?(group)
-  end
-
-  def groups(net_id, memberships = nil)
-    memberships ||= Set.new
-    filter = Net::LDAP::Filter.eq('cn', net_id)
-    connection.search(base: base, filter: filter) do |entry|
-      entry[:memberOf].each do |group|
-        group.scan(/#{search}/) do |m|
-          g = m[0]
-          unless memberships.include?(g)
-            memberships << g
-            groups(g, memberships)
-          end
-        end
+    json = Rails.cache.fetch(ldap_cache_key(net_id)) do
+      "{}"
+    end
+    hash = JSON.parse(json)
+    if hash.has_key?(group)
+      hash[group]
+    else
+      response = HTTParty.get(ldap_url(group, net_id))
+      (response.success? and response.body == 'TRUE').tap do |is_member|
+        hash[group] = is_member
+        Rails.cache.write(ldap_cache_key(net_id), hash.to_json, expires_in: 1.day, race_condition_ttl: 10.seconds)
       end
     end
-    memberships
   end
 
-  def cached_groups(net_id)
-    Rails.cache.fetch(ldap_cache_key(net_id), expires_in: 1.day, race_condition_ttl: 10.seconds) do
-      groups(net_id)
-    end
+  def ldap_url(group, net_id)
+    "http://quest.grainger.uiuc.edu/directory/ad/#{net_id}/ismemberof/#{URI.encode(group)}"
   end
 
   def self.ldap_cache_key(net_id)
-    "ldap_groups_#{net_id}"
+    "ldap_#{net_id}"
   end
 
-  def ldap_cache_key(net_id)
-    self.class.ldap_cache_key(net_id)
-  end
-
-  def self.reset_cache(net_id)
+  #Historically it was possible to delete a single user from the cache, but this isn't really
+  # possible as things are now, so just blow away the whole cache.
+  def self.reset_cache(net_id = nil)
     Rails.cache.delete(ldap_cache_key(net_id))
-  end
-
-  def connect
-    self.connection = Net::LDAP.new(host: host, port: port, encryption: :start_tls,
-                                    auth: {username: user, password: passwd, method: :simple})
-    unless connection.bind
-      raise RuntimeError, 'Unable to connect to LDAP server'
-    end
   end
 
 end
