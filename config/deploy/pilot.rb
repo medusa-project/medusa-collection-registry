@@ -15,13 +15,16 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-set :home, '/home/lib-medusa-collectionregistry'
-set :deploy_to, "#{fetch(:home)}/medusa-cr-capistrano"
+set :home, '/home/centos'
+set :deploy_to, "#{fetch(:home)}/repos/medusa-cr-capistrano"
 set :bin, "#{fetch(:home)}/bin"
 
-server 'medusatest.library.illinois.edu', user: 'lib-medusa-collectionregistry', roles: %w{web app db}, primary: true
+server 'medusa-pilot.library.illinois.edu', user: 'centos', roles: %w{web app db}, primary: true
+
+set :keep_releases, 2
+
 #server 'medusatest.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
-ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
+#ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
 # Custom SSH Options
 # ==================
