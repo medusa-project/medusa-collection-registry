@@ -59,7 +59,8 @@ class GlacierAnalysis::BackupFinder < Object
       {
           manifest_path: manifest_path,
           md5_sum: md5_sum,
-          amazon_backup: amazon_backup(manifest_path)
+          amazon_backup: amazon_backup(manifest_path),
+          bag_path: data[2]
       }
     end
   end
