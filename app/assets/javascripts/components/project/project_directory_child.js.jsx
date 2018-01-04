@@ -1,9 +1,6 @@
 class ProjectDirectoryRow extends React.Component {
     constructor(props) {
         super(props);
-
-        // This binding is necessary to make `this` work in the callback
-        //this.handleClick = this.handleClick.bind(this);
     }
 
     handleUse(e) {

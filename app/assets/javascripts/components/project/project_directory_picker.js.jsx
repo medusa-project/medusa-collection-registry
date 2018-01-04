@@ -1,9 +1,6 @@
 class ProjectDirectoryPicker extends React.Component {
     constructor(props) {
         super(props);
-
-        // This binding is necessary to make `this` work in the callback
-        //this.handleClick = this.handleClick.bind(this);
     }
 
     getInitialState() {
@@ -46,11 +43,11 @@ class ProjectDirectoryPicker extends React.Component {
         (
             <div className='project-directory-picker'>
                 <div>
-                    <a className='btn btn-xs btn-default' onClick={this.handleUse}>
+                    <a className='btn btn-xs btn-default' onClick={(e) => this.handleUse(e)}>
                         Use
                     </a>
                     {(this.state.current == '/') ||
-                    <a className='btn btn-xs btn-default' onClick={this.handleUp}>
+                    <a className='btn btn-xs btn-default' onClick={(e) => this.handleUp(e)}>
                         Up
                     </a>
                     }
@@ -59,7 +56,7 @@ class ProjectDirectoryPicker extends React.Component {
                 <ul>
                     {this.state.children.map((child) =>
                         <ProjectDirectoryRow key={child} name={child}
-                                             onUse={this.setDirectory} onDown={this.getChildDirectoryInfo}/>)
+                                             onUse={(p) => this.setDirectory(p)} onDown={(p) => this.getChildDirectoryInfo(p)}/>)
                     }
                 </ul>
             </div>
