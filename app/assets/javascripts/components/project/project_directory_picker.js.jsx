@@ -3,7 +3,7 @@ class ProjectDirectoryPicker extends React.Component {
         super(props);
 
         // This binding is necessary to make `this` work in the callback
-        this.handleClick = this.handleClick.bind(this);
+        //this.handleClick = this.handleClick.bind(this);
     }
 
     getInitialState() {
