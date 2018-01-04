@@ -5,4 +5,4 @@
   .col-sm-1
     = f.input :"allow_blank_#{field}", label: false, as: :boolean
   .col-sm-7
-    = f.input field, label: false, required: false, as: :text
+    = f.input field, label: false, required: false, as: :text, input_html: { rows: 5 }
