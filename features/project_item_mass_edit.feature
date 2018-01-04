@@ -19,6 +19,7 @@ Feature: Project items mass edit
     And I fill in item mass edit fields:
       | Batch                 | batch_3 |
       | Reformatting operator | Dee     |
+      | Notes                 | My note |
     And I select 'RCAM' from 'Equipment'
     And I check 'mass_action_update_equipment'
     And I click on 'Mass update'
@@ -27,10 +28,10 @@ Feature: Project items mass edit
     And I should see none of:
       | batch_1 | batch_2 |
     And the item with fields should exist:
-      | barcode        | batch   | reformatting_operator | equipment |
-      | 30012323456789 | batch_3 | Dee                   | RCAM      |
-      | 30045623456789 | batch_3 | Dee                   | RCAM      |
-      | 30078923456789 | batch_3 | Dee                   | RCAM      |
+      | barcode        | batch   | reformatting_operator | equipment | notes   |
+      | 30012323456789 | batch_3 | Dee                   | RCAM      | My note |
+      | 30045623456789 | batch_3 | Dee                   | RCAM      | My note |
+      | 30078923456789 | batch_3 | Dee                   | RCAM      | My note |
 
   Scenario: Mass edit project items doesn't change blank items when unchecked
     Given I am logged in as a project_mgr

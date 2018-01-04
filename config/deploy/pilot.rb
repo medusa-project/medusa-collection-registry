@@ -20,6 +20,7 @@ set :deploy_to, "#{fetch(:home)}/repos/medusa-cr-capistrano"
 set :bin, "#{fetch(:home)}/bin"
 
 server 'medusa-pilot.library.illinois.edu', user: 'centos', roles: %w{web app db}, primary: true
+ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
 set :keep_releases, 2
 
