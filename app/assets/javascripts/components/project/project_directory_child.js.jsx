@@ -1,6 +1,9 @@
 class ProjectDirectoryRow extends React.Component {
     constructor(props) {
         super(props);
+
+        this.handleDown = this.handleDown.bind(this);
+        this.handleUse = this.handleUse.bind(this);
     }
 
     handleUse(e) {

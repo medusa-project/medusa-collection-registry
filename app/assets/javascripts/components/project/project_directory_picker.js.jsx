@@ -1,67 +1,73 @@
 class ProjectDirectoryPicker extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
-    getInitialState() {
-        return {
-            current: this.props.data.current,
-            children: this.props.data.children,
-            parent: this.props.data.parent
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      current: props.data.current,
+      children: props.data.children,
+      parent: props.data.parent
+    };
 
-    getDirectoryInfo(path) {
-        return $.getJSON('/projects/ingest_path_info', {path: path}, (data) => this.replaceState(data));
-    }
+    this.handleUse = this.handleUse.bind(this);
+    this.handleUp = this.handleUp.bind(this);
+    this.setDirectory = this.setDirectory.bind(this);
+    this.getChildDirectoryInfo = this.getChildDirectoryInfo.bind(this);
+  }
 
-    getChildDirectoryInfo(path) {
-        return this.getDirectoryInfo(this.state.current + child_path);
-    }
+  getDirectoryInfo(path) {
+    return $.getJSON('/projects/ingest_path_info', {path: path}, (data) => this.setState(data));
+  }
 
-    setDirectory(child_path) {
-        var path = this.state.current;
-        if (child_path) {
-            path = path + child_path;
-        }
-        $('#project_ingest_folder').val(path);
-        $('#directory-picker').modal('hide');
-    }
+  getChildDirectoryInfo(child_path) {
+    return this.getDirectoryInfo(this.state.current + child_path);
+  }
 
-    handleUse(e) {
-        e.preventDefault();
-        this.setDirectory(null);
+  setDirectory(child_path) {
+    var path = this.state.current;
+    if (child_path) {
+      path = path + child_path;
     }
+    $('#project_ingest_folder').val(path);
+    $('#directory-picker').modal('hide');
+  }
 
-    handleUp(e) {
-        e.preventDefault();
-        this.getDirectoryInfo(this.state.parent);
-    }
+  handleUse(e) {
+    e.preventDefault();
+    this.setDirectory(null);
+  }
 
-    render() {
-        return
-        (
-            <div className='project-directory-picker'>
-                <div>
-                    <a className='btn btn-xs btn-default' onClick={(e) => this.handleUse(e)}>
-                        Use
-                    </a>
-                    {(this.state.current == '/') ||
-                    <a className='btn btn-xs btn-default' onClick={(e) => this.handleUp(e)}>
-                        Up
-                    </a>
-                    }
-                    {this.state.current}
-                </div>
-                <ul>
-                    {this.state.children.map((child) =>
-                        <ProjectDirectoryRow key={child} name={child}
-                                             onUse={(p) => this.setDirectory(p)} onDown={(p) => this.getChildDirectoryInfo(p)}/>)
-                    }
-                </ul>
-            </div>
-        );
-    }
+  handleUp(e) {
+    e.preventDefault();
+    this.getDirectoryInfo(this.state.parent);
+  }
+
+  currentState() {
+    return this.state.current;
+  }
+
+  render() {
+    return (
+      <div className='project-directory-picker'>
+        <div>
+          <a className='btn btn-xs btn-default' onClick={this.handleUse}>
+            Use
+          </a>
+          {(this.currentState() == '/') ||
+          <a className='btn btn-xs btn-default' onClick={this.handleUp}>
+            Up
+          </a>
+          }
+          {this.currentState()}
+        </div>
+        <ul>
+          {this.state.children.map((child) =>
+            <ProjectDirectoryRow key={child} name={child}
+                                 onUse={this.setDirectory} onDown={this.getChildDirectoryInfo}/>)
+          }
+        </ul>
+      </div>
+    );
+  }
 }
 
 // @ProjectDirectoryPicker = React.createClass
