@@ -8,6 +8,7 @@ class LdapQuery < Object
   end
 
   def is_member_of?(group, net_id)
+    return false unless group.present?
     json = Rails.cache.fetch(ldap_cache_key(net_id)) do
       "{}"
     end
