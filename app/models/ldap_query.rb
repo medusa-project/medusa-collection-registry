@@ -37,8 +37,6 @@ class LdapQuery < Object
     "ldap_#{net_id}"
   end
 
-  #Historically it was possible to delete a single user from the cache, but this isn't really
-  # possible as things are now, so just blow away the whole cache.
   def self.reset_cache(net_id = nil)
     Rails.cache.delete(ldap_cache_key(net_id))
   end
