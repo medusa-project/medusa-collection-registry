@@ -17,9 +17,14 @@ class LdapQuery < Object
       hash[group]
     else
       response = HTTParty.get(ldap_url(group, net_id))
-      (response.success? and response.body == 'TRUE').tap do |is_member|
-        hash[group] = is_member
-        Rails.cache.write(ldap_cache_key(net_id), hash.to_json, expires_in: 1.day, race_condition_ttl: 10.seconds)
+      if response.success?
+        (response.body == 'TRUE').tap do |is_member|
+          hash[group] = is_member
+          Rails.cache.write(ldap_cache_key(net_id), hash.to_json, expires_in: 1.day, race_condition_ttl: 10.seconds)
+        end
+      else
+        #don't authenticate, but also don't cache, in this case
+        false
       end
     end
   end
