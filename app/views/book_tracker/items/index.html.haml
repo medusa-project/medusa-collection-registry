@@ -76,7 +76,7 @@
       .col-sm-3
         = hidden_field_tag(:ht, params[:ht])
         = hidden_field_tag(:ia, params[:ia])
-        = text_area_tag(:q, params[:q], placeholder: 'Filter by term or list of bib IDs',
+        = text_area_tag(:q, params[:q], placeholder: 'Filter by term or list of bib or object IDs',
                              class: 'form-control', rows: 4, style: 'width:100%')
       .col-sm-1
         = button_tag('Clear', class: 'btn btn-default mbt-clear')
@@ -86,12 +86,12 @@
   .col-sm-8
     %h4
       = pluralize(@items.total_entries, 'item', 'items')
-      - if @missing_bib_ids.any?
-        = link_to("#{@missing_bib_ids.length} bib IDs not found", '#',
-        id: 'book-tracker-bib-ids-not-found',
+      - if @missing_ids.any?
+        = link_to("#{@missing_ids.length} IDs not found", '#',
+        id: 'book-tracker-ids-not-found',
         class: 'btn btn-default btn-xs btn-danger',
-        data: { toggle: 'modal', target: '#bib-ids-modal' },
-        title: 'Missing bib IDs')
+        data: { toggle: 'modal', target: '#missing-ids-modal' },
+        title: 'Missing IDs')
   .col-sm-4{style: 'text-align:right'}
     .btn-group
       %button.btn.btn-default.dropdown-toggle{'aria-expanded' => 'false',
@@ -110,7 +110,7 @@
 #items_list
   = render partial: 'items', locals: { items: @items, next_page_url: @next_page_url }
 
-= render layout: 'layouts/bootstrap_modal', locals: {id: 'bib-ids-modal'} do
+= render layout: 'layouts/bootstrap_modal', locals: {id: 'missing-ids-modal'} do
   .modal-header
     %button.close{ 'type' => 'button', 'data-dismiss' => 'modal' }
       %span{'aria-hidden' => 'true'}
@@ -118,7 +118,7 @@
       %span.sr-only
         Close
     %h4.modal-title
-      Missing bib IDs
+      Missing IDs
   .modal-body
     %ul
-      = raw(@missing_bib_ids.uniq.map{ |id| "<li>#{id}</li>" }.join)
+      = raw(@missing_ids.uniq.map{ |id| "<li>#{id}</li>" }.join)

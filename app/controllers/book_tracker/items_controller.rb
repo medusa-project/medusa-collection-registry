@@ -17,7 +17,7 @@ module BookTracker
     #
     def index
       @items = Item.all
-      @missing_bib_ids = []
+      @missing_ids = []
 
       @dates = {
           local_storage: Task.where(service: Service::LOCAL_STORAGE).
@@ -35,16 +35,30 @@ module BookTracker
       query = @allowed_params[:q]
       unless query.blank?
         lines = query.strip.split("\n")
-        if lines.length > 1 # if >1 line, assume a newline-separated bib ID list
-          @items = @items.where('bib_id IN (?)', lines.map{ |x| x.strip.gsub(/\D/, '')[0..8] })
-          # Get a list of entered bib IDs for which items were not found
-          sql = "SELECT * FROM "\
-            "(values #{lines.map{ |x| "(#{x.strip[0..8]})" }.join(',')}) as T(ID) "\
-            "EXCEPT "\
-            "SELECT bib_id "\
-            "FROM book_tracker_items;"
-          @missing_bib_ids = ActiveRecord::Base.connection.execute(sql).
-              map{ |r| r['id'] }
+        # If >1 line, assume a list of bib and/or object IDs.
+        if lines.length > 1
+          bib_ids = lines.select{ |id| id.length < 8 }.map{ |x| x.strip }
+          object_ids = lines.select{ |id| id.length > 8 }.map{ |x| x.strip[0..20] }
+
+          @items = @items.where('bib_id::char IN (?) OR obj_id IN (?)',
+                                bib_ids, object_ids)
+          # Compile a list of entered IDs for which items were not found.
+          if bib_ids.any?
+            sql = "SELECT * FROM "\
+              "(values #{bib_ids.map{ |id| "('#{id}')" }.join(',')}) as T(ID) "\
+              "EXCEPT "\
+              "SELECT bib_id::char "\
+              "FROM book_tracker_items;"
+            @missing_ids += ActiveRecord::Base.connection.execute(sql).map{ |r| r['id'] }
+          end
+          if object_ids.any?
+            sql = "SELECT * FROM "\
+              "(values #{object_ids.map{ |id| "('#{id}')" }.join(',')}) as T(ID) "\
+              "EXCEPT "\
+              "SELECT obj_id "\
+              "FROM book_tracker_items;"
+            @missing_ids += ActiveRecord::Base.connection.execute(sql).map{ |r| r['id'] }
+          end
         else
           q = "%#{query.strip}%"
           @items = @items.where('CAST(bib_id AS VARCHAR(10)) LIKE ? '\
