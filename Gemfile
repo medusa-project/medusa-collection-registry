@@ -4,7 +4,10 @@ gem 'sass'
 gem 'rails', "~> 5.1"
 gem 'responders'
 
-gem 'pg'
+#Rails (ActiveRecord) seems to want this version restriction on pg, though it doesn't seem to enforce it
+# in a way that bundler understands.
+# /active_record/connection_adapters/postgresql_adapter.rb has a 'gem' line with the restriction
+gem 'pg', "~> 0.21"
 gem 'postgresql_cursor'
 
 #deployment webserver
