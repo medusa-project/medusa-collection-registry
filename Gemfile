@@ -53,6 +53,8 @@ gem 'daemons-rails'
 gem 'ruby-vips', '~>0.3.14', require: 'vips'
 
 #AMQP communication - implicitly uses Bunny
+gem 'bunny', '~> 2.7.2'
+gem 'amq-protocol', '~> 2.2.0'
 gem 'amqp_helper', '~>0.1.4', git: 'git://github.com/medusa-project/amqp_helper.git'
 
 gem 'sass-rails'
