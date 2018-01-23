@@ -57,7 +57,7 @@ gem 'ruby-vips', '~>0.3.14', require: 'vips'
 # We get OpenSSL::SSL::SSLError: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed
 # Since there are no urgent security issues that I know about and since we may be replacing this soon anyway, I'm fine
 # with pinning it
-gem 'bunny', '~> 2.8.0'
+gem 'bunny'
 gem 'amq-protocol'
 gem 'amqp_helper', '~>0.1.4', git: 'git://github.com/medusa-project/amqp_helper.git'
 
