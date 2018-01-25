@@ -1,7 +1,8 @@
 require 'rake'
+require 'csv'
 
 namespace :check do
-  desc 'Run all checks'
+  desc 'Run many checks'
   task :all => [:cfs_directories_vs_bit_level_file_groups, :file_count_and_size_totals,
                 :cfs_directories_vs_physical_paths, :combined_paths, :unassessed_cfs_file_count] do
     #just run all dependencies
@@ -119,4 +120,21 @@ namespace :check_dirs do
     end
   end
 
+end
+
+namespace :zero_size_files do
+  desc 'Output information about zero length files to a zero_size_files.csv'
+  task to_csv: :environment do
+    CSV.open('zero_size_files.csv', 'w') do |csv|
+      csv << %w(repository_id collection_id file_group_id file_id
+                name extension db_record_created_at file_mtime
+                uuid full_path)
+      files = CfsFile.where(size: 0).to_a.sort_by {|f| f.repository.id}
+      files.each do |file|
+        csv << [file.repository.id, file.collection.id, file.file_group.id,
+                file.id, file.name, file.file_extension.extension,
+                file.created_at, file.mtime, file.uuid, file.absolute_path]
+      end
+    end
+  end
 end
