@@ -77,6 +77,14 @@ Feature: Collection description
     And I should not see 'dogs'
     And the repository with title 'Sample Repo' should have an event with key 'collection_deleted' performed by 'admin@example.com'
 
+  Scenario: Collection with associated project may not be deleted
+    Given the collection with title 'dogs' has associated project with field title:
+      | Project |
+    When I edit the collection with title 'dogs'
+    And I click on 'Delete'
+    Then I should see 'could not be deleted'
+    And I should be on the view page for the collection with title 'dogs'
+
   Scenario: Create a new collection
     When I start a new collection for the repository titled 'Sample Repo'
     And I fill in fields:
