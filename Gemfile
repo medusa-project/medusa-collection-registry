@@ -70,8 +70,8 @@ gem 'bootstrap-sass'
 
 gem 'webpacker', '~> 3.2'
 
-gem 'jquery-rails'
-gem 'jquery-ui-rails'
+#gem 'jquery-rails'
+#gem 'jquery-ui-rails'
 gem 'rails-jquery-autocomplete'
 gem 'clipboard-rails'
 #gem 'underscore-rails'
