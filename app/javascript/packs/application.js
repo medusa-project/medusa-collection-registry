@@ -7,4 +7,9 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-console.log('Hello World from Webpacker. Yay!')
+require('underscore');
+require('underscore.string');
+require("expose-loader?_!underscore");
+require("expose-loader?_.string!underscore.string");
+
+//console.log('Hello World from Webpacker. Yay!');
