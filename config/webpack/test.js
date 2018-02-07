@@ -2,4 +2,4 @@
 
 //module.exports = environment.toWebpackConfig()
 
-module.exports = require('./shared')
+module.exports = require('./shared');
