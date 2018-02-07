@@ -74,8 +74,8 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'rails-jquery-autocomplete'
 gem 'clipboard-rails'
-gem 'underscore-rails'
-gem 'underscore-string-rails'
+#gem 'underscore-rails'
+#gem 'underscore-string-rails'
 
 gem 'react-rails', '~> 2.4.0'
 

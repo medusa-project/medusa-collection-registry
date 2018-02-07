@@ -501,8 +501,6 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.1.4)
       execjs (>= 0.3.0, < 3)
-    underscore-rails (1.8.3)
-    underscore-string-rails (0.0.2)
     uuid (2.3.8)
       macaddr (~> 1.0)
     valid_email (0.1.0)
@@ -610,8 +608,6 @@ DEPENDENCIES
   sunspot_test
   traceroute
   uglifier
-  underscore-rails
-  underscore-string-rails
   uuid
   valid_email
   webpacker (~> 3.2)

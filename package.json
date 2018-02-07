@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "@rails/webpacker": "^3.2.1"
+    "@rails/webpacker": "^3.2.1",
+    "underscore": "^1.8.3",
+    "underscore.string": "^3.3.4"
   },
   "devDependencies": {
     "webpack-dev-server": "^2.11.1"

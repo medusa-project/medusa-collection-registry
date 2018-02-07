@@ -20,8 +20,6 @@
 //= require common
 //= require ckeditor/init
 //= require clipboard
-//= require underscore
-//= require underscore.string
 //= require Chart.bundle
 //= require chartkick
 //= require react
