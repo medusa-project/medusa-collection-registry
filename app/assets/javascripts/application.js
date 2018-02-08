@@ -14,7 +14,6 @@
 //= require bootstrap-sprockets
 //= require autocomplete-rails-uncompressed
 //= require data_tables_common
-//= require local-time
 //= require common
 //= require ckeditor/init
 //= require react

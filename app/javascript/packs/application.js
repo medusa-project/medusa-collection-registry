@@ -26,3 +26,6 @@ require('chart.js');
 require('expose-loader?Chartkick!chartkick');
 
 require('expose-loader?Clipboard!clipboard');
+
+import Localtime from 'local-time';
+Localtime.start();
