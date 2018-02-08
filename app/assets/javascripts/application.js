@@ -17,7 +17,6 @@
 //= require local-time
 //= require common
 //= require ckeditor/init
-//= require clipboard
 //= require react
 //= require react_ujs
 //= require components

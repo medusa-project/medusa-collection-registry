@@ -24,3 +24,5 @@ import('bootstrap-datepicker-webpack/dist/css/bootstrap-datepicker3');
 
 require('chart.js');
 require('expose-loader?Chartkick!chartkick');
+
+require('expose-loader?Clipboard!clipboard');
