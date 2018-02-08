@@ -7,7 +7,6 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-require('jquery');
 require('expose-loader?$!jquery');
 require('expose-loader?jQuery!jquery');
 require('jquery-ui');
@@ -17,12 +16,11 @@ require('jquery-ui');
 //import('jquery-ui/themes/base/all');
 require('jquery-ujs');
 
-require('underscore');
-require('underscore.string');
 require("expose-loader?_!underscore");
 require("expose-loader?_.string!underscore.string");
 
 require('bootstrap-datepicker-webpack');
 import('bootstrap-datepicker-webpack/dist/css/bootstrap-datepicker3');
 
-//console.log('Hello World from Webpacker. Yay!');
+require('chart.js');
+require('expose-loader?Chartkick!chartkick');

@@ -2,6 +2,8 @@
   "dependencies": {
     "@rails/webpacker": "^3.2.1",
     "bootstrap-datepicker-webpack": "^1.7.0-dev",
+    "chart.js": "^2.7.1",
+    "chartkick": "^2.2.4",
     "expose-loader": "^0.7.4",
     "jquery": "2.2.4",
     "jquery-ui": "^1.12.1",

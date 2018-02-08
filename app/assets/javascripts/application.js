@@ -18,8 +18,6 @@
 //= require common
 //= require ckeditor/init
 //= require clipboard
-//= require Chart.bundle
-//= require chartkick
 //= require react
 //= require react_ujs
 //= require components
