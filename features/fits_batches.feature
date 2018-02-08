@@ -12,8 +12,8 @@ Feature: FITS batch processing
     And the physical cfs directory 'dogs/toy-dogs' has a file 'bob.txt' with contents 'bob'
     And the physical cfs directory 'dogs/toy-dogs' has a file 'fred.xml' with contents '<?xml version="1.0"?><fred/>'
     And the collection with title 'Dogs' has child file groups with fields:
-      | title   | type              |
-      | Toys    | BitLevelFileGroup |
+      | title | type              |
+      | Toys  | BitLevelFileGroup |
     And the file group titled 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
 
   Scenario: Run batch of FITS on files by extension
@@ -39,6 +39,7 @@ Feature: FITS batch processing
     Then 3 cfs files should have fits attached
     And 'admin@example.com' should receive an email with subject 'FITS batch completed'
 
+  @selenium_chrome
   Scenario: Only one delayed job may be active for an extension at a time
     When I go to the dashboard
     And I click on 'File Statistics'
