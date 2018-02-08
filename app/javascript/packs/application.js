@@ -10,11 +10,12 @@
 require('expose-loader?$!jquery');
 require('expose-loader?jQuery!jquery');
 require('jquery-ui');
-//This seems to interact badly with some other stuff - don't know why yet. Also possible tht
+//TODO: This seems to interact badly with some other stuff - don't know why yet. Also possible tht
 //we need a specific version of jquery-ui to go with jquery2 that we're using now.
 //Maybe try only importing the css that we actually use
 //import('jquery-ui/themes/base/all');
 require('jquery-ujs');
+require('checkboxes.js/src/jquery.checkboxes');
 
 require("expose-loader?_!underscore");
 require("expose-loader?_.string!underscore.string");
