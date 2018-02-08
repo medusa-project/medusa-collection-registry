@@ -8,6 +8,7 @@ require 'cucumber/rails'
 require 'json_spec/cucumber'
 require 'capybara/poltergeist'
 require 'sunspot_test/cucumber'
+require_relative './selenium_downloads_helper'
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd
@@ -69,7 +70,20 @@ def last_json
   page.source
 end
 
-%i(selenium chrome selenium_chrome_headless selenium_chrome poltergeist webkit).each do |driver|
+Capybara.register_driver :download_chrome do |app|
+  profile = Selenium::WebDriver::Chrome::Profile.new
+  profile["download.default_directory"] = SeleniumDownloadsHelper::PATH.to_s
+  Capybara::Selenium::Driver.new(app, browser: :chrome, profile: profile)
+end
+
+Before("@download_chrome") do
+  SeleniumDownloadsHelper.clear_downloads
+end
+After("@download_chrome") do
+  SeleniumDownloadsHelper.clear_downloads
+end
+
+%i(selenium chrome selenium_chrome_headless selenium_chrome poltergeist webkit download_chrome).each do |driver|
   Around("@#{driver}") do |scenario, block|
     begin
       Capybara.current_driver = driver

@@ -16,3 +16,9 @@ Then(/^I should receive a file '([^']*)' of type '([^']*)'$/) do |file_name, mim
   expect(page.response_headers['Content-Type']).to eq(mime_type)
   expect(page.response_headers['Content-Disposition']).to match(file_name)
 end
+
+Then(/^I should receive a csv file '([^']*)'$/) do |file_name|
+  SeleniumDownloadsHelper.wait_for_download
+  expect(SeleniumDownloadsHelper.download_name).to eq(file_name)
+  expect {CSV.read(SeleniumDownloadsHelper.download)}.not_to raise_error
+end
