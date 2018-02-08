@@ -39,7 +39,6 @@ Feature: FITS batch processing
     Then 3 cfs files should have fits attached
     And 'admin@example.com' should receive an email with subject 'FITS batch completed'
 
-  @poltergeist
   Scenario: Only one delayed job may be active for an extension at a time
     When I go to the dashboard
     And I click on 'File Statistics'
