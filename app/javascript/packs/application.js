@@ -10,8 +10,11 @@
 require('expose-loader?$!jquery');
 require('expose-loader?jQuery!jquery');
 require('jquery-ui');
-//TODO: This seems to interact badly with some other stuff - don't know why yet. Also possible tht
+//TODO: Importing css for jquery-ui seems to interact badly with some other stuff - don't know why yet.
+// Also possible that
 //we need a specific version of jquery-ui to go with jquery2 that we're using now.
+//An example of the problem is the add event dialog off a file group - with the jquery-ui stuff
+//imported it does not behave properly.
 //Maybe try only importing the css that we actually use
 //import('jquery-ui/themes/base/all');
 require('jquery-ujs');
@@ -29,4 +32,5 @@ require('expose-loader?Chartkick!chartkick');
 require('expose-loader?Clipboard!clipboard');
 
 import Localtime from 'local-time';
+
 Localtime.start();
