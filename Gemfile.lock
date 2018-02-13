@@ -140,7 +140,6 @@ GEM
       cocaine
       orm_adapter (~> 0.5.0)
     climate_control (0.2.0)
-    clipboard-rails (1.7.1)
     cliver (0.3.2)
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
@@ -537,7 +536,6 @@ DEPENDENCIES
   chartkick
   chronic
   ckeditor
-  clipboard-rails
   coffee-rails
   config
   connection_pool
