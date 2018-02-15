@@ -15,7 +15,6 @@
 //= require autocomplete-rails-uncompressed
 //= require data_tables_common
 //= require common
-//= require ckeditor/init
 //= require react
 //= require react_ujs
 //= require components
