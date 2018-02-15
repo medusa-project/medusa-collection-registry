@@ -34,3 +34,16 @@ require('expose-loader?Clipboard!clipboard');
 import Localtime from 'local-time';
 
 Localtime.start();
+
+require('tinymce/themes/modern');
+import tinymce from 'tinymce';
+// require.context(
+//     'tinymce/skins/lightgray',
+//     false,
+//     /\.css$/
+//);
+tinymce.init({
+      selector: 'textarea.ckeditor',
+      skin_url: 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.6/skins/lightgray'
+    }
+)
