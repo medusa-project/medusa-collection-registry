@@ -37,13 +37,22 @@ Localtime.start();
 
 require('tinymce/themes/modern');
 import tinymce from 'tinymce';
+require('tinymce/skins/lightgray/content.min.css');
+require('tinymce/skins/lightgray/skin.min.css');
+// require.context(
+//     'tinymce/skins/lightgray',
+//     true,
+//     /.*/
+// );
 // require.context(
 //     'tinymce/skins/lightgray',
 //     false,
 //     /\.css$/
 //);
 tinymce.init({
-      selector: 'textarea.ckeditor',
-      skin_url: 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.6/skins/lightgray'
+      selector: 'textarea.rich-editor',
+      //skin_url: 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.6/skins/lightgray',
+      //skin_url: '/packs/tinymce/skins/lightgray'
+      skin: false
     }
 )
