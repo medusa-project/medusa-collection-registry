@@ -29,7 +29,7 @@ $(document).ready(() => {
           'numlist bullist | outdent indent | blockquote | alignleft aligncenter alignright alignjustify | link unlink anchor  | code fullscreen',
           'styleselect formatselect fontselect fontsizeselect | forecolor backcolor'
         ],
-        fullscreen_new_window: true
+        branding: false,
       }
   )
 })
