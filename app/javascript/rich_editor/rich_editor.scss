@@ -1,6 +1,4 @@
 // This is a fix to make the top of the editor clear the bottom of the header
 div.mce-fullscreen {
-  z-index: 1050;
-  top: 51px!important;
-  bottom: 51px!important;
+  top: 51px !important;
 }
