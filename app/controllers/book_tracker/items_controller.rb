@@ -8,7 +8,7 @@ module BookTracker
 
     def setup
       @allowed_params = params.permit(:action, :controller, :format, :ht, :ia,
-                                      :id, :in, :ni, :page, :q)
+                                      :id, :page, :q, in: [], ni: [])
     end
 
     ##
