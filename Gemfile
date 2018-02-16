@@ -19,7 +19,6 @@ gem 'haml-rails'
 #cf https://github.com/plataformatec/simple_form/issues/1423
 gem 'simple_form'
 gem 'auto_html'
-gem 'ckeditor'
 gem 'simple_memoize'
 gem 'auto_strip_attributes'
 gem 'dalli'
