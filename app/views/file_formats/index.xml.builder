@@ -51,6 +51,16 @@ xml.file_formats do
           end
         end
       end
+      xml.logical_extensions do
+        file_format.logical_extensions.each do |logical_extension|
+          xml.logical_extension do
+            xml.extension logical_extension.extension
+            if logical_extension.description.present?
+              xml.description logical_extension.description
+            end
+          end
+        end
+      end
     end
   end
 end
