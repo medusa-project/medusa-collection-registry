@@ -1,0 +1,2 @@
+class LogicalExtension < ApplicationRecord
+end
