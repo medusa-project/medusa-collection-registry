@@ -1,0 +1,3 @@
+class FileFormatsLogicalExtensionsJoin < ActiveRecord
+
+end
