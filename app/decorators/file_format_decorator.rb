@@ -6,4 +6,10 @@ class FileFormatDecorator < BaseDecorator
     end.join(', ').html_safe
   end
 
+  def extensions_string
+    logical_extensions.collect do |extension|
+      extension.label
+    end.join(', ')
+  end
+
 end
