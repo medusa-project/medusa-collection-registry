@@ -13,7 +13,7 @@ class FileFormat < ApplicationRecord
   end
 
   def logical_extensions_string=(extensions)
-    return if logical_extensions_string == extensions.strip
+    #return if logical_extensions_string == extensions.strip
     if extensions.strip.blank?
       self.logical_extensions = []
     else
@@ -21,6 +21,12 @@ class FileFormat < ApplicationRecord
       transaction do
         self.logical_extensions.clear
         self.logical_extensions = incoming_extensions
+        incoming_extensions.each.with_index do |incoming_extension, i|
+          if join = file_formats_logical_extensions_joins.detect {|join| join.logical_extension == incoming_extension}
+            join.position = i
+            join.save!
+          end
+        end
       end
     end
   end

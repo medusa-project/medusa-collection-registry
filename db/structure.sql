@@ -2454,7 +2454,8 @@ CREATE TABLE file_formats_logical_extensions_joins (
     file_format_id bigint,
     logical_extension_id bigint,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    "position" integer
 );
 
 
@@ -7986,6 +7987,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171113212259'),
 ('20171116203856'),
 ('20171117201629'),
-('20180222205350');
+('20180222205350'),
+('20180223184346');
 
 
