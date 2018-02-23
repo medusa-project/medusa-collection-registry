@@ -14,26 +14,11 @@ class FileFormat < ApplicationRecord
   has_many :related_file_formats, through: :related_file_format_joins, dependent: :destroy
 
   def logical_extensions_string
-    logical_extensions.collect {|extension| extension.label}.join(', ')
+    LogicalExtension.stringify_collection(logical_extensions)
   end
 
   def logical_extensions_string=(extensions)
-    #return if logical_extensions_string == extensions.strip
-    if extensions.strip.blank?
-      self.logical_extensions = []
-    else
-      incoming_extensions = extensions.split(',').collect {|ext| LogicalExtension.ensure_extension(ext)}.uniq
-      transaction do
-        self.logical_extensions.clear
-        self.logical_extensions = incoming_extensions
-        incoming_extensions.each.with_index do |incoming_extension, i|
-          if join = file_formats_logical_extensions_joins.detect {|join| join.logical_extension == incoming_extension}
-            join.position = i
-            join.save!
-          end
-        end
-      end
-    end
+    LogicalExtension.generic_set_logical_expressions_string(extensions, logical_extensions, file_formats_logical_extensions_joins)
   end
   
 end

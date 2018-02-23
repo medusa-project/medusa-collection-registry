@@ -24,4 +24,31 @@ class LogicalExtension < ApplicationRecord
     string.match(/^[\s\.]*(\w+).*?\((.*?)\).*$/) or string.match(/^[\s\.]*(\w+).*$/)
     find_or_create_by(extension: $1, description: $2 || '')
   end
+
+  def self.stringify_collection(logical_extensions_collection)
+    logical_extensions_collection.collect {|extension| extension.label}.join(', ')
+  end
+
+  #This encapsulates the similarities in dealing objects that associate some logical extensions
+  # via a join model with position field. 
+  def self.generic_set_logical_expressions_string(new_extensions_string, extensions_association, join_association)
+    return if new_extensions_string.strip == stringify_collection(extensions_association)
+    if new_extensions_string.strip.blank?
+      extensions_association.send(:clear)
+    else
+      incoming_extensions = new_extensions_string.split(',').collect {|ext| LogicalExtension.ensure_extension(ext)}.uniq
+      transaction do
+        extensions_association.send(:clear)
+        extensions_association.send('<<', *incoming_extensions)
+        joins = join_association.all
+        incoming_extensions.each.with_index do |incoming_extension, i|
+          if join = joins.detect {|join| join.logical_extension == incoming_extension}
+            join.position = i
+            join.save!
+          end
+        end
+      end
+    end
+  end
+
 end
