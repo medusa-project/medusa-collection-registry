@@ -13,6 +13,7 @@ class FileFormat < ApplicationRecord
   end
 
   def logical_extensions_string=(extensions)
+    return if logical_extensions_string == extensions.strip
     if extensions.strip.blank?
       self.logical_extensions = []
     else
