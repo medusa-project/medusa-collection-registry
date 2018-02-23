@@ -4,7 +4,7 @@ class RelatedFileFormatJoin < ApplicationRecord
 
   after_destroy :destroy_symmetric_partner
   after_save :ensure_symmetric_partner
-  
+
   def destroy_symmetric_partner
     if partner
       partner.destroy!

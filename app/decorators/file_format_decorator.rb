@@ -12,4 +12,10 @@ class FileFormatDecorator < BaseDecorator
     end.join(', ')
   end
 
+  def related_file_formats_links
+    object.related_file_formats.order('name asc').collect do |related_file_format|
+      h.link_to(related_file_format.name, related_file_format)
+    end.join(', ')
+  end
+
 end
