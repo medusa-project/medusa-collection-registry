@@ -3565,6 +3565,38 @@ ALTER SEQUENCE red_flags_id_seq OWNED BY red_flags.id;
 
 
 --
+-- Name: related_file_format_joins; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE related_file_format_joins (
+    id bigint NOT NULL,
+    file_format_id bigint,
+    related_file_format_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: related_file_format_joins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE related_file_format_joins_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: related_file_format_joins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE related_file_format_joins_id_seq OWNED BY related_file_format_joins.id;
+
+
+--
 -- Name: related_file_group_joins; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4942,6 +4974,13 @@ ALTER TABLE ONLY red_flags ALTER COLUMN id SET DEFAULT nextval('red_flags_id_seq
 
 
 --
+-- Name: related_file_format_joins id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY related_file_format_joins ALTER COLUMN id SET DEFAULT nextval('related_file_format_joins_id_seq'::regclass);
+
+
+--
 -- Name: related_file_group_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5590,6 +5629,14 @@ ALTER TABLE ONLY pronoms
 
 ALTER TABLE ONLY red_flags
     ADD CONSTRAINT red_flags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: related_file_format_joins related_file_format_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY related_file_format_joins
+    ADD CONSTRAINT related_file_format_joins_pkey PRIMARY KEY (id);
 
 
 --
@@ -6730,6 +6777,20 @@ CREATE INDEX index_red_flags_on_status ON red_flags USING btree (status);
 --
 
 CREATE INDEX index_red_flags_on_updated_at ON red_flags USING btree (updated_at);
+
+
+--
+-- Name: index_related_file_format_joins_on_file_format_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_related_file_format_joins_on_file_format_id ON related_file_format_joins USING btree (file_format_id);
+
+
+--
+-- Name: index_related_file_format_joins_on_related_file_format_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_related_file_format_joins_on_related_file_format_id ON related_file_format_joins USING btree (related_file_format_id);
 
 
 --
@@ -7988,6 +8049,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171116203856'),
 ('20171117201629'),
 ('20180222205350'),
-('20180223184346');
+('20180223184346'),
+('20180223194517');
 
 
