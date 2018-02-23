@@ -18,6 +18,7 @@ class FileFormat < ApplicationRecord
     else
       incoming_extensions = extensions.split(',').collect {|ext| LogicalExtension.ensure_extension(ext)}.uniq
       transaction do
+        self.logical_extensions.clear
         self.logical_extensions = incoming_extensions
       end
     end
