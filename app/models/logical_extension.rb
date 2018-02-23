@@ -2,6 +2,10 @@ class LogicalExtension < ApplicationRecord
 
   has_many :file_formats_logical_extensions_joins, dependent: :destroy
   has_many :file_formats, through: :file_formats_logical_extensions_joins
+  has_many :file_format_normalization_paths_input_logical_extensions_joins, dependent: :destroy
+  has_many :input_file_format_normalization_paths, through: :file_format_normalization_paths_input_logical_extensions_joins, source: :file_format_normalization_path
+  has_many :file_format_normalization_paths_output_logical_extensions_joins, dependent: :destroy
+  has_many :output_file_format_normalization_paths, through: :file_format_normalization_paths_output_logical_extensions_joins, source: :file_format_normalization_path
 
   validates_uniqueness_of :description, scope: :extension
   validates_presence_of :extension
