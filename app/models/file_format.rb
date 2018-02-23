@@ -5,8 +5,8 @@ class FileFormat < ApplicationRecord
   has_many :file_format_normalization_paths, -> {order :created_at}, dependent: :destroy
   has_many :pronoms, -> {order :created_at}, dependent: :destroy
 
-  has_many :file_formats_logical_extensions_joins, dependent: :destroy
-  has_many :logical_extensions, -> {order 'extension asc, description asc'}, through: :file_formats_logical_extensions_joins
+  has_many :file_formats_logical_extensions_joins, -> {order :position}, dependent: :destroy
+  has_many :logical_extensions, through: :file_formats_logical_extensions_joins
 
   def logical_extensions_string
     logical_extensions.collect {|extension| extension.label}.join(', ')
