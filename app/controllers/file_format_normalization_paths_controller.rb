@@ -60,7 +60,7 @@ class FileFormatNormalizationPathsController < ApplicationController
   def allowed_normalization_path_params
     params[:file_format_normalization_path].permit(:name, :output_format_id, :software, :software_version,
                                                    :operating_system, :software_settings, :potential_for_loss, :notes,
-                                                   :input_logical_extensions_string, :output_logical_extensions_string)
+                                                   :input_logical_extension_id, :output_logical_extension_id)
   end
 
 end

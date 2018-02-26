@@ -1,2 +1,2 @@
-= render layout: 'layouts/standard_table', locals: {id: :normalization_paths, headers: ['Name', 'Input Extensions', 'Output Extensions', 'Output Format', 'Software', 'Operating System', '']} do
+= render layout: 'layouts/standard_table', locals: {id: :normalization_paths, headers: ['Name', 'Input Extension', 'Output Extension', 'Output Format', 'Software', 'Operating System', '']} do
   = render partial: 'file_format_normalization_paths/table_row', collection: @file_format.file_format_normalization_paths, as: :normalization_path

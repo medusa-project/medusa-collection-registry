@@ -2130,7 +2130,9 @@ CREATE TABLE file_format_normalization_paths (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     output_format_id integer,
-    notes text
+    notes text,
+    input_logical_extension_id integer,
+    output_logical_extension_id integer
 );
 
 
@@ -2151,72 +2153,6 @@ CREATE SEQUENCE file_format_normalization_paths_id_seq
 --
 
 ALTER SEQUENCE file_format_normalization_paths_id_seq OWNED BY file_format_normalization_paths.id;
-
-
---
--- Name: file_format_normalization_paths_input_logical_extensions_joins; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE file_format_normalization_paths_input_logical_extensions_joins (
-    id bigint NOT NULL,
-    file_format_normalization_path_id bigint,
-    logical_extension_id bigint,
-    "position" integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: file_format_normalization_paths_input_logical_extensions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE file_format_normalization_paths_input_logical_extensions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: file_format_normalization_paths_input_logical_extensions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE file_format_normalization_paths_input_logical_extensions_id_seq OWNED BY file_format_normalization_paths_input_logical_extensions_joins.id;
-
-
---
--- Name: file_format_normalization_paths_output_logical_extensions_joins; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE file_format_normalization_paths_output_logical_extensions_joins (
-    id bigint NOT NULL,
-    file_format_normalization_path_id bigint,
-    logical_extension_id bigint,
-    "position" integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: file_format_normalization_paths_output_logical_extension_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE file_format_normalization_paths_output_logical_extension_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: file_format_normalization_paths_output_logical_extension_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE file_format_normalization_paths_output_logical_extension_id_seq OWNED BY file_format_normalization_paths_output_logical_extensions_joins.id;
 
 
 --
@@ -4767,20 +4703,6 @@ ALTER TABLE ONLY file_format_normalization_paths ALTER COLUMN id SET DEFAULT nex
 
 
 --
--- Name: file_format_normalization_paths_input_logical_extensions_joins id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY file_format_normalization_paths_input_logical_extensions_joins ALTER COLUMN id SET DEFAULT nextval('file_format_normalization_paths_input_logical_extensions_id_seq'::regclass);
-
-
---
--- Name: file_format_normalization_paths_output_logical_extensions_joins id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY file_format_normalization_paths_output_logical_extensions_joins ALTER COLUMN id SET DEFAULT nextval('file_format_normalization_paths_output_logical_extension_id_seq'::regclass);
-
-
---
 -- Name: file_format_notes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5392,22 +5314,6 @@ ALTER TABLE ONLY file_extensions
 
 
 --
--- Name: file_format_normalization_paths_input_logical_extensions_joins file_format_normalization_paths_input_logical_extensions_j_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY file_format_normalization_paths_input_logical_extensions_joins
-    ADD CONSTRAINT file_format_normalization_paths_input_logical_extensions_j_pkey PRIMARY KEY (id);
-
-
---
--- Name: file_format_normalization_paths_output_logical_extensions_joins file_format_normalization_paths_output_logical_extensions__pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY file_format_normalization_paths_output_logical_extensions_joins
-    ADD CONSTRAINT file_format_normalization_paths_output_logical_extensions__pkey PRIMARY KEY (id);
-
-
---
 -- Name: file_format_normalization_paths file_format_normalization_paths_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5956,34 +5862,6 @@ CREATE INDEX fflej_file_format_id_idx ON file_formats_logical_extensions_joins U
 --
 
 CREATE INDEX fflej_logical_extension_id_idx ON file_formats_logical_extensions_joins USING btree (logical_extension_id);
-
-
---
--- Name: ffnpilej_ffnp_id_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX ffnpilej_ffnp_id_idx ON file_format_normalization_paths_input_logical_extensions_joins USING btree (file_format_normalization_path_id);
-
-
---
--- Name: ffnpilej_le_id_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX ffnpilej_le_id_idx ON file_format_normalization_paths_input_logical_extensions_joins USING btree (logical_extension_id);
-
-
---
--- Name: ffnpolej_ffnp_id_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX ffnpolej_ffnp_id_idx ON file_format_normalization_paths_output_logical_extensions_joins USING btree (file_format_normalization_path_id);
-
-
---
--- Name: ffnpolej_le_id_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX ffnpolej_le_id_idx ON file_format_normalization_paths_output_logical_extensions_joins USING btree (logical_extension_id);
 
 
 --
@@ -8176,6 +8054,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180223184346'),
 ('20180223194517'),
 ('20180223212939'),
-('20180223213125');
+('20180223213125'),
+('20180226204915');
 
 

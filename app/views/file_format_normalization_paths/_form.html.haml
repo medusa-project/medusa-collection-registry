@@ -5,10 +5,8 @@
       = render partial: 'form_sidebar', locals: {f: f, object: @normalization_path}
       .col-sm-10
         = f.input :name
-        Enter logical extensions as a comma separated list with each item either an extension or an extension
-        followed by a short description, for example "pl", "pl (Perl)", "pl (Prolog)".
-        = f.input :input_logical_extensions_string, label: 'Input Logical Extensions'
-        = f.input :output_logical_extensions_string, label: 'Output Logical Extensions'
+        = f.input :input_logical_extension_id, as: :select, allow_blank: true, collection: LogicalExtension.order('extension asc, description asc'), label_method: :label
+        = f.input :output_logical_extension_id, as: :select, allow_blank: true, collection: LogicalExtension.order('extension asc, description asc'), label_method: :label
         = f.association :output_format, as: :select, allow_blank: true
         = f.input :software
         = f.input :software_version
