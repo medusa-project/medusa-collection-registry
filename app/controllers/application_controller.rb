@@ -80,6 +80,11 @@ class ApplicationController < ActionController::Base
     redirect_to unauthorized_path
   end
 
+  rescue_from ActiveRecord::InvalidForeignKey do |exception|
+    redirect_back(fallback_location: root_path,
+                  alert: 'The record you are trying to delete has some associated database records so cannot be deleted. Please contact the medusa admins for help.')
+  end
+
   def record_event(eventable, key, user = current_user)
     eventable.events.create(actor_email: user.email, key: key, date: Date.today)
   end
