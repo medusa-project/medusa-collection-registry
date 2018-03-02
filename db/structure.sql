@@ -2130,7 +2130,9 @@ CREATE TABLE file_format_normalization_paths (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     output_format_id integer,
-    notes text
+    notes text,
+    input_logical_extension_id integer,
+    output_logical_extension_id integer
 );
 
 
@@ -2443,6 +2445,39 @@ CREATE SEQUENCE file_formats_id_seq
 --
 
 ALTER SEQUENCE file_formats_id_seq OWNED BY file_formats.id;
+
+
+--
+-- Name: file_formats_logical_extensions_joins; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE file_formats_logical_extensions_joins (
+    id bigint NOT NULL,
+    file_format_id bigint,
+    logical_extension_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    "position" integer
+);
+
+
+--
+-- Name: file_formats_logical_extensions_joins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE file_formats_logical_extensions_joins_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: file_formats_logical_extensions_joins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE file_formats_logical_extensions_joins_id_seq OWNED BY file_formats_logical_extensions_joins.id;
 
 
 --
@@ -3158,6 +3193,36 @@ ALTER SEQUENCE job_virus_scans_id_seq OWNED BY job_virus_scans.id;
 
 
 --
+-- Name: logical_extensions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE logical_extensions (
+    id bigint NOT NULL,
+    extension character varying,
+    description character varying DEFAULT ''::character varying
+);
+
+
+--
+-- Name: logical_extensions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE logical_extensions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: logical_extensions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE logical_extensions_id_seq OWNED BY logical_extensions.id;
+
+
+--
 -- Name: medusa_uuids; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3499,6 +3564,38 @@ CREATE SEQUENCE red_flags_id_seq
 --
 
 ALTER SEQUENCE red_flags_id_seq OWNED BY red_flags.id;
+
+
+--
+-- Name: related_file_format_joins; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE related_file_format_joins (
+    id bigint NOT NULL,
+    file_format_id bigint,
+    related_file_format_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: related_file_format_joins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE related_file_format_joins_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: related_file_format_joins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE related_file_format_joins_id_seq OWNED BY related_file_format_joins.id;
 
 
 --
@@ -4669,6 +4766,13 @@ ALTER TABLE ONLY file_formats_file_format_profiles_joins ALTER COLUMN id SET DEF
 
 
 --
+-- Name: file_formats_logical_extensions_joins id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_formats_logical_extensions_joins ALTER COLUMN id SET DEFAULT nextval('file_formats_logical_extensions_joins_id_seq'::regclass);
+
+
+--
 -- Name: file_groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4809,6 +4913,13 @@ ALTER TABLE ONLY job_virus_scans ALTER COLUMN id SET DEFAULT nextval('job_virus_
 
 
 --
+-- Name: logical_extensions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY logical_extensions ALTER COLUMN id SET DEFAULT nextval('logical_extensions_id_seq'::regclass);
+
+
+--
 -- Name: medusa_uuids id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4862,6 +4973,13 @@ ALTER TABLE ONLY pronoms ALTER COLUMN id SET DEFAULT nextval('pronoms_id_seq'::r
 --
 
 ALTER TABLE ONLY red_flags ALTER COLUMN id SET DEFAULT nextval('red_flags_id_seq'::regclass);
+
+
+--
+-- Name: related_file_format_joins id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY related_file_format_joins ALTER COLUMN id SET DEFAULT nextval('related_file_format_joins_id_seq'::regclass);
 
 
 --
@@ -5268,6 +5386,14 @@ ALTER TABLE ONLY file_formats_file_format_profiles_joins
 
 
 --
+-- Name: file_formats_logical_extensions_joins file_formats_logical_extensions_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY file_formats_logical_extensions_joins
+    ADD CONSTRAINT file_formats_logical_extensions_joins_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: file_formats file_formats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5436,6 +5562,14 @@ ALTER TABLE ONLY job_virus_scans
 
 
 --
+-- Name: logical_extensions logical_extensions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY logical_extensions
+    ADD CONSTRAINT logical_extensions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: medusa_uuids medusa_uuids_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5497,6 +5631,14 @@ ALTER TABLE ONLY pronoms
 
 ALTER TABLE ONLY red_flags
     ADD CONSTRAINT red_flags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: related_file_format_joins related_file_format_joins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY related_file_format_joins
+    ADD CONSTRAINT related_file_format_joins_pkey PRIMARY KEY (id);
 
 
 --
@@ -5706,6 +5848,20 @@ CREATE INDEX ffffp_file_format_idx ON file_formats_file_format_profiles_joins US
 --
 
 CREATE INDEX ffffp_file_format_profile_idx ON file_formats_file_format_profiles_joins USING btree (file_format_profile_id);
+
+
+--
+-- Name: fflej_file_format_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX fflej_file_format_id_idx ON file_formats_logical_extensions_joins USING btree (file_format_id);
+
+
+--
+-- Name: fflej_logical_extension_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX fflej_logical_extension_id_idx ON file_formats_logical_extensions_joins USING btree (logical_extension_id);
 
 
 --
@@ -6514,6 +6670,13 @@ CREATE INDEX index_job_virus_scans_on_updated_at ON job_virus_scans USING btree 
 
 
 --
+-- Name: index_logical_extensions_on_extension_and_description; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_logical_extensions_on_extension_and_description ON logical_extensions USING btree (extension, description);
+
+
+--
 -- Name: index_medusa_uuids_on_uuid; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6616,6 +6779,20 @@ CREATE INDEX index_red_flags_on_status ON red_flags USING btree (status);
 --
 
 CREATE INDEX index_red_flags_on_updated_at ON red_flags USING btree (updated_at);
+
+
+--
+-- Name: index_related_file_format_joins_on_file_format_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_related_file_format_joins_on_file_format_id ON related_file_format_joins USING btree (file_format_id);
+
+
+--
+-- Name: index_related_file_format_joins_on_related_file_format_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_related_file_format_joins_on_related_file_format_id ON related_file_format_joins USING btree (related_file_format_id);
 
 
 --
@@ -7872,6 +8049,12 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171012153758'),
 ('20171113212259'),
 ('20171116203856'),
-('20171117201629');
+('20171117201629'),
+('20180222205350'),
+('20180223184346'),
+('20180223194517'),
+('20180223212939'),
+('20180223213125'),
+('20180226204915');
 
 

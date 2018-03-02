@@ -7,4 +7,12 @@
       = f.input :policy_summary
       = render layout: 'shared/layout_modal_edit', locals: {id: 'edit_file_format_profiles_list', title: 'Select File Rendering Profiles'} do
         = f.association :file_format_profiles, as: :check_boxes, label_method: :name, label: ''
+      = render layout: 'shared/layout_modal_edit', locals: {id: 'edit_related_file_formats_list', title: 'Select Related File Formats'} do
+        = f.association :related_file_formats, as: :check_boxes, label_method: :name, label: '', collection: potential_related_file_formats(@file_format)
+      = render layout: 'shared/layout_modal_edit', locals: {id: 'edit_file_extension_list', title: 'Select Logical Extensions'} do
+        %p
+          Enter as a comma separated list with each item either an extension or an extension followed by a short description,
+          for example "pl", "pl (Perl)", "pl (Prolog)". You may also click on an existing logical extension to add it.
+        = f.input :logical_extensions_string, label: 'Logical extensions', class: 'logical-extensions-string'
+        = render partial: 'logical_extensions/column_index'
 

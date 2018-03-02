@@ -38,3 +38,5 @@ config/environments/*.local.yml
 yarn-debug.log*
 yarn-error.log*
 .yarn-integrity
+spec/
+vendor/bundle

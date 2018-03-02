@@ -1,0 +1,4 @@
+class FileFormatNormalizationPathsOutputLogicalExtensionsJoin < ApplicationRecord
+  belongs_to :file_format_normalization_path
+  belongs_to :logical_extension
+end

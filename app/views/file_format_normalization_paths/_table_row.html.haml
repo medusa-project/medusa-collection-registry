@@ -1,5 +1,7 @@
 %tr{id: "file_format_normalization_path_#{normalization_path.id}"}
   %td= link_to normalization_path.name, normalization_path_path(normalization_path), target: '_blank'
+  %td= normalization_path.input_logical_extension.try(:label)
+  %td= normalization_path.output_logical_extension.try(:label)
   %td= link_to(normalization_path.output_format_name, normalization_path.output_format) if normalization_path.output_format.present?
   %td= normalization_path.software
   %td= normalization_path.operating_system

@@ -5,6 +5,8 @@
       = render partial: 'form_sidebar', locals: {f: f, object: @normalization_path}
       .col-sm-10
         = f.input :name
+        = f.input :input_logical_extension_id, as: :select, allow_blank: true, collection: LogicalExtension.order('extension asc, description asc'), label_method: :label
+        = f.input :output_logical_extension_id, as: :select, allow_blank: true, collection: LogicalExtension.order('extension asc, description asc'), label_method: :label
         = f.association :output_format, as: :select, allow_blank: true
         = f.input :software
         = f.input :software_version

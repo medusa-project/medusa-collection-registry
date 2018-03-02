@@ -4,7 +4,7 @@ class FileFormatsController < ApplicationController
   before_action :get_file_format, only: [:show, :edit, :update, :destroy]
 
   def index
-    @file_formats = FileFormat.order('name asc').all.decorate
+    @file_formats = FileFormat.order('name asc').includes(:pronoms, :logical_extensions).all.decorate
   end
 
   def show
@@ -55,7 +55,8 @@ class FileFormatsController < ApplicationController
   end
 
   def allowed_params
-    params[:file_format].permit(:name, :pronom_id, :policy_summary, file_format_profile_ids: [])
+    params[:file_format].permit(:name, :pronom_id, :policy_summary, :logical_extensions_string,
+                                file_format_profile_ids: [], related_file_format_ids: [])
   end
 
 end
