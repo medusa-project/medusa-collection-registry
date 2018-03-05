@@ -61,6 +61,7 @@ Rails.application.routes.draw do
         post :create_bit_level, on: :member
       end
       post :bulk_amazon_backup, on: :collection
+      get :content_type_manifest, on: :member
     end
   end
 

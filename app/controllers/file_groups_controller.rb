@@ -1,10 +1,10 @@
 class FileGroupsController < ApplicationController
 
-  before_action :require_medusa_user, except: [:show]
-  before_action :require_medusa_user_or_basic_auth, only: [:show]
+  before_action :require_medusa_user, except: [:show, :content_type_manifest]
+  before_action :require_medusa_user_or_basic_auth, only: [:show, :content_type_manifest]
   before_action :find_file_group_and_collection, only: [:show, :destroy, :edit, :update, :create_cfs_fits,
                                                         :create_virus_scan, :red_flags, :attachments,
-                                                        :assessments, :events]
+                                                        :assessments, :events, :content_type_manifest]
   respond_to :html, :js, :json
 
   def show
@@ -113,6 +113,20 @@ class FileGroupsController < ApplicationController
   def assessments
     @assessable = @file_group
     @assessments = @assessable.assessments.order('date DESC')
+  end
+
+  def content_type_manifest
+    start = params[:start].try(:to_i) || 0
+    count = params[:count].try(:to_i) || 10000
+    count = [10000, count].min
+    records = @file_group.try(:content_type_summary, start, count) || []
+    total_available = @file_group.total_files
+    response_hash = {start: start, requested_count: count, actual_count: [count, records.length].min, total_available: total_available, records: records}
+    respond_to do |format|
+      format.json do
+        render json: response_hash
+      end
+    end
   end
 
   protected
