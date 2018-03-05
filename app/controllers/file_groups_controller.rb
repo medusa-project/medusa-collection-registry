@@ -120,7 +120,6 @@ class FileGroupsController < ApplicationController
     count = params[:count].try(:to_i) || 10000
     count = [10000, count].min
     records = @file_group.try(:content_type_summary, start, count) || []
-    total_available = @file_group.total_files
     response_hash = {start: start, requested_count: count, actual_count: [count, records.length].min, total_available: total_available, records: records}
     respond_to do |format|
       format.json do
