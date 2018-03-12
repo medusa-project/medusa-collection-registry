@@ -9,7 +9,7 @@ namespace :idnp do
     storage_root = AccrualStorage.instance.root_named(staging_root)
     directories = storage_root.directories_at('IDNP_RestructuredCollections')
     directories.each.with_index do |directory_pathname, i|
-      next unless directory_pathname.basename.to_s == "1015-sn84024082"
+      #next unless directory_pathname.basename.to_s == "1015-sn84024082"
       base_name = directory_pathname.basename.to_s
       collection_id = base_name.match(/^(\d+)-/)[1]
       collection = Collection.find(collection_id) || (raise RuntimeError, "Collection #{collection_id} not found.")
