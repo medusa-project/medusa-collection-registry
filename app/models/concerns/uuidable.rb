@@ -22,8 +22,15 @@ module Uuidable
   #This method is needed to get a predictable uuid for testing and when we have a
   #pre-existing uuid we want to use
   def uuid=(uuid)
-    self.medusa_uuid.destroy if self.medusa_uuid
-    MedusaUuid.create!(uuid: uuid, uuidable: self)
+    if self.medusa_uuid
+      unless self.medusa_uuid.uuid == uuid
+        self.medusa_uuid.uuid = uuid
+        self.medusa_uuid.save!
+      end
+    else
+      MedusaUuid.create!(uuid: uuid, uuidable: self)
+    end
+
   end
 
   def handle
