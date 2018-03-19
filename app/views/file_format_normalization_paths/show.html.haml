@@ -10,8 +10,8 @@
 %div
   = show_field @normalization_path, :name
   - link = @normalization_path.output_format ? link_to(@normalization_path.output_format_name, @normalization_path.output_format) : ''
-  = show_value @normalization_path.input_logical_extension.label, 'Input Logical Extension'
-  = show_value @normalization_path.output_logical_extension.label, 'Output Logical Extension'
+  = show_value @normalization_path.input_logical_extension.try(:label), 'Input Logical Extension'
+  = show_value @normalization_path.output_logical_extension.try(:label), 'Output Logical Extension'
   = show_value link, 'Output Format'
   = show_field @normalization_path, :software
   = show_field @normalization_path, :software_version
