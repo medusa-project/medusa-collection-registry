@@ -13,6 +13,8 @@ class FileFormat < ApplicationRecord
   # on the join fires, which is needed for symmetry
   has_many :related_file_formats, through: :related_file_format_joins, dependent: :destroy
 
+  has_many :attachments, as: :attachable, dependent: :destroy
+
   def logical_extensions_string
     LogicalExtension.stringify_collection(logical_extensions)
   end
