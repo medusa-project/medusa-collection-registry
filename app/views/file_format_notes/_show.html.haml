@@ -7,4 +7,4 @@
           = link_to 'Delete', note_path(note), class: 'btn btn-xs btn-danger', remote: true, method: :delete, data: {confirm: 'Are you sure? This cannot be undone.'}, title: 'Delete Note'
       %p
         #{note.user.netid} - #{note.date}
-    %p= note.note
+    %p= note.note_html
