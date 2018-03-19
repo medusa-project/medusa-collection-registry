@@ -1,14 +1,14 @@
 class FileFormatsController < ApplicationController
 
   before_action :require_medusa_user, except: [:show, :index]
-  before_action :get_file_format, only: [:show, :edit, :update, :destroy]
+  before_action :get_file_format, only: [:show, :edit, :update, :destroy, :attachments]
 
   def index
     @file_formats = FileFormat.order('name asc').includes(:pronoms, :logical_extensions).all.decorate
   end
 
   def show
-
+    @attachable = @file_format
   end
 
   def edit

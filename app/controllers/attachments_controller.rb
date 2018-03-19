@@ -73,6 +73,8 @@ class AttachmentsController < ApplicationController
         FileGroup
       when 'Project'
         Project
+      when 'FileFormat'
+        FileFormat
       else
         raise RuntimeError, "Unrecognized attachable type #{attachable_type_name}"
     end

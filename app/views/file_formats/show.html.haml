@@ -44,4 +44,14 @@
         .panel-body
           = render partial: 'file_format_normalization_paths/table'
 
+  .row
+    .col-xs-12
+      #file_format_attachments.panel.panel-default
+        .panel-heading
+          .pull-right
+            = link_to 'Add', new_attachment_path(attachable_id: @file_format.id, attachable_type: 'FileFormat'), class: 'btn btn-xs btn-default', title: 'Add Attachment'
+          %h4 Attachments
+        .panel-body
+          = render partial: 'attachments_table'
+
   #form_placeholder
