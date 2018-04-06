@@ -24,7 +24,7 @@ class MedusaBaseMailer < ApplicationMailer
 
   def subject_prefix
     if Settings&.mailer&.system_name
-      "Medusa [#{Settings.mailer.system_name}]"
+      "Medusa[#{Settings.mailer.system_name}]"
     else
       "Medusa"
     end
