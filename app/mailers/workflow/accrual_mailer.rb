@@ -3,27 +3,27 @@ class Workflow::AccrualMailer < MedusaBaseMailer
 
   def done(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: @workflow_accrual.user.email, subject: 'Medusa accrual completed')
+    mail(to: @workflow_accrual.user.email, subject: subject('Accrual completed'))
   end
 
   def initial_approval(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: @workflow_accrual.user.email, subject: 'Medusa accrual pending')
+    mail(to: @workflow_accrual.user.email, subject: subject('Accrual pending'))
   end
 
   def illegal_overwrite(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: @workflow_accrual.user.email, subject: 'Medusa accrual cancelled')
+    mail(to: @workflow_accrual.user.email, subject: subject('Accrual cancelled'))
   end
 
   def aborted(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: @workflow_accrual.user.email, subject: 'Medusa accrual aborted')
+    mail(to: @workflow_accrual.user.email, subject: subject('Accrual aborted'))
   end
 
   def notify_admin_of_incoming_request(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: self.admin_address, subject: 'Medusa accrual requested')
+    mail(to: self.admin_address, subject: subject('Accrual requested'))
   end
 
 end

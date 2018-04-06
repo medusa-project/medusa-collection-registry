@@ -67,6 +67,10 @@ ldap:
   passwd: your_password
   base: DC=ad,DC=uillinois,DC=edu
   search: ^CN=([^,]+),((CN|OU)=[^,]+,)*DC=ad,DC=uillinois,DC=edu$
+mailer:
+  #You can set the following to add an extra bit into the subjects of emails that go out,
+  #making is easier to distinguish production/staging/etc.
+  #system_name: Test
 #general medusa configuration
 medusa:
   #medusa server information for generating certain urls that need more than just the path

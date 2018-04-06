@@ -66,7 +66,7 @@ Then /^accrual amazon backup for file group '(.*)' and user '(.*)' should happen
     Then there should be 1 amazon backup delayed job
     When amazon backup runs successfully
     Then the file group titled '#{title}' should have a completed Amazon backup
-    And '#{user}' should receive an email with subject 'Amazon backup progress')
+    And '#{user}' should receive an email with subject 'Medusa: Amazon backup progress')
 end
 
 Then /^accrual assessment for the cfs directory with path '(.*)' has (\d+) files?, (\d+) director(?:y|ies), (\d+) minor conflicts?, and (\d+) serious conflicts?$/ do |path, file_count, directory_count, minor_conflict_count, serious_conflict_count|

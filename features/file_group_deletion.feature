@@ -50,7 +50,7 @@ Feature: File Group Deletion
       | state            | requester_reason |
       | email_superusers | No longer needed |
     When I perform file group deletion workflows
-    Then 'superadmin@example.com' should receive an email with subject 'Medusa File Group deletion requested' containing all of:
+    Then 'superadmin@example.com' should receive an email with subject 'Medusa: File Group deletion requested' containing all of:
       | No longer needed |
     And there should be 1 file group deletion workflow in state 'wait_decision'
     And there should be 0 file group deletion workflow delayed jobs
@@ -75,7 +75,7 @@ Feature: File Group Deletion
       | state                  |
       | email_requester_accept |
     When I perform file group deletion workflows
-    Then 'manager@example.com' should receive an email with subject 'Medusa File Group deletion approved'
+    Then 'manager@example.com' should receive an email with subject 'Medusa: File Group deletion approved'
     And there should be 1 file group deletion workflow in state 'move_content'
     And there should be 1 file group deletion workflow delayed job
 
@@ -84,7 +84,7 @@ Feature: File Group Deletion
       | state                         | cached_file_group_title |
       | email_requester_final_removal | My File Group Title     |
     When I perform file group deletion workflows
-    Then 'manager@example.com' should receive an email with subject 'Medusa File Group final deletion completed' containing all of:
+    Then 'manager@example.com' should receive an email with subject 'Medusa: File Group final deletion completed' containing all of:
       | My File Group Title |
     And there should be 1 file group deletion workflow in state 'end'
     And there should be 1 file group deletion workflow delayed job
@@ -116,7 +116,7 @@ Feature: File Group Deletion
       | state                  | approver_reason |
       | email_requester_reject | Still using     |
     When I perform file group deletion workflows
-    Then 'manager@example.com' should receive an email with subject 'Medusa File Group deletion rejected' containing all of:
+    Then 'manager@example.com' should receive an email with subject 'Medusa: File Group deletion rejected' containing all of:
       | Still using |
     And there should be 1 file group deletion workflow in state 'end'
     And there should be 1 file group deletion workflow delayed job
@@ -126,8 +126,8 @@ Feature: File Group Deletion
       | state                  |
       | email_restored_content |
     When I perform file group deletion workflows
-    Then 'manager@example.com' should receive an email with subject 'Medusa File Group deletion cancelled - content restored'
-    And 'superadmin@example.com' should receive an email with subject 'Medusa File Group deletion cancelled - content restored'
+    Then 'manager@example.com' should receive an email with subject 'Medusa: File Group deletion cancelled - content restored'
+    And 'superadmin@example.com' should receive an email with subject 'Medusa: File Group deletion cancelled - content restored'
     And there should be 1 file group deletion workflow in state 'end'
     And there should be 1 file group deletion workflow delayed job
 

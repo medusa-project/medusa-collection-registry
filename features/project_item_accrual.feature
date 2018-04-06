@@ -25,7 +25,7 @@ Feature: Project Item Accrual
   Scenario: Receive email that ingest is starting
     Given the user 'manager@example.com' has a project item ingest workflow in state 'email_started'
     When I perform project item ingest workflows
-    Then 'manager@example.com' should receive an email with subject 'Project Item ingest started'
+    Then 'manager@example.com' should receive an email with subject 'Medusa: Project Item ingest started'
     And there should be 1 project item ingest workflow in state 'ingest'
     And there should be 1 project item ingest workflow delayed job
 
@@ -70,7 +70,7 @@ Feature: Project Item Accrual
   Scenario: Email progress
     Given the user 'manager@example.com' has a project item ingest workflow in state 'email_progress'
     When I perform project item ingest workflows
-    Then 'manager@example.com' should receive an email with subject 'Project Item ingest progress'
+    Then 'manager@example.com' should receive an email with subject 'Medusa: Project Item ingest progress'
     And there should be 1 project item ingest workflow in state 'amazon_backup'
     And there should be 1 project item ingest workflow delayed job
 
@@ -130,8 +130,7 @@ Feature: Project Item Accrual
   Scenario: Email about missing staging directory
     Given the user 'manager@example.com' has a project item ingest workflow in state 'email_staging_directory_missing'
     When I perform project item ingest workflows
-#    Then 'manager@example.com' should receive an email with subject 'Project Item ingest error'
-    Then 'manager@example.com' should receive an email with subject 'Project Item ingest error' containing all of:
+    Then 'manager@example.com' should receive an email with subject 'Medusa: Project Item ingest error' containing all of:
       | The staging directory was either not specified or does not exist on disk. |
     And there should be 1 project item ingest workflow in state 'end'
 
@@ -159,7 +158,7 @@ Feature: Project Item Accrual
   Scenario: Email about missing target directory
     Given the user 'manager@example.com' has a project item ingest workflow in state 'email_target_directory_missing'
     When I perform project item ingest workflows
-    Then 'manager@example.com' should receive an email with subject 'Project Item ingest error' containing all of:
+    Then 'manager@example.com' should receive an email with subject 'Medusa: Project Item ingest error' containing all of:
       | The target cfs directory either does not exist or belongs to the wrong collection. |
     And there should be 1 project item ingest workflow in state 'end'
 
@@ -193,7 +192,7 @@ Feature: Project Item Accrual
   Scenario: Receive email that ingest has happened
     Given the user 'manager@example.com' has a project item ingest workflow in state 'email_done'
     When I perform project item ingest workflows
-    Then 'manager@example.com' should receive an email with subject 'Project Item ingest completed'
+    Then 'manager@example.com' should receive an email with subject 'Medusa: Project Item ingest completed'
     And there should be 1 project item ingest workflow in state 'end'
     And there should be 1 project item ingest workflow delayed job
 
