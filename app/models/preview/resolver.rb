@@ -25,7 +25,7 @@ module Preview
         audio: Audio,
         text: Text,
         #TODO - still working on pdf viewer, possibly by pdfjs and ruby gem
-        pdf: Default,
+        pdf: Pdf,
         none: Default
     }
     def find_previewer(cfs_file)
