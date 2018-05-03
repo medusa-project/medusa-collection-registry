@@ -98,7 +98,7 @@ class CfsFilesController < ApplicationController
 
   def preview_video
     authorize! :download, @file.file_group
-    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', filename: @file.name, range: true
+    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', range: true, buffer_size: 100000
   end
 
   def random
@@ -113,7 +113,7 @@ class CfsFilesController < ApplicationController
   end
 
   def find_previewer
-    @previewer = @file.previewer
+    @previewer = safe_can?(:download, @file.file_group) ? @file.previewer : Preview::Default.new(@file)
   end
 
   def safe_content_type(cfs_file)

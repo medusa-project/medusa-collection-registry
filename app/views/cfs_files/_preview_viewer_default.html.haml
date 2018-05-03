@@ -1,3 +1,10 @@
-%p
-  No preview for mime type: #{@file.content_type_name}
-  or extension: #{File.extname(@file.name)}
+- if safe_can?(:download, @file.file_group)
+  %p
+    No preview for mime type: #{@file.content_type_name}
+    or extension: #{File.extname(@file.name)}
+  %p
+    If you want a preview for this mime type or extension, please contact the
+    medusa admins to request.
+- else
+  %p
+    You do not have permission to preview this content.
