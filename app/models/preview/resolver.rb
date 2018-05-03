@@ -24,7 +24,8 @@ module Preview
         video: Video,
         audio: Audio,
         text: Text,
-        pdf: Pdf,
+        #TODO - still working on pdf viewer, possibly by pdfjs and ruby gem
+        pdf: Default,
         none: Default
     }
     def find_previewer(cfs_file)
