@@ -27,19 +27,19 @@ GIT
     net-http-digest_auth (1.4)
 
 GIT
-  remote: https://github.com/metalels/send_file_with_range.git
-  revision: 008acf58ac5e7b4be1f2319ef3fcad5187a8759d
-  branch: rails51
-  specs:
-    send_file_with_range (1.0.0)
-
-GIT
   remote: https://github.com/ruby-amqp/bunny.git
   revision: f365c186ba387b96889cab4c57f96b2b3abfa680
   branch: 2.9.x-stable
   specs:
     bunny (2.9.2.pre)
       amq-protocol (~> 2.3.0)
+
+GIT
+  remote: https://github.com/tom-sherman/send_file_with_range.git
+  revision: 37b6e00f927cd3d614ce163d104f267e0173ae28
+  branch: master
+  specs:
+    send_file_with_range (1.0.0)
 
 GEM
   remote: https://rubygems.org/
