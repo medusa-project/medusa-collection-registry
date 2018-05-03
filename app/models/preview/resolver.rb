@@ -24,6 +24,7 @@ module Preview
         video: Video,
         audio: Audio,
         text: Text,
+        pdf: Pdf,
         none: Default
     }
     def find_previewer(cfs_file)

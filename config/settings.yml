@@ -65,6 +65,8 @@ cfs_file_viewers:
       - text/x-shellscript
       - text/x-tex
       - text/x-vcard
+    pdf:
+      - application/pdf
   extensions:
     image:
       - gif
@@ -108,6 +110,8 @@ cfs_file_viewers:
       - wmv
     text:
       - txt
+    pdf:
+      - pdf
   thumbnail_size: 90
   galleria_height: 400
   galleria_width: 1000

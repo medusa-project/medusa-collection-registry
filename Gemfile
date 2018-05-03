@@ -127,6 +127,7 @@ gem 'chartkick'
 gem 'chronic'
 
 gem 'send_file_with_range', git: 'https://github.com/tom-sherman/send_file_with_range.git', branch: 'master'
+gem 'pdfjs_viewer-rails'
 
 group :development, :test do
   gem 'rspec-rails'

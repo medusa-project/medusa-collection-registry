@@ -346,6 +346,10 @@ GEM
     passenger (5.1.12)
       rack
       rake (>= 0.8.1)
+    pdfjs_viewer-rails (0.2.0)
+      json (> 1.8.4)
+      rails (> 4.2.0)
+      sass-rails (~> 5.0)
     pg (0.21.0)
     poltergeist (1.17.0)
       capybara (~> 2.1)
@@ -583,6 +587,7 @@ DEPENDENCIES
   os
   paperclip
   passenger
+  pdfjs_viewer-rails
   pg (~> 0.21)
   poltergeist
   postgresql_cursor

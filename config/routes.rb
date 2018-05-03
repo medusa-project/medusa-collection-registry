@@ -89,7 +89,7 @@ Rails.application.routes.draw do
   resources :virus_scans, only: :show
 
   resources :cfs_files, only: :show, concerns: %i(downloadable eventable fixity_checkable) do
-    %i(create_fits_xml fits view preview_image preview_video preview_audio thumbnail galleria).each { |action| get action, on: :member }
+    %i(create_fits_xml fits view preview_image preview_video preview_audio preview_pdf thumbnail galleria).each { |action| get action, on: :member }
     get :random, on: :collection
   end
   get 'cfs_files/:id/preview_iiif_image/*iiif_parameters', to: 'cfs_files#preview_iiif_image', as: 'preview_iiif_image_cfs_file'
