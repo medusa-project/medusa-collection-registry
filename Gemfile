@@ -126,7 +126,7 @@ gem 'chartkick'
 #date parsing
 gem 'chronic'
 
-gem 'send_file_with_range', git: 'https://github.com/metalels/send_file_with_range.git', branch: 'rails51'
+gem 'send_file_with_range', git: 'https://github.com/tom-sherman/send_file_with_range.git', branch: 'master'
 
 group :development, :test do
   gem 'rspec-rails'
