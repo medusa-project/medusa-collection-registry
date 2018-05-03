@@ -24,7 +24,6 @@ module Preview
         video: Video,
         audio: Audio,
         text: Text,
-        #TODO - still working on pdf viewer, possibly by pdfjs and ruby gem
         pdf: Pdf,
         none: Default
     }

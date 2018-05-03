@@ -5,9 +5,10 @@ class CfsFilesController < ApplicationController
   before_action :require_medusa_user, except: [:show, :download]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :download]
   before_action :find_file, only: [:show, :create_fits_xml, :fits, :download, :view, :fixity_check, :events,
-                                   :preview_image, :preview_video, :preview_audio, :preview_pdf, :preview_iiif_image,
+                                   :preview_image, :preview_video, :preview_audio, :preview_pdf,
+                                   :preview_pdf_content, :preview_iiif_image,
                                    :thumbnail, :galleria]
-  before_action :find_previewer, only: [:show, :preview_image, :preview_video, :preview_iiif_image, :thumbnail, :galleria]
+  before_action :find_previewer, only: [:show, :preview_image, :preview_video, :preview_audio, :preview_pdf, :preview_iiif_image, :thumbnail, :galleria]
 
   def show
     @file_group = @file.file_group
@@ -109,9 +110,13 @@ class CfsFilesController < ApplicationController
 
   def preview_pdf
     authorize! :download, @file.file_group
-    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', range: true, buffer_size: 100000
+    render layout: nil
   end
 
+  def preview_pdf_content
+    authorize! :download, @file.file_group
+    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', range: true, buffer_size: 100000
+  end
 
   def random
     redirect_to CfsFile.random
