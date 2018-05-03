@@ -8,6 +8,8 @@ cfs_file_viewers:
       - image/gif
     video:
       - video/mp4
+    text:
+      - text/plain
   extensions:
     image:
       - tif
@@ -19,6 +21,8 @@ cfs_file_viewers:
       - jp2
     video:
       - mp4
+    text:
+      - txt
   thumbnail_size: 90
   galleria_height: 400
   galleria_width: 1000

@@ -98,7 +98,7 @@ class CfsFilesController < ApplicationController
 
   def preview_video
     authorize! :download, @file.file_group
-    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
+    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', filename: @file.name, range: true
   end
 
   def random

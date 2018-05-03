@@ -19,14 +19,16 @@ module Preview
 
     def find_previewer(cfs_file)
       previewer_class = case find_preview_viewer_type(cfs_file)
-        when :image
-          Image
-        when :video
-          Video
-        when :none
-          Default
-        else
-          raise RuntimeError, 'Unrecognized previewer type'
+                        when :image
+                          Image
+                        when :video
+                          Video
+                        when :text
+                          Text
+                        when :none
+                          Default
+                        else
+                          raise RuntimeError, 'Unrecognized previewer type'
                         end
       previewer_class.new(cfs_file)
     end
@@ -36,7 +38,7 @@ module Preview
     def invert_hash_of_arrays(hash_of_arrays)
       Hash.new.tap do |h|
         hash_of_arrays.each do |key, values|
-          values.each { |value| h[value] = key.to_sym }
+          values.each {|value| h[value] = key.to_sym}
         end
       end
     end
