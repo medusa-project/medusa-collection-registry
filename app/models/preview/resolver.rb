@@ -17,19 +17,16 @@ module Preview
           :none
     end
 
+    PREVIEWER_MAP = {
+        image: Image,
+        video: Video,
+        audio: Audio,
+        text: Text,
+        none: Default
+    }
     def find_previewer(cfs_file)
-      previewer_class = case find_preview_viewer_type(cfs_file)
-                        when :image
-                          Image
-                        when :video
-                          Video
-                        when :text
-                          Text
-                        when :none
-                          Default
-                        else
-                          raise RuntimeError, 'Unrecognized previewer type'
-                        end
+      previewer_class = PREVIEWER_MAP[find_preview_viewer_type(cfs_file)]
+      raise 'Unrecognized previewer type' unless previewer_class
       previewer_class.new(cfs_file)
     end
 

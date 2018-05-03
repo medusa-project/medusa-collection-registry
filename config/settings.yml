@@ -8,6 +8,8 @@ cfs_file_viewers:
       - image/gif
     video:
       - video/mp4
+    audio:
+      - audio/mpeg
     text:
       - text/plain
   extensions:
@@ -19,6 +21,8 @@ cfs_file_viewers:
       - png
       - gif
       - jp2
+    audio:
+      - mp3
     video:
       - mp4
     text:

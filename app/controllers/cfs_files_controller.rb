@@ -101,6 +101,11 @@ class CfsFilesController < ApplicationController
     send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', range: true, buffer_size: 100000
   end
 
+  def preview_audio
+    authorize! :download, @file.file_group
+    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', range: true, buffer_size: 100000
+  end
+
   def random
     redirect_to CfsFile.random
   end
