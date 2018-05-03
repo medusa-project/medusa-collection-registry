@@ -27,6 +27,13 @@ GIT
     net-http-digest_auth (1.4)
 
 GIT
+  remote: https://github.com/metalels/send_file_with_range.git
+  revision: 008acf58ac5e7b4be1f2319ef3fcad5187a8759d
+  branch: rails51
+  specs:
+    send_file_with_range (1.0.0)
+
+GIT
   remote: https://github.com/ruby-amqp/bunny.git
   revision: f365c186ba387b96889cab4c57f96b2b3abfa680
   branch: 2.9.x-stable
@@ -595,6 +602,7 @@ DEPENDENCIES
   sass
   sass-rails
   selenium-webdriver
+  send_file_with_range!
   shoulda-matchers
   simple_form
   simple_memoize
