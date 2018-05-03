@@ -1,5 +1,7 @@
 require 'singleton'
 
+#TODO possibly revise this to use a regexp search, at least on the content types,
+# since the lists are starting to get large.
 module Preview
   class Resolver < Object
     include Singleton
@@ -12,7 +14,7 @@ module Preview
     end
 
     def find_preview_viewer_type(cfs_file)
-      mime_type_viewers[cfs_file.content_type_name] ||
+      mime_type_viewers[cfs_file.content_type_name&.split(';')&.first] ||
           extension_viewers[File.extname(cfs_file.name).sub(/^\./, '').downcase] ||
           :none
     end
