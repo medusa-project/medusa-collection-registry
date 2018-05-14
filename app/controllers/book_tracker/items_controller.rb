@@ -2,7 +2,7 @@ module BookTracker
 
   class ItemsController < ApplicationController
 
-    RESULTS_LIMIT = 50
+    RESULTS_LIMIT = 100
 
     before_action :setup
 
