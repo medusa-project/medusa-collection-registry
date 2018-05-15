@@ -1,0 +1,33 @@
+#check-google-modal.modal.fade{'aria-labelledby' => 'check-google-modal-label', :role => 'dialog', :tabindex => '-1'}
+  .modal-dialog{:role => 'document'}
+    .modal-content
+      = form_tag(book_tracker_check_google_path, multipart: true, method: 'post') do
+        .modal-header
+          %button.close{'aria-label' => 'Close', 'data-dismiss' => 'modal', :type => 'button'}
+            %span{'aria-hidden' => 'true'} ×
+          %h4#check-google-modal-label.modal-title Google
+        .modal-body
+          Google Books no longer supports programmatic harvesting of our book
+          inventory. To check this service, follow these steps:
+          %ol
+            %li
+              %a{href: 'https://books.google.com/libraries/UIUC/_all_books',
+                 target: '_blank'} Follow this link to access the book inventory.
+              %ol{type: 'a'}
+                %li
+                  You may be prompted to sign in. If, after signing in, you
+                  receive a "permission denied" error, contact Library IT to
+                  request access to GRIN.
+            %li
+              Right-click the "Text-only Version" link and save it as a file.
+              It may take a few minutes to download.
+            %li
+              Click the file upload button below and select the file you just
+              downloaded.
+            %li
+              Click the "Check" button.
+          %hr
+          = file_field_tag 'file'
+        .modal-footer
+          %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'} Cancel
+          = submit_tag('Check', class: 'btn btn-primary')

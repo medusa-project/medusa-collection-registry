@@ -9,6 +9,14 @@ module BookTracker
     QUEUE_NAME = 'book_tracker' # DelayedJob queue name
 
     ##
+    # @param inventory_pathname [String] Pathname of a Google Books inventory
+    #                                    file.
+    #
+    def initialize(inventory_pathname)
+      @inventory_pathname = inventory_pathname
+    end
+
+    ##
     # For delayed_job
     #
     def max_attempts
@@ -23,7 +31,11 @@ module BookTracker
     end
 
     def perform
-      Google.new.check
+      begin
+        Google.new(@inventory_pathname).check
+      ensure
+        File.delete(@inventory_pathname) rescue nil
+      end
     end
 
     ##
