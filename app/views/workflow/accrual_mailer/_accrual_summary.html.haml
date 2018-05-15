@@ -29,6 +29,12 @@
       - if @workflow_accrual.workflow_accrual_files.count > 5
         %li ([#{@workflow_accrual.workflow_accrual_files.count - 5}] more sibling files in ingest)
 
+- unless @workflow_accrual.empty_file_report.blank?
+  %div
+    Some zero size files were detected in the ingest request
+    %pre
+      = @workflow_accrual.empty_file_report
+
 %p
   If this seems incorrect, please take a close look at source and
   destination files before proceeding.
