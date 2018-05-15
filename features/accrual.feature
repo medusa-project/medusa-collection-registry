@@ -74,6 +74,7 @@ Feature: File accrual
       | joe.txt | stuff |
     And I click on 'Ingest'
     Then accrual assessment for the cfs directory with path 'dogs' has 1 files, 1 directories, 0 minor conflicts, and 0 serious conflicts
+    And accrual assessment for the cfs directory with path 'dogs' has a zero file 'stuff/zero.txt'
     And 'manager@example.com' should receive an email with subject 'Medusa: Accrual pending'
     When I select accrual action 'Proceed'
     Then 'medusa-admin@example.com' should receive an email with subject 'Medusa: Accrual requested'

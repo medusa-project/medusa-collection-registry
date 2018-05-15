@@ -9,13 +9,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: fg_holding_1; Type: SCHEMA; Schema: -; Owner: -
---
-
-CREATE SCHEMA fg_holding_1;
-
-
---
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -1343,154 +1336,6 @@ $$;
 SET default_tablespace = '';
 
 SET default_with_oids = false;
-
---
--- Name: assessments; Type: TABLE; Schema: fg_holding_1; Owner: -
---
-
-CREATE TABLE fg_holding_1.assessments (
-    id integer,
-    date date,
-    preservation_risks text,
-    notes text,
-    assessable_id integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    author_id integer,
-    notes_html text,
-    preservation_risks_html text,
-    assessable_type character varying(255),
-    name character varying(255),
-    assessment_type character varying(255),
-    preservation_risk_level character varying(255),
-    naming_conventions text,
-    naming_conventions_html text,
-    storage_medium_id integer,
-    directory_structure text,
-    directory_structure_html text,
-    last_access_date date,
-    file_format character varying(255),
-    total_file_size numeric,
-    total_files integer
-);
-
-
---
--- Name: cfs_directories; Type: TABLE; Schema: fg_holding_1; Owner: -
---
-
-CREATE TABLE fg_holding_1.cfs_directories (
-    id integer,
-    path text,
-    root_cfs_directory_id integer,
-    tree_size numeric,
-    tree_count integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    parent_id integer,
-    parent_type character varying
-);
-
-
---
--- Name: cfs_files; Type: TABLE; Schema: fg_holding_1; Owner: -
---
-
-CREATE TABLE fg_holding_1.cfs_files (
-    id integer,
-    cfs_directory_id integer,
-    name character varying(255),
-    size numeric,
-    mtime timestamp without time zone,
-    md5_sum character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    content_type_id integer,
-    file_extension_id integer,
-    fixity_check_time timestamp without time zone,
-    fixity_check_status character varying,
-    fits_serialized boolean
-);
-
-
---
--- Name: events; Type: TABLE; Schema: fg_holding_1; Owner: -
---
-
-CREATE TABLE fg_holding_1.events (
-    id integer,
-    key character varying(255),
-    note text,
-    eventable_id integer,
-    eventable_type character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    actor_email character varying(255),
-    date date,
-    cascadable boolean
-);
-
-
---
--- Name: file_groups; Type: TABLE; Schema: fg_holding_1; Owner: -
---
-
-CREATE TABLE fg_holding_1.file_groups (
-    id integer,
-    external_file_location character varying(255),
-    file_format character varying(255),
-    total_file_size numeric,
-    total_files integer,
-    collection_id integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    producer_id integer,
-    description text,
-    provenance_note text,
-    title character varying(255),
-    staged_file_location character varying(255),
-    cfs_root character varying(255),
-    type character varying(255),
-    package_profile_id integer,
-    external_id character varying(255),
-    private_description text,
-    access_url character varying(255),
-    contact_id integer,
-    acquisition_method character varying
-);
-
-
---
--- Name: medusa_uuids; Type: TABLE; Schema: fg_holding_1; Owner: -
---
-
-CREATE TABLE fg_holding_1.medusa_uuids (
-    id integer,
-    uuid character varying(255),
-    uuidable_id integer,
-    uuidable_type character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: rights_declarations; Type: TABLE; Schema: fg_holding_1; Owner: -
---
-
-CREATE TABLE fg_holding_1.rights_declarations (
-    id integer,
-    rights_declarable_id integer,
-    rights_declarable_type character varying(255),
-    rights_basis character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    copyright_jurisdiction character varying(255),
-    copyright_statement character varying(255),
-    access_restrictions character varying(255),
-    custom_copyright_statement text
-);
-
 
 --
 -- Name: access_system_collection_joins; Type: TABLE; Schema: public; Owner: -
@@ -4617,7 +4462,8 @@ CREATE TABLE public.workflow_accrual_jobs (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     amazon_backup_id integer,
-    allow_overwrite boolean DEFAULT false
+    allow_overwrite boolean DEFAULT false,
+    empty_file_report text DEFAULT ''::text
 );
 
 
@@ -8288,6 +8134,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180223212939'),
 ('20180223213125'),
 ('20180226204915'),
-('20180319160347');
+('20180319160347'),
+('20180515194345');
 
 
