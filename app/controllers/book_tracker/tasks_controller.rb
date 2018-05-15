@@ -10,7 +10,7 @@ module BookTracker
     #
     def check_google
       Delayed::Job.enqueue(GoogleJob.new)
-      flash[:success] = 'Google check will begin momentarily.'
+      flash['success'] = 'Google check will begin momentarily.'
       redirect_back fallback_location: book_tracker_tasks_path
     end
 
@@ -19,7 +19,7 @@ module BookTracker
     #
     def check_hathitrust
       Delayed::Job.enqueue(HathitrustJob.new)
-      flash[:success] = 'HathiTrust check will begin momentarily.'
+      flash['success'] = 'HathiTrust check will begin momentarily.'
       redirect_back fallback_location: book_tracker_tasks_path
     end
 
@@ -28,7 +28,7 @@ module BookTracker
     #
     def check_internet_archive
       Delayed::Job.enqueue(InternetArchiveJob.new)
-      flash[:success] = 'Internet Archive check will begin momentarily.'
+      flash['success'] = 'Internet Archive check will begin momentarily.'
       redirect_back fallback_location: book_tracker_tasks_path
     end
 
@@ -37,7 +37,7 @@ module BookTracker
     #
     def import
       Delayed::Job.enqueue(ImportJob.new)
-      flash[:success] = 'Import will begin momentarily.'
+      flash['success'] = 'Import will begin momentarily.'
       redirect_back fallback_location: book_tracker_tasks_path
     end
 
@@ -71,7 +71,7 @@ module BookTracker
 
     def service_check_in_progress
       if Service::check_in_progress?
-        flash[:error] = 'Cannot import or check multiple services concurrently.'
+        flash['error'] = 'Cannot import or check multiple services concurrently.'
         redirect_back fallback_location: book_tracker_tasks_path
       end
     end
