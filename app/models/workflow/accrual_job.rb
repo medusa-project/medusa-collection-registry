@@ -116,6 +116,10 @@ Paths are stored for inspection in #{tmpfile} on the server.
     end
   end
 
+  #TODO record zero length files here, perhaps on the job itself, and display
+  # when appropriate. Maybe add a text field to the job for this (default ''),
+  # add to it if zero byte files are found, and then save at the end. Then display/
+  # send along with the email.
   def add_stats
     source_path = staging_local_path
     workflow_accrual_files.each do |file|
