@@ -127,9 +127,7 @@ Paths are stored for inspection in #{tmpfile} on the server.
       file_path = File.join(source_path, file.name)
       file.size = File.size(file_path)
       file.save!
-      if file.size == 0
-        empty_files.puts(file.name)
-      end
+      empty_files.puts(file.name) if file.size.zero?
     end
     workflow_accrual_directories.each do |directory|
       directory_path = File.join(source_path, directory.name)
@@ -141,9 +139,7 @@ Paths are stored for inspection in #{tmpfile} on the server.
           count += 1
           file_size = File.size(entry)
           size += file_size
-          if file_size.zero?
-            empty_files.puts(File.join(directory.name, entry.gsub(/^\.\//, '')))
-          end
+          empty_files.puts(File.join(directory.name, entry.gsub(/^\.\//, ''))) if file_size.zero?
         end
         directory.count = count
         directory.size = size
