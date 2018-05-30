@@ -137,10 +137,11 @@ Paths are stored for inspection in #{tmpfile} on the server.
         count = 0
         size = 0
         Find.find('.') do |entry|
+          next if File.directory?(entry)
           count += 1
           file_size = File.size(entry)
           size += file_size
-          if file_size == 0
+          if file_size.zero?
             empty_files.puts(File.join(directory.name, entry.gsub(/^\.\//, '')))
           end
         end
