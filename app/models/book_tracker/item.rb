@@ -108,6 +108,7 @@ module BookTracker
           author: self.author,
           volume: self.volume,
           date: self.date,
+          url: self.url,
           hathitrust_url: self.exists_in_hathitrust ?
               self.hathitrust_handle : nil,
           hathitrust_rights: self.hathitrust_rights,
