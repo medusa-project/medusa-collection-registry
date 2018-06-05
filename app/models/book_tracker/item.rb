@@ -99,7 +99,24 @@ module BookTracker
     end
 
     def as_json(options = { })
-      super((options || { }).merge({methods: [:url] }))
+      {
+          id: self.id,
+          bib_id: self.bib_id,
+          oclc_number: self.oclc_number,
+          obj_id: self.obj_id,
+          title: self.title,
+          author: self.author,
+          volume: self.volume,
+          date: self.date,
+          hathitrust_url: self.exists_in_hathitrust ?
+              self.hathitrust_handle : nil,
+          hathitrust_rights: self.hathitrust_rights,
+          internet_archive_identifier: self.ia_identifier,
+          internet_archive_url: self.exists_in_internet_archive ?
+              self.internet_archive_url : nil,
+          created_at: self.created_at,
+          updated_at: self.updated_at
+      }
     end
 
     ##
