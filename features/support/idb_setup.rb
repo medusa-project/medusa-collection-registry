@@ -16,20 +16,20 @@ module IdbTestHelper
   end
 
   def stage_content
-    path = File.join(AmqpAccrual::Config.staging_directory('idb'), staging_path)
-    FileUtils.mkdir_p(File.dirname(path))
-    File.open(path, 'w') do |f|
-      f.puts 'Staging text'
-    end
+    #TODO remove old code
+    # path = File.join(AmqpAccrual::Config.staging_directory('idb'), staging_path)
+    # FileUtils.mkdir_p(File.dirname(path))
+    # File.open(path, 'w') do |f|
+    #   f.puts 'Staging text'
+    # end
+    AmqpAccrual::Config.instance.storage_roots.at('idb').copy_io_to(staging_path, StringIO.new('Staging text'))
   end
 
 end
 
 Before('@idb') do
   #clear idb staging directories - test should set these up as desired
-  Dir[File.join(AmqpAccrual::Config.staging_directory('idb'), '*')].each do |dir|
-    FileUtils.rm_rf(dir)
-  end
+  AmqpAccrual::Config.instance.storage_roots.at('idb').delete_all_content
 end
 
 Around('@idb-no-deletions') do |scenario, block|
