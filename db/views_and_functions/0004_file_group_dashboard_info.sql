@@ -8,7 +8,8 @@ CREATE OR REPLACE VIEW view_file_group_dashboard_info AS
     C.id AS collection_id,
     C.title AS collection_title,
     R.id AS repository_id,
-    R.title AS repository_title
+    R.title AS repository_title,
+    C.external_id AS collection_external_id
   FROM file_groups FG, collections C, repositories R, cfs_directories CFS
   WHERE FG.type = 'BitLevelFileGroup' AND FG.collection_id = C.id AND c.repository_id = R.id
         AND CFS.parent_type = 'FileGroup' AND CFS.parent_id = FG.id

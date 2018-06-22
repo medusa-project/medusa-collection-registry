@@ -1,2 +1,2 @@
-= render layout: 'layouts/standard_table', locals: {id: :accruals_table, headers: ['Ingest ID', 'Date submitted', 'File Group', 'Collection', 'Submitted by', 'Pre-ingest report', 'Status', 'Actions']} do
+= render layout: 'layouts/standard_table', locals: {id: :accruals_table, headers: ['Ingest ID', 'Date submitted', 'File Group', 'Collection [ext id]', 'Submitted by', 'Pre-ingest report', 'Status', 'Actions']} do
   = render partial: 'accruals/accruals_table_row', collection: @accrual_jobs, as: :accrual_job

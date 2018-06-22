@@ -4,7 +4,7 @@ module DashboardCommon
   extend ActiveSupport::Concern
 
   #return a hash with key the id
-  #values are hashes with title, collection id and title, repository id and title, total file size and count,
+  #values are hashes with title, collection id, external_id, and title, repository id and title, total file size and count,
   #last backup date (or nil) and last backup completed (or nil)
   def amazon_info(file_groups, backups)
     backup_info_hash = file_group_latest_amazon_backup_hash(backups)
