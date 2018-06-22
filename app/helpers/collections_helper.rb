@@ -1,7 +1,7 @@
 module CollectionsHelper
 
   def access_system_select_collection
-    AccessSystem.all.collect {|system| [system.name, system.id]}
+    AccessSystem.order(:name).all.collect {|system| [system.name, system.id]}
   end
 
   def collection_confirm_message
