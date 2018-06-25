@@ -25,7 +25,8 @@ class Workflow::AccrualJob < Workflow::Base
                 'initial_approval' => 'Awaiting approval',
                 'copying' => 'Copying', 'admin_approval' => 'Awaiting admin approval',
                 'amazon_backup' => 'Amazon backup', 'amazon_backup_completed' => 'Amazon backup completed',
-                'assessing' => 'Running Assessments', 'email_done' => 'Emailing completion',
+                'assessing' => 'Starting Assessments', 'await_assessment' => 'Running Assessment',
+                'email_done' => 'Emailing completion',
                 'aborting' => 'Aborting', 'end' => 'Ending'}
   STATES = STATE_HASH.keys
 
@@ -193,8 +194,7 @@ Paths are stored for inspection in #{tmpfile} on the server.
     target_path = cfs_directory.absolute_path
     copy_entries_and_remove(workflow_accrual_files, source_path, target_path, overwrite: overwrite)
     copy_entries_and_remove(workflow_accrual_directories, source_path, target_path, overwrite: overwrite)
-    cfs_directory.make_and_assess_tree
-    be_in_state_and_requeue('amazon_backup')
+    be_in_state_and_requeue('assessing')
   end
 
   def perform_copying
@@ -297,20 +297,25 @@ MESSAGE
   end
 
   def perform_amazon_backup_completed
-    be_in_state_and_requeue('assessing')
+    be_in_state_and_requeue('email_done')
   end
 
-  #this is a bit misleading - the assessments are kicked off by perform_copying in delayed jobs; this
-  #really just checks to see if any of them are still going and blocks until they are all done
   def perform_assessing
+    cfs_directory.make_and_assess_tree
+    be_in_state_and_requeue('await_assessment')
+  end
+
+  def perform_await_assessment
+    wait_time = Rails.env.test? ? (0.1).seconds : 5.minutes
     if has_pending_assessments?
       if self.created_at + 2.days > Time.now
-        self.put_in_queue(run_at: Time.now + 5.minutes)
+        self.put_in_queue(run_at: Time.now + wait_time)
       else
         raise RuntimeError, "Assessments are still pending. Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
       end
     else
-      be_in_state_and_requeue('email_done')
+      Workflow::AccrualMailer.assessment_done(self).deliver_now
+      be_in_state_and_requeue('amazon_backup')
     end
   end
 
