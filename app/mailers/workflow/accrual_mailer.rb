@@ -28,7 +28,7 @@ class Workflow::AccrualMailer < MedusaBaseMailer
 
   def assessment_done(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: [@workflow_accrual.user.email, @workflow_accrual.collection&.contact&.email].compact,
+    mail(to: [@workflow_accrual.user.email, @workflow_accrual.collection&.contact&.email].compact.uniq,
          subject: subject('Accrual assessment completed'))
   end
 
