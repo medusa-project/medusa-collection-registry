@@ -65,7 +65,7 @@ end
 
 Then(/^the IDB file should have been deleted$/) do
   expect(CfsFile.find_by(id: @idb_file_to_delete.id)).to be_nil
-  expect(@idb_file_to_delete.exists_on_filesystem?).to be false
+  expect(@idb_file_to_delete.exists_on_storage?).to be false
   expect(AmqpAccrual::Config.file_group('idb').total_files).to eq(@initial_idb_file_count - 1)
 end
 

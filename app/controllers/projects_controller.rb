@@ -118,7 +118,7 @@ class ProjectsController < ApplicationController
     upload = params[:upload_items][:items]
     if upload
       @project.transaction do
-        job = Job::ItemBulkImport.create!(user: current_user, project: @project, file_basename: upload.original_filename)
+        job = Job::ItemBulkImport.create!(user: current_user, project: @project, file_name: upload.original_filename)
         job.copy_csv_file(upload.tempfile.path)
         job.enqueue_job
       end

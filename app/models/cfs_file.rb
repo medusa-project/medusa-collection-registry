@@ -91,7 +91,7 @@ class CfsFile < ApplicationRecord
   def exists_on_storage?
     Application.main_storage_root.exist?(self.key)
   end
-  
+
   def remove_from_storage
     Application.main_storage_root.delete_content(self.key)
   end
