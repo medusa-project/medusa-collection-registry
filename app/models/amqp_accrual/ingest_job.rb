@@ -66,7 +66,7 @@ class AmqpAccrual::IngestJob < Job::Base
   def source_root
     AmqpAccrual::Config.instance.storage_roots.at(self.client)
   end
-
+  
   def source_key
     staging_path
   end

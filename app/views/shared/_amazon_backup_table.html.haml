@@ -5,7 +5,10 @@
       %tr
         %td= id
         %td= link_to(info[:title], file_group_path(id))
-        %td= link_to(info[:collection_title], collection_path(info[:collection_id]))
+        %td
+          #{link_to(info[:collection_title], collection_path(info[:collection_id]))}
+          - if info[:collection_external_id].present?
+            [#{info[:collection_external_id]}]
         %td= link_to(info[:repository_title], repository_path(info[:repository_id]))
         %td= info[:total_files].to_i.to_s(:delimited)
         %td= info[:total_file_size].to_d.to_s(:rounded, precision: 3)

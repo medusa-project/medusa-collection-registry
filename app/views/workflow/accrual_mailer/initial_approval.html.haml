@@ -5,6 +5,8 @@
 - if file_group = @workflow_accrual.cfs_directory.file_group
   %p
     This belongs to the file group #{file_group.title}, collection #{file_group.collection.title}
+    - if file_group.collection.external_id.present?
+      [#{file_group.collection.external_id}]
     and repository #{file_group.repository.title}.
 
 %p

@@ -4131,7 +4131,8 @@ CREATE VIEW public.view_file_group_dashboard_info AS
     c.id AS collection_id,
     c.title AS collection_title,
     r.id AS repository_id,
-    r.title AS repository_title
+    r.title AS repository_title,
+    c.external_id AS collection_external_id
    FROM public.file_groups fg,
     public.collections c,
     public.repositories r,

@@ -231,7 +231,7 @@ Paths are stored for inspection in #{tmpfile} on the server.
   end
 
   def copy_entry(entry, source_path, target_path, overwrite: false)
-    opts = %w(-a --ignore-times --safe-links --chmod Dug+w --exclude-from) << exclude_file_path
+    opts = %w(-a --ignore-times --safe-links --chmod Du+rwx,Dgo+rw,Dgo-w,Fu+rw,Fu-x,Fgo+r,Fgo-wx --exclude-from) << exclude_file_path
     opts << '--ignore-existing' unless overwrite
     source_entry = File.join(source_path, entry.name)
     return unless File.exists?(source_entry)
