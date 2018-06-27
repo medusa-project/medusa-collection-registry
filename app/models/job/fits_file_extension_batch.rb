@@ -22,7 +22,7 @@ class Job::FitsFileExtensionBatch < ApplicationRecord
     already_done_files = Array.new
     analyzed_files = Array.new
     cfs_files.each do |cfs_file|
-      unless cfs_file.exists_on_filesystem?
+      unless cfs_file.exists_on_storage?
         missing_files << cfs_file
         next
       end

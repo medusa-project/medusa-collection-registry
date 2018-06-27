@@ -87,13 +87,13 @@ class CfsFilesController < ApplicationController
 
   def thumbnail
     authorize! :download, @file.file_group
-    render nothing: true, status: 404 unless @previewer.respond_to?(:thumbnail_data) and @file.exists_on_filesystem?
+    render nothing: true, status: 404 unless @previewer.respond_to?(:thumbnail_data) and @file.exists_on_storage?
     send_data @previewer.thumbnail_data, type: 'image/jpeg', disposition: 'inline'
   end
 
   def galleria
     authorize! :download, @file.file_group
-    render nothing: true, status: 404 unless @previewer.respond_to?(:galleria_data) and @file.exists_on_filesystem?
+    render nothing: true, status: 404 unless @previewer.respond_to?(:galleria_data) and @file.exists_on_storage?
     send_data @previewer.galleria_data, type: 'image/jpeg', disposition: 'inline'
   end
 
