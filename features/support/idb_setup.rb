@@ -22,7 +22,10 @@ module IdbTestHelper
     # File.open(path, 'w') do |f|
     #   f.puts 'Staging text'
     # end
-    AmqpAccrual::Config.instance.storage_roots.at('idb').copy_io_to(staging_path, StringIO.new('Staging text'))
+    text = 'Staging text'
+    md5_sum = Digest::MD5.base64digest(text)
+    storage_root = AmqpAccrual::Config.instance.storage_roots.at('idb')
+    storage_root.copy_io_to(staging_path, StringIO.new(text), md5_sum, text.length)
   end
 
 end
