@@ -9,7 +9,9 @@ module CfsFilesHelper
   end
 
   def text_preview(cfs_file)
-    File.read(cfs_file.absolute_path, 500)
+    cfs_file.with_input_io do |io|
+      io.read(500)
+    end
   end
 
 end

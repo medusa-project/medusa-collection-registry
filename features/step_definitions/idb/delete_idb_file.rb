@@ -10,7 +10,12 @@ end
 Given(/^there is a valid IDB delete delayed job$/) do
   idb_file_group = AmqpAccrual::Config.file_group('idb')
   cfs_file = FactoryBot.create(:cfs_file, cfs_directory_id: idb_file_group.cfs_directory.id, name: 'test.txt')
-  File.open(cfs_file.absolute_path, 'w') { |f| f.puts 'Some content' }
+
+  content_string = 'Some content'
+  md5_sum = Digest::MD5.base64digest(content_string)
+  storage_root = Application.main_storage_root
+  storage_root.copy_io_to(cfs_file.key, StringIO.new(content_string), md5_sum, content_string.length)
+
   idb_file_group.reload
   @initial_idb_file_count = idb_file_group.total_files
   @idb_file_to_delete = cfs_file

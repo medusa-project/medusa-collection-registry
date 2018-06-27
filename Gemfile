@@ -131,6 +131,8 @@ gem 'pdfjs_viewer-rails'
 
 gem 'medusa_storage', git: 'https://github.com/medusa-project/medusa_storage.git', branch: 'master'
 
+gem 'hex_string'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'

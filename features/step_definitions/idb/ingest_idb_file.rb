@@ -31,7 +31,10 @@ Then(/^the IDB files should be present in medusa storage$/) do
   expect(AmqpAccrual::Config.file_group('idb').total_files).to eq(1)
   AmqpAccrual::Config.cfs_directory('idb').each_file_in_tree do |file|
     expect(file.name).to eq('file.txt')
-    expect(File.read(file.absolute_path)).to match('Staging text')
+    file_content = file.with_input_io do |io|
+      io.read
+    end
+    expect(file_content).to match('Staging text')
   end
   file = CfsFile.find_by(name: 'file.txt')
   expect(file).to be_a(CfsFile)

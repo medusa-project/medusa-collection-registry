@@ -131,7 +131,10 @@ end
 Then(/^the file group titled '([^']*)' should have a cfs file for the path '([^']*)' matching '([^']*)'$/) do |title, path, text|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     expect(cfs_file).not_to be_nil
-    expect(File.read(cfs_file.absolute_path)).to match(text)
+    file_content = cfs_file.with_input_io do |io|
+      io.read
+    end
+    expect(file_content).to match(text)
   end
 end
 

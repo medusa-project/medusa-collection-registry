@@ -1,4 +1,7 @@
 require 'net/http'
+#TODO - the send_files may not work properly with S3 medusa_storage, as it's possible they'll
+# delete before being served. For these applications we want to distinguish between filesystem
+# and S3 storages anyway, I think, with presigned urls in some cases
 class CfsFilesController < ApplicationController
 
 
@@ -38,7 +41,7 @@ class CfsFilesController < ApplicationController
     @file_group = @file.file_group
     authorize! :update, @file_group
     @file.events.create!(key: 'fixity_check_run', cascadable: false, actor_email: current_user.email, note: '')
-    current_md5 = @file.file_system_md5_sum
+    current_md5 = @file.storage_md5_sum
     if current_md5 == @file.md5_sum
       flash[:notice] = 'Fixity is confirmed'
       @file.events.create!(key: 'fixity_result', cascadable: false, actor_email: current_user.email, note: 'OK')
@@ -66,12 +69,16 @@ class CfsFilesController < ApplicationController
       #basic auth
       redirect_to(login_path) unless basic_auth?
     end
-    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
+    @file.with_input_file do |input_file|
+      send_file input_file, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
+    end
   end
 
   def view
     authorize! :download, @file.file_group
-    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
+    @file.with_input_file do |input_file|
+      send_file input_file, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
+    end
   end
 
   def preview_image
@@ -91,16 +98,11 @@ class CfsFilesController < ApplicationController
     send_data @previewer.thumbnail_data, type: 'image/jpeg', disposition: 'inline'
   end
 
-  def galleria
-    authorize! :download, @file.file_group
-    render nothing: true, status: 404 unless @previewer.respond_to?(:galleria_data) and @file.exists_on_storage?
-    send_data @previewer.galleria_data, type: 'image/jpeg', disposition: 'inline'
-  end
-
-
   def preview_content
     authorize! :download, @file.file_group
-    send_file @file.absolute_path, type: safe_content_type(@file), disposition: 'inline', range: true, buffer_size: 100000
+    @file.with_input_file do |input_file|
+      send_file input_file, type: safe_content_type(@file), disposition: 'inline', range: true, buffer_size: 100000
+    end
   end
 
   def preview_pdf
