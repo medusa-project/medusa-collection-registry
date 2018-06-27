@@ -1,0 +1,79 @@
+amqp_accrual:
+  idb:
+    active: true
+    allow_delete: true
+    delayed_job_queue: idb
+    incoming_queue: idb_to_medusa_test
+    outgoing_queue: medusa_to_idb_test
+    #This is kind of meaningless given that the test db goes in and out. Steps will have to
+    #set it as needed.
+    file_group_id: 2109
+    #staging_directory: <%= Rails.root %>/tmp/idb-staging/test
+    storage_root:
+      :name: idb
+      :type: filesystem
+      :path: <%= Rails.root %>/tmp/idb-staging/test
+    return_directory_information: true
+downloader:
+  root: medusa
+  incoming_queue: downloader_to_medusa_test
+  outgoing_queue: client_to_downloader_test
+  #Bunny style amqp connection options
+  amqp: {}
+fits:
+  batch_size: 1000
+  server_url: http://localhost:4567
+  storage: /Users/hding2/repos/medusa-collection-registry/tmp/storage-dev/fits
+iiif: &IIIF_TEST
+  host: localhost
+  port: 43002
+  root: iiif
+medusa:
+  server: http://localhost:3000
+  main_storage_root:
+    :name: main_storage
+    :type: filesystem
+    :path: <%= File.join(Rails.root, 'tmp', 'storage-test', 'root') %>
+  cfs:
+    root: <%= File.join(Rails.root, 'tmp', 'storage-test', 'root') %>
+    fg_delete_holding: <%= File.join(Rails.root, 'tmp', 'storage-test', 'fg_delete_holding') %>
+    tmp: <%= File.join(Rails.root, 'tmp') %>
+    fits_home: /Users/hding2/src/fits
+    export_root: <%= File.join(Rails.root, 'tmp', 'storage-test', 'export-root') %>
+    export_autoclean: false
+  medusa_users_group: Library Medusa Users
+  medusa_admins_group: Library Medusa Admins
+  medusa_superusers_group: Library Medusa Super Admins
+  medusa_project_admins_group: Library Medusa Projects
+  amazon:
+    outgoing_queue: medusa_to_glacier_test
+    incoming_queue: glacier_to_medusa_test
+  fixity_server:
+    outgoing_queue: medusa_to_fixity_test
+    incoming_queue: fixity_to_medusa_test
+  public_view_on: true
+project_staging_directory: <%= File.join(Rails.root, 'tmp', 'staging-roots', 'test-1') %>
+smtp:
+  smtp_settings:
+    address: express-smtp.cites.uiuc.edu
+    domain: libgrkiputytto.ad.uiuc.edu
+  web_host: "localhost:3000"
+storage:
+  accrual:
+    roots:
+      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
+        remote_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
+        name: staging-1
+      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-2
+        remote_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
+        name: staging-2
+  staging:
+    roots:
+      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
+        remote_path: /test-staging-root-1
+      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-2
+        remote_path: /test-staging-root-2
+triple_store:
+  triple_store_base_url: http://localhost:3030/test
+  medusa_base_url: http://localhost:3000
+  medusa_rdf_prefix: https://medusa.library.illinois.edu/terms/

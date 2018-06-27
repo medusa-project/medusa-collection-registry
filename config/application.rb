@@ -16,6 +16,7 @@ module MedusaCollectionRegistry
     attr_accessor :bit_file_tmp_dir
     attr_accessor :group_resolver
     attr_accessor :glacier_logger
+    attr_accessor :main_storage_root
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

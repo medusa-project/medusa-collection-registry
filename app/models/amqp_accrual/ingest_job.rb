@@ -20,8 +20,7 @@ class AmqpAccrual::IngestJob < Job::Base
 
   def perform
     ensure_uuid
-    ensure_directories
-    rsync_file
+    copy_content
     create_cfs_file
     do_assessment
     send_return_message
@@ -57,6 +56,22 @@ class AmqpAccrual::IngestJob < Job::Base
     File.basename(staging_path)
   end
 
+  def target_root
+    Application.main_storage_root
+  end
+
+  def target_key
+    File.join(AmqpAccrual::Config.cfs_directory(client).relative_path, target_file)
+  end
+
+  def source_root
+    AmqpAccrual::Config.instance.storage_roots.at(self.client)
+  end
+
+  def source_key
+    staging_path
+  end
+
   def source_file
     File.join(AmqpAccrual::Config.staging_directory(client), staging_path)
   end
@@ -66,19 +81,25 @@ class AmqpAccrual::IngestJob < Job::Base
     AmqpAccrual::Config.cfs_directory(client).ensure_directory_at_relative_path(target_directory)
   end
 
-  def rsync_file
-    opts = %w(-a --no-l -L --ignore-times --chmod Dug+w --safe-links)
-    out, err, status = Open3.capture3('rsync', *opts, source_file, absolute_target_file)
-    unless status.success?
-      message = <<MESSAGE
-Error doing rsync for Amqp Accrual job #{self.id}.
-STDOUT: #{out}
-STDERR: #{err}
-Rescheduling.
-MESSAGE
-      Rails.logger.error message
-      raise RuntimeError, message
-    end
+  #TODO this now has to take copy the source key in the appropriate staging root to the corresponding
+  # key in the main storage root. So we need to make sure we compute those keys appropriately
+  # and then use the medusa_storage facilities to copy, preserving the appropriate
+  # data. We'll also need to make sure that we have a main storage root defined.
+  def copy_content
+#     opts = %w(-a --no-l -L --ignore-times --chmod Dug+w --safe-links)
+#     out, err, status = Open3.capture3('rsync', *opts, source_file, absolute_target_file)
+#     unless status.success?
+#       message = <<MESSAGE
+# Error doing rsync for Amqp Accrual job #{self.id}.
+# STDOUT: #{out}
+# STDERR: #{err}
+# Rescheduling.
+# MESSAGE
+#       Rails.logger.error message
+#       raise RuntimeError, message
+#     end
+    target_root.copy_content_to(target_key, source_root, source_key)
+    x = 1
   end
 
   def create_cfs_file

@@ -13,7 +13,12 @@ amqp_accrual:
     #file group that will take content from this accrual client
     file_group_id: 1401
     #where content from this client is staged
+    #TODO remove staging_directory
     staging_directory: <%= Rails.root %>/tmp/idb-staging/development
+    storage_root:
+      :name: idb
+      :type: filesystem
+      :path: <%= Rails.root %>/tmp/idb-staging/development
     #whether or not to return some extra information in amqp messages - this may be restructured to allow clients to be
     #configured to get exactly the information they want
     return_directory_information: true
@@ -77,7 +82,12 @@ medusa:
   server: http://localhost:3000
   #'cfs' staging file config. Note that this doesn't strictly need to be a dx/cfs file system,
   #but we use that name in order to distinguish from our internal bit file stuff for now.
+  main_storage_root:
+    :name: main_storage
+    :type: filesystem
+    :path: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-dev
   cfs:
+    #TODO remove root
     root: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-dev
     fg_delete_holding: <%= File.join(Rails.root, 'tmp', 'storage-dev', 'fg_delete_holding') %>
     tmp: /Users/hding2/repos/medusa-collection-registry/tmp

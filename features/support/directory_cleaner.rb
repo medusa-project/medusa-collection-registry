@@ -20,4 +20,6 @@ Before do
     end
   end
 
+  Application.main_storage_root.delete_all_content
+
 end
