@@ -36,7 +36,7 @@ class AmqpAccrual::DeleteJob < Job::Base
   protected
 
   def destroy_file_and_answer(cfs_file)
-    cfs_file.remove_from_filesystem
+    cfs_file.remove_from_storage
     cfs_file.destroy!
     send_success_message
   end

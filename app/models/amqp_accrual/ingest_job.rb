@@ -6,7 +6,7 @@ class AmqpAccrual::IngestJob < Job::Base
 
   def self.create_for(client, message)
     job = self.new(staging_path: message['staging_path'], client: client)
-    if find_by(staging_path: job.staging_path, client: client) or File.exist?(job.absolute_target_file) or job.staging_path.blank?
+    if find_by(staging_path: job.staging_path, client: client) or job.content_exists? or job.staging_path.blank?
       Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Duplicate file or blank path."
       send_duplicate_file_message(client, message)
     else
@@ -20,6 +20,7 @@ class AmqpAccrual::IngestJob < Job::Base
 
   def perform
     ensure_uuid
+    ensure_cfs_directory_parents
     copy_content
     create_cfs_file
     do_assessment
@@ -29,8 +30,8 @@ class AmqpAccrual::IngestJob < Job::Base
     raise
   end
 
-  def absolute_target_file
-    File.join(AmqpAccrual::Config.cfs_directory(self.client).absolute_path, target_file)
+  def content_exists?
+    target_root.exist?(target_key)
   end
 
   protected
@@ -40,19 +41,17 @@ class AmqpAccrual::IngestJob < Job::Base
     self.save!
   end
 
-  def item_path_from_root
+  #this is the path of the cfs subdirectory relative to the root cfs directory
+  def target_relative_cfs_subdirectory
     File.dirname(staging_path.split('/').drop(1).join('/'))
   end
 
-  def target_directory
-    item_path_from_root
+  #this is the path of the cfs file relative to the root cfs directory
+  def target_relative_cfs_file
+    File.join(target_relative_cfs_subdirectory, file_basename)
   end
 
-  def target_file
-    File.join(target_directory, file_name)
-  end
-
-  def file_name
+  def file_basename
     File.basename(staging_path)
   end
 
@@ -61,7 +60,7 @@ class AmqpAccrual::IngestJob < Job::Base
   end
 
   def target_key
-    File.join(AmqpAccrual::Config.cfs_directory(client).relative_path, target_file)
+    File.join(AmqpAccrual::Config.cfs_directory(client).relative_path, target_relative_cfs_file)
   end
 
   def source_root
@@ -72,50 +71,28 @@ class AmqpAccrual::IngestJob < Job::Base
     staging_path
   end
 
-  def source_file
-    File.join(AmqpAccrual::Config.staging_directory(client), staging_path)
+  def ensure_cfs_directory_parents
+    AmqpAccrual::Config.cfs_directory(client).ensure_directory_at_relative_path(target_relative_cfs_subdirectory)
   end
 
-  def ensure_directories
-    FileUtils.mkdir_p(File.join(AmqpAccrual::Config.cfs_directory(client).absolute_path, target_directory))
-    AmqpAccrual::Config.cfs_directory(client).ensure_directory_at_relative_path(target_directory)
-  end
-
-  #TODO this now has to take copy the source key in the appropriate staging root to the corresponding
-  # key in the main storage root. So we need to make sure we compute those keys appropriately
-  # and then use the medusa_storage facilities to copy, preserving the appropriate
-  # data. We'll also need to make sure that we have a main storage root defined.
   def copy_content
-#     opts = %w(-a --no-l -L --ignore-times --chmod Dug+w --safe-links)
-#     out, err, status = Open3.capture3('rsync', *opts, source_file, absolute_target_file)
-#     unless status.success?
-#       message = <<MESSAGE
-# Error doing rsync for Amqp Accrual job #{self.id}.
-# STDOUT: #{out}
-# STDERR: #{err}
-# Rescheduling.
-# MESSAGE
-#       Rails.logger.error message
-#       raise RuntimeError, message
-#     end
     target_root.copy_content_to(target_key, source_root, source_key)
-    x = 1
   end
 
   def create_cfs_file
     transaction do
-      file = immediate_parent_directory.cfs_files.find_or_create_by!(name: file_name)
+      file = target_parent_cfs_directory.cfs_files.find_or_create_by!(name: file_basename)
       file.create_amqp_accrual_event
       file.uuid = uuid
     end
   end
 
-  def immediate_parent_directory
-    AmqpAccrual::Config.cfs_directory(client).find_directory_at_relative_path(target_directory)
+  def target_parent_cfs_directory
+    AmqpAccrual::Config.cfs_directory(client).find_directory_at_relative_path(target_relative_cfs_subdirectory)
   end
 
   def do_assessment
-    immediate_parent_directory.cfs_files.find_by(name: file_name).try(:run_initial_assessment)
+    target_parent_cfs_directory.cfs_files.find_by(name: file_basename).try(:run_initial_assessment)
     Sunspot.commit
   end
 
@@ -125,13 +102,13 @@ class AmqpAccrual::IngestJob < Job::Base
 
   def return_message
     {operation: 'ingest', staging_path: staging_path,
-     medusa_path: target_file, status: 'ok', uuid: uuid}.clone.tap do |message|
+     medusa_path: target_relative_cfs_file, status: 'ok', uuid: uuid}.clone.tap do |message|
       message.merge!(return_directory_information) if AmqpAccrual::Config.return_directory_information?(client)
     end
   end
 
   def return_directory_information
-    parent_directory = immediate_parent_directory
+    parent_directory = target_parent_cfs_directory
     grandparent_directory = parent_directory.parent
     item_root_directory = parent_directory.ancestors_and_self.drop(1).first
     Hash.new.tap do |h|

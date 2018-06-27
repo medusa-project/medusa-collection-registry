@@ -80,16 +80,20 @@ class CfsFile < ApplicationRecord
     File.join(self.cfs_directory.relative_path, self.name)
   end
 
+  def key
+    relative_path
+  end
+
   def absolute_path
     File.join(CfsRoot.instance.path, self.relative_path)
   end
 
-  def exists_on_filesystem?
-    File.exists?(self.absolute_path)
+  def exists_on_storage?
+    Application.main_storage_root.exist?(self.key)
   end
-
-  def remove_from_filesystem
-    File.delete(self.absolute_path) if File.exists?(self.absolute_path)
+  
+  def remove_from_storage
+    Application.main_storage_root.delete_content(self.key)
   end
 
   #the directories leading up to the file
