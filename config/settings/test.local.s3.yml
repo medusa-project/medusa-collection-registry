@@ -30,7 +30,6 @@ medusa:
   cfs:
     root: <%= File.join(Rails.root, 'tmp', 'storage-test', 'root') %>
     fg_delete_holding: <%= File.join(Rails.root, 'tmp', 'storage-test', 'fg_delete_holding') %>
-    tmp: <%= File.join(Rails.root, 'tmp') %>
     fits_home: /Users/hding2/src/fits
     export_root: <%= File.join(Rails.root, 'tmp', 'storage-test', 'export-root') %>
     export_autoclean: false
@@ -61,6 +60,7 @@ storage:
     - :name: idb
       :type: filesystem
       :path: <%= Rails.root %>/tmp/idb-staging/test
+  tmp: <%= File.join(Rails.root, 'tmp') %>
   accrual:
     roots:
       - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1

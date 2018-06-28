@@ -94,7 +94,7 @@ class CfsFile < ApplicationRecord
 
   #wrap the storage root's ability to yield a file path having the appropriate content in it
   def with_input_file
-    storage_root.with_input_file(self.key, tmp_dir: Settings.medusa.cfs.tmp) do |file|
+    storage_root.with_input_file(self.key, tmp_dir: Application.storage_manager.tmpdir) do |file|
       yield file
     end
   end

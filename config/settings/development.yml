@@ -1,4 +1,5 @@
 #allowed amqp accrual clients
+#for each a storage root with the same name must be configured in the storage.amqp section
 amqp_accrual:
   idb:
     #set to false to turn off this accrual client
@@ -15,10 +16,6 @@ amqp_accrual:
     #where content from this client is staged
     #TODO remove staging_directory
     staging_directory: <%= Rails.root %>/tmp/idb-staging/development
-    storage_root:
-      :name: idb
-      :type: filesystem
-      :path: <%= Rails.root %>/tmp/idb-staging/development
     #whether or not to return some extra information in amqp messages - this may be restructured to allow clients to be
     #configured to get exactly the information they want
     return_directory_information: true
@@ -82,15 +79,10 @@ medusa:
   server: http://localhost:3000
   #'cfs' staging file config. Note that this doesn't strictly need to be a dx/cfs file system,
   #but we use that name in order to distinguish from our internal bit file stuff for now.
-  main_storage_root:
-    :name: main_storage
-    :type: filesystem
-    :path: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-dev
   cfs:
     #TODO remove root
     root: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-dev
     fg_delete_holding: <%= File.join(Rails.root, 'tmp', 'storage-dev', 'fg_delete_holding') %>
-    tmp: /Users/hding2/repos/medusa-collection-registry/tmp
     #optional - set if you have a local fits to use
     fits_home: /Users/hding2/src/fits
     export_root: /home/hading/repos/medusa-collection-registry/tmp/cfs-export-root-dev
@@ -163,6 +155,16 @@ smtp:
   #used by mailer to construct urls
   web_host: "localhost:3000"
 storage:
+  main_root:
+    :name: main_storage
+    :type: filesystem
+    :path: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-dev
+  amqp:
+    - :name: idb
+      :type: filesystem
+      :path: <%= Rails.root %>/tmp/idb-staging/development
+  tmpdir: /Users/hding2/repos/medusa-collection-registry/tmp
+
   #For each root the name gives a tag to be shown to start in the browser when accruing
   #The local path is the local path to the directory in the condo mount
   #the remote path is the path to a local mount of a storage.library (or other) directory which

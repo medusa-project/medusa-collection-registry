@@ -10,7 +10,7 @@ class CfsRoot
 
   def initialize
     self.path = Settings.medusa.cfs.root
-    self.tmp_path = Settings.medusa.cfs.tmp.if_blank('/tmp')
+    self.tmp_path = Application.storage_manager.tmpdir
   end
 
   #Return a list of roots from the file system that are not currently being

@@ -1,10 +1,11 @@
 class StorageManager
 
-  attr_accessor :main_root, :amqp_roots
+  attr_accessor :main_root, :amqp_roots, :tmpdir
 
   def initialize
     initialize_main_storage
     initialize_amqp_storage
+    initialize_tmpdir
   end
 
   def initialize_main_storage
@@ -20,6 +21,10 @@ class StorageManager
 
   def amqp_root_at(name)
     amqp_roots.at(name)
+  end
+
+  def initialize_tmpdir
+    self.tmpdir = Settings.storage.tmpdir.if_blank(ENV['TMPDIR'])
   end
 
 end
