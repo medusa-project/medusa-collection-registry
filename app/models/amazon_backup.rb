@@ -40,7 +40,7 @@ class AmazonBackup < ApplicationRecord
     description = %Q(Amazon Backup Id: #{self.id}
 Date: #{self.date}
 Cfs Directory Id: #{self.cfs_directory.id}
-Cfs Directory: #{self.cfs_directory.absolute_path}
+Cfs Directory: #{self.cfs_directory.key}
     )
     if file_group
       description << %Q(File Group Id: #{file_group.id}

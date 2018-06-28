@@ -4,6 +4,7 @@ Feature: Fixity Checking
   I want to be able to run fixity checks on my file
 
   Background:
+    Given PENDING
     Given I clear the cfs root directory
     And the physical cfs directory 'dogs/toy-dogs' has a file 'picture.doc' with contents 'picture stuff'
     And the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some text'
