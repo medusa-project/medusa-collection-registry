@@ -1,3 +1,4 @@
+#The storage is configured under the storage key
 amqp_accrual:
   idb:
     active: true
@@ -9,10 +10,6 @@ amqp_accrual:
     #set it as needed.
     file_group_id: 2109
     #staging_directory: <%= Rails.root %>/tmp/idb-staging/test
-    storage_root:
-      :name: idb
-      :type: filesystem
-      :path: <%= Rails.root %>/tmp/idb-staging/test
     return_directory_information: true
 downloader:
   root: medusa
@@ -30,10 +27,6 @@ iiif: &IIIF_TEST
   root: iiif
 medusa:
   server: http://localhost:3000
-  main_storage_root:
-    :name: main_storage
-    :type: filesystem
-    :path: <%= File.join(Rails.root, 'tmp', 'storage-test', 'root') %>
   cfs:
     root: <%= File.join(Rails.root, 'tmp', 'storage-test', 'root') %>
     fg_delete_holding: <%= File.join(Rails.root, 'tmp', 'storage-test', 'fg_delete_holding') %>
@@ -59,6 +52,15 @@ smtp:
     domain: libgrkiputytto.ad.uiuc.edu
   web_host: "localhost:3000"
 storage:
+  main_root:
+    :name: main_storage
+    :type: filesystem
+    :path: <%= File.join(Rails.root, 'tmp', 'storage-test', 'root') %>
+  #note that the names have to be coordinated with the amqp: section
+  amqp:
+    - :name: idb
+      :type: filesystem
+      :path: <%= Rails.root %>/tmp/idb-staging/test
   accrual:
     roots:
       - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1

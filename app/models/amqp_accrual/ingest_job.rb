@@ -64,7 +64,7 @@ class AmqpAccrual::IngestJob < Job::Base
   end
 
   def source_root
-    AmqpAccrual::Config.instance.storage_roots.at(self.client)
+    Application.storage_manager.amqp_root_at(self.client)
   end
 
   def source_key

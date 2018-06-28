@@ -3,11 +3,10 @@ require 'singleton'
 class AmqpAccrual::Config < Object
   include Singleton
 
-  attr_accessor :config, :storage_roots
+  attr_accessor :config
 
   def initialize
     self.config = Settings.amqp_accrual
-    initialize_storage_roots
   end
 
   ACCESSORS = [:incoming_queue, :outgoing_queue, :file_group_id, :staging_directory, :active, :delayed_job_queue,
@@ -55,13 +54,6 @@ class AmqpAccrual::Config < Object
 
   def clients
     self.config.keys
-  end
-
-  def initialize_storage_roots
-    storage_config = self.config.keys.collect do |key|
-      config[key].storage_root.to_h
-    end
-    self.storage_roots = MedusaStorage::RootSet.new(storage_config)
   end
 
   DELEGATE_TO_INSTANCE = ACCESSORS + %i(all_queues file_group cfs_directory active? return_directory_information?
