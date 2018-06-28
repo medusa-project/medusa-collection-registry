@@ -56,7 +56,7 @@ class AmqpAccrual::IngestJob < Job::Base
   end
 
   def target_root
-    Application.main_storage_root
+    Application.storage_manager.main_root
   end
 
   def target_key

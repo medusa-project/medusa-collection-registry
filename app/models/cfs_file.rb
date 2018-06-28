@@ -107,7 +107,7 @@ class CfsFile < ApplicationRecord
   end
 
   def storage_root
-    Application.main_storage_root
+    Application.storage_manager.main_root
   end
 
   #the directories leading up to the file
