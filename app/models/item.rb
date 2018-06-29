@@ -47,8 +47,12 @@ rights_information status equipment unique_identifier item_number source_media).
     title.if_blank(item_title.if_blank(local_title))
   end
 
-  def staging_directory
-    File.join(project.staging_directory, ingest_identifier)
+  # def staging_directory
+  #   File.join(project.staging_directory, ingest_identifier)
+  # end
+
+  def staging_key_prefix
+    File.join(project.staging_key_prefix, ingest_identifier)
   end
 
   def ingest_identifier

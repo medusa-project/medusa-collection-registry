@@ -23,9 +23,13 @@ class Project < ApplicationRecord
 
   standard_auto_html(:specifications, :summary)
 
-  def staging_directory
-    raise RuntimeError, "No ingest folder specified" unless ingest_folder.present?
-    File.join(staging_root, ingest_folder)
+  # def staging_directory
+  #   raise RuntimeError, "No ingest folder specified" unless ingest_folder.present?
+  #   File.join(staging_root, ingest_folder)
+  # end
+
+  def staging_key_prefix
+    ingest_folder
   end
 
   def staging_root
@@ -40,8 +44,12 @@ class Project < ApplicationRecord
     return target
   end
 
-  def target_cfs_directory_path
-    target_cfs_directory.absolute_path
+  # def target_cfs_directory_path
+  #   target_cfs_directory.absolute_path
+  # end
+
+  def target_key_prefix
+    target_cfs_directory.relative_path
   end
 
 end
