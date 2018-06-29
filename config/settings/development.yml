@@ -129,8 +129,6 @@ medusa:
     feedback: hding2@illinois.edu
     dev: hding2@illinois.edu
     noreply: medusa-noreply@medusatest.library.illinois.edu
-#where project content for automatic ingest is staged
-project_staging_directory: /project/staging/directory
 #configuration for Omniauth::Shibboleth
 shibboleth:
   host: medusatest.library.illinois.edu
@@ -163,8 +161,12 @@ storage:
     - :name: idb
       :type: filesystem
       :path: <%= Rails.root %>/tmp/idb-staging/development
+#where project content for automatic ingest is staged
+  project_staging:
+    :name: project_staging
+    :type: filesystem
+    :path: /project/staging/directory
   tmpdir: /Users/hding2/repos/medusa-collection-registry/tmp
-
   #For each root the name gives a tag to be shown to start in the browser when accruing
   #The local path is the local path to the directory in the condo mount
   #the remote path is the path to a local mount of a storage.library (or other) directory which

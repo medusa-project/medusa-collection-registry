@@ -1,10 +1,11 @@
 class StorageManager
 
-  attr_accessor :main_root, :amqp_roots, :tmpdir
+  attr_accessor :main_root, :amqp_roots, :project_staging_root, :tmpdir
 
   def initialize
     initialize_main_storage
     initialize_amqp_storage
+    initialize_project_staging_storage
     initialize_tmpdir
   end
 
@@ -17,6 +18,12 @@ class StorageManager
   def initialize_amqp_storage
     amqp_config = Settings.storage.amqp.collect(&:to_h)
     self.amqp_roots = MedusaStorage::RootSet.new(amqp_config)
+  end
+
+  def initialize_project_staging_storage
+    root_config = Settings.storage.project_staging.to_h
+    root_set = MedusaStorage::RootSet.new(Array.wrap(root_config))
+    self.project_staging_root = root_set.at(root_config[:name]) || raise('Project staging root not defined')
   end
 
   def amqp_root_at(name)
