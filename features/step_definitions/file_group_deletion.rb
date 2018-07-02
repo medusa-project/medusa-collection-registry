@@ -21,18 +21,6 @@ Then(/^there should be (\d+) file group deletion workflows?$/) do |count|
   expect(Workflow::FileGroupDelete.count).to eq(count.to_i)
 end
 
-And(/^there should be a physical file group delete holding directory '(.*)' with (\d+) files$/) do |path, count|
-  holding_directory = File.join(Settings.medusa.cfs.fg_delete_holding, path)
-  expect(Dir.exist?(holding_directory)).to be_truthy
-  tree_file_count = Dir[File.join(holding_directory, '**', '*')].count { |file| File.file?(file) }
-  expect(tree_file_count).to eq(count.to_i)
-end
-
-And(/^there should not be a physical file group delete holding directory '(.*)'$/) do |path|
-  holding_directory = File.join(Settings.medusa.cfs.fg_delete_holding, path)
-  expect(Dir.exist?(holding_directory)).to be_falsey
-end
-
 And(/^there should be file group delete backup tables:$/) do |table|
   table.headers.each do |table_name|
     expect(ActiveRecord::Base.connection.data_source_exists?(table_name)).to be_truthy
@@ -45,3 +33,12 @@ And(/^there should not be file group delete backup tables:$/) do |table|
   end
 end
 
+And(/^the delete notification file should exist for '(.*)'$/) do |key_prefix|
+  key = File.join(key_prefix, 'THIS_DIRECTORY_TO_BE_DELETED')
+  expect(Application.storage_manager.main_root.exist?(key)).to be_truthy
+end
+
+And(/^the delete notification file should not exist for '(.*)'$/) do |key_prefix|
+  key = File.join(key_prefix, 'THIS_DIRECTORY_TO_BE_DELETED')
+  expect(Application.storage_manager.main_root.exist?(key)).to be_falsey
+end

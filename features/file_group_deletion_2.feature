@@ -28,8 +28,7 @@ Feature: File Group Deletion Part Two
     And there should be no cfs directory with path '1/1'
     And there should be no file group with title 'Dogs'
     And there should be no cfs file with name 'intro.txt'
-    And there should be no physical cfs directory '1/1'
-    And there should be a physical file group delete holding directory '1' with 3 files
+    And the delete notification file should exist for '1/1'
     And the collection with title 'Animals' should have an event with key 'file_group_delete_moved' performed by 'manager@example.com'
     And there should be file group delete backup tables:
       | fg_holding_1.file_groups | fg_holding_1.cfs_directories | fg_holding_1.cfs_files | fg_holding_1.rights_declarations | fg_holding_1.assessments | fg_holding_1.events |
@@ -43,7 +42,8 @@ Feature: File Group Deletion Part Two
     Then there should not be file group delete backup tables:
       | fg_holding_1.file_groups | fg_holding_1.cfs_directories | fg_holding_1.cfs_files | fg_holding_1.rights_declarations | fg_holding_1.assessments | fg_holding_1.events |
     And the collection with title 'Animals' should have an event with key 'file_group_delete_final' performed by 'manager@example.com'
-    And there should not be a physical file group delete holding directory '1'
+    And the delete notification file should not exist for '1/1'
+    And there should be no physical cfs directory '1/1'
     And there should be 1 file group deletion workflow in state 'email_requester_final_removal'
 
   @javascript
@@ -59,8 +59,7 @@ Feature: File Group Deletion Part Two
     And there should be 1 file group deletion workflow delayed job
     When I perform file group deletion workflows
     Then there should be 1 file group deletion workflow in state 'email_restored_content'
-    #the content should be restored on the file system
-    And there should not be a physical file group delete holding directory '1'
+    And the delete notification file should not exist for '1/1'
     And there should be a physical cfs directory '1/1'
     #the content should be restored in the database and the backup tables gone
     And there should not be file group delete backup tables:

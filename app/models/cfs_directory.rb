@@ -166,7 +166,7 @@ class CfsDirectory < ApplicationRecord
   end
 
   def absolute_path
-    #raise "DEPRECATE"
+    raise "DEPRECATE"
     File.join(CfsRoot.instance.path, self.relative_path)
   end
 

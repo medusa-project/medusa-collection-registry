@@ -49,7 +49,7 @@ wait_delete_content delete_content restore_content email_restored_content email_
 
   def perform_delete_content
     delete_db_backup_tables
-    FileUtils.rm_rf(holding_directory_path)
+    delete_held_content
     delete_amazon_backups
     Event.create!(eventable: collection, key: :file_group_delete_final, actor_email: requester.email,
                   note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{cached_collection_id}") if collection.present?
@@ -104,25 +104,42 @@ wait_delete_content delete_content restore_content email_restored_content email_
 
   protected
 
+  #TODO - the name is a bit out of sync after medusa_storage changes
   def move_physical_content
-    if cfs_directory.present? and Dir.exist?(cfs_directory.absolute_path)
-      FileUtils.mkdir_p(Settings.medusa.cfs.fg_delete_holding)
-      FileUtils.move(cfs_directory.absolute_path, holding_directory_path)
-    end
+    Application.storage_manager.main_root.write_string_to(notification_file_key,
+                                                          'This file group is scheduled to be deleted.')
+    # if cfs_directory.present? and Dir.exist?(cfs_directory.absolute_path)
+    #   FileUtils.mkdir_p(Settings.medusa.cfs.fg_delete_holding)
+    #   FileUtils.move(cfs_directory.absolute_path, holding_directory_path)
+    # end
   end
 
+  #TODO - the name is a bit out of sync after medusa_storage changes
   def restore_physical_content
-    restore_path = File.join(CfsRoot.instance.path, cached_collection_id.to_s, file_group_id.to_s)
-    unless Dir.exist?(restore_path)
-      FileUtils.mkdir_p(File.join(CfsRoot.instance.path, cached_collection_id.to_s))
-      FileUtils.move(holding_directory_path, restore_path)
-    end
+    Application.storage_manager.main_root.delete_content(notification_file_key)
+    # restore_path = File.join(CfsRoot.instance.path, cached_collection_id.to_s, file_group_id.to_s)
+    # unless Dir.exist?(restore_path)
+    #   FileUtils.mkdir_p(File.join(CfsRoot.instance.path, cached_collection_id.to_s))
+    #   FileUtils.move(holding_directory_path, restore_path)
+    # end
   end
 
-  def holding_directory_path
-    File.join(Settings.medusa.cfs.fg_delete_holding, file_group_id.to_s)
+  def delete_held_content
+    Application.storage_manager.main_root.delete_tree(content_key_prefix)
+    #FileUtils.rm_rf(holding_directory_path)
   end
 
+  # def holding_directory_path
+  #   File.join(Settings.medusa.cfs.fg_delete_holding, file_group_id.to_s)
+  # end
+
+  def content_key_prefix
+    File.join(cached_collection_id.to_s, file_group_id.to_s)
+  end
+
+  def notification_file_key
+    File.join(content_key_prefix, 'THIS_DIRECTORY_TO_BE_DELETED')
+  end
 
   def destroy_db_objects
     cfs_directory.destroy_tree_from_leaves if cfs_directory.present?
