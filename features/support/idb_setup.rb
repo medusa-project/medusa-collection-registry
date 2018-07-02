@@ -17,7 +17,6 @@ module IdbTestHelper
 
   def stage_content
     stage_content_to(staging_path, 'Staging text')
-    content = 'Staging text'
   end
 
   def stage_content_to(key, content_string)

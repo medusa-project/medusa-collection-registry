@@ -13,7 +13,7 @@ class ProjectsController < ApplicationController
     @projects = Project.order('title ASC')
     respond_to do |format|
       format.html
-      format.csv { send_data projects_to_csv(@projects), type: 'text/csv', filename: 'projects.csv' }
+      format.csv {send_data projects_to_csv(@projects), type: 'text/csv', filename: 'projects.csv'}
     end
   end
 
@@ -53,15 +53,15 @@ class ProjectsController < ApplicationController
   def mass_action
     authorize! :update, @project
     case params[:commit]
-      when 'Mass update'
-        mass_update(params[:mass_action])
-      when 'Delete checked'
-        items = @project.items.where(id: params[:mass_action][:item])
-        items.destroy_all
-      when 'Ingest items'
-        ingest_items(params[:mass_action])
-      else
-        raise RuntimeError, 'Unexpected mass action on project items'
+    when 'Mass update'
+      mass_update(params[:mass_action])
+    when 'Delete checked'
+      items = @project.items.where(id: params[:mass_action][:item])
+      items.destroy_all
+    when 'Ingest items'
+      ingest_items(params[:mass_action])
+    else
+      raise RuntimeError, 'Unexpected mass action on project items'
     end
     respond_to do |format|
       format.html do
@@ -80,7 +80,7 @@ class ProjectsController < ApplicationController
     @helper = SearchHelper::TableItem.new(project: @project, batch: @batch)
     respond_to do |format|
       format.html
-      format.csv { send_data items_to_csv(@items), type: 'text/csv', filename: 'items.csv' }
+      format.csv {send_data items_to_csv(@items), type: 'text/csv', filename: 'items.csv'}
     end
   end
 
@@ -131,7 +131,7 @@ class ProjectsController < ApplicationController
   #TODO make this really work
   def ingest_path_info
     respond_to do |format|
-      format.json { render json: ingest_directory_info(params[:path]) }
+      format.json {render json: ingest_directory_info(params[:path])}
     end
   end
 
@@ -159,7 +159,7 @@ class ProjectsController < ApplicationController
       Array.new.tap do |row|
         row << link_to(item.barcode, item)
         row << item.bib_id
-        row << [item.title, item.item_title, item.local_title].detect { |title| title.present? }
+        row << [item.title, item.item_title, item.local_title].detect {|title| title.present?}
         row << item.notes
         row << link_to(item.batch, project_path(@project, batch: item.batch))
         row << check_box_tag('', item.id, false, name: 'assign_batch[assign][]', id: "assign_batch_assign_#{item.id}") if safe_can?(:update, @project)
@@ -193,7 +193,7 @@ class ProjectsController < ApplicationController
 
   def ingest_items(params)
     item_ids = params[:item] rescue Array.new
-    items = @project.items.where(ingested: false, id: item_ids).reject { |item| item.workflow_item_ingest_request.present? }
+    items = @project.items.where(ingested: false, id: item_ids).reject {|item| item.workflow_item_ingest_request.present?}
     if items.count > 0
       @project.transaction do
         workflow = Workflow::ProjectItemIngest.create!(project: @project, user: current_user, state: 'start')
@@ -219,34 +219,48 @@ ALERT
   end
 
   def initialize_ingest_directory_info
-    @ingest_directory_info = ingest_directory_info('/')
+    @ingest_directory_info = ingest_directory_info('')
   end
 
-  #path is the relative path from a configured project staging root
-  #make the full path
-  #if it is in the project staging root then proceed naturally
-  #if not then proceed from the project staging root - could just use a recursive call with '/' as the path
-  def ingest_directory_info(path)
-    root_path = Pathname.new(Settings.project_staging_directory).expand_path
-    new_path = Pathname.new(File.join(Settings.project_staging_directory, path)).expand_path
-    unless new_path.to_s.start_with?(root_path.to_s)
-      return ingest_directory_info('/')
-    end
-    if new_path == root_path
+  def ingest_directory_info(key)
+    key = key.sub(/^\/*/, '')
+    children = Application.storage_manager.project_staging_root.subdirectory_keys(key).collect {|k| File.join(File.basename(k), '/')}.sort rescue []
+    if key == ''
       Hash.new.tap do |h|
         h[:current] = '/'
-        h[:children] = root_path.children.select { |c| c.directory? }.collect { |d| File.join(d.basename, '/') }.sort rescue []
+        h[:children] = children
         h[:parent] = '/'
       end
     else
       Hash.new.tap do |h|
-        h[:current] = File.join(new_path.relative_path_from(root_path).to_s, '/')
-        h[:children] = new_path.children.select { |c| c.directory? }.collect { |d| File.join(d.basename, '/') }.sort
-        h[:parent] = File.join(new_path.parent.relative_path_from(root_path).to_s, '/')
+        h[:current] = File.join(key, '/')
+        h[:children] = children
+        h[:parent] = File.join(File.dirname(key), '/')
         h[:parent] = '/' if h[:parent] == './'
-        x = 1
       end
     end
   end
+
+  #   root_path = Pathname.new(Settings.project_staging_directory).expand_path
+  #   new_path = Pathname.new(File.join(Settings.project_staging_directory, key)).expand_path
+  #   unless new_path.to_s.start_with?(root_path.to_s)
+  #     return ingest_directory_info('')
+  #   end
+  #   if new_path == root_path
+  #     Hash.new.tap do |h|
+  #       h[:current] = '/'
+  #       h[:children] = root_path.children.select { |c| c.directory? }.collect { |d| File.join(d.basename, '/') }.sort rescue []
+  #       h[:parent] = '/'
+  #     end
+  #   else
+  #     Hash.new.tap do |h|
+  #       h[:current] = File.join(new_path.relative_path_from(root_path).to_s, '/')
+  #       h[:children] = new_path.children.select { |c| c.directory? }.collect { |d| File.join(d.basename, '/') }.sort
+  #       h[:parent] = File.join(new_path.parent.relative_path_from(root_path).to_s, '/')
+  #       h[:parent] = '/' if h[:parent] == './'
+  #       x = 1
+  #     end
+  #   end
+  # end
 
 end
