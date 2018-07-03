@@ -6,10 +6,9 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
 
   Background:
     Given I am logged in as an admin
-    And I clear the cfs root directory
-    And the cfs directory 'animals/dogs' contains cfs fixture file 'grass.jpg'
-    And the cfs directory 'animals/dogs/pictures' contains cfs fixture file 'grass.jpg'
-    And the cfs directory 'animals/dogs' contains cfs fixture file 'fits.xml'
+    And the main storage directory key 'animals/dogs' contains cfs fixture content 'grass.jpg'
+    And the main storage directory key 'animals/dogs/pictures' contains cfs fixture content 'grass.jpg'
+    And the main storage directory key 'animals/dogs' contains cfs fixture content 'fits.xml'
     And the collection with title 'Animals' has child file groups with fields:
       | title         | type              |
       | Cats          | ExternalFileGroup |

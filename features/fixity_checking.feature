@@ -4,9 +4,8 @@ Feature: Fixity Checking
   I want to be able to run fixity checks on my file
 
   Background:
-    Given I clear the cfs root directory
-    And the physical cfs directory 'dogs/toy-dogs' has a file 'picture.doc' with contents 'picture stuff'
-    And the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some text'
+    Given the main storage has a key 'dogs/toy-dogs/picture.doc' with contents 'picture stuff'
+    And the main storage has a key 'dogs/toy-dogs/yorkies/something.txt' with contents 'some text'
     And the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |
@@ -35,7 +34,7 @@ Feature: Fixity Checking
   @javascript @search
   Scenario: Fixity check with changed file from file group level
     Given I am logged in as an admin
-    When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some changed text'
+    When the main storage has a key 'dogs/toy-dogs/yorkies/something.txt' with contents 'some changed text'
     And I view the file group with title 'Toys'
     And I click on 'Run'
     And I click on 'Fixity check'
@@ -85,7 +84,7 @@ Feature: Fixity Checking
   @javascript @search
   Scenario: Fixity check with changed file from directory level
     Given I am logged in as an admin
-    When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some changed text'
+    When the main storage has a key 'dogs/toy-dogs/yorkies/something.txt' with contents 'some changed text'
     And I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
     And I click on 'Run'
     And I click on 'Fixity check'
@@ -111,7 +110,7 @@ Feature: Fixity Checking
   @javascript @search
   Scenario: Fixity check of changed file from file level
     Given I am logged in as an admin
-    When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'some changed text'
+    When the main storage has a key 'dogs/toy-dogs/yorkies/something.txt' with contents 'some changed text'
     And I view the cfs file for the file group titled 'Toys' for the path 'yorkies/something.txt'
     And I click on 'Run'
     And I click on 'Fixity check'

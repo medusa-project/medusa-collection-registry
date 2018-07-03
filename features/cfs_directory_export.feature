@@ -4,10 +4,9 @@ Feature: Cfs directory export
   I want to be able to export my content
 
   Background:
-    Given I clear the cfs root directory
-    And the physical cfs directory 'dogs' has a file 'intro.txt' with contents 'anything'
-    And the physical cfs directory 'dogs/pugs' has a file 'picture.jpg' with contents 'anything'
-    And the physical cfs directory 'dogs/pugs' has a file 'description.txt' with contents 'anything'
+    Given the main storage has a key 'dogs/intro.txt' with contents 'anything'
+    And the main storage has a key 'dogs/pugs/picture.jpg' with contents 'anything'
+    And the main storage has a key 'dogs/pugs/description.txt' with contents 'anything'
     And the collection with title 'Animals' has child file groups with fields:
       | title | type              |
       | Dogs  | BitLevelFileGroup |

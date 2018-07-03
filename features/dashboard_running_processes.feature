@@ -24,8 +24,8 @@ Feature: Dashboard running processes display
     And I should not see 'Bats'
 
   Scenario: See running FITS characterizations
-    Given there is a physical cfs directory 'files/dogs'
-    And there is a physical cfs directory 'files/cats'
+    Given the main storage has a directory key 'files/dogs' containing a file
+    And the main storage has a directory key 'files/cats' containing a file
     And the file group titled 'Dogs' has cfs root 'files/dogs'
     And the file group titled 'Cats' has cfs root 'files/cats'
     And I am running a fits job for the file group titled 'Dogs' with 12 files
@@ -39,8 +39,8 @@ Feature: Dashboard running processes display
       | Gnats | Bats |
 
   Scenario: See running initial assessment characterizations
-    Given there is a physical cfs directory 'files/dogs'
-    And there is a physical cfs directory 'files/cats'
+    Given the main storage has a directory key 'files/dogs' containing a file
+    And the main storage has a directory key 'files/cats' containing a file
     And the file group titled 'Dogs' has cfs root 'files/dogs'
     And the file group titled 'Cats' has cfs root 'files/cats'
     And I am running an initial assessment job for the file group titled 'Dogs' with 12 files

@@ -4,11 +4,8 @@ Feature: CFS FITS integration
   I want to be able to run FITS against files in the CFS directory
 
   Background:
-    Given I clear the cfs root directory
-    And there is a physical cfs directory 'dogs/toy-dogs'
-    And there is a physical cfs directory 'dogs/toy-dogs/pictures'
-    And the physical cfs directory 'dogs/toy-dogs' has a file 'text.txt' with contents 'some text'
-    And the physical cfs directory 'dogs/toy-dogs/pictures' has a file 'picture.txt' with contents 'more text'
+    Given the main storage has a key 'dogs/toy-dogs/text.txt' with contents 'some text'
+    And the main storage has a key 'dogs/toy-dogs/pictures/picture.txt' with contents 'more text'
     And the collection with title 'Dogs' has child file groups with fields:
       | title | type              |
       | Toys | BitLevelFileGroup |

@@ -5,9 +5,8 @@ Feature: CFS file group integration
 
   Background:
     Given I am logged in as an admin
-    And I clear the cfs root directory
-    And the physical cfs directory 'dogs/toy-dogs' has a file 'document.doc' with contents 'does not matter'
-    And the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'something.txt' with contents 'also irrelevant'
+    And the main storage has a key 'dogs/toy-dogs/document.doc' with contents 'does not matter'
+    And the main storage has a key 'dogs/toy-dogs/yorkies/something.txt' with contents 'also irrelevant'
     And the collection with title 'Dogs' has child file groups with fields:
       | title | type              |
       | Toys  | BitLevelFileGroup |
@@ -23,7 +22,7 @@ Feature: CFS file group integration
       | document.doc |
 
   Scenario: Set file group's cfs root from file group edit view
-    Given there is a physical cfs directory 'englishmen/yorkies'
+    Given the main storage has a directory key 'englishmen/yorkies' containing a file
     When I edit the file group with title 'Toys'
     And I select 'englishmen/yorkies' from 'Cfs root'
     And I click on 'Update'

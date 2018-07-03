@@ -1,17 +1,4 @@
 require 'fileutils'
-And(/^there is a physical cfs directory '([^']*)'$/) do |path|
-  FileUtils.mkdir_p(cfs_local_path(path))
-end
-
-And(/^I clear the cfs root directory$/) do
-  Dir[File.join(CfsRoot.instance.path, '*')].each do |entry|
-    FileUtils.rm_rf(entry)
-  end
-end
-
-And(/^I remove the cfs path '([^']*)'$/) do |path|
-  FileUtils.rm_rf(cfs_local_path(path))
-end
 
 When(/^I view the cfs path '([^']*)'$/) do |path|
   visit cfs_show_path(path: path)
@@ -58,51 +45,5 @@ When(/^I view fits for the cfs file '([^']*)'$/) do |path|
 end
 
 
-And(/^the cfs directory '([^']*)' contains cfs fixture file '([^']*)'$/) do |path, fixture|
-  ensure_cfs_path(path)
-  FileUtils.copy_file(File.join(Rails.root, 'features', 'fixtures', fixture),
-                      cfs_local_path(path, fixture))
-end
 
-Given(/^the physical cfs directory '([^']*)' has the data of bag '([^']*)'$/) do |path, bag_name|
-  step "there is a physical cfs directory '#{path}'"
-  bag_data_directory = File.join(bag_path(bag_name), 'data')
-  Dir.chdir(bag_data_directory) do
-    Dir['**/*'].each do |file|
-      if File.file?(file)
-        target = cfs_local_path(path, file)
-        FileUtils.mkdir_p(File.dirname(target))
-        FileUtils.copy(file, target)
-      end
-    end
-  end
-end
-
-And(/^the physical cfs directory '([^']*)' has a file '([^']*)' with contents '([^']*)'$/) do |directory, file, contents|
-  step "there is a physical cfs directory '#{directory}'"
-  File.open(cfs_local_path(directory, file), 'w') do |f|
-    f.write contents
-  end
-end
-
-And(/^there should be no physical cfs directory '(.*)'$/) do |path|
-  expect(Dir.exist?(File.join(CfsRoot.instance.path, path))).to be_falsey
-end
-
-And(/^there should be a physical cfs directory '(.*)'$/) do |path|
-  expect(Dir.exist?(File.join(CfsRoot.instance.path, path))).to be_truthy
-end
-
-
-def ensure_cfs_path(path)
-  FileUtils.mkdir_p(File.join(CfsRoot.instance.path, path))
-end
-
-def cfs_local_path(*args)
-  File.join(CfsRoot.instance.path, *args)
-end
-
-def bag_path(name)
-  File.join(Rails.root, 'features', 'fixtures', 'bags', name)
-end
 

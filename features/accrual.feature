@@ -19,8 +19,7 @@ Feature: File accrual
   #the scenes, the price for making these tests a little more concise in this file.
 
   Background:
-    Given I clear the cfs root directory
-    And the physical cfs directory 'dogs' has the data of bag 'accrual-initial-bag'
+    Given the main storage directory key 'dogs' contains the data of bag 'accrual-initial-bag'
     And the collection with title 'Animals' has child file groups with fields:
       | title | type              |
       | Dogs  | BitLevelFileGroup |

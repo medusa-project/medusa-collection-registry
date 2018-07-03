@@ -6,11 +6,10 @@ Feature: FITS batch processing
 
   Background:
     Given I am logged in as an admin
-    And I clear the cfs root directory
-    And the physical cfs directory 'dogs/toy-dogs' has a file 'joe.txt' with contents 'joe'
-    And the physical cfs directory 'dogs/toy-dogs' has a file 'pete.txt' with contents 'pete'
-    And the physical cfs directory 'dogs/toy-dogs' has a file 'bob.txt' with contents 'bob'
-    And the physical cfs directory 'dogs/toy-dogs' has a file 'fred.xml' with contents '<?xml version="1.0"?><fred/>'
+    And the main storage has a key 'dogs/toy-dogs/joe.txt' with contents 'joe'
+    And the main storage has a key 'dogs/toy-dogs/pete.txt' with contents 'pete'
+    And the main storage has a key 'dogs/toy-dogs/bob.txt' with contents 'bob'
+    And the main storage has a key 'dogs/toy-dogs/fred.xml' with contents '<?xml version="1.0"?><fred/>'
     And the collection with title 'Dogs' has child file groups with fields:
       | title   | type              |
       | Toys    | BitLevelFileGroup |

@@ -4,9 +4,8 @@ Feature: Virus scans authorization
   I want to enforce proper authorization
 
   Background:
-    Given I clear the cfs root directory
-    And the cfs directory 'dogs/images' contains cfs fixture file 'clam.exe'
-    And the cfs directory 'dogs/images' contains cfs fixture file 'grass.jpg'
+    Given the main storage directory key 'dogs/images' contains cfs fixture content 'clam.exe'
+    And the main storage directory key 'dogs/images' contains cfs fixture content 'grass.jpg'
     And the repository with title 'Animals' has child collections with fields:
       | title |
       | Dogs  |

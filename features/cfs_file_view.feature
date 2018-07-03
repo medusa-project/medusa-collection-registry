@@ -5,8 +5,7 @@ Feature: Viewing CFS file information and content
 
   Background:
     Given I am logged in as an admin
-    And I clear the cfs root directory
-    And the cfs directory 'dogs/places' contains cfs fixture file 'grass.jpg'
+    And the main storage directory key 'dogs/places' contains cfs fixture content 'grass.jpg'
     And every collection with fields exists:
       | title   | id |
       | Animals | 1  |

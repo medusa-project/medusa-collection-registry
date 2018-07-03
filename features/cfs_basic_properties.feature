@@ -8,11 +8,10 @@ Feature: CFS basic properties
     And the collection with title 'Dogs' has child file groups with fields:
       | title | type              |
       | Toys  | BitLevelFileGroup |
-    And I clear the cfs root directory
-    And the physical cfs directory 'dogs/toy-dogs' has a file 'stuff.txt' with contents 'Toy dog stuff'
-    And the physical cfs directory 'dogs/toy-dogs' has a file 'Thumbs.db' with contents 'thumbs'
-    And the physical cfs directory 'dogs/toy-dogs' has a file '.DS_Store' with contents 'ds_store'
-    And the physical cfs directory 'dogs/toy-dogs/chihuahuas' has a file 'freakdog.xml' with contents '<?xml version="1.0" encoding="utf-8"?><freak>dog</freak>'
+    And the main storage has a key 'dogs/toy-dogs/stuff.txt' with contents 'Toy dog stuff'
+    And the main storage has a key 'dogs/toy-dogs/Thumbs.db' with contents 'thumbs'
+    And the main storage has a key 'dogs/toy-dogs/.DS_Store' with contents 'ds_store'
+    And the main storage has a key 'dogs/toy-dogs/chihuahuas/freakdog.xml' with contents '<?xml version="1.0" encoding="utf-8"?><freak>dog</freak>'
     And the file group titled 'Toys' has cfs root 'dogs/toy-dogs' and delayed jobs are run
 
   Scenario: When I do an initial assessment on a bit level file group there should be file objects with file properties
@@ -34,18 +33,18 @@ Feature: CFS basic properties
     Then the file group titled 'Toys' should not have a cfs file for the path '.DS_Store'
 
   Scenario: When I remove a file and rerun assessments then the record for that file is deleted
-    When I remove the cfs path 'dogs/toy-dogs/chihuahuas/freakdog.xml'
+    When I remove the main storage tree 'dogs/toy-dogs/chihuahuas/freakdog.xml'
     And I run assessments on the the file group titled 'Toys'
     Then the file group titled 'Toys' should not have a cfs file for the path 'chihuahuas/freakdog.xml'
 
   Scenario: When I remove a directory and rerun assessments then the record for that directory and its files are deleted
-    When I remove the cfs path 'dogs/toy-dogs/chihuahuas'
+    When I remove the main storage tree 'dogs/toy-dogs/chihuahuas'
     And I run assessments on the the file group titled 'Toys'
     Then the file group titled 'Toys' should not have a cfs file for the path 'chihuahuas/freakdog.xml'
     And the file group titled 'Toys' should not have a cfs directory for the path 'chihuahuas'
 
   Scenario: When I modify a file and rerun assessments then the record for that file is updated, except fixity, which goes into an error state
-    When the physical cfs directory 'dogs/toy-dogs' has a file 'stuff.txt' with contents 'New toy dog stuff'
+    When the main storage has a key 'dogs/toy-dogs/stuff.txt' with contents 'New toy dog stuff'
     And I run assessments on the the file group titled 'Toys'
     Then the file group titled 'Toys' should have a cfs file for the path 'stuff.txt' with results:
       | size                | 17.0                             |
@@ -55,7 +54,7 @@ Feature: CFS basic properties
       | fixity_check_status | bad                              |
 
   Scenario: When I add a file and rerun assessments then the record for that file is created; existing files are unchanged
-    When the physical cfs directory 'dogs/toy-dogs/chihuahuas' has a file 'yappy.txt' with contents 'yap yap'
+    When the main storage has a key 'dogs/toy-dogs/chihuahuas/yappy.txt' with contents 'yap yap'
     And I run assessments on the the file group titled 'Toys'
     Then the file group titled 'Toys' should have a cfs file for the path 'chihuahuas/yappy.txt' with results:
       | size                | 7.0        |
@@ -69,7 +68,7 @@ Feature: CFS basic properties
       | md5_sum           | 9972d3c67a1155d5694c6647e1e2dafc |
 
   Scenario: When I add a directory and rerun assessments then the record for that directory is created
-    When the physical cfs directory 'dogs/toy-dogs/yorkies' has a file 'good.txt' with contents 'unfreakish'
+    When the main storage has a key 'dogs/toy-dogs/yorkies/good.txt' with contents 'unfreakish'
     And I run assessments on the the file group titled 'Toys'
     Then the file group titled 'Toys' should have a cfs directory for the path 'yorkies'
     And the file group titled 'Toys' should have a cfs file for the path 'yorkies/good.txt' with results:
