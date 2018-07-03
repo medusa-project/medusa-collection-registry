@@ -108,30 +108,16 @@ wait_delete_content delete_content restore_content email_restored_content email_
   def move_physical_content
     Application.storage_manager.main_root.write_string_to(notification_file_key,
                                                           'This file group is scheduled to be deleted.')
-    # if cfs_directory.present? and Dir.exist?(cfs_directory.absolute_path)
-    #   FileUtils.mkdir_p(Settings.medusa.cfs.fg_delete_holding)
-    #   FileUtils.move(cfs_directory.absolute_path, holding_directory_path)
-    # end
   end
 
   #TODO - the name is a bit out of sync after medusa_storage changes
   def restore_physical_content
     Application.storage_manager.main_root.delete_content(notification_file_key)
-    # restore_path = File.join(CfsRoot.instance.path, cached_collection_id.to_s, file_group_id.to_s)
-    # unless Dir.exist?(restore_path)
-    #   FileUtils.mkdir_p(File.join(CfsRoot.instance.path, cached_collection_id.to_s))
-    #   FileUtils.move(holding_directory_path, restore_path)
-    # end
   end
 
   def delete_held_content
     Application.storage_manager.main_root.delete_tree(content_key_prefix)
-    #FileUtils.rm_rf(holding_directory_path)
   end
-
-  # def holding_directory_path
-  #   File.join(Settings.medusa.cfs.fg_delete_holding, file_group_id.to_s)
-  # end
 
   def content_key_prefix
     File.join(cached_collection_id.to_s, file_group_id.to_s)
