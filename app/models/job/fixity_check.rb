@@ -69,11 +69,11 @@ class Job::FixityCheck < ApplicationRecord
   end
 
   def manifest_file_path
-    File.join(CfsRoot.instance.tmp_path, "fixity_check_expected_#{self.id}.md5")
+    File.join(Application.storage_manager.tmpdir, "fixity_check_expected_#{self.id}.md5")
   end
 
   def result_file_path
-    File.join(CfsRoot.instance.tmp_path, "fixity_check_results_#{self.id}.txt")
+    File.join(Application.storage_manager.tmpdir, "fixity_check_results_#{self.id}.txt")
   end
 
 end
