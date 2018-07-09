@@ -2,7 +2,7 @@ class CfsDirectoriesController < ApplicationController
 
   before_action :require_medusa_user, except: [:show, :show_tree]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :show_tree]
-  before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :fixity_check, :show_tree, :cfs_files, :cfs_directories]
+  before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :show_tree, :cfs_files, :cfs_directories]
   before_action :find_directory_with_includes, only: [:show]
 
   def show
@@ -50,21 +50,6 @@ class CfsDirectoriesController < ApplicationController
         render json: directory_tree_as_hashes(@directory)
       end
     end
-  end
-
-  def fixity_check
-    @file_group = @directory.file_group
-    authorize! :update, @file_group
-    @directory.transaction do
-      @directory.events.create(key: 'fixity_check_scheduled', date: Date.today, actor_email: current_user.email)
-      if Job::FixityCheck.find_by(fixity_checkable: @directory)
-        flash[:notice] = 'Fixity check already scheduled for this cfs directory'
-      else
-        Job::FixityCheck.create_for(@directory, @directory, current_user)
-        flash[:notice] = 'Fixity check scheduled'
-      end
-    end
-    redirect_to @directory
   end
 
   def events

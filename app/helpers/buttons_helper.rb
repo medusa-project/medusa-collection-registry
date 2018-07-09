@@ -69,10 +69,6 @@ module ButtonsHelper
     link_to 'Index', url, class: 'btn btn-default'
   end
 
-  def fixity_check_button(url)
-    link_to 'Run fixity check', url, method: :post, class: 'btn btn-default', data: {confirm: 'Are you sure?'}
-  end
-
   def small_run_button(url, options = {})
     link_to 'Run', url, options.reverse_merge(method: :post, class: 'btn btn-default btn-xs')
   end

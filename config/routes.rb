@@ -27,7 +27,6 @@ Rails.application.routes.draw do
   concern :attachable, Proc.new {member {get 'attachments'}}
   concern :downloadable, Proc.new {member {get 'download'}}
   concern :collection_indexer, Proc.new {member {get 'collections'}}
-  concern :fixity_checkable, Proc.new {member {post 'fixity_check'}}
   concern :gallery_viewer, Proc.new {member {post 'toggle_gallery_viewer'}}
   concern :autocomplete_email, Proc.new {collection {get :autocomplete_user_email}}
 
@@ -54,7 +53,7 @@ Rails.application.routes.draw do
   [:file_groups, :external_file_groups, :bit_level_file_groups].each do |file_group_type|
     resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy],
               concerns: %i(eventable red_flaggable assessable attachable) do
-      %i(create_cfs_fits create_amazon_backup fixity_check create_initial_cfs_assessment).each do |action|
+      %i(create_cfs_fits create_amazon_backup create_initial_cfs_assessment).each do |action|
         post action, on: :member
       end if file_group_type == :bit_level_file_groups
       if file_group_type == :external_file_groups
@@ -87,14 +86,14 @@ Rails.application.routes.draw do
   resources :access_systems, concerns: :collection_indexer
   resources :package_profiles, concerns: :collection_indexer
 
-  resources :cfs_files, only: :show, concerns: %i(downloadable eventable fixity_checkable) do
+  resources :cfs_files, only: :show, concerns: %i(downloadable eventable) do
     %i(create_fits_xml fits view preview_image preview_pdf
        preview_content thumbnail galleria).each {|action| get action, on: :member}
     get :random, on: :collection
   end
   get 'cfs_files/:id/preview_iiif_image/*iiif_parameters', to: 'cfs_files#preview_iiif_image', as: 'preview_iiif_image_cfs_file'
 
-  resources :cfs_directories, only: :show, concerns: %i(fixity_checkable eventable gallery_viewer) do
+  resources :cfs_directories, only: :show, concerns: %i(eventable gallery_viewer) do
     %i(create_fits_for_tree export export_tree).each {|action| post action, on: :member}
     get :show_tree, on: :member
     get :cfs_files, on: :member

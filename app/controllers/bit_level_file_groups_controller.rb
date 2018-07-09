@@ -31,19 +31,4 @@ class BitLevelFileGroupsController < FileGroupsController
     redirect_to @file_group
   end
 
-  def fixity_check
-    @file_group = BitLevelFileGroup.find(params[:id])
-    authorize! :update, @file_group
-    @file_group.transaction do
-      @file_group.events.create!(key: 'fixity_check_scheduled', date: Date.today, actor_email: current_user.email)
-      if Job::FixityCheck.find_by(fixity_checkable: @file_group)
-        flash[:notice] = "Fixity check already scheduled for file group id: #{@file_group.id} title: #{@file_group.title}"
-      else
-        Job::FixityCheck.create_for(@file_group, @file_group.cfs_directory, current_user)
-        flash[:notice] = 'Fixity check scheduled'
-      end
-    end
-    redirect_to @file_group
-  end
-
 end

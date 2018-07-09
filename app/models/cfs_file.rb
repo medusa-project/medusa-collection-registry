@@ -153,9 +153,6 @@ class CfsFile < ApplicationRecord
     self.fixity_check_time = Time.now
   end
 
-  #TODO - update for new FixityCheckResult scheme
-  #Always generate FixityCheckResult
-  #Only generate event when there is an error
   def update_fixity_status_with_event(md5sum: nil, actor_email: nil)
     update_fixity_status_not_found_with_event(actor_email: actor_email) and return unless exists_on_storage?
     md5sum ||= self.storage_md5_sum

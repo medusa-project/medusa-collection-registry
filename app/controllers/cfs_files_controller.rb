@@ -7,7 +7,7 @@ class CfsFilesController < ApplicationController
 
   before_action :require_medusa_user, except: [:show, :download]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :download]
-  before_action :find_file, only: [:show, :create_fits_xml, :fits, :download, :view, :fixity_check, :events,
+  before_action :find_file, only: [:show, :create_fits_xml, :fits, :download, :view, :events,
                                    :preview_image, :preview_content, :preview_pdf,
                                    :preview_iiif_image,
                                    :thumbnail, :galleria]
@@ -35,21 +35,6 @@ class CfsFilesController < ApplicationController
     else
       render text: "Fits XML not present for cfs file #{@file.relative_path}"
     end
-  end
-
-  def fixity_check
-    @file_group = @file.file_group
-    authorize! :update, @file_group
-    @file.events.create!(key: 'fixity_check_run', cascadable: false, actor_email: current_user.email, note: '')
-    current_md5 = @file.storage_md5_sum
-    if current_md5 == @file.md5_sum
-      flash[:notice] = 'Fixity is confirmed'
-      @file.events.create!(key: 'fixity_result', cascadable: false, actor_email: current_user.email, note: 'OK')
-    else
-      flash[:notice] = "MD5 has changed. Stored: #{@file.md5_sum} Current: #{current_md5}"
-      @file.events.create!(key: 'fixity_result', cascadable: true, actor_email: current_user.email, note: 'FAILED')
-    end
-    redirect_to @file
   end
 
   def events
