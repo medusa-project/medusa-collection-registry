@@ -41,7 +41,7 @@ class Ability
     end
     #File groups - do for all subclasses, though I'm not sure this is strictly necessary
     [FileGroup, BitLevelFileGroup, ExternalFileGroup].each do |klass|
-      can [:update, :create, :create_cfs_fits, :create_virus_scan, :download, :export, :destroy], klass do |file_group|
+      can [:update, :create, :create_cfs_fits, :download, :export, :destroy], klass do |file_group|
         repository_manager?(user, file_group)
       end
       can [:download, :export], klass do |file_group|

@@ -4,12 +4,6 @@
       %span.badge #{Delayed::Job.where('failed_at IS NOT NULL').count}
       delayed jobs have failed! Please contact the development staff to diagnose
 
-= render layout: 'layouts/standard_table', locals: {id: :running_virus_scans, classes: %w(table-bordered table-condensed), caption: 'Virus Scans', headers: ['File Group', 'Created']} do
-  - Job::VirusScan.includes(:file_group).each do |virus_scan_job|
-    %tr
-      %td= link_to virus_scan_job.file_group.title, polymorphic_path(virus_scan_job.file_group)
-      %td= link_to virus_scan_job.created_at.to_date.to_s
-
 = render layout: 'layouts/standard_table', locals: {id: :running_fits_scans, classes: %w(table-bordered table-condensed), caption: 'FITS Scans', headers: ['Path', 'File Group', 'Files remaining']} do
   - BitLevelFileGroup.where(id: Job::FitsDirectory.distinct.pluck(:file_group_id)).includes(:cfs_directory).each do |file_group|
     - if file_group.cfs_directory.present?

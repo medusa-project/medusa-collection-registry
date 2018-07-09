@@ -13,16 +13,6 @@ Feature: Dashboard running processes display
       | Gnats | BitLevelFileGroup |
       | Bats  | ExternalFileGroup |
 
-  Scenario: See running virus scans
-    Given I am running a virus scan job for the file group titled 'Dogs'
-    And I am running a virus scan job for the file group titled 'Cats'
-    When I go to the dashboard
-    And I click on 'Running Processes'
-    Then I should see the running virus scans table
-    And I should see all of:
-      | Dogs | Cats |
-    And I should not see 'Bats'
-
   Scenario: See running FITS characterizations
     Given the main storage has a directory key 'files/dogs' containing a file
     And the main storage has a directory key 'files/cats' containing a file

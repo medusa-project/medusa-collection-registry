@@ -54,7 +54,7 @@ Rails.application.routes.draw do
   [:file_groups, :external_file_groups, :bit_level_file_groups].each do |file_group_type|
     resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy],
               concerns: %i(eventable red_flaggable assessable attachable) do
-      %i(create_cfs_fits create_virus_scan create_amazon_backup fixity_check create_initial_cfs_assessment).each do |action|
+      %i(create_cfs_fits create_amazon_backup fixity_check create_initial_cfs_assessment).each do |action|
         post action, on: :member
       end if file_group_type == :bit_level_file_groups
       if file_group_type == :external_file_groups
@@ -86,7 +86,6 @@ Rails.application.routes.draw do
   end
   resources :access_systems, concerns: :collection_indexer
   resources :package_profiles, concerns: :collection_indexer
-  resources :virus_scans, only: :show
 
   resources :cfs_files, only: :show, concerns: %i(downloadable eventable fixity_checkable) do
     %i(create_fits_xml fits view preview_image preview_pdf

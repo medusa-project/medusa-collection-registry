@@ -3,7 +3,7 @@ class FileGroupsController < ApplicationController
   before_action :require_medusa_user, except: [:show, :content_type_manifest]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :content_type_manifest]
   before_action :find_file_group_and_collection, only: [:show, :destroy, :edit, :update, :create_cfs_fits,
-                                                        :create_virus_scan, :red_flags, :attachments,
+                                                        :red_flags, :attachments,
                                                         :assessments, :events, :content_type_manifest]
   respond_to :html, :js, :json
 

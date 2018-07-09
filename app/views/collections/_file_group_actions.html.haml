@@ -17,9 +17,3 @@
     - if file_group.is_a?(BitLevelFileGroup)
       %li.dropdown-header{role: 'presentation'} FITS
       %li.fits-action{role: 'presentation'}= link_to 'Run', create_cfs_fits_bit_level_file_group_path(file_group), remote: 'true', method: :post
-      %li.divider
-      %li.dropdown-header{role: 'presentation'} Virus Scan
-      - if file_group.virus_scans.present?
-        %li.virus-scan-action{role: 'presentation'}= link_to 'View', virus_scan_path(file_group.virus_scans.order('created_at desc').first)
-        |
-      %li.virus-scan-action{role: 'presentation'}= link_to 'Run', create_virus_scan_bit_level_file_group_path(file_group, format: 'js'), remote: 'true', method: :post
