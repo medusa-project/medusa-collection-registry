@@ -53,8 +53,7 @@ class FileGroup < ApplicationRecord
   end
 
   STORAGE_LEVEL_HASH = {'external' => 'ExternalFileGroup',
-                        'bit-level store' => 'BitLevelFileGroup',
-                        'object-level store' => 'ObjectLevelFileGroup'}
+                        'bit-level store' => 'BitLevelFileGroup'}
 
   def self.class_for_storage_level(storage_level)
     Kernel.const_get(STORAGE_LEVEL_HASH[storage_level])

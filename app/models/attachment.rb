@@ -3,7 +3,7 @@ class Attachment < ApplicationRecord
 	email_person_association(:author)
 
 	belongs_to :attachable, polymorphic: true, touch: true
-	validates_inclusion_of :attachable_type, in: %w(Collection FileGroup ExternalFileGroup BitLevelFileGroup ObjectLevelFileGroup Project FileFormat)
+	validates_inclusion_of :attachable_type, in: %w(Collection FileGroup ExternalFileGroup BitLevelFileGroup Project FileFormat)
 
 	# Paperclip
 	has_attached_file :attachment, styles: {}

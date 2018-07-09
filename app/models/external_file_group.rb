@@ -7,7 +7,7 @@ class ExternalFileGroup < FileGroup
   end
 
   def self.downstream_types
-    %w(BitLevelFileGroup ObjectLevelFileGroup)
+    %w(BitLevelFileGroup)
   end
 
   #check that the staged_file_location is okay - it must end in collection_id/file_group_id

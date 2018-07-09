@@ -51,7 +51,7 @@ Rails.application.routes.draw do
 
   resources :events, concerns: :autocomplete_email
 
-  [:file_groups, :external_file_groups, :bit_level_file_groups, :object_level_file_groups].each do |file_group_type|
+  [:file_groups, :external_file_groups, :bit_level_file_groups].each do |file_group_type|
     resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy],
               concerns: %i(eventable red_flaggable assessable attachable) do
       %i(create_cfs_fits create_virus_scan create_amazon_backup fixity_check create_initial_cfs_assessment).each do |action|

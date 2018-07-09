@@ -69,7 +69,7 @@ class AttachmentsController < ApplicationController
     case attachable_type_name
       when 'Collection'
         Collection
-      when 'FileGroup', 'ExternalFileGroup', 'ObjectLevelFileGroup', 'BitLevelFileGroup'
+      when 'FileGroup', 'ExternalFileGroup', 'BitLevelFileGroup'
         FileGroup
       when 'Project'
         Project
