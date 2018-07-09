@@ -9,16 +9,6 @@ class FileExtensionsController < ApplicationController
     @cfs_files = cfs_files_query.includes(cfs_directory: {root_cfs_directory: {parent: :collection}})
   end
 
-  def fits_batch
-    authorize! :create, FileExtension
-    if Job::FitsFileExtensionBatch.create_for(current_user, @file_extension)
-      flash[:notice] = "FITS batch scheduled for extension '#{@file_extension.extension}'"
-    else
-      flash[:notice] = "There is already a FITS batch scheduled for extension '#{@file_extension.extension}'"
-    end
-    redirect_back(fallback_location: root_path)
-  end
-
   def random_cfs_file
     redirect_to @file_extension.random_cfs_file(params.slice(:repository_id, :virtual_repository_id, :collection_id))
   end

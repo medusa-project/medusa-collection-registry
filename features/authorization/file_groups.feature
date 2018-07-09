@@ -13,8 +13,8 @@ Feature: File group authorization
 
   Scenario: Enforce permissions
     Then deny object permission on the file group with title 'images' to users for action with redirection:
-      | public user | view, edit, update, events, red_flags, create_cfs_fits(post), attachments, assessments | authentication |
-      | user        | edit, update, create_cfs_fits(post)                                                    | unauthorized   |
+      | public user | view, edit, update, events, red_flags, attachments, assessments | authentication |
+      | user        | edit, update                                                  | unauthorized   |
     And deny permission on the file group collection to users for action with redirection:
       | public user | new, create | authentication |
 

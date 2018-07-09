@@ -13,9 +13,6 @@
         %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Run', href: '#'}
           = fa_icon('cog')
           %span.caret
-        %ul.dropdown-menu.dropdown-menu-right
-          - unless @file.fits_result.present?
-            %li= link_to 'Create FITS', create_fits_xml_cfs_file_path(@file)
       .btn-group
         %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Download'}
           = fa_icon('download')

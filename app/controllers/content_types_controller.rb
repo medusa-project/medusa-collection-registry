@@ -26,16 +26,6 @@ class ContentTypesController < ApplicationController
     @cfs_files = @cfs_files.includes(cfs_directory: {root_cfs_directory: {parent: :collection}})
   end
 
-  def fits_batch
-    authorize! :create, ContentType
-    if Job::FitsContentTypeBatch.create_for(current_user, @content_type)
-      flash[:notice] = "FITS batch scheduled for mime type '#{@content_type.name}'"
-    else
-      flash[:notice] = "There is already a FITS batch scheduled for mime type '#{@content_type.name}'"
-    end
-    redirect_back(fallback_location: root_path)
-  end
-
   def random_cfs_file
     redirect_to @content_type.random_cfs_file(params.slice(:repository_id, :virtual_repository_id, :collection_id))
   end

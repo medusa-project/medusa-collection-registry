@@ -81,16 +81,6 @@ class FileGroupsController < ApplicationController
     end
   end
 
-  def create_cfs_fits
-    authorize! :create_cfs_fits, @file_group
-    if @file_group.cfs_directory.present?
-      Job::FitsDirectoryTree.create_for(@file_group.cfs_directory)
-      record_event(@file_group, 'cfs_fits_performed')
-      flash[:notice] = "Scheduling FITS creation for /#{@file_group.cfs_directory.relative_path}"
-      redirect_to @file_group
-    end
-  end
-
   def events
     @helper = SearchHelper::TableEvent.new(params: params, cascaded_eventable: @file_group)
     respond_to do |format|

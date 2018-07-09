@@ -19,13 +19,6 @@ class CfsDirectoriesController < ApplicationController
     end
   end
 
-  def create_fits_for_tree
-    authorize! :create_cfs_fits, @directory.file_group
-    Job::FitsDirectoryTree.create_for(@directory)
-    flash[:notice] = "Scheduling FITS creation for /#{@directory.relative_path}"
-    redirect_to @directory
-  end
-
   def export
     authorize! :export, @directory.file_group
     @files_present = !@directory.cfs_files.empty?

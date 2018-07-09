@@ -92,23 +92,6 @@ Feature: Viewing CFS file information and content
     Then I should see all of:
       | File format: incorrect extension | File size: has changed |
 
-  Scenario: Create FITS for file
-    When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And I click on 'Create FITS'
-    Then the file group titled 'Dogs' should have a cfs file for the path 'grass.jpg' with fits attached
-    And I should be viewing the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And the cfs file with name 'grass.jpg' should have fits data matching:
-      | file_format              | JPEG File Interchange Format                              |
-      | file_format_version      | 1.01                                                      |
-      | file_size                | 169804.0                                                  |
-      | creating_application     | CREATOR: gd-jpeg v1.0 (using IJG JPEG v62), quality = 100 |
-      | well_formed              | true                                                      |
-      | is_valid                 | true                                                      |
-      | image_byte_order         | big endian                                                |
-      | image_compression_scheme | JPEG                                                      |
-      | image_color_space        | YCbCr                                                     |
-
-
   Scenario: View FITS for file
     Given the cfs file at path 'grass.jpg' for the file group titled 'Dogs' has fits attached
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'

@@ -16,8 +16,6 @@ Feature: Touching associated models
       | resource_typeable_resource_type_join  | resource_type                                                  |
       | job_cfs_directory_export              | user, cfs_directory                                            |
       | job_cfs_initial_file_group_assessment | file_group                                                     |
-      | job_fits_directory                    | file_group, cfs_directory                                      |
-      | job_fits_directory_tree               | file_group, cfs_directory                                      |
       | workflow_accrual_comment              | workflow_accrual_job                                           |
       | workflow_accrual_conflict             | workflow_accrual_job                                           |
       | workflow_accrual_directory            | workflow_accrual_job                                           |

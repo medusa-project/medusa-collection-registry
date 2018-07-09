@@ -39,8 +39,7 @@ Feature: Repository dashboard
   Scenario: Dashboard includes running processes tables
     When I view the repository with title 'Sample Repo'
     And I click on 'Running Processes'
-    Then I should see the running fits scans table
-    And I should see the running initial assessment scans table
+    Then I should see the running initial assessment scans table
 
   @javascript @poltergeist
   Scenario: Get CSV version of file statistics

@@ -13,7 +13,3 @@
     %li.divider
     %li.dropdown-header{role: 'presentation'} Related File Groups
     %li.related-file-group-action{role: 'presentation'}= link_to 'Add', edit_polymorphic_path(file_group, active_tab: '#related-file-groups')
-    %li.divider
-    - if file_group.is_a?(BitLevelFileGroup)
-      %li.dropdown-header{role: 'presentation'} FITS
-      %li.fits-action{role: 'presentation'}= link_to 'Run', create_cfs_fits_bit_level_file_group_path(file_group), remote: 'true', method: :post

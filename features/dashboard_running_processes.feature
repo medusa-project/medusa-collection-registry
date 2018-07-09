@@ -13,21 +13,6 @@ Feature: Dashboard running processes display
       | Gnats | BitLevelFileGroup |
       | Bats  | ExternalFileGroup |
 
-  Scenario: See running FITS characterizations
-    Given the main storage has a directory key 'files/dogs' containing a file
-    And the main storage has a directory key 'files/cats' containing a file
-    And the file group titled 'Dogs' has cfs root 'files/dogs'
-    And the file group titled 'Cats' has cfs root 'files/cats'
-    And I am running a fits job for the file group titled 'Dogs' with 12 files
-    And I am running a fits job for the file group titled 'Cats' with 13 files
-    When I go to the dashboard
-    And I click on 'Running Processes'
-    Then I should see the running fits scans table
-    And I should see all of:
-      | Dogs | Cats | files/dogs | files/cats | 12 | 13 |
-    And I should see none of:
-      | Gnats | Bats |
-
   Scenario: See running initial assessment characterizations
     Given the main storage has a directory key 'files/dogs' containing a file
     And the main storage has a directory key 'files/cats' containing a file
