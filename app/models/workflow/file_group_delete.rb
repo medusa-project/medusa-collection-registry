@@ -129,7 +129,7 @@ wait_delete_content delete_content restore_content email_restored_content email_
     transaction do
       file_group.destroy! if file_group.present?
       Event.create!(eventable: collection, key: :file_group_delete_moved, actor_email: requester.email,
-                    note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{collection.id} | Reason: #{requester_reason}")
+                    note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{cached_collection_id} | Reason: #{requester_reason}")
     end
   end
 
