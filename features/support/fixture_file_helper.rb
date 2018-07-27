@@ -12,7 +12,7 @@ module FixtureFileHelper
   end
 
   def bag_key(bag_name)
-    File.join('bags', bag_name)
+    File.join('bags', bag_name, 'data')
   end
 
 end

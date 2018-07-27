@@ -14,7 +14,6 @@ Feature: Touching associated models
       | related_file_group_join               | source_file_group, target_file_group                           |
       | repository                            | institution                                                    |
       | resource_typeable_resource_type_join  | resource_type                                                  |
-      | job_cfs_directory_export              | user, cfs_directory                                            |
       | job_cfs_initial_file_group_assessment | file_group                                                     |
       | workflow_accrual_comment              | workflow_accrual_job                                           |
       | workflow_accrual_conflict             | workflow_accrual_job                                           |
