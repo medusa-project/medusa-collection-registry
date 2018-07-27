@@ -86,7 +86,9 @@ class CfsDirectory < ApplicationRecord
   end
 
   def is_present_and_populated_on_storage?
-    storage_root.file_keys(self.key).present?
+    storage_root.directory_key?(self.key) and storage_root.file_keys(self.key).present?
+  rescue MedusaStorage::Error::InvalidDirectory
+    false
   end
 
   #By all means think of a better name for this
