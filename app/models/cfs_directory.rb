@@ -100,13 +100,6 @@ class CfsDirectory < ApplicationRecord
     self.root_cfs_directory
   end
 
-  #ensure there is a CfsFile object at the given absolute path and return it
-  def ensure_file_at_absolute_path(path)
-    full_path = Pathname.new(path)
-    relative_path = full_path.relative_path_from(Pathname.new(File.join(CfsRoot.instance.path, self.path)))
-    ensure_file_at_relative_path(relative_path)
-  end
-
   #ensure there is a CfsFile object at the given path relative to this directory's path and return it
   def ensure_file_at_relative_path(path)
     path_components = fully_split_path(path)
@@ -167,8 +160,8 @@ class CfsDirectory < ApplicationRecord
     File.join(ancestors_and_self.collect {|d| d.path}.drop(1))
   end
 
+  #TODO remove this and fix up - many accrual tests currently touch this for some reason
   def absolute_path
-    raise "DEPRECATE"
     File.join(CfsRoot.instance.path, self.relative_path)
   end
 

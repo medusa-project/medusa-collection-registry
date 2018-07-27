@@ -10,8 +10,8 @@ class BitLevelFileGroup < FileGroup
   after_destroy :maybe_destroy_cfs_directories
   before_destroy :check_emptiness
 
-  delegate :ensure_file_at_absolute_path, :ensure_file_at_relative_path,
-           :find_directory_at_relative_path, :find_file_at_relative_path, to: :cfs_directory
+  delegate :ensure_file_at_relative_path, :find_directory_at_relative_path,
+           :find_file_at_relative_path, to: :cfs_directory
 
   def ensure_cfs_directory
     physical_cfs_directory_path = expected_absolute_cfs_root_directory
@@ -130,7 +130,7 @@ class BitLevelFileGroup < FileGroup
 
   def accrual_unstarted?
     events.where(key: 'files_added').blank? and
-    (cfs_directory.blank? or cfs_directory.pristine?)
+        (cfs_directory.blank? or cfs_directory.pristine?)
   end
 
   def check_emptiness
