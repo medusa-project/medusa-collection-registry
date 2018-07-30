@@ -4488,6 +4488,36 @@ ALTER SEQUENCE public.workflow_accrual_jobs_id_seq OWNED BY public.workflow_accr
 
 
 --
+-- Name: workflow_accrual_keys; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.workflow_accrual_keys (
+    id bigint NOT NULL,
+    key text,
+    workflow_accrual_job_id bigint
+);
+
+
+--
+-- Name: workflow_accrual_keys_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.workflow_accrual_keys_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: workflow_accrual_keys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.workflow_accrual_keys_id_seq OWNED BY public.workflow_accrual_keys.id;
+
+
+--
 -- Name: workflow_file_group_deletes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -5181,6 +5211,13 @@ ALTER TABLE ONLY public.workflow_accrual_jobs ALTER COLUMN id SET DEFAULT nextva
 
 
 --
+-- Name: workflow_accrual_keys id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workflow_accrual_keys ALTER COLUMN id SET DEFAULT nextval('public.workflow_accrual_keys_id_seq'::regclass);
+
+
+--
 -- Name: workflow_file_group_deletes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5846,6 +5883,14 @@ ALTER TABLE ONLY public.workflow_accrual_files
 
 ALTER TABLE ONLY public.workflow_accrual_jobs
     ADD CONSTRAINT workflow_accrual_jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_accrual_keys workflow_accrual_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workflow_accrual_keys
+    ADD CONSTRAINT workflow_accrual_keys_pkey PRIMARY KEY (id);
 
 
 --
@@ -7092,6 +7137,13 @@ CREATE INDEX index_workflow_accrual_jobs_on_user_id ON public.workflow_accrual_j
 
 
 --
+-- Name: index_workflow_accrual_keys_on_workflow_accrual_job_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workflow_accrual_keys_on_workflow_accrual_job_id ON public.workflow_accrual_keys USING btree (workflow_accrual_job_id);
+
+
+--
 -- Name: index_workflow_file_group_deletes_on_approver_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8136,6 +8188,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180223213125'),
 ('20180226204915'),
 ('20180319160347'),
-('20180515194345');
+('20180515194345'),
+('20180730184829');
 
 

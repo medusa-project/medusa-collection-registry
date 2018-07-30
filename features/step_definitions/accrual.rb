@@ -1,5 +1,5 @@
 And(/^the bag '(.*)' is staged in the accrual root named '(.*)' at path '(.*)'$/) do |bag_name, root_name, path|
-  Application.storage_manager.accrual_roots.at(root_name).copy_tree_to(path, FixtureFileHelper.storage_root, FixtureFileHelper.bag_key(bag_name))
+  Application.storage_manager.accrual_roots.at(root_name).copy_tree_to(path, FixtureFileHelper.storage_root, FixtureFileHelper.complete_bag_key(bag_name))
 end
 
 And(/^I should see the accrual form and dialog$/) do

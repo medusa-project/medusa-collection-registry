@@ -36,12 +36,12 @@ class Accrual
 
   def directories
     return Array.new if at_root?
-    staging_root.subdirectory_keys(path_from_staging_root).sort
+    staging_root.subdirectory_keys(path_from_staging_root).collect {|d| File.basename(d)}.sort
   end
 
   def files
     return Array.new if at_root?
-    staging_root.file_keys(path_from_staging_root).sort
+    staging_root.file_keys(path_from_staging_root).collect {|f| File.basename(f)}.sort
   end
 
   def self.available_root_names
