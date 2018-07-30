@@ -89,7 +89,7 @@ wait_delete_content delete_content restore_content email_restored_content email_
       destroy_queued_jobs
       be_in_state_and_requeue('restore_content')
       'Starting to restore content'
-    elsif state== 'delete_content'
+    elsif state == 'delete_content'
       'Unable to restore content - deletion has already begun'
     else
       'Workflow in an unexpected state - not restoring content'
@@ -131,8 +131,10 @@ wait_delete_content delete_content restore_content email_restored_content email_
     cfs_directory.destroy_tree_from_leaves if cfs_directory.present?
     transaction do
       file_group.destroy! if file_group.present?
-      Event.create!(eventable: collection, key: :file_group_delete_moved, actor_email: requester.email,
-                    note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{collection.id} | Reason: #{requester_reason}")
+      if collection.present?
+        Event.create!(eventable: collection, key: :file_group_delete_moved, actor_email: requester.email,
+                      note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{cached_collection_id} | Reason: #{requester_reason}")
+      end
     end
   end
 
