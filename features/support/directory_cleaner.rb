@@ -12,5 +12,5 @@ Before do
 
   Application.storage_manager.main_root.delete_all_content
   Application.storage_manager.accrual_roots.all_roots.each {|root| root.delete_all_content}
-
+  
 end

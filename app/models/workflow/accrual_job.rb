@@ -77,40 +77,6 @@ class Workflow::AccrualJob < Workflow::Base
   # did it.
   def perform_check_sync
     be_in_state_and_requeue('check')
-#     comparators = (workflow_accrual_directories + workflow_accrual_files).collect {|obj| obj.comparator.analyze}
-#     if comparators.all? {|comparator| comparator.objects_equal?}
-#       be_in_state_and_requeue('check')
-#     else
-#       tmpfile = File.join(Dir.tmpdir, "check_sync-#{self.id}-#{Time.now}")
-#       File.open(tmpfile, 'wb') do |f|
-#         f.puts 'Source only:'
-#         comparators.each {|comparator| comparator.augmented_source_only_paths.each {|p| f.puts p}}
-#         f.puts 'Target only:'
-#         comparators.each {|comparator| comparator.augmented_target_only_paths.each {|p| f.puts p}}
-#         f.puts 'Differences:'
-#         comparators.each {|comparator| comparator.augmented_different_sizes_paths.each {|p| f.puts p}}
-#         f.puts 'Suggested remediation:'
-#         comparators.each do |comparator|
-#           comparator.augmented_target_only_paths.each do |p|
-#             puts Shellwords.escape("rm -f #{File.join(staging_remote_path, p)}")
-#           end
-#         end
-#         comparators.each do |comparator|
-#           (comparator.augmented_source_only_paths + comparator.augmented_different_sizes_paths).each do |p|
-#             puts Shellwords.escape("cp -f #{File.join(staging_local_path, p)} #{File.join(staging_remote_path, p)}")
-#           end
-#         end
-#       end
-#       GenericErrorMailer.error("Check sync failed for accrual_job: #{self.id}.\n See #{tmpfile} for details.",
-#                                subject: 'Accrual Check Sync Error').deliver_now
-#       raise RuntimeError,
-#             %Q(storage.library and condo copies of accrual directory are not in sync.
-# #{comparators.collect {|comparator| comparator.source_only_paths.count}.sum} files are only present in the source copy
-# #{comparators.collect {|comparator| comparator.target_only_paths.count}.sum} files are only present in the target copy
-# #{comparators.collect {|comparator| comparator.different_sizes_paths.count}.sum} files are present in both copies but with different sizes
-# Paths are stored for inspection in #{tmpfile} on the server.
-# )
-#     end
   end
 
   #TODO See if we can't break this down a bit. It might do to have a class that does this work.
@@ -139,7 +105,7 @@ class Workflow::AccrualJob < Workflow::Base
       directory.size = size
       directory.count = keys.count
       directory.save!
-      ingest_keys << keys
+      ingest_keys += keys
     end
     update_attribute(:empty_file_report, empty_files.string)
     cfs_directory_prefix = cfs_directory.relative_path
@@ -148,14 +114,14 @@ class Workflow::AccrualJob < Workflow::Base
     duplicate_keys.each do |key|
       existing_md5 = Application.storage_manager.main_root.md5_sum(File.join(cfs_directory_prefix, key))
       ingest_md5 = root.md5_sum(File.join(prefix, key))
-      file_changed = existing_md5 == ingest_md5
+      file_changed = (existing_md5 != ingest_md5)
       workflow_accrual_conflicts.create!(path: key, different: file_changed)
     end
     if has_serious_conflicts? and (not allow_overwrite)
       Workflow::AccrualMailer.illegal_overwrite(self).deliver_now
       be_in_state_and_requeue('end')
     else
-      create_workflow_accrual_keys(keys)
+      create_workflow_accrual_keys(ingest_keys)
       be_in_state('initial_approval')
       Workflow::AccrualMailer.initial_approval(self).deliver_now
     end
@@ -167,86 +133,6 @@ class Workflow::AccrualJob < Workflow::Base
       workflow_accrual_keys.create(key: key) unless excluded_file?(File.basename(key))
     end
   end
-
-  # def perform_check
-  #   add_stats
-  #   source_path = staging_local_path
-  #   duplicate_files(source_path).each do |duplicate_file|
-  #     file_changed = file_changed?(duplicate_file, source_path)
-  #     workflow_accrual_conflicts.create!(path: duplicate_file, different: file_changed)
-  #   end
-  #   if has_serious_conflicts? and (not allow_overwrite)
-  #     Workflow::AccrualMailer.illegal_overwrite(self).deliver_now
-  #     be_in_state_and_requeue('end')
-  #   else
-  #     be_in_state('initial_approval')
-  #     Workflow::AccrualMailer.initial_approval(self).deliver_now
-  #   end
-  # end
-  #
-  # def add_stats
-  #   source_path = staging_local_path
-  #   empty_files = StringIO.new
-  #   workflow_accrual_files.each do |file|
-  #     file_path = File.join(source_path, file.name)
-  #     file.size = File.size(file_path)
-  #     file.save!
-  #     empty_files.puts(file.name) if file.size.zero?
-  #   end
-  #   workflow_accrual_directories.each do |directory|
-  #     directory_path = File.join(source_path, directory.name)
-  #     Dir.chdir(directory_path) do
-  #       count = 0
-  #       size = 0
-  #       Find.find('.') do |entry|
-  #         next if File.directory?(entry)
-  #         count += 1
-  #         file_size = File.size(entry)
-  #         size += file_size
-  #         empty_files.puts(File.join(directory.name, entry.gsub(/^\.\//, ''))) if file_size.zero?
-  #       end
-  #       directory.count = count
-  #       directory.size = size
-  #       directory.save!
-  #     end
-  #   end
-  #   update_attribute(:empty_file_report, empty_files.string)
-  # end
-
-  # def duplicate_files(source_path)
-  #   existing_files.intersection(requested_files(source_path))
-  # end
-  #
-  # def requested_files(source_path)
-  #   Set.new.tap do |files|
-  #     self.workflow_accrual_files.each {|file| files << file.name}
-  #     Dir.chdir(source_path) do
-  #       self.workflow_accrual_directories.each do |directory|
-  #         Find.find(directory.name) do |entry|
-  #           files << entry if File.file?(entry)
-  #         end
-  #       end
-  #     end
-  #   end
-  # end
-  #
-  # def existing_files
-  #   Set.new.tap do |files|
-  #     Dir.chdir(cfs_directory.absolute_path) do
-  #       Find.find('.') do |entry|
-  #         files << entry.sub(/\.\//, '') if File.file?(entry)
-  #       end
-  #     end
-  #   end
-  # end
-
-  # def file_changed?(file, source_path)
-  #   #if the initial assessment hasn't been done yet this can error out, i.e. if the db and file system views of the
-  #   #existing content are different
-  #   old_md5 = cfs_directory.find_file_at_relative_path(file).md5_sum
-  #   new_md5 = Digest::MD5.file(File.join(source_path, file)).to_s
-  #   old_md5 != new_md5
-  # end
 
   def perform_initial_approval
     unrunnable_state
@@ -263,7 +149,7 @@ class Workflow::AccrualJob < Workflow::Base
     workflow_accrual_keys.find_each do |key|
       source_key = File.join(source_prefix, key.key)
       target_key = File.join(target_prefix, key.key)
-      if overwrite or !target_root.exists?(target_key)
+      if overwrite or !target_root.exist?(target_key)
         target_root.copy_content_to(target_key, source_root, source_key)
       end
       key.destroy!
