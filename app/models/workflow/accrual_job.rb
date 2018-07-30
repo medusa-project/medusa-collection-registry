@@ -257,11 +257,22 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def internal_perform_copying(overwrite: false)
-    source_path = staging_local_path
-    target_path = cfs_directory.absolute_path
-    copy_entries_and_remove(workflow_accrual_files, source_path, target_path, overwrite: overwrite)
-    copy_entries_and_remove(workflow_accrual_directories, source_path, target_path, overwrite: overwrite)
-    be_in_state_and_requeue('assessing')
+    source_root, source_prefix = staging_root_and_prefix
+    target_prefix = cfs_directory.relative_path
+    target_root = Application.storage_manager.main_root
+    workflow_accrual_keys.find_each do |key|
+      source_key = File.join(source_prefix, key.key)
+      target_key = File.join(target_prefix, key.key)
+      if overwrite or !target_root.exists?(target_key)
+        target_root.copy_content_to(target_key, source_root, source_key)
+      end
+      key.destroy!
+    end
+    if workflow_accrual_keys.reload.count.zero?
+      be_in_state_and_requeue('assessing')
+    else
+      raise "Unexpected workflow accrual keys still exist."
+    end
   end
 
   def perform_copying
