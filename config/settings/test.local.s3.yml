@@ -66,20 +66,29 @@ storage:
     :type: filesystem
     :path: <%= File.join(Rails.root, 'tmp', 'staging-roots', 'test-1') %>
   tmp: <%= File.join(Rails.root, 'tmp') %>
+#  this is the old format
+#  accrual:
+#    roots:
+#      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
+#        remote_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
+#        name: staging-1
+#      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-2
+#        remote_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
+#        name: staging-2
   accrual:
-    roots:
-      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
-        remote_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
-        name: staging-1
-      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-2
-        remote_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
-        name: staging-2
-  staging:
-    roots:
-      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
-        remote_path: /test-staging-root-1
-      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-2
-        remote_path: /test-staging-root-2
+    - :name: staging-1
+      :type: filesystem
+      :path: <%= File.join(Rails.root, 'tmp/staging-roots/test-1') %>
+    - :name: staging-2
+      :type: filesystem
+      :path: <%= File.join(Rails.root, 'tmp/staging-roots/test-2') %>
+#TODO is this used anymore?
+#  staging:
+#    roots:
+#      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-1
+#        remote_path: /test-staging-root-1
+#      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/test-2
+#        remote_path: /test-staging-root-2
 triple_store:
   triple_store_base_url: http://localhost:3030/test
   medusa_base_url: http://localhost:3000

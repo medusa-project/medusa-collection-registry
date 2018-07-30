@@ -1,9 +1,5 @@
 And(/^the bag '(.*)' is staged in the accrual root named '(.*)' at path '(.*)'$/) do |bag_name, root_name, path|
-  root = AccrualStorage.instance.root_named(root_name)
-  staging_target = File.join(root.local_path, path)
-  FileUtils.rm_rf(staging_target)
-  FileUtils.mkdir_p(staging_target)
-  FileUtils.cp_r(File.join(Rails.root, 'features', 'fixtures', 'bags', bag_name, 'data'), staging_target)
+  Application.storage_manager.accrual_roots.at(root_name).copy_tree_to(path, FixtureFileHelper.storage_root, FixtureFileHelper.bag_key(bag_name))
 end
 
 And(/^I should see the accrual form and dialog$/) do
