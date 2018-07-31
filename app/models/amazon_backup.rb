@@ -1,4 +1,3 @@
-require 'fileutils'
 class AmazonBackup < ApplicationRecord
   include AmazonBackupAmqp
 

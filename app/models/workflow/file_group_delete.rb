@@ -1,4 +1,3 @@
-require 'fileutils'
 class Workflow::FileGroupDelete < Workflow::Base
 
   belongs_to :file_group

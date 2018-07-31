@@ -1,4 +1,3 @@
-require 'fileutils'
 class MetadataHelper::Collection
   include ModsHelper
   

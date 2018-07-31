@@ -2,7 +2,7 @@ require 'fileutils'
 class Job::ItemBulkImport < Job::Base
   belongs_to :user
   belongs_to :project
-  delegate csv_file_location_root, to: :class
+  delegate :csv_file_location_root, to: :class
 
   def self.csv_file_location_root
     File.join(Rails.root, 'tmp', 'item_upload_csv', Rails.env)
