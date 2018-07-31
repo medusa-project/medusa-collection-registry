@@ -28,7 +28,7 @@ GIT
 
 GIT
   remote: https://github.com/medusa-project/medusa_storage.git
-  revision: 9124885397618fd425be3e9feef230115251ec5c
+  revision: 609fe519f26f41eb47197c5c447010b62ad91875
   branch: master
   specs:
     medusa_storage (0.1.8)
