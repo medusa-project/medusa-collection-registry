@@ -2,7 +2,6 @@ require 'fileutils'
 require 'set'
 class BitLevelFileGroup < FileGroup
 
-  has_many :job_fits_directories, class_name: 'Job::FitsDirectory', foreign_key: :file_group_id
   has_many :job_cfs_initial_directory_assessments, class_name: 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
   has_many :archived_accrual_jobs, dependent: :destroy, foreign_key: :file_group_id
 
@@ -69,10 +68,6 @@ class BitLevelFileGroup < FileGroup
 
   def run_initial_cfs_assessment
     self.cfs_directory.make_and_assess_tree
-  end
-
-  def running_fits_file_count
-    Job::FitsDirectory.where(file_group_id: self.id).sum(:file_count)
   end
 
   def running_initial_assessments_file_count

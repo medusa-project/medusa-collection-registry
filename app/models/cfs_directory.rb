@@ -236,12 +236,6 @@ class CfsDirectory < ApplicationRecord
     Sunspot.commit
   end
 
-  def schedule_fits
-    self.each_directory_in_tree(true) do |directory|
-      Job::FitsDirectory.create_for(directory)
-    end
-  end
-
   def run_fits
     self.cfs_files.each do |cfs_file|
       cfs_file.ensure_fits_xml
