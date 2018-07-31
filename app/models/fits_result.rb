@@ -1,7 +1,6 @@
-require 'fileutils'
-
 class FitsResult < Object
   attr_accessor :cfs_file, :new
+  delegate :storage_root, to: :class
 
   def initialize(cfs_file)
     self.cfs_file = cfs_file
@@ -9,15 +8,11 @@ class FitsResult < Object
   end
 
   def self.storage_root
-    Settings.fits.storage
+    Application.storage_manager.fits_root
   end
 
-  def storage_directory
-    File.join(self.class.storage_root, cfs_file_uuid.first(6).chars.in_groups_of(2).collect(&:join))
-  end
-
-  def storage_file
-    File.join(storage_directory, "#{self.cfs_file_uuid}.xml")
+  def storage_key
+    File.join(cfs_file_uuid.first(6).chars.in_groups_of(2).collect(&:join), "#{self.cfs_file_uuid}.xml")
   end
 
   def cfs_file_uuid
@@ -25,7 +20,7 @@ class FitsResult < Object
   end
 
   def serialized?
-    File.exists?(self.storage_file)
+    storage_root.exist?(storage_key)
   end
 
   def present?
@@ -33,10 +28,7 @@ class FitsResult < Object
   end
 
   def serialize_xml
-    FileUtils.mkdir_p(storage_directory)
-    File.open(storage_file, 'w') do |f|
-      f.write(self.xml)
-    end
+    storage_root.write_string_to(storage_key, self.xml)
     cfs_file.with_lock do
       cfs_file.fits_serialized = true
       cfs_file.save!
@@ -44,19 +36,16 @@ class FitsResult < Object
   end
 
   def remove_serialized_xml(update_cfs_file: true)
-    File.delete(storage_file) if File.exist?(storage_file)
+    storage_root.delete_content(storage_key) if serialized?
     self.cfs_file.update_attribute(:fits_serialized, false) if update_cfs_file
   end
 
   def xml
-    serialized? ? File.read(storage_file) : nil
+    serialized? ? storage_root.as_string(storage_key) : nil
   end
 
   def xml=(string)
-    FileUtils.mkdir_p(storage_directory)
-    File.open(storage_file, 'w') do |f|
-      f.write(string)
-    end
+    storage_root.write_string_to(storage_key, string)
     self.cfs_file.update_attribute(:fits_serialized, true) unless self.cfs_file.fits_serialized
   end
 
