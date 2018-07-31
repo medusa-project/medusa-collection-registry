@@ -1,10 +1,11 @@
 class FitsResult < Object
-  attr_accessor :cfs_file, :new
+  attr_accessor :cfs_file, :is_new
   delegate :storage_root, to: :class
+  delegate :uuid, to: :cfs_file, prefix: true
 
   def initialize(cfs_file)
     self.cfs_file = cfs_file
-    self.new = !self.serialized?
+    self.is_new = !serialized?
   end
 
   def self.storage_root
@@ -12,11 +13,8 @@ class FitsResult < Object
   end
 
   def storage_key
-    File.join(cfs_file_uuid.first(6).chars.in_groups_of(2).collect(&:join), "#{self.cfs_file_uuid}.xml")
-  end
-
-  def cfs_file_uuid
-    self.cfs_file.uuid
+    File.join(cfs_file_uuid.first(6).chars.in_groups_of(2).collect(&:join),
+              "#{cfs_file_uuid}.xml")
   end
 
   def serialized?
@@ -50,7 +48,7 @@ class FitsResult < Object
   end
 
   def new?
-    self.new
+    is_new
   end
 
 end
