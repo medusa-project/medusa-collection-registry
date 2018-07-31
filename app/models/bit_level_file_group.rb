@@ -1,4 +1,3 @@
-require 'fileutils'
 require 'set'
 class BitLevelFileGroup < FileGroup
 
@@ -13,8 +12,6 @@ class BitLevelFileGroup < FileGroup
            :find_file_at_relative_path, to: :cfs_directory
 
   def ensure_cfs_directory
-    physical_cfs_directory_path = expected_absolute_cfs_root_directory
-    FileUtils.mkdir_p(physical_cfs_directory_path) unless Dir.exists?(physical_cfs_directory_path)
     if cfs_directory = CfsDirectory.find_by(path: expected_relative_cfs_root_directory)
       self.cfs_directory_id = cfs_directory.id unless self.cfs_directory_id
       self.save!
@@ -28,10 +25,6 @@ class BitLevelFileGroup < FileGroup
   #Destroy the physical cfs directory and/or CfsDirectory corresponding to this
   #ONLY IF they are empty
   def maybe_destroy_cfs_directories
-    physical_cfs_directory_path = expected_absolute_cfs_root_directory
-    if Dir.exist?(physical_cfs_directory_path) and (Dir.entries(physical_cfs_directory_path).to_set == %w(. ..).to_set)
-      Dir.unlink(physical_cfs_directory_path) rescue nil
-    end
     if cfs_directory.try(:is_empty?)
       cfs_directory.destroy
     end
