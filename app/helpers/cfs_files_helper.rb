@@ -10,7 +10,7 @@ module CfsFilesHelper
 
   def text_preview(cfs_file)
     cfs_file.with_input_io do |io|
-      io.read(500)
+      io.readline(nil, 500)
     end
   end
 
