@@ -119,7 +119,7 @@ wait_delete_content delete_content restore_content email_restored_content email_
   end
 
   def content_key_prefix
-    File.join(cached_collection_id.to_s, file_group_id.to_s)
+    File.join(cached_collection_id.to_s, file_group_id.to_s) + '/'
   end
 
   def notification_file_key
