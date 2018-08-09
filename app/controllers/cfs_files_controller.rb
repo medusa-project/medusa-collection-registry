@@ -1,7 +1,7 @@
 require 'net/http'
-#TODO - the send_files may not work properly with S3 medusa_storage, as it's possible they'll
-# delete before being served. For these applications we want to distinguish between filesystem
-# and S3 storages anyway, I think, with presigned urls in some cases
+#TODO - download/view should probably still use presigned urls when possible (and that might
+# happen in the view before the actions are hit) - I'm not
+# sure the current implementation is robust, although it does work for the tests.
 class CfsFilesController < ApplicationController
   include ActionController::Live
 
