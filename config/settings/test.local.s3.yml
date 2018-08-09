@@ -9,7 +9,6 @@ amqp_accrual:
     #This is kind of meaningless given that the test db goes in and out. Steps will have to
     #set it as needed.
     file_group_id: 2109
-    #staging_directory: <%= Rails.root %>/tmp/idb-staging/test
     return_directory_information: true
 downloader:
   root: medusa
@@ -27,10 +26,10 @@ iiif: &IIIF_TEST
 medusa:
   server: http://localhost:3000
   cfs:
-    root: <%= File.join(Rails.root, 'tmp', 'storage-test', 'root') %>
-    fg_delete_holding: <%= File.join(Rails.root, 'tmp', 'storage-test', 'fg_delete_holding') %>
+    #root: <%= File.join(Rails.root, 'tmp', 'storage-test', 'root') %>
+    #fg_delete_holding: <%= File.join(Rails.root, 'tmp', 'storage-test', 'fg_delete_holding') %>
     fits_home: /Users/hding2/src/fits
-    export_root: <%= File.join(Rails.root, 'tmp', 'storage-test', 'export-root') %>
+    #export_root: <%= File.join(Rails.root, 'tmp', 'storage-test', 'export-root') %>
     export_autoclean: false
   medusa_users_group: Library Medusa Users
   medusa_admins_group: Library Medusa Admins

@@ -21,13 +21,6 @@ Feature: CFS file group integration
     And I should see all of:
       | document.doc |
 
-  Scenario: Set file group's cfs root from file group edit view
-    Given the main storage has a directory key 'englishmen/yorkies' containing a file
-    When I edit the file group with title 'Toys'
-    And I select 'englishmen/yorkies' from 'Cfs root'
-    And I click on 'Update'
-    Then the file group titled 'Toys' should have root cfs directory with path 'englishmen/yorkies'
-
   Scenario: See that a cfs directory belongs to a file group when viewing it
     When I view the cfs directory for the file group titled 'Toys' for the path 'yorkies'
     Then I should see 'Toys'
