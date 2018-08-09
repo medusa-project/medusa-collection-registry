@@ -35,7 +35,7 @@ class Workflow::ProjectItemIngest < Workflow::Base
     be_in_state_and_requeue('email_staging_directory_missing') and return if staging_directory_missing?
     items.each do |item|
       begin
-        ingest_item(item) if !item.ingested #and Dir.exist?(item.staging_directory)
+        ingest_item(item) if !item.ingested and has_staged_content?(item)
       rescue MedusaStorage::Error::InvalidDirectory
         #just pass
       end
@@ -169,9 +169,17 @@ class Workflow::ProjectItemIngest < Workflow::Base
 
   def staging_directory_missing?
     staging_root.subdirectory_keys(project.staging_key_prefix).blank? and
-        staging_root.file_keys(project_staging_key_prefix).blank?
+        staging_root.file_keys(project.staging_key_prefix).blank?
   rescue MedusaStorage::Error::InvalidDirectory
     true
+  end
+
+  def has_staged_content?(item)
+    directory_key = item.staging_key_prefix
+    staging_root.file_keys(directory_key).present? ||
+        staging_root.subdirectory_keys(directory_key).present?
+  rescue Aws::S3::Errors::NotFound
+    false
   end
 
 end
