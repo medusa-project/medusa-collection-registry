@@ -60,7 +60,6 @@ class CfsFilesController < ApplicationController
       io.binmode if io.is_a?(StringIO)
       begin
         while buffer = io.read(128.kilobytes)
-          puts "READ: #{buffer}"
           break if buffer.blank?
           response.stream.write(buffer)
         end
@@ -79,7 +78,6 @@ class CfsFilesController < ApplicationController
       io.binmode if io.is_a?(StringIO)
       begin
         while buffer = io.read(128.kilobytes)
-          puts "READ: #{buffer}"
           break if buffer.blank?
           response.stream.write(buffer)
         end
