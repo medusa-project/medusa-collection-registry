@@ -38,7 +38,7 @@ Feature: CFS basic properties
     Then the file group titled 'Toys' should not have a cfs file for the path 'chihuahuas/freakdog.xml'
 
   Scenario: When I remove a directory and rerun assessments then the record for that directory and its files are deleted
-    When I remove the main storage tree 'dogs/toy-dogs/chihuahuas'
+    When I remove the main storage tree 'dogs/toy-dogs/chihuahuas/'
     And I run assessments on the the file group titled 'Toys'
     Then the file group titled 'Toys' should not have a cfs file for the path 'chihuahuas/freakdog.xml'
     And the file group titled 'Toys' should not have a cfs directory for the path 'chihuahuas'
