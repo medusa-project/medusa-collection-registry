@@ -13,9 +13,6 @@ amqp_accrual:
     outgoing_queue: medusa_to_idb
     #file group that will take content from this accrual client
     file_group_id: 1401
-    #where content from this client is staged
-    #TODO remove staging_directory
-    staging_directory: <%= Rails.root %>/tmp/idb-staging/development
     #whether or not to return some extra information in amqp messages - this may be restructured to allow clients to be
     #configured to get exactly the information they want
     return_directory_information: true
@@ -34,7 +31,7 @@ downloader:
   outgoing_queue: client_to_downloader_dev
   #Bunny style amqp connection options - note that these are distinct from the main amqp options because the downloader
   #may be on a different vhost/etc.
-  amqp:
+  amqp: {}
 fits:
   #default size to do
   batch_size: 1000
@@ -42,8 +39,6 @@ fits:
   binary: /path/to/fits/binary
   #url for fits server
   server_url: http://localhost:4567
-  #location to store generated fits
-  storage: /Users/hding2/repos/medusa-collection-registry/tmp/storage-dev/fits
 handle_client:
   #medusa_host is used by the models to help generate the appropriate URLs to
   #pass to the handle server
@@ -80,13 +75,8 @@ medusa:
   #'cfs' staging file config. Note that this doesn't strictly need to be a dx/cfs file system,
   #but we use that name in order to distinguish from our internal bit file stuff for now.
   cfs:
-    #TODO remove root
-    root: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-dev
-    fg_delete_holding: <%= File.join(Rails.root, 'tmp', 'storage-dev', 'fg_delete_holding') %>
     #optional - set if you have a local fits to use
     fits_home: /Users/hding2/src/fits
-    export_root: /home/hading/repos/medusa-collection-registry/tmp/cfs-export-root-dev
-    export_autoclean: false
   #This opens a few actions to basic auth so that machine clients can use them
   basic_auth: machine_user:machine_password
   #AD groups used to allow use and full administration of medusa
@@ -152,6 +142,8 @@ smtp:
     address: express-smtp.cites.uiuc.edu
   #used by mailer to construct urls
   web_host: "localhost:3000"
+#These are config for roots or lists of roots as required by the medusa_storage gem.
+#You may want to use YAML facilities to extract commonalities for S3 roots if they exist
 storage:
   main_root:
     :name: main_storage
@@ -166,33 +158,20 @@ storage:
     :name: project_staging
     :type: filesystem
     :path: /project/staging/directory
-  tmpdir: /Users/hding2/repos/medusa-collection-registry/tmp
+  tmp: /Users/hding2/repos/medusa-collection-registry/tmp
   #For each root the name gives a tag to be shown to start in the browser when accruing
-  #The local path is the local path to the directory in the condo mount
-  #the remote path is the path to a local mount of a storage.library (or other) directory which
-  #we expect has been synced to the local path - but having this lets us check the sync.
-  #Note that if there is no sync (probably for development and/or test) you can just the local and remote
-  #paths to be the same. The sync check will still happen, but will be trivial.
-  #Some of this may go away if we go to ADS
   accrual:
-    roots:
-      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/dev-1
-        remote_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/dev-1
-        name: staging-1
-  staging:
-    #an array of hashes which have the local_path (i.e. as the medusa server sees it) and the remote_path
-    #what will be recorded in the external file path). The name is used in the accrual processes.
-    roots:
-      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-root-1
-        remote_path: /staging-root-1
-        name: staging-1
-      - local_path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-root-2
-        remote_path: /staging-root-2
-        name: staging-2
+    - :name: staging-1
+      :type: filesystem
+      :path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/dev-1
+  fits:
+    :name: fits
+    :type: filesystem
+    :path: /Users/hding2/repos/medusa-collection-registry/tmp/storage-dev/fits
 superusers:
   - superadmin@example.com
 #settings for triple store integration
-triple_store:
-  triple_store_base_url: http://localhost:3030/test
-  medusa_base_url: http://localhost:3000
-  medusa_rdf_prefix: https://medusa.library.illinois.edu/terms/
+#triple_store:
+#  triple_store_base_url: http://localhost:3030/test
+#  medusa_base_url: http://localhost:3000
+#  medusa_rdf_prefix: https://medusa.library.illinois.edu/terms/
