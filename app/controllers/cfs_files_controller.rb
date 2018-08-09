@@ -3,7 +3,7 @@ require 'net/http'
 # delete before being served. For these applications we want to distinguish between filesystem
 # and S3 storages anyway, I think, with presigned urls in some cases
 class CfsFilesController < ApplicationController
-
+  include ActionController::Live
 
   before_action :require_medusa_user, except: [:show, :download]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :download]
@@ -54,15 +54,39 @@ class CfsFilesController < ApplicationController
       #basic auth
       redirect_to(login_path) unless basic_auth?
     end
-    @file.with_input_file do |input_file|
-      send_file input_file, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
+    @file.with_input_io do |io|
+      response.headers["Content-Type"] = safe_content_type(@file)
+      response.headers["Content-Disposition"] = "attachment; #{@file.name}"
+      io.binmode if io.is_a?(StringIO)
+      begin
+        while buffer = io.read(128.kilobytes)
+          puts "READ: #{buffer}"
+          break if buffer.blank?
+          response.stream.write(buffer)
+        end
+      ensure
+        io.close
+        response.stream.close
+      end
     end
   end
 
   def view
     authorize! :download, @file.file_group
-    @file.with_input_file do |input_file|
-      send_file input_file, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
+    @file.with_input_io do |io|
+      response.headers["Content-Type"] = safe_content_type(@file)
+      response.headers["Content-Disposition"] = "inline; #{@file.name}"
+      io.binmode if io.is_a?(StringIO)
+      begin
+        while buffer = io.read(128.kilobytes)
+          puts "READ: #{buffer}"
+          break if buffer.blank?
+          response.stream.write(buffer)
+        end
+      ensure
+        io.close
+        response.stream.close
+      end
     end
   end
 
