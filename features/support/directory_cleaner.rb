@@ -1,5 +1,4 @@
 require 'fileutils'
-
 #before each test make sure that the cfs directories, any staging directories, item_upload_csv directories are empty
 Before do
 
