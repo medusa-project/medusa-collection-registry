@@ -19,11 +19,6 @@ class Ability
     can [:create_attachment, :update_attachment, :destroy_attachment], Project do |project|
       project_admin?(user)
     end
-    #Cfs controller - need to see if requested path belongs to a file group managed by user
-    #The FitsRequest object is a helper for this
-    can :create_fits, FitsRequest do |request|
-      repository_manager?(user, request)
-    end
     can [:update, :create], Collection do |collection|
       repository_manager?(user, collection)
     end
