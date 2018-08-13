@@ -21,6 +21,10 @@ Feature: Virtual repositories
     And I click on 'Pets'
     Then I should be on the view page for the virtual repository with title 'Pets'
 
+  #The only reason this is marked javascript is to force it to run through
+  #the code that generates file stats. This sometimes fails with a problem
+  #related to a connection pool, but I think that is just a testing problem.
+  @javascript
   Scenario: Navigate from virtual repository to repository
     When I view the virtual repository with title 'Pets'
     And I click on 'Animals'
@@ -75,3 +79,4 @@ Feature: Virtual repositories
     And I click on 'Delete'
     Then I should be on the view page for the repository with title 'Animals'
     And there should be no virtual repository with title 'Pets'
+
