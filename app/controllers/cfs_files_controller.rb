@@ -23,12 +23,6 @@ class CfsFilesController < ApplicationController
     end
   end
 
-  def create_fits_xml
-    authorize! :create_cfs_fits, @file.file_group
-    @file.ensure_fits_xml
-    redirect_back(fallback_location: root_path)
-  end
-
   def fits
     if @file.fits_xml.present?
       render xml: @file.fits_xml
