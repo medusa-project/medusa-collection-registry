@@ -6,7 +6,8 @@
 #It may not be worth the time now to go back and rewrite all the old tests, but that could be done at some point.
 And /^delayed jobs are run$/ do
   begin
-    Delayed::Worker.new(quiet: false).work_off
+    #Set quiet to false to see the delayed jobs run
+    Delayed::Worker.new(quiet: true).work_off
   rescue Exception => e
     message = "DELAYED JOB ERROR: #{e}"
     Rails.logger.error message
