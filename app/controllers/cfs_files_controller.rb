@@ -9,9 +9,8 @@ class CfsFilesController < ApplicationController
   before_action :require_medusa_user_or_basic_auth, only: [:show, :download]
   before_action :find_file, only: [:show, :create_fits_xml, :fits, :download, :view, :events,
                                    :preview_image, :preview_content, :preview_pdf,
-                                   :preview_iiif_image,
-                                   :thumbnail, :galleria]
-  before_action :find_previewer, only: [:show, :preview_image, :preview_content, :preview_pdf, :preview_iiif_image, :thumbnail, :galleria]
+                                   :preview_iiif_image, :thumbnail]
+  before_action :find_previewer, only: [:show, :preview_image, :preview_content, :preview_pdf, :preview_iiif_image, :thumbnail]
 
   def show
     @file_group = @file.file_group
