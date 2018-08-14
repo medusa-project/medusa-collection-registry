@@ -1,10 +1,3 @@
-Then(/^there should be an exported directory with paths:$/) do |table|
-  root_dir = Dir[File.join(CfsDirectory.export_root, 'manager','*')].detect {|entry| File.directory?(entry)}
-  table.headers.each do |path|
-    expect(File.exists?(File.join(root_dir, path))).to be_truthy
-  end
-end
-
 And(/^there should be a (.*) download request for the export of the cfs directory for the file group titled '(.*)' for the path '(.*)'$/) do |type, title, path|
   cfs_root = FileGroup.find_by(title: title).cfs_directory
   cfs_directory = cfs_root.find_directory_at_relative_path(path)

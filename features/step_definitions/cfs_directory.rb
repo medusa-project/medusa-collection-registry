@@ -1,8 +1,3 @@
-Then(/^I should be viewing the cfs root directory for the file group titled '([^']*)'$/) do |title|
-  file_group = FileGroup.find_by(title: title)
-  expect(current_path).to eq(cfs_directory_path(file_group.cfs_directory))
-end
-
 When(/^I view the cfs directory for the file group titled '([^']*)' for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
   visit cfs_directory_path(file_group.find_directory_at_relative_path(path))
@@ -17,11 +12,6 @@ When(/^the cfs directory for the path '([^']*)' for the file group titled '([^']
   file_group = FileGroup.find_by(title: title)
   cfs_directory = file_group.find_directory_at_relative_path(path)
   Job::CfsInitialDirectoryAssessment.create(cfs_directory: cfs_directory, file_group: file_group)
-end
-
-Then(/^the file group titled '([^']*)' should have root cfs directory with path '([^']*)'$/) do |title, path|
-  file_group = FileGroup.find_by(title: title)
-  expect(file_group.cfs_directory.path).to eq(path)
 end
 
 Given(/^there are cfs directories with fields:$/) do |table|

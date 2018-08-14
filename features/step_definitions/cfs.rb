@@ -1,13 +1,5 @@
 require 'fileutils'
 
-When(/^I view the cfs path '([^']*)'$/) do |path|
-  visit cfs_show_path(path: path)
-end
-
-Then(/^I should be viewing the cfs file '([^']*)'$/) do |path|
-  current_path.should == cfs_show_path(path: path)
-end
-
 Given(/^the file group titled '([^']*)' has cfs root '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
   root_directory = FactoryBot.create(:cfs_directory, path: path)
@@ -40,9 +32,6 @@ And(/^I run assessments on the the file group titled '([^']*)'$/) do |title|
   step 'delayed jobs are run'
 end
 
-When(/^I view fits for the cfs file '([^']*)'$/) do |path|
-  visit cfs_fits_info_path(path: path)
-end
 
 
 

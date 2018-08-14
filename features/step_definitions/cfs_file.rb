@@ -12,10 +12,6 @@ And(/^the file group titled '([^']*)' has a cfs file for the path '([^']*)' with
   end
 end
 
-And(/^the file group titled '([^']*)' has a cfs file for the path '([^']*)'$/) do |title, path|
-  ensuring_cfs_file_at_path_for_file_group_titled(path, title)
-end
-
 And(/^the file group titled '([^']*)' has a cfs file for the path '([^']*)' with fields:$/) do |title, path, table|
   ensuring_cfs_file_at_path_for_file_group_titled(path, title) do |file|
     file.update_attributes!(table.hashes.first)
@@ -36,14 +32,6 @@ end
 
 Then(/^I should have viewed the fixture file '([^']*)'$/) do |name|
   check_cfs_file_download('inline', name, fixture_file_content(name))
-end
-
-Then(/^I should have downloaded a file '([^']*)' with contents '([^']*)'$/) do |name, contents|
-  check_cfs_file_download('attachment', name, contents)
-end
-
-Then(/^I should have viewed a file '([^']*)' with contents '([^']*)'$/) do |name, contents|
-  check_cfs_file_download('inline', name, contents)
 end
 
 def check_cfs_file_download(disposition, file_name, file_contents)
@@ -143,10 +131,6 @@ Then(/^the file group titled '([^']*)' should have a cfs directory for the path 
   expect(file_group.find_directory_at_relative_path(path)).to be_a(CfsDirectory)
 end
 
-Then(/^the file group titled '([^']*)' should have a cfs directory$/) do |title|
-  expect(BitLevelFileGroup.find_by(title: title).cfs_directory).to be_a(CfsDirectory)
-end
-
 Then(/^the file group titled '([^']*)' should not have a cfs file for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)
   expect { file_group.find_file_at_relative_path(path) }.to raise_error(RuntimeError)
@@ -215,9 +199,4 @@ end
 
 When(/^I reset fixity and FITS information for the cfs file named '(.*)'$/) do |name|
   CfsFile.find_by(name: name).reset_fixity_and_fits!
-end
-
-Then(/^the cfs file with name '(.*)' should have a fixity check result with status '(.*)'$/) do |name, status|
-  cfs_file = CfsFile.find_by(name: name)
-  expect(cfs_file.fixity_check_results.all.detect {|fcr| fcr.status == status}).to be_truthy
 end

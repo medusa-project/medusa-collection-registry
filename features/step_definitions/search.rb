@@ -6,10 +6,6 @@ Then(/^I should see a search table of (.*) with (\d+) rows?$/) do |type, count|
   end
 end
 
-And(/^I try to submit a filename search$/) do
-  self.send(:post, filename_searches_path)
-end
-
 Then(/^there is no filename search box$/) do
   expect(page).not_to have_css('#filename_search')
 end
