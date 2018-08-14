@@ -176,36 +176,6 @@ class Workflow::AccrualJob < Workflow::Base
     workflow_accrual_conflicts.where(different: true).find_each {|conflict| conflict.reset_cfs_file}
   end
 
-  #note that this means remove the db model from the accrual job, not the files from the source filesystem
-  def copy_entries_and_remove(entries, source_path, target_path, overwrite: false)
-    entries.each do |entry|
-      copy_entry(entry, source_path, target_path, overwrite: overwrite)
-      entry.destroy!
-    end
-  end
-
-  def copy_entry(entry, source_path, target_path, overwrite: false)
-    opts = %w(-a --ignore-times --safe-links --chmod Du+rwx,Dgo+rw,Dgo-w,Fu+rw,Fu-x,Fgo+r,Fgo-wx --exclude-from) << exclude_file_path
-    opts << '--ignore-existing' unless overwrite
-    source_entry = File.join(source_path, entry.name)
-    return unless File.exists?(source_entry)
-    out, err, status = Open3.capture3('rsync', *opts, source_entry, target_path)
-    unless status.success?
-      message = <<MESSAGE
-Error doing rsync for accrual job #{self.id} for #{entry.class} #{entry.name}.
-STDOUT: #{out}
-STDERR: #{err}
-Rescheduling.
-MESSAGE
-      Rails.logger.error message
-      raise RuntimeError, message
-    end
-  end
-
-  def exclude_file_path
-    File.join(Rails.root, 'config', 'accrual_rsync_exclude.txt')
-  end
-
   def excluded_file?(file)
     %w(Thumbs.db .DS_Store).include?(file)
   end
@@ -312,10 +282,6 @@ MESSAGE
 
   def abort_and_proceed
     be_in_state_and_requeue('aborting')
-  end
-
-  def has_conflicts?
-    workflow_accrual_conflicts.count > 0
   end
 
   def has_serious_conflicts?

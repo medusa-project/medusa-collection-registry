@@ -160,11 +160,6 @@ class CfsDirectory < ApplicationRecord
     File.join(ancestors_and_self.collect {|d| d.path}.drop(1))
   end
 
-  #TODO remove this and fix up - many accrual tests currently touch this for some reason
-  def absolute_path
-    File.join(CfsRoot.instance.path, self.relative_path)
-  end
-
   #list of all directories above this and self
   def ancestors_and_self
     self.ancestors << self
@@ -236,20 +231,6 @@ class CfsDirectory < ApplicationRecord
     Sunspot.commit
   end
 
-  def run_fits
-    self.cfs_files.each do |cfs_file|
-      cfs_file.ensure_fits_xml
-    end
-  end
-
-  def self.export_root
-    Settings.medusa.cfs.export_root
-  end
-
-  def self.export_autoclean
-    Settings.medusa.cfs.export_autoclean
-  end
-
   def handle_cfs_assessment
     #It is important to do the following in order
 
@@ -313,20 +294,6 @@ class CfsDirectory < ApplicationRecord
       directories.where('id != ?', self.id)
     end
     directories
-  end
-
-  #This is to have a way to compare to the files/directories on storage
-  #Should show no differences, of course, but there are occasional problems
-  def compare_to_storage
-    db_file_names = cfs_files.pluck(:name).to_set
-    db_directory_paths = subdirectories.pluck(:path).to_set
-    storage_file_names = storage_files
-    storage_subdirectory_paths = storage_subdirectories
-    CfsDirectoryDiskComparison.new(cfs_directory: self,
-                                   files_db_only: db_file_names.difference(storage_file_names),
-                                   files_disk_only: storage_file_names.difference(db_file_names),
-                                   directories_db_only: db_directory_paths.difference(storage_subdirectory_paths),
-                                   directories_disk_only: storage_subdirectory_paths.difference(db_directory_paths))
   end
 
   def storage_files

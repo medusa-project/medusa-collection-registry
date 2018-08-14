@@ -25,14 +25,6 @@ class FitsResult < Object
     serialized?
   end
 
-  def serialize_xml
-    storage_root.write_string_to(storage_key, self.xml)
-    cfs_file.with_lock do
-      cfs_file.fits_serialized = true
-      cfs_file.save!
-    end
-  end
-
   def remove_serialized_xml(update_cfs_file: true)
     storage_root.delete_content(storage_key) if serialized?
     self.cfs_file.update_attribute(:fits_serialized, false) if update_cfs_file
