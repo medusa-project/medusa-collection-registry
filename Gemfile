@@ -55,7 +55,7 @@ gem 'ruby-vips', '~>0.3.14', require: 'vips'
 #AMQP communication - implicitly uses Bunny
 # bunny is fixed because of problems deploying the 2.9 branch. I submitted a patch that I expect to be
 # in the 2.9.2 release, but they requested that I try it. When 2.9.2 is out we can remove this restriction.
-gem 'bunny', git: 'https://github.com/ruby-amqp/bunny.git', branch: '2.9.x-stable'
+gem 'bunny'#, git: 'https://github.com/ruby-amqp/bunny.git', branch: '2.9.x-stable'
 gem 'amq-protocol'
 gem 'amqp_helper', '~>0.1.4', git: 'git://github.com/medusa-project/amqp_helper.git'
 
