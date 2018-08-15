@@ -4,19 +4,14 @@ gem 'sass'
 gem 'rails', "~> 5.1"
 gem 'responders'
 
-#Rails (ActiveRecord) seems to want this version restriction on pg, though it doesn't seem to enforce it
-# in a way that bundler understands.
-# /active_record/connection_adapters/postgresql_adapter.rb has a 'gem' line with the restriction
-gem 'pg', "~> 0.21"
+gem 'pg'
 gem 'postgresql_cursor'
 
 #deployment webserver
 gem 'passenger'
 gem 'haml'
 gem 'haml-rails'
-#simple_form 3.3.1 was giving a problem with include_blank: false still including blanks, so we're pinning it back here
-#cf https://github.com/plataformatec/simple_form/issues/1427
-#cf https://github.com/plataformatec/simple_form/issues/1423
+
 gem 'simple_form'
 gem 'auto_html'
 gem 'ckeditor'
