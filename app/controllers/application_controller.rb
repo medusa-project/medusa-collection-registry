@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  helper_method :current_user, :medusa_user?
+  helper_method :current_user, :medusa_user?, :safe_can?
 
   protected
 
@@ -92,6 +92,11 @@ class ApplicationController < ActionController::Base
   def reset_ldap_cache(user)
     user ||= current_user
     LdapQuery.reset_cache(user.net_id) if user.present?
+  end
+
+  #Use in place of Cancan's can? so that it will work when there is not a user (in this case permission is denied, as you'd expect)
+  def safe_can?(action, *args)
+    current_user and can?(action, *args)
   end
 
 end

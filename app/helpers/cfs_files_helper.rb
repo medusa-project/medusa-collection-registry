@@ -8,4 +8,10 @@ module CfsFilesHelper
     end
   end
 
+  def text_preview(cfs_file)
+    File.open(cfs_file.absolute_path) do |f|
+      f.readline(nil, 500)
+    end
+  end
+
 end

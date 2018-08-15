@@ -2,8 +2,7 @@
 
 = simple_form_for :file_group, url: bulk_amazon_backup_bit_level_file_groups_path, method: :post do |f|
   %div
-    - cache(cache_key_for_all(BitLevelFileGroup)) do
-      = render 'shared/amazon_backup_table'
+    = render 'shared/amazon_backup_table'
 
   %br
 

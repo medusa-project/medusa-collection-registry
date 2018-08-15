@@ -17,10 +17,11 @@ class AccrualsController < ApplicationController
     cfs_directory = CfsDirectory.find params[:accrual][:cfs_directory_id]
     authorize! :accrue, cfs_directory
     staging_path = params[:accrual][:staging_path]
+    clean_staging_path = Nokogiri::HTML.parse(staging_path).text
     accrual_directories = params[:accrual][:accrual_directories].select {|d| d.present?}
     accrual_files = params[:accrual][:accrual_files].select {|f| f.present?}
     allow_overwrite = params[:accrual][:allow_overwrite]
-    Workflow::AccrualJob.create_for(current_user, cfs_directory, staging_path, accrual_files, accrual_directories, allow_overwrite)
+    Workflow::AccrualJob.create_for(current_user, cfs_directory, clean_staging_path, accrual_files, accrual_directories, allow_overwrite)
     flash[:notice] = submission_notice
     redirect_to cfs_directory
   end

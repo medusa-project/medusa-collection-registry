@@ -96,7 +96,7 @@ class Workflow::ProjectItemIngest < Workflow::Base
   end
 
   def rsync_item(item)
-    opts = %w(-a --ignore-times --safe-links --chmod Dug+w --exclude-from) << exclude_file_path
+    opts = %w(-a --ignore-times --safe-links --chmod Du+rwx,Dgo+rw,Dgo-w,Fu+rw,Fu-x,Fgo+r,Fgo-wx --exclude-from) << exclude_file_path
     source = item.staging_directory
     target = project.target_cfs_directory_path
     out, err, status = Open3.capture3('rsync', *opts, source, target)

@@ -66,7 +66,7 @@ Then /^accrual amazon backup for file group '(.*)' and user '(.*)' should happen
     Then there should be 1 amazon backup delayed job
     When amazon backup runs successfully
     Then the file group titled '#{title}' should have a completed Amazon backup
-    And '#{user}' should receive an email with subject 'Amazon backup progress')
+    And '#{user}' should receive an email with subject 'Medusa: Amazon backup progress')
 end
 
 Then /^accrual assessment for the cfs directory with path '(.*)' has (\d+) files?, (\d+) director(?:y|ies), (\d+) minor conflicts?, and (\d+) serious conflicts?$/ do |path, file_count, directory_count, minor_conflict_count, serious_conflict_count|
@@ -75,6 +75,12 @@ Then /^accrual assessment for the cfs directory with path '(.*)' has (\d+) files
     When delayed jobs are run
     Then the cfs directory with path '#{path}' should have an accrual job with #{file_count} files and #{directory_count} directories
     And the cfs directory with path '#{path}' should have an accrual job with #{minor_conflict_count} minor conflicts and #{serious_conflict_count} serious conflicts)
+end
+
+Then /^accrual assessment for the cfs directory with path '(.*)' has a zero file '(.*)'$/ do |cfs_directory_path, zero_file_path|
+  cfs_directory = CfsDirectory.find_by(path: cfs_directory_path)
+  accrual_job = Workflow::AccrualJob.find_by(cfs_directory_id: cfs_directory.id)
+  expect(accrual_job.empty_file_report.each_line.detect {|line| line.chomp == zero_file_path}).to be_truthy
 end
 
 When /^I navigate to my accrual data for bag '(.*)' at path '(.*)'$/ do |bag_name, path|

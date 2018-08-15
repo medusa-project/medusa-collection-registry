@@ -14,7 +14,7 @@ class Workflow::AccrualJob < Workflow::Base
   has_many :workflow_accrual_directories, class_name: 'Workflow::AccrualDirectory', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
   has_many :workflow_accrual_files, class_name: 'Workflow::AccrualFile', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
   has_many :workflow_accrual_conflicts, class_name: 'Workflow::AccrualConflict', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
-  has_many :workflow_accrual_comments, -> { order 'created_at desc' }, class_name: 'Workflow::AccrualComment', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
+  has_many :workflow_accrual_comments, -> {order 'created_at desc'}, class_name: 'Workflow::AccrualComment', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
 
   delegate :file_group, :root_cfs_directory, :collection, :repository, to: :cfs_directory
 
@@ -25,7 +25,8 @@ class Workflow::AccrualJob < Workflow::Base
                 'initial_approval' => 'Awaiting approval',
                 'copying' => 'Copying', 'admin_approval' => 'Awaiting admin approval',
                 'amazon_backup' => 'Amazon backup', 'amazon_backup_completed' => 'Amazon backup completed',
-                'assessing' => 'Running Assessments', 'email_done' => 'Emailing completion',
+                'assessing' => 'Starting Assessments', 'await_assessment' => 'Running Assessment',
+                'email_done' => 'Emailing completion',
                 'aborting' => 'Aborting', 'end' => 'Ending'}
   STATES = STATE_HASH.keys
 
@@ -65,17 +66,17 @@ class Workflow::AccrualJob < Workflow::Base
 
   def perform_check_sync
     comparators = (workflow_accrual_directories + workflow_accrual_files).collect {|obj| obj.comparator.analyze}
-    if comparators.all? { |comparator| comparator.objects_equal? }
+    if comparators.all? {|comparator| comparator.objects_equal?}
       be_in_state_and_requeue('check')
     else
       tmpfile = File.join(Dir.tmpdir, "check_sync-#{self.id}-#{Time.now}")
       File.open(tmpfile, 'wb') do |f|
         f.puts 'Source only:'
-        comparators.each { |comparator| comparator.augmented_source_only_paths.each { |p| f.puts p } }
+        comparators.each {|comparator| comparator.augmented_source_only_paths.each {|p| f.puts p}}
         f.puts 'Target only:'
-        comparators.each { |comparator| comparator.augmented_target_only_paths.each { |p| f.puts p } }
+        comparators.each {|comparator| comparator.augmented_target_only_paths.each {|p| f.puts p}}
         f.puts 'Differences:'
-        comparators.each { |comparator| comparator.augmented_different_sizes_paths.each { |p| f.puts p } }
+        comparators.each {|comparator| comparator.augmented_different_sizes_paths.each {|p| f.puts p}}
         f.puts 'Suggested remediation:'
         comparators.each do |comparator|
           comparator.augmented_target_only_paths.each do |p|
@@ -92,9 +93,9 @@ class Workflow::AccrualJob < Workflow::Base
                                subject: 'Accrual Check Sync Error').deliver_now
       raise RuntimeError,
             %Q(storage.library and condo copies of accrual directory are not in sync.
-#{comparators.collect{|comparator| comparator.source_only_paths.count}.sum} files are only present in the source copy
-#{comparators.collect{|comparator| comparator.target_only_paths.count}.sum} files are only present in the target copy
-#{comparators.collect{|comparator| comparator.different_sizes_paths.count}.sum} files are present in both copies but with different sizes
+#{comparators.collect {|comparator| comparator.source_only_paths.count}.sum} files are only present in the source copy
+#{comparators.collect {|comparator| comparator.target_only_paths.count}.sum} files are only present in the target copy
+#{comparators.collect {|comparator| comparator.different_sizes_paths.count}.sum} files are present in both copies but with different sizes
 Paths are stored for inspection in #{tmpfile} on the server.
 )
     end
@@ -118,23 +119,31 @@ Paths are stored for inspection in #{tmpfile} on the server.
 
   def add_stats
     source_path = staging_local_path
+    empty_files = StringIO.new
     workflow_accrual_files.each do |file|
-      file.size = File.size(File.join(source_path, file.name))
+      file_path = File.join(source_path, file.name)
+      file.size = File.size(file_path)
       file.save!
+      empty_files.puts(file.name) if file.size.zero?
     end
     workflow_accrual_directories.each do |directory|
-      Dir.chdir(File.join(source_path, directory.name)) do
+      directory_path = File.join(source_path, directory.name)
+      Dir.chdir(directory_path) do
         count = 0
         size = 0
         Find.find('.') do |entry|
+          next if File.directory?(entry)
           count += 1
-          size += File.size(entry)
+          file_size = File.size(entry)
+          size += file_size
+          empty_files.puts(File.join(directory.name, entry.gsub(/^\.\//, ''))) if file_size.zero?
         end
         directory.count = count
         directory.size = size
         directory.save!
       end
     end
+    update_attribute(:empty_file_report, empty_files.string)
   end
 
   def duplicate_files(source_path)
@@ -143,7 +152,7 @@ Paths are stored for inspection in #{tmpfile} on the server.
 
   def requested_files(source_path)
     Set.new.tap do |files|
-      self.workflow_accrual_files.each { |file| files << file.name }
+      self.workflow_accrual_files.each {|file| files << file.name}
       Dir.chdir(source_path) do
         self.workflow_accrual_directories.each do |directory|
           Find.find(directory.name) do |entry|
@@ -185,8 +194,7 @@ Paths are stored for inspection in #{tmpfile} on the server.
     target_path = cfs_directory.absolute_path
     copy_entries_and_remove(workflow_accrual_files, source_path, target_path, overwrite: overwrite)
     copy_entries_and_remove(workflow_accrual_directories, source_path, target_path, overwrite: overwrite)
-    cfs_directory.make_and_assess_tree
-    be_in_state_and_requeue('amazon_backup')
+    be_in_state_and_requeue('assessing')
   end
 
   def perform_copying
@@ -201,7 +209,7 @@ Paths are stored for inspection in #{tmpfile} on the server.
   end
 
   def reset_conflict_fixities_and_fits
-    workflow_accrual_conflicts.where(different: true).find_each { |conflict| conflict.reset_cfs_file }
+    workflow_accrual_conflicts.where(different: true).find_each {|conflict| conflict.reset_cfs_file}
   end
 
   def staging_local_path
@@ -223,7 +231,7 @@ Paths are stored for inspection in #{tmpfile} on the server.
   end
 
   def copy_entry(entry, source_path, target_path, overwrite: false)
-    opts = %w(-a --ignore-times --safe-links --chmod Dug+w --exclude-from) << exclude_file_path
+    opts = %w(-a --ignore-times --safe-links --chmod Du+rwx,Dgo+rw,Dgo-w,Fu+rw,Fu-x,Fgo+r,Fgo-wx --exclude-from) << exclude_file_path
     opts << '--ignore-existing' unless overwrite
     source_entry = File.join(source_path, entry.name)
     return unless File.exists?(source_entry)
@@ -289,20 +297,25 @@ MESSAGE
   end
 
   def perform_amazon_backup_completed
-    be_in_state_and_requeue('assessing')
+    be_in_state_and_requeue('email_done')
   end
 
-  #this is a bit misleading - the assessments are kicked off by perform_copying in delayed jobs; this
-  #really just checks to see if any of them are still going and blocks until they are all done
   def perform_assessing
+    cfs_directory.make_and_assess_tree
+    be_in_state_and_requeue('await_assessment')
+  end
+
+  def perform_await_assessment
+    wait_time = Rails.env.test? ? (0.1).seconds : 5.minutes
     if has_pending_assessments?
       if self.created_at + 2.days > Time.now
-        self.put_in_queue(run_at: Time.now + 5.minutes)
+        self.put_in_queue(run_at: Time.now + wait_time)
       else
         raise RuntimeError, "Assessments are still pending. Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
       end
     else
-      be_in_state_and_requeue('email_done')
+      Workflow::AccrualMailer.assessment_done(self).deliver_now
+      be_in_state_and_requeue('amazon_backup')
     end
   end
 
@@ -328,13 +341,13 @@ MESSAGE
 
   def approve_and_proceed
     case state
-      when 'initial_approval'
-        be_in_state('admin_approval')
-        notify_admin_of_request
-      when 'admin_approval'
-        be_in_state_and_requeue('copying')
-      else
-        raise RuntimeError, 'Job approved from unallowed initial state'
+    when 'initial_approval'
+      be_in_state('admin_approval')
+      notify_admin_of_request
+    when 'admin_approval'
+      be_in_state_and_requeue('copying')
+    else
+      raise RuntimeError, 'Job approved from unallowed initial state'
     end
   end
 

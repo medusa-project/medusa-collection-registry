@@ -26,7 +26,7 @@ Feature: Amazon backup
     And the physical cfs directory 'dogs' has the data of bag 'small-bag'
     And I run an initial cfs file assessment on the file group titled 'Dogs'
     When I run a failing Amazon backup for the file group titled 'Dogs'
-    Then 'admin@example.com' should receive an email with subject 'Amazon backup failure' containing all of:
+    Then 'admin@example.com' should receive an email with subject 'Medusa: Amazon backup failure' containing all of:
       | test_error |
 
   Scenario: Schedule amazon backup of a bit level file group

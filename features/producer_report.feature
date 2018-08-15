@@ -18,6 +18,6 @@ Feature: Producer Report
   Scenario: Fullfill a report request
     Given there is a producer report job for user 'admin@example.com' and the producer with title 'Scanning'
     When I perform producer report jobs
-    Then 'admin@example.com' should receive an email with subject 'Medusa Producer Report' containing all of:
+    Then 'admin@example.com' should receive an email with subject 'Medusa: Producer Report' containing all of:
       | Scanning |
     And 'admin@example.com' should receive an email with attachment 'report.csv'

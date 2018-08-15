@@ -53,8 +53,8 @@ Feature: Cfs directory export
       | user@example.com | pending | 123abc        |
     When a downloader error message is received with id '123abc'
     Then the downloader request with id '123abc' should have status 'error'
-    And 'user@example.com' should receive an email with subject 'Medusa Download error'
-    And 'medusa-admin@example.com' should receive an email with subject 'Medusa Download error'
+    And 'user@example.com' should receive an email with subject 'Medusa: Download error'
+    And 'medusa-admin@example.com' should receive an email with subject 'Medusa: Download error'
 
   Scenario: Request received message is received
     Given there is a downloader request for the export of the cfs directory for the file group titled 'Dogs' for the path '.' with fields:
@@ -69,7 +69,7 @@ Feature: Cfs directory export
       | user@example.com | request_received | 123abc        |
     When a downloader request completed message is received with id '123abc'
     Then the downloader request with id '123abc' should have status 'request_completed'
-    And 'user@example.com' should receive an email with subject 'Medusa Download ready'
+    And 'user@example.com' should receive an email with subject 'Medusa: Download ready'
 
   Scenario: Deny exports to public and users
     Then deny object permission on the cfs directory with path 'dogs' to users for action with redirection:

@@ -23,7 +23,7 @@ class Collection < ApplicationRecord
   has_many :file_group_assessments, through: :file_groups, source: :assessments
   has_many :bit_level_file_groups, -> { where('type = ?', 'BitLevelFileGroup') }, class_name: 'FileGroup'
   has_many :access_system_collection_joins, dependent: :destroy
-  has_many :access_systems, through: :access_system_collection_joins
+  has_many :access_systems, -> {order(:name)}, through: :access_system_collection_joins
   has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
   has_many :attachments, as: :attachable, dependent: :destroy
   has_many :projects

@@ -60,11 +60,6 @@ module ApplicationHelper
     'https://wiki.cites.illinois.edu/wiki/display/LibraryDigitalPreservation/Medusa+FAQ'
   end
 
-  #Use in place of Cancan's can? so that it will work when there is not a user (in this case permission is denied, as you'd expect)
-  def safe_can?(action, *args)
-    current_user and (can?(action, *args))
-  end
-
   def cache_key_for_all(klass)
     count = klass.cache_count
     max_updated_at = klass.maximum(:updated_at) rescue nil

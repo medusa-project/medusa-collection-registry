@@ -2,7 +2,7 @@ module BookTracker
 
   class ItemsController < ApplicationController
 
-    RESULTS_LIMIT = 50
+    RESULTS_LIMIT = 100
 
     before_action :setup
 
@@ -122,7 +122,12 @@ module BookTracker
           format.json do
             @items = @items.paginate(page: page, per_page: RESULTS_LIMIT)
             @items.each{ |item| item.url = url_for(item) }
-            render json: @items, except: :raw_marcxml
+            render json: {
+                numResults: @items.total_entries,
+                windowSize: RESULTS_LIMIT,
+                windowOffset: (page - 1) * RESULTS_LIMIT,
+                results: @items
+            }, except: :raw_marcxml
           end
           format.csv do
             # Use Enumerator in conjunction with some custom headers to

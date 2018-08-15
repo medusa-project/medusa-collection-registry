@@ -21,15 +21,15 @@ Rails.application.routes.draw do
     root to: 'static_pages#show', key: 'landing'
   end
 
-  concern :eventable, Proc.new { member { get 'events' } }
-  concern :red_flaggable, Proc.new { member { get 'red_flags' } }
-  concern :assessable, Proc.new { member { get 'assessments' } }
-  concern :attachable, Proc.new { member { get 'attachments' } }
-  concern :downloadable, Proc.new { member { get 'download' } }
-  concern :collection_indexer, Proc.new { member { get 'collections' } }
-  concern :fixity_checkable, Proc.new { member { post 'fixity_check' } }
+  concern :eventable, Proc.new {member {get 'events'}}
+  concern :red_flaggable, Proc.new {member {get 'red_flags'}}
+  concern :assessable, Proc.new {member {get 'assessments'}}
+  concern :attachable, Proc.new {member {get 'attachments'}}
+  concern :downloadable, Proc.new {member {get 'download'}}
+  concern :collection_indexer, Proc.new {member {get 'collections'}}
+  concern :fixity_checkable, Proc.new {member {post 'fixity_check'}}
   concern :gallery_viewer, Proc.new {member {post 'toggle_gallery_viewer'}}
-  concern :autocomplete_email, Proc.new { collection { get :autocomplete_user_email } }
+  concern :autocomplete_email, Proc.new {collection {get :autocomplete_user_email}}
 
   resources :collections, concerns: %i(eventable red_flaggable assessable attachable) do
     get :show_file_stats, on: :member
@@ -89,13 +89,14 @@ Rails.application.routes.draw do
   resources :virus_scans, only: :show
 
   resources :cfs_files, only: :show, concerns: %i(downloadable eventable fixity_checkable) do
-    %i(create_fits_xml fits view preview_image preview_video thumbnail galleria).each { |action| get action, on: :member }
+    %i(create_fits_xml fits view preview_image preview_pdf
+       preview_content thumbnail galleria).each {|action| get action, on: :member}
     get :random, on: :collection
   end
   get 'cfs_files/:id/preview_iiif_image/*iiif_parameters', to: 'cfs_files#preview_iiif_image', as: 'preview_iiif_image_cfs_file'
 
   resources :cfs_directories, only: :show, concerns: %i(fixity_checkable eventable gallery_viewer) do
-    %i(create_fits_for_tree export export_tree).each { |action| post action, on: :member }
+    %i(create_fits_for_tree export export_tree).each {|action| post action, on: :member}
     get :show_tree, on: :member
     get :cfs_files, on: :member
     get :cfs_directories, on: :member

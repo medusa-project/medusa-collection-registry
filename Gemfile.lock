@@ -34,6 +34,13 @@ GIT
     bunny (2.9.2.pre)
       amq-protocol (~> 2.3.0)
 
+GIT
+  remote: https://github.com/tom-sherman/send_file_with_range.git
+  revision: 37b6e00f927cd3d614ce163d104f267e0173ae28
+  branch: master
+  specs:
+    send_file_with_range (1.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -332,6 +339,10 @@ GEM
     passenger (5.1.12)
       rack
       rake (>= 0.8.1)
+    pdfjs_viewer-rails (0.2.0)
+      json (> 1.8.4)
+      rails (> 4.2.0)
+      sass-rails (~> 5.0)
     pg (0.21.0)
     poltergeist (1.17.0)
       capybara (~> 2.1)
@@ -570,6 +581,7 @@ DEPENDENCIES
   os
   paperclip
   passenger
+  pdfjs_viewer-rails
   pg (~> 0.21)
   poltergeist
   postgresql_cursor
@@ -589,6 +601,7 @@ DEPENDENCIES
   sass
   sass-rails
   selenium-webdriver
+  send_file_with_range!
   shoulda-matchers
   simple_form
   simple_memoize

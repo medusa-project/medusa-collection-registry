@@ -2,23 +2,116 @@
 cfs_file_viewers:
   mime_types:
     image:
-      - image/jpeg
-      - image/tiff
-      - image/png
       - image/gif
+      - image/jpeg
+      - image/png
+      - image/tiff
     video:
+      - video/avi
+      - video/m2ts
       - video/mp4
+      - video/mpeg
+      - video/mpg
+      - video/quicktime
+      - video/webm
+      - video/x-flv
+      - video/x-ms-asf
+      - video/x-msvideo
+      - video/x-ms-wmv
+    audio:
+      - audio/3gpp, video/3gpp
+      - audio/basic
+      - audio/midi
+      - audio/mp4
+      - audio/mpeg
+      - audio/mpeg|audio/x-mpeg|video/mp4|audio/mp4|image/x-macpaint
+      - audio/ogg
+      - audio/vnd.rn-realaudio, audio/x-pn-realaudio
+      - audio/x-aiff
+      - audio/x-aiff|audio/basic|audio/mid|audio/x-midi|audio/midi|audio/vnd.qcelp
+      - audio/x-dss
+      - audio/x-gsm|video/x-mpeg|video/mpeg
+      - audio/x-mp4a-latm
+      - audio/x-ms-wma
+      - audio/x-pn-realaudio
+      - audio/x-wav
+      - audio/x-wave
+    text:
+      - text/calendar
+      - text/css
+      - text/csv
+      - text/html
+      - text/PGP
+      - text/plain
+      - text/rtf
+      - text/troff
+      - text/x-asm
+      - text/x-c
+      - text/x-c++
+      - text/x-diff
+      - text/x-fortran
+      - text/x-java
+      - text/x-lisp
+      - text/x-mail
+      - text/x-makefile
+      - text/xml
+      - text/x-msdos-batch
+      - text/x-news
+      - text/x-pascal
+      - text/x-perl
+      - text/x-php
+      - text/x-python
+      - text/x-ruby
+      - text/x-shellscript
+      - text/x-tex
+      - text/x-vcard
+    pdf:
+      - application/pdf
   extensions:
     image:
-      - tif
-      - jpg
-      - tiff
-      - jpeg
-      - png
       - gif
       - jp2
+      - jpeg
+      - jpg
+      - png
+      - tif
+      - tiff
+    audio:
+      - aac
+      - aif
+      - aiff
+      - au
+      - m3u
+      - m4a
+      - m4p
+      - mid
+      - mp3
+      - ogg
+      - wav
     video:
+      - avi
+      - f4v
+      - flv
+      - m1v
+      - m2p
+      - m2v
+      - m4v
+      - mov
+      - movie
       - mp4
+      - mpe
+      - mpeg
+      - mpg
+      - qt
+      - vob
+      - webm
+      - wm
+      - wma
+      - wmv
+    text:
+      - txt
+    pdf:
+      - pdf
   thumbnail_size: 90
   galleria_height: 400
   galleria_width: 1000

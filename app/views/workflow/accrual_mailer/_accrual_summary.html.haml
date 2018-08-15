@@ -1,7 +1,11 @@
 %p
   The pending request for ingest is to transfer all content from the
   source directory #{@workflow_accrual.staging_local_path}
-  to Medusa File Group '#{@workflow_accrual.file_group_title}' at the destination
+  to Medusa File Group '#{@workflow_accrual.file_group_title}',
+  Collection '#{@workflow_accrual.collection.title}'
+  - if @workflow_accrual.collection.external_id.present?
+    [#{@workflow_accrual.collection.external_id}]
+  at the destination
   file path #{@workflow_accrual.relative_target_path}.
 
 %p
@@ -28,6 +32,12 @@
         %li [file] #{file.name}
       - if @workflow_accrual.workflow_accrual_files.count > 5
         %li ([#{@workflow_accrual.workflow_accrual_files.count - 5}] more sibling files in ingest)
+
+- if @workflow_accrual.empty_file_report.present?
+  %div
+    Some zero size files were detected in the ingest request
+    %pre
+      = @workflow_accrual.empty_file_report
 
 %p
   If this seems incorrect, please take a close look at source and

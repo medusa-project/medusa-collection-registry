@@ -42,8 +42,8 @@ Feature: Static content
       | Your email address | jbobr@example.com |
       | Your feedback      | Hi there          |
     And I click on 'Send'
-    Then 'jbobr@example.com' should receive an email with subject 'Medusa feedback confirmation'
-    And the feedback address should receive an email with subject /Medusa feedback/ matching all of:
+    Then 'jbobr@example.com' should receive an email with subject 'Medusa: Feedback confirmation'
+    And the feedback address should receive an email with subject /Medusa: Feedback/ matching all of:
       | Joebob Robertson | jbobr@example.com | Hi there |
 
   Scenario: Deposit files form
@@ -56,8 +56,8 @@ Feature: Static content
       | Current location of files | Location of my files         |
       | Notes                     | My notes                     |
     And I click on 'Send'
-    Then 'my-email-address@example.com' should receive an email with subject 'Medusa ingest request confirmation'
-    And the feedback address should receive an email with subject /Medusa ingest request/ matching all of:
+    Then 'my-email-address@example.com' should receive an email with subject 'Medusa: Ingest request confirmation'
+    And the feedback address should receive an email with subject /Medusa: Ingest request/ matching all of:
       | My name | my-email-address@example.com | My department | My collection name | Location of my files | My notes |
 
   Scenario: Request training form
@@ -70,8 +70,8 @@ Feature: Static content
       | List of trainees   | Arpee, Elwah      |
       | Notes              | A flat            |
     And I click on 'Send'
-    Then 'namey@example.com' should receive an email with subject 'Medusa training request confirmation'
-    And the feedback address should receive an email with subject /Medusa training request/ matching all of:
+    Then 'namey@example.com' should receive an email with subject 'Medusa: Training request confirmation'
+    And the feedback address should receive an email with subject /Medusa: Training request/ matching all of:
       | Namey | namey@example.com | Naming | 2012-03-04 | Arpee | Elwah | A flat |
 
 

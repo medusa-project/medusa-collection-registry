@@ -61,9 +61,11 @@
     .panel.panel-default
       .panel-heading
         %h3.panel-title
-          = form_tag(book_tracker_check_google_path, method: 'post') do
-            Google
-            = submit_tag('Check', class: 'btn btn-default btn-xs')
+          Google
+          %button.btn.btn-default.btn-xs{ 'data-target': '#check-google-modal',
+                                          'data-toggle': 'modal',
+                                          type: 'button' }
+            Check
       .panel-body
         %dl
           %dt
@@ -78,3 +80,5 @@
 
 #tasks_list
   = render partial: 'tasks'
+
+= render partial: 'check_google_panel'

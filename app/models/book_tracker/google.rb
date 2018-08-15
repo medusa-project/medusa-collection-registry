@@ -5,8 +5,8 @@ module BookTracker
   # corresponding local items with its findings.
   #
   # Access to GRIN is limited by IP address. If a request to
-  # https://books.google.com/libraries/UIUC/ returns HTTP 403, contact Jon G.
-  # in Library IT to request access.
+  # https://books.google.com/libraries/UIUC/ returns HTTP 403, contact Jon
+  # Gorman (jtgorman@illinois.edu) in Library IT to request access.
   #
   class Google
 
@@ -14,6 +14,14 @@ module BookTracker
       Task.where(service: Service::GOOGLE).
           where('status NOT IN (?)', [Status::SUCCEEDED, Status::FAILED]).
           limit(1).any?
+    end
+
+    ##
+    # @param inventory_pathname [String] Pathname of a Google Books inventory
+    #                                    file.
+    #
+    def initialize(inventory_pathname)
+      @inventory_pathname = inventory_pathname
     end
 
     def check
@@ -28,24 +36,18 @@ module BookTracker
       begin
         bt_items_in_gb = 0
         new_bt_items_in_gb = 0
+        num_lines = 0
         num_skipped_lines = 0
 
-        uri = URI.parse('https://books.google.com/libraries/UIUC/_all_books?format=text&mode=all')
-        request = Net::HTTP::Get.new(uri)
-        response = Net::HTTP.start(uri.host, uri.port,
-                                   use_ssl: uri.scheme == 'https',
-                                   verify_mode: OpenSSL::SSL::VERIFY_NONE) do |https|
-          https.request(request)
+        # Count the lines in order to display progress.
+        File.readlines(@inventory_pathname).each do
+          num_lines += 1;
         end
-        raise "Server returned HTTP #{response.code}." unless
-            response.kind_of?(Net::HTTPOK)
 
-        # Response body columns: [0] barcode, [1] scanned date,
-        # [2] processed date, [3] analyzed date, [4] converted date,
-        # [5] downloaded date
-        # Dates are in the form yyyy-mm-dd hh:mm
-        lines = response.body.split(/\n/)
-        lines.each_with_index do |line, index|
+        # File columns: [0] barcode, [1] scanned date, [2] processed date,
+        # [3] analyzed date, [4] converted date, [5] downloaded date
+        # Date format: yyyy-mm-dd hh:mm
+        File.readlines(@inventory_pathname).each_with_index do |line, index|
           begin
             parts = CSV.parse_line(line, { col_sep: "\t" })
             if parts.any?
@@ -63,7 +65,7 @@ module BookTracker
             num_skipped_lines += 1
           end
           if index % 1000 == 0
-            task.percent_complete = (index + 1).to_f / lines.length.to_f
+            task.percent_complete = (index + 1).to_f / num_lines.to_f
             task.save!
           end
         end

@@ -67,7 +67,7 @@ class AmqpAccrual::IngestJob < Job::Base
   end
 
   def rsync_file
-    opts = %w(-a --no-l -L --ignore-times --chmod Dug+w --safe-links)
+    opts = %w(-a --no-l -L --ignore-times --chmod Du+rwx,Dgo+rw,Dgo-w,Fu+rw,Fu-x,Fgo+r,Fgo-wx --safe-links)
     out, err, status = Open3.capture3('rsync', *opts, source_file, absolute_target_file)
     unless status.success?
       message = <<MESSAGE
