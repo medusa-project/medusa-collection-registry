@@ -156,7 +156,7 @@ group :test do
   gem 'simplecov'
   gem 'json_spec'
   #Lock this on 2.x, as going to 3 will probably require some fixing up
-  gem 'capybara', '~> 2.18'
+  gem 'capybara'#, '~> 2.18'
   gem 'capybara-email'
   gem 'launchy'
   #testing with javascript - requires phantomjs to be installed on the test machine
