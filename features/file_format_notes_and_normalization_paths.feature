@@ -68,7 +68,7 @@ Feature: File format notes and normalization paths
     Then there should be no file format normalization path with name 'Normalization Path 1'
     And I should not see 'Normalization Path 1'
 
-  @javascript @poltergeist
+  @javascript
   Scenario: Edit normalization path of file format
     Given I am logged in as an admin
     And the file format with name 'jp2' exists
