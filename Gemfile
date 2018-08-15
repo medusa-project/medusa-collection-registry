@@ -151,7 +151,7 @@ end
 group :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
-  gem 'simplecov'
+  gem 'simplecov', require: false
   gem 'json_spec'
   #Lock this on 2.x, as going to 3 will probably require some fixing up
   gem 'capybara'#, '~> 2.18'
