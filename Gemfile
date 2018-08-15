@@ -104,7 +104,10 @@ gem 'will_paginate-bootstrap'
 gem 'draper'
 
 gem 'uuid'
-gem 'paperclip'
+#There are test failures going to 6.0, but I'm not sure why and it
+# doesn't seem worth tracking them down when we may move to a different
+# system for handling this.
+gem 'paperclip', '~> 5.2'
 
 gem 'font-awesome-rails'
 
