@@ -109,6 +109,7 @@ module BookTracker
           volume: self.volume,
           date: self.date,
           url: self.url,
+          catalog_url: self.uiuc_catalog_url,
           hathitrust_url: self.exists_in_hathitrust ?
               self.hathitrust_handle : nil,
           hathitrust_rights: self.hathitrust_rights,
