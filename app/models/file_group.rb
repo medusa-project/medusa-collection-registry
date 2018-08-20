@@ -10,7 +10,6 @@ class FileGroup < ApplicationRecord
   belongs_to :parent, class_name: 'Collection', foreign_key: 'collection_id'
   belongs_to :producer
 
-  has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
   has_one :cfs_directory, as: :parent
   has_many :assessments, as: :assessable, dependent: :destroy
   has_many :target_file_group_joins, dependent: :destroy, class_name: 'RelatedFileGroupJoin', foreign_key: :source_file_group_id
@@ -19,7 +18,6 @@ class FileGroup < ApplicationRecord
   has_many :source_file_groups, through: :source_file_group_joins
   has_many :attachments, as: :attachable, dependent: :destroy
 
-  before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root
   before_save :strip_fields
   before_validation :initialize_file_info
@@ -64,18 +62,6 @@ class FileGroup < ApplicationRecord
 
   def json_storage_level
     self.class.to_s.underscore.sub('_file_group', '')
-  end
-
-  def ensure_rights_declaration
-    self.rights_declaration ||= self.clone_collection_rights_declaration
-  end
-
-  def clone_collection_rights_declaration
-    RightsDeclaration.new(self.collection.rights_declaration.attributes.slice(
-                              :rights_basis, :copyright_jurisdiction,
-                              :copyright_statement, :access_restrictions).merge(
-                              rights_declarable_id: self.id,
-                              rights_declarable_type: self.class.to_s))
   end
 
   def sibling_file_groups
