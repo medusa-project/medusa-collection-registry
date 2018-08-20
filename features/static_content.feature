@@ -60,18 +60,4 @@ Feature: Static content
     And the feedback address should receive an email with subject /Medusa: Ingest request/ matching all of:
       | My name | my-email-address@example.com | My department | My collection name | Location of my files | My notes |
 
-  Scenario: Request training form
-    When I visit the static page 'request_training'
-    And I fill in fields:
-      | Your name          | Namey             |
-      | Your email address | namey@example.com |
-      | Your department    | Naming            |
-      | Suggested date     | 2012-03-04        |
-      | List of trainees   | Arpee, Elwah      |
-      | Notes              | A flat            |
-    And I click on 'Send'
-    Then 'namey@example.com' should receive an email with subject 'Medusa: Training request confirmation'
-    And the feedback address should receive an email with subject /Medusa: Training request/ matching all of:
-      | Namey | namey@example.com | Naming | 2012-03-04 | Arpee | Elwah | A flat |
-
 

@@ -33,19 +33,6 @@ class StaticPagesController < ApplicationController
     end
   end
 
-  def request_training
-    flash[:notice] = 'Your training request has been submitted'
-    @request_training = StaticPageEmail::RequestTraining.new(params[:request_training])
-    if @request_training.valid?
-      @request_training.send_emails
-      redirect_to root_path
-    else
-      @form_partial_name = 'form_request_training'
-      @render_form = true
-      render 'show'
-    end
-  end
-
   def edit
     authorize! :update, @static_page
   end
