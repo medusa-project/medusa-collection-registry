@@ -19,7 +19,6 @@
         #{link_to(target_file_group.title, target_file_group)} - #{@file_group.target_relation_note(target_file_group)}
 = show_field @file_group, :external_file_location
 = show_field @file_group, :staged_file_location
-= show_field @file_group, :file_format
 %p
   %strong Package Profile:
   - if package_profile = @file_group.package_profile

@@ -9,8 +9,8 @@ Feature: File Group Management
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | title  | type              | created_at |
-      | Main Library           | image/jpeg  | 100             | 1200        | images | ExternalFileGroup | 2016-09-20 |
+      | external_file_location | total_file_size | total_files | title  | type              | created_at |
+      | Main Library           | 100             | 1200        | images | ExternalFileGroup | 2016-09-20 |
 
   Scenario: View file groups of a collection
     When I view the collection with title 'Dogs'
