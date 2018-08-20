@@ -22,7 +22,7 @@
             = f.association :resource_types, as: :check_boxes, wrapper_html: {id: 'resource_types'}, wrapper: :horizontal_radio_and_checkboxes
             = f.association :access_systems, collection: access_system_select_collection, html: {multiple: true}, as: :check_boxes, wrapper: :horizontal_radio_and_checkboxes
           #administrative-metadata.tab-pane
-            = f.input :private_description
+            = f.input :private_description, label: 'Internal collection description (suppressed from public view)'
             = f.input :contact_email, label: 'Contact email (for internal use on this collection only)', type: :email
             = f.association :preservation_priority, include_blank: false, selected: (@collection.preservation_priority.id rescue PreservationPriority.default.id)
             = f.input :notes

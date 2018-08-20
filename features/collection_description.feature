@@ -39,12 +39,12 @@ Feature: Collection description
   Scenario: Edit a collection
     When I edit the collection with title 'dogs'
     And I fill in fields:
-      | Description                                              | Puppy stuff                    |
-      | Private description                                      | Internal puppy stuff           |
-      | External ID                                              | external-puppy-id              |
-      | Representative image                                     | my_image_url                   |
-      | Representative item                                      | my_item_url                    |
-      | Physical Collection link (finding aid or catalog record) | http://physical.collection.url |
+      | Description                                                   | Puppy stuff                    |
+      | Internal collection description (suppressed from public view) | Internal puppy stuff           |
+      | External ID                                                   | external-puppy-id              |
+      | Representative image                                          | my_image_url                   |
+      | Representative item                                           | my_item_url                    |
+      | Physical Collection link (finding aid or catalog record)      | http://physical.collection.url |
     And I check 'Open collection metadata to public list of collections'
     And I press 'Update'
     Then I should be on the view page for the collection with title 'dogs'
@@ -57,8 +57,8 @@ Feature: Collection description
     When I relogin as a manager
     And I edit the collection with title 'dogs'
     And I fill in fields:
-      | Description         | Puppy stuff          |
-      | Private description | Internal puppy stuff |
+      | Description                                                   | Puppy stuff          |
+      | Internal collection description (suppressed from public view) | Internal puppy stuff |
     And I press 'Update'
     Then I should be on the view page for the collection with title 'dogs'
     And I should see 'Puppy stuff'
@@ -88,9 +88,9 @@ Feature: Collection description
   Scenario: Create a new collection
     When I start a new collection for the repository titled 'Sample Repo'
     And I fill in fields:
-      | Title               | reptiles      |
-      | Description         | Reptile stuff |
-      | Private description | Snake farm    |
+      | Title                                                         | reptiles      |
+      | Description                                                   | Reptile stuff |
+      | Internal collection description (suppressed from public view) | Snake farm    |
     And I press 'Create'
     Then I should be on the view page for the collection with title 'reptiles'
     And I should see 'Reptile stuff'
@@ -102,9 +102,9 @@ Feature: Collection description
     And I relogin as a manager
     When I start a new collection for the repository titled 'Sample Repo'
     And I fill in fields:
-      | Title               | reptiles      |
-      | Description         | Reptile stuff |
-      | Private description | Snake farm    |
+      | Title                                                         | reptiles      |
+      | Description                                                   | Reptile stuff |
+      | Internal collection description (suppressed from public view) | Snake farm    |
     And I press 'Create'
     Then I should be on the view page for the collection with title 'reptiles'
     And I should see 'Reptile stuff'
