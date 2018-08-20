@@ -47,8 +47,6 @@ class FileGroup < ApplicationRecord
     string :title
     text :description
     string :description
-    text :external_id
-    string :external_id
   end
 
   STORAGE_LEVEL_HASH = {'external' => 'ExternalFileGroup',
