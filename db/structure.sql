@@ -2503,7 +2503,6 @@ CREATE TABLE public.file_groups (
     package_profile_id integer,
     private_description text,
     access_url character varying(255),
-    contact_id integer,
     acquisition_method character varying
 );
 
@@ -8044,6 +8043,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180820162256'),
 ('20180820163520'),
 ('20180820172658'),
-('20180820175521');
+('20180820175521'),
+('20180820181615');
 
 
