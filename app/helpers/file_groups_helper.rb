@@ -20,8 +20,4 @@ module FileGroupsHelper
     %w(descriptive-metadata administrative-metadata rights-metadata)
   end
 
-  def package_profile_select_collection
-    PackageProfile.order('name ASC').load.collect {|profile| [profile.name, profile.id]}
-  end
-
 end

@@ -85,7 +85,6 @@ Rails.application.routes.draw do
     get :report, on: :member
   end
   resources :access_systems, concerns: :collection_indexer
-  resources :package_profiles, concerns: :collection_indexer
   resources :virus_scans, only: :show
 
   resources :cfs_files, only: :show, concerns: %i(downloadable eventable fixity_checkable) do

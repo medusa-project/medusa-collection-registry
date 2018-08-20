@@ -11,7 +11,7 @@ Feature: Virus scans authorization
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | title   | type              |
+      | title  | type              |
       | images | BitLevelFileGroup |
     And the file group titled 'images' has cfs root 'dogs/images' and delayed jobs are run
     And I am logged in as an admin

@@ -10,7 +10,7 @@ Feature: Touching associated models
       | amazon_backup                         | cfs_directory, user                         |
       | assessment                            | storage_medium                              |
       | collection                            | repository                                  |
-      | file_group                            | collection, producer, package_profile       |
+      | file_group                            | collection, producer       |
       | related_file_group_join               | source_file_group, target_file_group        |
       | repository                            | institution                                 |
       | resource_typeable_resource_type_join  | resource_type                               |

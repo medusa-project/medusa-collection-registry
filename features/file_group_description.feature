@@ -120,31 +120,3 @@ Feature: File Group description
     And the collection with title 'Dogs' should have 1 file group with title 'My file group'
     And the cfs root for the file group titled 'My file group' should be nil
 
-  Scenario: See package profile name and url in collection view
-    Given I am logged in as an admin
-    Given every package profile with fields exists:
-      | name          | url                              |
-      | image_profile | http://image_profile.example.com |
-    And the file group titled 'images' has package profile named 'image_profile'
-    When I view the file group with title 'images'
-    Then I should see all of:
-      | image_profile | http://image_profile.example.com |
-
-  Scenario: Navigate from file group view to corresponding package profile
-    Given I am logged in as an admin
-    Given the file group titled 'images' has package profile named 'image_profile'
-    When I view the file group with title 'images'
-    And I click on 'image_profile'
-    Then I should be on the view page for the package profile with name 'image_profile'
-
-  Scenario: Change package profile when editing file group
-    Given I am logged in as an admin
-    Given every package profile with fields exists:
-      | name          |
-      | image_profile |
-      | book_profile  |
-    And the file group titled 'images' has package profile named 'image_profile'
-    When I edit the file group with title 'images'
-    And I select 'book_profile' from 'Package profile'
-    And I click on 'Update'
-    Then the file group titled 'images' should have package profile named 'book_profile'
