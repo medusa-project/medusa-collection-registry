@@ -8,9 +8,9 @@ Feature: File Group description
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | description      | provenance_note     | title  | staged_file_location | access_url                | private_description | acquisition_method  |
-      | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   | http://access.example.com | private summary     | vendor digitization |
-      | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | staging_dir/texts    |                           |                     |                     |
+      | external_file_location | file_format | total_file_size | total_files | description      | provenance_note     | title  | staged_file_location | access_url                | acquisition_method  |
+      | Main Library           | image/jpeg  | 100             | 1200        | main summary     | main provenance     | images | staging_dir/images   | http://access.example.com | vendor digitization |
+      | Grainger               | text/xml    | 4               | 2400        | grainger summary | grainger provenance | texts  | staging_dir/texts    |                           |                     |
     And every producer with fields exists:
       | title    |
       | Scanning |
@@ -20,7 +20,7 @@ Feature: File Group description
     And the uuid of the file group with title 'images' is '3da0fae0-e3fa-012f-ac10-005056b22849-8'
     When I view the file group with title 'images'
     Then I should see all of:
-      | image/jpeg | 1,200 | main summary | main provenance | images | external | staging_dir/images | 3da0fae0-e3fa-012f-ac10-005056b22849-8 | private summary | http://access.example.com | vendor digitization |
+      | image/jpeg | 1,200 | main summary | main provenance | images | external | staging_dir/images | 3da0fae0-e3fa-012f-ac10-005056b22849-8 | http://access.example.com | vendor digitization |
 
   Scenario: View a file group as a manager
     Given I am logged in as a manager
@@ -42,14 +42,13 @@ Feature: File Group description
       | Title                                              | pictures                      |
       | Staged file location                               | staging_dir/pics              |
       | Access link (to digital content in another system) | http://new-access.example.com |
-      | Private description                                | changed secret description    |
     And I select 'external deposit' from 'Acquisition method'
     And I press 'Update'
     Then I should be on the view page for the file group with title 'pictures'
     And I should see all of:
-      | 1,300 | Changed summary | Changed provenance | pictures | staging_dir/pics | http://new-access.example.com | changed secret description | external deposit |
+      | 1,300 | Changed summary | Changed provenance | pictures | staging_dir/pics | http://new-access.example.com | external deposit |
     And I should see none of:
-      | 1,200 | main summary | main provenance | images | staging_dir/pictures | http://access.example.com | private summary | vendor digitization |
+      | 1,200 | main summary | main provenance | images | staging_dir/pictures | http://access.example.com | vendor digitization |
 
   Scenario: Edit a file group as a manager
     Given I am logged in as a manager

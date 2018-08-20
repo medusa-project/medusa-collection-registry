@@ -2501,7 +2501,6 @@ CREATE TABLE public.file_groups (
     cfs_root character varying(255),
     type character varying(255),
     package_profile_id integer,
-    private_description text,
     access_url character varying(255),
     acquisition_method character varying
 );
@@ -8044,6 +8043,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180820163520'),
 ('20180820172658'),
 ('20180820175521'),
-('20180820181615');
+('20180820181615'),
+('20180820185950');
 
 
