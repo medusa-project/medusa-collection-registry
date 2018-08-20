@@ -151,11 +151,11 @@ module BookTracker
       if self.exists_in_hathitrust
         case self.service
           when Service::INTERNET_ARCHIVE
-            handle = "http://hdl.handle.net/2027/uiuo.#{self.obj_id}"
+            handle = "https://hdl.handle.net/2027/uiuo.#{self.obj_id}"
           when Service::GOOGLE
-            handle = "http://hdl.handle.net/2027/uiug.#{self.obj_id}"
+            handle = "https://hdl.handle.net/2027/uiug.#{self.obj_id}"
           else # digitized locally or by vendors
-            handle = "http://hdl.handle.net/2027/uiuc.#{self.obj_id}"
+            handle = "https://hdl.handle.net/2027/uiuc.#{self.obj_id}"
         end
       end
       handle
@@ -194,7 +194,7 @@ module BookTracker
     end
 
     def uiuc_catalog_url
-      "http://vufind.carli.illinois.edu/vf-uiu/Record/uiu_#{self.bib_id}"
+      "https://vufind.carli.illinois.edu/vf-uiu/Record/uiu_#{self.bib_id}"
     end
 
     private
