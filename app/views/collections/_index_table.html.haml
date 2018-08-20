@@ -1,3 +1,3 @@
 - @collection_sizes = collection_size_hash
-= render layout: 'layouts/standard_table', locals: {id: :collections, headers: ['External ID', 'Title', 'Repository', 'Contact', 'GB', 'Ingest Need', '']} do
+= render layout: 'layouts/standard_table', locals: {id: :collections, headers: ['External ID', 'Title', 'Repository', 'Contact', 'GB', '']} do
   = render partial: 'collections/index_table_row', collection: @collections, as: :collection

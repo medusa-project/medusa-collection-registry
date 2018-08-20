@@ -8,7 +8,7 @@ class ProducersController < ApplicationController
   end
 
   def show
-    @producer = Producer.includes(file_groups: {collection: [:contact, :repository, :bit_level_file_groups, :preservation_priority]}).find(params[:id])
+    @producer = Producer.includes(file_groups: {collection: [:contact, :repository, :bit_level_file_groups]}).find(params[:id])
   end
 
   def destroy

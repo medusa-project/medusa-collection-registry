@@ -24,7 +24,6 @@
           #administrative-metadata.tab-pane
             = f.input :private_description, label: 'Internal collection description (suppressed from public view)'
             = f.input :contact_email, label: 'Contact email (for internal use on this collection only)', type: :email
-            = f.association :preservation_priority, include_blank: false, selected: (@collection.preservation_priority.id rescue PreservationPriority.default.id)
             = f.input :notes
           #rights-metadata.tab-pane
             = render partial: 'rights_declarations/nested_form', locals: {containing_form: f, rights_declaration: @collection.rights_declaration}

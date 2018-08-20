@@ -21,11 +21,6 @@ ActiveRecord::Base.transaction do
     ResourceType.find_or_create_by(name: name)
   end
 
-#PreservationPriorities
-  {0.0 => 'ingested', 1.0 => 'low', 2.0 => 'medium', 3.0 => 'high', 4.0 => 'urgent'}.each do |priority, name|
-    PreservationPriority.find_or_create_by(name: name, priority: priority)
-  end
-
   %w(help landing down deposit_files request_training create_a_collection feedback policies technology staff).each do |key|
     unless StaticPage.find_by(key: key)
       StaticPage.create(key: key, page_text: "#{key.humanize} page")

@@ -9,7 +9,7 @@ Feature: Touching associated models
       | access_system_collection_join         | access_system, collection                                      |
       | amazon_backup                         | cfs_directory, user                                            |
       | assessment                            | storage_medium                                                 |
-      | collection                            | repository, preservation_priority                              |
+      | collection                            | repository                             |
       | file_group                            | collection, producer, package_profile                          |
       | related_file_group_join               | source_file_group, target_file_group                           |
       | repository                            | institution                                                    |

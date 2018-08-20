@@ -16,7 +16,6 @@ class Collection < ApplicationRecord
 
   belongs_to :repository
   belongs_to :parent, class_name: 'Repository', foreign_key: 'repository_id'
-  belongs_to :preservation_priority
 
   has_many :assessments, dependent: :destroy, as: :assessable
   has_many :file_groups, dependent: :destroy
@@ -35,12 +34,10 @@ class Collection < ApplicationRecord
   has_many :parent_collections, -> { order('title ASC') }, through: :parent_collection_joins
 
   delegate :title, to: :repository, prefix: true
-  delegate :name, to: :preservation_priority, prefix: true, allow_nil: true
 
   validates_presence_of :title
   validates_uniqueness_of :title, scope: :repository_id
   validates_presence_of :repository_id
-  validates_presence_of :preservation_priority_id
 
   after_create :delayed_ensure_handle
   before_destroy :remove_handle
