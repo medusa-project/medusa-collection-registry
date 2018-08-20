@@ -4,7 +4,6 @@ class FileGroup < ApplicationRecord
   include CascadedRedFlaggable
   include Uuidable
   include Breadcrumb
-  include ResourceTypeable
   include EmailPersonAssociator
 
   belongs_to :collection
