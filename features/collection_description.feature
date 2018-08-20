@@ -153,7 +153,7 @@ Feature: Collection description
   Scenario: Associate contact with collection
     When I edit the collection with title 'dogs'
     And I fill in fields:
-      | Contact Person Email | hding2@example.com |
+      | Contact email (for internal use on this collection only) | hding2@example.com |
     And I press 'Update'
     Then I should see 'hding2@example.com'
     And a person with email 'hding2@example.com' should exist
