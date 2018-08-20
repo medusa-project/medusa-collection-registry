@@ -14,7 +14,7 @@
             - else
               = f.association :repository, collection: @repositories, required: true
             = f.input :description
-            = f.input :access_url, as: :string, label: 'Access URL'
+            = f.input :access_url, as: :string, label: 'Access link (to digital content in another system)'
             = f.input :physical_collection_url, as: :string, label: 'Physical collection URL'
             = f.input :external_id, label: 'External ID'
             = f.input :representative_image

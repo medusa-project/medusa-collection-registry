@@ -5,7 +5,7 @@
       = render 'public_notice'
       = show_value (@collection.publish ? 'Yes' : 'No'), 'Open collection metadata to public list of collections'
       = show_field @collection, :description_html, 'Description'
-      = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
+      = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access link (to digital content in another system)'
       = show_value link_to_external(@collection.physical_collection_url, @collection.physical_collection_url), 'Physical collection URL'
       = show_field @collection, :resource_type_names, 'Type of Resource'
       = show_field @collection, :external_id, 'External ID'
