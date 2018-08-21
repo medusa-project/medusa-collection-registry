@@ -146,6 +146,7 @@ class Workflow::AccrualJob < Workflow::Base
     source_root, source_prefix = staging_root_and_prefix
     target_prefix = cfs_directory.relative_path
     target_root = Application.storage_manager.main_root
+    #TODO - this could run through Parallel if advisable
     workflow_accrual_keys.find_each do |key|
       source_key = File.join(source_prefix, key.key)
       target_key = File.join(target_prefix, key.key)
