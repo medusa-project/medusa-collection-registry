@@ -17,7 +17,7 @@ module FileGroupsHelper
   end
 
   def file_group_form_tab_list
-    %w(descriptive-metadata administrative-metadata rights-metadata)
+    %w(descriptive-metadata administrative-metadata)
   end
 
 end
