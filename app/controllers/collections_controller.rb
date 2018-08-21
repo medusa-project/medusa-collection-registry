@@ -90,7 +90,7 @@ class CollectionsController < ApplicationController
     #Getting file groups and cfs_directories speeds things up considerably for an initial generation of the view,
     #but slows it down a bit when most of the rows are cached. I don't know how to decide ahead of time, so
     #I have chosen this way of doing it to reduce the maximum time.
-    @collections = Collection.order(:title).includes(:repository, :preservation_priority, :contact)
+    @collections = Collection.order(:title).includes(:repository, :contact)
     respond_to do |format|
       format.html
       format.csv {send_data collections_to_csv(@collections), type: 'text/csv', filename: 'collections.csv'}
@@ -137,7 +137,7 @@ class CollectionsController < ApplicationController
     params[:collection].permit(:access_url, :physical_collection_url, :description, :private_description, :end_date, :notes,
                                :repository_id, :start_date, :title,
                                :publish, :representative_image, :representative_item,
-                               :preservation_priority_id, :package_profile_id, :contact_email, :external_id,
+                               :contact_email, :external_id,
                                rights_declaration_attributes: [:rights_basis, :copyright_jurisdiction, :copyright_statement,
                                                                :access_restrictions, :custom_copyright_statement, :id],
                                resource_type_ids: [], access_system_ids: [], child_collection_ids: []

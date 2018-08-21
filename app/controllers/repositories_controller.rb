@@ -29,7 +29,7 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repository = Repository.includes(collections: [:assessments, :contact, :preservation_priority, :bit_level_file_groups,
+    @repository = Repository.includes(collections: [:assessments, :contact, :bit_level_file_groups,
                                                     {file_groups: [:cfs_directory, :assessments]}]).find(params[:id])
   end
 

@@ -25,8 +25,3 @@ Feature: Collection authorization
     And I click on 'DSpace'
     Then I should be on the login page
 
-  Scenario: View public profile index for a collection as a public user
-    Given the package profile with name 'Profile' exists
-    When I go to the package profile index page
-    And I click on 'Profile'
-    Then I should be on the login page

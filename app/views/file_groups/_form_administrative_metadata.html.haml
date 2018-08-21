@@ -1,9 +1,6 @@
 -# must pass the form as f
 = f.input :collection_id, as: :hidden, input_html: {value: @collection.id}
-= f.input :external_id, label: 'External ID'
-= f.input :contact_email, label: 'Contact Person Email', type: :email
 = f.input :producer_id, collection: producers_select_collection, include_blank: false
-= f.input :private_description
 = f.input :provenance_note, label: 'Provenance Note'
 = f.input :acquisition_method, label: 'Acquisition method', as: :select, include_blank: true, collection: FileGroup.acquisition_methods
 - if @file_group.new_record?
@@ -15,7 +12,5 @@
   = render partial: 'form_related_file_groups'
 = f.input :external_file_location
 = f.input :staged_file_location
-= f.input :file_format
-= f.input :package_profile_id, as: :select, include_blank: true, collection: package_profile_select_collection
 = f.input :total_file_size, label: 'Total file size (GB)', disabled: @file_group.is_a?(BitLevelFileGroup), input_html: {value: @file_group.file_size}
 = f.input :total_files, disabled: @file_group.is_a?(BitLevelFileGroup), input_html: {value: @file_group.file_count}

@@ -1,3 +1,5 @@
+#This used to apply to both collections and file groups, though the latter has been removed, so it
+# might make sense to move this entirely into collection.
 require 'active_support/concern'
 
 module ResourceTypeable

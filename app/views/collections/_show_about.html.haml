@@ -5,8 +5,8 @@
       = render 'public_notice'
       = show_value (@collection.publish ? 'Yes' : 'No'), 'Open collection metadata to public list of collections'
       = show_field @collection, :description_html, 'Description'
-      = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access URL'
-      = show_value link_to_external(@collection.physical_collection_url, @collection.physical_collection_url), 'Physical collection URL'
+      = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access link (to digital content in another system)'
+      = show_value link_to_external(@collection.physical_collection_url, @collection.physical_collection_url), 'Physical Collection link (finding aid or catalog record)'
       = show_field @collection, :resource_type_names, 'Type of Resource'
       = show_field @collection, :external_id, 'External ID'
       = show_field @collection, :representative_image
@@ -33,9 +33,8 @@
     .well
       %h3 Administrative metadata
       = show_field @collection, :uuid, 'UUID'
-      = show_field(@collection, :private_description_html, 'Private Description') if medusa_user?
-      = show_field @collection, :contact_email
-      = show_field @collection, :preservation_priority_name, 'Preservation Priority'
+      = show_field(@collection, :private_description_html, 'Internal collection description (suppressed from public view)') if medusa_user?
+      = show_field @collection, :contact_email, 'Contact email (for internal use on this collection only)'
       = show_value @collection.total_size.round(3).to_s(:delimited), 'Total Size (GB)'
       = show_field(@collection, :notes_html, 'Notes') if medusa_user?
   .col-md-4

@@ -9,8 +9,8 @@ Feature: File Group Management
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | title  | type              | created_at |
-      | Main Library           | image/jpeg  | 100             | 1200        | images | ExternalFileGroup | 2016-09-20 |
+      | external_file_location | total_file_size | total_files | title  | type              | created_at |
+      | Main Library           | 100             | 1200        | images | ExternalFileGroup | 2016-09-20 |
 
   Scenario: View file groups of a collection
     When I view the collection with title 'Dogs'
@@ -62,14 +62,4 @@ Feature: File Group Management
     Then I should see all of:
       | Ingested from | Ingested to |
 
-  Scenario: See the package profile of a file group in the file groups table
-    Given the file group titled 'images' has package profile named 'image_package'
-    When I view the collection with title 'Dogs'
-    Then I should see 'image_package'
-
-  Scenario: Navigate to package profile of owned file group
-    Given the file group titled 'images' has package profile named 'image_package'
-    When I view the collection with title 'Dogs'
-    And I click on 'image_package'
-    Then I should be on the view page for the package profile with name 'image_package'
 

@@ -9,8 +9,8 @@ Feature: File Group Assessment Management
       | title |
       | Dogs  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | external_file_location | file_format | total_file_size | total_files | description      | provenance_note | title   |
-      | Main Library           | image/jpeg  | 100             | 1200        | main summary | main provenance | Images |
+      | external_file_location | total_file_size | total_files | description  | provenance_note | title  |
+      | Main Library           | 100             | 1200        | main summary | main provenance | Images |
     And the assessable file group with title 'Images' has assessments with fields:
       | date       | preservation_risks | notes                 | name      |
       | 2013-02-11 | On CD              | Pictures of cute dogs | Assessing |

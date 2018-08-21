@@ -14,17 +14,16 @@
             - else
               = f.association :repository, collection: @repositories, required: true
             = f.input :description
-            = f.input :access_url, as: :string, label: 'Access URL'
-            = f.input :physical_collection_url, as: :string, label: 'Physical collection URL'
+            = f.input :access_url, as: :string, label: 'Access link (to digital content in another system)'
+            = f.input :physical_collection_url, as: :string, label: 'Physical Collection link (finding aid or catalog record)'
             = f.input :external_id, label: 'External ID'
             = f.input :representative_image
             = f.input :representative_item
             = f.association :resource_types, as: :check_boxes, wrapper_html: {id: 'resource_types'}, wrapper: :horizontal_radio_and_checkboxes
             = f.association :access_systems, collection: access_system_select_collection, html: {multiple: true}, as: :check_boxes, wrapper: :horizontal_radio_and_checkboxes
           #administrative-metadata.tab-pane
-            = f.input :private_description
-            = f.input :contact_email, label: 'Contact Person Email', type: :email
-            = f.association :preservation_priority, include_blank: false, selected: (@collection.preservation_priority.id rescue PreservationPriority.default.id)
+            = f.input :private_description, label: 'Internal collection description (suppressed from public view)'
+            = f.input :contact_email, label: 'Contact email (for internal use on this collection only)', type: :email
             = f.input :notes
           #rights-metadata.tab-pane
             = render partial: 'rights_declarations/nested_form', locals: {containing_form: f, rights_declaration: @collection.rights_declaration}

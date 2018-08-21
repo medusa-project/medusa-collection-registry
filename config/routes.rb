@@ -84,7 +84,6 @@ Rails.application.routes.draw do
     get :report, on: :member
   end
   resources :access_systems, concerns: :collection_indexer
-  resources :package_profiles, concerns: :collection_indexer
 
   resources :cfs_files, only: :show, concerns: %i(downloadable eventable) do
     %i(fits view preview_image preview_pdf

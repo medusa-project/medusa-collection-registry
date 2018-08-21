@@ -7,7 +7,6 @@ FactoryBot.define do
     total_file_size 0
     collection
     producer
-    package_profile
   end
 
   factory :external_file_group, parent: :file_group, class: ExternalFileGroup do

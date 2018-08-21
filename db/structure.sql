@@ -434,32 +434,6 @@ $$;
 
 
 --
--- Name: collections_touch_preservation_priority(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.collections_touch_preservation_priority() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-    BEGIN
-      IF (TG_OP = 'INSERT') THEN
-        UPDATE preservation_priorities
-        SET updated_at = NEW.updated_at
-        WHERE id = NEW.preservation_priority_id;
-      ELSIF (TG_OP = 'UPDATE') THEN
-        UPDATE preservation_priorities
-        SET updated_at = NEW.updated_at
-        WHERE (id = NEW.preservation_priority_id OR id = OLD.preservation_priority_id);
-      ELSIF (TG_OP = 'DELETE') THEN
-        UPDATE preservation_priorities
-        SET updated_at = localtimestamp
-        WHERE id = OLD.preservation_priority_id;
-      END IF;
-      RETURN NULL;
-    END;
-$$;
-
-
---
 -- Name: collections_touch_repository(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -547,32 +521,6 @@ CREATE FUNCTION public.file_groups_touch_collection() RETURNS trigger
         UPDATE collections
         SET updated_at = localtimestamp
         WHERE id = OLD.collection_id;
-      END IF;
-      RETURN NULL;
-    END;
-$$;
-
-
---
--- Name: file_groups_touch_package_profile(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.file_groups_touch_package_profile() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-    BEGIN
-      IF (TG_OP = 'INSERT') THEN
-        UPDATE package_profiles
-        SET updated_at = NEW.updated_at
-        WHERE id = NEW.package_profile_id;
-      ELSIF (TG_OP = 'UPDATE') THEN
-        UPDATE package_profiles
-        SET updated_at = NEW.updated_at
-        WHERE (id = NEW.package_profile_id OR id = OLD.package_profile_id);
-      ELSIF (TG_OP = 'DELETE') THEN
-        UPDATE package_profiles
-        SET updated_at = localtimestamp
-        WHERE id = OLD.package_profile_id;
       END IF;
       RETURN NULL;
     END;
@@ -1932,7 +1880,6 @@ CREATE TABLE public.collections (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     contact_id integer,
-    preservation_priority_id integer,
     private_description text,
     notes_html text,
     description_html text,
@@ -2514,7 +2461,6 @@ ALTER SEQUENCE public.file_formats_logical_extensions_joins_id_seq OWNED BY publ
 CREATE TABLE public.file_groups (
     id integer NOT NULL,
     external_file_location character varying(255),
-    file_format character varying(255),
     total_file_size numeric,
     total_files integer,
     collection_id integer,
@@ -2527,11 +2473,7 @@ CREATE TABLE public.file_groups (
     staged_file_location character varying(255),
     cfs_root character varying(255),
     type character varying(255),
-    package_profile_id integer,
-    external_id character varying(255),
-    private_description text,
     access_url character varying(255),
-    contact_id integer,
     acquisition_method character varying
 );
 
@@ -3342,39 +3284,6 @@ UNION
 
 
 --
--- Name: package_profiles; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.package_profiles (
-    id integer NOT NULL,
-    name character varying(255),
-    url character varying(255),
-    notes text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: package_profiles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.package_profiles_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: package_profiles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.package_profiles_id_seq OWNED BY public.package_profiles.id;
-
-
---
 -- Name: people; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3403,38 +3312,6 @@ CREATE SEQUENCE public.people_id_seq
 --
 
 ALTER SEQUENCE public.people_id_seq OWNED BY public.people.id;
-
-
---
--- Name: preservation_priorities; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.preservation_priorities (
-    id integer NOT NULL,
-    name character varying(255),
-    priority double precision,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: preservation_priorities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.preservation_priorities_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: preservation_priorities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.preservation_priorities_id_seq OWNED BY public.preservation_priorities.id;
 
 
 --
@@ -4131,8 +4008,7 @@ CREATE VIEW public.view_file_group_dashboard_info AS
     c.id AS collection_id,
     c.title AS collection_title,
     r.id AS repository_id,
-    r.title AS repository_title,
-    c.external_id AS collection_external_id
+    r.title AS repository_title
    FROM public.file_groups fg,
     public.collections c,
     public.repositories r,
@@ -5036,24 +4912,10 @@ ALTER TABLE ONLY public.medusa_uuids ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- Name: package_profiles id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.package_profiles ALTER COLUMN id SET DEFAULT nextval('public.package_profiles_id_seq'::regclass);
-
-
---
 -- Name: people id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.people ALTER COLUMN id SET DEFAULT nextval('public.people_id_seq'::regclass);
-
-
---
--- Name: preservation_priorities id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.preservation_priorities ALTER COLUMN id SET DEFAULT nextval('public.preservation_priorities_id_seq'::regclass);
 
 
 --
@@ -5694,27 +5556,11 @@ ALTER TABLE ONLY public.medusa_uuids
 
 
 --
--- Name: package_profiles package_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.package_profiles
-    ADD CONSTRAINT package_profiles_pkey PRIMARY KEY (id);
-
-
---
 -- Name: people people_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.people
     ADD CONSTRAINT people_pkey PRIMARY KEY (id);
-
-
---
--- Name: preservation_priorities preservation_priorities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.preservation_priorities
-    ADD CONSTRAINT preservation_priorities_pkey PRIMARY KEY (id);
 
 
 --
@@ -6528,20 +6374,6 @@ CREATE INDEX index_file_groups_on_collection_id ON public.file_groups USING btre
 
 
 --
--- Name: index_file_groups_on_external_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_file_groups_on_external_id ON public.file_groups USING btree (external_id);
-
-
---
--- Name: index_file_groups_on_package_profile_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_file_groups_on_package_profile_id ON public.file_groups USING btree (package_profile_id);
-
-
---
 -- Name: index_file_groups_on_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6815,13 +6647,6 @@ CREATE INDEX index_medusa_uuids_on_uuidable_id_and_uuidable_type ON public.medus
 
 
 --
--- Name: index_package_profiles_on_updated_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_package_profiles_on_updated_at ON public.package_profiles USING btree (updated_at);
-
-
---
 -- Name: index_people_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6833,13 +6658,6 @@ CREATE INDEX index_people_on_email ON public.people USING btree (email);
 --
 
 CREATE INDEX index_people_on_updated_at ON public.people USING btree (updated_at);
-
-
---
--- Name: index_preservation_priorities_on_updated_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_preservation_priorities_on_updated_at ON public.preservation_priorities USING btree (updated_at);
 
 
 --
@@ -7340,13 +7158,6 @@ CREATE TRIGGER cfs_files_touch_file_extension_trigger AFTER INSERT OR DELETE OR 
 
 
 --
--- Name: collections collections_touch_preservation_priority_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER collections_touch_preservation_priority_trigger AFTER INSERT OR DELETE OR UPDATE ON public.collections FOR EACH ROW EXECUTE PROCEDURE public.collections_touch_preservation_priority();
-
-
---
 -- Name: collections collections_touch_repository_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -7358,13 +7169,6 @@ CREATE TRIGGER collections_touch_repository_trigger AFTER INSERT OR DELETE OR UP
 --
 
 CREATE TRIGGER file_groups_touch_collection_trigger AFTER INSERT OR DELETE OR UPDATE ON public.file_groups FOR EACH ROW EXECUTE PROCEDURE public.file_groups_touch_collection();
-
-
---
--- Name: file_groups file_groups_touch_package_profile_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER file_groups_touch_package_profile_trigger AFTER INSERT OR DELETE OR UPDATE ON public.file_groups FOR EACH ROW EXECUTE PROCEDURE public.file_groups_touch_package_profile();
 
 
 --
@@ -8189,6 +7993,16 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180226204915'),
 ('20180319160347'),
 ('20180515194345'),
-('20180730184829');
+('20180730184829'),
+('20180820162256'),
+('20180820163520'),
+('20180820172658'),
+('20180820175521'),
+('20180820181615'),
+('20180820185950'),
+('20180820192218'),
+('20180820194539'),
+('20180820200518'),
+('20180820214650');
 
 

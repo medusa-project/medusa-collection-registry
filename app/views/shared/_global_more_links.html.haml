@@ -16,7 +16,6 @@
           %ul
             %li= link_to 'Producers', producers_path
             %li= link_to 'Access Systems', access_systems_path
-            %li= link_to 'Packages', package_profiles_path
             %li= link_to 'File Formats', file_formats_path
             %li= link_to 'File Formats (XML)', file_formats_path(format: :xml)
             %li= link_to 'File Rendering Profiles', file_format_profiles_path
@@ -34,9 +33,7 @@
         .col-sm-4
           %strong Quick Links:
           %ul
-            %li= link_to 'Deposit Files', static_page_path(key: :deposit_files)
             %li= link_to 'Create a Collection', new_collection_path
-            %li= link_to 'Request Training', static_page_path(key: :request_training)
             %li= link_to 'Feedback', static_page_path(key: :feedback)
           %strong Learn More:
           %ul
@@ -46,11 +43,12 @@
             %li= link_to 'Wiki', wiki_url
             %li= link_to 'Help', static_page_path(key: :help)
             %li= link_to 'FAQ', faq_url
-        .col-sm-4
-          %strong Frequently Visited Collections:
-          %ul
-            %li= link_to 'IDEALS', repository_path(42)
-            %li= link_to 'RBML', repository_path(23)
-            %li= link_to 'Sousa Archives'.html_safe, repository_path(31)
-            %li= link_to 'University Archives'.html_safe, repository_path(22)
+        -# We're removing this as a trial
+        -#.col-sm-4
+        -#  %strong Frequently Visited Collections:
+        -#  %ul
+        -#    %li= link_to 'IDEALS', repository_path(42)
+        -#    %li= link_to 'RBML', repository_path(23)
+        -#    %li= link_to 'Sousa Archives'.html_safe, repository_path(31)
+        -#    %li= link_to 'University Archives'.html_safe, repository_path(22)
 
