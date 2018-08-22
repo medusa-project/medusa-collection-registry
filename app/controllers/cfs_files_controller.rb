@@ -47,19 +47,22 @@ class CfsFilesController < ApplicationController
       #basic auth
       redirect_to(login_path) unless basic_auth?
     end
-    @file.with_input_io do |io|
-      response.headers["Content-Type"] = safe_content_type(@file)
-      response.headers["Content-Disposition"] = "attachment; #{@file.name}"
-      io.binmode if io.is_a?(StringIO)
-      begin
-        while buffer = io.read(128.kilobytes)
-          break if buffer.blank?
-          response.stream.write(buffer)
+    begin
+      @file.with_input_io do |io|
+        response.headers["Content-Type"] = safe_content_type(@file)
+        response.headers["Content-Disposition"] = "attachment; #{@file.name}"
+        io.binmode if io.is_a?(StringIO)
+        begin
+          while buffer = io.read(128.kilobytes)
+            break if buffer.blank?
+            response.stream.write(buffer)
+          end
+        ensure
+          io.close
         end
-      ensure
-        io.close
-        response.stream.close
       end
+    ensure
+      response.stream.close
     end
   end
 
