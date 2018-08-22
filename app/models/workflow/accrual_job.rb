@@ -93,7 +93,8 @@ class Workflow::AccrualJob < Workflow::Base
     end
     workflow_accrual_directories.each do |directory|
       #get the keys in this directory relative to the accrual prefix
-      keys = root.unprefixed_subtree_keys(File.join(prefix, directory.name)).collect do |unprefixed_key|
+      directory_key = prefix.blank? ? directory.name : File.join(prefix, directory.name)
+      keys = root.unprefixed_subtree_keys(directory_key).collect do |unprefixed_key|
         File.join(directory.name, unprefixed_key)
       end
       size = 0
