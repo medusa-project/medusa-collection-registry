@@ -50,7 +50,7 @@ class CfsFilesController < ApplicationController
     begin
       @file.with_input_io do |io|
         response.headers["Content-Type"] = safe_content_type(@file)
-        response.headers["Content-Disposition"] = "attachment; #{@file.name}"
+        response.headers["Content-Disposition"] = %Q(attachment; filename="#{@file.name}"; filename*=utf-8"#{URI.encode(@file.name)}")
         io.binmode if io.is_a?(StringIO)
         begin
           while buffer = io.read(128.kilobytes)
@@ -70,7 +70,7 @@ class CfsFilesController < ApplicationController
     authorize! :download, @file.file_group
     @file.with_input_io do |io|
       response.headers["Content-Type"] = safe_content_type(@file)
-      response.headers["Content-Disposition"] = "inline; #{@file.name}"
+      response.headers["Content-Disposition"] = %Q(inline; filename="#{@file.name}"; filename*=utf-8"#{URI.encode(@file.name)}")
       io.binmode if io.is_a?(StringIO)
       begin
         while buffer = io.read(128.kilobytes)
