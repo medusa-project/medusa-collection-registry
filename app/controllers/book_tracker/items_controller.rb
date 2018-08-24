@@ -7,8 +7,10 @@ module BookTracker
     before_action :setup
 
     def setup
-      @allowed_params = params.permit(:action, :controller, :format, :ht, :ia,
-                                      :id, :page, :q, in: [], ni: [])
+      @allowed_params = params.permit(:action, :controller, :format,
+                                      :ht, :ia, :id, :last_modified_after,
+                                      :last_modified_before, :page, :q,
+                                      in: [], ni: [])
     end
 
     ##
@@ -33,7 +35,7 @@ module BookTracker
 
       # query (q=)
       query = @allowed_params[:q]
-      unless query.blank?
+      if query.present?
         lines = query.strip.split("\n")
         # If >1 line, assume a list of bib and/or object IDs.
         if lines.length > 1
@@ -72,8 +74,8 @@ module BookTracker
       if @allowed_params[:in].respond_to?(:each) and
           @allowed_params[:ni].respond_to?(:each) and
           (@allowed_params[:in] & @allowed_params[:ni]).length > 0
-        flash[:error] = 'Cannot search for items that are both in and not in '\
-        'the same service.'
+        flash['error'] = 'Cannot search for items that are both in and not in '\
+            'the same service.'
       else
         if @allowed_params[:in].respond_to?(:each)
           @allowed_params[:in].each do |service|
@@ -101,6 +103,16 @@ module BookTracker
         end
 
         @items = @items.order(:title)
+      end
+
+      # These are used for harvesting.
+      if @allowed_params[:last_modified_after].present?
+        @items = @items.where('updated_at >= ?',
+                              Time.at(@allowed_params[:last_modified_after].to_i))
+      end
+      if @allowed_params[:last_modified_before].present?
+        @items = @items.where('updated_at <= ?',
+                              Time.at(@allowed_params[:last_modified_before].to_i))
       end
 
       page = @allowed_params[:page].to_i
