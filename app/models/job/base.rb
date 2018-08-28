@@ -38,6 +38,9 @@ class Job::Base < ApplicationRecord
     self.delayed_jobs.select{|j| j.attempts > 0}.each do |job|
       job.attempts = job.attempts - 1
       job.run_at = Time.now
+      job.locked_at = nil
+      job.locked_by = nil
+      job.last_error = ''
       job.save!
     end
   end
