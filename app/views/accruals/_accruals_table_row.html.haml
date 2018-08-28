@@ -9,7 +9,10 @@
       [#{accrual_job.collection.external_id}]
   %td= accrual_job.user.net_id
   %td= link_to(fa_icon('eye'), view_report_workflow_accrual_job_path(accrual_job), remote: true, title: 'View Report', class: 'btn btn-default btn-xs') if accrual_job.has_report?
-  %td{id: "accrual_status_#{accrual_job.id}", class: accrual_conflict_indicator_class(accrual_job)}= accrual_job.status_label
+  %td{id: "accrual_status_#{accrual_job.id}", class: accrual_conflict_indicator_class(accrual_job)}
+    #{accrual_job.status_label}
+    - if accrual_job.state == 'copying'
+      (#{accrual_job.workflow_accrual_keys.count})
   %td.dropdown{id: "accrual_actions_#{accrual_job.id}"}
     - if accrual_job.approvable_by?(current_user)
       %a.btn.btn-default.btn-xs.dropdown-toggle{type: 'button', 'data-toggle' => 'dropdown', 'aria-expanded' => false, href: '#', title: 'Actions'}
