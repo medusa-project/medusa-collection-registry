@@ -147,19 +147,31 @@ class Workflow::AccrualJob < Workflow::Base
     source_root, source_prefix = staging_root_and_prefix
     target_prefix = cfs_directory.relative_path
     target_root = Application.storage_manager.main_root
-    mutex = Mutex.new
-    workflow_accrual_keys.find_in_batches(batch_size: 100) do |key_batch|
-      Parallel.each(key_batch, in_threads: 5) do |key|
-        source_key = File.join(source_prefix, key.key)
-        target_key = File.join(target_prefix, key.key)
-        if overwrite or !target_root.exist?(target_key)
-          target_root.copy_content_to(target_key, source_root, source_key)
-        end
-        mutex.synchronize do
-          key.destroy!
-        end
+    #TODO - this could run through Parallel if advisable -
+    # however, with the try below I get database connection issues
+    # could not obtain a connectino from the pool withing 5.000 seconds ...
+    # all pooled connections were in use
+    # So I'm going to revert for now
+    workflow_accrual_keys.find_each do |key|
+      source_key = File.join(source_prefix, key.key)
+      target_key = File.join(target_prefix, key.key)
+      if overwrite or !target_root.exist?(target_key)
+        target_root.copy_content_to(target_key, source_root, source_key)
       end
+      key.destroy!
     end
+    # workflow_accrual_keys.find_in_batches(batch_size: 100) do |key_batch|
+    #   Parallel.each(key_batch, in_threads: 5) do |key|
+    #     source_key = File.join(source_prefix, key.key)
+    #     target_key = File.join(target_prefix, key.key)
+    #     if overwrite or !target_root.exist?(target_key)
+    #       target_root.copy_content_to(target_key, source_root, source_key)
+    #     end
+    #     mutex.synchronize do
+    #       key.destroy!
+    #     end
+    #   end
+    # end
     if workflow_accrual_keys.reload.count.zero?
       be_in_state_and_requeue('assessing')
     else
