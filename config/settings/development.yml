@@ -158,7 +158,9 @@ storage:
     :name: project_staging
     :type: filesystem
     :path: /project/staging/directory
-  tmp: /Users/hding2/repos/medusa-collection-registry/tmp
+  #location to use for temporary storage - note on S3 EC2 machines you might
+  #want to put this on an EFS volume, as their local storage is typically small.
+  tmpdir: /Users/hding2/repos/medusa-collection-registry/tmp
   #For each root the name gives a tag to be shown to start in the browser when accruing
   accrual:
     - :name: staging-1
