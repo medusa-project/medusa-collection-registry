@@ -226,6 +226,8 @@ class CfsDirectory < ApplicationRecord
 
   def run_initial_assessment(recursive: true)
     make_initial_entries
+    #TODO I might like to do this with Parallel, but my attempts have hung the tests for
+    # reasons that are unclear to me.
     self.cfs_files.reload.each {|cfs_file| cfs_file.run_initial_assessment}
     self.subdirectories.reload.each {|subdirectory| subdirectory.schedule_assessment_job} if recursive
     Sunspot.commit
