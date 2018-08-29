@@ -113,6 +113,7 @@ module BookTracker
           hathitrust_url: self.exists_in_hathitrust ?
               self.hathitrust_handle : nil,
           hathitrust_rights: self.hathitrust_rights,
+          hathitrust_access: self.hathitrust_access,
           internet_archive_identifier: self.ia_identifier,
           internet_archive_url: self.exists_in_internet_archive ?
               self.internet_archive_url : nil,
