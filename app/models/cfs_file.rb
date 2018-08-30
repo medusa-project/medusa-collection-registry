@@ -94,8 +94,20 @@ class CfsFile < ApplicationRecord
 
   #wrap the storage root's ability to yield a file path having the appropriate content in it
   def with_input_file
-    storage_root.with_input_file(self.key, tmp_dir: Application.storage_manager.tmpdir) do |file|
+    storage_root.with_input_file(self.key, tmp_dir: tmpdir_for_with_input_file) do |file|
       yield file
+    end
+  end
+
+  #Set this up so that we use local storage for small files, for some definition of small
+  # might want to extract this elsewhere so that is generally available and easy to make
+  # robust for whatever application.
+  def tmpdir_for_with_input_file
+    expected_size = size || storage_root.size(key)
+    if expected_size > 250.megabytes
+      Application.storage_manager.tmpdir
+    else
+      Dir.tmpdir
     end
   end
 

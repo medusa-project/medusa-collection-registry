@@ -160,6 +160,8 @@ storage:
     :path: /project/staging/directory
   #location to use for temporary storage - note on S3 EC2 machines you might
   #want to put this on an EFS volume, as their local storage is typically small.
+  #Note that we have code to use local storage for 'small' files, whatever that
+  #means, that will eventually be configurable
   tmpdir: /Users/hding2/repos/medusa-collection-registry/tmp
   #For each root the name gives a tag to be shown to start in the browser when accruing
   accrual:
