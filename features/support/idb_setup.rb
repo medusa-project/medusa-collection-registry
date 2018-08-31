@@ -4,11 +4,11 @@ module IdbTestHelper
   module_function
 
   def idb_ingest_message
-    {'operation' => 'ingest', 'staging_path' => 'prefix/test_dir/file.txt'}
+    {'operation' => 'ingest', 'staging_path' => 'prefix/test_dir/file.txt', 'pass_through' => {'key' => 'some value'}}
   end
 
   def idb_delete_message
-    {'operation' => 'delete', 'uuid' => 'c3712760-1183-0134-1d5b-0050569601ca-b'}
+    {'operation' => 'delete', 'uuid' => 'c3712760-1183-0134-1d5b-0050569601ca-b', 'pass_through' => {'key' => 'some value'}}
   end
 
   def staging_path

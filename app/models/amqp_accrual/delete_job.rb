@@ -1,13 +1,14 @@
 class AmqpAccrual::DeleteJob < Job::Base
   include AmqpConnector
   use_amqp_connector :medusa
+  serialize :incoming_message
 
   def self.create_for(client, message)
     unless AmqpAccrual::Config.allow_delete?(client)
       send_delete_not_permitted_message(client, message)
       return
     end
-    job = self.new(cfs_file_uuid: message['uuid'], client: client)
+    job = self.new(incoming_message: message, client: client)
     job.save!
     Delayed::Job.enqueue(job, queue: AmqpAccrual::Config.delayed_job_queue(client), priority: 30)
   rescue Exception => e
@@ -33,6 +34,14 @@ class AmqpAccrual::DeleteJob < Job::Base
     raise
   end
 
+  def cfs_file_uuid
+    incoming_message['uuid']
+  end
+
+  def pass_through
+    incoming_message['pass_through']
+  end
+
   protected
 
   def destroy_file_and_answer(cfs_file)
@@ -43,7 +52,7 @@ class AmqpAccrual::DeleteJob < Job::Base
 
   def self.unknown_error_message(incoming_message, error)
     {operation: 'delete', uuid: incoming_message['uuid'],
-     status: 'error', error: "Unknown error: #{error}"}
+     status: 'error', error: "Unknown error: #{error}", pass_through: incoming_message['pass_through']}
   end
 
   def self.send_unknown_error_message(client, incoming_message, error)
@@ -52,7 +61,7 @@ class AmqpAccrual::DeleteJob < Job::Base
 
   def self.delete_not_permitted_message(incoming_message)
     {operation: 'delete', uuid: incoming_message['uuid'],
-     status: 'error', error: 'Deletion is not allowed for this file group.'}
+     status: 'error', error: 'Deletion is not allowed for this file group.', pass_through: incoming_message['pass_through']}
   end
 
   def self.send_delete_not_permitted_message(client, incoming_message)
@@ -61,7 +70,7 @@ class AmqpAccrual::DeleteJob < Job::Base
 
   def wrong_file_group_message
     {operation: 'delete', uuid: cfs_file_uuid,
-    status: 'error', error: 'File is not in the allowed file group'}
+    status: 'error', error: 'File is not in the allowed file group', pass_through: pass_through}
   end
 
   def send_wrong_file_group_message
@@ -70,7 +79,7 @@ class AmqpAccrual::DeleteJob < Job::Base
 
   def file_not_found_message
     {operation: 'delete', uuid: cfs_file_uuid,
-     status: 'error', error: 'File not found'}
+     status: 'error', error: 'File not found', pass_through: pass_through}
   end
 
   def send_file_not_found_message
@@ -79,7 +88,7 @@ class AmqpAccrual::DeleteJob < Job::Base
 
   def success_message
     {operation: 'delete', uuid: cfs_file_uuid,
-     status: 'ok'}
+     status: 'ok', pass_through: pass_through}
   end
 
   def send_success_message

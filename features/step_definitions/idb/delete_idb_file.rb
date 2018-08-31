@@ -4,7 +4,14 @@ end
 
 Then(/^there should be an IDB delete delayed job reflecting the delete request$/) do
   message = IdbTestHelper.idb_delete_message
-  expect(AmqpAccrual::DeleteJob.find_by(client: 'idb', cfs_file_uuid: message['uuid'])).to be_truthy
+  expect(find_amqp_delete_job('idb', message)).to be_truthy
+end
+
+def find_amqp_delete_job(client, message)
+  jobs = AmqpAccrual::DeleteJob.where(client: client).all
+  jobs.detect do |job|
+    job.incoming_message == message
+  end
 end
 
 Given(/^there is a valid IDB delete delayed job$/) do
@@ -42,6 +49,7 @@ Then(/^Medusa should have sent an error return message to IDB matching '(.*)'$/)
       expect(message['uuid']).to eq(IdbTestHelper.idb_delete_message['uuid'])
     end
     expect(message['error']).to match(text)
+    expect(message['pass_through']['key']).to eq('some value')
   end
 end
 
@@ -80,5 +88,6 @@ And(/^Medusa should have sent a valid delete return message to IDB$/) do
     expect(message['operation']).to eq('delete')
     expect(message['status']).to eq('ok')
     expect(message['uuid']).to eq(@idb_uuid_to_delete)
+    expect(message['pass_through']['key']).to eq('some value')
   end
 end

@@ -1391,10 +1391,10 @@ ALTER SEQUENCE public.amazon_backups_id_seq OWNED BY public.amazon_backups.id;
 
 CREATE TABLE public.amqp_accrual_delete_jobs (
     id integer NOT NULL,
-    cfs_file_uuid character varying NOT NULL,
     client character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    incoming_message text
 );
 
 
@@ -4008,7 +4008,8 @@ CREATE VIEW public.view_file_group_dashboard_info AS
     c.id AS collection_id,
     c.title AS collection_title,
     r.id AS repository_id,
-    r.title AS repository_title
+    r.title AS repository_title,
+    c.external_id AS collection_external_id
    FROM public.file_groups fg,
     public.collections c,
     public.repositories r,
@@ -5937,13 +5938,6 @@ CREATE UNIQUE INDEX index_amazon_backups_on_cfs_directory_id_and_date ON public.
 --
 
 CREATE INDEX index_amazon_backups_on_updated_at ON public.amazon_backups USING btree (updated_at);
-
-
---
--- Name: index_amqp_accrual_delete_jobs_on_cfs_file_uuid; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_amqp_accrual_delete_jobs_on_cfs_file_uuid ON public.amqp_accrual_delete_jobs USING btree (cfs_file_uuid);
 
 
 --
@@ -8003,6 +7997,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180820192218'),
 ('20180820194539'),
 ('20180820200518'),
-('20180820214650');
+('20180820214650'),
+('20180831195356');
 
 
