@@ -134,13 +134,14 @@ class CfsFile < ApplicationRecord
     #This won't guarantee that we rerun if the file has changed, but it should pick up most of the cases. mtime only seems to go
     #down to the second
     if self.mtime.blank? or (external_mtime > self.mtime) or (external_size != self.size)
+      self.size = external_size
+      self.mtime = external_mtime
+      computed_content_type = with_input_file do |input_file|
+        (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(input_file) rescue 'application/octet-stream')
+      end
+      self.set_fixity(self.storage_md5_sum)
       transaction do
-        self.size = external_size
-        self.mtime = external_mtime
-        with_input_file do |input_file|
-          self.content_type_name = (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(input_file) rescue 'application/octet-stream')
-        end
-        self.set_fixity(self.storage_md5_sum)
+        self.content_type_name = computed_content_type
         self.save!
       end
     end
