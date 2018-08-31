@@ -1424,10 +1424,10 @@ ALTER SEQUENCE public.amqp_accrual_delete_jobs_id_seq OWNED BY public.amqp_accru
 CREATE TABLE public.amqp_accrual_ingest_jobs (
     id integer NOT NULL,
     client character varying NOT NULL,
-    staging_path character varying NOT NULL,
     uuid character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    incoming_message text
 );
 
 
@@ -5773,13 +5773,6 @@ ALTER TABLE ONLY public.workflow_project_item_ingests
 
 
 --
--- Name: amqp_accrual_ingest_jobs_unique_client_and_path; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX amqp_accrual_ingest_jobs_unique_client_and_path ON public.amqp_accrual_ingest_jobs USING btree (client, staging_path);
-
-
---
 -- Name: cfs_directory_parent_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7998,6 +7991,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180820194539'),
 ('20180820200518'),
 ('20180820214650'),
-('20180831195356');
+('20180831195356'),
+('20180831201248');
 
 

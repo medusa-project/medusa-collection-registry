@@ -7,16 +7,21 @@ module IdbTestHelper
     {'operation' => 'ingest', 'staging_path' => 'prefix/test_dir/file.txt', 'pass_through' => {'key' => 'some value'}}
   end
 
+  def idb_ingest_message_new_syntax
+    {'operation' => 'ingest', 'staging_key' => 'prefix/test_dir/file.txt', 'target_key' => 'another/location/content.txt',
+     'pass_through' => {'key' => 'some value'}}
+  end
+
   def idb_delete_message
     {'operation' => 'delete', 'uuid' => 'c3712760-1183-0134-1d5b-0050569601ca-b', 'pass_through' => {'key' => 'some value'}}
   end
 
-  def staging_path
-    idb_ingest_message['staging_path']
+  def staging_key(message)
+    message['staging_key'] || message ['staging_path']
   end
 
-  def stage_content
-    stage_content_to(staging_path, 'Staging text')
+  def stage_content(message)
+    stage_content_to(staging_key(message), 'Staging text')
   end
 
   def stage_content_to(key, content_string)

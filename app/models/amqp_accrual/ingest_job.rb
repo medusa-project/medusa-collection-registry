@@ -1,12 +1,11 @@
-require 'open3'
-
 class AmqpAccrual::IngestJob < Job::Base
   include AmqpConnector
   use_amqp_connector :medusa
+  serialize :incoming_message
 
   def self.create_for(client, message)
-    job = self.new(staging_path: message['staging_path'], client: client)
-    if find_by(staging_path: job.staging_path, client: client) or job.content_exists? or job.staging_path.blank?
+    job = self.new(incoming_message: message, client: client)
+    if job.content_exists? or job.staging_key.blank?
       Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Duplicate file or blank path."
       send_duplicate_file_message(client, message)
     else
@@ -31,68 +30,74 @@ class AmqpAccrual::IngestJob < Job::Base
   end
 
   def content_exists?
-    target_root.exist?(target_key)
+    target_root.exist?(full_target_key)
+  end
+
+  def staging_key
+    incoming_message['staging_key'] || incoming_message['staging_path']
   end
 
   protected
+
+  def pass_through
+    incoming_message['pass_through']
+  end
 
   def ensure_uuid
     self.uuid ||= MedusaUuid.generate
     self.save!
   end
 
-  #this is the path of the cfs subdirectory relative to the root cfs directory
-  def target_relative_cfs_subdirectory
-    File.dirname(staging_path.split('/').drop(1).join('/'))
-  end
-
-  #this is the path of the cfs file relative to the root cfs directory
-  def target_relative_cfs_file
-    File.join(target_relative_cfs_subdirectory, file_basename)
-  end
-
-  def file_basename
-    File.basename(staging_path)
+  def target_file_basename
+    File.basename(relative_target_key)
   end
 
   def target_root
     Application.storage_manager.main_root
   end
 
-  def target_key
-    File.join(AmqpAccrual::Config.cfs_directory(client).relative_path, target_relative_cfs_file)
+  def cfs_directory
+    AmqpAccrual::Config.cfs_directory(client)
+  end
+
+  def relative_target_key
+    incoming_message['target_key'] || File.join(staging_key.split('/').drop(1))
+  end
+
+  def relative_target_dirname
+    File.dirname(relative_target_key)
+  end
+
+  def full_target_key
+    File.join(cfs_directory.relative_path, relative_target_key)
   end
 
   def source_root
     Application.storage_manager.amqp_root_at(self.client)
   end
 
-  def source_key
-    staging_path
-  end
-
   def ensure_cfs_directory_parents
-    AmqpAccrual::Config.cfs_directory(client).ensure_directory_at_relative_path(target_relative_cfs_subdirectory)
+    cfs_directory.ensure_directory_at_relative_path(relative_target_dirname)
   end
 
   def copy_content
-    target_root.copy_content_to(target_key, source_root, source_key)
+    target_root.copy_content_to(full_target_key, source_root, staging_key)
   end
 
   def create_cfs_file
     transaction do
-      file = target_parent_cfs_directory.cfs_files.find_or_create_by!(name: file_basename)
+      file = target_parent_cfs_directory.cfs_files.find_or_create_by!(name: target_file_basename)
       file.create_amqp_accrual_event
       file.uuid = uuid
     end
   end
 
   def target_parent_cfs_directory
-    AmqpAccrual::Config.cfs_directory(client).find_directory_at_relative_path(target_relative_cfs_subdirectory)
+    cfs_directory.find_directory_at_relative_path(relative_target_dirname)
   end
 
   def do_assessment
-    target_parent_cfs_directory.cfs_files.find_by(name: file_basename).try(:run_initial_assessment)
+    target_parent_cfs_directory.cfs_files.find_by(name: target_file_basename).try(:run_initial_assessment)
     Sunspot.commit
   end
 
@@ -101,8 +106,9 @@ class AmqpAccrual::IngestJob < Job::Base
   end
 
   def return_message
-    {operation: 'ingest', staging_path: staging_path,
-     medusa_path: target_relative_cfs_file, status: 'ok', uuid: uuid}.clone.tap do |message|
+    {operation: 'ingest', staging_path: incoming_message['staging_path'], staging_key: incoming_message['staging_key'],
+     pass_through: pass_through,
+     medusa_path: relative_target_key, status: 'ok', uuid: uuid}.clone.tap do |message|
       message.merge!(return_directory_information) if AmqpAccrual::Config.return_directory_information?(client)
     end
   end
