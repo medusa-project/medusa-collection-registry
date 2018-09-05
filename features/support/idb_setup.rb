@@ -17,7 +17,7 @@ module IdbTestHelper
   end
 
   def staging_key(message)
-    message['staging_key'] || message ['staging_path']
+    message['staging_key'] || message['staging_path']
   end
 
   def stage_content(message)
