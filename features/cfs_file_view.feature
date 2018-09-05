@@ -62,17 +62,15 @@ Feature: Viewing CFS file information and content
     And I click on 'View'
     Then I should have viewed the fixture file 'grass.jpg'
 
-  Scenario: Deny view to users
+  Scenario: No view link for users
     Given I relogin as a user
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And I click on 'View'
-    Then I should be unauthorized
+    Then I should not see a 'View' link
 
-  Scenario: Deny download to users
+  Scenario: No download link for users
     Given I relogin as a user
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And I click on 'Download'
-    Then I should be unauthorized
+    Then I should not see a 'Download' link
 
   Scenario: Deny download and view permissions to public and users
     Then deny object permission on the cfs file with name 'grass.jpg' to users for action with redirection:
