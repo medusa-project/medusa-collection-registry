@@ -18,7 +18,8 @@
           = fa_icon('download')
           %span.caret
         %ul.dropdown-menu.dropdown-menu-right
-          %li= link_to 'Download', download_cfs_file_path(@file)
+          - if safe_can?(:download, @file.file_group)
+            %li= link_to 'Download', cfs_file_download_link(@file)
           %li= link_to 'JSON', cfs_file_path(@file, format: :json)
       = view_button(view_cfs_file_path(@file))
       - if @file.file_format_test.present?

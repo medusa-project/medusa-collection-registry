@@ -6,4 +6,8 @@ module CfsFilesHelper
     end
   end
 
+  def cfs_file_download_link(cfs_file)
+    download_cfs_file_path(cfs_file)
+  end
+
 end
