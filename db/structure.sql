@@ -1608,7 +1608,8 @@ CREATE TABLE public.book_tracker_items (
     raw_marcxml text,
     exists_in_google boolean DEFAULT false,
     source_path text,
-    hathitrust_rights character varying
+    hathitrust_rights character varying,
+    hathitrust_access character varying
 );
 
 
@@ -6032,6 +6033,13 @@ CREATE INDEX index_book_tracker_items_on_exists_in_internet_archive ON public.bo
 
 
 --
+-- Name: index_book_tracker_items_on_hathitrust_access; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_book_tracker_items_on_hathitrust_access ON public.book_tracker_items USING btree (hathitrust_access);
+
+
+--
 -- Name: index_book_tracker_items_on_ia_identifier; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7991,6 +7999,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180820194539'),
 ('20180820200518'),
 ('20180820214650'),
+('20180829135002'),
 ('20180831195356'),
 ('20180831201248');
 
