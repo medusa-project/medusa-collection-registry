@@ -33,6 +33,18 @@ module CfsFilesHelper
     end
   end
 
+  def cfs_file_content_preview_link(cfs_file)
+    case cfs_file.storage_root.root_type
+    when :filesystem
+      preview_content_cfs_file_path(cfs_file)
+    when :s3
+      cfs_file.storage_root.presigned_get_url(cfs_file.key, response_content_disposition: disposition('inline', cfs_file),
+                                              response_content_type: safe_content_type(cfs_file))
+    else
+      raise "Unrecognized storage root type #{cfs_file.storage_root.type}"
+    end
+  end
+
   private
 
   def disposition(type, cfs_file)
