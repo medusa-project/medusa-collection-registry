@@ -61,6 +61,8 @@
           %dd= @item.oclc_number
           %dt HathiTrust Rights
           %dd= @item.exists_in_hathitrust ? readable_hathitrust_rights(@item) : 'N/A'
+          %dt HathiTrust Access
+          %dd= @item.exists_in_hathitrust ? @item.hathitrust_access : 'N/A'
 
 #accordion.panel-group
   .panel.panel-default

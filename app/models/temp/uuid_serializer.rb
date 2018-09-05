@@ -32,10 +32,17 @@ module Temp
       end
     end
 
+    def destroy_uuid(uuid)
+      medusa_uuid = MedusaUuid.find_by(uuid: uuid)
+      medusa_uuid.destroy! if medusa_uuid
+    end
+
     def unserialize(file_name)
       uuids = JSON.parse(File.read(file_name))
-      file_group.uuid = uuids['file_group']
-      file_group.collection.uuid = uuids['collection']
+      destroy_uuid(uuids['file_group'])
+      file_group.uuid = uuids['file_group'] 
+      destroy_uuid(uuids['collection'])
+      file_group.collection.uuid = uuids['collection'] 
       root_directory = file_group.cfs_directory
       root_path = root_directory.relative_path
       File.open('errors.txt', 'w') do |errors|
@@ -43,6 +50,7 @@ module Temp
           FileGroup.transaction do
             new_uuid = uuids['directories'][path_from_root(directory.relative_path, root_path)]
             if new_uuid
+              destroy_uuid(new_uuid)
               directory.uuid = new_uuid
             else
               errors.puts "Uuid not found for directory #{directory.relative_path}"
@@ -53,6 +61,7 @@ module Temp
           FileGroup.transaction do
             new_uuid = uuids['files'][path_from_root(file.relative_path, root_path)]
             if new_uuid
+              destroy_uuid(new_uuid)
               file.uuid = new_uuid
             else
               errors.puts "Uuid not found for file #{file.relative_path}"
