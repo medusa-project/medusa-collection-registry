@@ -162,6 +162,9 @@ GEM
     capybara-email (3.0.1)
       capybara (>= 2.4, < 4.0)
       mail
+    capybara-mechanize (1.11.0)
+      capybara (>= 2.4.4, < 4)
+      mechanize (~> 2.7.0)
     chartkick (3.0.1)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
@@ -233,6 +236,8 @@ GEM
       sinatra (>= 1.4.4)
     diff-lcs (1.3)
     docile (1.3.1)
+    domain_name (0.5.20180417)
+      unf (>= 0.0.5, < 1.0.0)
     draper (3.0.1)
       actionpack (~> 5.0)
       activemodel (~> 5.0)
@@ -301,6 +306,8 @@ GEM
       haml (>= 4.0, < 6)
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
     httparty (0.16.2)
       multi_xml (>= 0.5.2)
     i18n (1.1.0)
@@ -333,6 +340,15 @@ GEM
       mini_mime (>= 0.1.1)
     marcel (0.3.2)
       mimemagic (~> 0.3.2)
+    mechanize (2.7.6)
+      domain_name (~> 0.5, >= 0.5.1)
+      http-cookie (~> 1.0)
+      mime-types (>= 1.17.2)
+      net-http-digest_auth (~> 1.1, >= 1.1.1)
+      net-http-persistent (>= 2.5.2)
+      nokogiri (~> 1.6)
+      ntlm-http (~> 0.1, >= 0.1.1)
+      webrobots (>= 0.0.9, < 0.2)
     method_source (0.9.0)
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
@@ -346,6 +362,8 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     mustermann (1.0.3)
+    net-http-persistent (3.0.0)
+      connection_pool (~> 2.2)
     net-ldap (0.16.1)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -353,6 +371,7 @@ GEM
     nio4r (2.3.1)
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
+    ntlm-http (0.1.1)
     oink (0.10.1)
       activerecord
       hodel_3000_compliant_logger
@@ -543,11 +562,15 @@ GEM
       execjs (>= 0.3.0, < 3)
     underscore-rails (1.8.3)
     underscore-string-rails (0.0.2)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.5)
     uuid (2.3.9)
       macaddr (~> 1.0)
     valid_email (0.1.0)
       activemodel
       mail (>= 2.6.1)
+    webrobots (0.1.2)
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
@@ -578,6 +601,7 @@ DEPENDENCIES
   capistrano-yarn
   capybara
   capybara-email
+  capybara-mechanize
   chartkick
   chronic
   ckeditor

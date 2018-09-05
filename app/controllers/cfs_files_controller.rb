@@ -47,40 +47,15 @@ class CfsFilesController < ApplicationController
       #basic auth
       redirect_to(login_path) unless basic_auth?
     end
-    begin
-      @file.with_input_io do |io|
-        response.headers["Content-Type"] = safe_content_type(@file)
-        response.headers["Content-Disposition"] = %Q(attachment; filename="#{@file.name}"; filename*=utf-8"#{URI.encode(@file.name)}")
-        io.binmode if io.is_a?(StringIO)
-        begin
-          while buffer = io.read(128.kilobytes)
-            break if buffer.blank?
-            response.stream.write(buffer)
-          end
-        ensure
-          io.close
-        end
-      end
-    ensure
-      response.stream.close
+    @file.with_input_file do |input_file|
+      send_file input_file, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
     end
   end
 
   def view
     authorize! :download, @file.file_group
-    @file.with_input_io do |io|
-      response.headers["Content-Type"] = safe_content_type(@file)
-      response.headers["Content-Disposition"] = %Q(inline; filename="#{@file.name}"; filename*=utf-8"#{URI.encode(@file.name)}")
-      io.binmode if io.is_a?(StringIO)
-      begin
-        while buffer = io.read(128.kilobytes)
-          break if buffer.blank?
-          response.stream.write(buffer)
-        end
-      ensure
-        io.close
-        response.stream.close
-      end
+    @file.with_input_file do |input_file|
+      send_file input_file, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
     end
   end
 

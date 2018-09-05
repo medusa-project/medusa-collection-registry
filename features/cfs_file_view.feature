@@ -1,3 +1,4 @@
+@mechanize
 Feature: Viewing CFS file information and content
   In order to work with bit level files
   As a librarian
@@ -29,6 +30,7 @@ Feature: Viewing CFS file information and content
 
   Scenario: Download cfs file
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
+    #And I wait 120 seconds
     And I click on 'Download'
     Then I should have downloaded the fixture file 'grass.jpg'
 
