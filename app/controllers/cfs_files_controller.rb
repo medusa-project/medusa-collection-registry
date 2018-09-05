@@ -51,10 +51,10 @@ class CfsFilesController < ApplicationController
       redirect_to(login_path) unless basic_auth?
       if @file.storage_root.root_type == :filesystem
         @file.with_input_file do |input_file|
-          send_file input_file, type: safe_content_type(@file), d isposition: 'attachment', filename: @file.name
+          send_file input_file, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
         end
       else
-        re  direct_to(CfsFilesHelper.cfs_file_download_link(@file))
+        re direct_to(CfsFilesHelper.cfs_file_download_link(@file))
       end
     end
 
