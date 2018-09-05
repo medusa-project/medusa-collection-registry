@@ -1,5 +1,7 @@
 module CfsFilesHelper
 
+  module_function
+
   def text_preview(cfs_file)
     cfs_file.with_input_io do |io|
       io.readline(nil, 500)
@@ -44,8 +46,6 @@ module CfsFilesHelper
       raise "Unrecognized storage root type #{cfs_file.storage_root.type}"
     end
   end
-
-  private
 
   def disposition(type, cfs_file)
     %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8"#{URI.encode(cfs_file.name)}")
