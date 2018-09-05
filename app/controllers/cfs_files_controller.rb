@@ -54,7 +54,7 @@ class CfsFilesController < ApplicationController
           send_file input_file, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
         end
       else
-        re direct_to(CfsFilesHelper.cfs_file_download_link(@file))
+        redirect_to(CfsFilesHelper.cfs_file_download_link(@file))
       end
     end
 
