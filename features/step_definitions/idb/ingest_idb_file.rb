@@ -83,6 +83,7 @@ And(/^Medusa should have sent an ingest return message to IDB with new message s
     expect(message['staging_key']).to eq(IdbTestHelper.staging_key(message))
     expect(message['item_root_dir']).to be_truthy
     expect(message['medusa_path']).to eq(IdbTestHelper.idb_ingest_message_new_syntax['target_key'])
+    expect(message['medusa_key']).to eq(IdbTestHelper.idb_ingest_message_new_syntax['target_key'])
     expect(CfsFile.find_by(name: 'file.txt')).to be_falsey
     expect(CfsFile.find_by(name: 'content.txt')).to be_truthy
     expect(message['pass_through']['key']).to eq('some value')

@@ -108,7 +108,7 @@ class AmqpAccrual::IngestJob < Job::Base
   def return_message
     {operation: 'ingest', staging_path: incoming_message['staging_path'], staging_key: incoming_message['staging_key'],
      pass_through: pass_through,
-     medusa_path: relative_target_key, status: 'ok', uuid: uuid}.clone.tap do |message|
+     medusa_path: relative_target_key, medusa_key: relative_target_key, status: 'ok', uuid: uuid}.clone.tap do |message|
       message.merge!(return_directory_information) if AmqpAccrual::Config.return_directory_information?(client)
     end
   end
