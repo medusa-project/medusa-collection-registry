@@ -49,17 +49,9 @@ module ApplicationHelper
   end
 
   def wiki_link(label)
-    fa_icon_link_to label, 'group', wiki_url, target: '_blank'
+    fa_icon_link_to label, 'group', Settings.medusa.wiki_url, target: '_blank'
   end
-
-  def wiki_url
-    Settings.medusa.wiki_url
-  end
-
-  def faq_url
-    Settings.medusa.faq_url
-  end
-
+  
   def cache_key_for_all(klass)
     count = klass.cache_count
     max_updated_at = klass.maximum(:updated_at) rescue nil

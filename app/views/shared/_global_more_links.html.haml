@@ -40,9 +40,9 @@
             %li= link_to 'Policies', static_page_path(key: :policies)
             %li= link_to 'Technology', static_page_path(key: :technology)
             %li= link_to 'Staff', static_page_path(key: :staff)
-            %li= link_to 'Wiki', wiki_url
+            %li= link_to 'Wiki', Settings.medusa.wiki_url
             %li= link_to 'Help', static_page_path(key: :help)
-            %li= link_to 'FAQ', faq_url
+            %li= link_to 'FAQ', Settings.medusa.faq_url
         -# We're removing this as a trial
         -#.col-sm-4
         -#  %strong Frequently Visited Collections:

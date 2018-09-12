@@ -22,7 +22,7 @@
               = fa_icon 'exclamation', class: 'dashboard-notification'
           - else
             = fa_icon_link_to 'Dashboard', 'tachometer', dashboard_path
-        %li= fa_icon_link_to 'Help', 'question-circle', wiki_url
+        %li= fa_icon_link_to 'Help', 'question-circle', Settings.medusa.wiki_url
   .global-nav-row
     .navbar-header
       .navbar-text.pull-left View lists of:
