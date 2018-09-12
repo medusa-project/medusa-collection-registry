@@ -44,10 +44,6 @@ module ApplicationHelper
     show_field(model, field, label) if model.send(field).present?
   end
 
-  def generic_confirm_message
-    Settings.classes.application_helper.generic_confirm_message
-  end
-
   def wiki_link(label)
     fa_icon_link_to label, Settings.icon.wiki_link, Settings.medusa.wiki_url, target: '_blank'
   end

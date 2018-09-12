@@ -1,9 +1,5 @@
 module RepositoriesHelper
 
-  def repository_confirm_message
-    Settings.classes.repositories_helper.confirm_message
-  end
-
   def repository_tab_list
     ['overview', 'running-processes', 'file-statistics', 'red-flags', %w(combined-events-tab Events newspaper-o), 'amazon', 'accruals']
   end

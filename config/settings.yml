@@ -1,7 +1,6 @@
 ## Any of this stuff can be overridden in the settings/<env>.yml or settings/<env>.local.yml files, but
 ## the idea is that this is fairly general stuff that shouldn't need to be configured separately
 ## for the most part.
-## You might argue that some of these belong in an I18n system. That would make sense, but they're here for now.
 
 # This controls how files are previewed
 cfs_file_viewers:
@@ -121,8 +120,6 @@ cfs_file_viewers:
   default_image_size: 300
 #The following are config for specific classes, using the convention classes.<class_name>.<setting_name>
 classes:
-  application_helper:
-    generic_confirm_message: This is irreversible - are you sure?
   assessment:
     assessment_types:
       - external_files
@@ -131,17 +128,6 @@ classes:
       - medium
       - high
       - urgent
-  collections_helper:
-    confirm_message: This is irreversible. Associated assessments and file groups will also be deleted.
-  dashboard_helper:
-    ingest_state_labels:
-      start: Starting
-      copying: Copying from staging
-      amazon_backup: Backing up to Amazon
-      end: Ended
-    ingest_state_unknown: Unknown
-  events_helper:
-    confirm_message: This is irreversible. Are you sure?
   file_extensions_controller:
     default_per_page: 25
   file_group:
@@ -181,8 +167,6 @@ classes:
     date_fields:
       :last_modified_date: fits/fileinfo/lastmodified
       :creation_date: fits/fileinfo/created
-  institutions_helper:
-    confirm_message: This is irreversible. Associated repositories, their collections, and their associated assessments and file groups will also be deleted.
   item:
     source_media_types:
       - BD-Videodisc
@@ -228,8 +212,6 @@ classes:
       - Sent to IPM
       - Sent for cataloging
       - Send to IA for digitization
-  repositories_helper:
-    confirm_message: This is irreversible. Associated collections and their associated assessments and file groups will also be deleted.
 #These are events available to the various eventables as a hash from stored string to descriptive string
 #For the loading to work correctly the base key has to be the class where Eventable is included.
 #So for STI like file group we can't have different events available for each type; it has to be the base class here

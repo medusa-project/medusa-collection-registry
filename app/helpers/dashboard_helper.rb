@@ -8,8 +8,7 @@ module DashboardHelper
   end
 
   def ingest_state_text(state)
-    Settings.classes.dashboard_helper.ingest_state_labels[state.to_s] ||
-        Settings.classes.dashboard_helper.ingest_state_unknown
+    t(state, scope: 'dashboard.ingest_state_labels', default: t('dashboard.ingest_state_labels.unknown'))
   end
 
   def accrual_conflict_indicator_class(workflow_accrual_job)

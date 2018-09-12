@@ -12,12 +12,12 @@ module ButtonsHelper
   end
 
   def delete_button(url_or_object, message: nil, options: {})
-    message ||= generic_confirm_message
+    message ||= t('default.confirm_message')
     fa_icon_link_to 'Delete', Settings.icons.delete_button, url_or_object, options.reverse_merge(method: :delete, data: {confirm: message}, class: 'btn btn-danger')
   end
 
   def small_delete_button(url_or_object, message: nil, options: {})
-    message ||= generic_confirm_message
+    message ||= t('default.confirm_message')
     fa_icon_link_to 'Delete', Settings.icons.delete_button, url_or_object, options.reverse_merge(method: :delete, data: {confirm: message}, class: 'btn btn-danger btn-xs')
   end
 
