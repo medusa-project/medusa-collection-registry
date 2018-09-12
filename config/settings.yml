@@ -1,4 +1,8 @@
-#This controls how files are previewed
+## Any of this stuff can be overridden in the settings/<env>.yml or settings/<env>.local.yml files, but
+## the idea is that this is fairly general stuff that shouldn't need to be configured separately
+## for the most part.
+
+# This controls how files are previewed
 cfs_file_viewers:
   mime_types:
     image:
