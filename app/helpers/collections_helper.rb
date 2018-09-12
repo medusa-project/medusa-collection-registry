@@ -5,7 +5,7 @@ module CollectionsHelper
   end
 
   def collection_confirm_message
-    'This is irreversible. Associated assessments and file groups will also be deleted.'
+    Settings.classes.collections_helper.confirm_message
   end
 
   def collection_form_tab_list

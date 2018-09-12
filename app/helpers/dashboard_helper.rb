@@ -7,11 +7,9 @@ module DashboardHelper
     tabs
   end
 
-  INGEST_STATE_LABELS = {start: 'Starting', copying: 'Copying from staging', amazon_backup: 'Backing up to Amazon',
-                         end: 'Ended'}
-
   def ingest_state_text(state)
-    INGEST_STATE_LABELS[state.to_sym] || 'Unknown'
+    Settings.classes.dashboard_helper.ingest_state_labels[state.to_s] ||
+        Settings.classes.dashboard_helper.ingest_state_unknown
   end
 
   def accrual_conflict_indicator_class(workflow_accrual_job)
