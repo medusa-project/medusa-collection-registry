@@ -46,7 +46,7 @@ class FileExtensionsController < ApplicationController
           where('file_groups.collection_id = ?', @collection_id).order('cfs_files.name asc')
     else
       @file_extension.cfs_files.order('name asc')
-    end.page(params[:page]).per_page(params[:per_page] || 25)
+    end.page(params[:page]).per_page(params[:per_page] || Settings.classes.file_extensions_controller.default_per_page)
   end
 
 

@@ -128,6 +128,8 @@ classes:
       - medium
       - high
       - urgent
+  file_extensions_controller:
+    default_per_page: 25
   file_group:
     acquisition_methods:
       - internal digitization
