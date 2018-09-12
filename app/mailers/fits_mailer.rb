@@ -5,7 +5,7 @@ class FitsMailer < MedusaBaseMailer
     @missing_files = missing_files
     @already_analyzed_files = already_analyzed_files
     @currently_analyzed_files = currently_analyzed_files
-    mail(to: user.email, subject: subject('FITS batch completed'))
+    mail(to: user.email)
   end
 
 end

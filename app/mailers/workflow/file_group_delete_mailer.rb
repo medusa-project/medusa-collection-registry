@@ -2,27 +2,27 @@ class Workflow::FileGroupDeleteMailer < MedusaBaseMailer
 
   def requester_accept(workflow)
     @workflow = workflow
-    mail to: workflow.requester.email, subject: subject('File Group deletion approved')
+    mail(to: workflow.requester.email)
   end
 
   def requester_reject(workflow)
     @workflow = workflow
-    mail to: workflow.requester.email, subject: subject('File Group deletion rejected')
+    mail(to: workflow.requester.email)
   end
 
   def restored_content(workflow)
     @workflow = workflow
-    mail to: requester_and_superusers(workflow), subject: subject('File Group deletion cancelled - content restored')
+    mail(to: requester_and_superusers(workflow))
   end
 
   def email_superusers(workflow)
     @workflow = workflow
-    mail to: Settings.superusers, subject: subject('File Group deletion requested')
+    mail(to: Settings.superusers)
   end
 
   def requester_final_removal(workflow)
     @workflow = workflow
-    mail to: workflow.requester.email, subject: subject('File Group final deletion completed')
+    mail(to: workflow.requester.email)
   end
 
   protected

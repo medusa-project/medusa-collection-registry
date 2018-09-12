@@ -4,7 +4,8 @@ class GenericErrorMailer < MedusaBaseMailer
     @message = message
     @process = $$
     @time = Time.now
-    mail(to: self.class.dev_address, subject: subject)
+    @subject = subject
+    mail(to: self.class.dev_address)
   end
 
 end

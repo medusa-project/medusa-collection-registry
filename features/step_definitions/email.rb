@@ -7,13 +7,15 @@ end
 
 And(/^'([^']*)' should receive an email with subject '([^']*)' containing all of:$/) do |address, subject, table|
   open_email(address)
-  # x = current_emails
-  # y = current_emails.collect(&:subject)
+  #x = current_emails
+  #y = current_emails.collect(&:subject)
   # z = subject
   # t = all_emails
   possible_emails = current_emails.select {|email| email.subject == subject}
   table.headers.each do |header|
-    possible_emails = possible_emails.select {|email| email.body.match(header)}
+    possible_emails = possible_emails.select do |email|
+      email.body.match(header) || email.text_part.body.match(header)
+    end
     expect(possible_emails).to be_present
   end
 end
