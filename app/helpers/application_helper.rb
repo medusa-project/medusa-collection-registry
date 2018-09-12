@@ -45,7 +45,7 @@ module ApplicationHelper
   end
 
   def generic_confirm_message
-    'This is irreversible - are you sure?'
+    Settings.classes.application_helper.generic_confirm_message
   end
 
   def wiki_link(label)
@@ -53,11 +53,11 @@ module ApplicationHelper
   end
 
   def wiki_url
-    'https://wiki.cites.uiuc.edu/wiki/display/LibraryDigitalPreservation/Home'
+    Settings.medusa.wiki_url
   end
 
   def faq_url
-    'https://wiki.cites.illinois.edu/wiki/display/LibraryDigitalPreservation/Medusa+FAQ'
+    Settings.medusa.faq_url
   end
 
   def cache_key_for_all(klass)

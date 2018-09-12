@@ -120,6 +120,8 @@ cfs_file_viewers:
   default_image_size: 300
 #The following are config for specific classes, using the convention classes.<class_name>.<setting_name>
 classes:
+  application_helper:
+    generic_confirm_message: This is irreversible - are you sure?
   assessment:
     assessment_types:
       - external_files
@@ -286,8 +288,10 @@ rights_fields:
     DISSEMINATE/CAMPUS_ONLY: Access is restricted to campus use only.
     DISSEMINATE/LIBRARY_ONLY: Access is restricted to library use only.
 medusa:
+  faq_url: https://wiki.cites.illinois.edu/wiki/display/LibraryDigitalPreservation/Medusa+FAQ
   fg_delete:
     amazon_backup_on_restore: true
     final_deletion_interval: <%= 120.days %>
+  wiki_url: https://wiki.cites.uiuc.edu/wiki/display/LibraryDigitalPreservation/Home
 
 
