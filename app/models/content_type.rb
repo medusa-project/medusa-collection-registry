@@ -7,8 +7,12 @@ class ContentType < ApplicationRecord
   validates_numericality_of :cfs_file_count, :cfs_file_size
   has_many :cfs_files
 
+  def self.empty
+    where(cfs_file_count: 0)
+  end
+
   def self.prune_empty
-    where(cfs_file_count: 0).each do |content_type|
+    empty.each do |content_type|
       content_type.destroy
     end
   end

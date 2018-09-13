@@ -63,6 +63,10 @@ class Collection < ApplicationRecord
     string :external_id
   end
 
+  def self.title_order
+    order('title ASC')
+  end
+
   def total_size
     self.bit_level_file_groups.sum('COALESCE(file_groups.total_file_size, 0)')
   end
@@ -92,7 +96,7 @@ class Collection < ApplicationRecord
   end
 
   def peer_collections
-    repository.collections.order('title ASC').where.not(id: id)
+    repository.collections.title_order.where.not(id: id)
   end
 
 end
