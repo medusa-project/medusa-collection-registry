@@ -8,7 +8,7 @@ class Attachment < ApplicationRecord
 	# Paperclip
 	has_attached_file :attachment, styles: {}
 
-  validates_attachment :attachment, presence: true, size: {less_than: 5.megabytes}
+  validates_attachment :attachment, presence: true, size: {less_than: Settings.classes.attachment.max_size}
   do_not_validate_attachment_file_type :attachment
 
   before_destroy :destroy_attachment

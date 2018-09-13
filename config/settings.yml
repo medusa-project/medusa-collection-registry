@@ -128,6 +128,15 @@ classes:
       - medium
       - high
       - urgent
+  attachment:
+    max_size: <%= 5.megabytes %>
+  cfs_file:
+    tmpdir_cutoff_size: <%= 500.megabytes %>
+    large_file_fits_cutoff_size: <%= 5.gigabytes %>
+  concerns:
+    excluded_files:
+      - Thumbs.db
+      - .DS_Store
   file_extensions_controller:
     default_per_page: 25
   file_group:
@@ -218,15 +227,13 @@ classes:
       assessment_requeue_interval: <%= 5.minutes %>
       copying_batch_size: 100
       copying_parallel_threads: 5
-      excluded_files:
-        - Thumbs.db
-        - .DS_Store
 #set up delayed job related stuff
 delayed_job:
   priority:
     amqp_accrual_delete_job: 30
     amqp_accrual_ingest_job: 50
     base_job: 30
+    large_file_fits: 70
 #These are events available to the various eventables as a hash from stored string to descriptive string
 #For the loading to work correctly the base key has to be the class where Eventable is included.
 #So for STI like file group we can't have different events available for each type; it has to be the base class here

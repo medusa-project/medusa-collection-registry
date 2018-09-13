@@ -7,6 +7,7 @@ class CfsDirectory < ApplicationRecord
   include Eventable
   include CascadedEventable
   include CascadedRedFlaggable
+  include ExcludedFiles
 
   has_many :subdirectories, class_name: 'CfsDirectory', as: :parent, dependent: :destroy
   has_many :cfs_files, dependent: :destroy
@@ -208,12 +209,6 @@ class CfsDirectory < ApplicationRecord
         cfs_file.destroy
       end
     end
-  end
-
-  #TODO - possibly extend this to allow for exclusions specified on (for example) a
-  #Collection level
-  def excluded_file?(entry)
-    %w(Thumbs.db .DS_Store).include?(File.basename(entry))
   end
 
   def schedule_assessment_job

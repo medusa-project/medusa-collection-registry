@@ -104,7 +104,7 @@ class CfsFile < ApplicationRecord
   # robust for whatever application.
   def tmpdir_for_with_input_file
     expected_size = size || storage_root.size(key)
-    if expected_size > 250.megabytes
+    if expected_size > Settings.classes.cfs_file.tmpdir_cutoff_size
       Application.storage_manager.tmpdir
     else
       Dir.tmpdir
@@ -220,7 +220,8 @@ class CfsFile < ApplicationRecord
   end
 
   def ensure_fits_xml_for_large_file
-    self.delay(priority: 70).ensure_fits_xml if !fits_serialized? and self.size.present? and self.size > 5.gigabytes
+    self.delay(priority: Settings.delayed_job.priority.large_file_fits).ensure_fits_xml if
+        !fits_serialized? and self.size.present? and self.size > Settings.classes.cfs_file.large_file_fits_cutoff_size
   end
 
   def update_fits_xml(xml: nil)

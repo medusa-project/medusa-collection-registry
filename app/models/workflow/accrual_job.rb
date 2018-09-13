@@ -3,6 +3,7 @@ require 'set'
 
 class Workflow::AccrualJob < Workflow::Base
   include RenderAnywhere
+  include ExcludedFiles
 
   attr_accessor :comment
 
@@ -190,10 +191,6 @@ class Workflow::AccrualJob < Workflow::Base
     workflow_accrual_conflicts.where(different: true).find_each {|conflict| conflict.reset_cfs_file}
   end
 
-  def excluded_file?(file)
-    excluded_files.include?(file)
-  end
-
   #We have to be a little careful here, as we want to make sure the backup happens, but at the same time it may
   #be the case that there is already a backup scheduled or ongoing, and in light of the fact that we only allow a single
   #backup per file group / date pair we may need to latch on to an existing backup or schedule a backup in the future.
@@ -345,10 +342,5 @@ class Workflow::AccrualJob < Workflow::Base
     set_instance_variable('workflow_accrual', self)
     render partial: 'workflow/accrual_mailer/view_report'
   end
-
-  def excluded_files
-    @excluded_files ||= Settings.classes.workflow.accrual_job.excluded_files.to_set
-  end
-
 
 end
