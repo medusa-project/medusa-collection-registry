@@ -1,5 +1,3 @@
-require 'find'
-require 'open3'
 require 'render_anywhere'
 require 'set'
 
@@ -160,8 +158,8 @@ class Workflow::AccrualJob < Workflow::Base
     #   end
     #   key.destroy!
     # end
-    workflow_accrual_keys.find_in_batches(batch_size: 100) do |key_batch|
-      Parallel.each(key_batch, in_threads: 5) do |key|
+    workflow_accrual_keys.find_in_batches(batch_size: Settings.classes.workflow.accrual_job.copying_batch_size) do |key_batch|
+      Parallel.each(key_batch, in_threads: Settings.classes.workflow.accrual_job.copying_parallel_threads) do |key|
         source_key = File.join(source_prefix, key.key)
         target_key = File.join(target_prefix, key.key)
         if overwrite or !target_root.exist?(target_key)
@@ -193,7 +191,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def excluded_file?(file)
-    %w(Thumbs.db .DS_Store).include?(file)
+    excluded_files.include?(file)
   end
 
   #We have to be a little careful here, as we want to make sure the backup happens, but at the same time it may
@@ -246,10 +244,9 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_await_assessment
-    wait_time = Rails.env.test? ? (0.1).seconds : 5.minutes
     if has_pending_assessments?
-      if self.created_at + 2.days > Time.now
-        self.put_in_queue(run_at: Time.now + wait_time)
+      if self.created_at + Settings.classes.workflow.accrual_job.assessment_error_reporting_timeout > Time.now
+        self.put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
       else
         raise RuntimeError, "Assessments are still pending. Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
       end
@@ -348,5 +345,10 @@ class Workflow::AccrualJob < Workflow::Base
     set_instance_variable('workflow_accrual', self)
     render partial: 'workflow/accrual_mailer/view_report'
   end
+
+  def excluded_files
+    @excluded_files ||= Settings.classes.workflow.accrual_job.excluded_files.to_set
+  end
+
 
 end

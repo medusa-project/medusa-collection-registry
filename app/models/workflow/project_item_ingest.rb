@@ -1,4 +1,3 @@
-require 'open3'
 class Workflow::ProjectItemIngest < Workflow::Base
 
   belongs_to :user
@@ -108,9 +107,6 @@ class Workflow::ProjectItemIngest < Workflow::Base
   end
 
   def copy_item(item)
-    #opts = %w(-a --ignore-times --safe-links --chmod Du+rwx,Dgo+rw,Dgo-w,Fu+rw,Fu-x,Fgo+r,Fgo-wx --exclude-from) << exclude_file_path
-    #source = item.staging_directory
-    #target = project.target_cfs_directory_path
     source_key_prefix = item.staging_key_prefix
     target_key_prefix = project.target_key_prefix
     item_id = File.basename(source_key_prefix)
@@ -120,23 +116,6 @@ class Workflow::ProjectItemIngest < Workflow::Base
                                 staging_root,
                                 File.join(source_key_prefix, source_key))
     end
-    #copy everything in the source tree under the target key. How do we best do that here?
-    #/source/prefix/with_id/content_path should go to
-    # /target/prefix/with_id/content_path
-    #how do we reflect the exclude files?
-
-
-    #     out, err, status = Open3.capture3('rsync', *opts, source, target)
-    #     unless status.success?
-    #       message = <<MESSAGE
-    # Error doing rsync for project item ingest job #{self.id} for item #{item.id}.
-    # STDOUT: #{out}
-    # STDERR: #{err}
-    # Rescheduling.
-    # MESSAGE
-    #       Rails.logger.error message
-    #       raise RuntimeError, message
-    #     end
   end
 
   #return the cfs directory corresponding to the item

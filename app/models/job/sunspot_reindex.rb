@@ -1,4 +1,6 @@
 #note that if the batch size is too large the queries may become problematic. 1000 seems to work.
+# There is a Sunspot method that does basically this, but this has the advantage of
+# not destroying the entire index first and then rebuilding it - it just fixes little pieces at a time.
 class Job::SunspotReindex < Job::Base
 
   def self.create_for(class_or_class_name, start_id: 0, end_id: 0, batch_size: 1000)

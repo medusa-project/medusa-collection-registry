@@ -11,7 +11,7 @@ class AmqpAccrual::DeleteJob < Job::Base
         return
       end
       job.save!
-      Delayed::Job.enqueue(job, queue: AmqpAccrual::Config.delayed_job_queue(client), priority: 30)
+      Delayed::Job.enqueue(job, queue: AmqpAccrual::Config.delayed_job_queue(client), priority: Settings.delayed_job.priority.amqp_accrual_delete_job)
     rescue Exception => e
       Rails.logger.error "Failed to create Amqp Delete Job for client: #{client} message: #{message}. Error: #{e}"
       job.send_unknown_error_message(e)
