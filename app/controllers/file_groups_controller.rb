@@ -96,7 +96,7 @@ class FileGroupsController < ApplicationController
 
   def assessments
     @assessable = @file_group
-    @assessments = @assessable.assessments.order('date DESC')
+    @assessments = @assessable.assessments.order(date: :desc)
   end
 
   def content_type_manifest

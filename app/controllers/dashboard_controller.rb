@@ -49,7 +49,7 @@ SQL
   end
 
   def red_flags
-    @red_flags = RedFlag.order('created_at DESC').includes(:red_flaggable).load
+    @red_flags = RedFlag.order(created_at: :desc).includes(:red_flaggable).load
     render partial: 'shared/red_flags_table', layout: false
   end
 
@@ -67,9 +67,9 @@ SQL
 
   def accruals
     if Application.group_resolver.is_ad_admin?(current_user)
-      @accrual_jobs = Workflow::AccrualJob.order('created_at asc').all.decorate
+      @accrual_jobs = Workflow::AccrualJob.order(:created_at).all.decorate
     else
-      @accrual_jobs = current_user.workflow_accrual_jobs.order('created_at asc').decorate
+      @accrual_jobs = current_user.workflow_accrual_jobs.order(:created_at).decorate
     end
     render partial: 'accruals/accruals', layout: false
   end

@@ -9,7 +9,7 @@ class Job::SunspotReindex < Job::Base
   end
 
   def perform
-    models = klass.where('id >= ?', start_id).order('id asc').includes(klass.sunspot_options[:include]).limit(batch_size)
+    models = klass.where('id >= ?', start_id).order(:id).includes(klass.sunspot_options[:include]).limit(batch_size)
     Sunspot.index models
     remove_orphans(models)
     if models.last.id < end_id and start_id < end_id

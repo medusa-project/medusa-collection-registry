@@ -45,7 +45,7 @@ class FileExtensionsController < ApplicationController
           joins(cfs_directory: {root_cfs_directory: :parent_file_group}).
           where('file_groups.collection_id = ?', @collection_id).order('cfs_files.name asc')
     else
-      @file_extension.cfs_files.order('name asc')
+      @file_extension.cfs_files.order(:name)
     end.page(params[:page]).per_page(params[:per_page] || Settings.classes.file_extensions_controller.default_per_page)
   end
 

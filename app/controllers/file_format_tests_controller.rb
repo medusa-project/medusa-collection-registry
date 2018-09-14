@@ -49,10 +49,10 @@ class FileFormatTestsController < ApplicationController
   def index
     respond_to do |format|
       format.html do
-        @file_format_tests = FileFormatTest.order('date desc, id desc')
+        @file_format_tests = FileFormatTest.order(date: :desc, id: :desc)
       end
       format.csv do
-        @file_format_tests = FileFormatTest.order('date desc, id desc').
+        @file_format_tests = FileFormatTest.order(date: :desc, id: :desc).
             includes(cfs_file: [:content_type, :fits_data, cfs_directory: {root_cfs_directory: {parent_file_group: {collection: :repository}}}],
                      file_format_test_reasons: nil)
         send_data file_format_tests_to_csv(@file_format_tests), type: 'text/csv', filename: 'file_format_tests.csv'

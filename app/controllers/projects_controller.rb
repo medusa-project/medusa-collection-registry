@@ -10,7 +10,7 @@ class ProjectsController < ApplicationController
   autocomplete :user, :email
 
   def index
-    @projects = Project.order('title ASC')
+    @projects = Project.order(:title)
     respond_to do |format|
       format.html
       format.csv {send_data projects_to_csv(@projects), type: 'text/csv', filename: 'projects.csv'}

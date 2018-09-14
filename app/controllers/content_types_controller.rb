@@ -21,7 +21,7 @@ class ContentTypesController < ApplicationController
                        joins(cfs_directory: {root_cfs_directory: :parent_file_group}).
                        where('file_groups.collection_id = ?', @collection_id).order('cfs_files.name asc').page(params[:page]).per_page(params[:per_page] || 25)
                  else
-                   @content_type.cfs_files.order('name asc').page(params[:page]).per_page(params[:per_page] || 25)
+                   @content_type.cfs_files.order(:name).page(params[:page]).per_page(params[:per_page] || 25)
                  end
     @cfs_files = @cfs_files.includes(cfs_directory: {root_cfs_directory: {parent: :collection}})
   end

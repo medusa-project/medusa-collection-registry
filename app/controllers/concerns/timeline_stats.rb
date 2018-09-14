@@ -38,7 +38,7 @@ module TimelineStats
   protected
 
   def years_for_stats
-    start = CfsFile.order('created_at asc').first.created_at.to_date
+    start = CfsFile.order(:created_at).first.created_at.to_date
     current = Date.today
     last_start_of_year = if current.month >= 7
                            current.change(day: 1, month: 7, year: current.year + 1)

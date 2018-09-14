@@ -67,9 +67,9 @@ class RepositoriesController < ApplicationController
 
   def show_accruals
     if Application.group_resolver.is_ad_admin?(current_user)
-      accrual_jobs = Workflow::AccrualJob.order('created_at asc').all.decorate
+      accrual_jobs = Workflow::AccrualJob.order(:created_at).all.decorate
     else
-      accrual_jobs = current_user.workflow_accrual_jobs.order('created_at asc').decorate
+      accrual_jobs = current_user.workflow_accrual_jobs.order(:created_at).decorate
     end
     @accrual_jobs = accrual_jobs.select { |accrual_job| accrual_job.repository == @repository }
     render partial: 'accruals/accruals', layout: false

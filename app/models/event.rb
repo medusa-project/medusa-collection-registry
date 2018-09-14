@@ -11,7 +11,7 @@ class Event < ApplicationRecord
   after_update :recascade
 
   def self.descending_date
-    order('date DESC')
+    order(date: :desc)
   end
 
   def self.recent(interval = nil)
