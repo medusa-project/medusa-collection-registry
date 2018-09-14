@@ -10,6 +10,19 @@ class Event < ApplicationRecord
   after_create :maybe_cascade
   after_update :recascade
 
+  def self.descending_date
+    order('date DESC')
+  end
+
+  def self.recent(interval = nil)
+    interval ||= 7.days
+    where('events.updated_at >= ?', Time.now - interval)
+  end
+
+  def self.cascadable
+    where(cascadable: true)
+  end
+
   def message
     self.eventable.event_message(self.key) rescue ''
   end
@@ -39,7 +52,7 @@ class Event < ApplicationRecord
 SQL
     CascadedEventJoin.connection.execute(sql)
     CascadedEventJoin.reindex
-    self.includes(:eventable).where(cascadable: true).find_each(batch_size: 100) do |event|
+    self.includes(:eventable).cascadable.find_each(batch_size: 100) do |event|
       transaction do
         event.maybe_cascade
       end

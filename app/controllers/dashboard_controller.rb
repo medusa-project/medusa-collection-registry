@@ -54,7 +54,7 @@ SQL
   end
 
   def events
-    @events = Event.order('date DESC').where('updated_at >= ?', Time.now - 7.days).where(cascadable: true).includes(eventable: :parent)
+    @events = Event.descending_date.recent.cascadable.includes(eventable: :parent)
     render partial: 'events', layout: false
   end
 

@@ -66,6 +66,10 @@ class CfsDirectory < ApplicationRecord
     where("parent_type IS NULL OR parent_type = 'FileGroup'")
   end
 
+  def self.non_roots
+    where("parent_type = 'CfsDirectory'")
+  end
+
   def non_root?
     self.parent.is_a?(CfsDirectory)
   end
@@ -178,7 +182,7 @@ class CfsDirectory < ApplicationRecord
     else
       ids = [self.id]
       while true
-        new_ids = (CfsDirectory.where(parent_id: ids).where("parent_type = 'CfsDirectory'").ids << self.id).sort
+        new_ids = (CfsDirectory.non_roots.where(parent_id: ids).ids << self.id).sort
         return new_ids if ids == new_ids
         ids = new_ids
       end

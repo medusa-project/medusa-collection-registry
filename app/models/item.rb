@@ -39,6 +39,14 @@ rights_information status equipment unique_identifier item_number source_media).
     time :updated_at
   end
 
+  def self.uningested
+    where(ingested: false)
+  end
+
+  def self.ingested
+    where(ingested: true)
+  end
+
   def ensure_barcode
     self.barcode ||= ''
   end

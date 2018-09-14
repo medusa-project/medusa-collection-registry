@@ -17,6 +17,14 @@ class AmazonBackup < ApplicationRecord
 
   validates_presence_of :user_id, :date
 
+  def self.descending_date
+    order('date desc')
+  end
+
+  def self.preceding(date)
+    where('date < ?', date)
+  end
+
   def initialize_archive_ids_and_date
     self.archive_ids ||= Array.new
     self.date ||= Date.today
@@ -24,7 +32,7 @@ class AmazonBackup < ApplicationRecord
 
   #Return the previous backup for the file group, or nil
   def previous_backup
-    self.cfs_directory.amazon_backups.where('date < ?', self.date).order('date desc').first
+    self.cfs_directory.amazon_backups.preceding(self.date).descending_date.first
   end
 
   def request_backup

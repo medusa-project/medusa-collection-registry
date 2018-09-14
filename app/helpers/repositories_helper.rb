@@ -12,7 +12,7 @@ module RepositoriesHelper
   end
 
   def load_repository_dashboard_events
-    @events = @repository.cascaded_events.where('events.updated_at > ?', Time.now - 7.days).where(cascadable: true).includes(eventable: :parent)
+    @events = @repository.cascaded_events.recent.cascadable.includes(eventable: :parent)
   end
 
 end

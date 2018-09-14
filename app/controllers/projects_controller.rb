@@ -193,7 +193,7 @@ class ProjectsController < ApplicationController
 
   def ingest_items(params)
     item_ids = params[:item] rescue Array.new
-    items = @project.items.where(ingested: false, id: item_ids).reject {|item| item.workflow_item_ingest_request.present?}
+    items = @project.items.uningested.where(id: item_ids).reject {|item| item.workflow_item_ingest_request.present?}
     if items.count > 0
       @project.transaction do
         workflow = Workflow::ProjectItemIngest.create!(project: @project, user: current_user, state: 'start')
@@ -208,7 +208,7 @@ class ProjectsController < ApplicationController
 
   def make_ingest_alert(project, item_ids, items)
     to_do_count = items.count
-    already_ingested_count = project.items.where(ingested: true, id: item_ids).count
+    already_ingested_count = project.items.ingested.where(id: item_ids).count
     in_process_count = Workflow::ItemIngestRequest.where(item_id: item_ids).count
     @alert = <<ALERT
     Your ingest request has been received. There are:
