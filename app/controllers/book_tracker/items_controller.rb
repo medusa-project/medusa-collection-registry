@@ -108,6 +108,9 @@ module BookTracker
 
       # Harvest mode (harvest=true) uses a query that the web UI can't generate.
       if @allowed_params[:harvest] == 'true'
+        # Exclude Hathitrust-restricted items (DLDS-70)
+        @items = @items.where('hathitrust_access != ?', 'deny')
+
         # Include only books that don't solely exist, or don't exist at all,
         # in Google, due to difficulty in linking to them.
         @items = @items.where('exists_in_google = ? OR exists_in_hathitrust = ? OR exists_in_internet_archive = ?',
