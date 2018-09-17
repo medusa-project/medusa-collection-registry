@@ -24,10 +24,7 @@ var default_datatable_args = {
   },
   "processing": true,
   "pagingType": 'full_numbers',
-  'buttons': [],
-  "columnDefs": [
-    {'type' : "diacritics-neutralise", 'targets' : '_all'}
-  ]
+  'buttons': []
 };
 
 //Make the table selected by the provided CSS selector into a dataTables table using the default_datatable_args with
@@ -40,10 +37,8 @@ function initialize_data_table(tableSelector, extra_args) {
 
 function initialize_data_table_synchronous(tableSelector, extra_args) {
   var args = $.extend(true, {}, default_datatable_args, extra_args);
-  //console.log(args);
   try {
     var table = $(tableSelector).DataTable(args);
-    //table.state.clear();
     add_back_to_top_button(tableSelector);
     $('input[type="search"]').keyup( function () {
       table
@@ -51,11 +46,9 @@ function initialize_data_table_synchronous(tableSelector, extra_args) {
               jQuery.fn.DataTable.ext.type.search.string( this.value )
           )
           .draw();
-      //console.log('Did search');
     } );
-    //console.log("Initialized " + tableSelector);
   } catch (err) {
-    //console.log("Error initializing " + tableSelector);
+    console.log("Error initializing " + tableSelector);
   }
 }
 
@@ -64,5 +57,4 @@ function add_back_to_top_button(tableSelector) {
   var pagination_list = $(tableSelector).closest('div.row').next('div').find('ul.pagination');
   var up_button = '<li class="paginate_button"><a href="#global-navigation"><i class="fa fa-chevron-circle-up"></i></a></li>';
   pagination_list.append(up_button);
-  console.log("Added top button " + tableSelector);
 }
