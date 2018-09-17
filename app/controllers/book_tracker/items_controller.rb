@@ -7,7 +7,7 @@ module BookTracker
     before_action :setup
 
     def setup
-      @allowed_params = params.permit(:action, :controller, :format,
+      @allowed_params = params.permit(:action, :controller, :format, :harvest,
                                       :ht, :ia, :id, :last_modified_after,
                                       :last_modified_before, :page, :q,
                                       in: [], ni: [])
@@ -15,7 +15,7 @@ module BookTracker
 
     ##
     # Responds to both GET /book_tracker/items (and also POST due to search
-    # form's ability to accept long lists of bib IDs)
+    # form's ability to accept long lists of bib IDs).
     #
     def index
       @items = Item.all
@@ -71,6 +71,7 @@ module BookTracker
       end
 
       # in/not-in service (in[]=, ni[]=)
+      # These are used by checkboxes in the items UI.
       if @allowed_params[:in].respond_to?(:each) and
           @allowed_params[:ni].respond_to?(:each) and
           (@allowed_params[:in] & @allowed_params[:ni]).length > 0
@@ -105,14 +106,21 @@ module BookTracker
         @items = @items.order(:title)
       end
 
-      # These are used for harvesting.
-      if @allowed_params[:last_modified_after].present?
-        @items = @items.where('updated_at >= ?',
-                              Time.at(@allowed_params[:last_modified_after].to_i))
-      end
-      if @allowed_params[:last_modified_before].present?
-        @items = @items.where('updated_at <= ?',
-                              Time.at(@allowed_params[:last_modified_before].to_i))
+      # Harvest mode (harvest=true) uses a query that the web UI can't generate.
+      if @allowed_params[:harvest] == 'true'
+        # Include only books that don't solely exist, or don't exist at all,
+        # in Google, due to difficulty in linking to them.
+        @items = @items.where('exists_in_google = ? OR exists_in_hathitrust = ? OR exists_in_internet_archive = ?',
+                              false, true, true)
+
+        if @allowed_params[:last_modified_after].present? # epoch seconds
+          @items = @items.where('updated_at >= ?',
+                                Time.at(@allowed_params[:last_modified_after].to_i))
+        end
+        if @allowed_params[:last_modified_before].present? # epoch seconds
+          @items = @items.where('updated_at <= ?',
+                                Time.at(@allowed_params[:last_modified_before].to_i))
+        end
       end
 
       page = @allowed_params[:page].to_i
