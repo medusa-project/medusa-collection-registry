@@ -20,8 +20,11 @@ set :deploy_to, "#{fetch(:home)}/medusa-cr-capistrano"
 set :bin, "#{fetch(:home)}/bin"
 
 #server 'medusa.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
-server 'medusa.library.illinois.edu', user: 'lib-medusa-collectionregistry', roles: %w{web app db}, primary: true
-
+server 'medusa.library.illinois.edu', user: 'lib-medusa-collectionregistry', roles: %w{web app db}, primary: true,
+       :ssh_options => {
+           :keepalive => true,
+           :keepalive_interval => 60 #seconds
+       }
 
 # Custom SSH Options
 # ==================
