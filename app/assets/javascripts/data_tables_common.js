@@ -41,7 +41,6 @@ function initialize_data_table_synchronous(tableSelector, extra_args) {
     var table = $(tableSelector).DataTable(args);
     add_back_to_top_button(tableSelector);
     $('input[type="search"]').keyup( function () {
-      console.log('fixing user string ' + this.value);
       table
           .search(
               jQuery.fn.DataTable.ext.type.search.string( this.value )

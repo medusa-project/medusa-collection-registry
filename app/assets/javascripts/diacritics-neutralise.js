@@ -228,7 +228,6 @@ jQuery.fn.DataTable.ext.type.search.allowDiacritics = function (array) {
 };
 
 jQuery.fn.DataTable.ext.type.search.string = function (s) {
-  console.log('fixing up ' + s);
   return removeDiacritics(s);
 };
 
