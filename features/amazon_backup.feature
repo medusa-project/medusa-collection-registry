@@ -33,7 +33,7 @@ Feature: Amazon backup
     And I click on 'Create backup'
     Then there should be 1 amazon backup delayed job
 
-  @javascript @poltergeist
+  @javascript
   Scenario: Bulk schedule amazon backup of bit level file groups
     Given I am logged in as an admin
     And the file group titled 'Dogs' has cfs root 'dogs'

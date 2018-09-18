@@ -81,6 +81,12 @@ end
   end
 end
 
+#Make sure the browser is big enough - a few of the tests will send input to the wrong place if
+# it is not wide enough.
+Before("@javascript") do
+  Capybara.current_session.current_window.resize_to(1600, 1200)
+end
+
 require 'capybara/email'
 World(Capybara::Email::DSL)
 

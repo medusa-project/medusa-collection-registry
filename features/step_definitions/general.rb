@@ -24,3 +24,7 @@ And(/^I wait for (\d+) of '(.*)' to exist$/) do |count, class_name|
     sleep interval
   end
 end
+
+And /^I press escape$/ do
+  first('body').send_keys(:escape)
+end

@@ -17,7 +17,7 @@ Feature: File format notes and normalization paths
     Then I should see 'My tiff note'
     And I should see 'Normalization Path 1'
 
-  @javascript @poltergeist
+  @javascript
   Scenario: Add note to file format
     Given I am logged in as an admin
     When I view the file format with name 'tiff'
@@ -36,7 +36,7 @@ Feature: File format notes and normalization paths
     Then there should be no file format note with note 'My tiff note'
     And I should not see 'My tiff note'
 
-  @javascript @poltergeist
+  @javascript
   Scenario: Edit note of file format
     Given I am logged in as an admin
     When I view the file format with name 'tiff'
@@ -47,7 +47,7 @@ Feature: File format notes and normalization paths
     Then I should see 'Edited Note'
     And a file format note with note 'Edited Note' should exist
 
-  @javascript @poltergeist
+  @javascript
   Scenario: Add normalization path to file format
     Given I am logged in as an admin
     When I view the file format with name 'tiff'

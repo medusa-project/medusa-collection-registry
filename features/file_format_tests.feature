@@ -15,7 +15,7 @@ Feature: File Format Tests
       | tester_email      | date       | pass  | notes       |
       | sugar@example.com | 2015-10-06 | false | Sugie notes |
 
-  @javascript @poltergeist
+  @javascript
   Scenario: Add file format test to cfs file
     Given I am logged in as a manager
     When I view the cfs file with name 'Ruthie'
@@ -25,8 +25,8 @@ Feature: File Format Tests
     And I check all of:
       | corrupt | software unavailable |
     And I fill in fields:
-      | Notes | Random stuff |
       | Date  | 2015-10-08   |
+      | Notes | Random stuff |
     And I click on 'Create'
     Then I should be on the view page for the cfs file with name 'Ruthie'
     And I should see all of:
@@ -35,7 +35,7 @@ Feature: File Format Tests
       | saved with incorrect extension | Pass |
     And the cfs file with name 'Ruthie' should have an associated file format test
 
-  @javascript @poltergeist
+  @javascript
   Scenario: Edit file format test of existing cfs file
     Given I am logged in as a manager
     And the cfs file with name 'Ruthie' is associated with the file format test with tester email 'sugar@example.com'
@@ -69,7 +69,7 @@ Feature: File Format Tests
     Then the checkbox 'corrupt' should be disabled and unchecked
     And the checkbox 'software unavailable' should be disabled and unchecked
 
-  @javascript @poltergeist
+  @javascript
   Scenario: User can add reasons when inputting a file format test
     Given I am logged in as a manager
     #make sure this isn't left over after an error or something

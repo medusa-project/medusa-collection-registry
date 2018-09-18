@@ -1,4 +1,4 @@
-@javascript @poltergeist
+@javascript
 Feature: File Format Pronoms
   In order to use standard language for file formats
   As a librarian
@@ -36,7 +36,7 @@ Feature: File Format Pronoms
 
   Scenario: Delete Pronom
     When I view the file format with name 'tiff'
-    And I click on 'Delete Pronom'
+    And I click on 'Delete Pronom' expecting an alert 'Are you sure? This cannot be undone.'
     Then I should see none of:
       | 2.1 | fmt/360 |
     And there should be no pronom with version '2.1'

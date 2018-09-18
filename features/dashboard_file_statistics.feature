@@ -35,8 +35,9 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
     Then I should see the file stats by content type table
     And I should see the file stats by file extension table
 
-  @poltergeist
+ #need to figure out how to do this without poltergeist
   Scenario: Get CSV version of file statistics
+    When PENDING
     When I go to the dashboard
     And I click on 'File Statistics'
     And within '#file-statistics' I click on 'CSV'
