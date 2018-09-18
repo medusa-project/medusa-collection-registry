@@ -9,6 +9,7 @@ require 'json_spec/cucumber'
 require 'capybara/poltergeist'
 require 'sunspot_test/cucumber'
 require 'capybara/mechanize/cucumber'
+require 'fileutils'
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd
@@ -70,7 +71,7 @@ def last_json
   page.source
 end
 
-%i(selenium chrome selenium_chrome_headless selenium_chrome poltergeist webkit).each do |driver|
+%i(selenium chrome selenium_chrome_headless selenium_chrome poltergeist webkit selenium_chrome_headless_downloading).each do |driver|
   Around("@#{driver}") do |scenario, block|
     begin
       Capybara.current_driver = driver
@@ -79,6 +80,34 @@ end
       Capybara.use_default_driver
     end
   end
+end
+
+# Register a driver specially for downloading stuff
+# This is basically taken from:
+# https://gist.github.com/bbonamin/4b01be9ed5dd1bdaf909462ff4fdca95
+CAPYBARA_DOWNLOAD_DIR = Rails.root.join('tmp/test-downloads').to_s
+Capybara.register_driver :selenium_chrome_headless_downloading do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_preference(:download, prompt_for_download: false, default_directory: CAPYBARA_DOWNLOAD_DIR)
+  options.add_preference(:browser, set_download_behavior: { behavior: 'allow' })
+  options.headless!
+  driver = Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+  ### Allow file downloads in Google Chrome when headless!!!
+  ### https://bugs.chromium.org/p/chromium/issues/detail?id=696481#c89
+  bridge = driver.browser.send(:bridge)
+  path = '/session/:session_id/chromium/send_command'
+  path[':session_id'] = bridge.session_id
+  bridge.http.call(:post, path, cmd: 'Page.setDownloadBehavior',
+                   params: {
+                       behavior: 'allow',
+                       downloadPath: CAPYBARA_DOWNLOAD_DIR
+                   })
+  driver
+end
+
+Before("@selenium_chrome_headless_downloading") do
+  FileUtils.rm_rf(CAPYBARA_DOWNLOAD_DIR)
+  FileUtils.mkdir_p(CAPYBARA_DOWNLOAD_DIR)
 end
 
 #Make sure the browser is big enough - a few of the tests will send input to the wrong place if

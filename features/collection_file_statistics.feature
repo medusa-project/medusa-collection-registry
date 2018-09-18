@@ -26,9 +26,9 @@ Feature: Collection file statistics
       | image/jpeg      | 2 | 332 KB  |
       | application/xml | 1 | 2.89 KB |
 
-    #need to figure out how to do this without poltergeist
+  @selenium_chrome_headless_downloading
   Scenario: Get CSV version of file statistics for collection
-    When PENDING
     When I view the collection with title 'Animals'
     And within '#file-statistics' I click on 'CSV'
-    Then I should receive a file 'file-statistics.csv' of type 'text/csv'
+    And I wait 0.2 seconds
+    Then I should have downloaded a file 'file-statistics.csv' of type 'text/csv'

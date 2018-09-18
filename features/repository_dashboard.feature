@@ -41,11 +41,10 @@ Feature: Repository dashboard
     And I click on 'Running Processes'
     Then I should see the running initial assessment scans table
 
-  @javascript
+  @javascript @selenium_chrome_headless_downloading
   Scenario: Get CSV version of file statistics
-    #need to figure out how to do this without poltergeist
-    When PENDING
     When I view the repository with title 'Sample Repo'
     And I click on 'File Statistics'
     And within '#file-statistics' I click on 'CSV'
-    Then I should receive a file 'file-statistics.csv' of type 'text/csv'
+    And I wait 0.2 seconds
+    Then I should have downloaded a file 'file-statistics.csv' of type 'text/csv'
