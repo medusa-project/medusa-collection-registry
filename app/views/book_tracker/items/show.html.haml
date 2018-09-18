@@ -25,8 +25,6 @@
             =link_to('HathiTrust', @item.hathitrust_handle, target: '_blank')
           %li{ 'class' => @item.exists_in_internet_archive ? '' : 'disabled' }
             = link_to('Internet Archive', @item.internet_archive_url, target: '_blank')
-          %li{ 'class' => @item.exists_in_google ? '' : ' disabled' }
-            = link_to('Google Books', @item.google_url, target: '_blank')
       = link_to(book_tracker_item_path(@item, format: :json),
                     class: 'btn btn-default', target: '_blank') do
         %span.glyphicon.glyphicon-new-window{ 'aria-hidden' => true }
