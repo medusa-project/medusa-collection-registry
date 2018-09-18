@@ -231,6 +231,11 @@ jQuery.fn.DataTable.ext.type.search.string = function (s) {
   return removeDiacritics(s);
 };
 
+jQuery.fn.DataTable.ext.type.search.html = function (s) {
+  return removeDiacritics(s.replace( /<.*?>/g, '' ));
+};
+
+
 /**
  * end of diacritics-neutralise.js
  */
