@@ -1609,7 +1609,9 @@ CREATE TABLE public.book_tracker_items (
     exists_in_google boolean DEFAULT false,
     source_path text,
     hathitrust_rights character varying,
-    hathitrust_access character varying
+    hathitrust_access character varying,
+    language character varying,
+    subject character varying
 );
 
 
@@ -8000,6 +8002,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180820214650'),
 ('20180829135002'),
 ('20180831195356'),
-('20180831201248');
+('20180831201248'),
+('20180918144251');
 
 
