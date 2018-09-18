@@ -23,7 +23,7 @@ set :bin, "#{fetch(:home)}/bin"
 server 'medusa.library.illinois.edu', user: 'lib-medusa-collectionregistry', roles: %w{web app db}, primary: true,
        :ssh_options => {
            :keepalive => true,
-           :keepalive_interval => 60 #seconds
+           :keepalive_interval => 30 #seconds
        }
 
 # Custom SSH Options

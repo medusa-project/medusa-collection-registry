@@ -1,3 +1,8 @@
+/*
+ This is a modified version of the standard plugin that uses the technique in the accents-neutralise
+   plugin to do html as well as string columns. If a standard plugin become available then it'd be
+   great to use that instead. But keep in mind if you need to upgrade this.
+*/
 /**
  * When filtering a table with accented characters (letters with diacritical marks)
  * it can be frustrating to have an input such as _Zurich_ not match _Zürich_ in
@@ -230,6 +235,11 @@ jQuery.fn.DataTable.ext.type.search.allowDiacritics = function (array) {
 jQuery.fn.DataTable.ext.type.search.string = function (s) {
   return removeDiacritics(s);
 };
+
+jQuery.fn.DataTable.ext.type.search.html = function (s) {
+  return removeDiacritics(s.replace( /<.*?>/g, '' ));
+};
+
 
 /**
  * end of diacritics-neutralise.js
