@@ -180,8 +180,9 @@ module BookTracker
 
     def show
       @item = Item.find(params[:id])
+      @item.url = url_for(@item)
       respond_to do |format|
-        format.html {}
+        format.html
         format.json { render json: @item }
       end
     end
