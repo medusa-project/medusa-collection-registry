@@ -40,46 +40,29 @@ function initialize_data_table_synchronous(tableSelector, extra_args) {
   try {
     let table = $(tableSelector).DataTable(args);
     let input = $('input[type="search"]', $(tableSelector).closest('div.row').prev('div.row'));
-    console.log('input: ' + tableSelector + ' : ' + input);
-    add_back_to_top_button(tableSelector);
-    // $('input[type="search"]').on("keyup", function () {
-    //   console.log(jQuery.fn.DataTable.ext.type.search.string( this.value));
-    //   table
-    //       .search(
-    //           jQuery.fn.DataTable.ext.type.search.string( this.value )
-    //       )
-    //       .draw();
-    // } );
-    let search = function(string) {
+    ensure_back_to_top_button(tableSelector);
+    let search = function (string) {
       table
           .search(
-              jQuery.fn.DataTable.ext.type.search.string( string )
+              jQuery.fn.DataTable.ext.type.search.string(string)
           )
           .draw();
+      ensure_back_to_top_button(tableSelector);
     };
-    $('input[type="search"]').keyup( function () {
+    $(input).keyup(function () {
       search(this.value);
-    } );
+    });
     //This seems more complicated than it should, but as I understand, the event fires immediately,
     //and possibly before the text is actually present in the input element. So this sort of workaround
     //is needed. The setTimeout sends this to the bottom of the stack and forces the content to be pasted
     //before. Now, I'm not sure why just extracting the text and doing the search doesn't work - but it
     //doesn't. It's not worth fighting.
-    $('input[type="search"]').on("paste", function (e) {
+    $(input).on("paste", function (e) {
       let text = e.originalEvent.clipboardData.getData('text');
       setTimeout(function () {
         search(text);
       }, 0);
-    } );
-
-    // $('input[type="search"]').onpaste( function (x, e) {
-    //   console.log("paste: " + jQuery.fn.DataTable.ext.type.search.string( x.value));
-    //   table
-    //       .search(
-    //           jQuery.fn.DataTable.ext.type.search.string( x.value )
-    //       )
-    //       .draw();
-    // } );
+    });
   } catch (err) {
     console.log("Error initializing " + tableSelector);
   }
@@ -88,8 +71,11 @@ function initialize_data_table_synchronous(tableSelector, extra_args) {
 //TODO - figure out how to do this correctly so that the button survives
 //redraws of the table, e.g. when search happens.
 //Add a back to top of page button to the datatable
-function add_back_to_top_button(tableSelector) {
-  var pagination_list = $(tableSelector).closest('div.row').next('div').find('ul.pagination');
-  var up_button = '<li class="paginate_button"><a href="#global-navigation"><i class="fa fa-chevron-circle-up"></i></a></li>';
-  pagination_list.append(up_button);
+function ensure_back_to_top_button(tableSelector) {
+  let pagination_list = $(tableSelector).closest('div.row').next('div').find('ul.pagination');
+  if (!$('li.paginate_button', pagination_list)) {
+    let up_button = '<li class="paginate_button"><a href="#global-navigation"><i class="fa fa-chevron-circle-up"></i></a></li>';
+    pagination_list.append(up_button);
+  }
 }
+
