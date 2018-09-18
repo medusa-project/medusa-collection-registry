@@ -61,6 +61,10 @@
           %dd= @item.exists_in_hathitrust ? readable_hathitrust_rights(@item) : 'N/A'
           %dt HathiTrust Access
           %dd= @item.exists_in_hathitrust ? @item.hathitrust_access : 'N/A'
+          %dt Language
+          %dd= @item.language
+          %dt Subjects
+          %dd= @item.subject&.split(BookTracker::Item::SUBJECT_DELIMITER)&.join(', ')
 
 #accordion.panel-group
   .panel.panel-default
