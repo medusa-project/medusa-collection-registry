@@ -17,6 +17,8 @@ require('jquery-ui');
 //imported it does not behave properly.
 //Maybe try only importing the css that we actually use
 //import('jquery-ui/themes/base/all');
+//Also, I think we only use jquery-ui for datepicker and possibly some effects - maybe find
+//other sources for the same
 require('jquery-ujs');
 require('checkboxes.js/src/jquery.checkboxes');
 

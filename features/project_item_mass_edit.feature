@@ -11,7 +11,6 @@ Feature: Project items mass edit
       | 30078923456789 | 98765  |       | CatCat | My cat note | ABC789      | batch_2 | Cats        |            |
       | 30045623456789 | 76543  |       | Buster |             |             | batch_1 |             | Bustard    |
 
-  @selenium_chrome
   Scenario: Mass edit project items
     Given I am logged in as a project_mgr
     When I view the project with title 'Scanning'
