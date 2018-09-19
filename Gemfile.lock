@@ -28,12 +28,13 @@ GIT
 
 GIT
   remote: https://github.com/medusa-project/medusa_storage.git
-  revision: 2ae6db5299b43ccc2d9f2407f60b021eee16710d
+  revision: fc19ced981fcf729247ec30eea7c30dfbfc6b9a3
   branch: master
   specs:
-    medusa_storage (0.2.4)
+    medusa_storage (0.4.0)
       aws-sdk-s3
       hex_string
+      io-like
       parallel (~> 1.12)
 
 GIT
@@ -107,17 +108,17 @@ GEM
     autoprefixer-rails (9.1.2)
       execjs
     aws-eventstream (1.0.1)
-    aws-partitions (1.102.0)
-    aws-sdk-core (3.25.0)
+    aws-partitions (1.104.0)
+    aws-sdk-core (3.27.0)
       aws-eventstream (~> 1.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-kms (1.7.0)
-      aws-sdk-core (~> 3)
+    aws-sdk-kms (1.9.0)
+      aws-sdk-core (~> 3, >= 3.26.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-s3 (1.17.1)
-      aws-sdk-core (~> 3, >= 3.21.2)
+    aws-sdk-s3 (1.19.0)
+      aws-sdk-core (~> 3, >= 3.26.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.3)
@@ -125,7 +126,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
-    backports (3.11.3)
+    backports (3.11.4)
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
@@ -268,10 +269,10 @@ GEM
     erubi (1.7.1)
     erubis (2.7.0)
     execjs (2.7.0)
-    factory_bot (4.11.0)
+    factory_bot (4.11.1)
       activesupport (>= 3.0.0)
-    factory_bot_rails (4.11.0)
-      factory_bot (~> 4.11.0)
+    factory_bot_rails (4.11.1)
+      factory_bot (~> 4.11.1)
       railties (>= 3.0.0)
     faraday (0.15.2)
       multipart-post (>= 1.2, < 3)
@@ -306,6 +307,7 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.1.0)
       concurrent-ruby (~> 1.0)
+    io-like (0.3.0)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
@@ -398,9 +400,9 @@ GEM
     public_suffix (3.0.3)
     puma (3.12.0)
     rack (2.0.5)
-    rack-protection (2.0.3)
+    rack-protection (2.0.4)
       rack
-    rack-proxy (0.6.3)
+    rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -510,10 +512,10 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    sinatra (2.0.3)
+    sinatra (2.0.4)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.3)
+      rack-protection (= 2.0.4)
       tilt (~> 2.0)
     sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
@@ -557,7 +559,7 @@ GEM
     valid_email (0.1.0)
       activemodel
       mail (>= 2.6.1)
-    webpacker (3.2.1)
+    webpacker (3.5.5)
       activesupport (>= 4.2)
       rack-proxy (>= 0.6.1)
       railties (>= 4.2)
@@ -663,7 +665,7 @@ DEPENDENCIES
   uglifier
   uuid
   valid_email
-  webpacker (~> 3.2)
+  webpacker
   will_paginate
   will_paginate-bootstrap
   yajl-ruby

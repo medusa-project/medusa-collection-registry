@@ -61,7 +61,7 @@ gem 'uglifier'
 
 gem 'bootstrap-sass'
 
-gem 'webpacker', '~> 3.2'
+gem 'webpacker'
 
 gem 'rails-jquery-autocomplete'
 
