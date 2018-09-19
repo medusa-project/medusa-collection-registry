@@ -7,13 +7,15 @@ module BookTracker
     before_action :setup
 
     def setup
-      @allowed_params = params.permit(:action, :controller, :format, :ht, :ia,
-                                      :id, :page, :q, in: [], ni: [])
+      @allowed_params = params.permit(:action, :controller, :format, :harvest,
+                                      :ht, :ia, :id, :last_modified_after,
+                                      :last_modified_before, :page, :q,
+                                      in: [], ni: [])
     end
 
     ##
     # Responds to both GET /book_tracker/items (and also POST due to search
-    # form's ability to accept long lists of bib IDs)
+    # form's ability to accept long lists of bib IDs).
     #
     def index
       @items = Item.all
@@ -33,7 +35,7 @@ module BookTracker
 
       # query (q=)
       query = @allowed_params[:q]
-      unless query.blank?
+      if query.present?
         lines = query.strip.split("\n")
         # If >1 line, assume a list of bib and/or object IDs.
         if lines.length > 1
@@ -69,11 +71,12 @@ module BookTracker
       end
 
       # in/not-in service (in[]=, ni[]=)
+      # These are used by checkboxes in the items UI.
       if @allowed_params[:in].respond_to?(:each) and
           @allowed_params[:ni].respond_to?(:each) and
           (@allowed_params[:in] & @allowed_params[:ni]).length > 0
-        flash[:error] = 'Cannot search for items that are both in and not in '\
-        'the same service.'
+        flash['error'] = 'Cannot search for items that are both in and not in '\
+            'the same service.'
       else
         if @allowed_params[:in].respond_to?(:each)
           @allowed_params[:in].each do |service|
@@ -101,6 +104,26 @@ module BookTracker
         end
 
         @items = @items.order(:title)
+      end
+
+      # Harvest mode (harvest=true) uses a query that the web UI can't generate.
+      if @allowed_params[:harvest] == 'true'
+        # Exclude Hathitrust-restricted items (DLDS-70)
+        @items = @items.where('hathitrust_access != ?', 'deny')
+
+        # Include only books that don't solely exist, or don't exist at all,
+        # in Google, due to difficulty in linking to them.
+        @items = @items.where('exists_in_google = ? OR exists_in_hathitrust = ? OR exists_in_internet_archive = ?',
+                              false, true, true)
+
+        if @allowed_params[:last_modified_after].present? # epoch seconds
+          @items = @items.where('updated_at >= ?',
+                                Time.at(@allowed_params[:last_modified_after].to_i))
+        end
+        if @allowed_params[:last_modified_before].present? # epoch seconds
+          @items = @items.where('updated_at <= ?',
+                                Time.at(@allowed_params[:last_modified_before].to_i))
+        end
       end
 
       page = @allowed_params[:page].to_i
@@ -157,8 +180,9 @@ module BookTracker
 
     def show
       @item = Item.find(params[:id])
+      @item.url = url_for(@item)
       respond_to do |format|
-        format.html {}
+        format.html
         format.json { render json: @item }
       end
     end

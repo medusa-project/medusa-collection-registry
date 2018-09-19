@@ -5,6 +5,5 @@
     %td #{link_to collection.title, collection}
     %td #{collection.contact_email}
     %td #{collection.total_size.to_s(:rounded, precision: 2, delimiter: ',')}
-    %td #{collection.preservation_priority_name}
     %td
       = small_edit_button(collection)

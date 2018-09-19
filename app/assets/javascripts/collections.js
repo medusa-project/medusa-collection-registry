@@ -25,10 +25,6 @@ var storage_level_filter = {
     this.filter('bit-level store');
   },
 
-  object_level: function () {
-    this.filter('object-level store');
-  },
-
   filter: function (filter_string) {
     $('#file_groups').DataTable().columns(2).search(filter_string).draw();
   }

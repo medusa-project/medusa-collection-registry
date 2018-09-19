@@ -1,6 +1,6 @@
 %p
   The pending request for ingest is to transfer all content from the
-  source directory #{@workflow_accrual.staging_local_path}
+  source directory #{@workflow_accrual.staging_path}
   to Medusa File Group '#{@workflow_accrual.file_group_title}',
   Collection '#{@workflow_accrual.collection.title}'
   - if @workflow_accrual.collection.external_id.present?
@@ -23,12 +23,12 @@
   %li
     #{@workflow_accrual.relative_target_path}
     %ul
-      - @workflow_accrual.workflow_accrual_directories.order('name asc').limit(5).each do |directory|
+      - @workflow_accrual.workflow_accrual_directories.order(:name).limit(5).each do |directory|
         %li [folder] #{directory.name}
       - if @workflow_accrual.workflow_accrual_directories.count > 5
         %li ([#{@workflow_accrual.workflow_accrual_directories.count - 5}] more sibling folders in ingest)
     %ul
-      - @workflow_accrual.workflow_accrual_files.order('name asc').limit(5).each do |file|
+      - @workflow_accrual.workflow_accrual_files.order(:name).limit(5).each do |file|
         %li [file] #{file.name}
       - if @workflow_accrual.workflow_accrual_files.count > 5
         %li ([#{@workflow_accrual.workflow_accrual_files.count - 5}] more sibling files in ingest)

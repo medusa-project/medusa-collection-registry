@@ -89,7 +89,7 @@ namespace :check_dirs do
     max_id = args[:max_id] || 10 ** 12
     found_problem = false
     CfsDirectory.where('id >= ?', min_id).where('id <= ?', max_id).find_each do |cfs_directory|
-      report = cfs_directory.compare_to_disk
+      report = cfs_directory.compare_to_storage
       if report.disk_directory_missing?
         report.print_disk_directory_missing
         found_problem = true

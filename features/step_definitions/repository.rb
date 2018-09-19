@@ -4,11 +4,6 @@ And /^I have repositories with fields:$/ do |table|
   end
 end
 
-And /^the repository titled '([^']*)' is managed by '([^']*)'$/ do |title, email|
-  person = FactoryBot.create(:person, email: email,)
-  FactoryBot.create(:repository, contact: person, title: title)
-end
-
 Then /^I should see all repository fields$/ do
   ['Title', 'URL', 'Notes', 'Address 1', 'Address 2', 'City', 'State', 'Zip', 'Phone Number', 'Email'].each do |field|
     step "I should see '#{field}'"

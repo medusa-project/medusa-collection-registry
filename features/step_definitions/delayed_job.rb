@@ -5,7 +5,15 @@
 #like the amazon backup where we can't really run the job.
 #It may not be worth the time now to go back and rewrite all the old tests, but that could be done at some point.
 And /^delayed jobs are run$/ do
-  Delayed::Worker.new.work_off
+  begin
+    #Set quiet to false to see the delayed jobs run
+    Delayed::Worker.new(quiet: true).work_off
+  rescue Exception => e
+    message = "DELAYED JOB ERROR: #{e}"
+    Rails.logger.error message
+    puts message
+    raise
+  end
 end
 
 And(/^there should be (\d+) delayed jobs?$/) do |count|

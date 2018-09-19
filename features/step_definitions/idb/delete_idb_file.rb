@@ -4,13 +4,25 @@ end
 
 Then(/^there should be an IDB delete delayed job reflecting the delete request$/) do
   message = IdbTestHelper.idb_delete_message
-  expect(AmqpAccrual::DeleteJob.find_by(client: 'idb', cfs_file_uuid: message['uuid'])).to be_truthy
+  expect(find_amqp_delete_job('idb', message)).to be_truthy
+end
+
+def find_amqp_delete_job(client, message)
+  jobs = AmqpAccrual::DeleteJob.where(client: client).all
+  jobs.detect do |job|
+    job.incoming_message == message
+  end
 end
 
 Given(/^there is a valid IDB delete delayed job$/) do
   idb_file_group = AmqpAccrual::Config.file_group('idb')
   cfs_file = FactoryBot.create(:cfs_file, cfs_directory_id: idb_file_group.cfs_directory.id, name: 'test.txt')
-  File.open(cfs_file.absolute_path, 'w') { |f| f.puts 'Some content' }
+
+  content_string = 'Some content'
+  md5_sum = Digest::MD5.base64digest(content_string)
+  storage_root = Application.storage_manager.main_root
+  storage_root.copy_io_to(cfs_file.key, StringIO.new(content_string), md5_sum, content_string.length)
+
   idb_file_group.reload
   @initial_idb_file_count = idb_file_group.total_files
   @idb_file_to_delete = cfs_file
@@ -37,6 +49,7 @@ Then(/^Medusa should have sent an error return message to IDB matching '(.*)'$/)
       expect(message['uuid']).to eq(IdbTestHelper.idb_delete_message['uuid'])
     end
     expect(message['error']).to match(text)
+    expect(message['pass_through']['key']).to eq('some value')
   end
 end
 
@@ -65,7 +78,7 @@ end
 
 Then(/^the IDB file should have been deleted$/) do
   expect(CfsFile.find_by(id: @idb_file_to_delete.id)).to be_nil
-  expect(@idb_file_to_delete.exists_on_filesystem?).to be false
+  expect(@idb_file_to_delete.exists_on_storage?).to be false
   expect(AmqpAccrual::Config.file_group('idb').total_files).to eq(@initial_idb_file_count - 1)
 end
 
@@ -75,5 +88,6 @@ And(/^Medusa should have sent a valid delete return message to IDB$/) do
     expect(message['operation']).to eq('delete')
     expect(message['status']).to eq('ok')
     expect(message['uuid']).to eq(@idb_uuid_to_delete)
+    expect(message['pass_through']['key']).to eq('some value')
   end
 end

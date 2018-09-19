@@ -13,11 +13,6 @@ When(/^I click on '([^']*)' in the (.*) actions$/) do |link, section|
   end
 end
 
-When(/^I click on '([^']*)' in the (.*) actions and delayed jobs are run$/) do |link, section|
-  step "I click on '#{link}' in the #{section} actions"
-  step 'delayed jobs are run'
-end
-
 When /^I start a new collection for the repository titled '([^']*)'$/ do |title|
   steps %Q( When I view the repository with title '#{title}'
             And I click on 'Add Collection')

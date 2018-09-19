@@ -8,5 +8,5 @@
     %td= item.date
     %td= item.exists_in_hathitrust? ? link_to(raw('&check;'), item.hathitrust_handle, target: 'blank') : ''
     %td= item.exists_in_internet_archive? ? link_to(raw('&check;'), item.internet_archive_url, target: 'blank') : ''
-    %td= item.exists_in_google? ? link_to(raw('&check;'), item.google_url, target: 'blank') : ''
+    %td= item.exists_in_google? ? raw('&check;') : ''
     %input{type: 'hidden', name: 'next-page-url', value: "#{next_page_url}"}

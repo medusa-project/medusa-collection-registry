@@ -16,9 +16,6 @@
     .col-md-4#administrative-metadata
       .well
         = render 'show_administrative_metadata'
-    .col-md-4#rights-metadata
-      .well
-        = render partial: 'rights_declarations/show', locals: {rights_declaration: @file_group.rights_declaration}
   - if @directory.present?
     .row#amazon.collapse
       %hr

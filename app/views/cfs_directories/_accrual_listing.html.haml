@@ -2,8 +2,8 @@
   %div
     %h5 Roots:
     %ul.list-group
-      - AccrualStorage.instance.roots.each do |root|
-        %li.list-group-item= link_to root.name, @accrual.child_display_path(root.name), remote: true
+      - Accrual.available_root_names.sort_by {|name| name.downcase}.each do |root_name|
+        %li.list-group-item= link_to root_name, @accrual.child_display_path(root_name), remote: true
 - else
   %div
     %h5 Directories:

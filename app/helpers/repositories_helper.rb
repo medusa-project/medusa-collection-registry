@@ -1,9 +1,5 @@
 module RepositoriesHelper
 
-  def repository_confirm_message
-    'This is irreversible. Associated collections and their associated assessments and file groups will also be deleted.'
-  end
-
   def repository_tab_list
     ['overview', 'running-processes', 'file-statistics', 'red-flags', %w(combined-events-tab Events newspaper-o), 'amazon', 'accruals']
   end
@@ -16,7 +12,7 @@ module RepositoriesHelper
   end
 
   def load_repository_dashboard_events
-    @events = @repository.cascaded_events.where('events.updated_at > ?', Time.now - 7.days).where(cascadable: true).includes(eventable: :parent)
+    @events = @repository.cascaded_events.recent.cascadable.includes(eventable: :parent)
   end
 
 end

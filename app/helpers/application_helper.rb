@@ -44,20 +44,8 @@ module ApplicationHelper
     show_field(model, field, label) if model.send(field).present?
   end
 
-  def generic_confirm_message
-    'This is irreversible - are you sure?'
-  end
-
   def wiki_link(label)
-    fa_icon_link_to label, 'group', wiki_url, target: '_blank'
-  end
-
-  def wiki_url
-    'https://wiki.cites.uiuc.edu/wiki/display/LibraryDigitalPreservation/Home'
-  end
-
-  def faq_url
-    'https://wiki.cites.illinois.edu/wiki/display/LibraryDigitalPreservation/Medusa+FAQ'
+    fa_icon_link_to label, Settings.icon.wiki_link, Settings.medusa.wiki_url, target: '_blank'
   end
 
   def cache_key_for_all(klass)

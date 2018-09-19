@@ -19,8 +19,12 @@ class FileExtension < ApplicationRecord
     self.extension.if_blank('<no extension>')
   end
 
+  def self.empty
+    where(cfs_file_count: 0)
+  end
+
   def self.prune_empty
-    where(cfs_file_count: 0).each do |file_extension|
+    empty.each do |file_extension|
       file_extension.destroy!
     end
   end

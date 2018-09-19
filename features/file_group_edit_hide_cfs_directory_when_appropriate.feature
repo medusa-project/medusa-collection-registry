@@ -12,10 +12,3 @@ Feature: Hide cfs directory field for non-cfs file group types
       | Dogs | ExternalFileGroup |
     When I edit the file group with title 'Dogs'
     Then I should not see 'Cfs Root'
-
-  Scenario: Hide for existing object level file group
-    Given the collection with title 'Animals' has child file groups with fields:
-      | title | type                 |
-      | Dogs | ObjectLevelFileGroup |
-    When I edit the file group with title 'Dogs'
-    Then I should not see 'Cfs Root'

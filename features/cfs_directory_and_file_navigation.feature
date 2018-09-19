@@ -1,14 +1,13 @@
-Feature: CFS integration
+Feature: Main storage integration
   In order to temporarily preserve and work with files before ingest
   As a librarian
-  I want to be able to work with a CFS file share exposed as a local directory
+  I want to be able to work with a main storage share
 
   Background:
-    Given I clear the cfs root directory
-    And the physical cfs directory 'dogs' has a file 'intro.txt' with contents 'anything'
-    And the physical cfs directory 'dogs/pugs' has a file 'document.doc' with contents 'anything'
-    And the physical cfs directory 'dogs/pugs' has a file 'description.txt' with contents 'anything'
-    And the physical cfs directory 'dogs/pugs/toys' has a file 'something.txt' with contents 'anything'
+    Given the main storage has a key 'dogs/intro.txt' with contents 'anything'
+    And the main storage has a key 'dogs/pugs/document.doc' with contents 'anything'
+    And the main storage has a key 'dogs/pugs/description.txt' with contents 'anything'
+    And the main storage has a key 'dogs/pugs/toys/something.txt' with contents 'anything'
     And the collection with title 'Animals' has child file groups with fields:
       | title | type              |
       | Dogs  | BitLevelFileGroup |

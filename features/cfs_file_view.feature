@@ -1,3 +1,4 @@
+@mechanize
 Feature: Viewing CFS file information and content
   In order to work with bit level files
   As a librarian
@@ -5,8 +6,7 @@ Feature: Viewing CFS file information and content
 
   Background:
     Given I am logged in as an admin
-    And I clear the cfs root directory
-    And the cfs directory 'dogs/places' contains cfs fixture file 'grass.jpg'
+    And the main storage directory key 'dogs/places' contains cfs fixture content 'grass.jpg'
     And every collection with fields exists:
       | title   | id |
       | Animals | 1  |
@@ -30,6 +30,7 @@ Feature: Viewing CFS file information and content
 
   Scenario: Download cfs file
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
+    #And I wait 120 seconds
     And I click on 'Download'
     Then I should have downloaded the fixture file 'grass.jpg'
 
@@ -63,17 +64,15 @@ Feature: Viewing CFS file information and content
     And I click on 'View'
     Then I should have viewed the fixture file 'grass.jpg'
 
-  Scenario: Deny view to users
+  Scenario: No view link for users
     Given I relogin as a user
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And I click on 'View'
-    Then I should be unauthorized
+    Then I should not see a 'View' link
 
-  Scenario: Deny download to users
+  Scenario: No download link for users
     Given I relogin as a user
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And I click on 'Download'
-    Then I should be unauthorized
+    Then I should not see a 'Download' link
 
   Scenario: Deny download and view permissions to public and users
     Then deny object permission on the cfs file with name 'grass.jpg' to users for action with redirection:
@@ -93,23 +92,6 @@ Feature: Viewing CFS file information and content
     Then I should see all of:
       | File format: incorrect extension | File size: has changed |
 
-  Scenario: Create FITS for file
-    When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And I click on 'Create FITS'
-    Then the file group titled 'Dogs' should have a cfs file for the path 'grass.jpg' with fits attached
-    And I should be viewing the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And the cfs file with name 'grass.jpg' should have fits data matching:
-      | file_format              | JPEG File Interchange Format                              |
-      | file_format_version      | 1.01                                                      |
-      | file_size                | 169804.0                                                  |
-      | creating_application     | CREATOR: gd-jpeg v1.0 (using IJG JPEG v62), quality = 100 |
-      | well_formed              | true                                                      |
-      | is_valid                 | true                                                      |
-      | image_byte_order         | big endian                                                |
-      | image_compression_scheme | JPEG                                                      |
-      | image_color_space        | YCbCr                                                     |
-
-
   Scenario: View FITS for file
     Given the cfs file at path 'grass.jpg' for the file group titled 'Dogs' has fits attached
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
@@ -120,3 +102,15 @@ Feature: Viewing CFS file information and content
     Given the cfs file at path 'grass.jpg' for the file group titled 'Dogs' has fits attached
     When I reset fixity and FITS information for the cfs file named 'grass.jpg'
     Then the cfs file at path 'grass.jpg' for the file group titled 'Dogs' should have been fixity and fits reset
+
+  Scenario: View events for a file
+    When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
+    And I click on 'Events'
+    Then I should be viewing events for the cfs file with name 'grass.jpg'
+
+  #Of course this only works because there is only one cfs file set up - we're testing the presence of the
+  #link and its general function, not the randomness
+  Scenario: View random file
+    When I go to the dashboard
+    And I click on 'Random File'
+    Then I should be on the view page for the cfs file with name 'grass.jpg'

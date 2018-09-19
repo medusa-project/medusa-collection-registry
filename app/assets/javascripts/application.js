@@ -13,9 +13,12 @@
 
 //= require bootstrap-sprockets
 //= require autocomplete-rails-uncompressed
-//= require data_tables_common
+//= require local-time
 //= require common
 //= require react
 //= require react_ujs
 //= require components
+//= require datatables
+//= require diacritics-neutralise
+//= require data_tables_common
 //= require_tree .

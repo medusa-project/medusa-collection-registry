@@ -80,16 +80,46 @@ class CfsFile < ApplicationRecord
     File.join(self.cfs_directory.relative_path, self.name)
   end
 
-  def absolute_path
-    File.join(CfsRoot.instance.path, self.relative_path)
+  def key
+    relative_path
   end
 
-  def exists_on_filesystem?
-    File.exists?(self.absolute_path)
+  def exists_on_storage?
+    storage_root.exist?(self.key)
   end
 
-  def remove_from_filesystem
-    File.delete(self.absolute_path) if File.exists?(self.absolute_path)
+  def remove_from_storage
+    storage_root.delete_content(self.key)
+  end
+
+  #wrap the storage root's ability to yield a file path having the appropriate content in it
+  def with_input_file
+    storage_root.with_input_file(self.key, tmp_dir: tmpdir_for_with_input_file) do |file|
+      yield file
+    end
+  end
+
+  #Set this up so that we use local storage for small files, for some definition of small
+  # might want to extract this elsewhere so that is generally available and easy to make
+  # robust for whatever application.
+  def tmpdir_for_with_input_file
+    expected_size = size || storage_root.size(key)
+    if expected_size > Settings.classes.cfs_file.tmpdir_cutoff_size
+      Application.storage_manager.tmpdir
+    else
+      Dir.tmpdir
+    end
+  end
+
+  #wrap the storage root's ability to yield an io on the content
+  def with_input_io
+    storage_root.with_input_io(self.key) do |io|
+      yield io
+    end
+  end
+
+  def storage_root
+    Application.storage_manager.main_root
   end
 
   #the directories leading up to the file
@@ -99,15 +129,19 @@ class CfsFile < ApplicationRecord
 
   #run an initial assessment on files that need it - skip if we've already done it and the mtime hasn't changed
   def run_initial_assessment
-    file_info = File.stat(self.absolute_path)
+    external_mtime = storage_root.mtime(self.key)
+    external_size = storage_root.size(self.key)
     #This won't guarantee that we rerun if the file has changed, but it should pick up most of the cases. mtime only seems to go
     #down to the second
-    if self.mtime.blank? or (file_info.mtime > self.mtime) or (file_info.size != self.size)
+    if self.mtime.blank? or (external_mtime > self.mtime) or (external_size != self.size)
+      self.size = external_size
+      self.mtime = external_mtime
+      computed_content_type = with_input_file do |input_file|
+        (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(input_file) rescue 'application/octet-stream')
+      end
+      self.set_fixity(self.storage_md5_sum)
       transaction do
-        self.size = file_info.size
-        self.mtime = file_info.mtime
-        self.content_type_name = (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(self.absolute_path) rescue 'application/octet-stream')
-        self.set_fixity(self.file_system_md5_sum)
+        self.content_type_name = computed_content_type
         self.save!
       end
     end
@@ -132,12 +166,9 @@ class CfsFile < ApplicationRecord
     self.fixity_check_time = Time.now
   end
 
-  #TODO - update for new FixityCheckResult scheme
-  #Always generate FixityCheckResult
-  #Only generate event when there is an error
   def update_fixity_status_with_event(md5sum: nil, actor_email: nil)
-    update_fixity_status_not_found_with_event(actor_email: actor_email) and return unless exists_on_filesystem?
-    md5sum ||= self.file_system_md5_sum
+    update_fixity_status_not_found_with_event(actor_email: actor_email) and return unless exists_on_storage?
+    md5sum ||= self.storage_md5_sum
     if self.md5_sum.present?
       if self.md5_sum == md5sum
         update_fixity_status_ok
@@ -162,7 +193,7 @@ class CfsFile < ApplicationRecord
     transaction do
       fixity_check_results.create!(status: :bad)
       create_fixity_event(cascadable: true, note: 'FAILED', actor_email: actor_email)
-      red_flags.create!(message: "Md5 Sum changed. Recorded: #{md5_sum} Current: #{file_system_md5_sum}. Cfs File Id: #{self.id}")
+      red_flags.create!(message: "Md5 Sum changed. Recorded: #{md5_sum} Current: #{storage_md5_sum}. Cfs File Id: #{self.id}")
       set_fixity_status('bad')
       save!
     end
@@ -189,7 +220,8 @@ class CfsFile < ApplicationRecord
   end
 
   def ensure_fits_xml_for_large_file
-    self.delay(priority: 70).ensure_fits_xml if !fits_serialized? and self.size.present? and self.size > 5.gigabytes
+    self.delay(priority: Settings.delayed_job.priority.large_file_fits).ensure_fits_xml if
+        !fits_serialized? and self.size.present? and self.size > Settings.classes.cfs_file.large_file_fits_cutoff_size
   end
 
   def update_fits_xml(xml: nil)
@@ -258,8 +290,8 @@ class CfsFile < ApplicationRecord
     end
   end
 
-  def file_system_md5_sum
-    Digest::MD5.file(self.absolute_path).hexdigest
+  def storage_md5_sum
+    storage_root.hex_md5_sum(self.key)
   end
 
   def ensure_current_file_extension
@@ -361,16 +393,18 @@ class CfsFile < ApplicationRecord
   protected
 
   def get_fits_xml
-    uri = URI(File.join(Settings.fits.server_url, 'fits/file'))
-    uri.query = URI.encode_www_form({path: self.absolute_path.gsub(/^\/+/, '')})
-    response = HTTParty.get(uri.to_s, timeout: 3000)
-    case response.code
+    with_input_file do |input_file|
+      uri = URI(File.join(Settings.fits.server_url, 'fits/file'))
+      uri.query = URI.encode_www_form({path: input_file.gsub(/^\/+/, '')})
+      response = HTTParty.get(uri.to_s, timeout: 3000)
+      case response.code
       when 200
         response.body
       when 404
-        raise RuntimeError, "File not found for FITS: #{self.absolute_path}"
+        raise RuntimeError, "File not found for FITS: #{self.input_file}"
       else
         raise RuntimeError, "Bad response from FITS server: Code #{response.code}. Body: #{response.body}"
+      end
     end
   end
 

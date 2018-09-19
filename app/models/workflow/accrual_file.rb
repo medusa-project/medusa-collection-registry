@@ -4,8 +4,4 @@ class Workflow::AccrualFile < ApplicationRecord
   validates_presence_of :workflow_accrual_job_id
   validates_uniqueness_of :name, scope: :workflow_accrual_job_id, allow_blank: false
 
-  def comparator
-    Comparator::SingleFile.new(workflow_accrual_job.staging_local_path, workflow_accrual_job.staging_remote_path, name)
-  end
-
 end

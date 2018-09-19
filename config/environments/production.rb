@@ -20,6 +20,9 @@ MedusaCollectionRegistry::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
 
+  # Log asset compilation to stdout so we can see in capistrano with --trace
+  config.assets.logger = Logger.new $stdout
+
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH
 

@@ -4,7 +4,7 @@ class FileFormatProfilesController < ApplicationController
   before_action :find_file_format_profile, only: [:show, :edit, :update, :destroy, :clone]
 
   def index
-    @file_format_profiles = FileFormatProfile.order('name asc')
+    @file_format_profiles = FileFormatProfile.order(:name)
   end
 
   def show

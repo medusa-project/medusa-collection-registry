@@ -4,6 +4,10 @@
 
 #TODO by setting up the tests correctly we could probably remove this dependence - i.e. have the tests
 #take this information directly out of the settings instead of hard coding it
+classes:
+  workflow:
+    accrual_job:
+      assessment_requeue_interval: <%= (0.1).seconds %>
 download_users:
   joe_downloader_user:
     - 1

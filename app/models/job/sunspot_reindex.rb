@@ -1,4 +1,6 @@
 #note that if the batch size is too large the queries may become problematic. 1000 seems to work.
+# There is a Sunspot method that does basically this, but this has the advantage of
+# not destroying the entire index first and then rebuilding it - it just fixes little pieces at a time.
 class Job::SunspotReindex < Job::Base
 
   def self.create_for(class_or_class_name, start_id: 0, end_id: 0, batch_size: 1000)
@@ -7,7 +9,7 @@ class Job::SunspotReindex < Job::Base
   end
 
   def perform
-    models = klass.where('id >= ?', start_id).order('id asc').includes(klass.sunspot_options[:include]).limit(batch_size)
+    models = klass.where('id >= ?', start_id).order(:id).includes(klass.sunspot_options[:include]).limit(batch_size)
     Sunspot.index models
     remove_orphans(models)
     if models.last.id < end_id and start_id < end_id

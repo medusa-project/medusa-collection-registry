@@ -50,9 +50,6 @@ class Temp::IdSynchronizer
         file_group.job_fits_directories.each do |job|
           update_file_group_id(job)
         end
-        file_group.virus_scans.each do |scan|
-          update_file_group_id(scan)
-        end
       end
       file_group.target_file_group_joins.each do |join|
         update_file_group_id(join, id_field: :source_file_group_id)

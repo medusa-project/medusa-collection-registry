@@ -9,5 +9,3 @@
             = render partial: 'form_descriptive_metadata', locals: {f: f}
           #administrative-metadata.tab-pane
             = render partial: 'form_administrative_metadata', locals: {f: f}
-          #rights-metadata.tab-pane
-            = render partial: 'rights_declarations/nested_form', locals: {containing_form: f, rights_declaration: @file_group.rights_declaration}

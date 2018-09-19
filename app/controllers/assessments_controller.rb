@@ -61,7 +61,7 @@ class AssessmentsController < ApplicationController
     case assessable_type_name
       when 'Collection'
         Collection
-      when 'FileGroup', 'ExternalFileGroup', 'BitLevelFileGroup', 'ObjectLevelFileGroup'
+      when 'FileGroup', 'ExternalFileGroup', 'BitLevelFileGroup'
         FileGroup
       when 'Repository'
         Repository

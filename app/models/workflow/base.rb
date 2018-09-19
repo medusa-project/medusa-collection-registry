@@ -18,7 +18,7 @@ class Workflow::Base < Job::Base
   self.abstract_class = true
 
   def put_in_queue(opts = {})
-    Delayed::Job.enqueue(self, opts.reverse_merge(priority: 30))
+    Delayed::Job.enqueue(self, opts.reverse_merge(priority: Settings.delayed_job.priority.base_job))
   end
 
   def perform

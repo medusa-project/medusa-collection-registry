@@ -15,9 +15,9 @@ Feature: Red Flag Summary
     And the collection with title 'Cats' has child file groups with fields:
       | title | type              |
       | Cool  | BitLevelFileGroup |
-    And there is a physical cfs directory 'dogs/toys'
-    And there is a physical cfs directory 'dogs/hot'
-    And there is a physical cfs directory 'cats/cool'
+    And the main storage has a directory key 'dogs/toys' containing a file
+    And the main storage has a directory key 'dogs/hot' containing a file
+    And the main storage has a directory key 'cats/cool' containing a file
     And the file group titled 'Toys' has cfs root 'dogs/toys'
     And the file group titled 'Hot' has cfs root 'dogs/hot'
     And the file group titled 'Cool' has cfs root 'cats/cool'

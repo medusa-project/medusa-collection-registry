@@ -73,15 +73,6 @@ namespace :fixity do
       csv << [f.id, f.fixity_check_status, f.cfs_directory_id, f.file_group.id, f.absolute_path]
     end
     f.close
-    # File.open('fixity_report.csv', 'wb') do |f|
-    #   CSV.new(f) do |csv|
-    #     csv << %w(cfs_file_id status cfs_directory_id file_group_id path)
-    #     problem_files = CfsFile.not_found_fixity.to_a + CfsFile.bad_fixity.to_a
-    #     problem_files.each do |f|
-    #       csv << [f.id, f.fixity_check_status, f.cfs_directory_id, f.file_group.id, f.absolute_path]
-    #     end
-    #   end
-    # end
   end
 end
 

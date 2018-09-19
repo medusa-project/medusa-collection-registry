@@ -3,7 +3,7 @@ class FileGroupsController < ApplicationController
   before_action :require_medusa_user, except: [:show, :content_type_manifest]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :content_type_manifest]
   before_action :find_file_group_and_collection, only: [:show, :destroy, :edit, :update, :create_cfs_fits,
-                                                        :create_virus_scan, :red_flags, :attachments,
+                                                        :red_flags, :attachments,
                                                         :assessments, :events, :content_type_manifest]
   respond_to :html, :js, :json
 
@@ -12,7 +12,6 @@ class FileGroupsController < ApplicationController
     @directory = @file_group.cfs_directory
     @directory = CfsDirectory.includes(:subdirectories, {cfs_files: [:content_type, :file_extension]}).find(@directory.id) if @directory.present?
     @accrual = create_accrual
-    @suppress_gallery_viewer = cookies[:suppress_gallery_viewer] == "1"
     respond_to do |format|
       format.html do
         @directories_helper = SearchHelper::TableCfsDirectory.new(cfs_directory: @directory)
@@ -45,12 +44,10 @@ class FileGroupsController < ApplicationController
   def update
     authorize! :update, @file_group
     handle_related_file_groups do
-      handle_nested_rights_declaration(params[:file_group]) do
-        if @file_group.update_attributes(allowed_params)
-          redirect_to @file_group
-        else
-          render 'edit'
-        end
+      if @file_group.update_attributes(allowed_params)
+        redirect_to @file_group
+      else
+        render 'edit'
       end
     end
   end
@@ -59,7 +56,6 @@ class FileGroupsController < ApplicationController
     @collection = Collection.find(params[:collection_id])
     @file_group = FileGroup.new(collection_id: @collection.id)
     authorize! :create, @file_group
-    @file_group.rights_declaration = @file_group.clone_collection_rights_declaration
     @related_file_group_id = params[:related_file_group_id]
   end
 
@@ -67,27 +63,15 @@ class FileGroupsController < ApplicationController
     handle_related_file_groups do
       @collection = Collection.find(params[:file_group][:collection_id])
       klass = determine_creation_class(params[:file_group])
-      handle_nested_rights_declaration(allowed_params) do
-        @file_group = klass.new(collection: @collection)
-        authorize! :create, @file_group
-        @file_group.update_attributes(allowed_params)
-        if @file_group.save
-          @file_group.record_creation_event(current_user)
-          redirect_to @file_group
-        else
-          render 'new'
-        end
+      @file_group = klass.new(collection: @collection)
+      authorize! :create, @file_group
+      @file_group.update_attributes(allowed_params)
+      if @file_group.save
+        @file_group.record_creation_event(current_user)
+        redirect_to @file_group
+      else
+        render 'new'
       end
-    end
-  end
-
-  def create_cfs_fits
-    authorize! :create_cfs_fits, @file_group
-    if @file_group.cfs_directory.present?
-      Job::FitsDirectoryTree.create_for(@file_group.cfs_directory)
-      record_event(@file_group, 'cfs_fits_performed')
-      flash[:notice] = "Scheduling FITS creation for /#{@file_group.cfs_directory.relative_path}"
-      redirect_to @file_group
     end
   end
 
@@ -112,7 +96,7 @@ class FileGroupsController < ApplicationController
 
   def assessments
     @assessable = @file_group
-    @assessments = @assessable.assessments.order('date DESC')
+    @assessments = @assessable.assessments.order(date: :desc)
   end
 
   def content_type_manifest
@@ -136,19 +120,6 @@ class FileGroupsController < ApplicationController
     @collection = @file_group.collection
   end
 
-  #Ideally we'd handle this with nested attributes, but I can't seem to get the combination of STI on the file group
-  #and nested attributes to work correctly, so here we are. It's not too bad since the file group will already exist
-  #and is guaranteed to have both a collection and rights declaration, making both of those just updates.
-  def handle_nested_rights_declaration(params)
-    rights_params = params.delete(:rights_declaration) || ActionController::Parameters.new
-    rights_params = rights_params.permit(:rights_basis, :copyright_jurisdiction, :copyright_statement,
-                                         :access_restrictions, :custom_copyright_statement)
-    FileGroup.transaction do
-      yield
-      @file_group.rights_declaration.update_attributes!(rights_params)
-    end
-  end
-
   def determine_creation_class(params)
     FileGroup.class_for_storage_level(params.delete(:storage_level))
   end
@@ -170,10 +141,9 @@ class FileGroupsController < ApplicationController
   def allowed_params
     params[:file_group].permit(:collection_id, :external_file_location,
                                :producer_id, :description, :provenance_note, :acquisition_method, :contact_email,
-                               :title, :external_id, :staged_file_location, :total_file_size,
-                               :file_format, :total_files, :related_file_group_ids, :cfs_root,
-                               :package_profile_id, :cfs_directory_id, :access_url, :private_description, :rights_declaration,
-                               resource_type_ids: [])
+                               :title, :staged_file_location, :total_file_size,
+                               :total_files, :related_file_group_ids, :cfs_root,
+                               :cfs_directory_id, :access_url)
   end
 
   def show_json

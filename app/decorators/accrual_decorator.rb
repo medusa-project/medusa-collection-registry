@@ -37,6 +37,7 @@ class AccrualDecorator < BaseDecorator
 
   def directory_checkboxes
     h.content_tag(:ul, class: 'accrual-list list-group') do
+      x = directories
       h.collection_check_boxes(:accrual, :accrual_directories, directories, :itself, Proc.new { |directory| h.link_to(directory, child_display_path(directory), remote: true) }) do |box|
         h.content_tag(:li, class: 'list-group-item') do
           box.label do

@@ -1,4 +1,3 @@
-require 'open3'
 class Workflow::ProjectItemIngest < Workflow::Base
 
   belongs_to :user
@@ -31,10 +30,14 @@ class Workflow::ProjectItemIngest < Workflow::Base
   end
 
   def perform_ingest
-    be_in_state_and_requeue('email_staging_directory_missing') and return unless project.ingest_folder.present? and Dir.exist?(project.staging_directory)
     be_in_state_and_requeue('email_target_directory_missing') and return unless safe_target_directory.present?
+    be_in_state_and_requeue('email_staging_directory_missing') and return if staging_directory_missing?
     items.each do |item|
-      ingest_item(item) if !item.ingested and Dir.exist?(item.staging_directory)
+      begin
+        ingest_item(item) if !item.ingested and has_staged_content?(item)
+      rescue MedusaStorage::Error::InvalidDirectory
+        #just pass
+      end
     end
     add_file_group_event
     be_in_state_and_requeue('email_progress')
@@ -85,30 +88,33 @@ class Workflow::ProjectItemIngest < Workflow::Base
     destroy_queued_jobs_and_self
   end
 
+  def staging_root
+    Application.storage_manager.project_staging_root
+  end
+
+  def main_root
+    Application.storage_manager.main_root
+  end
+
   protected
 
   def ingest_item(item)
-    rsync_item(item)
+    copy_item(item)
     item_cfs_directory = create_and_assess_item_cfs_directory(item)
     item.cfs_directory = item_cfs_directory
     item.ingested = true
     item.save!
   end
 
-  def rsync_item(item)
-    opts = %w(-a --ignore-times --safe-links --chmod Du+rwx,Dgo+rw,Dgo-w,Fu+rw,Fu-x,Fgo+r,Fgo-wx --exclude-from) << exclude_file_path
-    source = item.staging_directory
-    target = project.target_cfs_directory_path
-    out, err, status = Open3.capture3('rsync', *opts, source, target)
-    unless status.success?
-      message = <<MESSAGE
-Error doing rsync for project item ingest job #{self.id} for item #{item.id}.
-STDOUT: #{out}
-STDERR: #{err}
-Rescheduling.
-MESSAGE
-      Rails.logger.error message
-      raise RuntimeError, message
+  def copy_item(item)
+    source_key_prefix = item.staging_key_prefix
+    target_key_prefix = project.target_key_prefix
+    item_id = File.basename(source_key_prefix)
+    source_keys = staging_root.unprefixed_subtree_keys(source_key_prefix).reject {|key| file_exclusions.include?(File.basename(key))}
+    source_keys.each do |source_key|
+      main_root.copy_content_to(File.join(target_key_prefix, item_id, source_key),
+                                staging_root,
+                                File.join(source_key_prefix, source_key))
     end
   end
 
@@ -126,6 +132,10 @@ MESSAGE
     File.join(Rails.root, 'config', 'accrual_rsync_exclude.txt')
   end
 
+  def file_exclusions
+    @file_exclusions ||= (File.read(exclude_file_path).lines.collect(&:chomp) rescue [])
+  end
+
   def safe_target_directory
     project.target_cfs_directory rescue nil
   end
@@ -134,6 +144,21 @@ MESSAGE
     file_group = project.target_cfs_directory.file_group
     note = "Ingested items: #{item_ids.join(',')}"
     file_group.events.create!(key: :project_item_ingest, actor_email: user.email, cascadable: true, note: note)
+  end
+
+  def staging_directory_missing?
+    staging_root.subdirectory_keys(project.staging_key_prefix).blank? and
+        staging_root.file_keys(project.staging_key_prefix).blank?
+  rescue MedusaStorage::Error::InvalidDirectory
+    true
+  end
+
+  def has_staged_content?(item)
+    directory_key = item.staging_key_prefix
+    staging_root.file_keys(directory_key).present? ||
+        staging_root.subdirectory_keys(directory_key).present?
+  rescue Aws::S3::Errors::NotFound
+    false
   end
 
 end

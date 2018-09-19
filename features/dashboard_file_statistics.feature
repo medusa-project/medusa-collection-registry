@@ -6,10 +6,9 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
 
   Background:
     Given I am logged in as an admin
-    And I clear the cfs root directory
-    And the cfs directory 'animals/dogs' contains cfs fixture file 'grass.jpg'
-    And the cfs directory 'animals/dogs/pictures' contains cfs fixture file 'grass.jpg'
-    And the cfs directory 'animals/dogs' contains cfs fixture file 'fits.xml'
+    And the main storage directory key 'animals/dogs' contains cfs fixture content 'grass.jpg'
+    And the main storage directory key 'animals/dogs/pictures' contains cfs fixture content 'grass.jpg'
+    And the main storage directory key 'animals/dogs' contains cfs fixture content 'fits.xml'
     And the collection with title 'Animals' has child file groups with fields:
       | title         | type              |
       | Cats          | ExternalFileGroup |
@@ -36,9 +35,10 @@ Feature: File Statistics Summary on the Collection Registry Dashboard
     Then I should see the file stats by content type table
     And I should see the file stats by file extension table
 
-    @download_chrome
+  @selenium_chrome_headless_downloading
   Scenario: Get CSV version of file statistics
     When I go to the dashboard
     And I click on 'File Statistics'
     And within '#file-statistics' I click on 'CSV'
-    Then I should receive a csv file 'file-statistics.csv'
+    And I wait 0.2 seconds
+    Then I should have downloaded a file 'file-statistics.csv' of type 'text/csv'

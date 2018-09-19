@@ -12,7 +12,6 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
-//@import 'jquery-ui';
 @import 'font-awesome';
 @import 'datatables';
 @import 'variables';
@@ -23,7 +22,9 @@
 @import 'library_header';
 @import 'book_tracker/items';
 @import 'search';
-@import 'galleria_classic';
+@import 'jquery-ui/base';
+@import 'jquery-ui/datepicker';
+@import 'jquery-ui/theme';
 
 #file_stats_summary {
   td, th {

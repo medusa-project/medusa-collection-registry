@@ -4,7 +4,7 @@ class FileFormatsController < ApplicationController
   before_action :get_file_format, only: [:show, :edit, :update, :destroy, :attachments]
 
   def index
-    @file_formats = FileFormat.order('name asc').includes(:pronoms, :logical_extensions).all.decorate
+    @file_formats = FileFormat.order(:name).includes(:pronoms, :logical_extensions).all.decorate
   end
 
   def show

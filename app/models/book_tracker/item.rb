@@ -6,6 +6,7 @@ module BookTracker
                   'Author', 'Volume', 'Date', 'IA Identifier',
                   'HathiTrust Handle', 'Exists in HathiTrust', 'Exists in IA',
                   'Exists in Google']
+    SUBJECT_DELIMITER = '||'
 
     # Used by self.insert_or_update!
     INSERTED = 0
@@ -22,11 +23,12 @@ module BookTracker
     # depending on whether an item with a matching object ID is already present
     # in the database.
     #
-    # @param params Params hash
-    # @param source_path Pathname of the file from which the params were
-    # extracted
-    # @return Array with the created or updated Item at position 0 and the status
-    # (Item::INSERTED or Item::UPDATED) at position 1
+    # @param params [ActionController::Parameters]
+    # @param source_path [String] Pathname of the file from which the params
+    #                             were extracted.
+    # @return [Array] Array with the created or updated Item at position 0 and
+    #                 the status (Item::INSERTED or Item::UPDATED) at position
+    #                 1.
     #
     def self.insert_or_update!(params, source_path = nil)
       status = Item::UPDATED
@@ -44,15 +46,15 @@ module BookTracker
 
     ##
     # @param record Nokogiri element corresponding to a /collection/record
-    # element in a MARCXML file
-    # @return Params hash for an Item
+    #               element in a MARCXML file.
+    # @return [Hash] Params hash for an Item.
     #
     def self.params_from_marcxml_record(record)
       namespaces = { 'marc' => 'http://www.loc.gov/MARC21/slim' }
       item_params = {}
 
       # raw MARCXML
-      item_params[:raw_marcxml] = record.to_xml(indent: 2)
+      item_params[:raw_marcxml] = record.to_xml(indent: 4)
 
       # extract bib ID
       nodes = record.xpath('marc:controlfield[@tag = 001]', namespaces)
@@ -71,6 +73,17 @@ module BookTracker
       item_params[:title] = record.
           xpath('marc:datafield[@tag = 245][1]/marc:subfield[@code = \'a\' or @code = \'b\']', namespaces).
           map{ |t| t.content }.join(' ').strip
+
+      # extract language from 008
+      nodes = record.xpath('marc:controlfield[@tag = 008][1]', namespaces)
+      item_params[:language] = nodes.first.content[35..37] if nodes.any?
+
+      # extract subject from 650 subfield a
+      # N.B.: items may have more than one subject; in this case the subjects
+      # are combined into one value separated by SUBJECT_DELIMITER, to avoid
+      # the unnecessary complexity of another table.
+      nodes = record.xpath('marc:datafield[@tag = 650]/marc:subfield[@code = \'a\']', namespaces)
+      item_params[:subject] = nodes.map(&:content).join(SUBJECT_DELIMITER)
 
       # extract volume from 955 subfield v
       nodes = record.xpath('marc:datafield[@tag = 955][1]/marc:subfield[@code = \'v\']', namespaces)
@@ -105,13 +118,17 @@ module BookTracker
           oclc_number: self.oclc_number,
           obj_id: self.obj_id,
           title: self.title,
-          author: self.author,
           volume: self.volume,
+          author: self.author,
+          language: self.language,
+          subjects: self.subject&.split(SUBJECT_DELIMITER),
           date: self.date,
           url: self.url,
+          catalog_url: self.uiuc_catalog_url,
           hathitrust_url: self.exists_in_hathitrust ?
               self.hathitrust_handle : nil,
           hathitrust_rights: self.hathitrust_rights,
+          hathitrust_access: self.hathitrust_access,
           internet_archive_identifier: self.ia_identifier,
           internet_archive_url: self.exists_in_internet_archive ?
               self.internet_archive_url : nil,
@@ -121,51 +138,29 @@ module BookTracker
     end
 
     ##
-    # It is not possible to generate a link directly to a Google item, as
-    # Google Books URLs use private IDs. Instead, this method returns a URL
-    # of a search for the item.
-    #
-    # @return string
-    #
-    def google_url
-      strip_characters = '`~!@#$%^&*()\\=[]{}|\\\"\'<>,.?/:;'
-      blank_characters = '-_+'
-      sanitized_title = self.title.tr(strip_characters, '').tr(blank_characters, ' ')
-      sanitized_author = self.author.tr(strip_characters, '').tr(blank_characters, ' ')
-      q = []
-      q << 'intitle:' + sanitized_title.split(' ').select{ |t| t.length > 1 }.
-          join(' intitle:') unless sanitized_title.blank?
-      q << 'inauthor:' + sanitized_author.split(' ').select{ |t| t.length > 1 }.
-          join(' inauthor:') unless sanitized_author.blank?
-      "https://www.google.com/search?tbo=p&tbm=bks&q=#{q.join('+')}&num=10&gws_rd=ssl"
-    end
-
-    ##
-    # @return [String] If self.exists_in_hathitrust is true, returns the
-    # expected HathiTrust handle of the item. Otherwise, returns an empty
-    # string.
+    # @return [String] If self.exists_in_hathitrust is true, the expected
+    #                  HathiTrust handle of the item. Otherwise, an empty
+    #                  string.
     #
     def hathitrust_handle
       handle = ''
       if self.exists_in_hathitrust
         case self.service
           when Service::INTERNET_ARCHIVE
-            handle = "http://hdl.handle.net/2027/uiuo.#{self.obj_id}"
+            handle = "https://hdl.handle.net/2027/uiuo.#{self.obj_id}"
           when Service::GOOGLE
-            handle = "http://hdl.handle.net/2027/uiug.#{self.obj_id}"
+            handle = "https://hdl.handle.net/2027/uiug.#{self.obj_id}"
           else # digitized locally or by vendors
-            handle = "http://hdl.handle.net/2027/uiuc.#{self.obj_id}"
+            handle = "https://hdl.handle.net/2027/uiuc.#{self.obj_id}"
         end
       end
       handle
     end
 
     ##
-    # Returns the expected Internet Archive URL of the item. If the item does not
-    # exist in Internet Archive, the URL will be broken. The URL should work if
-    # if self.exists_in_internet_archive is true.
-    #
-    # @return string
+    # @return [String] The expected Internet Archive URL of the item. The URL
+    #                  should resolve if self.exists_in_internet_archive is
+    #                  true; otherwise it will be broken.
     #
     def internet_archive_url
       "https://archive.org/details/#{self.ia_identifier}"
@@ -175,7 +170,7 @@ module BookTracker
       if self.obj_id.start_with?('ark:/')
         Service::INTERNET_ARCHIVE
       elsif self.obj_id.length == 14 and self.obj_id[0] == '3'
-        # It's a Google record if the object ID is a barcode. Barcodes are 14
+        # If the object ID is a barcode, it's a Google record. Barcodes are 14
         # digits and start with number 3.
         Service::GOOGLE
       end
@@ -193,7 +188,7 @@ module BookTracker
     end
 
     def uiuc_catalog_url
-      "http://vufind.carli.illinois.edu/vf-uiu/Record/uiu_#{self.bib_id}"
+      "https://vufind.carli.illinois.edu/vf-uiu/Record/uiu_#{self.bib_id}"
     end
 
     private

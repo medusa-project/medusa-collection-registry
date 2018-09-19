@@ -2,6 +2,8 @@ class MedusaBaseMailer < ApplicationMailer
 
   delegate :feedback_address, :dev_address, :no_reply_address, :admin_address, to: :class
 
+  after_action :add_subject
+
   def self.feedback_address
     Settings.medusa.email.feedback
   end
@@ -23,11 +25,16 @@ class MedusaBaseMailer < ApplicationMailer
   end
 
   def subject_prefix
-    if Settings&.mailer&.system_name
-      "Medusa[#{Settings.mailer.system_name}]"
+    if system_name = Settings&.mailer&.system_name
+      "Medusa[#{system_name}]"
     else
       "Medusa"
     end
+  end
+
+  def add_subject
+    @subject ||= default_i18n_subject(@subject_args || {})
+    mail subject: subject(@subject)
   end
 
   default from: self.no_reply_address

@@ -39,13 +39,12 @@ Feature: Repository dashboard
   Scenario: Dashboard includes running processes tables
     When I view the repository with title 'Sample Repo'
     And I click on 'Running Processes'
-    Then I should see the running virus scans table
-    And I should see the running fits scans table
-    And I should see the running initial assessment scans table
+    Then I should see the running initial assessment scans table
 
-  @javascript @download_chrome
+  @javascript @selenium_chrome_headless_downloading
   Scenario: Get CSV version of file statistics
     When I view the repository with title 'Sample Repo'
     And I click on 'File Statistics'
     And within '#file-statistics' I click on 'CSV'
-    Then I should receive a csv file 'file-statistics.csv'
+    And I wait 0.2 seconds
+    Then I should have downloaded a file 'file-statistics.csv' of type 'text/csv'

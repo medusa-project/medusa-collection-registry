@@ -2,5 +2,5 @@
   Collections
 
 %div
-  = render layout: 'layouts/standard_table', locals: {id: :collections, headers: ['External ID', 'Title', 'Contact', 'Size (GB)', 'Preservation Priority', '']} do
+  = render layout: 'layouts/standard_table', locals: {id: :collections, headers: ['External ID', 'Title', 'Contact', 'Size (GB)', '']} do
     = render partial: 'repositories/collections_table_row', collection: @repository.collections, as: :collection, cached: true

@@ -49,11 +49,12 @@ end
 And(/^there exists staged content for the items with ingest identifiers:$/) do |table|
   table.headers.each do |ingest_id|
     item = Item.find_by(unique_identifier: ingest_id) || Item.find_by(bib_id: ingest_id)
-    FileUtils.mkdir_p(item.staging_directory)
-    File.open(File.join(item.staging_directory, 'content.txt'), 'w') do |f|
-      f.puts item.ingest_identifier
-      f.puts 'content'
-    end
+    content_key = File.join(item.staging_key_prefix, 'content.txt')
+    content = StringIO.new
+    content.puts item.ingest_identifier
+    content.puts 'content'
+    content.rewind
+    Application.storage_manager.project_staging_root.copy_io_to(content_key, content, Digest::MD5.base64digest(content.string), content.string.length)
   end
 end
 

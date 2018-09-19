@@ -47,7 +47,7 @@ Feature: File format notes and normalization paths
     Then I should see 'Edited Note'
     And a file format note with note 'Edited Note' should exist
 
-  @javascript @selenium_chrome
+  @javascript
   Scenario: Add normalization path to file format
     Given I am logged in as an admin
     When I view the file format with name 'tiff'

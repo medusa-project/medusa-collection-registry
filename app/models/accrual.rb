@@ -23,7 +23,7 @@ class Accrual
   end
 
   def staging_root
-    AccrualStorage.instance.root_named(staging_root_name)
+    Application.storage_manager.accrual_roots.at(staging_root_name)
   end
 
   def staging_root_name
@@ -36,12 +36,16 @@ class Accrual
 
   def directories
     return Array.new if at_root?
-    staging_root.directories_at(path_from_staging_root).collect { |pathname| pathname.basename.to_s }.sort
+    staging_root.subdirectory_keys(path_from_staging_root).collect {|d| File.basename(d)}.sort
   end
 
   def files
     return Array.new if at_root?
-    staging_root.files_at(path_from_staging_root).collect { |pathname| pathname.basename.to_s }.sort
+    staging_root.file_keys(path_from_staging_root).collect {|f| File.basename(f)}.sort
+  end
+
+  def self.available_root_names
+    Application.storage_manager.accrual_roots.all_root_names.sort
   end
 
 end

@@ -5,14 +5,14 @@
 = render 'storage_level_filter'
 
 - if @collection.file_groups.present?
-  = render layout: 'layouts/standard_table', locals: {id: :file_groups, headers: ['Id', 'Name', 'Storage Level', 'Created','Profile', 'Producer', 'Total files', 'Total file size (GB)', 'Related File Groups', '']} do
-    = render partial: 'file_groups_table_row', collection: @collection.file_groups.includes(:package_profile, :producer, :source_file_groups, :target_file_groups).order('created_at'), as: :file_group
+  = render layout: 'layouts/standard_table', locals: {id: :file_groups, headers: ['Id', 'Name', 'Storage Level', 'Created', 'Producer', 'Total files', 'Total file size (GB)', 'Related File Groups', '']} do
+    = render partial: 'file_groups_table_row', collection: @collection.file_groups.includes(:producer, :source_file_groups, :target_file_groups).order(:created_at), as: :file_group
 
 -# TODO Consider rendering one of each of these forms and adapting to the appropriate file group
 -# rather than rendering a form for each one, hidden though they may be.
 -# TODO why do these take so long to render sometimes?
 - cache(@collection) do
   %div#event_forms
-    - @collection.file_groups.order('created_at').each do |file_group|
+    - @collection.file_groups.order(:created_at).each do |file_group|
       - cache(['event_forms', file_group]) do
         = render partial: 'events/modal_form', locals: {eventable: file_group, remote: true, dialog_id: "add-event-file-group-#{file_group.id}"}

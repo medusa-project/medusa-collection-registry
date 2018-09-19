@@ -14,8 +14,6 @@
           = fa_icon('cog')
           %span.caret
         %ul.dropdown-menu.dropdown-menu-right
-          %li= link_to 'Create FITS', create_fits_for_tree_cfs_directory_path(@directory), method: :post
-          %li= link_to 'Fixity check', fixity_check_cfs_directory_path(@directory), method: :post
           - if @accrual.present? and safe_can?(:accrue, @directory)
             %li= link_to 'Add files', '#', 'data-toggle' => 'modal', 'data-target' => '#add-files-dialog'
       - if can? :export, @file_group

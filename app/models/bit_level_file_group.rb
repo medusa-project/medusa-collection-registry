@@ -1,9 +1,6 @@
-require 'fileutils'
 require 'set'
 class BitLevelFileGroup < FileGroup
 
-  has_many :virus_scans, dependent: :destroy, foreign_key: :file_group_id
-  has_many :job_fits_directories, class_name: 'Job::FitsDirectory', foreign_key: :file_group_id
   has_many :job_cfs_initial_directory_assessments, class_name: 'Job::CfsInitialDirectoryAssessment', foreign_key: :file_group_id
   has_many :archived_accrual_jobs, dependent: :destroy, foreign_key: :file_group_id
 
@@ -11,12 +8,10 @@ class BitLevelFileGroup < FileGroup
   after_destroy :maybe_destroy_cfs_directories
   before_destroy :check_emptiness
 
-  delegate :ensure_file_at_absolute_path, :ensure_file_at_relative_path,
-           :find_directory_at_relative_path, :find_file_at_relative_path, to: :cfs_directory
+  delegate :ensure_file_at_relative_path, :find_directory_at_relative_path,
+           :find_file_at_relative_path, to: :cfs_directory
 
   def ensure_cfs_directory
-    physical_cfs_directory_path = expected_absolute_cfs_root_directory
-    FileUtils.mkdir_p(physical_cfs_directory_path) unless Dir.exists?(physical_cfs_directory_path)
     if cfs_directory = CfsDirectory.find_by(path: expected_relative_cfs_root_directory)
       self.cfs_directory_id = cfs_directory.id unless self.cfs_directory_id
       self.save!
@@ -30,10 +25,6 @@ class BitLevelFileGroup < FileGroup
   #Destroy the physical cfs directory and/or CfsDirectory corresponding to this
   #ONLY IF they are empty
   def maybe_destroy_cfs_directories
-    physical_cfs_directory_path = expected_absolute_cfs_root_directory
-    if Dir.exist?(physical_cfs_directory_path) and (Dir.entries(physical_cfs_directory_path).to_set == %w(. ..).to_set)
-      Dir.unlink(physical_cfs_directory_path) rescue nil
-    end
     if cfs_directory.try(:is_empty?)
       cfs_directory.destroy
     end
@@ -44,20 +35,11 @@ class BitLevelFileGroup < FileGroup
   end
 
   def self.downstream_types
-    ['ObjectLevelFileGroup']
+    []
   end
 
   def supports_cfs
     true
-  end
-
-  def full_cfs_directory_path
-    raise RuntimeError, "No cfs directory set for file group #{self.id}" unless self.cfs_directory.present?
-    File.join(CfsRoot.instance.path, self.cfs_directory.path)
-  end
-
-  def expected_absolute_cfs_root_directory
-    File.join(CfsRoot.instance.path, self.expected_relative_cfs_root_directory)
   end
 
   def expected_relative_cfs_root_directory
@@ -70,10 +52,6 @@ class BitLevelFileGroup < FileGroup
 
   def run_initial_cfs_assessment
     self.cfs_directory.make_and_assess_tree
-  end
-
-  def running_fits_file_count
-    Job::FitsDirectory.where(file_group_id: self.id).sum(:file_count)
   end
 
   def running_initial_assessments_file_count
@@ -131,7 +109,7 @@ class BitLevelFileGroup < FileGroup
 
   def accrual_unstarted?
     events.where(key: 'files_added').blank? and
-    (cfs_directory.blank? or cfs_directory.pristine?)
+        (cfs_directory.blank? or cfs_directory.pristine?)
   end
 
   def check_emptiness

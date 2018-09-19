@@ -4,16 +4,12 @@ class FileGroup < ApplicationRecord
   include CascadedRedFlaggable
   include Uuidable
   include Breadcrumb
-  include ResourceTypeable
-  include EmailPersonAssociator
 
   belongs_to :collection
   #parent is a duplicate, but allows uniformity for events, i.e. we can do eventable.parent
   belongs_to :parent, class_name: 'Collection', foreign_key: 'collection_id'
   belongs_to :producer
-  belongs_to :package_profile
 
-  has_one :rights_declaration, dependent: :destroy, autosave: true, as: :rights_declarable
   has_one :cfs_directory, as: :parent
   has_many :assessments, as: :assessable, dependent: :destroy
   has_many :target_file_group_joins, dependent: :destroy, class_name: 'RelatedFileGroupJoin', foreign_key: :source_file_group_id
@@ -22,9 +18,6 @@ class FileGroup < ApplicationRecord
   has_many :source_file_groups, through: :source_file_group_joins
   has_many :attachments, as: :attachable, dependent: :destroy
 
-  email_person_association(:contact)
-
-  before_validation :ensure_rights_declaration
   before_save :canonicalize_cfs_root
   before_save :strip_fields
   before_validation :initialize_file_info
@@ -48,13 +41,10 @@ class FileGroup < ApplicationRecord
     string :title
     text :description
     string :description
-    text :external_id
-    string :external_id
   end
 
   STORAGE_LEVEL_HASH = {'external' => 'ExternalFileGroup',
-                        'bit-level store' => 'BitLevelFileGroup',
-                        'object-level store' => 'ObjectLevelFileGroup'}
+                        'bit-level store' => 'BitLevelFileGroup'}
 
   def self.class_for_storage_level(storage_level)
     Kernel.const_get(STORAGE_LEVEL_HASH[storage_level])
@@ -71,18 +61,6 @@ class FileGroup < ApplicationRecord
 
   def json_storage_level
     self.class.to_s.underscore.sub('_file_group', '')
-  end
-
-  def ensure_rights_declaration
-    self.rights_declaration ||= self.clone_collection_rights_declaration
-  end
-
-  def clone_collection_rights_declaration
-    RightsDeclaration.new(self.collection.rights_declaration.attributes.slice(
-                              :rights_basis, :copyright_jurisdiction,
-                              :copyright_statement, :access_restrictions).merge(
-                              rights_declarable_id: self.id,
-                              rights_declarable_type: self.class.to_s))
   end
 
   def sibling_file_groups

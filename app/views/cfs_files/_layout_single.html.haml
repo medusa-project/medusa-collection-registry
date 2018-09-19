@@ -13,18 +13,16 @@
         %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Run', href: '#'}
           = fa_icon('cog')
           %span.caret
-        %ul.dropdown-menu.dropdown-menu-right
-          - unless @file.fits_result.present?
-            %li= link_to 'Create FITS', create_fits_xml_cfs_file_path(@file)
-          %li= link_to 'Fixity check', fixity_check_cfs_file_path(@file), method: :post
       .btn-group
         %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Download'}
           = fa_icon('download')
           %span.caret
         %ul.dropdown-menu.dropdown-menu-right
-          %li= link_to 'Download', download_cfs_file_path(@file)
+          - if safe_can?(:download, @file.file_group)
+            %li= link_to 'Download', cfs_file_download_link(@file), download: @file.name
           %li= link_to 'JSON', cfs_file_path(@file, format: :json)
-      = view_button(view_cfs_file_path(@file))
+      - if safe_can?(:download, @file.file_group)
+        = view_button(cfs_file_view_link(@file))
       - if @file.file_format_test.present?
         = fa_icon_link_to('Edit File format test', 'balance-scale', edit_file_format_test_path(@file.file_format_test), class: 'btn btn-default')
       - else

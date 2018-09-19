@@ -58,59 +58,7 @@ namespace :fits do
   task handle_incoming_amqp_messages: :environment do
     report_errors(handle_incoming_messages) if incoming_message_count > 0
   end
-
-  #TODO: We just need this temporarily, until we've fixed all this stuff up
-  desc "Fix up long fits files"
-  task fix_long: :environment do
-    require 'pstore'
-    store_file = File.join(ENV['HOME'], 'tmp', 'long_fits.pstore')
-    unless File.exist?(store_file)
-      puts "Store file not found. Exiting"
-      return
-    end
-    store = PStore.new(store_file)
-    store.ultra_safe = true
-    continue = true
-    Signal.trap('INT') do
-      puts "preparing to shutdown"
-      continue = false
-    end
-    bar = nil
-    store.transaction do
-      bar = ProgressBar.new(store[:ids].length)
-    end
-    while continue
-      store.transaction do
-        if store[:ids].length.zero?
-          puts "No more ids to do"
-          continue = false
-        end
-        id = store[:ids].pop
-        if cfs_file = CfsFile.find_by(id: id)
-          xml = cfs_file.fits_xml
-          doc = Nokogiri::XML(xml)
-          doc.css('fits toolOutput').remove
-          cfs_file.fits_result.xml = doc.to_xml
-        end
-        bar.increment!
-      end
-    end
-  end
-
-  desc "fits files still to be fixed"
-  task fix_long_count: :environment do
-    require 'pstore'
-    store_file = File.join(ENV['HOME'], 'tmp', 'long_fits.pstore')
-    unless File.exist?(store_file)
-      puts "Store file not found. Exiting"
-      return
-    end
-    store = PStore.new(store_file)
-    store.ultra_safe = true
-    count = store.transaction { store[:ids].count }
-    puts "#{count} long fits files remaining"
-  end
-
+  
   MAX_SLEEPS = 12
   SLEEP_TIME = 10
   #return a hash of any errors

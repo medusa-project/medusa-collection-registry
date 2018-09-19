@@ -21,19 +21,9 @@ class ContentTypesController < ApplicationController
                        joins(cfs_directory: {root_cfs_directory: :parent_file_group}).
                        where('file_groups.collection_id = ?', @collection_id).order('cfs_files.name asc').page(params[:page]).per_page(params[:per_page] || 25)
                  else
-                   @content_type.cfs_files.order('name asc').page(params[:page]).per_page(params[:per_page] || 25)
+                   @content_type.cfs_files.order(:name).page(params[:page]).per_page(params[:per_page] || 25)
                  end
     @cfs_files = @cfs_files.includes(cfs_directory: {root_cfs_directory: {parent: :collection}})
-  end
-
-  def fits_batch
-    authorize! :create, ContentType
-    if Job::FitsContentTypeBatch.create_for(current_user, @content_type)
-      flash[:notice] = "FITS batch scheduled for mime type '#{@content_type.name}'"
-    else
-      flash[:notice] = "There is already a FITS batch scheduled for mime type '#{@content_type.name}'"
-    end
-    redirect_back(fallback_location: root_path)
   end
 
   def random_cfs_file

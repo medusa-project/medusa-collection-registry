@@ -1,0 +1,103 @@
+en:
+  amazon_mailer:
+    failure:
+      subject: Amazon backup failure
+    progress:
+      subject: Amazon backup progress
+  cfs_mailer:
+    export_complete:
+      subject: Download ready
+    export_error_admin:
+      subject: Download error
+    export_error_user:
+      subject: Download error
+  delayed_job_error_mailer:
+    error:
+      subject: Delayed Job Error
+  downloader_mailer:
+    directory_complete:
+      subject: Download ready
+    directory_error:
+      subject: Download error
+    directory_error_admin:
+      subject: Download error
+    file_list_complete:
+      subject: Download ready
+    file_list_error:
+      subject: Download error
+    file_list_error_admin:
+      subject: Download error
+  fits_mailer:
+    success:
+      subject: FITS batch completed
+  fixity_error_mailer:
+    report_problems:
+      subject: Fixity errors
+  item_bulk_import_mailer:
+    failure:
+      subject: Error uploading project items
+    success:
+      subject: Project items uploaded
+  message_receiver_error_mailer:
+    error:
+      subject: Message Receiver Error
+  producer_mailer:
+    report:
+      subject: Producer Report
+  static_page_mailer:
+    deposit_files_confirmation:
+      subject: Ingest request confirmation
+    deposit_files_internal:
+      subject: "Ingest request [%{date}]"
+    feedback_confirmation:
+      subject: Feedback confirmation
+    feedback_internal:
+      subject: "Feedback [%{date}]"
+    request_training_confirmation:
+      subject: Training request confirmation
+    request_training_internal:
+      subject: "Training request [%{date}]"
+  test_mailer:
+    test:
+      subject: Test email subject
+  workflow:
+    accrual_mailer:
+      aborted:
+        subject: Accrual aborted
+      assessment_done:
+        subject: Accrual assessment completed
+      done:
+        subject: Accrual completed
+      illegal_overwrite:
+        subject: Accrual cancelled
+      initial_approval:
+        subject: Accrual pending
+      notify_admin_of_incoming_request:
+        subject: Accrual requested
+    file_group_delete_mailer:
+      email_superusers:
+        subject: File Group deletion requested
+      requester_accept:
+        subject: File Group deletion approved
+      requester_final_removal:
+        subject: File Group final deletion completed
+      requester_reject:
+        subject: File Group deletion rejected
+      restored_content:
+        subject: File Group deletion cancelled - content restored
+    ingest_mailer:
+      done:
+        subject: Ingest completed
+      staging_delete_done:
+        subject: Staged content deleted
+    project_item_ingest_mailer:
+      done:
+        subject: Project Item ingest completed
+      progress:
+        subject: Project Item ingest progress
+      staging_directory_missing:
+        subject: Project Item ingest error
+      started:
+        subject: Project Item ingest started
+      target_directory_missing:
+        subject: Project Item ingest error

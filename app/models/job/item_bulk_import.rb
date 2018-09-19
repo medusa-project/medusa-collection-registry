@@ -2,20 +2,21 @@ require 'fileutils'
 class Job::ItemBulkImport < Job::Base
   belongs_to :user
   belongs_to :project
+  delegate :csv_file_location_root, to: :class
 
   def self.csv_file_location_root
     File.join(Rails.root, 'tmp', 'item_upload_csv', Rails.env)
   end
 
   def csv_file_location
-    File.join(self.class.csv_file_location_root, "#{self.id}.csv")
+    File.join(csv_file_location_root, "#{self.id}.csv")
   end
 
   def copy_csv_file(source_path)
     FileUtils.mkdir_p(File.dirname(csv_file_location))
     File.open(csv_file_location, 'wb') do |f|
       File.open(source_path, 'rb') do |g|
-        f.write(g.read)
+        IO.copy_stream(g, f)
       end
     end
   end

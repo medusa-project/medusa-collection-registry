@@ -45,8 +45,10 @@ module BookTracker
             item = Item.find_by_obj_id(parts[0].split('.').last)
             if item
               if !item.exists_in_hathitrust or
+                  item.hathitrust_access != parts[1] or
                   item.hathitrust_rights != parts[2]
                 item.exists_in_hathitrust = true
+                item.hathitrust_access = parts[1]
                 item.hathitrust_rights = parts[2]
                 item.save!
               end

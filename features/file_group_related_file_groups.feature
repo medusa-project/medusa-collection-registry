@@ -10,25 +10,23 @@ Feature: File Group related file groups
       | Dogs  |
       | Cats  |
     And the collection with title 'Dogs' has child file groups with fields:
-      | title              | type                 |
-      | texts             | ExternalFileGroup    |
-      | access_images     | BitLevelFileGroup    |
-      | production_images | ObjectLevelFileGroup |
+      | title         | type              |
+      | texts         | ExternalFileGroup |
+      | access_images | BitLevelFileGroup |
     And the collection with title 'Cats' has child file groups with fields:
-      | title       | type                 |
-      | cat_images | ObjectLevelFileGroup |
+      | title      | type              |
+      | cat_images | BitLevelFileGroup |
 
   Scenario: Editing a file group shows potential related file groups
     When I edit the file group with title 'texts'
     Then I should see all of:
-      | access_images | production_images |
+      | access_images |
     And I should not see 'texts' in the related file groups section
     And I should not see 'cat_images' in the related file groups section
 
   Scenario: Editing a file group does not show file groups lower on the ingest path
     When I edit the file group with title 'access_images'
-    Then I should see 'production_images'
-    And I should not see 'texts' in the related file groups section
+    Then I should not see 'texts' in the related file groups section
 
   Scenario: Adding a related file group
     When I edit the file group with title 'texts'

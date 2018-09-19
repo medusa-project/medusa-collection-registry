@@ -46,32 +46,5 @@ Feature: Static content
     And the feedback address should receive an email with subject /Medusa: Feedback/ matching all of:
       | Joebob Robertson | jbobr@example.com | Hi there |
 
-  Scenario: Deposit files form
-    When I visit the static page 'deposit_files'
-    And I fill in fields:
-      | Your name                 | My name                      |
-      | Your email address        | my-email-address@example.com |
-      | Your department           | My department                |
-      | Collection name           | My collection name           |
-      | Current location of files | Location of my files         |
-      | Notes                     | My notes                     |
-    And I click on 'Send'
-    Then 'my-email-address@example.com' should receive an email with subject 'Medusa: Ingest request confirmation'
-    And the feedback address should receive an email with subject /Medusa: Ingest request/ matching all of:
-      | My name | my-email-address@example.com | My department | My collection name | Location of my files | My notes |
-
-  Scenario: Request training form
-    When I visit the static page 'request_training'
-    And I fill in fields:
-      | Your name          | Namey             |
-      | Your email address | namey@example.com |
-      | Your department    | Naming            |
-      | Suggested date     | 2012-03-04        |
-      | List of trainees   | Arpee, Elwah      |
-      | Notes              | A flat            |
-    And I click on 'Send'
-    Then 'namey@example.com' should receive an email with subject 'Medusa: Training request confirmation'
-    And the feedback address should receive an email with subject /Medusa: Training request/ matching all of:
-      | Namey | namey@example.com | Naming | 2012-03-04 | Arpee | Elwah | A flat |
 
 

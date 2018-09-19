@@ -13,7 +13,7 @@ class Repository < ApplicationRecord
   has_many :assessments, as: :assessable, dependent: :destroy
   has_many :virtual_repositories, dependent: :destroy
 
-  LDAP_DOMAINS = %w(uofi uiuc)
+  LDAP_DOMAINS = %w(uofi)
 
   validates_uniqueness_of :title
   validates_presence_of :title
@@ -56,8 +56,12 @@ class Repository < ApplicationRecord
     nil
   end
 
+  def self.title_order
+    order(:title)
+  end
+
   def self.managed_by(user)
-    order(:title).select {|repository| repository.manager?(user)}
+    title_order.select {|repository| repository.manager?(user)}
   end
 
 end

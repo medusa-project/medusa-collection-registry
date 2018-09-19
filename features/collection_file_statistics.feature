@@ -6,10 +6,9 @@ Feature: Collection file statistics
 
   Background:
     Given I am logged in as an admin
-    And I clear the cfs root directory
-    And the cfs directory 'animals/dogs' contains cfs fixture file 'grass.jpg'
-    And the cfs directory 'animals/dogs/pictures' contains cfs fixture file 'grass.jpg'
-    And the cfs directory 'animals/dogs' contains cfs fixture file 'fits.xml'
+    And the main storage directory key 'animals/dogs' contains cfs fixture content 'grass.jpg'
+    And the main storage directory key 'animals/dogs/pictures' contains cfs fixture content 'grass.jpg'
+    And the main storage directory key 'animals/dogs' contains cfs fixture content 'fits.xml'
     And the collection with title 'Animals' has child file groups with fields:
       | title         | type              |
       | Cats          | ExternalFileGroup |
@@ -27,8 +26,9 @@ Feature: Collection file statistics
       | image/jpeg      | 2 | 332 KB  |
       | application/xml | 1 | 2.89 KB |
 
-  @download_chrome
+  @selenium_chrome_headless_downloading
   Scenario: Get CSV version of file statistics for collection
     When I view the collection with title 'Animals'
     And within '#file-statistics' I click on 'CSV'
-    Then I should receive a csv file 'file-statistics.csv'
+    And I wait 0.2 seconds
+    Then I should have downloaded a file 'file-statistics.csv' of type 'text/csv'

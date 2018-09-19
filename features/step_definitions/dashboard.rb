@@ -21,7 +21,3 @@ end
 When /^I go to the dashboard$/ do
   visit dashboard_path
 end
-
-Then /^show me the page$/ do
-  save_and_open_page
-end

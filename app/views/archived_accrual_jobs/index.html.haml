@@ -4,4 +4,4 @@
 %div
   = render layout: 'layouts/standard_table', locals: {id: :archived_accrual_jobs, headers: ['Archived At', 'File Group', 'Staging Path', 'State', 'User', '']} do
     - cache(cache_key_for_all(ArchivedAccrualJob)) do
-      = render partial: 'index_table_row', collection: ArchivedAccrualJob.order('created_at desc'), as: :archived_accrual_job, cached: true
+      = render partial: 'index_table_row', collection: ArchivedAccrualJob.order(created_at: :desc), as: :archived_accrual_job, cached: true

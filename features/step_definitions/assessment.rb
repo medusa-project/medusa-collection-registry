@@ -43,8 +43,3 @@ def find_assessment(date, collection_title)
   collection = Collection.find_by(title: collection_title)
   collection.assessments.where(date: Date.parse(date)).first
 end
-
-def find_file_group_assessment(date, location)
-  file_group = FileGroup.find_by(external_file_location: location)
-  file_group.assessments.where(date: Date.parse(date)).first
-end

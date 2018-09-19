@@ -1,17 +1,3 @@
-= render layout: 'layouts/standard_table', locals: {id: :running_virus_scans, classes: %w(table-bordered table-condensed), caption: 'Virus Scans', headers: ['File Group', 'Created']} do
-  - Job::VirusScan.for_repository(@repository).includes(:file_group).each do |virus_scan_job|
-    %tr
-      %td= link_to virus_scan_job.file_group.title, polymorphic_path(virus_scan_job.file_group)
-      %td= link_to virus_scan_job.created_at.to_date.to_s
-
-= render layout: 'layouts/standard_table', locals: {id: :running_fits_scans, classes: %w(table-bordered table-condensed), caption: 'FITS Scans', headers: ['Path', 'File Group', 'Files remaining']} do
-  - Job::FitsDirectory.file_groups_for_repository(@repository).each do |file_group|
-    - if file_group.cfs_directory.present?
-      %tr
-        %td= file_group.cfs_directory.relative_path
-        %td= link_to(file_group.title, polymorphic_path(file_group))
-        %td= file_group.running_fits_file_count
-
 = render layout: 'layouts/standard_table', locals: {id: :running_initial_assessment_scans, classes: %w(table-bordered table-condensed), caption: 'Initial Assessment Scans', headers: ['Path', 'File Group', 'Files remaining']} do
   - Job::CfsInitialDirectoryAssessment.file_groups_for_repository(@repository).each do |file_group|
     - if file_group.cfs_directory.present?

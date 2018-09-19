@@ -3,33 +3,32 @@ class Workflow::AccrualMailer < MedusaBaseMailer
 
   def done(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: @workflow_accrual.user.email, subject: subject('Accrual completed'))
+    mail(to: @workflow_accrual.user.email)
   end
 
   def initial_approval(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: @workflow_accrual.user.email, subject: subject('Accrual pending'))
+    mail(to: @workflow_accrual.user.email)
   end
 
   def illegal_overwrite(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: @workflow_accrual.user.email, subject: subject('Accrual cancelled'))
+    mail(to: @workflow_accrual.user.email)
   end
 
   def aborted(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: @workflow_accrual.user.email, subject: subject('Accrual aborted'))
+    mail(to: @workflow_accrual.user.email)
   end
 
   def notify_admin_of_incoming_request(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: self.admin_address, subject: subject('Accrual requested'))
+    mail(to: self.admin_address)
   end
 
   def assessment_done(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: [@workflow_accrual.user.email, @workflow_accrual.collection&.contact&.email].compact.uniq,
-         subject: subject('Accrual assessment completed'))
+    mail(to: [@workflow_accrual.user.email, @workflow_accrual.collection&.contact&.email].compact.uniq)
   end
 
 end

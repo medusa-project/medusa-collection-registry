@@ -4,9 +4,7 @@ Feature: Red flags
   I want to have the system automatically note potential file problems
 
   Background:
-    Given I clear the cfs root directory
-    And there is a physical cfs directory 'dogs'
-    And the cfs directory 'dogs' contains cfs fixture file 'grass.jpg'
+    Given the main storage directory key 'dogs' contains cfs fixture content 'grass.jpg'
     And the collection with title 'Dogs' has child file groups with fields:
       | title    | type              |
       | pictures | BitLevelFileGroup |

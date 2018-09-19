@@ -1,4 +1,4 @@
-class Item < ApplicationRecord
+  class Item < ApplicationRecord
   belongs_to :project, touch: true
   has_one :workflow_item_ingest_request, :class_name => 'Workflow::ItemIngestRequest', dependent: :destroy
   belongs_to :cfs_directory
@@ -39,6 +39,14 @@ rights_information status equipment unique_identifier item_number source_media).
     time :updated_at
   end
 
+  def self.uningested
+    where(ingested: false)
+  end
+
+  def self.ingested
+    where(ingested: true)
+  end
+
   def ensure_barcode
     self.barcode ||= ''
   end
@@ -47,8 +55,8 @@ rights_information status equipment unique_identifier item_number source_media).
     title.if_blank(item_title.if_blank(local_title))
   end
 
-  def staging_directory
-    File.join(project.staging_directory, ingest_identifier)
+  def staging_key_prefix
+    File.join(project.staging_key_prefix, ingest_identifier)
   end
 
   def ingest_identifier
@@ -56,7 +64,7 @@ rights_information status equipment unique_identifier item_number source_media).
   end
 
   def self.find_by_ingest_identifier(ingest_identifier)
-    find_by(unique_identifier: ingest_identifier).if_blank(find_by(bib_id: ingest_identifier))
+    find_by(unique_identifier: ingest_identifier) || find_by(bib_id: ingest_identifier)
   end
 
 end

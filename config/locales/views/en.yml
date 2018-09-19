@@ -1,0 +1,18 @@
+en:
+  collections:
+    confirm_message: This is irreversible. Associated assessments and file groups will also be deleted.
+  dashboard:
+    ingest_state_labels:
+      start: Starting
+      copying: Copying from staging
+      amazon_backup: Backing up to Amazon
+      end: Ended
+      unknown: Unknown
+  default:
+    confirm_message: This is irreversible - are you sure?
+  events:
+    confirm_message: This is irreversible. Are you sure?
+  institutions:
+    confirm_message: This is irreversible. Associated repositories, their collections, and their associated assessments and file groups will also be deleted.
+  repositories:
+    confirm_message: This is irreversible. Associated collections and their associated assessments and file groups will also be deleted.

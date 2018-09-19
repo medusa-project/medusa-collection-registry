@@ -4,7 +4,7 @@ class InstitutionsController < ApplicationController
 
   def index
     authorize! :read, Institution
-    @institutions = Institution.order('name ASC').all
+    @institutions = Institution.order(:name).all
   end
 
   def new

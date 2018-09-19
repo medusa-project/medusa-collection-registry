@@ -27,7 +27,10 @@
             - @file.red_flags.each do |red_flag|
               %li= red_flag.message
     .col-sm-5
-      = render @previewer.view_partial
+      - if safe_can?(:download, @file.file_group)
+        = render @previewer.view_partial
+      - else
+        %p You do not have appropriate permissions for this a file preview.
     .col-sm-3
       %table#fixity_check_results.table.table-bordered.table-striped.table-condensed
         %caption Fixity Check History

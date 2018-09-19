@@ -5,24 +5,19 @@ class Ability
     #medusa admins can do almost anything - exceptions are explicitly removed later
     can :manage, :all if medusa_admin?(user)
     #Assessments - must be done for each assessable, where the real check occurs
-    [Collection, FileGroup, ExternalFileGroup, BitLevelFileGroup, ObjectLevelFileGroup, Repository].each do |klass|
+    [Collection, FileGroup, ExternalFileGroup, BitLevelFileGroup, Repository].each do |klass|
       can [:create_assessment, :update_assessment], klass do |assessable|
         (assessable.is_a?(klass) and repository_manager?(user, assessable))
       end
     end
     #Attachments - must be done for each attachable, where the real check occurs
-    [Collection, FileGroup, BitLevelFileGroup, ObjectLevelFileGroup, ExternalFileGroup, Project].each do |klass|
+    [Collection, FileGroup, BitLevelFileGroup, ExternalFileGroup, Project].each do |klass|
       can [:create_attachment, :update_attachment], klass do |attachable|
         (attachable.is_a?(klass) and repository_manager?(user, attachable))
       end
     end
     can [:create_attachment, :update_attachment, :destroy_attachment], Project do |project|
       project_admin?(user)
-    end
-    #Cfs controller - need to see if requested path belongs to a file group managed by user
-    #The FitsRequest object is a helper for this
-    can :create_fits, FitsRequest do |request|
-      repository_manager?(user, request)
     end
     can [:update, :create], Collection do |collection|
       repository_manager?(user, collection)
@@ -34,14 +29,14 @@ class Ability
       project_admin?(user)
     end
     #Events - must be done for each eventable, where the real check occurs
-    [FileGroup, BitLevelFileGroup, ObjectLevelFileGroup, ExternalFileGroup].each do |klass|
+    [FileGroup, BitLevelFileGroup, ExternalFileGroup].each do |klass|
       can [:create_event, :destroy_event, :update_event], klass do |eventable|
         repository_manager?(user, eventable)
       end
     end
     #File groups - do for all subclasses, though I'm not sure this is strictly necessary
-    [FileGroup, BitLevelFileGroup, ObjectLevelFileGroup, ExternalFileGroup].each do |klass|
-      can [:update, :create, :create_cfs_fits, :create_virus_scan, :download, :export, :destroy], klass do |file_group|
+    [FileGroup, BitLevelFileGroup, ExternalFileGroup].each do |klass|
+      can [:update, :create, :create_cfs_fits, :download, :export, :destroy], klass do |file_group|
         repository_manager?(user, file_group)
       end
       can [:download, :export], klass do |file_group|

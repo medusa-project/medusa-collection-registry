@@ -6,7 +6,7 @@ class Project < ApplicationRecord
   email_person_association(:owner)
 
   has_many :attachments, as: :attachable, dependent: :destroy
-  has_many :items, -> { order 'created_at desc' }, dependent: :destroy do
+  has_many :items, -> {order 'created_at desc'}, dependent: :destroy do
     def find_by_ingest_identifier(ingest_identifier)
       find_by(unique_identifier: ingest_identifier).if_blank(find_by(bib_id: ingest_identifier))
     end
@@ -23,9 +23,10 @@ class Project < ApplicationRecord
 
   standard_auto_html(:specifications, :summary)
 
-  def staging_directory
-    raise RuntimeError, "No ingest folder specified" unless ingest_folder.present?
-    File.join(staging_root, ingest_folder)
+  before_save :normalize_ingest_folder
+
+  def staging_key_prefix
+    ingest_folder
   end
 
   def staging_root
@@ -40,8 +41,15 @@ class Project < ApplicationRecord
     return target
   end
 
-  def target_cfs_directory_path
-    target_cfs_directory.absolute_path
+  def target_key_prefix
+    target_cfs_directory.relative_path
+  end
+
+  def normalize_ingest_folder
+    unless self.ingest_folder.nil?
+      self.ingest_folder = ingest_folder.sub(/^\/*/, '')
+      self.ingest_folder = ingest_folder.sub(/\/*$/, '')
+    end
   end
 
 end

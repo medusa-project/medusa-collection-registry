@@ -4,19 +4,14 @@ gem 'sass'
 gem 'rails', "~> 5.1"
 gem 'responders'
 
-#Rails (ActiveRecord) seems to want this version restriction on pg, though it doesn't seem to enforce it
-# in a way that bundler understands.
-# /active_record/connection_adapters/postgresql_adapter.rb has a 'gem' line with the restriction
-gem 'pg', "~> 0.21"
+gem 'pg'
 gem 'postgresql_cursor'
 
 #deployment webserver
 gem 'passenger'
 gem 'haml'
 gem 'haml-rails'
-#simple_form 3.3.1 was giving a problem with include_blank: false still including blanks, so we're pinning it back here
-#cf https://github.com/plataformatec/simple_form/issues/1427
-#cf https://github.com/plataformatec/simple_form/issues/1423
+
 gem 'simple_form'
 gem 'auto_html'
 gem 'simple_memoize'
@@ -31,7 +26,9 @@ gem 'logger'
 gem 'net-http-digest_auth', git: 'git://github.com/medusa-project/net-http-digest_auth.git'
 
 #pinned for a problem compiling 0.7.1 on our servers
-gem 'ruby-filemagic', '0.7.0', require: 'filemagic'
+# I think I have the problem fixed, but if it won't compile then repin this
+#gem 'ruby-filemagic', '0.7.0', require: 'filemagic'
+gem 'ruby-filemagic'
 
 gem 'jbuilder'
 
@@ -51,10 +48,7 @@ gem 'daemons-rails'
 #the fallback to ImageMagick.
 gem 'ruby-vips', '~>0.3.14', require: 'vips'
 
-#AMQP communication - implicitly uses Bunny
-# bunny is fixed because of problems deploying the 2.9 branch. I submitted a patch that I expect to be
-# in the 2.9.2 release, but they requested that I try it. When 2.9.2 is out we can remove this restriction.
-gem 'bunny', git: 'https://github.com/ruby-amqp/bunny.git', branch: '2.9.x-stable'
+gem 'bunny'
 gem 'amq-protocol'
 gem 'amqp_helper', '~>0.1.4', git: 'git://github.com/medusa-project/amqp_helper.git'
 
@@ -97,7 +91,10 @@ gem 'will_paginate-bootstrap'
 gem 'draper'
 
 gem 'uuid'
-gem 'paperclip'
+#There are test failures going to 6.0, but I'm not sure why and it
+# doesn't seem worth tracking them down when we may move to a different
+# system for handling this.
+gem 'paperclip', '~> 5.2'
 
 gem 'font-awesome-rails'
 
@@ -127,6 +124,10 @@ gem 'chronic'
 gem 'send_file_with_range', git: 'https://github.com/tom-sherman/send_file_with_range.git', branch: 'master'
 gem 'pdfjs_viewer-rails'
 
+gem 'medusa_storage', git: 'https://github.com/medusa-project/medusa_storage.git', branch: 'master'
+
+gem 'hex_string'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
@@ -146,13 +147,14 @@ group :development do
 end
 
 group :test do
-  #gem 'cucumber', '~> 2.0'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
-  gem 'simplecov'
+  gem 'simplecov', require: false
   gem 'json_spec'
-  gem 'capybara'
+  #Lock this on 2.x, as going to 3 will probably require some fixing up
+  gem 'capybara'#, '~> 2.18'
   gem 'capybara-email'
+  gem 'capybara-mechanize'
   gem 'launchy'
   #testing with javascript - requires phantomjs to be installed on the test machine
   gem 'poltergeist'

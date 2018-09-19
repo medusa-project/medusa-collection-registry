@@ -7,11 +7,12 @@ class CfsDirectory < ApplicationRecord
   include Eventable
   include CascadedEventable
   include CascadedRedFlaggable
+  include ExcludedFiles
 
   has_many :subdirectories, class_name: 'CfsDirectory', as: :parent, dependent: :destroy
   has_many :cfs_files, dependent: :destroy
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
-  has_many :amazon_backups, -> { order 'date desc' }
+  has_many :amazon_backups, -> {order 'date desc'}
   has_many :archived_accrual_jobs, dependent: :destroy
   has_many :workflow_accrual_jobs, :class_name => 'Workflow::AccrualJob', dependent: :destroy
   belongs_to :parent, polymorphic: true, touch: true
@@ -21,8 +22,8 @@ class CfsDirectory < ApplicationRecord
   has_one :job_cfs_initial_directory_assessment, :class_name => 'Job::CfsInitialDirectoryAssessment', dependent: :destroy
 
   validates :path, presence: true
-  validates_uniqueness_of :path, scope: :parent_id, if: ->(record) {record.parent_type == 'CfsDirectory' }
-  validate(unless: Proc.new { |record| record.parent_type == 'CfsDirectory' }) do |cfs_directory|
+  validates_uniqueness_of :path, scope: :parent_id, if: ->(record) {record.parent_type == 'CfsDirectory'}
+  validate(unless: Proc.new {|record| record.parent_type == 'CfsDirectory'}) do |cfs_directory|
     unless (CfsDirectory.roots.where(path: cfs_directory.path).all - [cfs_directory]).empty?
       errors.add(:base, 'Path must be unique for roots')
     end
@@ -32,8 +33,8 @@ class CfsDirectory < ApplicationRecord
   #two validations are needed because we can't set the root directory to self
   #until after we've saved once. The after_save callback sets this by default
   #after the initial save
-  validates :root_cfs_directory_id, presence: true, if: ->(record) { record.parent_type == 'CfsDirectory' }
-  validates :root_cfs_directory_id, presence: true, unless: ->(record){ record.parent_type == 'CfsDirectory' }, on: :update
+  validates :root_cfs_directory_id, presence: true, if: ->(record) {record.parent_type == 'CfsDirectory'}
+  validates :root_cfs_directory_id, presence: true, unless: ->(record) {record.parent_type == 'CfsDirectory'}, on: :update
   after_save :ensure_root
   after_update :handle_cfs_assessment
 
@@ -65,6 +66,10 @@ class CfsDirectory < ApplicationRecord
     where("parent_type IS NULL OR parent_type = 'FileGroup'")
   end
 
+  def self.non_roots
+    where("parent_type = 'CfsDirectory'")
+  end
+
   def non_root?
     self.parent.is_a?(CfsDirectory)
   end
@@ -81,29 +86,23 @@ class CfsDirectory < ApplicationRecord
     self.subdirectories.blank?
   end
 
-  def is_empty_or_missing_on_disk?
-    !is_present_and_populated_on_disk?
+  def is_empty_or_missing_on_storage?
+    !is_present_and_populated_on_storage?
   end
 
-  def is_present_and_populated_on_disk?
-    path = Pathname.new(absolute_path)
-    path.directory? and path.children.present?
+  def is_present_and_populated_on_storage?
+    storage_root.directory_key?(self.key) and storage_root.file_keys(self.key).present?
+  rescue MedusaStorage::Error::InvalidDirectory
+    false
   end
 
   #By all means think of a better name for this
   def pristine?
-    self.is_empty? and self.is_empty_or_missing_on_disk?
+    self.is_empty? and self.is_empty_or_missing_on_storage?
   end
 
   def root
     self.root_cfs_directory
-  end
-
-  #ensure there is a CfsFile object at the given absolute path and return it
-  def ensure_file_at_absolute_path(path)
-    full_path = Pathname.new(path)
-    relative_path = full_path.relative_path_from(Pathname.new(File.join(CfsRoot.instance.path, self.path)))
-    ensure_file_at_relative_path(relative_path)
   end
 
   #ensure there is a CfsFile object at the given path relative to this directory's path and return it
@@ -154,12 +153,16 @@ class CfsDirectory < ApplicationRecord
     File.join(ancestors_and_self.collect {|d| d.path})
   end
 
-  def relative_path_from_root
-    File.join(ancestors_and_self.collect {|d| d.path}.drop(1))
+  def key
+    relative_path + '/'
   end
 
-  def absolute_path
-    File.join(CfsRoot.instance.path, self.relative_path)
+  def storage_root
+    Application.storage_manager.main_root
+  end
+
+  def relative_path_from_root
+    File.join(ancestors_and_self.collect {|d| d.path}.drop(1))
   end
 
   #list of all directories above this and self
@@ -179,7 +182,7 @@ class CfsDirectory < ApplicationRecord
     else
       ids = [self.id]
       while true
-        new_ids = (CfsDirectory.where(parent_id: ids).where("parent_type = 'CfsDirectory'").ids << self.id).sort
+        new_ids = (CfsDirectory.non_roots.where(parent_id: ids).ids << self.id).sort
         return new_ids if ids == new_ids
         ids = new_ids
       end
@@ -187,38 +190,29 @@ class CfsDirectory < ApplicationRecord
   end
 
   def make_initial_entries
-    Dir.chdir(self.absolute_path) do
-      #create the directories and files under this directory
-      entries = Pathname.new('.').children.reject { |entry| entry.symlink? }.collect { |entry| entry.to_s }
-      disk_directories = entries.select { |entry| File.directory?(entry) }.to_set
-      disk_directories.each do |entry|
-        self.ensure_directory_at_relative_path(entry)
-      end
-      self.subdirectories.reload.each do |directory|
-        unless disk_directories.include?(directory.path)
-          directory.destroy_tree_from_leaves
-        end
-      end
-      disk_files = entries.select { |entry| File.file?(entry) }.to_set
-      disk_files.each do |entry|
-        if excluded_file?(entry)
-          File.delete(entry) if File.exist?(entry)
-        else
-          self.ensure_file_at_relative_path(entry)
-        end
-      end
-      self.cfs_files.reload.each do |cfs_file|
-        unless disk_files.include?(cfs_file.name)
-          cfs_file.destroy
-        end
+    subdirs = storage_subdirectories
+    subdirs.each do |dir|
+      self.ensure_directory_at_relative_path(dir)
+    end
+    self.subdirectories.reload.each do |directory|
+      unless subdirs.include?(directory.path)
+        directory.destroy_tree_from_leaves
       end
     end
-  end
-
-  #TODO - possibly extend this to allow for exclusions specified on (for example) a
-  #Collection level
-  def excluded_file?(entry)
-    %w(Thumbs.db .DS_Store).include?(File.basename(entry))
+    files = storage_files
+    files.each do |file|
+      if excluded_file?(file)
+        file_key = File.join(self.key, file)
+        storage_root.delete_content(file_key) if storage_root.exist?(file_key)
+      else
+        self.ensure_file_at_relative_path(file)
+      end
+    end
+    self.cfs_files.reload.each do |cfs_file|
+      unless files.include?(cfs_file.name)
+        cfs_file.destroy
+      end
+    end
   end
 
   def schedule_assessment_job
@@ -231,29 +225,12 @@ class CfsDirectory < ApplicationRecord
 
   def run_initial_assessment(recursive: true)
     make_initial_entries
-    self.cfs_files.reload.each { |cfs_file| cfs_file.run_initial_assessment }
+    #TODO I might like to do this with Parallel, but my attempts have hung the tests for
+    # reasons that are unclear to me. This includes modifying the call to run_initial_assessment
+    # so that the save happens in a mutex synchronized block.
+    self.cfs_files.reload.each {|cfs_file| cfs_file.run_initial_assessment}
     self.subdirectories.reload.each {|subdirectory| subdirectory.schedule_assessment_job} if recursive
     Sunspot.commit
-  end
-
-  def schedule_fits
-    self.each_directory_in_tree(true) do |directory|
-      Job::FitsDirectory.create_for(directory)
-    end
-  end
-
-  def run_fits
-    self.cfs_files.each do |cfs_file|
-      cfs_file.ensure_fits_xml
-    end
-  end
-
-  def self.export_root
-    Settings.medusa.cfs.export_root
-  end
-
-  def self.export_autoclean
-    Settings.medusa.cfs.export_autoclean
   end
 
   def handle_cfs_assessment
@@ -321,24 +298,12 @@ class CfsDirectory < ApplicationRecord
     directories
   end
 
-  #This is to have a way to compare to the files/directories on disk
-  #Should show no differences, of course, but there are occasional problems
-  def compare_to_disk
-    if File.directory?(self.absolute_path)
-      db_file_names = cfs_files.pluck(:name).to_set
-      db_directory_paths = subdirectories.pluck(:path).to_set
-      children = Pathname.new(absolute_path).children
-      disk_file_names = children.select(&:file?).collect { |f| f.basename.to_s }.to_set
-      disk_directory_paths = children.select(&:directory?).collect { |d| d.basename.to_s }.to_set
-      CfsDirectoryDiskComparison.new(cfs_directory: self,
-                                     files_db_only: db_file_names.difference(disk_file_names),
-                                     files_disk_only: disk_file_names.difference(db_file_names),
-                                     directories_db_only: db_directory_paths.difference(disk_directory_paths),
-                                     directories_disk_only: disk_directory_paths.difference(db_directory_paths))
-    else
-      CfsDirectoryDiskComparison.new(cfs_directory: self,
-                                     disk_directory_missing: true)
-    end
+  def storage_files
+    storage_root.file_keys(self.key).collect {|f| File.basename(f)}.to_set
+  end
+
+  def storage_subdirectories
+    storage_root.subdirectory_keys(self.key).collect {|f| File.basename(f)}.to_set
   end
 
   def after_restore

@@ -1,9 +1,5 @@
 And(/^the bag '(.*)' is staged in the accrual root named '(.*)' at path '(.*)'$/) do |bag_name, root_name, path|
-  root = AccrualStorage.instance.root_named(root_name)
-  staging_target = File.join(root.local_path, path)
-  FileUtils.rm_rf(staging_target)
-  FileUtils.mkdir_p(staging_target)
-  FileUtils.cp_r(File.join(Rails.root, 'features', 'fixtures', 'bags', bag_name, 'data'), staging_target)
+  Application.storage_manager.accrual_roots.at(root_name).copy_tree_to(path, FixtureFileHelper.storage_root, FixtureFileHelper.complete_bag_key(bag_name))
 end
 
 And(/^I should see the accrual form and dialog$/) do
@@ -21,6 +17,12 @@ Then(/^the cfs directory with path '(.*)' should have an accrual job with (\d+) 
   accrual_job = Workflow::AccrualJob.find_by(cfs_directory_id: cfs_directory.id)
   expect(accrual_job.workflow_accrual_files.count).to eql(file_count.to_i)
   expect(accrual_job.workflow_accrual_directories.count).to eql(directory_count.to_i)
+end
+
+Then(/^the cfs directory with path '(.*)' should have an accrual job with (\d+) keys?$/) do |path, key_count|
+  cfs_directory = CfsDirectory.find_by(path: path)
+  accrual_job = Workflow::AccrualJob.find_by(cfs_directory_id: cfs_directory.id)
+  expect(accrual_job.workflow_accrual_keys.count).to eql(key_count.to_i)
 end
 
 And(/^the cfs directory with path '(.*)' should have an accrual job with (\d+) minor conflicts? and (\d+) serious conflicts?$/) do |path, minor_conflict_count, serious_conflict_count|

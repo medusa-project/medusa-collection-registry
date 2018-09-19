@@ -60,6 +60,10 @@ And /^I click on '([^']*)' and delayed jobs are run$/ do |link_name|
   step 'delayed jobs are run'
 end
 
+Then(/^I should not see a '(.*)' link$/) do |text|
+  expect(page).to have_no_link(text)
+end
+
 And /^I select '([^']*)' from '([^']*)'$/ do |value, label|
   select(value, from: label)
 end
@@ -113,4 +117,3 @@ def complete_form_from_table(table)
     fill_in(row.first, with: row.last)
   end
 end
-

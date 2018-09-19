@@ -1,4 +1,8 @@
-#This controls how files are previewed
+## Any of this stuff can be overridden in the settings/<env>.yml or settings/<env>.local.yml files, but
+## the idea is that this is fairly general stuff that shouldn't need to be configured separately
+## for the most part.
+
+# This controls how files are previewed
 cfs_file_viewers:
   mime_types:
     image:
@@ -113,8 +117,6 @@ cfs_file_viewers:
     pdf:
       - pdf
   thumbnail_size: 90
-  galleria_height: 400
-  galleria_width: 1000
   default_image_size: 300
 #The following are config for specific classes, using the convention classes.<class_name>.<setting_name>
 classes:
@@ -126,6 +128,17 @@ classes:
       - medium
       - high
       - urgent
+  attachment:
+    max_size: <%= 5.megabytes %>
+  cfs_file:
+    tmpdir_cutoff_size: <%= 500.megabytes %>
+    large_file_fits_cutoff_size: <%= 5.gigabytes %>
+  concerns:
+    excluded_files:
+      - Thumbs.db
+      - .DS_Store
+  file_extensions_controller:
+    default_per_page: 25
   file_group:
     acquisition_methods:
       - internal digitization
@@ -208,6 +221,19 @@ classes:
       - Sent to IPM
       - Sent for cataloging
       - Send to IA for digitization
+  workflow:
+    accrual_job:
+      assessment_error_reporting_timeout: <%= 2.days %>
+      assessment_requeue_interval: <%= 5.minutes %>
+      copying_batch_size: 100
+      copying_parallel_threads: 5
+#set up delayed job related stuff
+delayed_job:
+  priority:
+    amqp_accrual_delete_job: 30
+    amqp_accrual_ingest_job: 50
+    base_job: 30
+    large_file_fits: 70
 #These are events available to the various eventables as a hash from stored string to descriptive string
 #For the loading to work correctly the base key has to be the class where Eventable is included.
 #So for STI like file group we can't have different events available for each type; it has to be the base class here
@@ -281,9 +307,23 @@ rights_fields:
     DISSEMINATE/DISALLOW: Access is restricted.
     DISSEMINATE/CAMPUS_ONLY: Access is restricted to campus use only.
     DISSEMINATE/LIBRARY_ONLY: Access is restricted to library use only.
+#Control which font-awesome icons are used
+icons:
+  add_button: plus
+  attachments_button: paperclip
+  clone_button: clone
+  create_button: plus
+  delete_button: trash-o
+  edit_button: pencil-square-o
+  events_button: newspaper-o
+  red_flags_button: flag
+  view_button: eye
+  wiki_link: group
 medusa:
+  faq_url: https://wiki.cites.illinois.edu/wiki/display/LibraryDigitalPreservation/Medusa+FAQ
   fg_delete:
     amazon_backup_on_restore: true
     final_deletion_interval: <%= 120.days %>
+  wiki_url: https://wiki.cites.uiuc.edu/wiki/display/LibraryDigitalPreservation/Home
 
 
