@@ -109,7 +109,7 @@ class Workflow::AccrualJob < Workflow::Base
     end
     update_attribute(:empty_file_report, empty_files.string)
     cfs_directory_prefix = cfs_directory.relative_path
-    existing_keys = Application.storage_manager.main_root.unprefixed_subtree_keys(cfs_directory_prefix)
+    existing_keys = existing_keys_for(cfs_directory_prefix)
     duplicate_keys = ingest_keys.intersection(existing_keys)
     duplicate_keys.each do |key|
       existing_md5 = Application.storage_manager.main_root.md5_sum(File.join(cfs_directory_prefix, key))
@@ -125,6 +125,12 @@ class Workflow::AccrualJob < Workflow::Base
       be_in_state('initial_approval')
       Workflow::AccrualMailer.initial_approval(self).deliver_now
     end
+  end
+
+  def existing_keys_for(prefix)
+    Application.storage_manager.main_root.unprefixed_subtree_keys(prefix)
+  rescue MedusaStorage::Error::InvalidDirectory
+    Array.new
   end
 
   def create_workflow_accrual_keys(keys)
