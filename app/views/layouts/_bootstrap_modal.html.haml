@@ -1,7 +1,7 @@
 -# pass id if you want to assign it and html_class for additional classes. Inside the layout give the modal-header, modal-body, modal-footer as needed
 - id ||= nil
 - html_class ||= nil
-.modal{id: id, tabindex: -1, role: 'dialog', class: [html_class, ('fade' unless Rails.env.test?)]}
+.modal{id: id, tabindex: -1, role: 'dialog', class: [html_class, maybe_fade]}
   .modal-dialog
     .modal-content
       = yield

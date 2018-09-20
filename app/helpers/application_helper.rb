@@ -73,4 +73,8 @@ module ApplicationHelper
         Workflow::AccrualJob.awaiting_admin.present?
   end
 
+  def maybe_fade
+    Rails.env.test? ? nil : 'fade'
+  end
+
 end

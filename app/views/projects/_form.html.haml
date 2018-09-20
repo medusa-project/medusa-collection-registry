@@ -15,7 +15,7 @@
       = f.input :status, as: :select, collection: Project::STATUSES, include_blank: false
       = f.input :summary, input_html: {class: 'rich-editor'}
       = f.input :specifications, input_html: {class: 'rich-editor'}
-    #directory-picker.modal{role: 'dialog', 'aria-labelledby': 'directory picker', 'aria-hidden': true, class: ('fade' unless Rails.env.test?)}
+    #directory-picker.modal{role: 'dialog', 'aria-labelledby': 'directory picker', 'aria-hidden': true, class: maybe_fade}
       .modal-dialog
         .modal-content
           .modal-header
