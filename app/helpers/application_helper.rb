@@ -73,6 +73,9 @@ module ApplicationHelper
         Workflow::AccrualJob.awaiting_admin.present?
   end
 
+  #Use to insert fade class for bootstrap modals in non-test environments. In test,
+  # having the fade will sometimes interfere (unpredictably) with selenium tests,
+  # so it's best to omit it there.
   def maybe_fade
     Rails.env.test? ? nil : 'fade'
   end
