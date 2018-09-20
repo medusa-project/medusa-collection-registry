@@ -119,3 +119,8 @@ end
 require 'capybara/email'
 World(Capybara::Email::DSL)
 
+puts "Compiling webpack"
+Dir.chdir(Rails.root) do
+  system("RAILS_ENV=test bundle exec rake webpacker:compile")
+end
+puts "Webpack compiled"
