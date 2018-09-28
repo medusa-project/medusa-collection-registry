@@ -491,7 +491,6 @@ GEM
     rspec-support (3.8.0)
     rsync (1.0.9)
     ruby-filemagic (0.7.2)
-    ruby-vips (0.3.14)
     ruby_parser (3.11.0)
       sexp_processor (~> 4.9)
     rubyzip (1.2.1)
@@ -660,7 +659,6 @@ DEPENDENCIES
   rspec-rails
   rsync
   ruby-filemagic
-  ruby-vips (~> 0.3.14)
   sass
   sass-rails
   selenium-webdriver
