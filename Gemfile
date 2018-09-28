@@ -46,7 +46,7 @@ gem 'daemons-rails'
 #introduces some API changes and other complications - see the ruby-vips github page
 #Alternately, we may just decide that Cantaloupe is good enough and get rid of the fallback, or revert
 #the fallback to ImageMagick.
-gem 'ruby-vips', '~>0.3.14', require: 'vips'
+#gem 'ruby-vips', '~>0.3.14', require: 'vips'
 
 gem 'bunny'
 gem 'amq-protocol'
