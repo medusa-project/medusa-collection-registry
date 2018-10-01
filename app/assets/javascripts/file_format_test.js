@@ -1,7 +1,7 @@
 function update_file_format_reasons() {
   var checkboxes = $("input.check_boxes");
   if ($("#file_format_test_pass_true").is(":checked")) {
-    checkboxes.attr("checked", false).attr("disabled", true);
+    checkboxes.prop("checked", false).attr("disabled", true);
   } else {
     checkboxes.removeAttr("disabled");
   }
