@@ -86,8 +86,7 @@ Rails.application.routes.draw do
   resources :access_systems, concerns: :collection_indexer
 
   resources :cfs_files, only: :show, concerns: %i(downloadable eventable) do
-    %i(fits view preview_image preview_pdf
-       preview_content thumbnail).each {|action| get action, on: :member}
+    %i(fits view preview_pdf preview_content thumbnail).each {|action| get action, on: :member}
     get :random, on: :collection
   end
   get 'cfs_files/:id/preview_iiif_image/*iiif_parameters', to: 'cfs_files#preview_iiif_image', as: 'preview_iiif_image_cfs_file'
