@@ -28,10 +28,14 @@ require("expose-loader?_.string!underscore.string");
 require('bootstrap-datepicker');
 require('bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css');
 
-require('chart.js');
-require('expose-loader?Chartkick!chartkick');
+import Chartkick from 'chartkick';
 
-require('expose-loader?Clipboard!clipboard');
+window.Chartkick = Chartkick;
+import Chart from 'chart.js';
+
+Chartkick.addAdapter(Chart);
+
+require('expose-loader?ClipboardJS!clipboard');
 
 import Localtime from 'local-time';
 

@@ -3,9 +3,9 @@
     "@rails/webpacker": "^3.2.1",
     "bootstrap-datepicker": "^1.8.0",
     "chart.js": "^2.7.1",
-    "chartkick": "^2.2.4",
+    "chartkick": "^3.0.1",
     "checkboxes.js": "^1.0.7",
-    "clipboard": "^1.7.1",
+    "clipboard": "^2.0.1",
     "expose-loader": "^0.7.4",
     "jquery": "3.3.1",
     "jquery-ui": "^1.12.1",
@@ -17,6 +17,6 @@
     "webpack-merge": "^4.1.1"
   },
   "devDependencies": {
-    "webpack-dev-server": "^2.11.1"
+    "webpack-dev-server": "^3.1.9"
   }
 }
