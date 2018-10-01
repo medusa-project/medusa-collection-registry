@@ -25,9 +25,6 @@ require('checkboxes.js/src/jquery.checkboxes');
 require("expose-loader?_!underscore");
 require("expose-loader?_.string!underscore.string");
 
-require('bootstrap-datepicker-webpack');
-import('bootstrap-datepicker-webpack/dist/css/bootstrap-datepicker3');
-
 require('chart.js');
 require('expose-loader?Chartkick!chartkick');
 
