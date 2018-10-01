@@ -25,6 +25,9 @@ require('checkboxes.js/src/jquery.checkboxes');
 require("expose-loader?_!underscore");
 require("expose-loader?_.string!underscore.string");
 
+require('bootstrap-datepicker');
+require('bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css');
+
 require('chart.js');
 require('expose-loader?Chartkick!chartkick');
 
