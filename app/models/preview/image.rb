@@ -4,7 +4,7 @@ module Preview
     delegate :image_server_config, to: :class
 
     def view_partial
-      is_iiif_compatible? ? 'preview_viewer_iiif_image' : 'preview_viewer_default_image'
+      'preview_viewer_iiif_image'
     end
 
     def is_iiif_compatible?
@@ -62,44 +62,8 @@ module Preview
       end
     end
 
-    def default_image_response_info
-      # if cfs_file.exists_on_storage?
-      #   cfs_file.with_input_file do |input_file|
-      #     image = VIPS::Image.new(input_file)
-      #     width = image.x_size
-      #     height = image.y_size
-      #     if [width, height].max > Settings.cfs_file_viewers.default_image_size
-      #       factor = ([height, width].max / Settings.cfs_file_viewers.default_image_size.to_f).ceil
-      #       image = image.shrink(factor)
-      #     end
-      #     image.jpeg.to_memory
-      #   end
-      # else
-      #   File.open(File.join(Rails.root, 'public', 'images', 'image_not_found.jpg'))
-      # end
-      raise "VIPS no longer supported"
-    end
-
     def thumbnail_data
-      if is_iiif_compatible?
         iiif_thumbnail_data
-      else
-        default_thumbnail_data
-      end
-    end
-
-    def default_thumbnail_data
-      # cfs_file.with_input_file do |input_File|
-      #   VIPS::Image.new(input_File)
-      #   width = image.x_size
-      #   height = image.y_size
-      #   if [width, height].max > Settings.cfs_file_viewers.thumbnail_size
-      #     factor = ([height, width].max / Settings.cfs_file_viewers.thumbnail_size.to_d).ceil
-      #     image = image.shrink(factor)
-      #   end
-      #   image.jpeg.to_memory
-      # end
-      raise "VIPS no longer supported"
     end
 
     def iiif_thumbnail_data

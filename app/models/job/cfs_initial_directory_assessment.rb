@@ -12,6 +12,8 @@ class Job::CfsInitialDirectoryAssessment < Job::Base
 
     def perform
       self.cfs_directory.run_initial_assessment if self.cfs_directory
+    rescue MedusaStorage::Error::InvalidDirectory
+      #do nothing - the directory does not exist, so just let this job expire
     end
 
     def self.for_repository(repository)
