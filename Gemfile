@@ -50,7 +50,7 @@ gem 'daemons-rails'
 
 gem 'bunny'
 gem 'amq-protocol'
-gem 'amqp_helper', '~>0.1.4', git: 'git://github.com/medusa-project/amqp_helper.git'
+gem 'amqp_helper', '~>0.2.0', git: 'git://github.com/medusa-project/amqp_helper.git'
 
 gem 'sass-rails'
 gem 'coffee-rails'

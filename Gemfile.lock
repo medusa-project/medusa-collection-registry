@@ -7,9 +7,9 @@ GIT
 
 GIT
   remote: git://github.com/medusa-project/amqp_helper.git
-  revision: da0d46b8a37b612bd2e6544278bdb79474da3718
+  revision: b76e4bc7e4f7b43405808e68df4a65cbf7940278
   specs:
-    amqp_helper (0.1.5)
+    amqp_helper (0.2.2)
       bunny
       bunny-mock
 
@@ -131,8 +131,8 @@ GEM
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
     builder (3.2.3)
-    bunny (2.11.0)
-      amq-protocol (~> 2.3.0)
+    bunny (2.12.0)
+      amq-protocol (~> 2.3, >= 2.3.0)
     byebug (10.0.2)
     cancancan (2.3.0)
     capistrano (3.11.0)
@@ -578,7 +578,7 @@ PLATFORMS
 
 DEPENDENCIES
   amq-protocol
-  amqp_helper (~> 0.1.4)!
+  amqp_helper (~> 0.2.0)!
   auto_html
   auto_strip_attributes
   bootstrap-sass
