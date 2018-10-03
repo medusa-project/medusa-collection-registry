@@ -40,3 +40,5 @@ yarn-error.log*
 .yarn-integrity
 spec/
 vendor/bundle
+
+attic
