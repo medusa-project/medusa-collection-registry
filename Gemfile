@@ -29,6 +29,11 @@ gem 'net-http-digest_auth', git: 'git://github.com/medusa-project/net-http-diges
 # I think I have the problem fixed, but if it won't compile then repin this
 #gem 'ruby-filemagic', '0.7.0', require: 'filemagic'
 gem 'ruby-filemagic'
+#This is a potential replacement to ruby-filemagic that is pure ruby and capable of working on IOs,
+# hence might work with S3 better. I'm adding it in order to have it available to do some testing.
+# It actually might be used by rails itself, but I want to be explicit about it if we're using
+# it directly.
+gem 'marcel'
 
 gem 'jbuilder'
 

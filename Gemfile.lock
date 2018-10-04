@@ -621,6 +621,7 @@ DEPENDENCIES
   lmdb
   local_time
   logger
+  marcel
   medusa_storage!
   multi_json
   net-http-digest_auth!
