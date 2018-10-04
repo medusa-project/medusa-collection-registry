@@ -14,7 +14,6 @@ gem 'haml-rails'
 
 gem 'simple_form'
 gem 'auto_html'
-gem 'ckeditor'
 gem 'simple_memoize'
 gem 'auto_strip_attributes'
 gem 'dalli'
@@ -51,7 +50,7 @@ gem 'daemons-rails'
 
 gem 'bunny'
 gem 'amq-protocol'
-gem 'amqp_helper', '~>0.1.4', git: 'git://github.com/medusa-project/amqp_helper.git'
+gem 'amqp_helper', '~>0.2.0', git: 'git://github.com/medusa-project/amqp_helper.git'
 
 gem 'sass-rails'
 gem 'coffee-rails'
@@ -62,12 +61,9 @@ gem 'uglifier'
 
 gem 'bootstrap-sass'
 
-gem 'jquery-rails'
-gem 'jquery-ui-rails'
+gem 'webpacker'
+
 gem 'rails-jquery-autocomplete'
-gem 'clipboard-rails'
-gem 'underscore-rails'
-gem 'underscore-string-rails'
 
 gem 'react-rails', '~> 2.4.0'
 
@@ -89,9 +85,6 @@ gem 'capistrano-yarn'
 
 #memory/active record usage monitoring
 gem 'oink'
-
-# Medusa Book Tracker compatibility
-gem 'local_time'
 
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
@@ -118,7 +111,12 @@ gem 'render_anywhere', require: false
 gem 'os'
 gem 'lmdb'
 
+## For this group we are installing the js via webpack/yarn,
+## but it is still useful to get the view helpers
 gem 'chartkick'
+# Medusa Book Tracker compatibility
+gem 'local_time'
+
 
 #date parsing
 gem 'chronic'

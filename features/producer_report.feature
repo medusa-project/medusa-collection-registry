@@ -1,4 +1,3 @@
-@current
 Feature: Producer Report
   In order to track accumulation of content by a producer
   As a librarian

@@ -22,6 +22,8 @@ end
 
 #This doesn't actually test the mime_type, which we'd want to check from the response headers
 # This is intended for use with a selenium that actually does a download
+# We can't check the Content-Type header, though we may be able to check the file in other ways
+# dispatching on the mime_type.
 Then(/^I should have downloaded a file '([^']*)' of type '([^']*)'$/) do |file_name, mime_type|
   expect(File.exist?(File.join(CAPYBARA_DOWNLOAD_DIR, file_name))).to be_truthy
 end

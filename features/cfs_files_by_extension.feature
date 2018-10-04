@@ -3,6 +3,7 @@ Feature: Cfs files by file extension
   As a librarian
   I want to be able to view and have statistics on files with given file extensions
 
+  #Note that this doesn't physically copy files into place, just makes the db records
   Background:
     Given there are cfs directories with fields:
       | path |
@@ -43,14 +44,3 @@ Feature: Cfs files by file extension
       | extension | cfs_file_count | cfs_file_size |
       | jpg       | 2              | 4567          |
       | xml       | 1              | 789           |
-
-  #This test is clearly not perfect, but should fail at least 1 in 3 times if there is a problem
-  @javascript
-  Scenario: Random file
-    Given I am logged in as an admin
-    When I go to the dashboard
-    And I click on 'File Statistics'
-    And I click on 'jpg'
-    And I click on 'Random File'
-    Then I should see none of:
-      | pit_bull.xml |

@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "@rails/webpacker": "^3.2.1",
+    "bootstrap-datepicker": "^1.8.0",
+    "chart.js": "^2.7.1",
+    "chartkick": "^3.0.1",
+    "checkboxes.js": "^1.0.7",
+    "clipboard": "^2.0.1",
+    "expose-loader": "^0.7.4",
+    "jquery": "3.3.1",
+    "jquery-ui": "^1.12.1",
+    "jquery-ujs": "^1.2.2",
+    "local-time": "^2.0.0",
+    "tinymce": "^4.7.6",
+    "underscore": "^1.8.3",
+    "underscore.string": "^3.3.4",
+    "webpack-merge": "^4.1.1"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^3.1.9"
+  }
+}

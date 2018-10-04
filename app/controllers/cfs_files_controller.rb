@@ -7,10 +7,10 @@ class CfsFilesController < ApplicationController
 
   before_action :require_medusa_user, except: [:show, :download]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :download]
-  before_action :find_file, only: [:show, :create_fits_xml, :fits, :download, :view, :events,
-                                   :preview_image, :preview_content, :preview_pdf,
+  before_action :find_file, only: [:show, :fits, :download, :view, :events,
+                                   :preview_content, :preview_pdf,
                                    :preview_iiif_image, :thumbnail]
-  before_action :find_previewer, only: [:show, :preview_image, :preview_content, :preview_pdf, :preview_iiif_image, :thumbnail]
+  before_action :find_previewer, only: [:show, :preview_content, :preview_pdf, :preview_iiif_image, :thumbnail]
 
   def show
     @file_group = @file.file_group
@@ -65,11 +65,6 @@ class CfsFilesController < ApplicationController
     @file.with_input_file do |input_file|
       send_file input_file, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
     end
-  end
-
-  def preview_image
-    authorize! :download, @file.file_group
-    send_data @previewer.default_image_response_info, type: 'image/jpeg', disposition: 'inline'
   end
 
   def preview_iiif_image

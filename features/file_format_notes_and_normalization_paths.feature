@@ -24,7 +24,6 @@ Feature: File format notes and normalization paths
     And I click on 'Add Note'
     And I fill in fields:
       | Note | My new note |
-    And I wait 1 second
     And I click on 'Create'
     Then I should see 'My new note'
     And a file format note with note 'My new note' should exist
@@ -55,7 +54,6 @@ Feature: File format notes and normalization paths
     And I fill in fields:
       | Name  | My new path |
       | Notes | My new note |
-    And I wait 1 second
     And I click on 'Create'
     Then I should see all of:
       | My new path |
@@ -75,8 +73,8 @@ Feature: File format notes and normalization paths
     When I view the file format with name 'tiff'
     And I click on 'Edit Normalization Path'
     And I fill in fields:
-      | Software | Photoshop   |
-      | Notes    | My new note |
+      | Software | Photoshop |
+      | Notes | My new note |
     And I select 'jp2' from 'Output format'
     And I click on 'Update'
     Then I should see all of:

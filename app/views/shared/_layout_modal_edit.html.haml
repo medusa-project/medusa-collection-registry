@@ -1,6 +1,6 @@
 -# Must pass in title (for button and header of dialog), id (for modal dialog, omit leading '#'), and yield the body
 %a.btn.btn-primary{href: '#', 'data-toggle' => 'modal', 'data-target' => "##{id}"} #{title}
-.modal.fade.modal-wide{role: 'dialog', 'aria-labelledby' => title, 'aria-hidden' => 'true', id: id}
+.modal.modal-wide{role: 'dialog', 'aria-labelledby' => title, 'aria-hidden' => 'true', id: id, class: maybe_fade}
   .modal-dialog.modal-checkbox-dialog
     .modal-content
       .modal-header

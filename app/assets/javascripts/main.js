@@ -12,11 +12,7 @@ $.extend($.fn.datepicker.defaults, {
             return null
         }
     },
-    format: function (a) {
-        var b = _.string.lpad((a.getMonth() + 1).toString(), 2, '0'),
-            c = _.string.lpad(a.getDate().toString(), 2, '0');
-        return _.string.join('-', a.getFullYear(), b, c)
-    }
+    format: 'yyyy-mm-dd'
 });
 
 /**
