@@ -15,18 +15,18 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 #set :home, '/services/medusa'
-set :home, '/home/lib-medusa-collectionregistry'
+set :home, '/home/medusa'
 set :deploy_to, "#{fetch(:home)}/medusa-cr-capistrano"
 set :bin, "#{fetch(:home)}/bin"
-set :ssh_options, {
-    forward_agent: true,
-    auth_methods: ["publickey"],
-    keys: ["/Users/jmtroy2/.ssh/medusa_prod.pem"]
-}
+# set :ssh_options, {
+#     forward_agent: true,
+#     auth_methods: ["publickey"],
+#     keys: ["/Users/jmtroy2/.ssh/medusa_prod.pem"]
+# }
 
 
 #server 'medusa.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
-server 'aws-medusa-prod.library.illinois.edu', user: 'lib-medusa-collectionregistry', roles: %w{web app db}, primary: true,
+server 'aws-medusa-prod.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true,
        :ssh_options => {
            :keepalive => true,
            :keepalive_interval => 30 #seconds
