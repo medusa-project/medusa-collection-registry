@@ -36,6 +36,10 @@ function initialize_data_table(tableSelector, extra_args) {
 };
 
 function initialize_data_table_synchronous(tableSelector, extra_args) {
+  //Bail out if already a datatable
+  if ($.fn.DataTable.fnIsDataTable($(tableSelector))) {
+    return;
+  }
   var args = $.extend(true, {}, default_datatable_args, extra_args);
   try {
     let table = $(tableSelector).DataTable(args);
