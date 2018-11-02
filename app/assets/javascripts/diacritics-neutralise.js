@@ -204,6 +204,7 @@ var diacriticsMap = [
 ];
 
 function removeDiacritics(s) {
+  s = s.normalize();
   for (var i = 0, l = diacriticsMap.length; i < l; i++) {
     s = s.replace(diacriticsMap[i].letters, diacriticsMap[i].base);
   }
