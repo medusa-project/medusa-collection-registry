@@ -12,10 +12,10 @@ class Job::SunspotReindex < Job::Base
     models = klass.where('id >= ?', start_id).order(:id).includes(klass.sunspot_options[:include]).limit(batch_size)
     Sunspot.index models
     remove_orphans(models)
+    Sunspot.commit
     if models.last.id < end_id and start_id < end_id
       self.class.create_for(class_name, start_id: [models.last.id + 1, start_id + batch_size].max, end_id: end_id, batch_size: batch_size)
     end
-    Sunspot.commit
   end
 
   #This is a little convoluted, but should be safe and also work where
