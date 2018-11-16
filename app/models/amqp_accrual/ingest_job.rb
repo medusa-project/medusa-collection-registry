@@ -40,7 +40,7 @@ class AmqpAccrual::IngestJob < Job::Base
   protected
 
   def pass_through
-    incoming_message['pass_through']
+    incoming_message['pass_through'] rescue "Unable to read pass_through"
   end
 
   def ensure_uuid
@@ -134,13 +134,14 @@ class AmqpAccrual::IngestJob < Job::Base
   end
 
   def self.duplicate_file_message(incoming_message)
-    {operation: 'ingest', staging_path: incoming_message['staging_path'],
+    {operation: 'ingest', staging_path: incoming_message['staging_path'], staging_key: incoming_message['staging_key'],
+     pass_through: pass_through,
      status: 'error', error: 'File with the path already exists or is already scheduled for ingestion'}
   end
 
   def self.unknown_error_message(incoming_message, error)
-    {operation: 'ingest', staging_path: incoming_message['staging_path'],
-     status: 'error', error: "Unknown error: #{error}"}
+    {operation: 'ingest', staging_path: incoming_message['staging_path'], staging_key: incoming_message['staging_key'],
+     pass_through: pass_through, status: 'error', error: "Unknown error: #{error}"}
   end
 
   def self.send_duplicate_file_message(client, incoming_message)
