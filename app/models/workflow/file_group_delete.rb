@@ -1,3 +1,12 @@
+#Note that things behave a bit differently depending on whether the storage is versioned.
+# If not, then in the initial delete stage we do _not_ really delete the content. We just leave it in place.
+# Then in the final delete stage we go ahead and delete it. If restore is requested nothing needs to happen
+# to the content itself.
+# If so, then in the initial delete stage we delete it (e.g. in the S3 sense, we insert delete markers). In the
+# final delete stage we delete all the versions. If restore is requested then we remove the appropriate delete
+# markers.
+# Also at the final delete stage, if a storage root is defined for backups then we delete versions from it,
+# independently of the above considerations.
 class Workflow::FileGroupDelete < Workflow::Base
 
   belongs_to :file_group
@@ -8,7 +17,7 @@ class Workflow::FileGroupDelete < Workflow::Base
 
   before_create :cache_fields
 
-  STATES = %w(start email_superusers wait_decision email_requester_accept email_requester_reject move_content
+  STATES = %w(start email_superusers wait_decision email_requester_accept email_requester_reject initial_handle_content
 wait_delete_content delete_content restore_content email_restored_content email_requester_final_removal end)
   validates_inclusion_of :state, in: STATES, allow_blank: false
 
@@ -27,7 +36,7 @@ wait_delete_content delete_content restore_content email_restored_content email_
 
   def perform_email_requester_accept
     Workflow::FileGroupDeleteMailer.requester_accept(self).deliver_now
-    be_in_state_and_requeue('move_content')
+    be_in_state_and_requeue('initial_handle_content')
   end
 
   def perform_email_requester_reject
@@ -35,9 +44,9 @@ wait_delete_content delete_content restore_content email_restored_content email_
     be_in_state_and_requeue('end')
   end
 
-  def perform_move_content
+  def perform_initial_handle_content
     create_db_backup_tables
-    move_physical_content
+    initial_handle_content
     destroy_db_objects
     be_in_state_and_requeue('wait_delete_content', run_at: Time.now + Settings.medusa.fg_delete.final_deletion_interval)
   end
@@ -103,19 +112,44 @@ wait_delete_content delete_content restore_content email_restored_content email_
 
   protected
 
-  #TODO - the name is a bit out of sync after medusa_storage changes
-  def move_physical_content
-    Application.storage_manager.main_root.write_string_to(notification_file_key,
-                                                          'This file group is scheduled to be deleted.')
+  def main_root
+    Application.storage_manager.main_root
   end
 
-  #TODO - the name is a bit out of sync after medusa_storage changes
+  def backup_root
+    Application.storage_manager.main_root_backup
+  end
+
+  def initial_handle_content
+    if main_root.versioned
+      main_root.delete_tree(content_key_prefix)
+    else
+      main_root.write_string_to(notification_file_key,
+                                'This file group is scheduled to be deleted.')
+    end
+  end
+
   def restore_physical_content
-    Application.storage_manager.main_root.delete_content(notification_file_key)
+    if main_root.versioned
+      main_root.undelete_tree(content_key_prefix)
+    else
+      main_root.delete_content(notification_file_key)
+    end
   end
 
   def delete_held_content
-    Application.storage_manager.main_root.delete_tree(content_key_prefix)
+    if main_root.versioned
+      main_root.delete_tree_versions(content_key_prefix)
+    else
+      main_root.delete_tree(content_key_prefix)
+    end
+    if backup_root.present?
+      if backup_root.versioned
+        backup_root.delete_tree_versions(content_key_prefix)
+      else
+        backup_root.delete_tree(content_key_prefix)
+      end
+    end
   end
 
   def content_key_prefix

@@ -17,10 +17,10 @@ Feature: File Group Deletion Part Two
       | Dogs  | BitLevelFileGroup | 1  | 1             |
     And the file group titled 'Dogs' has cfs root '1/1' and delayed jobs are run
     And the user 'manager@example.com' has a file group deletion workflow with fields:
-      | state        | file_group_id |
-      | move_content | 1             |
+      | state                  | file_group_id |
+      | initial_handle_content | 1             |
 
-  Scenario: File group delete workflow in state move_content is run
+  Scenario: File group delete workflow in state initial_handle_content is run
     When I perform file group deletion workflows
     Then there should be 1 file group deletion workflow in state 'wait_delete_content'
     And there should be 1 file group deletion workflow delayed job

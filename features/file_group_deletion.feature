@@ -75,7 +75,7 @@ Feature: File Group Deletion
       | email_requester_accept |
     When I perform file group deletion workflows
     Then 'manager@example.com' should receive an email with subject 'Medusa: File Group deletion approved'
-    And there should be 1 file group deletion workflow in state 'move_content'
+    And there should be 1 file group deletion workflow in state 'initial_handle_content'
     And there should be 1 file group deletion workflow delayed job
 
   Scenario: File group delete workflow in state email_requester_final_delete is run
