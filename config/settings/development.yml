@@ -151,7 +151,7 @@ storage:
     :path: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-dev
   #set this if there is a backup location. It is used only with the file_group delete
   #procedure in order to make the final delete apply to the backup copy as well.
-  main_root_backup: nil
+  main_root_backup: ~
   amqp:
     - :name: idb
       :type: filesystem
