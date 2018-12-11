@@ -12,6 +12,8 @@ class CfsFilesController < ApplicationController
                                    :preview_iiif_image, :thumbnail]
   before_action :find_previewer, only: [:show, :preview_content, :preview_pdf, :preview_iiif_image, :thumbnail]
 
+  helper_method :cfs_file_download_link, :cfs_file_view_link
+
   def show
     @file_group = @file.file_group
     @directory = @file.cfs_directory
