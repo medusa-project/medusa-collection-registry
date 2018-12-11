@@ -51,7 +51,7 @@ module CfsFilesHelper
     if browser.chrome?
       %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8"#{URI.encode(cfs_file.name)}")
     else
-      %Q(#{type}; filename*=utf-8"#{URI.encode(cfs_file.name)}; filename="#{cfs_file.name}")
+      %Q(#{type}; filename*=utf-8"#{URI.encode(cfs_file.name)}"; filename="#{cfs_file.name}")
     end
   end
 
