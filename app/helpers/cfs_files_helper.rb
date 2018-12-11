@@ -48,7 +48,11 @@ module CfsFilesHelper
   end
 
   def disposition(type, cfs_file)
-    %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8"#{URI.encode(cfs_file.name)}")
+    if browser.chrome?
+      %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8"#{URI.encode(cfs_file.name)}")
+    else
+      %Q(#{type}; filename*=utf-8"#{URI.encode(cfs_file.name)}; filename="#{cfs_file.name}")
+    end
   end
 
   def safe_content_type(cfs_file)

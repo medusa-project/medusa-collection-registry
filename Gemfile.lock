@@ -130,6 +130,7 @@ GEM
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+    browser (2.5.3)
     builder (3.2.3)
     bunny (2.12.0)
       amq-protocol (~> 2.3, >= 2.3.0)
@@ -582,6 +583,7 @@ DEPENDENCIES
   auto_html
   auto_strip_attributes
   bootstrap-sass
+  browser
   bunny
   bunny-mock!
   byebug

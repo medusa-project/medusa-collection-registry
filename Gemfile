@@ -133,6 +133,8 @@ gem 'medusa_storage', git: 'https://github.com/medusa-project/medusa_storage.git
 
 gem 'hex_string'
 
+gem 'browser'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
