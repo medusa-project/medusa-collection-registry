@@ -151,7 +151,7 @@ class CfsFilesController < ApplicationController
     if browser.chrome? or browser.safari?
       %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8"#{URI.encode(cfs_file.name)}")
     elsif browser.ie? or browser.edge?
-      %Q(#{type}; filename*=utf-8"#{URI.encode(cfs_file.name)}"; filename="#{cfs_file.name}")
+      %Q(#{type}; filename*=utf-8"#{URI.encode(cfs_file.name)}"; filename=''#{cfs_file.name})
     elsif browser.firefox?
       %Q(#{type}; filename="#{cfs_file.name}")
     else
