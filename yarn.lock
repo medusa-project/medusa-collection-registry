@@ -1296,7 +1296,7 @@ chartkick@^3.0.1:
   resolved "https://registry.yarnpkg.com/chartkick/-/chartkick-3.0.1.tgz#f325041bfc15f5d18074d4803549efc3751ccd81"
   integrity sha512-u9kOAq69BhIl7KZsU3+athnZUdXhivCQeYMoXWTRGZB6Rf17oaBO0LboK+s+yXJ12Uvw6Ua8ryf7Md7dOjpoaQ==
 
-checkboxes.js@^1.0.7:
+checkboxes.js@1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/checkboxes.js/-/checkboxes.js-1.2.2.tgz#73823aa4cdd5c27343a2e9a238aa1d34b43f3302"
   integrity sha512-CUloSEI4QEmyy5p+9OKhhu/zqxwwc1XIZtT6Htgplp5YpzPa0h/5h3e3psoso5L2DqpvRUaDNHhuHuQAlCiNrA==

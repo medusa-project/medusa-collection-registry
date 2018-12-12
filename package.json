@@ -4,7 +4,7 @@
     "bootstrap-datepicker": "^1.8.0",
     "chart.js": "^2.7.1",
     "chartkick": "^3.0.1",
-    "checkboxes.js": "^1.0.7",
+    "checkboxes.js": "1.2.2",
     "clipboard": "^2.0.1",
     "expose-loader": "^0.7.4",
     "jquery": "3.3.1",
