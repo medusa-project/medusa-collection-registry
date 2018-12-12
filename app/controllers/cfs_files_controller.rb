@@ -43,17 +43,19 @@ class CfsFilesController < ApplicationController
   end
 
   def download
+    disposition_string = disposition('attachment', @file)
+    filename = URI.encode(@file.name)
     if current_user.present?
       authorize!(:download, @file.file_group)
       @file.with_input_file do |input_file|
-        send_file input_file, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
+        send_file input_file, type: safe_content_type(@file), disposition: disposition_string, filename: filename
       end
     else
       #basic auth
       redirect_to(login_path) unless basic_auth?
       if @file.storage_root.root_type == :filesystem
         @file.with_input_file do |input_file|
-          send_file input_file, type: safe_content_type(@file), disposition: 'attachment', filename: @file.name
+          send_file input_file, type: safe_content_type(@file), disposition: disposition_string, filename: filename
         end
       else
         redirect_to(cfs_file_download_link(@file))
@@ -64,15 +66,17 @@ class CfsFilesController < ApplicationController
 
   def view
     authorize! :download, @file.file_group
+    disposition_string = disposition('inline', @file)
+    filename = URI.encode(@file.name)
     @file.with_input_file do |input_file|
-      send_file input_file, type: safe_content_type(@file), disposition: 'inline', filename: @file.name
+      send_file input_file, type: safe_content_type(@file), disposition: disposition_string, filename: filename
     end
   end
 
   def preview_iiif_image
     authorize! :download, @file.file_group
     response_info = @previewer.iiif_image_response_info(params)
-    send_data response_info[:data], type: response_info[:response_type], disposition: 'inline'
+    send_data response_info[:data], type: response_info[:response_type], disposition: disposition('inline', @file)
   end
 
   def thumbnail
@@ -147,15 +151,20 @@ class CfsFilesController < ApplicationController
     end
   end
 
+  #note that the way send_file works means that it will automatically append _another_ filename after this string
+  # I can't find a way to get it to behave nicely, but it seems to work without harm to do it this way for now.
+  # It really expects disposition to just be attachment or inline, but there is no way that I can find to set
+  # the utf-8 version of the filename without doing this.
+  # When this is used with S3 for presigned urls I expect it'll be okay as is.
   def disposition(type, cfs_file)
     if browser.chrome? or browser.safari?
-      %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8"#{URI.encode(cfs_file.name)}")
+      %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8''#{URI.encode(cfs_file.name)})
     elsif browser.ie? or browser.edge?
       %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8''#{URI.encode(cfs_file.name)})
     elsif browser.firefox?
       %Q(#{type}; filename="#{cfs_file.name}")
     else
-      %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8"#{URI.encode(cfs_file.name)}")
+      %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8''#{URI.encode(cfs_file.name)}")
     end
   end
 
