@@ -148,7 +148,7 @@ class CfsFilesController < ApplicationController
   end
 
   def disposition(type, cfs_file)
-    if browser.chrome? or browser.safari?
+    if browser.chrome? or browser.safari? or browser.ie? or browser.edge?
       %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8"#{URI.encode(cfs_file.name)}")
     elsif browser.firefox?
       %Q(#{type}; filename="#{cfs_file.name}")
