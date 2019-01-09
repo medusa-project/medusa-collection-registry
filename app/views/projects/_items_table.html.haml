@@ -14,7 +14,7 @@
           = f.submit :'Delete checked', class: 'btn btn-primary btn-danger', onclick: 'before_mass_action_submit();', data: {confirm: 'Multiple items may be deleted. Are you sure?'}
           = link_to :'Mass edit', '#', class: 'btn btn-default btn-primary', onclick: 'show_item_mass_edit();'
           = f.submit :'Ingest items', class: 'btn btn-default btn-primary', onclick: 'before_mass_action_submit();'
-  %table.table.table-striped#items{'data-toggle' => 'checkboxes', 'data-range' => 'true'}
+  %table.table.table-striped#items
     %thead
       %tr
         - @helper.headers.each do |header|
@@ -64,3 +64,7 @@
       ]
     })
   })
+:javascript
+  $(document).ready(function () {
+    $('#items').checkboxes('range', true);
+  });

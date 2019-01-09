@@ -20,7 +20,9 @@ require('jquery-ui');
 //Also, I think we only use jquery-ui for datepicker and possibly some effects - maybe find
 //other sources for the same
 require('jquery-ujs');
-require('checkboxes.js/src/jquery.checkboxes');
+//I have checkboxes.js locked at this version in yarn.lock - it doesn't seem to load nicely
+//unless I go specifically to the exact file.
+require('checkboxes.js/dist/jquery.checkboxes-1.2.2.min');
 
 require("expose-loader?_!underscore");
 require("expose-loader?_.string!underscore.string");
