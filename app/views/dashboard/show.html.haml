@@ -9,33 +9,13 @@
     #file-statistics.tab-pane
       = render partial: 'shared_js/datatables_load', locals: {id: 'file-statistics', path: file_stats_dashboard_path, table_ids: %w(file_stats_content_type file_stats_file_extension)}
     #red-flags.tab-pane
-      Loading...
-      :javascript
-        $("#red-flags").load("#{red_flags_dashboard_path}", function () {
-          initialize_data_table("table#red-flags-table", {});
-        });
+      = render partial: 'shared_js/datatables_load', locals: {id: 'red-flags', path: red_flags_dashboard_path, table_ids: 'red-flags-table'}
     #combined-events-tab.tab-pane
-      Loading...
-      :javascript
-        $("#combined-events-tab").load("#{events_dashboard_path}", function () {
-          initialize_data_table("table#events", {});
-        });
+      = render partial: 'shared_js/datatables_load', locals: {id: 'combined-events-tab', path: events_dashboard_path, table_ids: 'events'}
     #amazon.tab-pane
-      Loading...
-      :javascript
-        $("#amazon").load("#{amazon_dashboard_path}", function () {
-          initialize_data_table("table#amazon-backups-table", {});
-        });
+      = render partial: 'shared_js/datatables_load', locals: {id: 'amazon', path: amazon_dashboard_path, table_ids: 'amazon-backups-table'}
     #accruals.tab-pane
-      Loading...
-      :javascript
-        $("#accruals").load("#{accruals_dashboard_path}", function () {
-          initialize_data_table("table#accruals_table", {});
-        });
+      = render partial: 'shared_js/datatables_load', locals: {id: 'accruals', path: accruals_dashboard_path, table_ids: 'accruals_table'}
     - if current_user&.superuser?
       #file-group-deletions.tab-pane
-        Loading...
-        :javascript
-          $("#file-group-deletions").load("#{file_group_deletions_dashboard_path}", function () {
-            initialize_data_table("table#file_group_deletions_table", {});
-          });
+        = render partial: 'shared_js/datatables_load', locals: {id: 'file-group-deletions', path: file_group_deletions_dashboard_path, table_ids: 'file_group_deletions_table'}
