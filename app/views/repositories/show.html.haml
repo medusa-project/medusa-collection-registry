@@ -21,40 +21,14 @@
     #overview.tab-pane.active
       = render 'overview'
     #running-processes.tab-pane
-      Loading...
-      :javascript
-        $("#running-processes").load("#{show_running_processes_repository_path(@repository)}");
+      = render partial: 'shared_js/simple_load', locals: {id: 'running-processes', path: show_running_processes_repository_path(@repository)}
     #file-statistics.tab-pane
-      Loading...
-      :javascript
-        $("#file-statistics").load("#{show_file_stats_repository_path(@repository)}", function () {
-          initialize_data_table("table#file_stats_content_type", {});
-          initialize_data_table("table#file_stats_file_extension", {});
-          });
+      = render partial: 'shared_js/datatables_load', locals: {id: 'file-statistics', path: show_file_stats_repository_path(@repository), table_ids: %w(file_stats_content_type file_stats_file_extension)}
     #red-flags.tab-pane
-      Loading...
-      :javascript
-        $("#red-flags").load("#{show_red_flags_repository_path(@repository)}", function () {
-          initialize_data_table("table#red-flags-table", {});
-        });
+      = render partial: 'shared_js/datatables_load', locals: {id: 'red-flags', path: show_red_flags_repository_path(@repository), table_ids: 'red-flags-table'}
     #combined-events-tab.tab-pane
-      Loading...
-      :javascript
-        $("#combined-events-tab").load("#{show_events_repository_path(@repository)}", function () {
-          initialize_data_table("table#events", {});
-        });
+      = render partial: 'shared_js/datatables_load', locals: {id: 'combined-events-tab', path: show_events_repository_path(@repository), table_ids: 'events'}
     #amazon.tab-pane
-      Loading...
-      :javascript
-        $("#amazon").load("#{show_amazon_repository_path(@repository)}", function () {
-          initialize_data_table("table#amazon-backups-table", {});
-        });
+      = render partial: 'shared_js/datatables_load', locals: {id: 'amazon', path: show_amazon_repository_path(@repository), table_ids: 'amazon-backups-table'}
     #accruals.tab-pane
-      Loading...
-      :javascript
-        $("#accruals").load("#{show_accruals_repository_path(@repository)}", function () {
-          initialize_data_table("table#accruals_table", {});
-        });
-
-
-
+      = render partial: 'shared_js/datatables_load', locals: {id: 'accruals', path: show_accruals_repository_path(@repository), table_ids: 'accruals_table'}

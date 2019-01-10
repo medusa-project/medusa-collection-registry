@@ -17,9 +17,4 @@
       %hr
       .row
         #file-statistics
-          Loading...
-          :javascript
-            $("#file-statistics").load("#{show_file_stats_collection_path(@collection)}", function () {
-              initialize_data_table("table#file_stats_content_type", {});
-              initialize_data_table("table#file_stats_file_extension", {});
-              });
+          = render partial: 'shared_js/datatables_load', locals: {id: 'file-statistics', path: show_file_stats_collection_path(@collection), table_ids: %w(file_stats_content_type file_stats_file_extension)}
