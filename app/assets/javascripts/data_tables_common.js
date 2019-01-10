@@ -35,6 +35,12 @@ function initialize_data_table(tableSelector, extra_args) {
   })
 };
 
+function initialize_data_tables(tableSelectors, extra_args) {
+  _.each(tableSelectors, function (tableSelector) {
+    initialize_data_table_synchronous(tableSelector, extra_args);
+  });
+}
+
 function initialize_data_table_synchronous(tableSelector, extra_args) {
   //Bail out if already a datatable
   if ($.fn.DataTable.fnIsDataTable($(tableSelector))) {

@@ -5,16 +5,9 @@
     #storage-overview.tab-pane.active
       = render 'storage_overview'
     #running-processes.tab-pane
-      Loading...
-      :javascript
-        $("#running-processes").load("#{running_processes_dashboard_path}");
+      = render partial: 'shared_js/simple_load', locals: {id: 'running-processes', path: running_processes_dashboard_path}
     #file-statistics.tab-pane
-      Loading...
-      :javascript
-        $("#file-statistics").load("#{file_stats_dashboard_path}", function () {
-          initialize_data_table("table#file_stats_content_type", {});
-          initialize_data_table("table#file_stats_file_extension", {});
-        });
+      = render partial: 'shared_js/datatables_load', locals: {id: 'file-statistics', path: file_stats_dashboard_path, table_ids: %w(file_stats_content_type file_stats_file_extension)}
     #red-flags.tab-pane
       Loading...
       :javascript

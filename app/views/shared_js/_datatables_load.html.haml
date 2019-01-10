@@ -1,0 +1,8 @@
+-# must pass: id => id of element to replace, path - path to load,
+-# table_ids => id or array of ids of tables to initialize after load
+- selectors = Array.wrap(table_ids).collect {|table_id| "table##{table_id}"}
+Loading...
+:javascript
+  $("##{id}").load("#{path}", function () {
+    initialize_data_tables(#{selectors.to_json.html_safe}, {})
+  });
