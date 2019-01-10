@@ -1,0 +1,22 @@
+-# must pass selector, a jquery selector string
+-# must pass search_helper, a SearchHelper subclass
+:javascript
+    $(function() {
+      $(#{%Q(selector)}).DataTable({
+        'processing': true,
+        'serverSide': true,
+        'pageLength': 25,
+        'order': [],
+        'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+        'search': {
+          'search': ""
+        },
+        'stateSave': true,
+        'ajax': {
+          'url': "#{search_helper.url}"
+        },
+        'columnDefs': [
+          {'orderable': false, 'targets': #{search_helper.columns_tagged(:unsortable)}}
+        ]
+      })
+    })
