@@ -4,6 +4,6 @@
       %tr
         - @directories_helper.headers.each do |header|
           %th= header
-  = render partial: 'shared/search_datatable_init', locals: {selector: '#directory_subdirectories', search_helper: @directories_helper}
+  = render partial: 'shared_js/search_datatable_init', locals: {selector: '#directory_subdirectories', search_helper: @directories_helper}
 - else
   %p No Folders

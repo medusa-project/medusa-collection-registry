@@ -40,4 +40,4 @@
               - if red_flag.flagged?
                 %span.unflag-link
                   = link_to('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true, class: 'btn btn-default btn-xs')
-= render partial: 'shared/checkboxes_init', locals: {selector: '#red-flags-table'}
+= render partial: 'shared_js/checkboxes_init', locals: {selector: '#red-flags-table'}

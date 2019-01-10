@@ -4,7 +4,7 @@
       %tr
         - @files_helper.headers.each do |header|
           %th= header
-  = render partial: 'shared/search_datatable_init', locals: {selector: '#directory_files', search_helper: @files_helper}
+  = render partial: 'shared_js/search_datatable_init', locals: {selector: '#directory_files', search_helper: @files_helper}
 - else
   %p
     No files
