@@ -4,24 +4,5 @@
       %tr
         - @helper.headers.each do |header|
           %th= header
-:javascript
-  $(function() {
-    $('#cascaded_events').DataTable({
-      'processing': true,
-      'serverSide': true,
-      'pageLength': 25,
-      'order': [],
-      'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-      'search': {
-        'search': ""
-      },
-      'stateSave': true,
-      'ajax': {
-        'url': "#{@helper.url}"
-      },
-      'columnDefs': [
-        {'orderable': false, 'targets': #{@helper.columns_tagged(:unsortable)}}
-      ]
-    })
-  })
+= render partial: 'shared/search_datatable_init', locals: {selector: '#cascaded_events', search_helper: @helper}
 

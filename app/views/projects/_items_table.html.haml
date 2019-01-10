@@ -64,7 +64,4 @@
       ]
     })
   })
-:javascript
-  $(document).ready(function () {
-    $('#items').checkboxes('range', true);
-  });
+= render partial: 'shared/checkboxes_init', locals: {selector: '#items'}

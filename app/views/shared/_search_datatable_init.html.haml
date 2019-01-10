@@ -2,7 +2,7 @@
 -# must pass search_helper, a SearchHelper subclass
 :javascript
     $(function() {
-      $(#{%Q(selector)}).DataTable({
+      $("#{selector}").DataTable({
         'processing': true,
         'serverSide': true,
         'pageLength': 25,

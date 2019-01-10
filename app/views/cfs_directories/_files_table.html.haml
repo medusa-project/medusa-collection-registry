@@ -4,26 +4,7 @@
       %tr
         - @files_helper.headers.each do |header|
           %th= header
-  :javascript
-    $(function() {
-      $('#directory_files').DataTable({
-        'processing': true,
-        'serverSide': true,
-        'pageLength': 25,
-        'order': [],
-        'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-        'search': {
-          'search': ""
-        },
-        'stateSave': true,
-        'ajax': {
-          'url': "#{@files_helper.url}"
-        },
-        'columnDefs': [
-          {'orderable': false, 'targets': #{@files_helper.columns_tagged(:unsortable)}}
-        ]
-      })
-    })
+  = render partial: 'shared/search_datatable_init', locals: {selector: '#directory_files', search_helper: @files_helper}
 - else
   %p
     No files

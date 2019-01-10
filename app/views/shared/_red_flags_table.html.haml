@@ -40,7 +40,4 @@
               - if red_flag.flagged?
                 %span.unflag-link
                   = link_to('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true, class: 'btn btn-default btn-xs')
-:javascript
-  $(document).ready(function () {
-    $('#red-flags-table').checkboxes('range', true);
-  });
+= render partial: 'shared/checkboxes_init', locals: {selector: '#red-flags-table'}
