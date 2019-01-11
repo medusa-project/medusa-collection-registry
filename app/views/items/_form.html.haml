@@ -1,7 +1,7 @@
 - content_for :form_sidebar_extra do
   %hr
-    %h4 Voyager lookup
-    #barcode_items
+  %h4 Voyager lookup
+  #barcode_items
 = simple_form_for @item, html: {class: 'form-horizontal'}, wrapper: :horizontal_form, remote: @remote do |f|
   .container
     .row

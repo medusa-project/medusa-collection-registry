@@ -23,9 +23,9 @@
   - if @directory.present?
     .row
       %hr
-        - if @file_group.accrual_unstarted?
-          No files have been added yet
-        - else
-          = render 'cfs_directories/directory_contents_table'
+      - if @file_group.accrual_unstarted?
+        No files have been added yet
+      - else
+        = render 'cfs_directories/directory_contents_table'
   - if @accrual.present? and safe_can?(:accrue, @directory)
     = render 'cfs_directories/accrual_dialog'
