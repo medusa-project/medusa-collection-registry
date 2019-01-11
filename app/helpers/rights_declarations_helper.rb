@@ -7,7 +7,8 @@ module RightsDeclarationsHelper
   def copyright_statement_select_items
     items = hash_to_sorted_select_items(RightsDeclaration.copyright_statements, RightsDeclaration.default_copyright_statement)
     #Move custom label to the end
-    items.reject {|i| i.last == RightsDeclaration.custom_copyright_key} + items.select {|i| i.last == RightsDeclaration.custom_copyright_key}
+    items = items.reject {|i| i.last == RightsDeclaration.custom_copyright_key} + items.select {|i| i.last == RightsDeclaration.custom_copyright_key}
+    [["<Leave blank>", ""]] + items
   end
 
   def access_restriction_select_items

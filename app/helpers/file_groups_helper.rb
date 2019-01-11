@@ -10,4 +10,8 @@ module FileGroupsHelper
     %w(descriptive-metadata administrative-metadata)
   end
 
+  def acquisition_methods_collection
+    [['<Leave blank>', '']] + FileGroup.acquisition_methods.zip(FileGroup.acquisition_methods)
+  end
+
 end

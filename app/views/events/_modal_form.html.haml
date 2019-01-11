@@ -4,7 +4,7 @@
     .modal-dialog
       .modal-content
         .modal-header
-          %button{type: 'button', class: 'close', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'}
+          %button{type: :button, class: 'close', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'}
             ×
           %h3#modalLabel New Event
         .modal-body
@@ -13,5 +13,5 @@
           = f.input :date, as: :string, input_html: {class: 'datepicker', value: Date.today.to_s}
           = f.input :note, input_html: {class: 'col-sm-5'}
         .modal-footer
-          %button{class: 'btn btn-default', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Cancel
+          %button{type: :button, class: 'btn btn-default', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Cancel
           = f.button :submit, class: 'btn btn-primary', 'data-hide' => 'modal'

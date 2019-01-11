@@ -1,9 +1,10 @@
 module AssessmentsHelper
 
   def storage_media_select_collection
-    StorageMedium.all.collect do |medium|
+    collection = StorageMedium.all.collect do |medium|
       [medium.name, medium.id]
     end
+    [["<Leave blank>", ""]] + collection
   end
 
   def assessment_form_tab_list

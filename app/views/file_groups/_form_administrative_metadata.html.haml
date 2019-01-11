@@ -2,7 +2,7 @@
 = f.input :collection_id, as: :hidden, input_html: {value: @collection.id}
 = f.input :producer_id, collection: producers_select_collection, include_blank: false
 = f.input :provenance_note, label: 'Provenance Note'
-= f.input :acquisition_method, label: 'Acquisition method', as: :select, include_blank: true, collection: FileGroup.acquisition_methods
+= f.input :acquisition_method, label: 'Acquisition method', as: :select, allow_blank: true, include_blank: false, collection: acquisition_methods_collection
 - if @file_group.new_record?
   = f.input :storage_level, as: :select, include_blank: false, collection: FileGroup.storage_levels
   %p

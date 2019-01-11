@@ -19,7 +19,7 @@
       .modal-dialog
         .modal-content
           .modal-header
-            %a.close{href: '#', type: :button, 'data-dismiss': :modal, 'aria-label': :Close}
+            %a.close{href: '#', role: :button, 'data-dismiss': :modal, 'aria-label': :Close}
               %span{'aria-hidden': true}
                 &times;
             %h4.modal-title Ingest Directory Picker
@@ -27,5 +27,5 @@
             %p
               #{react_component('ProjectDirectoryPicker', data: @ingest_directory_info)}
           .modal-footer
-            %a.btn.btn-default{href: '#', type: :button, 'data-dismiss': :modal} Close
+            %a.btn.btn-default{href: '#', role: :button, 'data-dismiss': :modal} Close
       

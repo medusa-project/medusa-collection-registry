@@ -54,7 +54,7 @@ module ButtonsHelper
   end
 
   def events_button(url)
-    fa_icon_link_to 'Events', Settings.icons.events_button, url, class: button_class, value: 'Events'
+    fa_icon_link_to 'Events', Settings.icons.events_button, url, class: button_class
   end
 
   def assessments_button(url)
