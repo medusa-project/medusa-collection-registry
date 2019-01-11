@@ -3,52 +3,43 @@
     %a{href: '#', 'data-toggle' => 'modal', 'data-target' => '#more-actions'}
       More
       %span.caret
-  = render layout: 'layouts/bootstrap_modal', locals: {id: 'more-actions'} do
-    .modal-header
-      %a.close{'data-dismiss' => 'modal', 'aria-label' => 'Close', href: '#'}
-        %span{'aria-hidden' => true}
-          &times;
-      %h4.modal-title More actions
-    .modal-body
-      .row
-        .col-sm-4
-          %strong View by:
-          %ul
-            %li= link_to 'Producers', producers_path
-            %li= link_to 'Access Systems', access_systems_path
-            %li= link_to 'File Formats', file_formats_path
-            %li= link_to 'File Formats (XML)', file_formats_path(format: :xml)
-            %li= link_to 'File Rendering Profiles', file_format_profiles_path
-            %li= link_to 'File Format Tests', file_format_tests_path
-            %li= link_to 'File Format Tests (CSV)', file_format_tests_path(format: :csv)
-            - if safe_can?(:read, ArchivedAccrualJob)
-              %li= link_to 'Archived Accrual Jobs', archived_accrual_jobs_path
-            - if medusa_user?
-              %li= link_to 'Timeline', timeline_path
-          %strong Book Tracker:
-          %ul
-            %li= link_to 'Items', book_tracker_items_path
-            - if safe_can?(:update, BookTracker::Item)
-              %li= link_to 'Tasks', book_tracker_tasks_path
-        .col-sm-4
-          %strong Quick Links:
-          %ul
-            %li= link_to 'Create a Collection', new_collection_path
-            %li= link_to 'Feedback', static_page_path(key: :feedback)
-          %strong Learn More:
-          %ul
-            %li= link_to 'Policies', static_page_path(key: :policies)
-            %li= link_to 'Technology', static_page_path(key: :technology)
-            %li= link_to 'Staff', static_page_path(key: :staff)
-            %li= link_to 'Wiki', Settings.medusa.wiki_url
-            %li= link_to 'Help', static_page_path(key: :help)
-            %li= link_to 'FAQ', Settings.medusa.faq_url
-        -# We're removing this as a trial
-        -#.col-sm-4
-        -#  %strong Frequently Visited Collections:
-        -#  %ul
-        -#    %li= link_to 'IDEALS', repository_path(42)
-        -#    %li= link_to 'RBML', repository_path(23)
-        -#    %li= link_to 'Sousa Archives'.html_safe, repository_path(31)
-        -#    %li= link_to 'University Archives'.html_safe, repository_path(22)
-
+= render layout: 'layouts/bootstrap_modal', locals: {id: 'more-actions'} do
+  .modal-header
+    %a.close{'data-dismiss' => 'modal', 'aria-label' => 'Close', href: '#'}
+      %span{'aria-hidden' => 'true'}
+        &times;
+    %h4.modal-title More actions
+  .modal-body
+    .row
+      .col-sm-4
+        %strong View by:
+        %ul
+          %li= link_to 'Producers', producers_path
+          %li= link_to 'Access Systems', access_systems_path
+          %li= link_to 'File Formats', file_formats_path
+          %li= link_to 'File Formats (XML)', file_formats_path(format: :xml)
+          %li= link_to 'File Rendering Profiles', file_format_profiles_path
+          %li= link_to 'File Format Tests', file_format_tests_path
+          %li= link_to 'File Format Tests (CSV)', file_format_tests_path(format: :csv)
+          - if safe_can?(:read, ArchivedAccrualJob)
+            %li= link_to 'Archived Accrual Jobs', archived_accrual_jobs_path
+          - if medusa_user?
+            %li= link_to 'Timeline', timeline_path
+        %strong Book Tracker:
+        %ul
+          %li= link_to 'Items', book_tracker_items_path
+          - if safe_can?(:update, BookTracker::Item)
+            %li= link_to 'Tasks', book_tracker_tasks_path
+      .col-sm-4
+        %strong Quick Links:
+        %ul
+          %li= link_to 'Create a Collection', new_collection_path
+          %li= link_to 'Feedback', static_page_path(key: :feedback)
+        %strong Learn More:
+        %ul
+          %li= link_to 'Policies', static_page_path(key: :policies)
+          %li= link_to 'Technology', static_page_path(key: :technology)
+          %li= link_to 'Staff', static_page_path(key: :staff)
+          %li= link_to 'Wiki', Settings.medusa.wiki_url
+          %li= link_to 'Help', static_page_path(key: :help)
+          %li= link_to 'FAQ', Settings.medusa.faq_url

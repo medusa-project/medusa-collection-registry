@@ -1,12 +1,11 @@
-- cache(current_user) do
-  %li.dropdown
-    %a.dropdown-toggle{'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'aria-expanded' =>'false', href: '#', id: 'show_search'}
-      = fa_icon 'search'
-      %span.caret
-    %ul.dropdown-menu{role: 'menu', 'aria-labelledby' => 'dLabel'}
-      %li
-        = simple_form_for :search, url: search_searches_path, html: {id: 'search', class: 'form-inline navbar-form'}, method: :post do |f|
-          = f.input :query, label: false, required: true, placeholder: 'Search query'
-          -#Couldn't find a way to do the following directly with simple form, so drop back to standard Rails helpers
-          = button_tag(type: 'submit', class: 'btn btn-primary', title: 'Search', id: 'search_submit') do
-            = fa_icon 'search'
+%li.dropdown
+  %a.dropdown-toggle{'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'aria-expanded' =>'false', href: '#', id: 'show_search'}
+    = fa_icon 'search'
+    %span.caret
+  %ul.dropdown-menu{role: 'menu'}
+    %li
+      = simple_form_for :search, url: search_searches_path, html: {id: 'search', class: 'form-inline navbar-form'}, method: :post do |f|
+        = f.input :query, label: false, required: true, placeholder: 'Search query'
+        -#Couldn't find a way to do the following directly with simple form, so drop back to standard Rails helpers
+        = button_tag(type: 'submit', class: 'btn btn-primary', title: 'Search', id: 'search_submit') do
+          = fa_icon 'search'

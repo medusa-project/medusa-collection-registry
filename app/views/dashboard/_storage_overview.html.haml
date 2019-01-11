@@ -11,7 +11,7 @@
       %td.value= number_with_precision(@bit_level_storage_summary['size'].to_d / 1.gigabyte, precision: 2, delimiter: ',')
       %td.value= @bit_level_storage_summary['count'].to_i.to_s(:delimited)
 
-%table#storage-overview.table.table-hover.table-bordered.table-condensed
+%table#storage-overview-table.table.table-hover.table-bordered.table-condensed
   %caption Storage Summary
   %thead
     %tr
