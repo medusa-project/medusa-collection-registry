@@ -11,7 +11,7 @@
       = show_field @collection, :external_id, 'External ID'
       = show_field @collection, :representative_image
       = show_field @collection, :representative_item
-      %p
+      .show-value
         %strong Access Systems:
         %br
         - if access_systems = @collection.access_systems

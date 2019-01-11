@@ -125,10 +125,11 @@ Dir.chdir(Rails.root) do
 end
 puts "Webpack compiled"
 
-#Uncommenting this will look at the page object at the end of each test and if it is html will
+#Uncommenting the activating line will look at the page object at the end of each test and if it is html will
 # dump it into tmp/html_dump. It also creates a manifest file mapping the file to the page url
 # This is far from perfect and massively redundant, but will allow a decent amount of html validation checking
 # with little additional effort, so is fine for now.
+# Note that we may set some other places in the code that also dump when the dumper is active.
 require_relative('html_dumper')
 After do
   begin

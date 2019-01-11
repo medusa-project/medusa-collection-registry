@@ -1,6 +1,7 @@
 -#must pass in f (form) and field
+- group_id = "#{field}_group"
 .row
   .col-sm-2
-    = f.label field, required: false
+    = f.label field, required: false, for: group_id
   .col-sm-8
-    = f.input field, as: :radio_buttons, collection: ["Don't change", 'Yes', 'No'], checked: "Don't change", required: false, label: false
+    = f.input field, as: :radio_buttons, collection: ["Don't change", 'Yes', 'No'], checked: "Don't change", required: false, label: false, wrapper_html: {id: group_id}

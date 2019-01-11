@@ -22,7 +22,7 @@
           .col-sm-1
             = f.input :'update_equipment', label: false, as: :boolean
           .col-sm-9
-            = f.input :equipment, label: false, required: false, as: :select, collection: Item.equipment_types, allow_blank: true
+            = f.input :equipment, label: false, required: false, as: :select, collection: mass_edit_equipment_collection, allow_blank: true, include_blank: false
         = render 'item_mass_edit_text_field_row', f: f, field: :notes
         .row
           = f.input :item_ids, as: :hidden, input_html: { value: '' }
