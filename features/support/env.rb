@@ -125,15 +125,17 @@ Dir.chdir(Rails.root) do
 end
 puts "Webpack compiled"
 
-#Uncommenting the activating line will look at the page object at the end of each test and if it is html will
-# dump it into tmp/html_dump. It also creates a manifest file mapping the file to the page url
-# This is far from perfect and massively redundant, but will allow a decent amount of html validation checking
-# with little additional effort, so is fine for now.
-# Note that we may set some other places in the code that also dump when the dumper is active.
+#Uncommenting the following will look at the HTML after each step. If it has not yet been seen it will be
+# dumped into Rails.root/tmp/html_dump. Also a file named 'manifest' will be dumped that associates the
+# html files to the url that was active at the time.
+# Then you can run the vnu tool on the directory to see if there are any html errors
+# I do something like this: java -jar $HOME/bin/vnu.jar --errors-only *.html > errors 2>&1
+# Currently there is a valign error that seems to eminate from datatables, but any others should be fixable
+# within this application.
 require_relative('html_dumper')
-After do
+AfterStep do
   begin
-    HtmlDumper.instance.dump(page)
+    HtmlDumper.instance.maybe_dump(page)
   rescue Exception => e
     puts "Problem dumping html: #{e}"
   end
