@@ -12,9 +12,10 @@ function add_reason(id, label) {
   var new_checkbox = last_checkbox.clone();
   var new_label = $('label', new_checkbox);
   var new_input = $('input', new_checkbox);
-  new_label.attr('for', new_label.attr('for').replace(/\d+$/, id));
+  var new_id = new_label.attr('for').replace(/\d+$/, id);
+  new_label.attr('for', new_id);
   new_input.val(id).attr('checked', 'checked');
-  new_input.attr('id', new_input.attr('id').replace(/\d+$/, id));
+  new_input.attr('id', new_id);
   new_input.detach();
   new_label.text(label);
   new_label.prepend(new_input);
