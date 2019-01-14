@@ -4,7 +4,8 @@ class FileGroupsController < ApplicationController
   before_action :require_medusa_user_or_basic_auth, only: [:show, :content_type_manifest]
   before_action :find_file_group_and_collection, only: [:show, :destroy, :edit, :update, :create_cfs_fits,
                                                         :red_flags, :attachments,
-                                                        :assessments, :events, :content_type_manifest]
+                                                        :assessments, :events, :content_type_manifest,
+                                                        :new_event]
   respond_to :html, :js, :json
 
   def show
@@ -72,6 +73,13 @@ class FileGroupsController < ApplicationController
       else
         render 'new'
       end
+    end
+  end
+
+  def new_event
+    authorize! :create_event, @file_group
+    respond_to do |format|
+      format.js
     end
   end
 

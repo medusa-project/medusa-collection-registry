@@ -32,10 +32,14 @@ Feature: File Group Management
     And I click on 'View' in the event actions
     Then I should be viewing events for the file group with title 'images'
 
+  @javascript
   Scenario: Add file group event
     When I view the collection with title 'Dogs'
+    And I click on 'Actions'
     And I click on 'Add' in the event actions
-    And I submit the new event form on the collection view page
+    And I wait 2 seconds
+    And I click on 'Create Event'
+    And I wait 1 second
     Then the file group with title 'images' should have 1 events
 
   Scenario: View file group assessments

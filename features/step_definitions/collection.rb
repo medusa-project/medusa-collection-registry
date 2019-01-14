@@ -49,7 +49,7 @@ And /^The collection titled '([^']*)' should have preservation priority '([^']*)
 end
 
 And(/^I submit the new event form on the collection view page$/) do
-  within('#event_forms') do
+  within('#event_form') do
     click_on 'Create Event'
   end
 end

@@ -5,7 +5,7 @@
   %ul.dropdown-menu.dropdown-menu-right{role: 'menu'}
     %li.dropdown-header{role: 'presentation'} Events
     %li.event-action{role: 'presentation'}= link_to 'View', events_file_group_path(file_group)
-    %li.event-action{role: 'presentation'}= link_to 'Add', "#add-event-file-group-#{file_group.id}", 'data-toggle' => 'modal'
+    %li.event-action{role: 'presentation'}= link_to 'Add', new_event_file_group_path(file_group), remote: true
     %li.divider
     %li.assessment-action.dropdown-header{role: 'presentation'} Assessments
     %li.assessment-action{role: 'presentation'}= link_to 'View', assessments_file_group_path(file_group)

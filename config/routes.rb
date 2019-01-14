@@ -61,6 +61,7 @@ Rails.application.routes.draw do
       end
       post :bulk_amazon_backup, on: :collection
       get :content_type_manifest, on: :member
+      get :new_event, on: :member
     end
   end
 
