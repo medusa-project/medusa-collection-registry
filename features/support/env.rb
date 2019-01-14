@@ -130,13 +130,15 @@ puts "Webpack compiled"
 # html files to the url that was active at the time.
 # Then you can run the vnu tool on the directory to see if there are any html errors
 # I do something like this: java -jar $HOME/bin/vnu.jar --errors-only *.html > errors 2>&1
-# Currently there is a valign error that seems to eminate from datatables, but any others should be fixable
-# within this application.
-require_relative('html_dumper')
-AfterStep do
-  begin
-    HtmlDumper.instance.maybe_dump(page)
-  rescue Exception => e
-    puts "Problem dumping html: #{e}"
-  end
-end
+# Currently there are:
+# - a valign error that seems to emanate from datatables
+# - an error that appears to come from the datepicker: " Table columns in range 3…6 established by element “th” have no cells beginning in them."
+# , but any others should be fixable within this application.
+# require_relative('html_dumper')
+# AfterStep do
+#   begin
+#     HtmlDumper.instance.maybe_dump(page)
+#   rescue Exception => e
+#     puts "Problem dumping html: #{e}"
+#   end
+# end
