@@ -6,7 +6,7 @@ And(/^I fill in ldap administration info '([^']*)' for the repository titled '([
   domain, group = domain_and_group.split('\\')
   within_form_for(title) do
     fill_in('repository[ldap_admin_group]', with: group)
-        select(domain, from: 'repository[ldap_admin_domain]')
+    #select(domain, from: 'repository[ldap_admin_domain]')
   end
 end
 

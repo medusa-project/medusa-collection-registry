@@ -15,17 +15,16 @@
       = f.input :status, as: :select, collection: Project::STATUSES, include_blank: false
       = f.input :summary, input_html: {class: 'rich-editor'}
       = f.input :specifications, input_html: {class: 'rich-editor'}
-    #directory-picker.modal{role: 'dialog', 'aria-label': 'Directory picker', 'aria-hidden': true, class: maybe_fade}
+    #directory-picker.modal{role: 'dialog', 'aria-label': 'Directory picker', 'aria-hidden': 'true', class: maybe_fade}
       .modal-dialog
         .modal-content
           .modal-header
             %a.close{href: '#', role: :button, 'data-dismiss': :modal, 'aria-label': :Close}
-              %span{'aria-hidden': true}
+              %span{'aria-hidden': 'true'}
                 &times;
             %h4.modal-title Ingest Directory Picker
           .modal-body
-            %p
-              #{react_component('ProjectDirectoryPicker', data: @ingest_directory_info)}
+            #{react_component('ProjectDirectoryPicker', data: @ingest_directory_info)}
           .modal-footer
             %a.btn.btn-default{href: '#', role: :button, 'data-dismiss': :modal} Close
       

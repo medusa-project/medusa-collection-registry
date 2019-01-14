@@ -16,10 +16,10 @@
               = f.input :local_title
               = f.input :batch
               = f.input :file_count
-              = f.input :status, as: :select, collection: Item.statuses
+              = f.input :status, as: :select, collection: items_statuses_collection, allow_blank: true, include_blank: false
               = f.input :reformatting_date, as: :string, input_html: {class: 'datepicker', value: @item.reformatting_date.if_blank(Date.today.to_s)}
               = f.input :reformatting_operator
-              = f.input :equipment, as: :select, collection: Item.equipment_types, allow_blank: true
+              = f.input :equipment, as: :select, collection: items_equipment_collection, allow_blank: true, include_blank: false
               = f.input :foldout_present, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
               = f.input :foldout_done, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
               = f.input :item_done, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
@@ -47,7 +47,7 @@
               = f.input :box
               = f.input :folder
               = f.input :item_title
-              = f.input :source_media, as: :select, allow_blank: true, collection: Item.source_media_types
+              = f.input :source_media, as: :select, allow_blank: true, include_blank: false, collection: items_source_media_collection
               = f.input :creator
               = f.input :date, as: :string, input_html: {class: 'datepicker', value: @item.date}
             .col-sm-5
