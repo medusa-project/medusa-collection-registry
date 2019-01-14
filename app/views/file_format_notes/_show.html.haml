@@ -5,6 +5,7 @@
         .pull-right
           = link_to 'Edit', edit_note_path(note), class: 'btn btn-xs btn-default', remote: true, title: 'Edit Note'
           = link_to 'Delete', note_path(note), class: 'btn btn-xs btn-danger', remote: true, method: :delete, data: {confirm: 'Are you sure? This cannot be undone.'}, title: 'Delete Note'
-      %p
+      .show-value
         #{note.user.netid} - #{note.date}
-    %p= note.note_html
+    .show-value
+      #{note.note_html}
