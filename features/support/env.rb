@@ -130,11 +130,11 @@ puts "Webpack compiled"
 # This is far from perfect and massively redundant, but will allow a decent amount of html validation checking
 # with little additional effort, so is fine for now.
 # Note that we may set some other places in the code that also dump when the dumper is active.
-require_relative('html_dumper')
-After do
-  begin
-    HtmlDumper.instance.dump(page)
-  rescue Exception => e
-    puts "Problem dumping html: #{e}"
-  end
-end
+# require_relative('html_dumper')
+# After do
+#   begin
+#     HtmlDumper.instance.dump(page)
+#   rescue Exception => e
+#     puts "Problem dumping html: #{e}"
+#   end
+# end
