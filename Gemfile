@@ -64,7 +64,9 @@ gem 'coffee-rails'
 
 gem 'uglifier'
 
-gem 'bootstrap-sass'
+#TODO update is available, but depends on sassc gem, which won't compile on the DCL servers. One the AWS
+# move is complete we should be able to remove this restriction
+gem 'bootstrap-sass', '~> 3.3.7'
 
 gem 'webpacker'
 
