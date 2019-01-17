@@ -30,11 +30,11 @@ module ButtonsHelper
   end
 
   def download_button(url)
-    link_to 'Download', url, class: button_class
+    link_to 'Download', url, class: button_class, role: :button
   end
 
   def small_download_button(url)
-    link_to 'Download', url, class: small_button_class
+    link_to 'Download', url, class: small_button_class, role: :button
   end
 
   def red_flags_button(url)
@@ -58,7 +58,7 @@ module ButtonsHelper
   end
 
   def assessments_button(url)
-    link_to 'Assessments', url, class: button_class
+    link_to 'Assessments', url, class: button_class, role: :button
   end
 
   def attachments_button(url)
@@ -66,15 +66,11 @@ module ButtonsHelper
   end
 
   def index_button(url)
-    link_to 'Index', url, class: button_class
+    link_to 'Index', url, class: button_class, role: :button
   end
 
   def small_run_button(url, options = {})
-    link_to 'Run', url, options.reverse_merge(method: :post, class: small_button_class)
-  end
-
-  def cancel_button(url_or_object)
-    link_to 'Cancel', url_or_object, class: button_class
+    link_to 'Run', url, options.reverse_merge(method: :post, class: small_button_class, role: :button)
   end
 
   def small_clone_button(url_or_object, options = {})
@@ -83,6 +79,18 @@ module ButtonsHelper
 
   def clone_button(url_or_object, options = {})
     fa_icon_link_to('Clone', Settings.icons.clone_button, url_or_object, options.reverse_merge(class: button_class, method: :post))
+  end
+
+  def cancel_modal_button
+    button_tag('Cancel', type: :button, class: button_class, data: {dismiss: :modal})
+  end
+
+  def cancel_modal_x
+    button_tag('×', type: :button, class: 'close', data: {dismiss: :modal})
+  end
+
+  def cancel_and_go_to_button(path_or_object)
+    link_to('Cancel', path_or_object, class: button_class, role: :button)
   end
 
   protected

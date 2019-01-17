@@ -1,5 +1,5 @@
 = simple_form_for @static_page, url: static_page_path(key: @static_page.key), html: { class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
   .form-actions
     = f.button :submit, 'Update', class: 'btn btn-primary'
-    = link_to 'Cancel', static_page_path(key: @static_page.key), class: 'btn btn-default'
+    = cancel_and_go_to_button(static_page_path(key: @static_page.key))
   = f.input :page_text, input_html: {class: 'rich-editor'}

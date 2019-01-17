@@ -19,7 +19,7 @@
       = f.input :notes, input_html: { rows: 3 }, wrapper: :wide_horizontal_file_input
     .form-actions.col-sm-12
       = f.button :submit, class: 'btn btn-primary'
-      = cancel_button(repositories_path)
+      = cancel_and_go_to_button(repositories_path)
       -  if @repository.persisted? and safe_can?(:destroy, @repository)
         = delete_button(repository_path(@repository), message: t('repositories.confirm_message'))
 

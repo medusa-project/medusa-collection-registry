@@ -1,5 +1,5 @@
 -#May pass cancel_return - object or path to go to if the form is cancelled. Default is to show obj.
 .col-sm-2
   .btn-group
-    = f.button :submit, class: 'btn btn-primary btn-sm', value: (object.new_record? ? 'Create' : 'Update'), onclick: "$('.modal').modal('hide');"
-    = link_to('Cancel', '#', class: 'btn btn-default btn-sm', onclick: "$('.modal').modal('hide'); return false;")
+    = f.button :submit, class: 'btn btn-primary', value: (object.new_record? ? 'Create' : 'Update'), onclick: "hide_modals();"
+    = cancel_modal_button

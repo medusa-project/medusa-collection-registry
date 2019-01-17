@@ -4,4 +4,4 @@
   = f.input :date, as: :string, input_html: {class: 'datepicker'}
   = f.input :note, input_html: {class: 'col-sm-5'}
   = f.button :submit, class: 'btn btn-primary'
-  = link_to 'Cancel', eventable_events_path(@event), class: 'btn btn-default'
+  = cancel_and_go_to_button(eventable_events_path(@event))

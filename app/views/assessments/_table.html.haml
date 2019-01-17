@@ -1,6 +1,6 @@
 .row
   .pull-left
-    = small_add_button(new_assessment_path(assessable_id: @assessable.id, assessable_type: @assessable.class.name), class: 'btn btn-primary btn-xs pull-right', title: 'Add Assessment')
+    = small_add_button(new_assessment_path_for(@assessable), class: 'btn btn-primary btn-xs pull-right', title: 'Add Assessment')
 
 .row
   - if @assessments.present?

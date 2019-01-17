@@ -14,4 +14,4 @@
       = f.input :notes
     %div
       = f.button :submit, class: 'btn btn-primary'
-      = link_to 'Cancel', @red_flag, class: 'btn btn-default'
+      = cancel_and_go_to_button(@red_flag)

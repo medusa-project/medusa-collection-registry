@@ -4,4 +4,4 @@
 = simple_form_for @accrual_job, url: url, method: :post, remote: true do |f|
   = f.input :comment, as: :text
   = f.button :submit, 'Submit', class: 'btn btn-primary'
-  %button{type: :button, class: 'btn btn-default', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Cancel
+  = cancel_modal_button

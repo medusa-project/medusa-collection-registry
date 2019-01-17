@@ -5,11 +5,11 @@
 - confirm ||= nil
 .col-sm-3
   .btn-group
-    = f.button :submit, class: 'btn btn-primary', value: (object.new_record? ? 'Create' : 'Update'), onclick: "$('.modal').modal('hide');", 'data-confirm': confirm
+    = f.button :submit, class: 'btn btn-primary', value: (object.new_record? ? 'Create' : 'Update'), onclick: "hide_modals();", 'data-confirm': confirm
     - if defined?(@remote) and @remote
-      = link_to('Cancel', '#', class: 'btn btn-default', onclick: "$('.modal').modal('hide'); false;")
+      = cancel_modal_button
     - else
-      = link_to('Cancel', cancel_return, class: 'btn btn-default')
+      = cancel_and_go_to_button(cancel_return)
     - if object.persisted? and safe_can?(:destroy, object)
       = delete_button(object)
 

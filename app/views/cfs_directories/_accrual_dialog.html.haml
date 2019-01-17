@@ -10,7 +10,7 @@
           = link_to 'Toggle Files', '#', onclick: 'toggle_accrual_files();', class: 'btn btn-default'
         .btn-group
           = f.button :submit, class: 'btn btn-primary', value: 'Ingest'
-          = link_to 'Cancel', '#', class: 'btn btn-default', 'data-toggle' => 'modal', 'data-target' => '#add-files-dialog'
+          = cancel_modal_button
       = f.input :cfs_directory_id, as: :hidden
       = f.input :staging_path, as: :hidden
       = f.input :allow_overwrite, as: :boolean
@@ -18,4 +18,4 @@
         = render 'cfs_directories/accrual_listing'
       .btn-group
         = f.button :submit, class: 'btn btn-primary', value: 'Ingest'
-        = link_to 'Cancel', '#', class: 'btn btn-default', 'data-toggle' => 'modal', 'data-target' => '#add-files-dialog'
+        = cancel_modal_button
