@@ -131,6 +131,7 @@ puts "Webpack compiled"
 # with little additional effort, so is fine for now.
 # Note that we may set some other places in the code that also dump when the dumper is active.
 require_relative('html_dumper')
+#HtmlDumper.instance.activate
 After do
   begin
     HtmlDumper.instance.dump(page)
