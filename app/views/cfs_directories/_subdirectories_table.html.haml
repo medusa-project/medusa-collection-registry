@@ -1,4 +1,4 @@
-- if @directories_helper.full_count > 0
+- if @directories_helper.full_count.positive?
   %table.table.table-striped#directory_subdirectories
     %thead
       %tr
