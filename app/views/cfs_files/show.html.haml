@@ -3,61 +3,12 @@
 
   .row
     #cfs-file-metadata.col-sm-4
-      = show_value 'bit-level', 'Storage level'
-      = show_value @file.md5_sum, 'MD5'
-      = show_value @file.fixity_check_time, 'Last fixity check'
-      = show_value @file.fixity_check_status, 'Fixity check status'
-      = show_value @file.uuid, 'UUID'
-      - if @file.fits_result.present?
-        %p
-          %strong
-            FITS:
-          = small_view_button(fits_cfs_file_path(@file, format: :xml))
-      - if @file_group
-        %p
-          %strong Belongs to:
-          #{link_to(@file_group.title, @file_group)}
-      - if @file.size
-        = show_value @file.size.to_s(:human_size, precision: 3), 'File size'
-      = show_value @file.content_type_name, 'Mimetype'
-      - if @file.red_flags.present?
-        %div
-          Red flags:
-          %ul
-            - @file.red_flags.each do |red_flag|
-              %li= red_flag.message
+      = render partial: 'show_metadata'
     .col-sm-5
-      - if safe_can?(:download, @file.file_group)
-        = render @previewer.view_partial
-      - else
-        %p You do not have appropriate permissions for this a file preview.
+      = render partial: 'show_preview'
     .col-sm-3
-      %table#fixity_check_results.table.table-bordered.table-striped.table-condensed
-        %caption Fixity Check History
-        %thead
-          %tr
-            %th Date
-            %th Status
-        %tbody
-          - @file.fixity_check_results.each do |fixity_check_result|
-            %tr
-              %td #{fixity_check_result.created_at.to_date}
-              %td #{fixity_check_result.status}
+      = render partial: 'show_fixity_check_results'
 
   - if @file_format_test.present?
-    %hr
-    .row
-      #file-format-test.col-sm-12
-        %h4 File Format Test
-        = show_field @file_format_test, :tester_email
-        = show_field @file_format_test, :date
-        = show_value @file_format_test.file_format_profile_name, 'File Rendering Profile'
-        = show_value @file_format_test.pass_label, 'Status'
-        = show_field @file_format_test, :notes
-        - if @file_format_test.file_format_test_reasons.present?
-          %div
-            %strong File Format Test Failure Reasons
-            %ul
-              - @file_format_test.file_format_test_reasons.each do |reason|
-                %li= reason.label
+    = render partial: 'show_file_format_test'
 

@@ -1,0 +1,23 @@
+= show_value 'bit-level', 'Storage level'
+= show_value @file.md5_sum, 'MD5'
+= show_value @file.fixity_check_time, 'Last fixity check'
+= show_value @file.fixity_check_status, 'Fixity check status'
+= show_value @file.uuid, 'UUID'
+- if @file.fits_result.present?
+  .show-value
+    %strong
+      FITS:
+    = small_view_button(fits_cfs_file_path(@file, format: :xml))
+- if @file_group
+  .show-value
+    %strong Belongs to:
+    #{link_to(@file_group.title, @file_group)}
+- if @file.size
+  = show_value @file.size.to_s(:human_size, precision: 3), 'File size'
+= show_value @file.content_type_name, 'Mimetype'
+- if @file.red_flags.present?
+  %div
+    Red flags:
+    %ul
+      - @file.red_flags.each do |red_flag|
+        %li= red_flag.message
