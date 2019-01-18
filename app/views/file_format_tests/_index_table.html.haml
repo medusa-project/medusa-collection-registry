@@ -1,4 +1,4 @@
-= render layout: 'layouts/standard_table', locals: {id: :file_format_tests, headers: ['File', 'Testers', 'Test Date', 'File Type', 'Status', 'Reasons', 'Comments']} do
+= render 'layouts/standard_table', id: :file_format_tests, headers: ['File', 'Testers', 'Test Date', 'File Type', 'Status', 'Reasons', 'Comments'] do
   - @file_format_tests.find_each(batch_size: 10) do |file_format_test|
     %tr
       %td= link_to file_format_test.cfs_file_name, file_format_test.cfs_file

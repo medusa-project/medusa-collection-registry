@@ -1,7 +1,7 @@
-= render layout: 'layouts/page_header' do
+= render 'layouts/page_header' do
   File Rendering Profiles
 
-= link_to 'Add File Rendering Profile', new_file_format_profile_path, class: 'btn btn-primary'
+= link_to 'Add File Rendering Profile', new_file_format_profile_path, class: 'btn btn-primary', role: :button
 
 = render 'index_table'
 
