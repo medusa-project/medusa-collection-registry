@@ -1,11 +1,10 @@
-- cache(@repository) do
-  %h3 Glacier Backups
+%h3 Glacier Backups
 
-  = simple_form_for :file_group, url: bulk_amazon_backup_bit_level_file_groups_path, method: :post do |f|
-    %div
-      = render 'shared/amazon_backup_table'
+= simple_form_for :file_group, url: bulk_amazon_backup_bit_level_file_groups_path, method: :post do |f|
+  %div
+    = render 'shared/amazon_backup_table'
 
-    %br
+  %br
 
-    %div
-      = f.button :submit, value: 'Create Backups', class: 'btn btn-primary pull-right'
+  %div
+    = f.button :submit, value: 'Create Backups', class: 'btn btn-primary pull-right'

@@ -1,14 +1,14 @@
 -# Must pass in title (for button and header of dialog), id (for modal dialog, omit leading '#'), and yield the body
-%a.btn.btn-primary{href: '#', 'data-toggle' => 'modal', 'data-target' => "##{id}"} #{title}
-.modal.modal-wide{role: 'dialog', 'aria-label' => title, 'aria-hidden' => 'true', id: id, class: maybe_fade}
+%a.btn.btn-primary{href: '#', 'data-toggle': 'modal', 'data-target': "##{id}"} #{title}
+.modal.modal-wide{role: 'dialog', 'aria-label': title, 'aria-hidden': 'true', id: id, class: maybe_fade}
   .modal-dialog.modal-checkbox-dialog
     .modal-content
       .modal-header
-        %a.close{href: '#', role: :button, 'data-dismiss' => 'modal', 'aria-label' => 'Close'}
-          %span{'aria-hidden' => 'true'}
+        %a.close{href: '#', role: :button, 'data-dismiss': 'modal', 'aria-label': 'Close'}
+          %span{'aria-hidden': 'true'}
             &times;
         %h4.modal-title= title
       .modal-body
         = yield
       .modal-footer
-        %a.btn.btn-default{href: '#', role: :button, 'data-dismiss' => 'modal'} Close
+        %a.btn.btn-default{href: '#', role: :button, 'data-dismiss': 'modal'} Close

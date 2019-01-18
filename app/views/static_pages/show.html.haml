@@ -1,6 +1,6 @@
 - if safe_can?(:update, @static_page)
   .row
-    = link_to 'Edit', edit_static_page_path(key: @static_page.key), class: 'btn btn-default'
+    = link_to 'Edit', edit_static_page_path(key: @static_page.key), class: 'btn btn-default', role: :button
 
 %br
 
@@ -12,4 +12,4 @@
   %hr
   .row
     .col-sm-9
-      = render partial: @form_partial_name
+      = render @form_partial_name

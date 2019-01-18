@@ -1,34 +1,24 @@
 - content_for :extra_links do
-  %a.btn.btn-default{'data-toggle' => 'collapse', href: '#metadata', 'aria-expanded' => 'false', 'aria-controls' => 'metadata'}
+  %a.btn.btn-default{'data-toggle': 'collapse', href: '#metadata', 'aria-expanded': 'false', 'aria-controls': 'metadata', role: :button}
     Metadata
     %span.caret
-= render layout: 'layout_single' do
-  - cache(@repository) do
-    #metadata.row.collapse
-      .well
-        = show_value link_to(@repository.institution.name, @repository.institution), 'Institution'
-        = show_field @repository, :contact_email
-        = render partial: 'shared/contact_information', locals: {contact_object: @repository}
-        = show_value link_to_external(@repository.url, @repository.url), 'URL'
-        = show_field @repository, :notes_html, 'Notes'
-        = show_value @repository.total_size.to_s(:rounded, precision: 2), 'Total Size (GB)'
-        = show_field @repository, :active_start_date, 'Active Start Date'
-        = show_field @repository, :active_end_date, 'Active End Date'
-    .row
-      .tabbable
-  = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: repository_tab_list}
+= render 'layout_single' do
+  = render 'show_metadata'
+  .row
+    .tabbable
+  = render 'shared/tab_header', id: 'tab-headers', tabs: repository_tab_list
   .tab-content
     #overview.tab-pane.active
       = render 'overview'
     #running-processes.tab-pane
-      = render partial: 'shared_js/simple_load', locals: {id: 'running-processes', path: show_running_processes_repository_path(@repository)}
+      = render 'shared_js/simple_load', id: 'running-processes', path: show_running_processes_repository_path(@repository)
     #file-statistics.tab-pane
-      = render partial: 'shared_js/datatables_load', locals: {id: 'file-statistics', path: show_file_stats_repository_path(@repository), table_ids: %w(file_stats_content_type file_stats_file_extension)}
+      = render 'shared_js/datatables_load', id: 'file-statistics', path: show_file_stats_repository_path(@repository), table_ids: %w(file_stats_content_type file_stats_file_extension)
     #red-flags.tab-pane
-      = render partial: 'shared_js/datatables_load', locals: {id: 'red-flags', path: show_red_flags_repository_path(@repository), table_ids: 'red-flags-table'}
+      = render 'shared_js/datatables_load', id: 'red-flags', path: show_red_flags_repository_path(@repository), table_ids: 'red-flags-table'
     #combined-events-tab.tab-pane
-      = render partial: 'shared_js/datatables_load', locals: {id: 'combined-events-tab', path: show_events_repository_path(@repository), table_ids: 'events'}
+      = render 'shared_js/datatables_load', id: 'combined-events-tab', path: show_events_repository_path(@repository), table_ids: 'events'
     #amazon.tab-pane
-      = render partial: 'shared_js/datatables_load', locals: {id: 'amazon', path: show_amazon_repository_path(@repository), table_ids: 'amazon-backups-table'}
+      = render 'shared_js/datatables_load', id: 'amazon', path: show_amazon_repository_path(@repository), table_ids: 'amazon-backups-table'
     #accruals.tab-pane
-      = render partial: 'shared_js/datatables_load', locals: {id: 'accruals', path: show_accruals_repository_path(@repository), table_ids: 'accruals_table'}
+      = render 'shared_js/datatables_load', id: 'accruals', path: show_accruals_repository_path(@repository), table_ids: 'accruals_table'

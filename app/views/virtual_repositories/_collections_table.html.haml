@@ -2,7 +2,7 @@
   Collections
 
 %div
-  = render layout: 'layouts/standard_table', locals: {id: :collections, headers: ['External ID', 'Title', 'Contact', 'Size (GB)', '']} do
+  = render 'layouts/standard_table', id: :collections, headers: ['External ID', 'Title', 'Contact', 'Size (GB)', ''] do
     - @virtual_repository.collections.each do |collection|
       - cache(collection) do
         %tr

@@ -2,8 +2,7 @@
   Virtual Repositories
 
 %div
-  = render layout: 'layouts/standard_table', locals: {id: :virtual_repositories, headers: %w(Title)} do
+  = render 'layouts/standard_table', id: :virtual_repositories, headers: %w(Title) do
     - @repository.virtual_repositories.each do |virtual_repository|
-      - cache(virtual_repository) do
-        %tr
-          %td= link_to(virtual_repository.title, virtual_repository)
+      %tr
+        %td= link_to(virtual_repository.title, virtual_repository)

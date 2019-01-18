@@ -1,0 +1,3 @@
+-# must pass f, the form
+= f.input :title
+= f.input :institution_id, as: :hidden, input_html: {value: (@repository.institution_id || @institution_id)}
