@@ -1,4 +1,4 @@
 - if @created
-  $("#file_format_notes .panel-body").append("#{escape_javascript(render(partial: 'show', locals: {note: @note}))}")
+  $("#file_format_notes .panel-body").append("#{escape_javascript(render('show', note: @note))}")
 - else
   alert("Error creating Note!");
