@@ -1,13 +1,12 @@
-= render layout: 'layouts/page_header' do
+= render 'layouts/page_header' do
   Institutions
 
-= render layout: 'layouts/standard_table', locals: {id: :institutions, headers: ['Name', '']} do
+= render 'layouts/standard_table', id: :institutions, headers: ['Name', ''] do
   - @institutions.each do |institution|
-    - cache(institution) do
-      %tr
-        %td= link_to(institution.name, institution)
-        %td= small_edit_button(institution)
+    %tr
+      %td= link_to(institution.name, institution)
+      %td= small_edit_button(institution)
 
 %br
 
-= link_to 'New Institution', new_institution_path, class: 'btn btn-primary'
+= link_to 'New Institution', new_institution_path, class: 'btn btn-primary', role: :button

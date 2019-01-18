@@ -1,15 +1,14 @@
-= render layout: 'layouts/standard_table', locals: {id: :projects, headers: ['External Id', 'Title', 'Repository', 'Collection', 'Manager', 'Owner', 'Start Date', 'Status', '']} do
+= render 'layouts/standard_table', id: :projects, headers: ['External Id', 'Title', 'Repository', 'Collection', 'Manager', 'Owner', 'Start Date', 'Status', ''] do
   - @projects.each do |project|
-    - cache(project) do
-      %tr
-        %td #{project.external_id}
-        %td #{link_to project.title, project}
-        %td #{link_to project.repository_title, project.repository}
-        %td #{link_to project.collection_title, project.collection}
-        %td #{project.manager_email}
-        %td #{project.owner_email}
-        %td #{project.start_date}
-        %td #{project.status}
-        %td
-          - if current_user.present?
-            = small_edit_button(project)
+    %tr
+      %td #{project.external_id}
+      %td #{link_to project.title, project}
+      %td #{link_to project.repository_title, project.repository}
+      %td #{link_to project.collection_title, project.collection}
+      %td #{project.manager_email}
+      %td #{project.owner_email}
+      %td #{project.start_date}
+      %td #{project.status}
+      %td
+        - if current_user.present?
+          = small_edit_button(project)

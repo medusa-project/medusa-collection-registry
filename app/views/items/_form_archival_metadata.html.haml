@@ -1,0 +1,16 @@
+-# must pass f, the form
+= field_set_tag('Archival Metadata') do
+  .col-sm-5
+    = f.input :unique_identifier
+    = f.input :record_series_id, label: 'Record Series Id'
+    = f.input :archival_management_system_url
+    = f.input :series
+    = f.input :sub_series, label: 'Sub-series'
+    = f.input :box
+    = f.input :folder
+    = f.input :item_title
+    = f.input :source_media, as: :select, allow_blank: true, include_blank: false, collection: items_source_media_collection
+    = f.input :creator
+    = f.input :date, as: :string, input_html: {class: 'datepicker', value: @item.date}
+  .col-sm-5
+    = f.input :rights_information

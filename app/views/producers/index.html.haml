@@ -1,9 +1,9 @@
-= render layout: 'layouts/page_header' do
+= render 'layouts/page_header' do
   Producer
 
 = render 'shared/definitions/producer'
 
-= render layout: 'layouts/standard_table', locals: {id: :producers, headers: ['Title', 'Administrator', 'URL', '']} do
+= render 'layouts/standard_table', id: :producers, headers: ['Title', 'Administrator', 'URL', ''] do
   - @producers.each do |producer|
     %tr
       %td #{link_to producer.title, producer}
@@ -15,4 +15,4 @@
 
 %br
 
-= link_to 'New Producer', new_producer_path, class: 'btn btn-primary'
+= link_to 'New Producer', new_producer_path, class: 'btn btn-primary', role: :button

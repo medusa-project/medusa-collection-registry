@@ -3,5 +3,5 @@
   %td= pronom.version
   %td
     - if can?(:update, @file_format)
-      = link_to 'Edit', edit_pronom_path(pronom), class: 'btn btn-xs btn-default', remote: true, title: 'Edit Pronom'
-      = link_to 'Delete',  pronom_path(pronom), class: 'btn btn-xs btn-danger', remote: true, method: :delete, data: {confirm: 'Are you sure? This cannot be undone.'}, title: 'Delete Pronom'
+      = link_to 'Edit', edit_pronom_path(pronom), class: 'btn btn-xs btn-default', remote: true, title: 'Edit Pronom', role: :button
+      = link_to 'Delete',  pronom_path(pronom), class: 'btn btn-xs btn-danger', remote: true, method: :delete, data: {confirm: 'Are you sure? This cannot be undone.'}, title: 'Delete Pronom', role: :button

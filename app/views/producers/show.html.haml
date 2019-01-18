@@ -1,14 +1,7 @@
-= render layout: 'layout_single' do
-
+= render 'layout_single' do
   .row
-    .col-sm-3#sidebar
+    #sidebar.col-sm-3
       .well
-        = show_field @producer, :administrator_email
-        = render partial: 'shared/contact_information', locals: {contact_object: @producer}
-        = show_value link_to_external(@producer.url, @producer.url), 'URL'
-        = show_field @producer, :active_start_date, 'Active Start Date'
-        = show_field @producer, :active_end_date, 'Active End Date'
-        = show_field @producer, :notes_html, 'Notes'
-
-    .col-sm-9#content
+        = render 'show_siderbar'
+    #content.col-sm-9
       = render 'collections_table'

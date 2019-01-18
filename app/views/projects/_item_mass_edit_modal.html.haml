@@ -1,4 +1,4 @@
-= render layout: 'layouts/bootstrap_modal', locals: {id: 'item_mass_edit_modal'} do
+= render 'layouts/bootstrap_modal', id: 'item_mass_edit_modal' do
   = simple_form_for :mass_action, url: mass_action_project_path(@project), html: {class: 'form-inline' }, remote: true do |f|
     .container
       .col-sm-10
@@ -29,6 +29,6 @@
         - %i(foldout_present foldout_done item_done ingested).each do |field|
           = render 'projects/item_mass_edit_radio_row', f: f, field: field
         .row
-          = link_to 'Close', '#', class: 'btn btn-default', 'data-dismiss': 'modal'
-          = link_to 'Reset', '#', class: 'btn btn-default', onclick: 'reset_item_mass_edit_form();'
+          = link_to 'Close', '#', class: 'btn btn-default', 'data-dismiss': 'modal', role: :button
+          = link_to 'Reset', '#', class: 'btn btn-default', onclick: 'reset_item_mass_edit_form();', role: :button
           = f.submit :'Mass update', class: 'btn btn-primary', onclick: 'before_mass_action_submit();'
