@@ -3,41 +3,20 @@
     .well
       %h3 Descriptive metadata
       = render 'public_notice'
-      = show_value (@collection.publish ? 'Yes' : 'No'), 'Open collection metadata to public list of collections'
-      = show_field @collection, :description_html, 'Description'
-      = show_value link_to_external(@collection.access_url, @collection.access_url), 'Access link (to digital content in another system)'
-      = show_value link_to_external(@collection.physical_collection_url, @collection.physical_collection_url), 'Physical Collection link (finding aid or catalog record)'
-      = show_field @collection, :resource_type_names, 'Type of Resource'
-      = show_field @collection, :external_id, 'External ID'
-      = show_field @collection, :representative_image
-      = show_field @collection, :representative_item
-      .show-value
-        %strong Access Systems:
-        %br
-        - if access_systems = @collection.access_systems
-          %ul#access_systems
-            - access_systems.each do |access_system|
-              %li #{link_to access_system.name, access_system}
+      = render partial: 'show_descriptive_metadata'
     - if @collection.child_collections.present?
       .well
         %h3 Child Collections
-        - @collection.child_collections.each do |child|
-          %p= link_to child.title, child
+        = render partial: 'show_child_collections'
     - if @collection.parent_collections.present?
       .well
         %h3 Parent Collections
-        - @collection.parent_collections.each do |parent|
-          %p= link_to parent.title, parent
-
+        = render partial: 'show_parent_collections'
   .col-md-4
     .well
       %h3 Administrative metadata
-      = show_field @collection, :uuid, 'UUID'
-      = show_field(@collection, :private_description_html, 'Internal collection description (suppressed from public view)') if medusa_user?
-      = show_field @collection, :contact_email, 'Contact email (for internal use on this collection only)'
-      = show_value @collection.total_size.round(3).to_s(:delimited), 'Total Size (GB)'
-      = show_field(@collection, :notes_html, 'Notes') if medusa_user?
+      = render partial: 'show_administrative_metadata'
   .col-md-4
     .well
-      = render 'show_rights_declaration'
-
+      %h3 Rights metadata
+      = render partial: 'rights_declarations/show', locals: {rights_declaration: @collection.rights_declaration}

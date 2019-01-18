@@ -1,0 +1,15 @@
+-# must pass f, the containing form
+= f.input :publish, wrapper: :horizontal_radio_and_checkboxes, label: 'Open collection metadata to public list of collections'
+= f.input :title
+- if @collection.repository
+  = f.association :repository, collection: @repositories, include_blank: false, selected: @collection.repository.id
+- else
+  = f.association :repository, collection: @repositories, required: true
+= f.input :description
+= f.input :access_url, as: :string, label: 'Access link (to digital content in another system)'
+= f.input :physical_collection_url, as: :string, label: 'Physical Collection link (finding aid or catalog record)'
+= f.input :external_id, label: 'External ID'
+= f.input :representative_image
+= f.input :representative_item
+= f.association :resource_types, as: :check_boxes, wrapper_html: {id: 'resource_types'}, wrapper: :horizontal_radio_and_checkboxes
+= f.association :access_systems, collection: access_system_select_collection, html: {multiple: true}, as: :check_boxes, wrapper: :horizontal_radio_and_checkboxes

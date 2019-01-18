@@ -1,0 +1,5 @@
+= show_field @collection, :uuid, 'UUID'
+= show_field(@collection, :private_description_html, 'Internal collection description (suppressed from public view)') if medusa_user?
+= show_field @collection, :contact_email, 'Contact email (for internal use on this collection only)'
+= show_value @collection.total_size.round(3).to_s(:delimited), 'Total Size (GB)'
+= show_field(@collection, :notes_html, 'Notes') if medusa_user?

@@ -1,5 +1,5 @@
 - content_for :extra_links do
-  %a.btn.btn-default{'data-toggle' => 'collapse', href: '#metadata', 'aria-expanded' => 'false', 'aria-controls' => 'metadata'}
+  %a.btn.btn-default{'data-toggle' => 'collapse', href: '#metadata', 'aria-expanded' => 'false', 'aria-controls' => 'metadata', role: :button}
     Metadata
     %span.caret
 = render layout: 'layout_single' do
