@@ -93,6 +93,14 @@ module ButtonsHelper
     link_to('Cancel', path_or_object, class: button_class, role: :button)
   end
 
+  def submit_button(form, value: 'Submit', classes: nil)
+    form.submit(value: value, class: "btn btn-primary #{classes}".strip!)
+  end
+
+  def submit_modal_button(form)
+    form.button :submit, class: 'btn btn-primary', 'data-hide' => 'modal', type: :submit
+  end
+
   protected
 
   def button_class
