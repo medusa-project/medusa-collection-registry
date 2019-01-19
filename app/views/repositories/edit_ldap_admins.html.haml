@@ -11,4 +11,4 @@
         %div.col-sm-3= link_to(repository.title, repository)
         %div.col-sm-3= f.input :ldap_admin_domain, class: 'form-control', input_html: {id: "repository_ldap_admin_domain_#{repository.id}"}, value: 'uofi', disabled: true, label: false
         %div.col-sm-3= f.input_field :ldap_admin_group, class: 'form-control', id: "repository_ldap_admin_group_#{repository.id}"
-        %div.col-sm-3= f.submit 'Update', class: 'btn btn-primary'
+        %div.col-sm-3= submit_button_3(f, 'Update')

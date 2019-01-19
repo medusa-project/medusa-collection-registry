@@ -17,7 +17,5 @@
       #add-files-listing
         = render 'cfs_directories/accrual_listing'
       .btn-group
-        =# f.button :submit, class: 'btn btn-primary', value: 'Ingest'
-        =# f.submit class: 'btn btn-primary', value: 'Ingest'
         = submit_button(f, value: 'Ingest')
         = cancel_modal_button

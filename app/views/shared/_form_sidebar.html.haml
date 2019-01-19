@@ -5,7 +5,7 @@
 - confirm ||= nil
 .col-sm-3
   .btn-group
-    = f.button :submit, class: 'btn btn-primary', value: (object.new_record? ? 'Create' : 'Update'), onclick: "hide_modals();", 'data-confirm': confirm
+    = submit_modal_button_2(f, object: object, 'data-confirm': confirm)
     - if defined?(@remote) and @remote
       = cancel_modal_button
     - else

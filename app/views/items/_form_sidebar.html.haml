@@ -4,13 +4,13 @@
 - cancel_return ||= object
 .col-sm-2
   .btn-group
-    = f.button :submit, class: 'btn btn-primary', value: (object.new_record? ? 'Create' : 'Update'), onclick: "hide_modals();"
+    = submit_modal_button_2(f, object: object)
     - if defined?(@remote) and @remote
       = cancel_modal_button
     - else
       = cancel_and_go_to_button(cancel_return)
     - if object.new_record?
-      = f.button :submit, class: 'btn btn-primary', value: 'Create and Exit', onclick: "hide_modals();"
+      = submit_modal_button_2(f, value: 'Create and Exit')
     - if object.persisted? and safe_can?(:destroy, object)
       = delete_button(object, options: {class: 'btn btn-danger'})
 

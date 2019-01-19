@@ -100,7 +100,13 @@ module ButtonsHelper
   end
 
   def submit_button_2(form, args = {})
-    form.button(:submit, class: 'btn btn-primary')
+    args.merge!(class: 'btn btn-primary')
+    form.button(:submit, args)
+  end
+
+  def submit_button_3(form, label, args = {})
+    classes = "btn btn-primary #{args.delete(:class)}".strip!
+    form.submit(label, args.merge!(class: classes))
   end
 
   def submit_modal_button(form, args = {})

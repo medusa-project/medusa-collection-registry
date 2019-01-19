@@ -13,5 +13,5 @@
       = f.input :status, as: :select, include_blank: false, collection: RedFlag::STATUSES
       = f.input :notes
     %div
-      = f.button :submit, class: 'btn btn-primary'
+      = submit_button_2(f)
       = cancel_and_go_to_button(@red_flag)
