@@ -93,12 +93,16 @@ module ButtonsHelper
     link_to('Cancel', path_or_object, class: button_class, role: :button)
   end
 
-  def submit_button(form, value: 'Submit', classes: nil)
-    form.submit(value: value, class: "btn btn-primary #{classes}".strip!)
+  def submit_button(form, args = {})
+    value = args.delete(:value) || 'Submit'
+    classes = "btn btn-primary #{args.delete(:class)}".strip!
+    form.submit(args.merge!(value: value, class: classes))
   end
 
-  def submit_modal_button(form)
-    form.button :submit, class: 'btn btn-primary', 'data-hide' => 'modal', type: :submit
+  def submit_modal_button(form, args = {})
+    value = args.delete(:value) || 'Submit'
+    classes = "btn btn-primary #{args.delete(:class)}".strip!
+    form.button :submit, args.merge!(class: classes, 'data-hide': 'modal', type: :submit, value: value)
   end
 
   protected

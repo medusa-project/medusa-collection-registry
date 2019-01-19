@@ -6,7 +6,7 @@
       %h3#modalLabel New Event
     - content_for(:modal_footer) do
       = cancel_modal_button
-      = submit_modal_button(f)
+      = submit_modal_button(f, value: 'Create Event')
     = render 'shared/modal_dialog' do
       = f.input :key, as: :select, include_blank: false, collection: eventable.event_select_options, label: 'Event'
       = f.input :actor_email, label: 'Actor Email', input_html: {value: current_user.try(:email), class: 'form-control'}, as: :autocomplete, url: autocomplete_user_email_events_path
