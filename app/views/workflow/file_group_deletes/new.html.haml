@@ -8,6 +8,6 @@
   = simple_form_for @workflow, html: {class: 'form-horizontal'} do |f|
     = f.input :requester_reason
     = f.input :file_group_id, as: :hidden, input_html: {value: @file_group.id}
-    = submit_button_3(f, 'Create')
+    = submit_button(f, label: 'Create')
     = cancel_and_go_to_button(file_group_path(@file_group))
 

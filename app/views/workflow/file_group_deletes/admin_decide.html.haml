@@ -1,5 +1,5 @@
 = simple_form_for @workflow, url: admin_record_decision_workflow_file_group_delete_path(@workflow), method: :post, html: {class: 'form-horizontal'} do |f|
   = f.input :requester_reason, disabled: true
   = f.input :approver_reason
-  = submit_button_3(f, 'Approve')
-  = submit_button_3(f, 'Reject')
+  = submit_button(f, label: 'Approve')
+  = submit_button(f, label: 'Reject')

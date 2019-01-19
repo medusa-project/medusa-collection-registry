@@ -17,7 +17,7 @@
           = fa_icon 'check-square-o', text: 'All'
         %a.btn.btn-default#uncheck_all{href: '#red-flags-table', 'data-toggle': 'checkboxes', 'data-action': 'uncheck', title: 'Uncheck All', role: :button}
           = fa_icon 'square-o', text: 'All'
-        = submit_button_3(f, 'Unflag Checked')
+        = submit_button(f, label: 'Unflag Checked')
   .row
     %div
       = render 'layouts/standard_table', id: 'red-flags-table', classes: 'table-condensed', headers: red_flags_table_headers do

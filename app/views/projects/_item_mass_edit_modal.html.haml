@@ -31,4 +31,4 @@
         .row
           = link_to 'Close', '#', class: 'btn btn-default', 'data-dismiss': 'modal', role: :button
           = link_to 'Reset', '#', class: 'btn btn-default', onclick: 'reset_item_mass_edit_form();', role: :button
-          = submit_button_3(f, 'Mass update', onclick: 'before_mass_action_submit();')
+          = submit_button(f, label: 'Mass update', onclick: 'before_mass_action_submit();')

@@ -93,20 +93,17 @@ module ButtonsHelper
     link_to('Cancel', path_or_object, class: button_class, role: :button)
   end
 
+  #the label: key goes to the first argument in the submit method
+  # the value: key goes as an html attribute
+  # I had both usages in the code that I'm refactoring from - I'm not sure if more unification is available here
   def submit_button(form, args = {})
-    value = args.delete(:value) || 'Submit'
     classes = "btn btn-primary #{args.delete(:class)}".strip!
-    form.submit(args.merge!(value: value, class: classes))
+    label = args.delete(:label)
+    form.submit(label, args.merge!(class: classes))
   end
 
   def submit_button_2(form, args = {})
-    args.merge!(class: 'btn btn-primary')
-    form.button(:submit, args)
-  end
-
-  def submit_button_3(form, label, args = {})
-    classes = "btn btn-primary #{args.delete(:class)}".strip!
-    form.submit(label, args.merge!(class: classes))
+    submit_button(form, args)
   end
 
   def submit_modal_button(form, args = {})
