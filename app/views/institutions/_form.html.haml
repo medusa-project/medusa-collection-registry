@@ -3,7 +3,7 @@
     .col-sm-12
       = f.input :name
     .form-actions.col-sm-12
-      = f.button :submit, class: 'btn btn-primary'
+      = submit_button_2(f)
       = cancel_and_go_to_button(institutions_path)
       - unless @institution.new_record?
         = delete_button(@institution)
