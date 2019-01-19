@@ -102,14 +102,11 @@ module ButtonsHelper
     form.submit(label, args.merge!(class: classes))
   end
 
-  def submit_button_2(form, args = {})
-    submit_button(form, args)
-  end
-
   def submit_modal_button(form, args = {})
+    return submit_modal_button_2(form, args)
     value = args.delete(:value) || 'Submit'
     classes = "btn btn-primary #{args.delete(:class)}".strip!
-    form.button :submit, args.merge!(class: classes, 'data-hide': 'modal', type: :submit, value: value)
+    form.button :submit, args.merge!(class: classes, type: :submit, value: value, 'data-hide': 'modal')
   end
 
   def submit_modal_button_2(form, args = {})
@@ -118,7 +115,7 @@ module ButtonsHelper
       value = submit_label(object)
     end
     classes = "btn btn-primary #{args.delete(:class)}".strip!
-    form.button :submit, args.merge!(class: classes, type: :submit, value: value, onclick: "hide_modals()", value: value)
+    form.button :submit, args.merge!(class: classes, type: :submit, value: value, onclick: "hide_modals()")
   end
 
   def submit_label(object)
