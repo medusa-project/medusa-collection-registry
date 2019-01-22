@@ -1,4 +1,4 @@
-- row = render partial: 'accruals/accruals_table_row', locals: {accrual_job: @accrual_job.decorate}
+- row = render 'accruals/accruals_table_row', accrual_job: @accrual_job.decorate
 - id = "#accrual_job_#{@accrual_job.id}"
 $("#{id}").replaceWith("#{escape_javascript(row)}");
 $("#{id}").effect("highlight", null, 1000);

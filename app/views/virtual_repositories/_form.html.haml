@@ -1,6 +1,6 @@
 = simple_form_for @virtual_repository, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
   .row
-    = render partial: 'shared/form_sidebar', locals: {f: f, object: @virtual_repository, cancel_return: repository_path(@virtual_repository.repository)}
+    = render 'shared/form_sidebar', f: f, object: @virtual_repository, cancel_return: repository_path(@virtual_repository.repository)
     .col-sm-9
       = f.input :title
       = f.input :repository_id, as: :hidden, input_html: {value: @virtual_repository.repository.id}

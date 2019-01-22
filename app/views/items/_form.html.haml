@@ -5,52 +5,13 @@
 = simple_form_for @item, html: {class: 'form-horizontal'}, wrapper: :horizontal_form, remote: @remote do |f|
   .container
     .row
-      = render partial: 'form_sidebar', locals: {f: f, object: @item, cancel_return: project_path(@item.project)}
+      = render 'form_sidebar', f: f, object: @item, cancel_return: project_path(@item.project)
       .col-sm-10
         .row
-          = field_set_tag('Administrative Metadata') do
-            .col-sm-5
-              = f.input :barcode, input_html: {class: 'barcode_input'}, autofocus: true
-              = f.input :item_number
-              = f.input :project_id, as: :hidden, input_html: {value: @item.project.id}
-              = f.input :local_title
-              = f.input :batch
-              = f.input :file_count
-              = f.input :status, as: :select, collection: items_statuses_collection, allow_blank: true, include_blank: false
-              = f.input :reformatting_date, as: :string, input_html: {class: 'datepicker', value: @item.reformatting_date.if_blank(Date.today.to_s)}
-              = f.input :reformatting_operator
-              = f.input :equipment, as: :select, collection: items_equipment_collection, allow_blank: true, include_blank: false
-              = f.input :foldout_present, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
-              = f.input :foldout_done, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
-              = f.input :item_done, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
-              = f.input :ingested, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
-            .col-sm-5
-              = f.input :notes
-              = f.input :local_description
+          = render 'form_administrative_metadata', f: f
         .row
-          = field_set_tag('Voyager Metadata') do
-            .col-sm-5
-              = f.input :call_number
-              = f.input :title
-              = f.input :author
-              = f.input :imprint
-              = f.input :bib_id, label: 'Bib Id'
-              = f.input :oclc_number
+          = render 'form_voyager_metadata', f: f
         .row
-          = field_set_tag('Archival Metadata') do
-            .col-sm-5
-              = f.input :unique_identifier
-              = f.input :record_series_id, label: 'Record Series Id'
-              = f.input :archival_management_system_url
-              = f.input :series
-              = f.input :sub_series, label: 'Sub-series'
-              = f.input :box
-              = f.input :folder
-              = f.input :item_title
-              = f.input :source_media, as: :select, allow_blank: true, include_blank: false, collection: items_source_media_collection
-              = f.input :creator
-              = f.input :date, as: :string, input_html: {class: 'datepicker', value: @item.date}
-            .col-sm-5
-              = f.input :rights_information
+          = render 'form_archival_metadata', f: f
   :javascript
     $(function () {prevent_enter_in_barcode_field = #{@item.barcode.blank?}})

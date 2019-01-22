@@ -3,5 +3,5 @@
 -# must pass url to which to submit form
 = simple_form_for @accrual_job, url: url, method: :post, remote: true do |f|
   = f.input :comment, as: :text
-  = f.button :submit, 'Submit', class: 'btn btn-primary'
-  %button{type: :button, class: 'btn btn-default', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} Cancel
+  = submit_button(f, value: 'Submit')
+  = cancel_modal_button

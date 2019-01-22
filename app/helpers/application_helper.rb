@@ -5,13 +5,13 @@ module ApplicationHelper
   end
 
   def fa_icon_link_to(title, icon, url, html_opts = {})
-    link_to url, html_opts.reverse_merge(title: title) do
+    link_to url, html_opts.reverse_merge(title: title, role: :button) do
       fa_icon icon
     end
   end
 
   def fa_icon_and_text_link_to(title, icon, url, html_opts = {})
-    link_to url, html_opts.reverse_merge(title: title) do
+    link_to url, html_opts.reverse_merge(title: title, role: :button) do
       fa_icon(icon) + ' ' + title
     end
   end

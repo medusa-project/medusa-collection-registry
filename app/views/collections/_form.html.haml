@@ -1,34 +1,16 @@
 = simple_form_for @collection, html: { class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
   .row
-    = render partial: 'shared/form_sidebar', locals: {f: f, object: @collection, cancel_return: (@collection.repository if @collection.new_record?)}
+    = render 'shared/form_sidebar', f: f, object: @collection, cancel_return: (@collection.repository if @collection.new_record?)
     .col-sm-9
       .tabbable
-        = render partial: 'shared/tab_header', locals: {id: 'edit-tabs', tabs: collection_form_tab_list}
+        = render 'shared/tab_header', id: 'edit-tabs', tabs: collection_form_tab_list
         .tab-content
           #descriptive-metadata.tab-pane.active
             = render 'public_notice'
-            = f.input :publish, wrapper: :horizontal_radio_and_checkboxes, label: 'Open collection metadata to public list of collections'
-            = f.input :title
-            - if @collection.repository
-              = f.association :repository, collection: @repositories, include_blank: false, selected: @collection.repository.id
-            - else
-              = f.association :repository, collection: @repositories, required: true
-            = f.input :description
-            = f.input :access_url, as: :string, label: 'Access link (to digital content in another system)'
-            = f.input :physical_collection_url, as: :string, label: 'Physical Collection link (finding aid or catalog record)'
-            = f.input :external_id, label: 'External ID'
-            = f.input :representative_image
-            = f.input :representative_item
-            = f.association :resource_types, as: :check_boxes, wrapper_html: {id: 'resource_types'}, wrapper: :horizontal_radio_and_checkboxes
-            = f.association :access_systems, collection: access_system_select_collection, html: {multiple: true}, as: :check_boxes, wrapper: :horizontal_radio_and_checkboxes
+            = render 'form_descriptive_metadata', f: f
           #administrative-metadata.tab-pane
-            = f.input :private_description, label: 'Internal collection description (suppressed from public view)'
-            = f.input :contact_email, label: 'Contact email (for internal use on this collection only)', type: :email
-            = f.input :notes
+            = render 'form_administrative_metadata', f: f
           #rights-metadata.tab-pane
-            = render partial: 'rights_declarations/nested_form', locals: {containing_form: f, rights_declaration: @collection.rights_declaration}
+            = render 'rights_declarations/nested_form', containing_form: f, rights_declaration: @collection.rights_declaration
           #subcollections.tab-pane
-            - if @collection.repository
-              = f.association :child_collections, as: :check_boxes, collection: @collection.peer_collections, label: false
-            - else
-              No subcollections are available until this collection is saved with a repository.
+            = render 'form_subcollections', f: f

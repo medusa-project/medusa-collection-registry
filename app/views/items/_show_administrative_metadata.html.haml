@@ -1,0 +1,15 @@
+= show_field @item, :barcode
+= show_field @item, :item_number
+= show_field @item, :local_title
+= show_value link_to(@item.batch, project_path(@project, batch: @item.batch)), 'Batch'
+= show_field @item, :file_count
+= show_field @item, :status
+= show_field @item, :reformatting_date
+= show_field @item, :reformatting_operator
+= show_field @item, :equipment
+= show_field @item, :foldout_present
+= show_field @item, :foldout_done
+= show_field @item, :item_done
+= show_field @item, :ingested
+- if @item.cfs_directory
+  = show_value link_to(@item.cfs_directory.path, @item.cfs_directory), 'Cfs Directory'

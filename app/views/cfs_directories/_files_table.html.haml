@@ -1,4 +1,4 @@
-- if @files_helper.full_count > 0
+- if @files_helper.full_count.positive?
   %table.table.table-striped#directory_files
     %thead
       %tr

@@ -1,6 +1,6 @@
 .row.vertical-align
   .col-xs-6
-    = render layout: 'layouts/page_header' do
+    = render 'layouts/page_header' do
       - if content_for?(:title)
         = yield(:title)
       - else
@@ -14,7 +14,7 @@
         = red_flags_button(red_flags_collection_path(@collection))
         = attachments_button(attachments_collection_path(@collection))
         .btn-group
-          %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+          %a.btn.btn-default.dropdown-toggle{'data-toggle': 'dropdown', href: '#'}
             Export
             %span.caret
           %ul.dropdown-menu

@@ -1,6 +1,6 @@
 .row.vertical-align
   .col-xs-6
-    = render layout: 'layouts/page_header' do
+    = render 'layouts/page_header' do
       - if content_for?(:title)
         = yield(:title)
       - else
@@ -11,6 +11,5 @@
       = index_button(file_format_profiles_path)
       = clone_button(clone_file_format_profile_path(@file_format_profile))
       = edit_button(@file_format_profile)
-
 
 = yield

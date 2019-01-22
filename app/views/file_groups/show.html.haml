@@ -1,14 +1,13 @@
 - content_for :extra_links do
-  %a.btn.btn-default{'data-toggle' => 'collapse', href: '#metadata', 'aria-expanded' => 'false', 'aria-controls' => 'metadata'}
+  %a.btn.btn-default{'data-toggle': 'collapse', href: '#metadata', 'aria-expanded': 'false', 'aria-controls': 'metadata', role: :button}
     Metadata
     %span.caret
   - if @directory.present?
-    %a.btn.btn-default{'data-toggle' => 'collapse', href: '#amazon', 'aria-expanded' => 'false', 'aria-controls' => 'metadata'}
+    %a.btn.btn-default{'data-toggle': 'collapse', href: '#amazon', 'aria-expanded': 'false', 'aria-controls': 'metadata', role: :button}
       Amazon
       %span.caret
 
-= render layout: 'layout_single' do
-
+= render 'layout_single' do
   .row#metadata.collapse{class: ('in' unless @file_group.is_a?(BitLevelFileGroup))}
     .col-md-4#descriptive-metadata
       .well

@@ -1,4 +1,4 @@
-= render layout: 'layouts/standard_table', locals: {id: :repositories, headers: ['Title', 'Contact', 'URL', 'Total Size (GB)', '']} do
+= render 'layouts/standard_table', id: :repositories, headers: ['Title', 'Contact', 'URL', 'Total Size (GB)', ''] do
   - @repositories.each do |repository|
     - cache([repository, repository.contact]) do
       %tr

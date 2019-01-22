@@ -2,66 +2,11 @@
   .row
     .col-sm-4
       .pull-left
-        %a.btn.btn-default#check_all{href: '#items', 'data-toggle' => 'checkboxes', 'data-action' => 'check'}
-          = fa_icon 'check-square-o', text: 'All'
-        %a.btn.btn-default#uncheck_all{href: '#items', 'data-toggle' => 'checkboxes', 'data-action' => 'uncheck'}
-          = fa_icon 'square-o', text: 'All'
-        %a.btn.btn-default#bibids-to-clipboard-btn{href: '#'}
-          = fa_icon 'clipboard', text: 'Bibids'
+        = render 'items_table_left_buttons'
     .col-sm-8
       .pull-right
-        #mass-action-buttons
-          = f.submit :'Delete checked', class: 'btn btn-primary btn-danger', onclick: 'before_mass_action_submit();', data: {confirm: 'Multiple items may be deleted. Are you sure?'}
-          = link_to :'Mass edit', '#', class: 'btn btn-default btn-primary', onclick: 'show_item_mass_edit();'
-          = f.submit :'Ingest items', class: 'btn btn-default btn-primary', onclick: 'before_mass_action_submit();'
-  %table.table.table-striped#items
-    %thead
-      %tr
-        - @helper.headers.each do |header|
-          %th= header
+        = render 'items_table_right_buttons', f: f
+  = render 'items_table_table'
 = render 'item_mass_edit_modal'
-:javascript
-  $(function() {
-    $('#items').DataTable({
-      'processing': true,
-      'serverSide': true,
-      'pageLength': 25,
-      'order': [],
-      'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-      'search': {
-        'search': ""
-      },
-      'buttons': ['colvis'
-      // For reference, we can toggle many at the same time if we want, though the below isn't very robust as is
-      //,
-      //            {
-      //              extend: 'columnToggle',
-      //              text: 'Toggle Voyager',
-      //              columns: [16, 17, 18, 19, 20, 21]
-      //            },
-      //            {
-      //              extend: 'columnToggle',
-      //              text: 'Toggle Archives',
-      //              columns: [22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
-      //            }
-                  ],
-      'colReorder': {
-        'fixedColumnsLeft' : 2,
-        'realtime' : false
-      },
-      'stateSave': true,
-      'dom': "<'row'<'col-sm-2'l><'col-sm-4'B><'col-sm-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-      'scrollX': true,
-      'scrollY': '75vh',
-      'scrollCollapse': true,
-      'ajax': {
-        'url': "#{@helper.url}"
-      },
-      'columnDefs': [
-        {'targets': #{@helper.columns_tagged(:unsortable)}, 'orderable': false },
-        {'targets': #{@helper.columns_tagged(:shorten)}, 'render': $.fn.dataTable.render.ellipsis(35)},
-        {'targets': #{@helper.columns_tagged(:item_info)}, 'render': $.fn.dataTable.render.item_information("#{ItemDecorator.item_information_separator}")}
-      ]
-    })
-  })
-= render partial: 'shared_js/checkboxes_init', locals: {selector: '#items'}
+= render 'items_table_js_init'
+= render 'shared_js/checkboxes_init', selector: '#items'

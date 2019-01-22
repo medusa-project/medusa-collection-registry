@@ -1,0 +1,44 @@
+:javascript
+  $(function() {
+    $('#items').DataTable({
+      'processing': true,
+      'serverSide': true,
+      'pageLength': 25,
+      'order': [],
+      'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+      'search': {
+        'search': ""
+      },
+      'buttons': ['colvis'
+      // For reference, we can toggle many at the same time if we want, though the below isn't very robust as is
+      //,
+      //            {
+      //              extend: 'columnToggle',
+      //              text: 'Toggle Voyager',
+      //              columns: [16, 17, 18, 19, 20, 21]
+      //            },
+      //            {
+      //              extend: 'columnToggle',
+      //              text: 'Toggle Archives',
+      //              columns: [22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+      //            }
+                  ],
+      'colReorder': {
+        'fixedColumnsLeft' : 2,
+        'realtime' : false
+      },
+      'stateSave': true,
+      'dom': "<'row'<'col-sm-2'l><'col-sm-4'B><'col-sm-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+      'scrollX': true,
+      'scrollY': '75vh',
+      'scrollCollapse': true,
+      'ajax': {
+        'url': "#{@helper.url}"
+      },
+      'columnDefs': [
+        {'targets': #{@helper.columns_tagged(:unsortable)}, 'orderable': false },
+        {'targets': #{@helper.columns_tagged(:shorten)}, 'render': $.fn.dataTable.render.ellipsis(35)},
+        {'targets': #{@helper.columns_tagged(:item_info)}, 'render': $.fn.dataTable.render.item_information("#{ItemDecorator.item_information_separator}")}
+      ]
+    })
+  })

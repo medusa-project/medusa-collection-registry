@@ -1,2 +1,2 @@
-= render layout: 'layouts/standard_table', locals: {id: :file_formats, headers: ['Name', 'Pronom', 'Policy Summary', 'Logical Extensions', '']} do
+= render 'layouts/standard_table', id: :file_formats, headers: ['Name', 'Pronom', 'Policy Summary', 'Logical Extensions', ''] do
   = render partial: 'index_table_row', collection: @file_formats, as: :file_format

@@ -1,21 +1,21 @@
-.pull-right= link_to fa_icon('random'), random_cfs_files_path, class: 'btn btn-default', title: 'Random File'
+.pull-right= link_to fa_icon('random'), random_cfs_files_path, class: 'btn btn-default', title: 'Random File', role: :button
 .tabbable
-  = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: dashboard_tab_list}
+  = render 'shared/tab_header', id: 'tab-headers', tabs: dashboard_tab_list
   .tab-content
     #storage-overview.tab-pane.active
       = render 'storage_overview'
     #running-processes.tab-pane
-      = render partial: 'shared_js/simple_load', locals: {id: 'running-processes', path: running_processes_dashboard_path}
+      = render 'shared_js/simple_load', id: 'running-processes', path: running_processes_dashboard_path
     #file-statistics.tab-pane
-      = render partial: 'shared_js/datatables_load', locals: {id: 'file-statistics', path: file_stats_dashboard_path, table_ids: %w(file_stats_content_type file_stats_file_extension)}
+      = render 'shared_js/datatables_load', id: 'file-statistics', path: file_stats_dashboard_path, table_ids: %w(file_stats_content_type file_stats_file_extension)
     #red-flags.tab-pane
-      = render partial: 'shared_js/datatables_load', locals: {id: 'red-flags', path: red_flags_dashboard_path, table_ids: 'red-flags-table'}
+      = render 'shared_js/datatables_load', id: 'red-flags', path: red_flags_dashboard_path, table_ids: 'red-flags-table'
     #combined-events-tab.tab-pane
-      = render partial: 'shared_js/datatables_load', locals: {id: 'combined-events-tab', path: events_dashboard_path, table_ids: 'events'}
+      = render 'shared_js/datatables_load', id: 'combined-events-tab', path: events_dashboard_path, table_ids: 'events'
     #amazon.tab-pane
-      = render partial: 'shared_js/datatables_load', locals: {id: 'amazon', path: amazon_dashboard_path, table_ids: 'amazon-backups-table'}
+      = render 'shared_js/datatables_load', id: 'amazon', path: amazon_dashboard_path, table_ids: 'amazon-backups-table'
     #accruals.tab-pane
-      = render partial: 'shared_js/datatables_load', locals: {id: 'accruals', path: accruals_dashboard_path, table_ids: 'accruals_table'}
+      = render 'shared_js/datatables_load', id: 'accruals', path: accruals_dashboard_path, table_ids: 'accruals_table'
     - if current_user&.superuser?
       #file-group-deletions.tab-pane
-        = render partial: 'shared_js/datatables_load', locals: {id: 'file-group-deletions', path: file_group_deletions_dashboard_path, table_ids: 'file_group_deletions_table'}
+        = render 'shared_js/datatables_load', id: 'file-group-deletions', path: file_group_deletions_dashboard_path, table_ids: 'file_group_deletions_table'

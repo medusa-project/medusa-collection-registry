@@ -3,7 +3,7 @@
     Existing logical extensions
 .row.justify-content-center
   .col-md-2
-  - LogicalExtension.order(:extension, :description).all.in_groups(3, false).each do |group|
+  - logical_extension_groups.each do |group|
     .col-md-3
       - group.each do |logical_extension|
         .logical-extension= logical_extension.label

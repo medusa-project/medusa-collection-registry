@@ -1,7 +1,6 @@
 = simple_form_for @file_format_test, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
   .row
-    = render partial: 'shared/form_sidebar', locals: {f: f, object: @file_format_test, cancel_return: @cfs_file}
-
+    = render 'shared/form_sidebar', f: f, object: @file_format_test, cancel_return: @cfs_file
     .col-md-9
       = f.input :cfs_file_id, as: :hidden
       = f.input :tester_email, type: :email

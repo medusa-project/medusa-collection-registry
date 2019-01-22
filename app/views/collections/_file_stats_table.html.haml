@@ -2,33 +2,9 @@
   - load_collection_file_stats
 
   .row
-    .col-sm-6
-      %h3
-        File Statistics
-      %p
-        Some statistics are cached and may be slightly out of date.
-    .col-sm-6
-      .pull-right
-        = link_to 'CSV', show_file_stats_collection_path(@collection, format: :csv), class: 'btn btn-default'
+    = render partial: 'file_stats_header'
   .row
     .col-sm-6
-      - cache([@collection, 'content_type']) do
-        = render layout: 'layouts/standard_table', locals: {id: :file_stats_content_type, classes: %w(table-bordered table-condensed), headers: ['File Format', 'Number of Files', 'Tested', 'Size']} do
-          - @content_type_hashes.each do |info|
-            %tr
-              %td= link_to info['name'], cfs_files_content_type_path(info['content_type_id'], collection_id: @collection.id)
-              %td= info['file_count'].to_i.to_s(:delimited)
-              - percent = info['tested_count'].to_d / info['file_count'].to_d * 100
-              %td= "#{info['tested_count'].to_i.to_s(:delimited)}&nbsp;(#{percent.to_s(:percentage, precision: 3)})".html_safe
-              %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_s(:human_size, precision: 3).sub(' ', '&nbsp;').html_safe
-
+      = render partial: 'file_stats_content_type'
     .col-sm-6
-      - cache([@collection, 'file_extension']) do
-        = render layout: 'layouts/standard_table', locals: {id: :file_stats_file_extension, classes: %w(table-bordered table-condensed), headers: ['File Extension', 'Number of Files', 'Tested', 'Size']} do
-          - @file_extension_hashes.each do |info|
-            %tr
-              %td= link_to info['extension'].if_blank('<no extension>'), cfs_files_file_extension_path(info['file_extension_id'], collection_id: @collection.id)
-              %td= info['file_count'].to_i.to_s(:delimited)
-              - percent = info['tested_count'].to_d / info['file_count'].to_d * 100
-              %td= "#{info['tested_count'].to_i.to_s(:delimited)}&nbsp;(#{percent.to_s(:percentage, precision: 3)})".html_safe
-              %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_s(:human_size, precision: 3).sub(' ', '&nbsp;').html_safe
+      = render partial: 'file_stats_file_extension'

@@ -1,12 +1,12 @@
 %ul.nav.navbar-nav.navbar-right
   %li
-    %a{href: '#', 'data-toggle' => 'modal', 'data-target' => '#more-actions'}
+    %a{href: '#', 'data-toggle': 'modal', 'data-target': '#more-actions'}
       More
       %span.caret
-= render layout: 'layouts/bootstrap_modal', locals: {id: 'more-actions'} do
+= render 'layouts/bootstrap_modal', id: 'more-actions' do
   .modal-header
-    %a.close{'data-dismiss' => 'modal', 'aria-label' => 'Close', href: '#'}
-      %span{'aria-hidden' => 'true'}
+    %a.close{'data-dismiss': 'modal', 'aria-label': 'Close', href: '#'}
+      %span{'aria-hidden': 'true'}
         &times;
     %h4.modal-title More actions
   .modal-body

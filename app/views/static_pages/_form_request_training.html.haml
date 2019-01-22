@@ -6,4 +6,5 @@
   = f.input :date, label: 'Suggested date', input_html: {class: 'datepicker', value: Date.today}
   = f.input :trainees, label: 'List of trainees', as: :text
   = f.input :notes, label: 'Notes', as: :text, required: false
-  = f.button :submit, class: 'btn btn-primary', value: 'Send'
+  =# f.button :submit, class: 'btn btn-primary', value: 'Send'
+  = submit_button(f, value: 'Send')

@@ -1,35 +1,10 @@
 .btn-group
   = assessments_button(assessments_file_group_path(@file_group))
-  .btn-group
-    %button.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Events', value: 'Events'}
-      = fa_icon('newspaper-o')
-      %span.caret
-    %ul.dropdown-menu.dropdown-menu-right
-      %li= link_to('View Events', events_file_group_path(@file_group))
-      %li= link_to('Add Event', '#addEventModal', 'data-toggle' => 'modal', title: 'Add Event')
+  = render 'actions_events'
   = red_flags_button(red_flags_file_group_path(@file_group))
   = attachments_button(attachments_file_group_path(@file_group))
-  .btn-group
-    %button.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Run', value: 'Run'}
-      = fa_icon('cog')
-      %span.caret
-    %ul.dropdown-menu.dropdown-menu-right
-      - if @file_group.is_a?(BitLevelFileGroup) and @file_group.is_currently_assessable?
-        %li= link_to 'Run Simple Assessment', create_initial_cfs_assessment_bit_level_file_group_path(@file_group), method: :post
-      - if @file_group.is_a?(ExternalFileGroup) and @file_group.lacks_related_bit_level_file_group? and safe_can?(:update, @file_group)
-        %li= link_to 'Create Bit Level File Group', create_bit_level_external_file_group_path(@file_group), method: :post
-      - if @accrual.present? and safe_can?(:accrue, @directory)
-        %li= link_to 'Add files', '#', 'data-toggle' => 'modal', 'data-target' => '#add-files-dialog'
+  = render 'actions_run'
   - if @directory.present?
-    .btn-group
-      %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Download', href: '#'}
-        = fa_icon('download')
-        %span.caret
-      %ul.dropdown-menu.dropdown-menu-right
-        - if can?(:export, @file_group)
-          %li= link_to 'Download Files - Omit Subfolders', export_cfs_directory_path(@directory), method: :post, remote: true
-          %li= link_to 'Download Files - Include Subfolders', export_tree_cfs_directory_path(@directory), method: :post, remote: true
-        %li= link_to 'TSV', show_tree_cfs_directory_path(@directory, format: :tsv)
-        %li= link_to 'JSON Tree', show_tree_cfs_directory_path(@directory, format: :json)
+    = render 'actions_download'
 
   = edit_button(@file_group)

@@ -6,7 +6,7 @@
   - tabs.each_with_index do |spec, index|
     - tab_spec = TabSpec.new(spec)
     %li{class: (index == active_index ? 'active' : '')}
-      %a{href: "##{tab_spec.id}", 'data-toggle' => 'tab', title: tab_spec.title}
+      %a{href: "##{tab_spec.id}", 'data-toggle': 'tab', title: tab_spec.title}
         - if tab_spec.icon
           = fa_icon(tab_spec.icon)
         - else

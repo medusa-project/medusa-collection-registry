@@ -1,6 +1,6 @@
 .row.vertical-align
   .col-xs-5
-    = render layout: 'layouts/page_header' do
+    = render 'layouts/page_header' do
       - if content_for?(:title)
         = yield(:title)
       - else
@@ -14,7 +14,6 @@
         .btn-group
           = yield(:extra_links)
 
-
 = yield
 
-= render partial: 'events/modal_form', locals: {eventable: @file_group, remote: false, dialog_id: :addEventModal}
+= render 'events/modal_form', eventable: @file_group, remote: false, dialog_id: :addEventModal

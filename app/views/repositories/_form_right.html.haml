@@ -1,0 +1,7 @@
+-# must pass f, the form
+= f.input :phone_number, label: 'Phone Number', type: :tel, wrapper: :wide_horizontal_file_input
+= f.input :email, type: :email, wrapper: :wide_horizontal_file_input
+= f.input :url, label: 'URL', type: :url, wrapper: :wide_horizontal_file_input
+= f.input :active_start_date, as: :string, input_html: {class: 'datepicker'}, label: 'Active Start Date', wrapper: :wide_horizontal_file_input
+= f.input :active_end_date, as: :string, input_html: {class: 'datepicker'}, label: 'Active End Date', wrapper: :wide_horizontal_file_input
+= f.input :notes, input_html: { rows: 3 }, wrapper: :wide_horizontal_file_input

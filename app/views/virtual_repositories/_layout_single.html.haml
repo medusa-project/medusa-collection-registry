@@ -1,6 +1,6 @@
 .row.vertical-align
   .col-xs-6
-    = render layout: 'layouts/page_header' do
+    = render 'layouts/page_header' do
       - if content_for?(:title)
         = yield(:title)
       - else

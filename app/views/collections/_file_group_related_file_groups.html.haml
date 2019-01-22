@@ -1,0 +1,9 @@
+-# must pass file_group
+- if file_group.source_file_groups.present?
+  %div
+    Ingested from: #{'File group'.pluralize(file_group.source_file_groups.count)}
+    #{file_group.source_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}
+- if file_group.target_file_groups.present?
+  %div
+    Ingested to: #{'File group'.pluralize(file_group.target_file_groups.count)}
+    #{file_group.target_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}

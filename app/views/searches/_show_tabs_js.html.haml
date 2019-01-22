@@ -1,0 +1,5 @@
+-# kludge to get the tab to actually show
+:javascript
+  $(function() {
+    $("a[title='#{@helpers.first.tab_label}']").trigger('click');
+  });

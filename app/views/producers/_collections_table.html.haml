@@ -2,7 +2,7 @@
   Collections
 
 %div
-  = render layout: 'layouts/standard_table', locals: {id: :collections, headers: ['External ID', 'Title', 'Repository', 'Contact', 'Size (GB)', '']} do
+  = render 'layouts/standard_table', id: :collections, headers: ['External ID', 'Title', 'Repository', 'Contact', 'Size (GB)', ''] do
     - @producer.collections.each do |collection|
       %tr
         %td #{collection.external_id}

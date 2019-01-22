@@ -1,0 +1,24 @@
+-# must pass helper, the SearchHelper
+:javascript
+  $(document).ready(function() {
+    $("##{helper.table_id}").DataTable({
+      "processing": true,
+      "serverSide": true,
+      "pageLength": 25,
+      "order" : [[0, 'asc']],
+      "search": {
+        "search": "#{helper.initial_search_string}"
+      },
+      'columnDefs': [
+        {'orderable': false, 'targets': #{helper.columns_tagged(:unsortable)}}
+      ],
+      "ajax": {
+        "url": "#{helper.url}",
+        "complete": function (xhr) {
+          if (xhr.status == 200) {
+            indicate_search_results_in_tab_header(xhr.responseJSON.recordsFiltered, "##{helper.tab_id}");
+          }
+        }
+      }
+    })
+  });

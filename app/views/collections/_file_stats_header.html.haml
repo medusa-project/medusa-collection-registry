@@ -1,0 +1,8 @@
+.col-sm-6
+  %h3
+    File Statistics
+  %p
+    Some statistics are cached and may be slightly out of date.
+.col-sm-6
+  .pull-right
+    = link_to 'CSV', show_file_stats_collection_path(@collection, format: :csv), class: 'btn btn-default'
