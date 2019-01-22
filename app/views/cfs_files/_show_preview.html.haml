@@ -1,0 +1,4 @@
+- if safe_can?(:download, @file.file_group)
+  = render @previewer.view_partial
+- else
+  %p You do not have appropriate permissions for this a file preview.

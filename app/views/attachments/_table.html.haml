@@ -2,7 +2,7 @@
 
   .row
     .pull-left
-      = small_add_button(new_attachment_path(attachable_id: @attachable.id, attachable_type: @attachable.class.name), class: 'btn btn-primary btn-xs pull-right', title: 'Add Attachment')
+      = small_add_button(new_attachment_path_for(@attachable), class: 'btn btn-primary btn-xs pull-right', title: 'Add Attachment')
 
   .row
     - if @attachable.attachments.includes(:author).present?

@@ -4,5 +4,5 @@
       %tr
         - @helper.headers.each do |header|
           %th= header
-= render partial: 'shared_js/search_datatable_init', locals: {selector: '#cascaded_events', search_helper: @helper}
+= render 'shared_js/search_datatable_init', selector: '#cascaded_events', search_helper: @helper
 

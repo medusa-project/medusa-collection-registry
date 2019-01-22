@@ -30,11 +30,11 @@ module ButtonsHelper
   end
 
   def download_button(url)
-    link_to 'Download', url, class: button_class
+    link_to 'Download', url, class: button_class, role: :button
   end
 
   def small_download_button(url)
-    link_to 'Download', url, class: small_button_class
+    link_to 'Download', url, class: small_button_class, role: :button
   end
 
   def red_flags_button(url)
@@ -58,7 +58,7 @@ module ButtonsHelper
   end
 
   def assessments_button(url)
-    link_to 'Assessments', url, class: button_class
+    link_to 'Assessments', url, class: button_class, role: :button
   end
 
   def attachments_button(url)
@@ -66,15 +66,11 @@ module ButtonsHelper
   end
 
   def index_button(url)
-    link_to 'Index', url, class: button_class
+    link_to 'Index', url, class: button_class, role: :button
   end
 
   def small_run_button(url, options = {})
-    link_to 'Run', url, options.reverse_merge(method: :post, class: small_button_class)
-  end
-
-  def cancel_button(url_or_object)
-    link_to 'Cancel', url_or_object, class: button_class
+    link_to 'Run', url, options.reverse_merge(method: :post, class: small_button_class, role: :button)
   end
 
   def small_clone_button(url_or_object, options = {})
@@ -83,6 +79,40 @@ module ButtonsHelper
 
   def clone_button(url_or_object, options = {})
     fa_icon_link_to('Clone', Settings.icons.clone_button, url_or_object, options.reverse_merge(class: button_class, method: :post))
+  end
+
+  def cancel_modal_button
+    button_tag('Cancel', type: :button, class: button_class, data: {dismiss: :modal})
+  end
+
+  def cancel_modal_x
+    button_tag('×', type: :button, class: 'close', data: {dismiss: :modal})
+  end
+
+  def cancel_and_go_to_button(path_or_object)
+    link_to('Cancel', path_or_object, class: button_class, role: :button)
+  end
+
+  #the label: key goes to the first argument in the submit method
+  # the value: key goes as an html attribute
+  # I had both usages in the code that I'm refactoring from - I'm not sure if more unification is available here
+  def submit_button(form, args = {})
+    classes = "btn btn-primary #{args.delete(:class)}".strip!
+    label = args.delete(:label)
+    form.submit(label, args.merge!(class: classes))
+  end
+
+  def submit_modal_button(form, args = {})
+    value = args.delete(:value) || 'Submit'
+    if object = args.delete(:object)
+      value = submit_label(object)
+    end
+    classes = "btn btn-primary #{args.delete(:class)}".strip!
+    form.button :submit, args.merge!(class: classes, type: :submit, value: value, onclick: "hide_modals()")
+  end
+
+  def submit_label(object)
+    object.new_record? ? 'Create' : 'Update'
   end
 
   protected

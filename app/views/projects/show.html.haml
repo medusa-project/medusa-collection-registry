@@ -1,32 +1,19 @@
 - content_for :extra_links do
-  %a.btn.btn-default{'data-toggle' => 'collapse', href: '#metadata', 'aria-expanded' => 'false', 'aria-controls' => 'metadata'}
+  %a.btn.btn-default{'data-toggle':'collapse', href: '#metadata', 'aria-expanded':'false', 'aria-controls':'metadata', role: :button}
     Metadata
     %span.caret
 - if @batch
   - content_for :title do
     Project (batch #{@batch}):
-= render layout: 'layout_single' do
-
+= render 'layout_single' do
   #metadata.row.collapse
     .col-md-4
       .well
-        = show_field @project, :external_id, 'External id'
-        = show_field @project, :manager_email
-        = show_field @project, :owner_email
-        = show_field @project, :start_date
-        = show_field @project, :ingest_folder
-        = show_field @project, :destination_folder_uuid
-        = show_field @project, :status
-        = show_value link_to(@project.collection.title, @project.collection), 'Collection'
+        = render 'show_metadata'
     .col-md-8
-      %h4 Summary
-      .well
-        %div.col-md-offset-1= @project.summary.html_safe
-      %h4 Specifications
-      .well
-        %div.col-md-offset-1= @project.specifications.html_safe
+      = render 'show_summary_and_specs'
 
-  .row#items_container
+  #items_container.row
     = render 'items_table'
 
   #new_item_form_placeholder

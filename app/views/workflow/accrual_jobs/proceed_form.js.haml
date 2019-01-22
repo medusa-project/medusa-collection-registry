@@ -1,3 +1,3 @@
-- form = render partial: 'workflow/accrual_jobs/comment_form', locals: {url: proceed_workflow_accrual_job_path(@accrual_job), title: 'Proceeding With Accrual'}
+- form = render 'workflow/accrual_jobs/comment_form', url: proceed_workflow_accrual_job_path(@accrual_job), title: 'Proceeding With Accrual'
 $("#accrual_comment_form").html("#{escape_javascript(form)}");
 $("#accrual_comment_modal").modal('show');

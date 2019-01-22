@@ -1,0 +1,5 @@
+-# must pass f, the form
+#mass-action-buttons
+  = submit_button(f, label: 'Delete checked', class: 'btn-danger', onclick: 'before_mass_action_submit();', data: {confirm: 'Multiple items may be deleted. Are you sure?'})
+  = link_to :'Mass edit', '#', class: 'btn btn-default btn-primary', onclick: 'show_item_mass_edit();', role: :button
+  = submit_button(f, label: 'Ingest items', onclick: 'before_mass_action_submit();')

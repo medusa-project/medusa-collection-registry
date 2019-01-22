@@ -1,0 +1,8 @@
+#file_format_notes.panel.panel-default
+  .panel-heading
+    .pull-right
+      = link_to 'Add', new_file_format_note_path(@file_format), class: 'btn btn-xs btn-default', remote: true, title: 'Add Note', role: :button
+    %h4 Notes
+  .panel-body
+    - @file_format.file_format_notes.each do |note|
+      = render'file_format_notes/show', note: note

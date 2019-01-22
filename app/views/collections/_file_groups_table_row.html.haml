@@ -1,24 +1,15 @@
 -# must pass 'file_group'
-- cache([file_group, file_group.producer]) do
-  %tr
-    %td #{file_group.id}
-    %td
-      #{link_to file_group.title, file_group}
-      - if file_group.supports_cfs and file_group.cfs_directory.present?
-        %div= link_to 'View files', cfs_directory_path(file_group.cfs_directory), class: 'btn btn-xs btn-default'
-    %td #{file_group.storage_level}
-    %td #{file_group.created_at.to_date}
-    %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
-    %td #{file_group.file_count.to_s(:delimited) rescue ''}
-    %td #{file_group.file_size.to_s(:rounded, precision: 2, delimiter: ',')}
-    %td.related_file_groups
-      - if file_group.source_file_groups.present?
-        %div
-          Ingested from: #{'File group'.pluralize(file_group.source_file_groups.count)}
-          #{file_group.source_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}
-      - if file_group.target_file_groups.present?
-        %div
-          Ingested to: #{'File group'.pluralize(file_group.target_file_groups.count)}
-          #{file_group.target_file_groups.collect {|fg| link_to(fg.id, fg)}.join(',').html_safe}
-    - cache(['file_group_actions', file_group]) do
-      = render 'file_group_actions', file_group: file_group
+%tr
+  %td #{file_group.id}
+  %td
+    #{link_to file_group.title, file_group}
+    - if file_group.supports_cfs and file_group.cfs_directory.present?
+      %div= link_to 'View files', cfs_directory_path(file_group.cfs_directory), class: 'btn btn-xs btn-default', role: :button
+  %td #{file_group.storage_level}
+  %td #{file_group.created_at.to_date}
+  %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
+  %td #{file_group.file_count.to_s(:delimited) rescue ''}
+  %td #{file_group.file_size.to_s(:rounded, precision: 2, delimiter: ',')}
+  %td.related_file_groups
+    = render 'file_group_related_file_groups', file_group: file_group
+  = render 'file_group_actions', file_group: file_group

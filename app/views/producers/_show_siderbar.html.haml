@@ -1,0 +1,6 @@
+= show_field @producer, :administrator_email
+= render 'shared/contact_information', contact_object: @producer
+= show_value link_to_external(@producer.url, @producer.url), 'URL'
+= show_field @producer, :active_start_date, 'Active Start Date'
+= show_field @producer, :active_end_date, 'Active End Date'
+= show_field @producer, :notes_html, 'Notes'

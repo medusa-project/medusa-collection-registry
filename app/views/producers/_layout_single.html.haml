@@ -1,6 +1,6 @@
 .row.vertical-align
   .col-xs-8
-    = render layout: 'layouts/page_header' do
+    = render 'layouts/page_header' do
       - if content_for?(:title)
         = yield(:title)
       - else
@@ -10,6 +10,6 @@
     .btn-group.pull-right
       = index_button(producers_path)
       = edit_button(@producer)
-      = fa_icon_link_to('Report', 'table', report_producer_path(@producer), class: 'btn btn-default', remote: true)
+      = fa_icon_link_to('Report', 'table', report_producer_path(@producer), class: 'btn btn-default', remote: true, role: :button)
 
 = yield

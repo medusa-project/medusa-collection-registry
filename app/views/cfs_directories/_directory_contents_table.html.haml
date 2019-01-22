@@ -1,27 +1,19 @@
-%hr
-
 - dir_tab_active = @directories_helper.full_count.positive?
 - dir_tab_class = dir_tab_active ? 'active' : ''
 - file_tab_class = dir_tab_active ? '' : 'active'
+%hr
 %div
   %ul.nav.nav-tabs{role: :tablist}
     %li{role: :presentation, class: dir_tab_class}
       %a{role: :tab, href: '#subdirectories_tab', 'data-toggle': :tab, 'aria-controls': 'subdirectories_tab'}
         Folders
         %span.indicator-icon
-          - if @directories_helper.full_count.positive?
-            = fa_icon('check', class: 'search-hit')
-          - else
-            = fa_icon('times', class: 'search-missed')
+          = search_indicator_icon(@directories_helper)
     %li{role: :presentation, class: file_tab_class}
       %a{role: :tab, href: '#files_tab', 'data-toggle': :tab, 'aria-controls': 'files_tab'}
         Files
         %span.indicator-icon
-        - if @files_helper.full_count.positive?
-          = fa_icon('check', class: 'search-hit')
-        - else
-          = fa_icon('times', class: 'search-missed')
-
+          = search_indicator_icon(@files_helper)
   .tab-content
     #subdirectories_tab.tab-pane{role: :tabpanel, class: dir_tab_class}
       = render 'cfs_directories/subdirectories_table'

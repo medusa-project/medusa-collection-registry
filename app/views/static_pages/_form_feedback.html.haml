@@ -3,4 +3,4 @@
   = f.input :name, label: 'Your name'
   = f.input :email, label: 'Your email address', as: :email
   = f.input :feedback, label: 'Your feedback', as: :text
-  = f.button :submit, class: 'btn btn-primary', value: 'Send'
+  = submit_button(f, value: 'Send')

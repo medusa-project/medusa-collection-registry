@@ -1,4 +1,4 @@
-= render layout: 'layouts/standard_table', locals: {id: :running_initial_assessment_scans, classes: %w(table-bordered table-condensed), caption: 'Initial Assessment Scans', headers: ['Path', 'File Group', 'Files remaining']} do
+= render 'layouts/standard_table', id: :running_initial_assessment_scans, classes: %w(table-bordered table-condensed), caption: 'Initial Assessment Scans', headers: ['Path', 'File Group', 'Files remaining'] do
   - Job::CfsInitialDirectoryAssessment.file_groups_for_repository(@repository).each do |file_group|
     - if file_group.cfs_directory.present?
       %tr

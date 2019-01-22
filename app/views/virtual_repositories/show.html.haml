@@ -1,7 +1,7 @@
-= render layout: 'layout_single' do
-  = render partial: 'shared/tab_header', locals: {id: 'tab-headers', tabs: virtual_repository_tab_list}
+= render 'layout_single' do
+  = render 'shared/tab_header', id: 'tab-headers', tabs: virtual_repository_tab_list
   .tab-content
     #overview.tab-pane.active
       = render 'overview'
     #file-statistics.tab-pane
-      = render partial: 'shared_js/datatables_load', locals: {id: 'file-statistics', path: show_file_stats_virtual_repository_path(@virtual_repository), table_ids: %w(file_stats_content_type file_stats_file_extension)}
+      = render 'shared_js/datatables_load', id: 'file-statistics', path: show_file_stats_virtual_repository_path(@virtual_repository), table_ids: %w(file_stats_content_type file_stats_file_extension)

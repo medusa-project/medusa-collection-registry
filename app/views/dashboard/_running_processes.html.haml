@@ -4,7 +4,7 @@
       %span.badge #{Delayed::Job.where('failed_at IS NOT NULL').count}
       delayed jobs have failed! Please contact the development staff to diagnose
 
-= render layout: 'layouts/standard_table', locals: {id: :running_initial_assessment_scans, classes: %w(table-bordered table-condensed), caption: 'Initial Assessment Scans', headers: ['Path', 'File Group', 'Files remaining']} do
+= render 'layouts/standard_table', id: :running_initial_assessment_scans, classes: %w(table-bordered table-condensed), caption: 'Initial Assessment Scans', headers: ['Path', 'File Group', 'Files remaining'] do
   - BitLevelFileGroup.where(id: Job::CfsInitialDirectoryAssessment.distinct.pluck(:file_group_id)).includes(:cfs_directory).each do |file_group|
     - if file_group.cfs_directory.present?
       %tr

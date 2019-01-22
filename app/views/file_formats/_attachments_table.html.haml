@@ -1,3 +1,3 @@
 - if @attachable.attachments.includes(:author).present?
-  = render layout: 'layouts/standard_table', locals: {id: :file_format_attachments, headers: ['Filename', 'Description', 'Content Type', 'Author', '']} do
+  = render 'layouts/standard_table', id: :file_format_attachments, headers: ['Filename', 'Description', 'Content Type', 'Author', ''] do
     = render partial: 'attachments/table_row', collection: @attachable.attachments, as: :attachment

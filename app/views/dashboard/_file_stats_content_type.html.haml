@@ -1,0 +1,11 @@
+- cache(cache_key_for_all(ContentType)) do
+  - headers = ['File Format', 'Number of Files', 'Tested', 'Size']
+  = render layout: 'layouts/standard_table', locals: {id: :file_stats_content_type, classes: %w(table-bordered table-condensed), headers: headers} do
+    - @content_type_hashes.each do |info|
+      %tr
+        %td= link_to info['name'], cfs_files_content_type_path(info['content_type_id'])
+        %td= info['file_count'].to_i.to_s(:delimited)
+        - percent = info['tested_count'].to_d / info['file_count'].to_d * 100
+        %td= "#{info['tested_count'].to_i.to_s(:delimited)}&nbsp;(#{percent.to_s(:percentage, precision: 3)})".html_safe
+        %td{'data-order' => info['file_size'].to_d}= info['file_size'].to_d.to_s(:human_size, precision: 3).sub(' ', '&nbsp;').html_safe
+

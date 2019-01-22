@@ -4,15 +4,15 @@
 - cancel_return ||= object
 .col-sm-2
   .btn-group
-    = f.button :submit, class: 'btn btn-primary btn-sm', value: (object.new_record? ? 'Create' : 'Update'), onclick: "$('.modal').modal('hide');"
+    = submit_modal_button(f, object: object)
     - if defined?(@remote) and @remote
-      = link_to('Cancel', '#', class: 'btn btn-default btn-sm', onclick: "$('.modal').modal('hide'); return false;")
+      = cancel_modal_button
     - else
-      = link_to('Cancel', cancel_return, class: 'btn btn-default btn-sm')
+      = cancel_and_go_to_button(cancel_return)
     - if object.new_record?
-      = f.button :submit, class: 'btn btn-primary btn-sm', value: 'Create and Exit', onclick: "$('.modal').modal('hide');"
+      = submit_modal_button(f, value: 'Create and Exit')
     - if object.persisted? and safe_can?(:destroy, object)
-      = delete_button(object, options: {class: 'btn btn-danger btn-sm'})
+      = delete_button(object, options: {class: 'btn btn-danger'})
 
   - if content_for?(:form_sidebar_extra)
     = content_for(:form_sidebar_extra)

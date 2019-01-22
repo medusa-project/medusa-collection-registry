@@ -3,15 +3,7 @@
     = render layout: 'layouts/page_header' do
       Collections
   .col-md-8
-    .btn-group.pull-right
-      = link_to 'Add Collection', new_collection_path, class: 'btn btn-primary'
-      .btn-group
-        %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
-          Export
-          %span.caret
-        %ul.dropdown-menu
-          %li= link_to 'CSV', collections_path(format: 'csv')
-
+    = render partial: 'index_buttons'
 
 - cache(cache_key_for_all(Collection)) do
   = render 'index_table'

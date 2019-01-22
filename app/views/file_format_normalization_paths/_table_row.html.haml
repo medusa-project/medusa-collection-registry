@@ -1,3 +1,4 @@
+-# must pass normalization_path
 %tr{id: "file_format_normalization_path_#{normalization_path.id}"}
   %td= link_to normalization_path.name, normalization_path_path(normalization_path), target: '_blank'
   %td= normalization_path.input_logical_extension.try(:label)
@@ -7,5 +8,5 @@
   %td= normalization_path.operating_system
   %td
     - if can?(:update, @file_format)
-      = link_to 'Edit', edit_normalization_path_path(normalization_path), class: 'btn btn-xs btn-default', remote: true, title: 'Edit Normalization Path'
-      = link_to 'Delete', normalization_path_path(normalization_path), class: 'btn btn-xs btn-danger', remote: true, method: :delete, data: {confirm: 'Are you sure? This cannot be undone.'}, title: 'Delete Normalization Path'
+      = link_to 'Edit', edit_normalization_path_path(normalization_path), class: 'btn btn-xs btn-default', remote: true, title: 'Edit Normalization Path', role: :button
+      = link_to 'Delete', normalization_path_path(normalization_path), class: 'btn btn-xs btn-danger', remote: true, method: :delete, data: {confirm: 'Are you sure? This cannot be undone.'}, title: 'Delete Normalization Path', role: :button

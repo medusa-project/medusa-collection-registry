@@ -1,6 +1,5 @@
 %table#file_format_profiles.table.table-striped
-  = render partial: 'index_table_header'
-  - cache(cache_key_for_all(FileFormatProfile)) do
-    %tbody
-      = render partial: 'index_table_row', collection: @file_format_profiles, as: :file_format_profile
+  = render 'index_table_header'
+  %tbody
+    = render partial: 'index_table_row', collection: @file_format_profiles, as: :file_format_profile
       

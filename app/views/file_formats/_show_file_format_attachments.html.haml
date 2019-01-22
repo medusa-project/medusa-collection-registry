@@ -1,0 +1,7 @@
+#file_format_attachments.panel.panel-default
+  .panel-heading
+    .pull-right
+      = link_to 'Add', new_attachment_path(attachable_id: @file_format.id, attachable_type: 'FileFormat'), class: 'btn btn-xs btn-default', title: 'Add Attachment', role: :button
+    %h4 Attachments
+  .panel-body
+    = render 'attachments_table'

@@ -1,8 +1,8 @@
 - url = @normalization_path.new_record? ? file_format_normalization_paths_path(@file_format) : normalization_path_path(@normalization_path)
-= render layout: 'layouts/bootstrap_modal', locals: {id: 'modal_item_form'} do
+= render 'layouts/bootstrap_modal', id: 'modal_item_form' do
   = simple_form_for @normalization_path, url: url, remote: true, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
     .row
-      = render partial: 'form_sidebar', locals: {f: f, object: @normalization_path}
+      = render 'form_sidebar', f: f, object: @normalization_path
       .col-sm-10
         = f.input :name
         = f.input :input_logical_extension_id, as: :select, allow_blank: true, include_blank: false, collection: logical_extensions_select_collection

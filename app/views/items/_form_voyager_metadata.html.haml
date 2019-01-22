@@ -1,0 +1,9 @@
+-# must pass in f, the form
+= field_set_tag('Voyager Metadata') do
+  .col-sm-5
+    = f.input :call_number
+    = f.input :title
+    = f.input :author
+    = f.input :imprint
+    = f.input :bib_id, label: 'Bib Id'
+    = f.input :oclc_number

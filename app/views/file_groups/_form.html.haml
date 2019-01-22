@@ -1,11 +1,11 @@
 = simple_form_for @file_group, as: :file_group, html: {class:'form-horizontal'}, defaults: {required: false} do |f|
   .row
-    = render partial: 'shared/form_sidebar', locals: {f: f, object: @file_group, cancel_return: (@collection if @file_group.new_record?)}
+    = render 'shared/form_sidebar', f: f, object: @file_group, cancel_return: (@collection if @file_group.new_record?)
     .col-sm-9
       .tabbable
-        = render partial: 'shared/tab_header', locals: {id: 'edit-tabs', tabs: file_group_form_tab_list}
+        = render 'shared/tab_header', id: 'edit-tabs', tabs: file_group_form_tab_list
         .tab-content
           #descriptive-metadata.tab-pane.active
-            = render partial: 'form_descriptive_metadata', locals: {f: f}
+            = render 'form_descriptive_metadata', f: f
           #administrative-metadata.tab-pane
-            = render partial: 'form_administrative_metadata', locals: {f: f}
+            = render 'form_administrative_metadata', f: f

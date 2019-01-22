@@ -1,0 +1,9 @@
+.panel.panel-default
+  .panel-heading
+    %h4 Content types:
+  - if @file_format_profile.content_types.present?
+    %ul.list-group
+      - @file_format_profile.content_types.each do |content_type|
+        %li.list-group-item= content_type.name
+  - else
+    .panel-body None

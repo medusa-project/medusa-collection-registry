@@ -1,11 +1,13 @@
 .row.vertical-align
   .col-md-4
-    = render layout: 'layouts/page_header' do
+    = render 'layouts/page_header' do
       File Extensions
   .col-md-8
     .btn-toolbar.pull-right
-      = link_to fa_icon('download'), download_batch_file_extension_path(@file_extension, page: params[:page], per_page: params[:per_page], repository_id: params[:repository_id], virtual_repository_id: params[:virtual_repository_id],  collection_id: params[:collection_id]), class: 'btn btn-default', method: :post, remote: true
-      = link_to fa_icon('random'), random_cfs_file_file_extension_path(@file_extension, repository_id: params[:repository_id], virtual_repository_id: params[:virtual_repository_id],  collection_id: params[:collection_id]), class: 'btn btn-default', title: 'Random File'
+      - download_path = download_batch_file_extension_path(@file_extension, page: params[:page], per_page: params[:per_page], repository_id: params[:repository_id], virtual_repository_id: params[:virtual_repository_id],  collection_id: params[:collection_id])
+      - random_path = random_cfs_file_file_extension_path(@file_extension, repository_id: params[:repository_id], virtual_repository_id: params[:virtual_repository_id],  collection_id: params[:collection_id])
+      = link_to fa_icon('download'), download_path, class: 'btn btn-default', method: :post, remote: true, role: :button
+      = link_to fa_icon('random'), random_path, class: 'btn btn-default', title: 'Random File', role: :button
 .row
   = render 'cfs_files/table'
   = will_paginate @cfs_files, renderer: BootstrapPagination::Rails, params: {repository_id: @repository_id, virtual_repository_id: @virtual_repository_id, collection_id: @collection_id}

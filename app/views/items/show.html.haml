@@ -1,44 +1,10 @@
-= render layout: 'layout_single' do
-
+= render 'layout_single' do
   .row
     .col-md-4
-      = show_field @item, :barcode
-      = show_field @item, :item_number
-      = show_field @item, :local_title
-      = show_value link_to(@item.batch, project_path(@project, batch: @item.batch)), 'Batch'
-      = show_field @item, :file_count
-      = show_field @item, :status
-      = show_field @item, :reformatting_date
-      = show_field @item, :reformatting_operator
-      = show_field @item, :equipment
-      = show_field @item, :foldout_present
-      = show_field @item, :foldout_done
-      = show_field @item, :item_done
-      = show_field @item, :ingested
-      - if @item.cfs_directory
-        = show_value link_to(@item.cfs_directory.path, @item.cfs_directory), 'Cfs Directory'
+      = render 'show_administrative_metadata'
       %hr
-      = show_field @item, :call_number
-      = show_field @item, :title
-      = show_field @item, :author
-      = show_field @item, :imprint
-      = show_field @item, :bib_id, 'Bib Id'
-      = show_field @item, :oclc_number
+      = render 'show_voyager_metadata'
       %hr
-      = show_field @item, :unique_identifier
-      = show_field @item, :record_series_id, 'Record Series Id'
-      = show_field @item, :archival_management_system_url
-      = show_field @item, :series
-      = show_field @item, :sub_series, 'Sub-series'
-      = show_field @item, :box
-      = show_field @item, :folder
-      = show_field @item, :item_title
-      = show_field @item, :source_media
-      = show_field @item, :creator
-      = show_field @item, :date
-      = show_field @item, :rights_information
+      = render 'show_archival_metadata'
     .col-md-8
-      %h4 Notes
-      %div= @item.notes
-      %h4 Local Description
-      %div= @item.local_description
+      = render 'show_notes_and_description'

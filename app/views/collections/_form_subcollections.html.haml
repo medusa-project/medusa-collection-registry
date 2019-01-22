@@ -1,0 +1,5 @@
+-# must pass f, the parent form
+- if @collection.repository
+  = f.association :child_collections, as: :check_boxes, collection: @collection.peer_collections, label: false
+- else
+  No subcollections are available until this collection is saved with a repository.

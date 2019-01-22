@@ -1,0 +1,9 @@
+.btn-group.pull-right
+  - if can? :update_ldap_admins, Repository
+    = link_to 'Edit Repository Admins', edit_ldap_admins_repositories_path, class: 'btn btn-primary', role: :button
+  .btn-group
+    %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', href: '#', role: :button}
+      Export
+      %span.caret
+    %ul.dropdown-menu
+      %li= link_to 'CSV', repositories_path(format: 'csv')

@@ -1,30 +1,6 @@
 = simple_form_for @project, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
   .row
-    = render partial: 'shared/form_sidebar', locals: {f: f, object: @project, cancel_return: (projects_path if @project.new_record?)}
+    = render 'shared/form_sidebar', f: f, object: @project, cancel_return: (projects_path if @project.new_record?)
     .col-sm-9
-      = f.input :collection_id, as: :hidden, input_html: {value: @collection.id}
-      = f.input :title
-      = f.input :external_id, label: 'External id'
-      = f.input :manager_email, required: true, as: :autocomplete, url: autocomplete_user_email_projects_path
-      = f.input :owner_email, required: true, as: :autocomplete, url: autocomplete_user_email_projects_path
-      = f.input :start_date, as: :string, input_html: {class: 'datepicker', value: (@project.start_date.if_blank(Date.today)).to_s}
-      - @label = capture do
-        %a{'data-toggle': :modal, 'data-target': '#directory-picker'} Ingest folder
-      = f.input :ingest_folder, label: @label, placeholder: 'Click label to select'
-      = f.input :destination_folder_uuid
-      = f.input :status, as: :select, collection: Project::STATUSES, include_blank: false
-      = f.input :summary, input_html: {class: 'rich-editor'}
-      = f.input :specifications, input_html: {class: 'rich-editor'}
-    #directory-picker.modal{role: 'dialog', 'aria-label': 'Directory picker', 'aria-hidden': 'true', class: maybe_fade}
-      .modal-dialog
-        .modal-content
-          .modal-header
-            %a.close{href: '#', role: :button, 'data-dismiss': :modal, 'aria-label': :Close}
-              %span{'aria-hidden': 'true'}
-                &times;
-            %h4.modal-title Ingest Directory Picker
-          .modal-body
-            #{react_component('ProjectDirectoryPicker', data: @ingest_directory_info)}
-          .modal-footer
-            %a.btn.btn-default{href: '#', role: :button, 'data-dismiss': :modal} Close
-      
+      = render 'form_metadata', f: f
+    = render 'form_directory_picker'

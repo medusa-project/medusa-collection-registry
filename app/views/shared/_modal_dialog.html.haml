@@ -1,0 +1,10 @@
+.modal-dialog
+  .modal-content
+    .modal-header
+      - if content_for(:modal_header)
+        = yield(:modal_header)
+    .modal-body
+      = yield
+    .modal-footer
+      - if content_for(:modal_footer)
+        = yield(:modal_footer)

@@ -1,8 +1,8 @@
 %li.dropdown
-  %a.dropdown-toggle{'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'aria-expanded' =>'false', href: '#', id: 'show_search'}
+  %a.dropdown-toggle{'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false', href: '#', id: 'show_search'}
     = fa_icon 'search'
     %span.caret
-  %ul.dropdown-menu{role: 'menu'}
+  %ul.dropdown-menu{role: :menu}
     %li
       = simple_form_for :search, url: search_searches_path, html: {id: 'search', class: 'form-inline navbar-form'}, method: :post do |f|
         = f.input :query, label: false, required: true, placeholder: 'Search query'
