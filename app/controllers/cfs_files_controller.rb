@@ -43,19 +43,19 @@ class CfsFilesController < ApplicationController
   end
 
   def download
-    disposition_string = disposition('attachment', @file)
+    #disposition_string = disposition('attachment', @file)
     filename = URI.encode(@file.name)
     if current_user.present?
       authorize!(:download, @file.file_group)
       @file.with_input_file do |input_file|
-        send_file input_file, type: safe_content_type(@file), disposition: disposition_string, filename: filename
+        send_file input_file, type: safe_content_type(@file), disposition: 'attachment', filename: filename
       end
     else
       #basic auth
       redirect_to(login_path) unless basic_auth?
       if @file.storage_root.root_type == :filesystem
         @file.with_input_file do |input_file|
-          send_file input_file, type: safe_content_type(@file), disposition: disposition_string, filename: filename
+          send_file input_file, type: safe_content_type(@file), disposition: 'attachment', filename: filename
         end
       else
         redirect_to(cfs_file_download_link(@file))
@@ -66,10 +66,10 @@ class CfsFilesController < ApplicationController
 
   def view
     authorize! :download, @file.file_group
-    disposition_string = disposition('inline', @file)
+    #disposition_string = disposition('inline', @file)
     filename = URI.encode(@file.name)
     @file.with_input_file do |input_file|
-      send_file input_file, type: safe_content_type(@file), disposition: disposition_string, filename: filename
+      send_file input_file, type: safe_content_type(@file), disposition: 'inline', filename: filename
     end
   end
 
@@ -156,16 +156,21 @@ class CfsFilesController < ApplicationController
   # It really expects disposition to just be attachment or inline, but there is no way that I can find to set
   # the utf-8 version of the filename without doing this.
   # When this is used with S3 for presigned urls I expect it'll be okay as is.
+  # TODO - still problematic
+  # https://aws-medusa-alb.library.illinois.edu/cfs_files/9319280 has a space in the filename and a user had difficulty with
+  # it. The current code seems to work properly in Chrome/Firefox/Safari, so I'm going to go with it for now
+  # and fix up the filesystem type stuff that goes through Rails instead of AWS presigned links to do the same.
   def disposition(type, cfs_file)
-    if browser.chrome? or browser.safari?
-      %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8''#{URI.encode(cfs_file.name)})
-    elsif browser.ie? or browser.edge?
-      %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8''#{URI.encode(cfs_file.name)})
-    elsif browser.firefox?
-      %Q(#{type}; filename="#{cfs_file.name}")
-    else
-      %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8''#{URI.encode(cfs_file.name)}")
-    end
+    return %Q(#{type}; filename="#{URI.encode(cfs_file.name)}")
+    # if browser.chrome? or browser.safari?
+    #   %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8''#{URI.encode(cfs_file.name)})
+    # elsif browser.ie? or browser.edge?
+    #   %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8''#{URI.encode(cfs_file.name)})
+    # elsif browser.firefox?
+    #   %Q(#{type}; filename="#{cfs_file.name}")
+    # else
+    #   %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8''#{URI.encode(cfs_file.name)}")
+    # end
   end
 
   def safe_content_type(cfs_file)
