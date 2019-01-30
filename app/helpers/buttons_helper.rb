@@ -3,82 +3,82 @@ module ButtonsHelper
 
   def edit_button(url_or_object, options = {})
     url_or_object = edit_polymorphic_path(url_or_object) if url_or_object.is_a?(ActiveRecord::Base)
-    fa_icon_link_to 'Edit', Settings.icons.edit_button, url_or_object, options.reverse_merge(class: button_class)
+    icon_default_button('Edit', Settings.icons.edit_button, url_or_object, options)
   end
 
   def small_edit_button(url_or_object, options = {})
     url_or_object = edit_polymorphic_path(url_or_object) if url_or_object.is_a?(ActiveRecord::Base)
-    fa_icon_link_to 'Edit', Settings.icons.edit_button, url_or_object, options.reverse_merge(class: small_button_class)
+    small_icon_default_button('Edit', Settings.icons.edit_button, url_or_object, options)
   end
 
   def delete_button(url_or_object, message: nil, options: {})
     message ||= t('default.confirm_message')
-    fa_icon_link_to 'Delete', Settings.icons.delete_button, url_or_object, options.reverse_merge(method: :delete, data: {confirm: message}, class: 'btn btn-danger')
+    icon_danger_button('Delete', Settings.icons.delete_button, url_or_object, options.reverse_merge(data: {confirm: message}))
   end
 
   def small_delete_button(url_or_object, message: nil, options: {})
     message ||= t('default.confirm_message')
-    fa_icon_link_to 'Delete', Settings.icons.delete_button, url_or_object, options.reverse_merge(method: :delete, data: {confirm: message}, class: 'btn btn-danger btn-xs')
+    small_icon_danger_button('Delete', Settings.icons.delete_button, url_or_object, options.reverse_merge(data: {confirm: message}))
   end
 
   def view_button(url_or_object)
-    fa_icon_link_to 'View', Settings.icons.view_button, url_or_object, class: button_class
+    icon_default_button('View', Settings.icons.view_button, url_or_object)
   end
 
   def small_view_button(url_or_object)
-    fa_icon_link_to 'View', Settings.icons.view_button, url_or_object, class: small_button_class
+    small_icon_default_button('View', Settings.icons.view_button, url_or_object)
   end
 
   def download_button(url)
-    link_to 'Download', url, class: button_class, role: :button
+    default_button('Download', url)
   end
 
   def small_download_button(url)
-    link_to 'Download', url, class: small_button_class, role: :button
+    small_default_button('Download', url)
   end
 
   def red_flags_button(url)
-    fa_icon_link_to 'Red Flags', Settings.icons.red_flags_button, url, class: button_class
+    icon_default_button('Red Flags', Settings.icons.red_flags_button, url)
   end
 
   def small_create_button(url)
-    fa_icon_link_to 'Create', Settings.icons.create_button, url, class: small_button_class
+    small_icon_default_button('Create', Settings.icons.create_button, url)
   end
 
   def add_button(url, options = {})
-    fa_icon_link_to 'Add', Settings.icons.add_button, url, options.reverse_merge(class: button_class)
+    icon_default_button('Add', Settings.icons.add_button, url, options)
   end
 
   def small_add_button(url, options = {})
-    fa_icon_link_to 'Add', Settings.icons.add_button, url, options.reverse_merge(class: small_button_class)
+    small_icon_default_button('Add', Settings.icons.add_button, url, options)
   end
 
   def events_button(url)
-    fa_icon_link_to 'Events', Settings.icons.events_button, url, class: button_class
+    icon_default_button('Events', Settings.icons.events_button, url)
   end
 
   def assessments_button(url)
-    link_to 'Assessments', url, class: button_class, role: :button
+    default_button('Assessments', url)
   end
 
   def attachments_button(url)
-    fa_icon_link_to 'Attachments', Settings.icons.attachments_button, url, class: button_class
+    icon_default_button('Attachments', Settings.icons.attachments_button, url)
   end
 
   def index_button(url)
-    link_to 'Index', url, class: button_class, role: :button
+    default_button('Index', url)
   end
 
   def small_run_button(url, options = {})
-    link_to 'Run', url, options.reverse_merge(method: :post, class: small_button_class, role: :button)
+    small_default_button('Run', url, options.reverse_merge(method: :post))
   end
 
   def small_clone_button(url_or_object, options = {})
-    fa_icon_link_to('Clone', Settings.icons.clone_button, url_or_object, options.reverse_merge(class: small_button_class, method: :post))
+    small_icon_default_button('Clone', Settings.icons.clone_button, url_or_object, options.reverse_merge(method: :post))
   end
 
   def clone_button(url_or_object, options = {})
-    fa_icon_link_to('Clone', Settings.icons.clone_button, url_or_object, options.reverse_merge(class: button_class, method: :post))
+    icon_default_button('Clone', Settings.icons.clone_button, url_or_object, options.reverse_merge(method: :post))
   end
 
   def cancel_modal_button
@@ -90,7 +90,7 @@ module ButtonsHelper
   end
 
   def cancel_and_go_to_button(path_or_object)
-    link_to('Cancel', path_or_object, class: button_class, role: :button)
+    default_button('Cancel', path_or_object)
   end
 
   #the label: key goes to the first argument in the submit method
@@ -111,8 +111,6 @@ module ButtonsHelper
     form.button :submit, args.merge!(class: classes, type: :submit, value: value, onclick: "hide_modals()")
   end
 
-  #This is somewhat badly named, but I'm already using the logical name for it elsewhere. Maybe resolve that in
-  # the future.
   def small_danger_button(label, path, args = {})
     generic_button(label, path, 'btn btn-danger btn-xs',
                    args.reverse_merge(role: :button, method: :delete,
@@ -120,8 +118,23 @@ module ButtonsHelper
                                       title: label))
   end
 
+  def icon_danger_button(title, icon, path, args = {})
+    generic_button(fa_icon(icon), path, 'btn btn-danger',
+                   args.reverse_merge(role: :button, method: :delete,
+                                      data: {confirm: 'Are you sure? This cannot be undone.'},
+                                      title: title))
+  end
+
+  def small_icon_danger_button(title, icon, path, args = {})
+    generic_button(fa_icon(icon), path, 'btn btn-danger btn-xs',
+                   args.reverse_merge(role: :button, method: :delete,
+                                      data: {confirm: 'Are you sure? This cannot be undone.'},
+                                      title: title))
+  end
+
+
   def small_icon_default_button(title, icon, path, args = {})
-    generic_button(fa_icon(icon), path, 'btn btn-default btn-xs', args.merge(title: title))
+    generic_button(fa_icon(icon), path, 'btn btn-default btn-xs', args.reverse_merge(title: title))
   end
 
   def small_default_button(label, path, args = {})
