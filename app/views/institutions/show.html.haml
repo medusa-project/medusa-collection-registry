@@ -1,5 +1,5 @@
 .btn-group.pull-right
-  = link_to 'Create Repository', new_repository_path(institution_id: @institution.id), class: 'btn btn-primary', role: :button
+  = primary_button('Create Repository', new_repository_path(institution_id: @institution.id))
   = edit_button(@institution)
 
 %h1.text_center= @institution.name

@@ -3,5 +3,5 @@
   %td= pronom.version
   %td
     - if can?(:update, @file_format)
-      = link_to 'Edit', edit_pronom_path(pronom), class: 'btn btn-xs btn-default', remote: true, title: 'Edit Pronom', role: :button
+      = small_default_button('Edit', edit_pronom_path(pronom), remote: true, title: 'Edit Pronom')
       = small_danger_button('Delete', pronom_path(pronom), remote: true, title: 'Delete Pronom')

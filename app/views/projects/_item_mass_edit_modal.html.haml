@@ -29,6 +29,6 @@
         - %i(foldout_present foldout_done item_done ingested).each do |field|
           = render 'projects/item_mass_edit_radio_row', f: f, field: field
         .row
-          = link_to 'Close', '#', class: 'btn btn-default', 'data-dismiss': 'modal', role: :button
-          = link_to 'Reset', '#', class: 'btn btn-default', onclick: 'reset_item_mass_edit_form();', role: :button
+          = default_button('Close', '#', 'data-dismiss': 'modal')
+          = default_button('Reset', "#", onclick: 'reset_item_mass_edit_form();')
           = submit_button(f, label: 'Mass update', onclick: 'before_mass_action_submit();')

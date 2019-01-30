@@ -9,10 +9,10 @@
   .col-xs-6
     .btn-toolbar.pull-right
       .btn-group
-        = link_to 'Add Item', new_item_path(project_id: @project.id), class: 'btn btn-default', remote: true, id: 'add_item_button', role: :button
-        = fa_icon_link_to 'Upload Items', 'upload', start_items_upload_project_path(@project), class: 'btn btn-default'
+        = default_button('Add Item', new_item_path(project_id: @project.id), remote: true, id: 'add_item_button')
+        = icon_default_button('Upload Items', 'upload', start_items_upload_project_path(@project))
         - unless current_page?(action: 'show') and @batch.blank?
-          = fa_icon_link_to('View Project', 'home', @project, class: 'btn btn-default')
+          = icon_default_button('View Project', 'home', @project)
         = attachments_button(attachments_project_path(@project))
         .btn-group
           %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
