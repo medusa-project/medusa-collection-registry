@@ -15,7 +15,5 @@
       (#{accrual_job.workflow_accrual_keys.count})
   %td.dropdown{id: "accrual_actions_#{accrual_job.id}"}
     - if accrual_job.approvable_by?(current_user)
-      %a.btn.btn-default.btn-xs.dropdown-toggle{role: 'button', 'data-toggle': 'dropdown', 'aria-expanded': false, href: '#', title: 'Actions'}
-        = fa_icon('cog')
-        %span.caret
+      = render 'shared/small_dropdown_toggle', title: :Actions, icon: 'cog'
       = render partial: 'accruals/accrual_workflow_actions', locals: {accrual_job: accrual_job}

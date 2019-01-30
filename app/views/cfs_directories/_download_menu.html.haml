@@ -1,7 +1,5 @@
 .btn-group
-  %a.btn.btn-default.dropdown-toggle{'data-toggle': 'dropdown', title: 'Download', role: :button}
-    = fa_icon('download')
-    %span.caret
+  = render 'shared/dropdown_toggle', title: 'Download', icon: 'download'
   %ul.dropdown-menu.dropdown-menu-right
     %li= link_to 'Download Files - Omit Subfolders', export_cfs_directory_path(@directory), method: :post, remote: true
     %li= link_to 'Download Files - Include Subfolders', export_tree_cfs_directory_path(@directory), method: :post, remote: true
