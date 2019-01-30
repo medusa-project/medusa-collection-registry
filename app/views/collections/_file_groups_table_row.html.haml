@@ -4,7 +4,7 @@
   %td
     #{link_to file_group.title, file_group}
     - if file_group.supports_cfs and file_group.cfs_directory.present?
-      %div= link_to 'View files', cfs_directory_path(file_group.cfs_directory), class: 'btn btn-xs btn-default', role: :button
+      %div= small_default_button('View files', cfs_directory_path(file_group.cfs_directory))
   %td #{file_group.storage_level}
   %td #{file_group.created_at.to_date}
   %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}

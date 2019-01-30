@@ -5,7 +5,7 @@
   .col-md-8
     .btn-toolbar.pull-right
       - path = random_cfs_file_content_type_path(@content_type, repository_id: params[:repository_id], virtual_repository_id: params[:virtual_repository_id], collection_id: params[:collection_id])
-      = link_to fa_icon('random'), path, class: 'btn btn-default', title: 'Random File', role: :button
+      = icon_default_button('Random File', 'random', path)
 .row
   = render 'cfs_files/table'
   = will_paginate @cfs_files, renderer: BootstrapPagination::Rails, params: {repository_id: @repository_id, virtual_repository_id: @virtual_repository_id, collection_id: @collection_id}

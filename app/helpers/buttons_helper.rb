@@ -114,12 +114,45 @@ module ButtonsHelper
   #This is somewhat badly named, but I'm already using the logical name for it elsewhere. Maybe resolve that in
   # the future.
   def small_danger_button(label, path, args = {})
-    link_to label, path, {class: 'btn btn-xs btn-danger', role: :button, method: :delete,
-                          data: {confirm: 'Are you sure? This cannot be undone.'},
-                          title: label}.merge(args)
+    generic_button(label, path, 'btn btn-danger btn-xs',
+                   args.reverse_merge(role: :button, method: :delete,
+                                      data: {confirm: 'Are you sure? This cannot be undone.'},
+                                      title: label))
+  end
+
+  def small_icon_default_button(title, icon, path, args = {})
+    generic_button(fa_icon(icon), path, 'btn btn-default btn-xs', args.merge(title: title))
+  end
+
+  def small_default_button(label, path, args = {})
+    generic_button(label, path, 'btn btn-default btn-xs', args)
+  end
+
+  def icon_default_button(title, icon, path, args = {})
+    generic_button(fa_icon(icon), path, 'btn btn-default', args.reverse_merge(title: title))
+  end
+
+  def default_button(label, path, args = {})
+    generic_button(label, path, 'btn btn-default', args)
+  end
+
+  def primary_button(label, path, args = {})
+    generic_button(label, path, 'btn btn-primary', args)
+  end
+
+  def small_primary_button(label, path, args = {})
+    generic_button(label, path, 'btn btn-primary btn-xs', args)
   end
 
   protected
+
+  def generic_button(label, path, base_classes, args)
+    extra_classes = args.delete(:class)
+    classes = [base_classes, extra_classes].join(' ')
+    link_to(path, {class: classes, title: label, role: :button}.merge(args)) do
+      label
+    end
+  end
 
   def button_class
     'btn btn-default'

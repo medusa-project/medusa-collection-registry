@@ -1,7 +1,7 @@
 %h2 File Groups
 
 %div
-  = link_to 'Add File Group', new_file_group_path(collection_id: @collection.id), class: 'btn btn-primary btn-xs'
+  = small_primary_button('Add File Group', new_file_group_path(collection_id: @collection.id))
 = render 'storage_level_filter'
 
 - if @collection.file_groups.present?

@@ -8,5 +8,5 @@
   %td= normalization_path.operating_system
   %td
     - if can?(:update, @file_format)
-      = link_to 'Edit', edit_normalization_path_path(normalization_path), class: 'btn btn-xs btn-default', remote: true, title: 'Edit Normalization Path', role: :button
+      = small_default_button('Edit', edit_normalization_path_path(normalization_path), remote: true, title: 'Edit Normalization Path')
       = small_danger_button('Delete', normalization_path_path(normalization_path), title: 'Delete Normalization Path')
