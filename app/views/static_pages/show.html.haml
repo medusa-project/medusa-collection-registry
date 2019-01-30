@@ -1,6 +1,6 @@
 - if safe_can?(:update, @static_page)
   .row
-    = link_to 'Edit', edit_static_page_path(key: @static_page.key), class: 'btn btn-default', role: :button
+    = default_button('Edit', edit_static_page_path(key: @static_page.key))
 
 %br
 

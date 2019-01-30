@@ -1,5 +1,3 @@
 .pull-right
-  = link_to '#', class: 'btn btn-default', 'data-dismiss': 'modal', 'aria-hidden': 'true', role: :button do
-    = fa_icon('close')
-
+  = icon_default_button('Close', 'close', '#', 'data-dismiss': 'modal', 'aria-hidden': 'true')
 = render 'workflow/accrual_mailer/view_report'

@@ -39,5 +39,5 @@
               = small_edit_button(red_flag)
               - if red_flag.flagged?
                 %span.unflag-link
-                  = link_to('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true, class: 'btn btn-default btn-xs', role: :button)
+                  = small_default_button('Unflag', unflag_red_flag_path(red_flag), method: :post, remote: true)
 = render 'shared_js/checkboxes_init', selector: '#red-flags-table'

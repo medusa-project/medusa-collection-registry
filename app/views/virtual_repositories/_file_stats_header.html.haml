@@ -5,4 +5,4 @@
     Some statistics are cached and may be slightly out of date.
 .col-sm-6
   .pull-right
-    = link_to 'CSV', show_file_stats_virtual_repository_path(@virtual_repository, format: :csv), class: 'btn btn-default', role: :button
+    = default_button('CSV', show_file_stats_virtual_repository_path(@virtual_repository, format: :csv))

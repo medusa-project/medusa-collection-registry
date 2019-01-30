@@ -1,6 +1,6 @@
 .btn-group.pull-right
   - if can? :update_ldap_admins, Repository
-    = link_to 'Edit Repository Admins', edit_ldap_admins_repositories_path, class: 'btn btn-primary', role: :button
+    = primary_button 'Edit Repository Admins', edit_ldap_admins_repositories_path
   .btn-group
     %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', href: '#', role: :button}
       Export
