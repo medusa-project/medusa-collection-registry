@@ -10,13 +10,9 @@
     .btn-group.pull-right
       = events_button(events_cfs_file_path(@file))
       .btn-group
-        %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Run', href: '#'}
-          = fa_icon('cog')
-          %span.caret
+        = render 'shared/dropdown_toggle', title: :Run, icon: 'cog'
       .btn-group
-        %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', title: 'Download'}
-          = fa_icon('download')
-          %span.caret
+        = render 'shared/dropdown_toggle', title: :Download, icon: 'download'
         %ul.dropdown-menu.dropdown-menu-right
           - if safe_can?(:download, @file.file_group)
             %li= link_to 'Download', cfs_file_download_link(@file), download: @file.name
