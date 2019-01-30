@@ -1,7 +1,7 @@
 #file_format_normalization_paths.panel.panel-default
   .panel-heading
     .pull-right
-      = link_to 'Add', new_file_format_normalization_path_path(@file_format), class: 'btn btn-xs btn-default', remote: true, title: 'Add Normalization Path', role: :button
+      = small_default_button('Add', new_file_format_normalization_path_path(@file_format), remote: true, title: 'Add Normalization Path')
     %h4 Normalization Paths
   .panel-body
     = render 'file_format_normalization_paths/table'

@@ -11,4 +11,4 @@
 
 %div
   - unless @file_group.amazon_backups.detect {|backup| backup.date == Date.today}
-    = link_to 'Create backup', create_amazon_backup_bit_level_file_group_path(@file_group), class: 'btn btn-default', method: :post, role: :button
+    = default_button('Create backup', create_amazon_backup_bit_level_file_group_path(@file_group), method: :post)

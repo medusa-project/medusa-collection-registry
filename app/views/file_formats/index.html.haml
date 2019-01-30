@@ -2,6 +2,6 @@
   File Formats
 
 -if can?(:create, FileFormat)
-  = link_to 'Add File Format', new_file_format_path, class: 'btn btn-primary', role: :button
+  = primary_button('Add File Format', new_file_format_path)
 
 = render 'index_table'

@@ -1,4 +1,4 @@
-.pull-right= link_to fa_icon('random'), random_cfs_files_path, class: 'btn btn-default', title: 'Random File', role: :button
+.pull-right= icon_default_button 'Random File', 'random', random_cfs_files_path
 .tabbable
   = render 'shared/tab_header', id: 'tab-headers', tabs: dashboard_tab_list
   .tab-content

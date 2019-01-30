@@ -3,7 +3,7 @@
     %div
       - if can?(:update, @file_format)
         .pull-right
-          = link_to 'Edit', edit_note_path(note), class: 'btn btn-xs btn-default', remote: true, title: 'Edit Note', role: :button
+          = small_default_button('Edit', edit_note_path(note), remote: true, title: 'Edit Note')
           = small_danger_button('Delete', note_path(note), remote: true, title: 'Delete Note')
       .show-value
         #{note.user.netid} - #{note.date}

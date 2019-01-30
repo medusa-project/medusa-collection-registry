@@ -1,7 +1,7 @@
 #file_format_pronoms.panel.panel-default
   .panel-heading
     .pull-right
-      = link_to 'Add', new_file_format_pronom_path(@file_format), class: 'btn btn-xs btn-default', remote: true, title: 'Create Pronom', role: :button
+      = small_default_button('Add', new_file_format_pronom_path(@file_format), remote: true, title: 'Create Pronom')
     %h4 Pronoms
   .panel-body
     = render 'pronoms/table'
