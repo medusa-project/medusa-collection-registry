@@ -30,21 +30,20 @@ Feature: Viewing CFS file information and content
 
   Scenario: Download cfs file
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    #And I wait 120 seconds
-    And I click on 'Download'
+    And I click on 'Download file'
     Then I should have downloaded the fixture file 'grass.jpg'
 
   Scenario: Download cfs file as a manager
     Given I relogin as a manager
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And I click on 'Download'
+    And I click on 'Download file'
     Then I should have downloaded the fixture file 'grass.jpg'
 
   Scenario: Download cfs file as a configured downloader
     Given I logout
     And I am logged in as 'joe_downloader_user@example.com'
     When I view the cfs file for the file group titled 'Dogs' for the path 'grass.jpg'
-    And I click on 'Download'
+    And I click on 'Download file'
     Then I should have downloaded the fixture file 'grass.jpg'
 
   Scenario: Download cfs file as a basic auth user

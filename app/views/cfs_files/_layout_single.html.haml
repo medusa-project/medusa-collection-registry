@@ -15,7 +15,7 @@
         = render 'shared/dropdown_toggle', title: :Download, icon: 'download'
         %ul.dropdown-menu.dropdown-menu-right
           - if safe_can?(:download, @file.file_group)
-            %li= link_to 'Download', cfs_file_download_link(@file), download: @file.name
+            %li= link_to 'Download', cfs_file_download_link(@file), download: @file.name, title: 'Download file'
           %li= link_to 'JSON', cfs_file_path(@file, format: :json)
       - if safe_can?(:download, @file.file_group)
         = view_button(cfs_file_view_link(@file))
