@@ -10,9 +10,7 @@
     .btn-group.pull-right
       = events_button(events_cfs_directory_path(@directory))
       .btn-group
-        %button.btn.btn-default.dropdown-toggle{'data-toggle': 'dropdown', title: 'Run', value: 'Run'}
-          = fa_icon('cog')
-          %span.caret
+        = render 'shared/dropdown_toggle', title: :Run, icon: 'cog'
         %ul.dropdown-menu.dropdown-menu-right
           - if @accrual.present? and safe_can?(:accrue, @directory)
             %li= link_to 'Add files', '#', 'data-toggle': 'modal', 'data-target': '#add-files-dialog'
