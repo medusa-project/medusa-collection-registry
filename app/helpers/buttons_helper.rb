@@ -111,8 +111,12 @@ module ButtonsHelper
     form.button :submit, args.merge!(class: classes, type: :submit, value: value, onclick: "hide_modals()")
   end
 
-  def submit_label(object)
-    object.new_record? ? 'Create' : 'Update'
+  #This is somewhat badly named, but I'm already using the logical name for it elsewhere. Maybe resolve that in
+  # the future.
+  def small_danger_button(label, path, args = {})
+    link_to label, path, {class: 'btn btn-xs btn-danger', role: :button, method: :delete,
+                          data: {confirm: 'Are you sure? This cannot be undone.'},
+                          title: label}.merge(args)
   end
 
   protected
@@ -123,6 +127,10 @@ module ButtonsHelper
 
   def small_button_class
     'btn btn-default btn-xs'
+  end
+
+  def submit_label(object)
+    object.new_record? ? 'Create' : 'Update'
   end
 
 end

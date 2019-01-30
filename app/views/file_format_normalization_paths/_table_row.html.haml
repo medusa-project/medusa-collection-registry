@@ -9,4 +9,4 @@
   %td
     - if can?(:update, @file_format)
       = link_to 'Edit', edit_normalization_path_path(normalization_path), class: 'btn btn-xs btn-default', remote: true, title: 'Edit Normalization Path', role: :button
-      = link_to 'Delete', normalization_path_path(normalization_path), class: 'btn btn-xs btn-danger', remote: true, method: :delete, data: {confirm: 'Are you sure? This cannot be undone.'}, title: 'Delete Normalization Path', role: :button
+      = small_danger_button('Delete', normalization_path_path(normalization_path), title: 'Delete Normalization Path')

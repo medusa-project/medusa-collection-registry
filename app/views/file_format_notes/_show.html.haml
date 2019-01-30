@@ -4,7 +4,7 @@
       - if can?(:update, @file_format)
         .pull-right
           = link_to 'Edit', edit_note_path(note), class: 'btn btn-xs btn-default', remote: true, title: 'Edit Note', role: :button
-          = link_to 'Delete', note_path(note), class: 'btn btn-xs btn-danger', remote: true, method: :delete, data: {confirm: 'Are you sure? This cannot be undone.'}, title: 'Delete Note', role: :button
+          = small_danger_button('Delete', note_path(note), remote: true, title: 'Delete Note')
       .show-value
         #{note.user.netid} - #{note.date}
     .show-value
