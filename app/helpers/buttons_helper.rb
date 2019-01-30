@@ -45,12 +45,8 @@ module ButtonsHelper
     small_icon_default_button('Create', Settings.icons.create_button, url)
   end
 
-  def add_button(url, options = {})
-    icon_default_button('Add', Settings.icons.add_button, url, options)
-  end
-
   def small_add_button(url, options = {})
-    small_icon_default_button('Add', Settings.icons.add_button, url, options)
+    small_icon_primary_button('Add', Settings.icons.add_button, url, options)
   end
 
   def events_button(url)
@@ -155,6 +151,10 @@ module ButtonsHelper
 
   def small_primary_button(label, path, args = {})
     generic_button(label, path, 'btn btn-primary btn-xs', args)
+  end
+
+  def small_icon_primary_button(title, icon, path, args = {})
+    generic_button(fa_icon(icon), path, 'btn btn-primary btn-xs', args.reverse_merge(title: title))
   end
 
   protected

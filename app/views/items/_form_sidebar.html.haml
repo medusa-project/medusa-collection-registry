@@ -12,7 +12,7 @@
     - if object.new_record?
       = submit_modal_button(f, value: 'Create and Exit')
     - if object.persisted? and safe_can?(:destroy, object)
-      = delete_button(object, options: {class: 'btn btn-danger'})
+      = delete_button(object)
 
   - if content_for?(:form_sidebar_extra)
     = content_for(:form_sidebar_extra)
