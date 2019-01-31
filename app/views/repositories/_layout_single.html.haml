@@ -14,16 +14,12 @@
         = red_flags_button(red_flags_repository_path(@repository))
         = edit_button(@repository)
         .btn-group
-          %a.btn.btn-default.dropdown-toggle{'data-toggle': 'dropdown', href: '#'}
-            = fa_icon 'plus'
-            %span.caret
+          = render 'shared/dropdown_toggle', title: :Expand, icon: :plus
           %ul.dropdown-menu.dropdown-menu-right
             %li= link_to 'Collection', new_collection_path(repository_id: @repository.id), title: 'Add Collection'
             %li= link_to 'Virtual Repository', new_virtual_repository_path(repository_id: @repository.id), title: 'Add Virtual Repository'
         .btn-group
-          %a.btn.btn-default.dropdown-toggle{'data-toggle': 'dropdown', href: '#'}
-            Export
-            %span.caret
+          = render 'shared/dropdown_toggle', title: :Export, text: :Export
           %ul.dropdown-menu.dropdown-menu-right
             %li= link_to 'CSV', collections_repository_path(@repository, format: 'csv')
       - if content_for?(:extra_links)

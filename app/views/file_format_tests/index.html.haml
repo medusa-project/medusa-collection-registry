@@ -5,9 +5,7 @@
   .col-md-8
     .btn-group.pull-right
       .btn-group
-        %a.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown', href: '#', role: :button}
-          Export
-          %span.caret
+        = render 'shared/dropdown_toggle', title: :Export, text: :Export
         %ul.dropdown-menu
           %li= link_to 'CSV', file_format_tests_path(format: 'csv')
 

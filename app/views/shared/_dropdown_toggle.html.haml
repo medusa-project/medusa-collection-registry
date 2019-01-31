@@ -1,7 +1,7 @@
 -# must pass title and either icon or text
 %button.btn.btn-default.dropdown-toggle{'data-toggle': :dropdown, 'aria-expanded': false, title: title, value: title, type: :button}
   - if defined?(icon)
-    = fa_icon(icon)
+    = fa_icon(icon.to_s)
   - if defined?(text)
-    = text
+    = text.to_s
   %span.caret
