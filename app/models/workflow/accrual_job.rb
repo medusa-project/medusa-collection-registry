@@ -25,7 +25,6 @@ class Workflow::AccrualJob < Workflow::Base
   STATE_HASH = {'start' => 'Start', 'check' => 'Checking for existing files', 'check_sync' => 'Checking sync',
                 'initial_approval' => 'Awaiting approval',
                 'copying' => 'Copying', 'admin_approval' => 'Awaiting admin approval',
-                'amazon_backup' => 'Amazon backup', 'amazon_backup_completed' => 'Amazon backup completed',
                 'assessing' => 'Starting Assessments', 'await_assessment' => 'Running Assessment',
                 'email_done' => 'Emailing completion',
                 'aborting' => 'Aborting', 'end' => 'Ending'}
@@ -197,50 +196,10 @@ class Workflow::AccrualJob < Workflow::Base
     workflow_accrual_conflicts.where(different: true).find_each {|conflict| conflict.reset_cfs_file}
   end
 
-  #We have to be a little careful here, as we want to make sure the backup happens, but at the same time it may
-  #be the case that there is already a backup scheduled or ongoing, and in light of the fact that we only allow a single
-  #backup per file group / date pair we may need to latch on to an existing backup or schedule a backup in the future.
-  #How we proceed: If there is already a backup scheduled for after today then make that the amazon backup for this, but
-  #don't create another job to run it. If not and there is a job scheduled for today then make a job for tomorrow and
-  #run it. If not then make a job for today and run it. Let errors propagate.
-  #In addition to this we need to make the association to AmazonBackup one to many and the message receiving method
-  #must reflect that.
-  def perform_amazon_backup
-    be_in_state_and_requeue('amazon_backup_completed')
-    return
-    #TODO this return doesn't get us out of this state - may need to do
-    #something else instead. If the file group isn't present what does that
-    #mean?
-    return if file_group.blank?
-    today = Date.today
-    transaction do
-      if future_backup = AmazonBackup.find_by(cfs_directory_id: root_cfs_directory.id, date: today + 1)
-        assign_amazon_backup(future_backup, run_backup: false)
-      elsif AmazonBackup.find_by(cfs_directory_id: root_cfs_directory.id, date: today)
-        assign_amazon_backup(AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: today + 1),
-                             run_backup: true, backup_options: {run_at: today + 1.day + 1.hour})
-      else
-        assign_amazon_backup(AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: today),
-                             run_backup: true)
-      end
-    end
-    #Stay in amazon_backup state - Amazon Backup will do the transition when it receives a reply from the glacier server
-  end
-
-  def assign_amazon_backup(backup, run_backup: false, backup_options: {})
-    self.amazon_backup = backup
-    self.save!
-    Job::AmazonBackup.create_for(backup, backup_options) if run_backup
-  end
-
   def perform_aborting
     Workflow::AccrualMailer.aborted(self).deliver_now
     archive('aborted')
     be_in_state_and_requeue('end')
-  end
-
-  def perform_amazon_backup_completed
-    be_in_state_and_requeue('email_done')
   end
 
   def perform_assessing

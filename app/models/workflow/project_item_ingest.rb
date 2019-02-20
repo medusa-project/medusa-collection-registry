@@ -6,7 +6,7 @@ class Workflow::ProjectItemIngest < Workflow::Base
   has_many :workflow_item_ingest_requests, :class_name => 'Workflow::ItemIngestRequest', dependent: :destroy, foreign_key: :workflow_project_item_ingest_id
   has_many :items, through: :workflow_item_ingest_requests
 
-  STATES = %w(start email_started ingest email_progress amazon_backup amazon_backup_completed email_done email_staging_directory_missing email_target_directory_missing end)
+  STATES = %w(start email_started ingest email_progress email_done email_staging_directory_missing email_target_directory_missing end)
 
   validates_inclusion_of :state, in: STATES, allow_blank: false
 
@@ -41,39 +41,6 @@ class Workflow::ProjectItemIngest < Workflow::Base
     end
     add_file_group_event
     be_in_state_and_requeue('email_progress')
-  end
-
-  #this is based off of the one in Workflow::AccrualJob and we might be able to unify them
-  def perform_amazon_backup
-    be_in_state_and_requeue('amazon_backup_completed')
-    return
-    file_group = project.target_cfs_directory.file_group
-    return if file_group.blank?
-    root_cfs_directory = file_group.cfs_directory
-    today = Date.today
-    transaction do
-      if future_backup = AmazonBackup.find_by(cfs_directory_id: root_cfs_directory.id, date: today + 1)
-        assign_amazon_backup(future_backup, run_backup: false)
-      elsif AmazonBackup.find_by(cfs_directory_id: root_cfs_directory.id, date: today)
-        assign_amazon_backup(AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: today + 1),
-                             run_backup: true, backup_options: {run_at: today + 1.day + 1.hour})
-      else
-        assign_amazon_backup(AmazonBackup.create!(user_id: self.user.id, cfs_directory_id: root_cfs_directory.id, date: today),
-                             run_backup: true)
-      end
-    end
-    #Stay in amazon_backup state - Amazon Backup will do the transition when it receives a reply from the glacier server
-  end
-
-  def assign_amazon_backup(backup, run_backup: false, backup_options: {})
-    self.amazon_backup = backup
-    self.save!
-    Job::AmazonBackup.create_for(backup, backup_options) if run_backup
-  end
-
-
-  def perform_amazon_backup_completed
-    be_in_state_and_requeue('email_done')
   end
 
   def perform_email_staging_directory_missing
