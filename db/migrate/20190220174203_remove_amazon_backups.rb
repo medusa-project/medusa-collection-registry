@@ -2,7 +2,7 @@ require 'simple_trigger_helper'
 class RemoveAmazonBackups < ActiveRecord::Migration[5.2]
 
   def up
-    AmazonBackup.connection.execute('DROP VIEW IF EXISTS view_file_groups_latest_amazon_backup;')
+    CfsFile.connection.execute('DROP VIEW IF EXISTS view_file_groups_latest_amazon_backup;')
     SimpleTriggerHelper.new(source_table: :workflow_accrual_jobs, target_table: :amazon_backups).drop_trigger
     SimpleTriggerHelper.new(source_table: :workflow_ingests, target_table: :amazon_backups).drop_trigger
     SimpleTriggerHelper.new(source_table: :amazon_backups, target_table: :cfs_directories).drop_trigger
