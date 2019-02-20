@@ -81,7 +81,7 @@ SQL
 
   def drop_touch_trigger_function_sql
     <<SQL
-  DROP FUNCTION IF EXISTS #{touch_trigger_name}();
+  DROP FUNCTION IF EXISTS #{touch_function_name}();
 SQL
   end
 
