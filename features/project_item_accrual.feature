@@ -72,7 +72,7 @@ Feature: Project Item Accrual
     When I perform project item ingest workflows
     Then 'manager@example.com' should receive an email with subject 'Medusa: Project Item ingest progress'
     And there should be 1 project item ingest workflow delayed job
-    
+
   Scenario: Try ingest with staging directory not existing
     Given every collection with fields exists:
       | title   | id |
