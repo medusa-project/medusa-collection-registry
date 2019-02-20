@@ -21,7 +21,7 @@ class Workflow::ProjectItemIngest < Workflow::Base
 
   def perform_email_progress
     Workflow::ProjectItemIngestMailer.progress(self).deliver_now
-    be_in_state_and_requeue('amazon_backup')
+    be_in_state_and_requeue('email_done')
   end
 
   def perform_email_done

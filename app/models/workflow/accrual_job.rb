@@ -257,7 +257,7 @@ class Workflow::AccrualJob < Workflow::Base
       end
     else
       Workflow::AccrualMailer.assessment_done(self).deliver_now
-      be_in_state_and_requeue('amazon_backup')
+      be_in_state_and_requeue('email_done')
     end
   end
 

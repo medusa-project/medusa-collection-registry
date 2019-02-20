@@ -71,7 +71,6 @@ Feature: Project Item Accrual
     Given the user 'manager@example.com' has a project item ingest workflow in state 'email_progress'
     When I perform project item ingest workflows
     Then 'manager@example.com' should receive an email with subject 'Medusa: Project Item ingest progress'
-    And there should be 1 project item ingest workflow in state 'amazon_backup'
     And there should be 1 project item ingest workflow delayed job
 
   Scenario: Ingest process amazon backup completed
