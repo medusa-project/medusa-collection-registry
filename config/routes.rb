@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   resources :repositories, concerns: %i(eventable red_flaggable assessable collection_indexer) do
     get :edit_ldap_admins, on: :collection
     put :update_ldap_admin, on: :member
-    %i(show_file_stats show_running_processes show_red_flags show_events show_amazon show_accruals).each do |action|
+    %i(show_file_stats show_running_processes show_red_flags show_events show_accruals).each do |action|
       get action, on: :member
     end
   end
@@ -53,13 +53,10 @@ Rails.application.routes.draw do
   [:file_groups, :external_file_groups, :bit_level_file_groups].each do |file_group_type|
     resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy],
               concerns: %i(eventable red_flaggable assessable attachable) do
-      %i(create_amazon_backup create_initial_cfs_assessment).each do |action|
-        post action, on: :member
-      end if file_group_type == :bit_level_file_groups
+      post :create_initial_cfs_assessment, on: :member if file_group_type == :bit_level_file_groups
       if file_group_type == :external_file_groups
         post :create_bit_level, on: :member
       end
-      post :bulk_amazon_backup, on: :collection
       get :content_type_manifest, on: :member
       get :new_event, on: :member
     end
@@ -132,7 +129,7 @@ Rails.application.routes.draw do
   resources :uuids, only: [:show]
 
   match '/dashboard', to: 'dashboard#show', as: :dashboard, via: [:get, :post]
-  %w(running_processes file_stats red_flags events amazon accruals file_group_deletions).each do |action|
+  %w(running_processes file_stats red_flags events accruals file_group_deletions).each do |action|
     match "/dashboard/#{action}", to: "dashboard##{action}", as: :"#{action}_dashboard", via: :get
   end
 

@@ -1,9 +1,4 @@
 en:
-  amazon_mailer:
-    failure:
-      subject: Amazon backup failure
-    progress:
-      subject: Amazon backup progress
   cfs_mailer:
     export_complete:
       subject: Download ready

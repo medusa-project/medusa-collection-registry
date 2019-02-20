@@ -5,7 +5,6 @@ en:
     ingest_state_labels:
       start: Starting
       copying: Copying from staging
-      amazon_backup: Backing up to Amazon
       end: Ended
       unknown: Unknown
   default:

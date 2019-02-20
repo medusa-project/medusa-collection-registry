@@ -19,9 +19,6 @@ $consecutive_errors = 0
 #handle responses from medusa-downloader
 Downloader::Request.listen
 
-#handle responses from medusa-glacier
-AmqpResponse::AmazonBackup.listen
-
 #handle responses from medusa-fixity
 AmqpResponse::Fixity.listen
 
