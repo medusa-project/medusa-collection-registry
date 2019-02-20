@@ -9,7 +9,6 @@ class Workflow::AccrualJob < Workflow::Base
 
   belongs_to :cfs_directory
   belongs_to :user
-  belongs_to :amazon_backup
 
   has_many :workflow_accrual_directories, class_name: 'Workflow::AccrualDirectory', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
   has_many :workflow_accrual_files, class_name: 'Workflow::AccrualFile', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
@@ -254,7 +253,7 @@ class Workflow::AccrualJob < Workflow::Base
 
   def archive(completion_state)
     ArchivedAccrualJob.create!(workflow_accrual_job_id: self.id, file_group_id: file_group.id, cfs_directory_id: cfs_directory_id,
-                               amazon_backup_id: amazon_backup_id, user_id: user_id, state: completion_state, staging_path: staging_path, report: render_report)
+                               user_id: user_id, state: completion_state, staging_path: staging_path, report: render_report)
   end
 
   def abort_and_proceed

@@ -7,7 +7,6 @@ Feature: Touching associated models
     When I touch a model the associated model's timestamp is updated for:
       | cfs_file                              | file_extension, content_type, cfs_directory |
       | access_system_collection_join         | access_system, collection                   |
-      | amazon_backup                         | cfs_directory, user                         |
       | assessment                            | storage_medium                              |
       | collection                            | repository                                  |
       | file_group                            | collection, producer                        |
@@ -19,4 +18,4 @@ Feature: Touching associated models
       | workflow_accrual_conflict             | workflow_accrual_job                        |
       | workflow_accrual_directory            | workflow_accrual_job                        |
       | workflow_accrual_file                 | workflow_accrual_job                        |
-      | workflow_accrual_job                  | cfs_directory, user, amazon_backup          |
+      | workflow_accrual_job                  | cfs_directory, user                         |

@@ -58,7 +58,6 @@ wait_delete_content delete_content restore_content email_restored_content email_
   def perform_delete_content
     delete_db_backup_tables
     delete_held_content
-    delete_amazon_backups
     Event.create!(eventable: collection, key: :file_group_delete_final, actor_email: requester.email,
                   note: "File Group #{file_group_id} - #{cached_file_group_title} | Collection: #{cached_collection_id}") if collection.present?
     be_in_state_and_requeue('email_requester_final_removal')
@@ -68,7 +67,6 @@ wait_delete_content delete_content restore_content email_restored_content email_
     restore_physical_content
     restore_db_content
     file_group.after_restore
-    AmazonBackup.create_and_schedule(requester, file_group.cfs_directory) if Settings.medusa.fg_delete.amazon_backup_on_restore
     Event.create!(eventable: collection, key: :file_group_delete_restored, actor_email: requester.email,
                   note: "File Group #{file_group.id} - #{file_group.title} | Collection: #{collection.id}")
     be_in_state_and_requeue('email_restored_content')
@@ -262,12 +260,6 @@ SQL
     INSERT INTO events (SELECT * FROM #{db_backup_schema_name}.events);
     DROP SCHEMA IF EXISTS #{db_backup_schema_name} CASCADE;
 SQL
-  end
-
-  def delete_amazon_backups
-    AmazonBackup.where(cfs_directory_id: cached_cfs_directory_id).each do |amazon_backup|
-      amazon_backup.delete_archives_and_self
-    end
   end
 
 end

@@ -1,6 +1,5 @@
 #Whenever you need an outside class to do a state transform
-#(e.g. Amazon backups need to wait and do it when they receive
-#notification of the completion of the backup) you should use the
+#you should use the
 #following pattern: Define a <state>_completed state and have the
 #outside class use the complete_current_action method, which moves
 #from <state> to <state>_completed and requeues. Then have the <state>_completed

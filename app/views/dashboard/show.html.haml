@@ -12,8 +12,6 @@
       = render 'shared_js/datatables_load', id: 'red-flags', path: red_flags_dashboard_path, table_ids: 'red-flags-table'
     #combined-events-tab.tab-pane
       = render 'shared_js/datatables_load', id: 'combined-events-tab', path: events_dashboard_path, table_ids: 'events'
-    #amazon.tab-pane
-      = render 'shared_js/datatables_load', id: 'amazon', path: amazon_dashboard_path, table_ids: 'amazon-backups-table'
     #accruals.tab-pane
       = render 'shared_js/datatables_load', id: 'accruals', path: accruals_dashboard_path, table_ids: 'accruals_table'
     - if current_user&.superuser?

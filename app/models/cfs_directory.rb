@@ -12,7 +12,6 @@ class CfsDirectory < ApplicationRecord
   has_many :subdirectories, class_name: 'CfsDirectory', as: :parent, dependent: :destroy
   has_many :cfs_files, dependent: :destroy
   belongs_to :root_cfs_directory, class_name: 'CfsDirectory'
-  has_many :amazon_backups, -> {order 'date desc'}
   has_many :archived_accrual_jobs, dependent: :destroy
   has_many :workflow_accrual_jobs, :class_name => 'Workflow::AccrualJob', dependent: :destroy
   belongs_to :parent, polymorphic: true, touch: true

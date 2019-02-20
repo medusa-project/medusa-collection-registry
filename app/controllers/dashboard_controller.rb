@@ -1,5 +1,4 @@
 class DashboardController < ApplicationController
-  include DashboardCommon
   include ModelsToCsv
 
   before_action :require_medusa_user
@@ -56,13 +55,6 @@ SQL
   def events
     @events = Event.descending_date.recent.cascadable.includes(eventable: :parent)
     render partial: 'events', layout: false
-  end
-
-  def amazon
-    file_groups = FileGroup.connection.select_all('SELECT * FROM view_file_group_dashboard_info').to_hash.collect { |h| h.with_indifferent_access }
-    backups = FileGroup.connection.select_rows('SELECT * FROM view_file_groups_latest_amazon_backup')
-    @amazon_info = amazon_info(file_groups, backups)
-    render partial: 'amazon', layout: false
   end
 
   def accruals

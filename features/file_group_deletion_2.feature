@@ -74,4 +74,3 @@ Feature: File Group Deletion Part Two
       | intro.txt | picture.jpg | description.txt |
     And 0 cfs files should have fits attached
     And the collection with title 'Animals' should have an event with key 'file_group_delete_restored' performed by 'manager@example.com'
-    And there should be 1 amazon backup delayed job

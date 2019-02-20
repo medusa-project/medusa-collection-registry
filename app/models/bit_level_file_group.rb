@@ -71,14 +71,6 @@ class BitLevelFileGroup < FileGroup
     total_files
   end
 
-  def amazon_backups
-    self.cfs_directory.present? ? self.cfs_directory.amazon_backups : []
-  end
-
-  def last_amazon_backup
-    self.amazon_backups.first
-  end
-
   def is_currently_assessable?
     !(Job::CfsInitialFileGroupAssessment.find_by(file_group_id: self.id) or
         Job::CfsInitialDirectoryAssessment.find_by(file_group_id: self.id))

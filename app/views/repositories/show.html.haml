@@ -18,7 +18,5 @@
       = render 'shared_js/datatables_load', id: 'red-flags', path: show_red_flags_repository_path(@repository), table_ids: 'red-flags-table'
     #combined-events-tab.tab-pane
       = render 'shared_js/datatables_load', id: 'combined-events-tab', path: show_events_repository_path(@repository), table_ids: 'events'
-    #amazon.tab-pane
-      = render 'shared_js/datatables_load', id: 'amazon', path: show_amazon_repository_path(@repository), table_ids: 'amazon-backups-table'
     #accruals.tab-pane
       = render 'shared_js/datatables_load', id: 'accruals', path: show_accruals_repository_path(@repository), table_ids: 'accruals_table'

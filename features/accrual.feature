@@ -111,7 +111,6 @@ Feature: File accrual
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
-    And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa: Accrual aborted'
     And the archived accrual job with fields should exist:
       | state   |
@@ -135,7 +134,6 @@ Feature: File accrual
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
-    And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa: Accrual aborted' containing all of:
       | Abort message |
 
@@ -178,7 +176,6 @@ Feature: File accrual
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
-    And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa: Accrual aborted'
 
   @javascript
@@ -200,7 +197,6 @@ Feature: File accrual
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
-    And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa: Accrual aborted' containing all of:
       | Abort message |
 
@@ -257,7 +253,6 @@ Feature: File accrual
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
-    And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa: Accrual aborted'
 
   @javascript
@@ -275,11 +270,11 @@ Feature: File accrual
       | intro.txt | pugs/description.txt | Request comment |
     When I relogin as an admin
     When I select accrual action 'Abort' with comment 'Abort comment'
+    And I wait 10 seconds
     Then the cfs directory with path 'dogs' should not have an accrual job
     And the file group titled 'Dogs' should not have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should not have a cfs file for the path 'joe.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'intro.txt'
-    And there should be 0 amazon backup delayed jobs
     Then 'manager@example.com' should receive an email with subject 'Medusa: Accrual aborted' containing all of:
       | Request comment | Abort comment |
 

@@ -1,12 +1,11 @@
 class RepositoriesController < ApplicationController
-  include DashboardCommon
 
   before_action :require_medusa_user, except: [:show]
   before_action :require_medusa_user_or_basic_auth, only: [:show]
   before_action :find_repository, only: [:edit, :update, :destroy, :red_flags, :update_ldap_admin,
                                          :collections, :events, :assessments,
                                          :show_file_stats, :show_running_processes, :show_red_flags, :show_events,
-                                         :show_amazon, :show_accruals]
+                                         :show_accruals]
   include ModelsToCsv
 
   helper_method :load_file_extension_stats, :load_content_type_stats
@@ -56,13 +55,6 @@ class RepositoriesController < ApplicationController
 
   def show_events
     render partial: 'events', layout: false
-  end
-
-  def show_amazon
-    file_groups = FileGroup.connection.select_all('SELECT * FROM view_file_group_dashboard_info WHERE repository_id = $1', nil, [[nil, @repository.id]]).to_hash.collect { |h| h.with_indifferent_access }
-    backups = FileGroup.connection.select_rows('SELECT * FROM view_file_groups_latest_amazon_backup V WHERE repository_id = $1', nil, [[nil, @repository.id]])
-    @amazon_info = amazon_info(file_groups, backups)
-    render partial: 'amazon', layout: false
   end
 
   def show_accruals

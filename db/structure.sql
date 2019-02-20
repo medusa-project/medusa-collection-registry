@@ -9,20 +9,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
 -- Name: access_system_collection_joins_touch_access_system(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -68,58 +54,6 @@ CREATE FUNCTION public.access_system_collection_joins_touch_collection() RETURNS
         UPDATE collections
         SET updated_at = localtimestamp
         WHERE id = OLD.collection_id;
-      END IF;
-      RETURN NULL;
-    END;
-$$;
-
-
---
--- Name: amazon_backups_touch_cfs_directory(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.amazon_backups_touch_cfs_directory() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-    BEGIN
-      IF (TG_OP = 'INSERT') THEN
-        UPDATE cfs_directories
-        SET updated_at = NEW.updated_at
-        WHERE id = NEW.cfs_directory_id;
-      ELSIF (TG_OP = 'UPDATE') THEN
-        UPDATE cfs_directories
-        SET updated_at = NEW.updated_at
-        WHERE (id = NEW.cfs_directory_id OR id = OLD.cfs_directory_id);
-      ELSIF (TG_OP = 'DELETE') THEN
-        UPDATE cfs_directories
-        SET updated_at = localtimestamp
-        WHERE id = OLD.cfs_directory_id;
-      END IF;
-      RETURN NULL;
-    END;
-$$;
-
-
---
--- Name: amazon_backups_touch_user(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.amazon_backups_touch_user() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-    BEGIN
-      IF (TG_OP = 'INSERT') THEN
-        UPDATE users
-        SET updated_at = NEW.updated_at
-        WHERE id = NEW.user_id;
-      ELSIF (TG_OP = 'UPDATE') THEN
-        UPDATE users
-        SET updated_at = NEW.updated_at
-        WHERE (id = NEW.user_id OR id = OLD.user_id);
-      ELSIF (TG_OP = 'DELETE') THEN
-        UPDATE users
-        SET updated_at = localtimestamp
-        WHERE id = OLD.user_id;
       END IF;
       RETURN NULL;
     END;
@@ -1100,32 +1034,6 @@ $$;
 
 
 --
--- Name: workflow_accrual_jobs_touch_amazon_backup(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.workflow_accrual_jobs_touch_amazon_backup() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-    BEGIN
-      IF (TG_OP = 'INSERT') THEN
-        UPDATE amazon_backups
-        SET updated_at = NEW.updated_at
-        WHERE id = NEW.amazon_backup_id;
-      ELSIF (TG_OP = 'UPDATE') THEN
-        UPDATE amazon_backups
-        SET updated_at = NEW.updated_at
-        WHERE (id = NEW.amazon_backup_id OR id = OLD.amazon_backup_id);
-      ELSIF (TG_OP = 'DELETE') THEN
-        UPDATE amazon_backups
-        SET updated_at = localtimestamp
-        WHERE id = OLD.amazon_backup_id;
-      END IF;
-      RETURN NULL;
-    END;
-$$;
-
-
---
 -- Name: workflow_accrual_jobs_touch_cfs_directory(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1171,32 +1079,6 @@ CREATE FUNCTION public.workflow_accrual_jobs_touch_user() RETURNS trigger
         UPDATE users
         SET updated_at = localtimestamp
         WHERE id = OLD.user_id;
-      END IF;
-      RETURN NULL;
-    END;
-$$;
-
-
---
--- Name: workflow_ingests_touch_amazon_backup(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.workflow_ingests_touch_amazon_backup() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-    BEGIN
-      IF (TG_OP = 'INSERT') THEN
-        UPDATE amazon_backups
-        SET updated_at = NEW.updated_at
-        WHERE id = NEW.amazon_backup_id;
-      ELSIF (TG_OP = 'UPDATE') THEN
-        UPDATE amazon_backups
-        SET updated_at = NEW.updated_at
-        WHERE (id = NEW.amazon_backup_id OR id = OLD.amazon_backup_id);
-      ELSIF (TG_OP = 'DELETE') THEN
-        UPDATE amazon_backups
-        SET updated_at = localtimestamp
-        WHERE id = OLD.amazon_backup_id;
       END IF;
       RETURN NULL;
     END;
@@ -1351,41 +1233,6 @@ ALTER SEQUENCE public.access_systems_id_seq OWNED BY public.access_systems.id;
 
 
 --
--- Name: amazon_backups; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.amazon_backups (
-    id integer NOT NULL,
-    cfs_directory_id integer,
-    part_count integer,
-    date date,
-    archive_ids text,
-    user_id integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: amazon_backups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.amazon_backups_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: amazon_backups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.amazon_backups_id_seq OWNED BY public.amazon_backups.id;
-
-
---
 -- Name: amqp_accrual_delete_jobs; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1470,7 +1317,6 @@ CREATE TABLE public.archived_accrual_jobs (
     id integer NOT NULL,
     report text,
     file_group_id integer,
-    amazon_backup_id integer,
     user_id integer NOT NULL,
     workflow_accrual_job_id integer NOT NULL,
     state text NOT NULL,
@@ -2682,35 +2528,6 @@ CREATE SEQUENCE public.items_id_seq
 --
 
 ALTER SEQUENCE public.items_id_seq OWNED BY public.items.id;
-
-
---
--- Name: job_amazon_backups; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.job_amazon_backups (
-    id integer NOT NULL,
-    amazon_backup_id integer
-);
-
-
---
--- Name: job_amazon_backups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.job_amazon_backups_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: job_amazon_backups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.job_amazon_backups_id_seq OWNED BY public.job_amazon_backups.id;
 
 
 --
@@ -4011,35 +3828,14 @@ CREATE VIEW public.view_file_group_dashboard_info AS
     c.id AS collection_id,
     c.title AS collection_title,
     r.id AS repository_id,
-    r.title AS repository_title
+    r.title AS repository_title,
+    c.external_id AS collection_external_id
    FROM public.file_groups fg,
     public.collections c,
     public.repositories r,
     public.cfs_directories cfs
   WHERE (((fg.type)::text = 'BitLevelFileGroup'::text) AND (fg.collection_id = c.id) AND (c.repository_id = r.id) AND ((cfs.parent_type)::text = 'FileGroup'::text) AND (cfs.parent_id = fg.id))
   ORDER BY fg.id;
-
-
---
--- Name: view_file_groups_latest_amazon_backup; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.view_file_groups_latest_amazon_backup AS
- SELECT fg.id AS file_group_id,
-    ab.part_count,
-    ab.archive_ids,
-    ab.date,
-    r.id AS repository_id
-   FROM public.amazon_backups ab,
-    ( SELECT amazon_backups.cfs_directory_id,
-            max(amazon_backups.date) AS max_date
-           FROM public.amazon_backups
-          GROUP BY amazon_backups.cfs_directory_id) ablu,
-    public.cfs_directories cfs,
-    public.file_groups fg,
-    public.collections c,
-    public.repositories r
-  WHERE ((ab.cfs_directory_id = ablu.cfs_directory_id) AND (ab.date = ablu.max_date) AND (ab.part_count IS NOT NULL) AND (ab.archive_ids IS NOT NULL) AND (cfs.id = ab.cfs_directory_id) AND (fg.id = cfs.parent_id) AND ((cfs.parent_type)::text = 'FileGroup'::text) AND (fg.collection_id = c.id) AND (c.repository_id = r.id));
 
 
 --
@@ -4341,7 +4137,6 @@ CREATE TABLE public.workflow_accrual_jobs (
     user_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    amazon_backup_id integer,
     allow_overwrite boolean DEFAULT false,
     empty_file_report text DEFAULT ''::text
 );
@@ -4446,8 +4241,7 @@ CREATE TABLE public.workflow_ingests (
     bit_level_file_group_id integer,
     user_id integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    amazon_backup_id integer
+    updated_at timestamp without time zone
 );
 
 
@@ -4512,8 +4306,7 @@ CREATE TABLE public.workflow_project_item_ingests (
     project_id integer,
     user_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    amazon_backup_id integer
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -4548,13 +4341,6 @@ ALTER TABLE ONLY public.access_system_collection_joins ALTER COLUMN id SET DEFAU
 --
 
 ALTER TABLE ONLY public.access_systems ALTER COLUMN id SET DEFAULT nextval('public.access_systems_id_seq'::regclass);
-
-
---
--- Name: amazon_backups id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.amazon_backups ALTER COLUMN id SET DEFAULT nextval('public.amazon_backups_id_seq'::regclass);
 
 
 --
@@ -4793,13 +4579,6 @@ ALTER TABLE ONLY public.institutions ALTER COLUMN id SET DEFAULT nextval('public
 --
 
 ALTER TABLE ONLY public.items ALTER COLUMN id SET DEFAULT nextval('public.items_id_seq'::regclass);
-
-
---
--- Name: job_amazon_backups id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.job_amazon_backups ALTER COLUMN id SET DEFAULT nextval('public.job_amazon_backups_id_seq'::regclass);
 
 
 --
@@ -5127,14 +4906,6 @@ ALTER TABLE ONLY public.access_systems
 
 
 --
--- Name: amazon_backups amazon_backups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.amazon_backups
-    ADD CONSTRAINT amazon_backups_pkey PRIMARY KEY (id);
-
-
---
 -- Name: amqp_accrual_delete_jobs amqp_accrual_delete_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5420,14 +5191,6 @@ ALTER TABLE ONLY public.institutions
 
 ALTER TABLE ONLY public.items
     ADD CONSTRAINT items_pkey PRIMARY KEY (id);
-
-
---
--- Name: job_amazon_backups job_amazon_backups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.job_amazon_backups
-    ADD CONSTRAINT job_amazon_backups_pkey PRIMARY KEY (id);
 
 
 --
@@ -5922,31 +5685,10 @@ CREATE INDEX index_access_systems_on_updated_at ON public.access_systems USING b
 
 
 --
--- Name: index_amazon_backups_on_cfs_directory_id_and_date; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_amazon_backups_on_cfs_directory_id_and_date ON public.amazon_backups USING btree (cfs_directory_id, date);
-
-
---
--- Name: index_amazon_backups_on_updated_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_amazon_backups_on_updated_at ON public.amazon_backups USING btree (updated_at);
-
-
---
 -- Name: index_amqp_accrual_delete_jobs_on_client; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_amqp_accrual_delete_jobs_on_client ON public.amqp_accrual_delete_jobs USING btree (client);
-
-
---
--- Name: index_archived_accrual_jobs_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_archived_accrual_jobs_on_amazon_backup_id ON public.archived_accrual_jobs USING btree (amazon_backup_id);
 
 
 --
@@ -6475,13 +6217,6 @@ CREATE INDEX index_items_on_status ON public.items USING btree (status);
 
 
 --
--- Name: index_job_amazon_backups_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_job_amazon_backups_on_amazon_backup_id ON public.job_amazon_backups USING btree (amazon_backup_id);
-
-
---
 -- Name: index_job_cfs_initial_directory_assessments_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6930,13 +6665,6 @@ CREATE INDEX index_workflow_accrual_files_on_workflow_accrual_job_id ON public.w
 
 
 --
--- Name: index_workflow_accrual_jobs_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workflow_accrual_jobs_on_amazon_backup_id ON public.workflow_accrual_jobs USING btree (amazon_backup_id);
-
-
---
 -- Name: index_workflow_accrual_jobs_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6983,13 +6711,6 @@ CREATE INDEX index_workflow_file_group_deletes_on_requester_id ON public.workflo
 --
 
 CREATE INDEX index_workflow_file_group_deletes_on_state ON public.workflow_file_group_deletes USING btree (state);
-
-
---
--- Name: index_workflow_ingests_on_amazon_backup_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workflow_ingests_on_amazon_backup_id ON public.workflow_ingests USING btree (amazon_backup_id);
 
 
 --
@@ -7088,20 +6809,6 @@ CREATE TRIGGER access_system_collection_joins_touch_access_system_trigger AFTER 
 --
 
 CREATE TRIGGER access_system_collection_joins_touch_collection_trigger AFTER INSERT OR DELETE OR UPDATE ON public.access_system_collection_joins FOR EACH ROW EXECUTE PROCEDURE public.access_system_collection_joins_touch_collection();
-
-
---
--- Name: amazon_backups amazon_backups_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER amazon_backups_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON public.amazon_backups FOR EACH ROW EXECUTE PROCEDURE public.amazon_backups_touch_cfs_directory();
-
-
---
--- Name: amazon_backups amazon_backups_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER amazon_backups_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON public.amazon_backups FOR EACH ROW EXECUTE PROCEDURE public.amazon_backups_touch_user();
 
 
 --
@@ -7315,13 +7022,6 @@ CREATE TRIGGER workflow_accrual_files_touch_workflow_accrual_job_trigger AFTER I
 
 
 --
--- Name: workflow_accrual_jobs workflow_accrual_jobs_touch_amazon_backup_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER workflow_accrual_jobs_touch_amazon_backup_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_jobs FOR EACH ROW EXECUTE PROCEDURE public.workflow_accrual_jobs_touch_amazon_backup();
-
-
---
 -- Name: workflow_accrual_jobs workflow_accrual_jobs_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -7333,13 +7033,6 @@ CREATE TRIGGER workflow_accrual_jobs_touch_cfs_directory_trigger AFTER INSERT OR
 --
 
 CREATE TRIGGER workflow_accrual_jobs_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_jobs FOR EACH ROW EXECUTE PROCEDURE public.workflow_accrual_jobs_touch_user();
-
-
---
--- Name: workflow_ingests workflow_ingests_touch_amazon_backup_trigger; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER workflow_ingests_touch_amazon_backup_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_ingests FOR EACH ROW EXECUTE PROCEDURE public.workflow_ingests_touch_amazon_backup();
 
 
 --
@@ -7572,14 +7265,6 @@ ALTER TABLE ONLY public.file_format_notes
 
 
 --
--- Name: workflow_accrual_jobs fk_rails_9fe508decd; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.workflow_accrual_jobs
-    ADD CONSTRAINT fk_rails_9fe508decd FOREIGN KEY (amazon_backup_id) REFERENCES public.amazon_backups(id);
-
-
---
 -- Name: job_item_bulk_imports fk_rails_ac902747ea; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7689,14 +7374,6 @@ ALTER TABLE ONLY public.job_fixity_checks
 
 ALTER TABLE ONLY public.file_format_normalization_paths
     ADD CONSTRAINT fk_rails_f4f83033da FOREIGN KEY (file_format_id) REFERENCES public.file_formats(id);
-
-
---
--- Name: archived_accrual_jobs fk_rails_f584154b33; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.archived_accrual_jobs
-    ADD CONSTRAINT fk_rails_f584154b33 FOREIGN KEY (amazon_backup_id) REFERENCES public.amazon_backups(id);
 
 
 --
@@ -8003,6 +7680,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180829135002'),
 ('20180831195356'),
 ('20180831201248'),
-('20180918144251');
+('20180918144251'),
+('20190220174203');
 
 

@@ -8,8 +8,6 @@
     = show_field @archived_accrual_job, :staging_path
     = show_field @archived_accrual_job, :state
     = show_value @archived_accrual_job.user.email, 'User Email'
-    - if @archived_accrual_job.amazon_backup
-      = show_value @archived_accrual_job.amazon_backup.completed? ? 'completed' : 'pending', 'Amazon Backup'
   %hr
   .row
     %h4 Report

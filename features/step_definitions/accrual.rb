@@ -62,15 +62,6 @@ When /^I select accrual action '([^']*)' with comment '([^']*)'$/ do |action, co
     And I wait 0.5 seconds)
 end
 
-
-Then /^accrual amazon backup for file group '(.*)' and user '(.*)' should happen$/ do |title, user|
-  steps %Q(
-    Then there should be 1 amazon backup delayed job
-    When amazon backup runs successfully
-    Then the file group titled '#{title}' should have a completed Amazon backup
-    And '#{user}' should receive an email with subject 'Medusa: Amazon backup progress')
-end
-
 Then /^accrual assessment for the cfs directory with path '(.*)' has (\d+) files?, (\d+) director(?:y|ies), (\d+) minor conflicts?, and (\d+) serious conflicts?$/ do |path, file_count, directory_count, minor_conflict_count, serious_conflict_count|
   steps %Q(
     Then the cfs directory with path '#{path}' should have an accrual job with #{file_count} files and #{directory_count} directories
