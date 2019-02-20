@@ -74,34 +74,6 @@ Feature: Project Item Accrual
     And there should be 1 project item ingest workflow in state 'amazon_backup'
     And there should be 1 project item ingest workflow delayed job
 
-    #Since the setup is a little complex we combine the test for requesting and receive notice of amazon backup
-  Scenario: Ingest request amazon backup and receive notice of amazon backup
-    Given every collection with fields exists:
-      | title   | id |
-      | Animals | 10  |
-    And every bit level file group with fields exists:
-      | title | collection_id | id |
-      | Dogs  | 10             | 10  |
-    And the uuid of the cfs directory with path '10/10' is '2c90f940-c6e1-0134-cb7e-0c4de9bac164-5'
-    And every project with fields exists:
-      | title   | destination_folder_uuid                | collection_id |
-      | Animals | 2c90f940-c6e1-0134-cb7e-0c4de9bac164-5 | 10             |
-    And the project with title 'Animals' has child items with fields:
-      | unique_identifier |
-      | item_1            |
-    And there is a project item ingest workflow for the project with title 'Animals' in state 'amazon_backup' for items with ingest identifier:
-      | item_1 |
-    When I perform project item ingest workflows
-    Then there should be 1 project item ingest workflow in state 'amazon_backup'
-    And there should be 0 project item ingest workflow delayed jobs
-    And there should be 1 amazon backup delayed job
-    When delayed jobs are run
-    And amazon backup runs successfully
-    Then there should be 1 project item ingest workflow in state 'amazon_backup_completed'
-    Then there should be 0 project item ingest workflows in state 'amazon_backup'
-    And there should be 1 project item ingest workflow delayed job
-    And the file group titled 'Dogs' should have a completed Amazon backup
-
   Scenario: Ingest process amazon backup completed
     Given the user 'manager@example.com' has a project item ingest workflow in state 'amazon_backup_completed'
     When I perform project item ingest workflows

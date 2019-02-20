@@ -90,10 +90,8 @@ Feature: File accrual
     When I wait 1 second
     And delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa: Accrual assessment completed'
-    When accrual amazon backup for file group 'Dogs' and user 'manager@example.com' should happen
     And delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa: Accrual completed'
-    And the file group with title 'Dogs' should have an event with key 'amazon_backup_completed' performed by 'manager@example.com'
     And the archived accrual job with fields should exist:
       | state     |
       | completed |
@@ -162,7 +160,6 @@ Feature: File accrual
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
     When I wait 1 second
     And delayed jobs are run
-    And accrual amazon backup for file group 'Dogs' and user 'manager@example.com' should happen
     When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa: Accrual completed'
 
@@ -231,8 +228,6 @@ Feature: File accrual
     And the cfs_file with name 'description.txt' should have an event with key 'fixity_reset' performed by 'manager@example.com'
     When I wait 1 second
     And delayed jobs are run
-    And accrual amazon backup for file group 'Dogs' and user 'manager@example.com' should happen
-    When delayed jobs are run
     Then 'manager@example.com' should receive an email with subject 'Medusa: Accrual completed'
 
   @javascript

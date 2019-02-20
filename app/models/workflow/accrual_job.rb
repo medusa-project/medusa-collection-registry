@@ -206,8 +206,8 @@ class Workflow::AccrualJob < Workflow::Base
   #In addition to this we need to make the association to AmazonBackup one to many and the message receiving method
   #must reflect that.
   def perform_amazon_backup
-    # be_in_state_and_requeue('amazon_backup_completed')
-    # return
+    be_in_state_and_requeue('amazon_backup_completed')
+    return
     #TODO this return doesn't get us out of this state - may need to do
     #something else instead. If the file group isn't present what does that
     #mean?
