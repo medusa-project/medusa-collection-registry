@@ -78,14 +78,14 @@ Feature: Project Item Accrual
   Scenario: Ingest request amazon backup and receive notice of amazon backup
     Given every collection with fields exists:
       | title   | id |
-      | Animals | 1  |
+      | Animals | 10  |
     And every bit level file group with fields exists:
       | title | collection_id | id |
-      | Dogs  | 1             | 1  |
-    And the uuid of the cfs directory with path '1/1' is '2c90f940-c6e1-0134-cb7e-0c4de9bac164-5'
+      | Dogs  | 10             | 10  |
+    And the uuid of the cfs directory with path '10/10' is '2c90f940-c6e1-0134-cb7e-0c4de9bac164-5'
     And every project with fields exists:
       | title   | destination_folder_uuid                | collection_id |
-      | Animals | 2c90f940-c6e1-0134-cb7e-0c4de9bac164-5 | 1             |
+      | Animals | 2c90f940-c6e1-0134-cb7e-0c4de9bac164-5 | 10             |
     And the project with title 'Animals' has child items with fields:
       | unique_identifier |
       | item_1            |

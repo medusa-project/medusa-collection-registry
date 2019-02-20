@@ -45,8 +45,8 @@ class Workflow::ProjectItemIngest < Workflow::Base
 
   #this is based off of the one in Workflow::AccrualJob and we might be able to unify them
   def perform_amazon_backup
-    be_in_state_and_requeue('amazon_backup_completed')
-    return
+    # be_in_state_and_requeue('amazon_backup_completed')
+    # return
     file_group = project.target_cfs_directory.file_group
     return if file_group.blank?
     root_cfs_directory = file_group.cfs_directory
