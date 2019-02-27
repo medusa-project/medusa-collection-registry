@@ -152,14 +152,11 @@ Feature: File accrual
       | intro.txt | pugs/description.txt |
     And I relogin as an admin
     And I select accrual action 'Proceed'
-    Then the cfs directory with path 'dogs' should have an accrual job with 0 keys
     Then the file group titled 'Dogs' should have a cfs directory for the path 'stuff'
     And the file group titled 'Dogs' should have a cfs file for the path 'stuff/more.txt'
     And the file group titled 'Dogs' should have a cfs file for the path 'joe.txt'
     When I wait 1 second
     And delayed jobs are run
-    When delayed jobs are run
-    Then 'manager@example.com' should receive an email with subject 'Medusa: Accrual completed'
 
   @javascript
   Scenario: Harmless conflict accrual, aborted by repository admin
