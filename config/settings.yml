@@ -131,7 +131,7 @@ classes:
   attachment:
     max_size: <%= 5.megabytes %>
   cfs_file:
-    tmpdir_cutoff_size: <%= 500.megabytes %>
+    tmpdir_cutoff_size: <%= 3.gigabytes %>
     large_file_fits_cutoff_size: <%= 5.gigabytes %>
   concerns:
     excluded_files:
