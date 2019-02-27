@@ -5,12 +5,18 @@ class AmqpAccrual::IngestJob < Job::Base
 
   def self.create_for(client, message)
     job = self.new(incoming_message: message, client: client)
+    job.target_key = job.relative_target_key
     if job.content_exists? or job.staging_key.blank?
       Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Duplicate file or blank path."
       send_duplicate_file_message(client, message)
     else
-      job.save!
-      Delayed::Job.enqueue(job, queue: AmqpAccrual::Config.delayed_job_queue(client), priority: Settings.delayed_job.priority.amqp_accrual_ingest_job)
+      begin
+        job.save!
+        Delayed::Job.enqueue(job, queue: AmqpAccrual::Config.delayed_job_queue(client), priority: Settings.delayed_job.priority.amqp_accrual_ingest_job)
+      rescue
+        Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Probably a duplicate request."
+        send_duplicate_file_message(client, message)
+      end
     end
   rescue Exception => e
     Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Error: #{e}"
@@ -37,7 +43,15 @@ class AmqpAccrual::IngestJob < Job::Base
     incoming_message['staging_key'] || incoming_message['staging_path']
   end
 
+  def relative_target_key
+    incoming_message['target_key'] || File.join(staging_key.split('/').drop(1))
+  end
+
   protected
+
+  def self.pass_through(incoming_message)
+    incoming_message['pass_through'] rescue "Unable to read pass_through"
+  end
 
   def pass_through
     incoming_message['pass_through'] rescue "Unable to read pass_through"
@@ -58,10 +72,6 @@ class AmqpAccrual::IngestJob < Job::Base
 
   def cfs_directory
     AmqpAccrual::Config.cfs_directory(client)
-  end
-
-  def relative_target_key
-    incoming_message['target_key'] || File.join(staging_key.split('/').drop(1))
   end
 
   def relative_target_dirname
@@ -135,13 +145,13 @@ class AmqpAccrual::IngestJob < Job::Base
 
   def self.duplicate_file_message(incoming_message)
     {operation: 'ingest', staging_path: incoming_message['staging_path'], staging_key: incoming_message['staging_key'],
-     pass_through: pass_through,
-     status: 'error', error: 'File with the path already exists or is already scheduled for ingestion'}
+     pass_through: pass_through(incoming_message),
+     status: 'error', error: 'File with the path already exists, is already scheduled for ingestion, or stating key was blank'}
   end
 
   def self.unknown_error_message(incoming_message, error)
     {operation: 'ingest', staging_path: incoming_message['staging_path'], staging_key: incoming_message['staging_key'],
-     pass_through: pass_through, status: 'error', error: "Unknown error: #{error}"}
+     pass_through: pass_through(incoming_message), status: 'error', error: "Unknown error: #{error}"}
   end
 
   def self.send_duplicate_file_message(client, incoming_message)

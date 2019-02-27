@@ -28,3 +28,10 @@ Feature: Amqp accrual
     And the IDB ingest delayed job is run
     Then the IDB file named 'content.txt' should be present in medusa storage
     And Medusa should have sent an ingest return message to IDB with new message syntax
+
+  Scenario: Medusa receives a duplicate message from IDB
+    When IDB sends an ingest request with new message syntax
+    And Medusa picks up the IDB AMQP request
+    And IDB sends an ingest request with new message syntax
+    And Medusa picks up the IDB AMQP request
+    Then Medusa should have sent a duplicate file error return message to IDB

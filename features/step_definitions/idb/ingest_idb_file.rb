@@ -89,3 +89,14 @@ And(/^Medusa should have sent an ingest return message to IDB with new message s
     expect(message['pass_through']['key']).to eq('some value')
   end
 end
+
+Then(/^Medusa should have sent a duplicate file error return message to IDB$/) do
+  AmqpHelper::Connector[:medusa].with_message(AmqpAccrual::Config.outgoing_queue('idb')) do |raw_message|
+    message = JSON.parse(raw_message)
+    expect(message['operation']).to eq('ingest')
+    expect(message['status']).to eq('error')
+    expect(message['error']).to eq('File with the path already exists, is already scheduled for ingestion, or stating key was blank')
+    expect(message['staging_key']).to eq(IdbTestHelper.staging_key(message))
+    expect(message['pass_through']['key']).to eq('some value')
+  end
+end
