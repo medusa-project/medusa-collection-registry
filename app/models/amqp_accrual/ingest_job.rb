@@ -91,6 +91,8 @@ class AmqpAccrual::IngestJob < Job::Base
   end
 
   def copy_content
+    raise "Object already exists at target key" if target_root.exist?(full_target_key)
+    raise "Object does not exist at source key" unless source_root.exist?(staging_key)
     target_root.copy_content_to(full_target_key, source_root, staging_key)
   end
 
