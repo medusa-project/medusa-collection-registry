@@ -226,7 +226,7 @@ classes:
       assessment_error_reporting_timeout: <%= 2.days %>
       assessment_requeue_interval: <%= 5.minutes %>
       copying_batch_size: 100
-      copying_parallel_threads: 5
+      copying_parallel_threads: 3
 #set up delayed job related stuff
 delayed_job:
   priority:
