@@ -58,7 +58,7 @@ namespace :fits do
   task handle_incoming_amqp_messages: :environment do
     report_errors(handle_incoming_messages) if incoming_message_count > 0
   end
-  
+
   MAX_SLEEPS = 12
   SLEEP_TIME = 10
   #return a hash of any errors
@@ -77,7 +77,7 @@ namespace :fits do
             if message['status'] == 'success'
               cfs_file.update_fits_xml(xml: message['parameters']['fits_xml'])
             else
-              Fits::Runner.update_cfs_file(cfs_file)
+              cfs_file.ensure_fits_xml
             end
           rescue RSolr::Error::Http => e
             FileUtils.touch(FITS_STOP_FILE)
@@ -112,11 +112,11 @@ namespace :fits do
   end
 
   def incoming_message_count
-    amqp_connector.with_queue(Settings.fits.incoming_queue) { |q| q.message_count }
+    amqp_connector.with_queue(Settings.fits.incoming_queue) {|q| q.message_count}
   end
 
   def outgoing_message_count
-    amqp_connector.with_queue(Settings.fits.outgoing_queue) { |q| q.message_count }
+    amqp_connector.with_queue(Settings.fits.outgoing_queue) {|q| q.message_count}
   end
 
   #returns number of requests sent
