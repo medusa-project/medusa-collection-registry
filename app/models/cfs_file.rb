@@ -27,6 +27,7 @@ class CfsFile < ApplicationRecord
   end
 
   validates_uniqueness_of :name, scope: :cfs_directory_id, allow_blank: false
+  validates_format_of :name, without: /\//
 
   #last fixity check was ok, not ok, or the file was not found. Nil value indicates
   #that no fixity check (after possibly the initial generation of the checksum) has been run -
