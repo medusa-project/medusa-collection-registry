@@ -6,6 +6,7 @@ class Repository < ApplicationRecord
   include MedusaAutoHtml
   include EmailPersonAssociator
   include Eventable
+  include Uuidable
 
   email_person_association(:contact)
   belongs_to :institution
