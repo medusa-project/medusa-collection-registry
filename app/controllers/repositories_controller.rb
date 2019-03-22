@@ -1,7 +1,7 @@
 class RepositoriesController < ApplicationController
 
-  before_action :require_medusa_user, except: [:show]
-  before_action :require_medusa_user_or_basic_auth, only: [:show]
+  before_action :require_medusa_user, except: [:show, :index]
+  before_action :require_medusa_user_or_basic_auth, only: [:show, :index]
   before_action :find_repository, only: [:edit, :update, :destroy, :red_flags, :update_ldap_admin,
                                          :collections, :events, :assessments,
                                          :show_file_stats, :show_running_processes, :show_red_flags, :show_events,
@@ -76,6 +76,7 @@ class RepositoriesController < ApplicationController
     @repositories = Repository.all.includes(collections: :bit_level_file_groups).includes(:contact)
     respond_to do |format|
       format.html
+      format.json
       format.csv { send_data repositories_to_csv(@repositories), type: 'text/csv', filename: 'repositories.csv' }
     end
   end
