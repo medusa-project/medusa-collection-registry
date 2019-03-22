@@ -8,3 +8,4 @@
     = show_value @repository.total_size.to_s(:rounded, precision: 2), 'Total Size (GB)'
     = show_field @repository, :active_start_date, 'Active Start Date'
     = show_field @repository, :active_end_date, 'Active End Date'
+    = show_field @repository, :uuid

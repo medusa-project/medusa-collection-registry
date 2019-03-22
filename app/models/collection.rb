@@ -33,7 +33,7 @@ class Collection < ApplicationRecord
   has_many :parent_collection_joins, class_name: 'SubcollectionJoin', foreign_key: :child_collection_id, dependent: :destroy
   has_many :parent_collections, -> { order('title ASC') }, through: :parent_collection_joins
 
-  delegate :title, to: :repository, prefix: true
+  delegate :title, :uuid, to: :repository, prefix: true
 
   validates_presence_of :title
   validates_uniqueness_of :title, scope: :repository_id
