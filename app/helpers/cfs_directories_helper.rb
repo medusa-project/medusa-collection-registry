@@ -6,7 +6,7 @@ module CfsDirectoriesHelper
 
   def add_cfs_directory_tree_entries(csv, root_cfs_directory)
     ids = root_cfs_directory.recursive_subdirectory_ids
-    CfsDirectory.where(id: ids).includes(:medusa_uuid, :parent).find_each do |cfs_directory|
+    CfsDirectory.where(id: ids).includes(:medusa_uuid, :parent).find_each(batch_size: 10) do |cfs_directory|
       parent = cfs_directory.parent
       csv << Array.new.tap do |row|
         row << cfs_directory.uuid
@@ -31,7 +31,7 @@ module CfsDirectoriesHelper
 
   def add_cfs_directory_tree_csv_files(csv, cfs_directory)
     cfs_directory_relative_path = cfs_directory.relative_path
-    cfs_directory.cfs_files.includes(:content_type, :medusa_uuid).each do |file|
+    cfs_directory.cfs_files.includes(:content_type, :medusa_uuid).find_each(batch_size: 10) do |file|
       csv << Array.new.tap do |row|
         row << file.uuid
         row << 'file'
