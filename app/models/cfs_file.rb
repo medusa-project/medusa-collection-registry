@@ -397,7 +397,7 @@ class CfsFile < ApplicationRecord
     with_input_file do |input_file|
       uri = URI(File.join(Settings.fits.server_url, 'fits/file'))
       uri.query = URI.encode_www_form({path: input_file.gsub(/^\/+/, '')})
-      response = HTTParty.get(uri.to_s, timeout: 3600 * 12)
+      response = HTTParty.get(uri.to_s, timeout: 3600 * 24)
       case response.code
       when 200
         response.body
