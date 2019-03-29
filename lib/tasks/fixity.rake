@@ -15,35 +15,37 @@ namespace :fixity do
     sub_batch_size = [batch_size, SUB_BATCH_LIMIT].min
     batch_size -= sub_batch_size
     while sub_batch_size > 0
-      fixity_files(sub_batch_size).each do |cfs_file|
-        break if File.exist?(FIXITY_STOP_FILE)
-        begin
-          cfs_file.update_fixity_status_with_event
-          unless cfs_file.fixity_check_status == 'ok'
-            puts "#{cfs_file.id}: #{cfs_file.fixity_check_status}"
-            case cfs_file.fixity_check_status
+      begin
+        fixity_files(sub_batch_size).each do |cfs_file|
+          break if File.exist?(FIXITY_STOP_FILE)
+          begin
+            cfs_file.update_fixity_status_with_event
+            unless cfs_file.fixity_check_status == 'ok'
+              puts "#{cfs_file.id}: #{cfs_file.fixity_check_status}"
+              case cfs_file.fixity_check_status
               when 'bad'
                 errors[cfs_file] = 'Bad fixity'
               when 'nf'
                 errors[cfs_file] = 'Not found'
               else
                 raise RuntimeError, 'Unrecognized fixity check status'
+              end
+            end
+            bar.increment!
+          rescue RSolr::Error::Http => e
+            errors[cfs_file] = e.to_s
+            FileUtils.touch(FIXITY_STOP_FILE)
+          rescue Exception => e
+            errors[cfs_file] = e.to_s
+            if errors.length > 25
+              FileUtils.touch(FIXITY_STOP_FILE)
             end
           end
-          bar.increment!
-        rescue RSolr::Error::Http => e
-          errors[cfs_file] = e.to_s
-          FileUtils.touch(FIXITY_STOP_FILE)
-        rescue Exception => e
-          errors[cfs_file] = e.to_s
-          if errors.length > 25
-            FileUtils.touch(FIXITY_STOP_FILE)
-          end
-        ensure
-          Sunspot.commit
-          sub_batch_size = [batch_size, SUB_BATCH_LIMIT].min
-          batch_size -= sub_batch_size
         end
+        sub_batch_size = [batch_size, SUB_BATCH_LIMIT].min
+        batch_size -= sub_batch_size
+      ensure
+        Sunspot.commit
       end
     end
     if errors.present?
