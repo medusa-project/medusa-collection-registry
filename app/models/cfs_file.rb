@@ -94,8 +94,9 @@ class CfsFile < ApplicationRecord
   end
 
   #wrap the storage root's ability to yield a file path having the appropriate content in it
+  # Use only for reading
   def with_input_file
-    storage_root.with_input_file(self.key, tmp_dir: tmpdir_for_with_input_file) do |file|
+    read_only_storage_root.with_input_file(self.key, tmp_dir: tmpdir_for_with_input_file) do |file|
       yield file
     end
   end
@@ -112,15 +113,23 @@ class CfsFile < ApplicationRecord
     end
   end
 
-  #wrap the storage root's ability to yield an io on the content
+  #wrap the storage root's ability to yield an io on the content. Use only for reading
   def with_input_io
-    storage_root.with_input_io(self.key) do |io|
+    read_only_storage_root.with_input_io(self.key) do |io|
       yield io
     end
   end
 
   def storage_root
     Application.storage_manager.main_root
+  end
+
+  def rclone_storage_root
+    Application.storage_manager.main_root_rclone
+  end
+
+  def read_only_storage_root
+    rclone_storage_root || storage_root
   end
 
   #the directories leading up to the file

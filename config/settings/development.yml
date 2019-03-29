@@ -140,6 +140,14 @@ storage:
     :name: main_storage
     :type: filesystem
     :path: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-dev
+  #For some operations if the main bucket is S3, it is useful and much more efficient to have this
+  #bucket also mounted via 'rclone mount'. If that is done, configure a filesystem root under
+  #the main_root_rclone key. For example, FITS generation and running 'file' are much
+  #improved this way, requiring no temporary copy of the S3 object to be created. In fact,
+  #this _could_ be used more generally - all that is required is that things that use it only read
+  #and that whatever it _is_ exposes the main_root as a filesystem. So in a theoretical sense it
+  #would work if that were, say, an AWS storage gateway, an alternate fuse type mount of a bucket, etc.
+  main_root_rclone: ~
   #set this if there is a backup location. It is used only with the file_group delete
   #procedure in order to make the final delete apply to the backup copy as well.
   main_root_backup: ~
