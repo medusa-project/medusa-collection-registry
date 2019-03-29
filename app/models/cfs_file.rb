@@ -301,7 +301,7 @@ class CfsFile < ApplicationRecord
   end
 
   def storage_md5_sum
-    storage_root.hex_md5_sum(self.key)
+    read_only_storage_root.hex_md5_sum(self.key)
   end
 
   def ensure_current_file_extension
