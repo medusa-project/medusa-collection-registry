@@ -114,7 +114,9 @@ class ItemCsvParser < Object
       items = item_hashes.collect do |item_hash|
         project.items.create!(item_hash)
       end
-      Sunspot.index! items
+      items.each do |item|
+        item.index
+      end
     end
   end
 

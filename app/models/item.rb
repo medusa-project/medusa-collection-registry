@@ -47,6 +47,16 @@ rights_information status equipment unique_identifier item_number source_media).
     where(ingested: true)
   end
 
+  #TODO - redefined this because of a problem we saw with Rsolr doing bulk indexes on these.
+  # I'm not sure what the problem is, but maybe try to find it, or maybe just rely
+  # on a move to elastic search.
+  def self.solr_reindex(options = {})
+    solr_remove_all_from_index
+    Item.all.find_each do |item|
+      item.index
+    end
+  end
+
   def ensure_barcode
     self.barcode ||= ''
   end
