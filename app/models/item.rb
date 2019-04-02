@@ -55,8 +55,7 @@ rights_information status equipment unique_identifier item_number source_media).
     Item.all.find_each do |item|
       item.index
     end
-    Sunspot.commit(true)
-    Sunspot.commit(false)
+    Sunspot.commit
   end
 
   def ensure_barcode
