@@ -117,6 +117,7 @@ class ItemCsvParser < Object
       items.each do |item|
         item.index
       end
+      Sunspot.commit
     end
   end
 
