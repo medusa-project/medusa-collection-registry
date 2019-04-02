@@ -90,9 +90,17 @@ class AmqpAccrual::IngestJob < Job::Base
     cfs_directory.ensure_directory_at_relative_path(relative_target_dirname)
   end
 
+  #TODO - we maybe could still make this better. This should catch some failures that
+  # we currently get, though.
   def copy_content
-    raise "Object already exists at target key" if target_root.exist?(full_target_key)
     raise "Object does not exist at source key" unless source_root.exist?(staging_key)
+    if target_root.exist?(full_target_key)
+      if target_root.md5_sum(full_target_key) == source_root.md5_sum(staging_key)
+        return
+      else
+        raise "Object already exists at target key with different md5 sum"
+      end
+    end
     target_root.copy_content_to(full_target_key, source_root, staging_key)
   end
 
