@@ -19,7 +19,8 @@ class Fixity::BatchRunner
     self.batch_size -= sub_batch_size
     while sub_batch_size > 0
       begin
-        Parallel.each(fixity_files(sub_batch_size).to_a, in_threads: Settings.fixity_runner.thread_count) do |cfs_file|
+        Parallel.each(fixity_files(sub_batch_size).to_a.sort_by!(&:size).reverse!,
+                      in_threads: Settings.fixity_runner.thread_count) do |cfs_file|
           unless File.exist?(fixity_stop_file)
             begin
               cfs_file.update_fixity_status_with_event
