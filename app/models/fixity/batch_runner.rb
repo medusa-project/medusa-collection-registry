@@ -4,14 +4,10 @@ class Fixity::BatchRunner
 
   attr_accessor :batch_size, :sub_batch_limit, :fixity_stop_file
 
-  DEFAULT_BATCH_SIZE = 10000
-  SUB_BATCH_LIMIT = 100
-  FIXITY_STOP_FILE = File.join(Rails.root, 'fixity_stop.txt')
-
   def initialize(batch_size = nil, sub_batch_limit = nil, fixity_stop_file = nil)
-    self.batch_size = batch_size || DEFAULT_BATCH_SIZE
-    self.sub_batch_limit = sub_batch_limit || SUB_BATCH_LIMIT
-    self.fixity_stop_file = fixity_stop_file || FIXITY_STOP_FILE
+    self.batch_size = batch_size || Settings.fixity_runner.default_batch_size
+    self.sub_batch_limit = sub_batch_limit || Settings.fixity_runner.sub_batch_limit
+    self.fixity_stop_file = fixity_stop_file || Settings.fixity_runner.fixity_stop_file
   end
 
   def run
@@ -23,7 +19,7 @@ class Fixity::BatchRunner
     self.batch_size -= sub_batch_size
     while sub_batch_size > 0
       begin
-        Parallel.each(fixity_files(sub_batch_size).to_a, in_threads: 6) do |cfs_file|
+        Parallel.each(fixity_files(sub_batch_size).to_a, in_threads: Settings.fixity_runner.thread_count) do |cfs_file|
           unless File.exist?(fixity_stop_file)
             begin
               cfs_file.update_fixity_status_with_event

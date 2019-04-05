@@ -271,6 +271,11 @@ events:
     amqp_accrual: Accrued via amqp
   repository:
     collection_deleted: Collection deleted
+fixity_runner:
+  default_batch_size: 10000
+  fixity_stop_file: <%= File.join(Rails.root, 'fixity_stop.txt') %>
+  sub_batch_limit: 100
+  thread_count: 6
 rights_fields:
   default_rights_basis: copyright
   rights_bases:
