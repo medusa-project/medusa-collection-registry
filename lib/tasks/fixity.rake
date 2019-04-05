@@ -9,6 +9,7 @@ namespace :fixity do
   FIXITY_STOP_FILE = File.join(Rails.root, 'fixity_stop.txt')
   desc "Run fixity on a number of files. BATCH_SIZE sets number (default #{DEFAULT_BATCH_SIZE})"
   task run_batch: :environment do
+    CfsDirectory.first
     batch_size = (ENV['BATCH_SIZE'] || DEFAULT_BATCH_SIZE).to_i
     errors = Concurrent::Hash.new
     mutex = Mutex.new
@@ -17,12 +18,12 @@ namespace :fixity do
     batch_size -= sub_batch_size
     while sub_batch_size > 0
       begin
-        Parallel.each(fixity_files(sub_batch_size).to_a, in_threads: 2) do |cfs_file|
+        Parallel.each(fixity_files(sub_batch_size).to_a, in_threads: 16) do |cfs_file|
           unless File.exist?(FIXITY_STOP_FILE)
             begin
               cfs_file.update_fixity_status_with_event
               maybe_add_error(cfs_file, errors)
-              mutex do
+              mutex.synchronize do
                 bar.increment!
               end
             rescue RSolr::Error::Http => e
