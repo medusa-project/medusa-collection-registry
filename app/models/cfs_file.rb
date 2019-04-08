@@ -131,7 +131,7 @@ class CfsFile < ApplicationRecord
   def read_only_storage_root
     #TODO this first line is only to work around a current 'rclone mount' bug. When that is fixed,
     # it can be removed.
-    return storage_root if size.zero?
+    return storage_root if size.present? and size.zero?
     rclone_storage_root || storage_root
   end
 
