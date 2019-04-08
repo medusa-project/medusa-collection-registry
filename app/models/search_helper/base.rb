@@ -51,7 +51,9 @@ class SearchHelper::Base < Object
   end
 
   def search_string
-    params[:search][:value]
+    params[:search][:value] || ''
+  rescue
+    ''
   end
 
   def per_page
