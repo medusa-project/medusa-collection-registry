@@ -58,7 +58,7 @@ class SearchHelper::Base < Object
 
   def per_page
     count = params[:length].to_i
-    count > 0 ? count : full_count
+    count = count > 0 ? count : full_count
     count.zero? ? 25 : count
   end
 
