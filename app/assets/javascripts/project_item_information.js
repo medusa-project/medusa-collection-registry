@@ -24,4 +24,4 @@ jQuery.fn.dataTable.render.item_information = function (separator) {
 
     return '<span class="ellipsis" title="' + fullString + '">' + shortString + '</span>';
   }
-}
+};

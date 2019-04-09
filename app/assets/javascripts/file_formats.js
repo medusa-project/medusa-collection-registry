@@ -2,13 +2,13 @@ $(document).ready(function () {
   initialize_data_table_synchronous("table#file_formats", {
       'buttons': [],
   });
-})
+});
 
 $(document).ready(function () {
   $('.logical-extension').on('click', function(e) {
     update_logical_extensions(this.innerText);
   })
-})
+});
 
 function update_logical_extensions(text) {
   var input = logical_extensions_string_input();

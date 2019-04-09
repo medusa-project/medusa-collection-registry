@@ -2,7 +2,7 @@ $(document).ready(function () {
   initialize_data_table("table#file_format_profiles", {
       "order" : [[1, "asc"], [0 , "asc"]]
   })
-})
+});
 
 $(document).ready(function () {
     $('#file_format_profile_form').on("submit", function (e) {
@@ -14,7 +14,7 @@ $(document).ready(function () {
             }
         }
     })
-})
+});
 
 function checked_count(selector) {
     return $(selector + " :checked").size();

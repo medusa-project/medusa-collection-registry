@@ -5,9 +5,8 @@ function update_rights_form() {
   } else {
     custom_copyright_statement_input.attr("disabled", true).val('');
   }
-};
-
+}
 $(function () {
   update_rights_form();
   $(".update_rights_form").change(update_rights_form);
-})
+});

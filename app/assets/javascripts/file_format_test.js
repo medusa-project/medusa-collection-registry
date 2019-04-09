@@ -5,8 +5,7 @@ function update_file_format_reasons() {
   } else {
     checkboxes.removeAttr("disabled");
   }
-};
-
+}
 function add_reason(id, label) {
   var last_checkbox = $('span.checkbox:last');
   var new_checkbox = last_checkbox.clone();
