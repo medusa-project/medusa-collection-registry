@@ -22,4 +22,6 @@ Delayed::Worker.destroy_failed_jobs = false
 Delayed::Worker.default_queue_name = 'default'
 
 #Some jobs may take a long time - we may need to adjust this more
-Delayed::Worker.max_run_time = 48.hours
+if Rails.env.production?
+  Delayed::Worker.max_run_time = 96.hours
+end
