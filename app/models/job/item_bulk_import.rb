@@ -22,7 +22,7 @@ class Job::ItemBulkImport < Job::Base
   end
 
   def enqueue_job
-    Delayed::Job.enqueue(self, priority: 10)
+    Delayed::Job.enqueue(self, priority: 10, queue: 'short')
   end
 
   def perform
