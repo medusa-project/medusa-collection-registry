@@ -1275,7 +1275,8 @@ CREATE TABLE public.amqp_accrual_ingest_jobs (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     incoming_message text,
-    target_key character varying
+    target_key character varying,
+    copied boolean DEFAULT false
 );
 
 
@@ -7720,6 +7721,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180918144251'),
 ('20190220174203'),
 ('20190227185658'),
-('20190322195107');
+('20190322195107'),
+('20190412153912');
 
 
