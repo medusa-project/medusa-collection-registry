@@ -24,9 +24,11 @@ class AmqpAccrual::IngestJob < Job::Base
   end
 
   def perform
-    ensure_uuid
-    ensure_cfs_directory_parents
-    copy_content
+    unless self.copied
+      ensure_uuid
+      ensure_cfs_directory_parents
+      copy_content
+    end
     create_cfs_file
     do_assessment
     send_return_message
@@ -102,6 +104,7 @@ class AmqpAccrual::IngestJob < Job::Base
       end
     end
     target_root.copy_content_to(full_target_key, source_root, staging_key)
+    update_attribute(:copied, true)
   end
 
   def create_cfs_file
