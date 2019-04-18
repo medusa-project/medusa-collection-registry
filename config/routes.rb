@@ -94,6 +94,8 @@ Rails.application.routes.draw do
     get :show_tree, on: :member
     get :cfs_files, on: :member
     get :cfs_directories, on: :member
+    get :report_map, on: :member
+    get :report_manifest, on: :member
   end
   resources :content_types, only: [] do
     get :cfs_files, on: :member
