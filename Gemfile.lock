@@ -38,12 +38,6 @@ GIT
       parallel (~> 1.12)
 
 GIT
-  remote: https://github.com/medusa-project/tty-tree.git
-  revision: 8b84b2c390c7d97a63ef250d941e2888339eedb0
-  specs:
-    tty-tree (0.2.0)
-
-GIT
   remote: https://github.com/tom-sherman/send_file_with_range.git
   revision: 37b6e00f927cd3d614ce163d104f267e0173ae28
   branch: master
@@ -671,7 +665,6 @@ DEPENDENCIES
   sunspot_solr
   sunspot_test
   traceroute
-  tty-tree!
   uglifier
   uuid
   valid_email

@@ -137,9 +137,6 @@ gem 'hex_string'
 
 gem 'browser'
 
-#Draw text trees for reports
-gem 'tty-tree', git: 'https://github.com/medusa-project/tty-tree.git'
-
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
