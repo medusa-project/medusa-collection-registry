@@ -1,4 +1,3 @@
-require 'tty-tree'
 class Report::CfsDirectoryMap
 
   attr_accessor :root_cfs_directory, :io
@@ -10,14 +9,59 @@ class Report::CfsDirectoryMap
   def generate(io)
     self.io = io
     add_header
-    tree = TTY::Tree.new(generate_hash(root_cfs_directory))
-    io.puts tree.render
+    print_directory(root_cfs_directory)
   end
 
   def add_header
+    #io.write "\u00ef\u00bb\u00bf"
     io.puts root_cfs_directory.parent.breadcrumbs.collect(&:breadcrumb_label).join(' > ')
     io.puts "Exported #{Time.now}"
     io.puts
+  end
+
+  def print_directory(cfs_directory, level: 0, last: false, prefix: '')
+    label = if cfs_directory == root_cfs_directory
+              cfs_directory.relative_path
+            else
+              cfs_directory.path
+            end
+    subdirectory_count = cfs_directory.subdirectories.count
+    io.write prefix
+    io.write directory_marker(level, last)
+    io.puts label
+    file_info(cfs_directory).each do |file_info|
+      io.write prefix
+      unless level.zero?
+        if last
+          io.write '    '
+        else
+          io.write '│   '
+        end
+      end
+      if subdirectory_count.zero?
+        io.write '    '
+      else
+        io.write '│   '
+      end
+      io.puts file_info
+    end
+    cfs_directory.subdirectories.each.with_index do |subdirectory, i|
+      last_subdir = i == (subdirectory_count - 1)
+      new_prefix = if level.zero?
+                     ''
+                   elsif last
+                     prefix + '    '
+                   else
+                     prefix + '│   '
+                   end
+      print_directory(subdirectory, level: level + 1, last: last_subdir, prefix: new_prefix)
+    end
+    cfs_directory.subdirectories.reset
+  end
+
+  def directory_marker(level, last)
+    return '' if level == 0
+    last ? '└───' : '├───'
   end
 
   def generate_hash(cfs_directory)
@@ -52,7 +96,7 @@ class Report::CfsDirectoryMap
       "#{key}#{" " * (max_length - key.length + 2)}#{results[key]}"
     end
     cfs_directory.cfs_files.reset
-    file_info
+    file_info << ''
   end
 
 end

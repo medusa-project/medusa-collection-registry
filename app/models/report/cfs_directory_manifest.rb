@@ -23,7 +23,7 @@ class Report::CfsDirectoryManifest
 
   def add_directory_to_tsv(cfs_directory)
     current_path = cfs_directory.relative_path + '/'
-    self.tsv << pad(current_path)
+    self.tsv << directory_row(current_path, cfs_directory.uuid)
     index = 0
     cfs_directory.subdirectories.order(:path).includes(:medusa_uuid).each do |subdirectory|
       index += 1
@@ -36,6 +36,11 @@ class Report::CfsDirectoryManifest
     self.tsv << blank_line
   end
 
+  def directory_row(current_path, uuid)
+    @directory_row_padding ||= (HEADERS.length - 2).times.collect {''}
+    [current_path, *@directory_row_padding, uuid]
+  end
+
   def add_headers
     self.tsv << HEADERS
     self.tsv << breadcrumbs
@@ -44,13 +49,13 @@ class Report::CfsDirectoryManifest
 
   def add_subdirectory_to_tsv(current_path, cfs_directory, index)
     self.tsv << [current_path, index, cfs_directory.path + '/', '', '',
-                 to_date(cfs_directory.created_at), to_time(cfs_directory.created_at),
+                 to_date(cfs_directory), to_time(cfs_directory),
                  '', cfs_directory.uuid].collect!(&:to_s)
   end
 
   def add_cfs_file_to_tsv(current_path, cfs_file, index)
     self.tsv << [current_path, index, cfs_file.name, cfs_file.file_extension.extension,
-                 cfs_file.content_type.name, to_date(cfs_file.mtime), to_time(cfs_file.mtime),
+                 cfs_file.content_type.name, to_date(cfs_file), to_time(cfs_file),
                  cfs_file.size, cfs_file.uuid].collect(&:to_s)
   end
 
@@ -74,12 +79,12 @@ class Report::CfsDirectoryManifest
   end
 
   #TODO may need to adjust these for localtime?
-  def to_date(datetime)
-    datetime.to_date.to_s
+  def to_date(object)
+    object.created_at.localtime.to_date.to_s
   end
 
-  def to_time(datetime)
-    datetime.strftime('%H:%M:%S')
+  def to_time(object)
+    object.created_at.localtime.strftime('%H:%M:%S')
   end
 
 end
