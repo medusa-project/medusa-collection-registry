@@ -10,7 +10,7 @@ class ReportMailer < MedusaBaseMailer
   def cfs_directory_manifest(job, report_io)
     @job = job
     @subject = "Medusa cfs directory manifest"
-    attachments['report.tsv'] = {content: report_io.string, mime_type: 'text/tab-separated-values'}
+    attachments['report.tsv'] = report_io.string
     mail(to: job.user.email)
   end
 
