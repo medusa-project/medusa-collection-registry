@@ -84,7 +84,7 @@ class CfsDirectoriesController < ApplicationController
 
   def report_map
     authorize! :export, @directory.file_group
-    Job::Report::CfsDirectoryManifest.create_for(current_user, @directory)
+    Job::Report::CfsDirectoryMap.create_for(current_user, @directory)
     respond_to do |format|
       format.js
       format.html do
