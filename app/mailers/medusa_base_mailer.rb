@@ -34,8 +34,7 @@ class MedusaBaseMailer < ApplicationMailer
 
   def add_subject
     @subject ||= default_i18n_subject(@subject_args || {})
-    mail.subject = @subject
-    #mail subject: subject(@subject)
+    mail subject: subject(@subject)
   end
 
   default from: self.no_reply_address
