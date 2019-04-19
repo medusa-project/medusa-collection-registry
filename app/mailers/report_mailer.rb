@@ -4,6 +4,7 @@ class ReportMailer < MedusaBaseMailer
     @job = job
     subject("Medusa Report Map for #{job.cfs_directory.relative_path}")
     attachments['report.txt'] = report_io.string
+    message.parts.reverse!
     mail(to: job.user.email)
   end
 
