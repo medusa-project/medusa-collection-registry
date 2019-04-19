@@ -34,6 +34,7 @@ class MedusaBaseMailer < ApplicationMailer
 
   def add_subject
     @subject ||= default_i18n_subject(@subject_args || {})
+    x = message
     mail subject: subject(@subject)
   end
 
