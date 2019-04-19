@@ -10,7 +10,7 @@ class Job::Report::CfsDirectoryManifest < ApplicationRecord
     report = Report::CfsDirectoryManifest.new(cfs_directory)
     io = StringIO.new
     report.generate_tsv(io)
-    ReportMailer.cfs_directory_manifest(job, io).deliver_now
+    ReportMailer.cfs_directory_manifest(self, io).deliver_now
   end
 
 
