@@ -1,4 +1,4 @@
-class Job::Report::CfsDirectoryManifest < ApplicationRecord
+class Job::Report::CfsDirectoryManifest < Job::Base
   belongs_to :user
   belongs_to :cfs_directory
 
