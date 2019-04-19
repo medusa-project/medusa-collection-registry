@@ -1,8 +1,9 @@
+#C.f. the email_subject_modifier initializer, which adds the 'system' that the email is coming from
 class MedusaBaseMailer < ApplicationMailer
 
   delegate :feedback_address, :dev_address, :no_reply_address, :admin_address, to: :class
 
-  after_action :add_subject
+  #after_action :add_subject
 
   def self.feedback_address
     Settings.medusa.email.feedback
@@ -34,7 +35,6 @@ class MedusaBaseMailer < ApplicationMailer
 
   def add_subject
     @subject ||= default_i18n_subject(@subject_args || {})
-    x = message
     mail subject: subject(@subject)
   end
 
