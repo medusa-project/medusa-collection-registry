@@ -14,7 +14,7 @@ class ReportMailer < MedusaBaseMailer
       format.text
       format.html
     end
-    attachments['report.tsv'] = {content: report_io.string, mime_type: 'text/tab-separated-values'}
+    mail.attachments['report.tsv'] = {content: report_io.string, mime_type: 'text/tab-separated-values'}
   end
 
 end
