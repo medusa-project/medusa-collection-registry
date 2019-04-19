@@ -82,6 +82,7 @@ class Report::CfsDirectoryMap
 
   def file_info(cfs_directory)
     files = cfs_directory.cfs_files.order(:name).includes(:content_type).all
+    return [] if files.blank?
     content_type_groups = files.group_by {|cfs_file| cfs_file.content_type.name}
     results = Hash.new
     content_type_groups.each do |content_type, content_type_group|
