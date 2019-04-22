@@ -10,7 +10,7 @@ class Job::Report::CfsDirectoryMap < Job::Base
     report = Report::CfsDirectoryMap.new(cfs_directory)
     io = StringIO.new
     report.generate(io)
-    ReportMailer.cfs_directory_map(self, io).deliver_now
+    ReportMailer.cfs_directory_map(self, io.string.encode(crlf_newline: true)).deliver_now
   end
 
 end
