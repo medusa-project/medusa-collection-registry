@@ -1,3 +1,6 @@
+#Note that there are (currently) two paths through copying - one where the CR does the copying itself,
+# and one using a copy server. Configuration determines if the copy server can be used for a given ingest.
+# One goes through the 'copying' state, the other through 'send_copy_messages' and 'await_copy_messages'
 require 'render_anywhere'
 require 'set'
 
@@ -23,7 +26,9 @@ class Workflow::AccrualJob < Workflow::Base
 
   STATE_HASH = {'start' => 'Start', 'check' => 'Checking for existing files', 'check_sync' => 'Checking sync',
                 'initial_approval' => 'Awaiting approval',
-                'copying' => 'Copying', 'admin_approval' => 'Awaiting admin approval',
+                'copying' => 'Copying',
+                'send_copy_messages' => 'Sending copying messages', 'await_copy_messages' => 'Awaiting copy messages',
+                'admin_approval' => 'Awaiting admin approval',
                 'assessing' => 'Starting Assessments', 'await_assessment' => 'Running Assessment',
                 'email_done' => 'Emailing completion',
                 'aborting' => 'Aborting', 'end' => 'Ending'}
@@ -191,6 +196,29 @@ class Workflow::AccrualJob < Workflow::Base
                                  note: "Accrual from #{staging_path}", actor_email: user.email)
   end
 
+  def use_copy_server
+    #TODO - use the configuration available to decide what to do
+    # If we have a configuration section for a copy server and the appropriate roots are covered, then
+    # use it.
+    false
+  end
+
+  def perform_send_copying_messages
+    #TODO - send the messages
+    be_in_state_and_requeue('await_copying_messages')
+  end
+
+  #Note that the way this works when this is run by _any_ job using the copying server, it will (potentially)
+  # pick up and deal with the messages for _any_ jobs that have incoming messages. This is fine, as the check
+  # on whether to proceed is just to check if this job has no more messages remaining. So if the current job
+  # processes messages for another job's copy, it just means that that part got a head start - the other job
+  # will still make the necessary check when _its_ delayed job is run, it just will have received a head start
+  # on processing the messages.
+  def perform_await_copying_messages
+    #TODO - pick up any incoming messages and remove the associated accrual keys or report errors
+    be_in_state_and_requeue('assessing') if workflow_accrual_keys.reload.count.zero?
+  end
+
   def reset_conflict_fixities_and_fits
     workflow_accrual_conflicts.where(different: true).find_each {|conflict| conflict.reset_cfs_file}
   end
@@ -245,7 +273,11 @@ class Workflow::AccrualJob < Workflow::Base
       be_in_state('admin_approval')
       notify_admin_of_request
     when 'admin_approval'
-      be_in_state_and_requeue('copying')
+      if use_copy_server
+        be_in_state_and_requeue('send_copying_messages')
+      else
+        be_in_state_and_requeue('copying')
+      end
     else
       raise RuntimeError, 'Job approved from unallowed initial state'
     end
