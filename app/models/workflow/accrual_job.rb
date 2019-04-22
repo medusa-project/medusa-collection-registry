@@ -203,7 +203,7 @@ class Workflow::AccrualJob < Workflow::Base
     false
   end
 
-  def perform_send_copying_messages
+  def perform_send_copy_messages
     #TODO - send the messages
     be_in_state_and_requeue('await_copying_messages')
   end
@@ -214,7 +214,7 @@ class Workflow::AccrualJob < Workflow::Base
   # processes messages for another job's copy, it just means that that part got a head start - the other job
   # will still make the necessary check when _its_ delayed job is run, it just will have received a head start
   # on processing the messages.
-  def perform_await_copying_messages
+  def perform_await_copy_messages
     #TODO - pick up any incoming messages and remove the associated accrual keys or report errors
     # Mark errors directly on the workflow_accrual_key, and then after getting all of the incoming
     # messages check for errors and report once if there are any present.
