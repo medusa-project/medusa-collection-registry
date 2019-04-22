@@ -216,6 +216,8 @@ class Workflow::AccrualJob < Workflow::Base
   # on processing the messages.
   def perform_await_copying_messages
     #TODO - pick up any incoming messages and remove the associated accrual keys or report errors
+    # Mark errors directly on the workflow_accrual_key, and then after getting all of the incoming
+    # messages check for errors and report once if there are any present.
     be_in_state_and_requeue('assessing') if workflow_accrual_keys.reload.count.zero?
   end
 

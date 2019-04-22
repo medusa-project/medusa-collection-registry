@@ -2901,6 +2901,70 @@ ALTER SEQUENCE public.job_item_bulk_imports_id_seq OWNED BY public.job_item_bulk
 
 
 --
+-- Name: job_report_cfs_directory_manifests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.job_report_cfs_directory_manifests (
+    id bigint NOT NULL,
+    user_id bigint,
+    cfs_directory_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: job_report_cfs_directory_manifests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.job_report_cfs_directory_manifests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: job_report_cfs_directory_manifests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.job_report_cfs_directory_manifests_id_seq OWNED BY public.job_report_cfs_directory_manifests.id;
+
+
+--
+-- Name: job_report_cfs_directory_maps; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.job_report_cfs_directory_maps (
+    id bigint NOT NULL,
+    user_id bigint,
+    cfs_directory_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: job_report_cfs_directory_maps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.job_report_cfs_directory_maps_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: job_report_cfs_directory_maps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.job_report_cfs_directory_maps_id_seq OWNED BY public.job_report_cfs_directory_maps.id;
+
+
+--
 -- Name: job_report_producers; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4199,7 +4263,8 @@ ALTER SEQUENCE public.workflow_accrual_jobs_id_seq OWNED BY public.workflow_accr
 CREATE TABLE public.workflow_accrual_keys (
     id bigint NOT NULL,
     key text,
-    workflow_accrual_job_id bigint
+    workflow_accrual_job_id bigint,
+    error text
 );
 
 
@@ -4687,6 +4752,20 @@ ALTER TABLE ONLY public.job_ingest_staging_deletes ALTER COLUMN id SET DEFAULT n
 --
 
 ALTER TABLE ONLY public.job_item_bulk_imports ALTER COLUMN id SET DEFAULT nextval('public.job_item_bulk_imports_id_seq'::regclass);
+
+
+--
+-- Name: job_report_cfs_directory_manifests id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_report_cfs_directory_manifests ALTER COLUMN id SET DEFAULT nextval('public.job_report_cfs_directory_manifests_id_seq'::regclass);
+
+
+--
+-- Name: job_report_cfs_directory_maps id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_report_cfs_directory_maps ALTER COLUMN id SET DEFAULT nextval('public.job_report_cfs_directory_maps_id_seq'::regclass);
 
 
 --
@@ -5302,6 +5381,22 @@ ALTER TABLE ONLY public.job_ingest_staging_deletes
 
 ALTER TABLE ONLY public.job_item_bulk_imports
     ADD CONSTRAINT job_item_bulk_imports_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: job_report_cfs_directory_manifests job_report_cfs_directory_manifests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_report_cfs_directory_manifests
+    ADD CONSTRAINT job_report_cfs_directory_manifests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: job_report_cfs_directory_maps job_report_cfs_directory_maps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_report_cfs_directory_maps
+    ADD CONSTRAINT job_report_cfs_directory_maps_pkey PRIMARY KEY (id);
 
 
 --
@@ -6374,6 +6469,34 @@ CREATE INDEX index_job_item_bulk_imports_on_user_id ON public.job_item_bulk_impo
 
 
 --
+-- Name: index_job_report_cfs_directory_manifests_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_job_report_cfs_directory_manifests_on_cfs_directory_id ON public.job_report_cfs_directory_manifests USING btree (cfs_directory_id);
+
+
+--
+-- Name: index_job_report_cfs_directory_manifests_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_job_report_cfs_directory_manifests_on_user_id ON public.job_report_cfs_directory_manifests USING btree (user_id);
+
+
+--
+-- Name: index_job_report_cfs_directory_maps_on_cfs_directory_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_job_report_cfs_directory_maps_on_cfs_directory_id ON public.job_report_cfs_directory_maps USING btree (cfs_directory_id);
+
+
+--
+-- Name: index_job_report_cfs_directory_maps_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_job_report_cfs_directory_maps_on_user_id ON public.job_report_cfs_directory_maps USING btree (user_id);
+
+
+--
 -- Name: index_job_report_producers_on_producer_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7119,6 +7242,14 @@ ALTER TABLE ONLY public.workflow_accrual_jobs
 
 
 --
+-- Name: job_report_cfs_directory_maps fk_rails_1a48857b12; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_report_cfs_directory_maps
+    ADD CONSTRAINT fk_rails_1a48857b12 FOREIGN KEY (cfs_directory_id) REFERENCES public.cfs_directories(id);
+
+
+--
 -- Name: file_format_tests_file_format_test_reasons_joins fk_rails_1db34f98ff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7140,6 +7271,14 @@ ALTER TABLE ONLY public.job_fits_file_extension_batches
 
 ALTER TABLE ONLY public.workflow_accrual_comments
     ADD CONSTRAINT fk_rails_2258e947c4 FOREIGN KEY (workflow_accrual_job_id) REFERENCES public.workflow_accrual_jobs(id);
+
+
+--
+-- Name: job_report_cfs_directory_manifests fk_rails_22c26c34ee; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_report_cfs_directory_manifests
+    ADD CONSTRAINT fk_rails_22c26c34ee FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -7247,6 +7386,14 @@ ALTER TABLE ONLY public.fixity_check_results
 
 
 --
+-- Name: job_report_cfs_directory_manifests fk_rails_5a8bfa928b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_report_cfs_directory_manifests
+    ADD CONSTRAINT fk_rails_5a8bfa928b FOREIGN KEY (cfs_directory_id) REFERENCES public.cfs_directories(id);
+
+
+--
 -- Name: cascaded_event_joins fk_rails_5f90452cff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7292,6 +7439,14 @@ ALTER TABLE ONLY public.job_item_bulk_imports
 
 ALTER TABLE ONLY public.workflow_accrual_directories
     ADD CONSTRAINT fk_rails_814510e4f4 FOREIGN KEY (workflow_accrual_job_id) REFERENCES public.workflow_accrual_jobs(id);
+
+
+--
+-- Name: job_report_cfs_directory_maps fk_rails_88ef33b97d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_report_cfs_directory_maps
+    ADD CONSTRAINT fk_rails_88ef33b97d FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -7722,6 +7877,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190220174203'),
 ('20190227185658'),
 ('20190322195107'),
-('20190412153912');
+('20190412153912'),
+('20190418215850'),
+('20190418215910'),
+('20190422162120');
 
 
