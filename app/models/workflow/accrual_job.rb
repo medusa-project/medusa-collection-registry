@@ -214,7 +214,7 @@ class Workflow::AccrualJob < Workflow::Base
     target_prefix = cfs_directory.relative_path
     target_root_name = Application.storage_manager.main_root.name
     workflow_accrual_keys.copy_not_requested.find_each do |workflow_accrual_key|
-      source_key = File.join(source_prefix, workflow_accrual_key.key)
+      source_key = File.join(source_prefix, workflow_accrual_key.key).gsub(/^\//, '')
       target_key = File.join(target_prefix, workflow_accrual_key.key)
       amqp.send_message(Settings.copy_server.outgoing_queue,
                         copy_message(staging_root_name, source_key, target_root_name, target_key, workflow_accrual_key))
