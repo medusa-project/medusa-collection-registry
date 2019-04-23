@@ -221,7 +221,7 @@ class Workflow::AccrualJob < Workflow::Base
       workflow_accrual_key.copy_requested = true
       workflow_accrual_key.save!
     end
-    be_in_state_and_requeue('await_copying_messages') if workflow_accrual_keys.copy_not_requested.count.zero?
+    be_in_state_and_requeue('await_copy_messages') if workflow_accrual_keys.copy_not_requested.count.zero?
   end
 
   def copy_message(source_root_name, source_key, target_root_name, target_key, workflow_accrual_key)
@@ -328,7 +328,7 @@ class Workflow::AccrualJob < Workflow::Base
       notify_admin_of_request
     when 'admin_approval'
       if use_copy_server
-        be_in_state_and_requeue('send_copying_messages')
+        be_in_state_and_requeue('send_copy_messages')
       else
         be_in_state_and_requeue('copying')
       end
