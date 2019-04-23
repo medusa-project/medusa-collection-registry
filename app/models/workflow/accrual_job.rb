@@ -216,23 +216,27 @@ class Workflow::AccrualJob < Workflow::Base
     workflow_accrual_keys.copy_not_requested.find_each do |workflow_accrual_key|
       source_key = File.join(source_prefix, workflow_accrual_key.key)
       target_key = File.join(target_prefix, workflow_accrual_key.key)
-      message = {
-          action: 'copyto',
-          pass_through: {
-              workflow_accrual_key_id: workflow_accrual_key.id
-          },
-          parameters: {
-              source_root: staging_root_name,
-              target_root: target_root_name,
-              source_key: source_key,
-              target_key: target_key
-          }
-      }
-      amqp.send_message(Settings.copy_server.outgoing_queue, message)
+      amqp.send_message(Settings.copy_server.outgoing_queue,
+                        copy_message(staging_root_name, source_key, target_root_name, target_key, workflow_accrual_key))
       workflow_accrual_key.copy_requested = true
       workflow_accrual_key.save!
     end
     be_in_state_and_requeue('await_copying_messages') if workflow_accrual_keys.copy_not_requested.count.zero?
+  end
+
+  def copy_message(source_root_name, source_key, target_root_name, target_key, workflow_accrual_key)
+    {
+        action: 'copyto',
+        pass_through: {
+            workflow_accrual_key_id: workflow_accrual_key.id
+        },
+        parameters: {
+            source_root: source_root_name,
+            target_root: target_root_name,
+            source_key: source_key,
+            target_key: target_key
+        }
+    }
   end
 
   #Note that the way this works when this is run by _any_ job using the copying server, it will (potentially)
