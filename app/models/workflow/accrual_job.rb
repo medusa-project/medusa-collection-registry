@@ -204,7 +204,7 @@ class Workflow::AccrualJob < Workflow::Base
     staging_root, prefix = staging_root_and_prefix
     staging_root_name = staging_root.name
     target_root_name = Application.storage_manager.main_root.name
-    return Settings.copy_server.roots.include?(staging_root_name) and Settings.copy_server.roots.include?(target_root_name)
+    return (Settings.copy_server.roots.include?(staging_root_name) && Settings.copy_server.roots.include?(target_root_name))
   end
 
   def perform_send_copy_messages
