@@ -270,7 +270,15 @@ class Workflow::AccrualJob < Workflow::Base
     unless error_count.zero?
       raise "There are #{error_count} keys with copying errors."
     end
-    be_in_state_and_requeue('assessing') if workflow_accrual_keys.reload.count.zero?
+    if workflow_accrual_keys.reload.count.zero?
+      be_in_state_and_requeue('assessing')
+    else
+      if self.created_at + Settings.classes.workflow.copy_server_error_reporting_timeout > Time.now
+        self.put_in_queue(run_at: Time.now + Settings.classes.workflow.copy_server_requeue_interval)
+      else
+        raise RuntimeError, "Copy server jobs are still pending. Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
+      end
+    end
   end
 
   def reset_conflict_fixities_and_fits
