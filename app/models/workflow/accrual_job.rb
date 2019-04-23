@@ -273,8 +273,8 @@ class Workflow::AccrualJob < Workflow::Base
     if workflow_accrual_keys.reload.count.zero?
       be_in_state_and_requeue('assessing')
     else
-      if self.created_at + Settings.classes.workflow.copy_server_error_reporting_timeout > Time.now
-        self.put_in_queue(run_at: Time.now + Settings.classes.workflow.copy_server_requeue_interval)
+      if self.created_at + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout > Time.now
+        self.put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
       else
         raise RuntimeError, "Copy server jobs are still pending. Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
       end
