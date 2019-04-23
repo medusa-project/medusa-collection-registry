@@ -39,6 +39,11 @@ en:
   producer_mailer:
     report:
       subject: Producer Report
+  report_mailer:
+    cfs_directory_map:
+      subject: Medusa cfs directory map
+    cfs_directory_manifest:
+      subject: Medusa cfs directory manifest
   static_page_mailer:
     deposit_files_confirmation:
       subject: Ingest request confirmation

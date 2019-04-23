@@ -1,0 +1,16 @@
+class Job::Report::CfsDirectoryMap < Job::Base
+  belongs_to :user
+  belongs_to :cfs_directory
+
+  def self.create_for(user, cfs_directory)
+    Delayed::Job.enqueue(self.create!(user: user, cfs_directory: cfs_directory), queue: 'short')
+  end
+
+  def perform
+    report = Report::CfsDirectoryMap.new(cfs_directory)
+    io = StringIO.new
+    report.generate(io)
+    ReportMailer.cfs_directory_map(self, io.string.encode(crlf_newline: true)).deliver_now
+  end
+
+end

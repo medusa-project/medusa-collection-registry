@@ -2,7 +2,8 @@ class CfsDirectoriesController < ApplicationController
 
   before_action :require_medusa_user, except: [:show, :show_tree]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :show_tree]
-  before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree, :show_tree, :cfs_files, :cfs_directories]
+  before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree,
+                                        :show_tree, :cfs_files, :cfs_directories, :report_manifest, :report_map]
   before_action :find_directory_with_includes, only: [:show]
 
   def show
@@ -66,6 +67,28 @@ class CfsDirectoriesController < ApplicationController
     respond_to do |format|
       format.json do
         render json: SearchHelper::TableCfsDirectory.new(params: params, cfs_directory: @directory).json_response
+      end
+    end
+  end
+
+  def report_manifest
+    authorize! :export, @directory.file_group
+    Job::Report::CfsDirectoryManifest.create_for(current_user, @directory)
+    respond_to do |format|
+      format.js
+      format.html do
+        redirect_to @directory, notice: 'Your report will be emailed to you shortly.'
+      end
+    end
+  end
+
+  def report_map
+    authorize! :export, @directory.file_group
+    Job::Report::CfsDirectoryMap.create_for(current_user, @directory)
+    respond_to do |format|
+      format.js
+      format.html do
+        redirect_to @directory, notice: 'Your report will be emailed to you shortly.'
       end
     end
   end
