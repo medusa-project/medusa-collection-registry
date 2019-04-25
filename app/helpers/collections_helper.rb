@@ -8,13 +8,12 @@ module CollectionsHelper
     %w(descriptive-metadata administrative-metadata rights-metadata subcollections)
   end
 
-  #map collection id to total size
-  #TODO at some point we may want to account for when we have related file groups
+  #map collection id to total size, counting only bit level file groups
   def collection_size_hash
-    sizes = Collection.connection.select_rows('SELECT collection_id, sum(total_file_size) as size FROM file_groups GROUP BY collection_id')
+    file_group_info = BitLevelFileGroup.select('collection_id, sum(total_file_size) AS size').group(:collection_id)
     Hash.new.tap do |hash|
-      sizes.each do |id, size|
-        hash[id.to_i] = size.to_f
+      file_group_info.each do |file_group|
+        hash[file_group.collection_id] = file_group.size.to_f
       end
     end
   end
