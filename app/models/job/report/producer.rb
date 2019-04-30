@@ -3,7 +3,12 @@ class Job::Report::Producer < Job::Base
   belongs_to :producer, class_name: '::Producer'
 
   def self.create_for(params = {})
-    Delayed::Job.enqueue(self.create!(params))
+    job = self.create!(params)
+    job.enqueue_job
+  end
+
+  def queue
+    Settings.delayed_job.short_queue
   end
 
   def perform

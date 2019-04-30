@@ -3,7 +3,12 @@ class Job::Report::CfsDirectoryManifest < Job::Base
   belongs_to :cfs_directory
 
   def self.create_for(user, cfs_directory)
-    Delayed::Job.enqueue(self.create!(user: user, cfs_directory: cfs_directory), queue: 'short')
+    job = self.create!(user: user, cfs_directory: cfs_directory)
+    job.enqueue_job
+  end
+
+  def queue
+    Settings.delayed_job.short_queue
   end
 
   def perform

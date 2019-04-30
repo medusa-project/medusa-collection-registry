@@ -3,7 +3,18 @@ class Job::CfsInitialFileGroupAssessment < Job::Base
 
   def self.create_for(file_group)
     raise RuntimeError, "No cfs directory defined for file group #{file_group.id}. Cannot create assessment job." unless file_group.cfs_directory.present?
-    Delayed::Job.enqueue(self.create!(file_group: file_group), priority: 60, queue: 'initial_assessment') unless self.find_by(file_group_id: file_group.id)
+    unless self.find_by(file_group_id: file_group.id)
+      job = self.create!(file_group: file_group)
+      job.enqueue_job
+    end
+  end
+
+  def queue
+    Settings.delayed_job.initial_assessment_queue
+  end
+
+  def priority
+    Settings.delayed_job.priority.cfs_initial_file_group_assessment
   end
 
   def perform

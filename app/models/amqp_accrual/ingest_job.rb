@@ -12,7 +12,7 @@ class AmqpAccrual::IngestJob < Job::Base
     else
       begin
         job.save!
-        Delayed::Job.enqueue(job, queue: AmqpAccrual::Config.delayed_job_queue(client), priority: Settings.delayed_job.priority.amqp_accrual_ingest_job)
+        job.enqueue_job
       rescue
         Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Probably a duplicate request."
         send_duplicate_file_message(client, message)
@@ -21,6 +21,14 @@ class AmqpAccrual::IngestJob < Job::Base
   rescue Exception => e
     Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Error: #{e}"
     send_unknown_error_message(client, message, e)
+  end
+
+  def queue
+    AmqpAccrual::Config.delayed_job_queue(self.client)
+  end
+
+  def priority
+    Settings.delayed_job.priority.amqp_accrual_ingest_job
   end
 
   def perform

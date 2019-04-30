@@ -5,9 +5,19 @@ class Job::CfsInitialDirectoryAssessment < Job::Base
     validates_uniqueness_of :cfs_directory
 
     def self.create_for(cfs_directory, file_group)
-      Delayed::Job.enqueue(self.create!(cfs_directory: cfs_directory, file_group: file_group,
-                                       file_count: cfs_directory.cfs_files.count),
-                           priority: 70, queue: 'initial_assessment') unless self.find_by(cfs_directory_id: cfs_directory.id)
+      unless self.find_by(cfs_directory_id: cfs_directory.id)
+        job = self.create!(cfs_directory: cfs_directory, file_group: file_group,
+                                    file_count: cfs_directory.cfs_files.count)
+        job.enqueue_job
+      end
+    end
+
+    def queue
+      Settings.delayed_job.initial_assessment_queue
+    end
+
+    def priority
+      Settings.delayed_job.priority.cfs_initial_directory_assessment
     end
 
     def perform

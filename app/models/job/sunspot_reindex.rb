@@ -4,8 +4,12 @@
 class Job::SunspotReindex < Job::Base
 
   def self.create_for(class_or_class_name, start_id: 0, end_id: 0, batch_size: 1000)
-    Delayed::Job.enqueue(self.create!(class_name: class_or_class_name.to_s, start_id: start_id, end_id: end_id, batch_size: batch_size),
-                         priority: 100)
+    job = self.create!(class_name: class_or_class_name.to_s, start_id: start_id, end_id: end_id, batch_size: batch_size)
+    job.enqueue_job
+  end
+
+  def priority
+    Settings.delayed_job.priority.sunspot_reindex
   end
 
   def perform

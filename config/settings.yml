@@ -231,11 +231,17 @@ classes:
 delayed_job:
   #Workflow objects will use the default_queue by default. That can be changed by overriding their 'queue' method.
   default_queue: default
+  short_queue: short
+  initial_assessment_queue: initial_assessment
   priority:
     amqp_accrual_delete_job: 30
     amqp_accrual_ingest_job: 50
     base_job: 30
+    cfs_initial_directory_assessment: 70
+    cfs_initial_file_group_assessment: 60
+    item_bulk_import: 10
     large_file_fits: 70
+    sunspot_reindex: 100
 #These are events available to the various eventables as a hash from stored string to descriptive string
 #For the loading to work correctly the base key has to be the class where Eventable is included.
 #So for STI like file group we can't have different events available for each type; it has to be the base class here

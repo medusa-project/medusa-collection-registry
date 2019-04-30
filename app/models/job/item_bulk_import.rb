@@ -21,8 +21,12 @@ class Job::ItemBulkImport < Job::Base
     end
   end
 
-  def enqueue_job
-    Delayed::Job.enqueue(self, priority: 10, queue: 'short')
+  def queue
+    Settings.delayed_job.short_queue
+  end
+
+  def priority
+    Settings.delayed_job.priority.item_bulk_import
   end
 
   def perform

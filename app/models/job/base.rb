@@ -45,4 +45,18 @@ class Job::Base < ApplicationRecord
     end
   end
 
+  def enqueue_job(args = {})
+    Delayed::Job.enqueue(self, args.reverse_merge(queue: queue, priority: priority))
+  end
+
+  #Override in subclasses as appropriate
+  def queue
+    Settings.delayed_job.default_queue
+  end
+
+  #Override in subclasses as appropriate
+  def priority
+    Settings.delayed_job.priority.base_job
+  end
+
 end
