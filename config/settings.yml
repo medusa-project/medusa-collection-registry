@@ -229,6 +229,8 @@ classes:
       copying_parallel_threads: 3
 #set up delayed job related stuff
 delayed_job:
+  #Workflow objects will use the default_queue by default. That can be changed by overriding their 'queue' method.
+  default_queue: default
   priority:
     amqp_accrual_delete_job: 30
     amqp_accrual_ingest_job: 50

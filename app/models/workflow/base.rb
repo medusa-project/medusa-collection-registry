@@ -17,7 +17,8 @@ class Workflow::Base < Job::Base
   self.abstract_class = true
 
   def put_in_queue(opts = {})
-    Delayed::Job.enqueue(self, opts.reverse_merge(priority: Settings.delayed_job.priority.base_job))
+    Delayed::Job.enqueue(self, opts.reverse_merge(priority: Settings.delayed_job.priority.base_job,
+                                                  queue: queue))
   end
 
   def perform
@@ -26,6 +27,11 @@ class Workflow::Base < Job::Base
     else
       raise RuntimeError, "#{self.class}: #{id} unrunnable for unknown reason."
     end
+  end
+
+  #Override to use a different queue or even to change the queue depending on job status
+  def queue
+    Settings.delayed_job.default_queue
   end
 
   #Override if something might change to make the job unrunnable. Preferably raise an error if it is.
