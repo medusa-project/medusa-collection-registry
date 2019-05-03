@@ -4233,7 +4233,8 @@ CREATE TABLE public.workflow_accrual_jobs (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     allow_overwrite boolean DEFAULT false,
-    empty_file_report text DEFAULT ''::text
+    empty_file_report text DEFAULT ''::text,
+    copy_start_time timestamp without time zone
 );
 
 
@@ -7882,6 +7883,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190418215850'),
 ('20190418215910'),
 ('20190422162120'),
-('20190422190028');
+('20190422190028'),
+('20190503165005');
 
 

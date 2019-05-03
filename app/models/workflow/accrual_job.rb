@@ -221,6 +221,7 @@ class Workflow::AccrualJob < Workflow::Base
       workflow_accrual_key.copy_requested = true
       workflow_accrual_key.save!
     end
+    update_attribute(:copy_start_time, Time.now)
     be_in_state_and_requeue('await_copy_messages') if workflow_accrual_keys.copy_not_requested.count.zero?
   end
 
@@ -273,10 +274,10 @@ class Workflow::AccrualJob < Workflow::Base
     if workflow_accrual_keys.reload.count.zero?
       be_in_state_and_requeue('assessing')
     else
-      if self.created_at + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout > Time.now
+      if self.copy_start_time + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout > Time.now
         self.put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
       else
-        raise RuntimeError, "Copy server jobs are still pending. Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
+        raise RuntimeError, "Copy server jobs are still pending (#{workflow_accrual_keys.count} remaining). Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
       end
     end
   end
@@ -388,6 +389,10 @@ class Workflow::AccrualJob < Workflow::Base
 
   def total_file_count
     top_level_file_count + workflow_accrual_directories.sum(:count)
+  end
+
+  def total_accrual_key_count
+    workflow_accrual_keys.count
   end
 
   def size
