@@ -1,3 +1,6 @@
+#Note that there are (currently) two paths through copying - one where the CR does the copying itself,
+# and one using a copy server. Configuration determines if the copy server can be used for a given ingest.
+# One goes through the 'copying' state, the other through 'send_copy_messages' and 'await_copy_messages'
 require 'render_anywhere'
 require 'set'
 
@@ -23,7 +26,9 @@ class Workflow::AccrualJob < Workflow::Base
 
   STATE_HASH = {'start' => 'Start', 'check' => 'Checking for existing files', 'check_sync' => 'Checking sync',
                 'initial_approval' => 'Awaiting approval',
-                'copying' => 'Copying', 'admin_approval' => 'Awaiting admin approval',
+                'copying' => 'Copying',
+                'send_copy_messages' => 'Sending copying messages', 'await_copy_messages' => 'Awaiting copy messages',
+                'admin_approval' => 'Awaiting admin approval',
                 'assessing' => 'Starting Assessments', 'await_assessment' => 'Running Assessment',
                 'email_done' => 'Emailing completion',
                 'aborting' => 'Aborting', 'end' => 'Ending'}
@@ -191,6 +196,91 @@ class Workflow::AccrualJob < Workflow::Base
                                  note: "Accrual from #{staging_path}", actor_email: user.email)
   end
 
+  def use_copy_server
+    #TODO - use the configuration available to decide what to do
+    # If we have a configuration section for a copy server and the appropriate roots are covered, then
+    # use it.
+    return false unless Settings.copy_server.present?
+    staging_root, prefix = staging_root_and_prefix
+    staging_root_name = staging_root.name
+    target_root_name = Application.storage_manager.main_root.name
+    return (Settings.copy_server.roots.include?(staging_root_name) && Settings.copy_server.roots.include?(target_root_name))
+  end
+
+  def perform_send_copy_messages
+    amqp = AmqpHelper::Connector[:medusa]
+    staging_root, source_prefix = staging_root_and_prefix
+    staging_root_name = staging_root.name
+    target_prefix = cfs_directory.relative_path
+    target_root_name = Application.storage_manager.main_root.name
+    workflow_accrual_keys.copy_not_requested.find_each do |workflow_accrual_key|
+      source_key = File.join(source_prefix, workflow_accrual_key.key).gsub(/^\//, '')
+      target_key = File.join(target_prefix, workflow_accrual_key.key)
+      amqp.send_message(Settings.copy_server.outgoing_queue,
+                        copy_message(staging_root_name, source_key, target_root_name, target_key, workflow_accrual_key))
+      workflow_accrual_key.copy_requested = true
+      workflow_accrual_key.save!
+    end
+    be_in_state_and_requeue('await_copy_messages') if workflow_accrual_keys.copy_not_requested.count.zero?
+  end
+
+  def copy_message(source_root_name, source_key, target_root_name, target_key, workflow_accrual_key)
+    {
+        action: 'copyto',
+        pass_through: {
+            workflow_accrual_key_id: workflow_accrual_key.id
+        },
+        parameters: {
+            source_root: source_root_name,
+            target_root: target_root_name,
+            source_key: source_key,
+            target_key: target_key
+        }
+    }
+  end
+
+  #Note that the way this works when this is run by _any_ job using the copying server, it will (potentially)
+  # pick up and deal with the messages for _any_ jobs that have incoming messages. This is fine, as the check
+  # on whether to proceed is just to check if this job has no more messages remaining. So if the current job
+  # processes messages for another job's copy, it just means that that part got a head start - the other job
+  # will still make the necessary check when _its_ delayed job is run, it just will have received a head start
+  # on processing the messages.
+  def perform_await_copy_messages
+    #TODO - pick up any incoming messages and remove the associated accrual keys or report errors
+    # Mark errors directly on the workflow_accrual_key, and then after getting all of the incoming
+    # messages check for errors and report once if there are any present.
+    amqp = AmqpHelper::Connector[:medusa]
+    continue_processing = true
+    while continue_processing
+      amqp.with_parsed_message(Settings.copy_server.incoming_queue) do |message|
+        if message
+          workflow_accrual_key = Workflow::AccrualKey.find(message['pass_through']['workflow_accrual_key_id'])
+          if message['status'] == 'success'
+            workflow_accrual_key.destroy!
+          else
+            workflow_accrual_key.error = message['message']
+            workflow_accrual_key.save!
+          end
+        else
+          continue_processing = false
+        end
+      end
+    end
+    error_count = workflow_accrual_keys.has_error.count
+    unless error_count.zero?
+      raise "There are #{error_count} keys with copying errors."
+    end
+    if workflow_accrual_keys.reload.count.zero?
+      be_in_state_and_requeue('assessing')
+    else
+      if self.created_at + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout > Time.now
+        self.put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
+      else
+        raise RuntimeError, "Copy server jobs are still pending. Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
+      end
+    end
+  end
+
   def reset_conflict_fixities_and_fits
     workflow_accrual_conflicts.where(different: true).find_each {|conflict| conflict.reset_cfs_file}
   end
@@ -245,7 +335,11 @@ class Workflow::AccrualJob < Workflow::Base
       be_in_state('admin_approval')
       notify_admin_of_request
     when 'admin_approval'
-      be_in_state_and_requeue('copying')
+      if use_copy_server
+        be_in_state_and_requeue('send_copy_messages')
+      else
+        be_in_state_and_requeue('copying')
+      end
     else
       raise RuntimeError, 'Job approved from unallowed initial state'
     end

@@ -227,6 +227,8 @@ classes:
       assessment_requeue_interval: <%= 5.minutes %>
       copying_batch_size: 100
       copying_parallel_threads: 3
+      copy_server_error_reporting_timeout: <%= 8.hours %>
+      copy_server_requeue_interval: <%= 5.minutes %>
 #set up delayed job related stuff
 delayed_job:
   #Workflow objects will use the default_queue by default. That can be changed by overriding their 'queue' method.
