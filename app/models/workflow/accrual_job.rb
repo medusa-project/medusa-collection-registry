@@ -221,7 +221,6 @@ class Workflow::AccrualJob < Workflow::Base
       workflow_accrual_key.copy_requested = true
       workflow_accrual_key.save!
     end
-    update_attribute(:copy_start_time, Time.now)
     be_in_state_and_requeue('await_copy_messages') if workflow_accrual_keys.copy_not_requested.count.zero?
   end
 
@@ -294,12 +293,13 @@ class Workflow::AccrualJob < Workflow::Base
 
   def perform_assessing
     cfs_directory.make_and_assess_tree
+    update_attribute(:assessment_start_time, Time.now)
     be_in_state_and_requeue('await_assessment')
   end
 
   def perform_await_assessment
     if has_pending_assessments?
-      if self.created_at + Settings.classes.workflow.accrual_job.assessment_error_reporting_timeout > Time.now
+      if self.assessment_start_time + Settings.classes.workflow.accrual_job.assessment_error_reporting_timeout > Time.now
         self.put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
       else
         raise RuntimeError, "Assessments are still pending. Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
@@ -336,6 +336,7 @@ class Workflow::AccrualJob < Workflow::Base
       be_in_state('admin_approval')
       notify_admin_of_request
     when 'admin_approval'
+      update_attribute(:copy_start_time, Time.now)
       if use_copy_server
         be_in_state_and_requeue('send_copy_messages')
       else
