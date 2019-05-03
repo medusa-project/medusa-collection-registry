@@ -223,7 +223,7 @@ classes:
       - Send to IA for digitization
   workflow:
     accrual_job:
-      assessment_error_reporting_timeout: <%= 2.days %>
+      assessment_error_reporting_timeout: <%= 1.day %>
       assessment_requeue_interval: <%= 5.minutes %>
       copying_batch_size: 100
       copying_parallel_threads: 3
