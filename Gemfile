@@ -68,7 +68,7 @@ gem 'uglifier'
 # move is complete we should be able to remove this restriction
 gem 'bootstrap-sass', '~> 3.3.7'
 
-gem 'webpacker'
+gem 'webpacker', '~> 3.5.5'
 
 gem 'rails-jquery-autocomplete'
 

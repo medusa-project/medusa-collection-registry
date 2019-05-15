@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/medusa-project/amqp_helper.git
-  revision: 93adbfc25af22c3419b60501a87c23e7c3614193
+  revision: e4e43afb82a498dba3d0946b853fbe8cfa16a94a
   specs:
     amqp_helper (0.2.2)
       bunny
@@ -105,20 +105,20 @@ GEM
       tag_helper (~> 0.5)
     auto_strip_attributes (2.5.0)
       activerecord (>= 4.0)
-    autoprefixer-rails (9.4.6)
+    autoprefixer-rails (9.5.1.1)
       execjs
     aws-eventstream (1.0.3)
-    aws-partitions (1.161.0)
-    aws-sdk-core (3.52.0)
+    aws-partitions (1.162.0)
+    aws-sdk-core (3.52.1)
       aws-eventstream (~> 1.0, >= 1.0.2)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
-    aws-sdk-kms (1.19.0)
-      aws-sdk-core (~> 3, >= 3.48.2)
+    aws-sdk-kms (1.20.0)
+      aws-sdk-core (~> 3, >= 3.52.1)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.37.0)
-      aws-sdk-core (~> 3, >= 3.48.2)
+    aws-sdk-s3 (1.38.0)
+      aws-sdk-core (~> 3, >= 3.52.1)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.1.0)
@@ -175,9 +175,9 @@ GEM
     chronic (0.10.2)
     climate_control (0.2.0)
     cliver (0.3.2)
-    coffee-rails (4.2.2)
+    coffee-rails (5.0.0)
       coffee-script (>= 2.2.0)
-      railties (>= 4.0.0)
+      railties (>= 5.2.0)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
@@ -207,12 +207,12 @@ GEM
       cucumber-tag_expressions (~> 1.1.0)
       gherkin (~> 5.0)
     cucumber-expressions (6.0.1)
-    cucumber-rails (1.6.0)
-      capybara (>= 1.1.2, < 4)
+    cucumber-rails (1.7.0)
+      capybara (>= 2.3.0, < 4)
       cucumber (>= 3.0.2, < 4)
       mime-types (>= 1.17, < 4)
       nokogiri (~> 1.8)
-      railties (>= 4, < 6)
+      railties (>= 4.2, < 7)
     cucumber-tag_expressions (1.1.1)
     cucumber-wire (0.0.1)
     daemons (1.3.1)
@@ -470,7 +470,7 @@ GEM
       rspec-mocks (~> 3.8.0)
     rspec-core (3.8.0)
       rspec-support (~> 3.8.0)
-    rspec-expectations (3.8.2)
+    rspec-expectations (3.8.3)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-mocks (3.8.0)
@@ -505,8 +505,8 @@ GEM
       childprocess (>= 0.5, < 2.0)
       rubyzip (~> 1.2, >= 1.2.2)
     sexp_processor (4.12.0)
-    shoulda-matchers (3.1.2)
-      activesupport (>= 4.0.0)
+    shoulda-matchers (4.0.1)
+      activesupport (>= 4.2.0)
     simple_form (4.1.0)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
@@ -670,7 +670,7 @@ DEPENDENCIES
   uglifier
   uuid
   valid_email
-  webpacker
+  webpacker (~> 3.5.5)
   will_paginate
   will_paginate-bootstrap
   yajl-ruby
