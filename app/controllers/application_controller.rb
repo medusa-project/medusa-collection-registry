@@ -55,6 +55,9 @@ class ApplicationController < ActionController::Base
       format.html do
         redirect_to(login_path)
       end
+      format.json do
+        redirect_to(login_path)
+      end
     end
   end
 
