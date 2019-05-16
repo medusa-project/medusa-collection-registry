@@ -13,8 +13,13 @@ Feature: Project Item Accrual
       | 4  | item_4            |        | true     |
     And I am logged in as a project_mgr
     When I view the project with title 'Scanning'
+    #TODO - using firefox via selenium (headless or not) clicking on 'check_all' doesn't seem to actually check the checkboxes.
+    #The button looks to push, but the checkboxes don't get checked. This of course makes the test fails. Chrome is okay.
+    #If you do it manually in firefox it seems fine - this only seems to be a selenium problem.
+    #This affects some similar tests as well.
     And I click on 'check_all'
     And I click on 'Ingest items'
+    And I accept the alert
     And I wait for 1 of 'Workflow::ProjectItemIngest' to exist
     Then the project item ingest workflow for the project with title 'Scanning' should have items with ingest identifier:
       | item_1 | item_2 | item_3 |

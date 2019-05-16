@@ -28,3 +28,7 @@ end
 And /^I press escape$/ do
   first('body').send_keys(:escape)
 end
+
+And(/^I accept the alert$/) do
+  page.accept_alert
+end

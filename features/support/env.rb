@@ -23,6 +23,13 @@ Capybara.match = :prefer_exact
 
 Capybara.server = :puma
 
+#TODO - a general note that as of this writing, 2019-05-16, the selenium based tests are somewhat
+# flaky. If you run them through selenium_chrome_headless it is likely that some of them will fail,
+# but rerun the failures a few times and eventually they'll all pass. This seems likely due to
+# selenium somehow. It's a bit of a mystery, though, as in the fairly recent past they would all pass
+# without difficulty. So something significant in the browsers/selenium-webdriver/capybara/etc. must
+# have changed. I've spent some time looking at it without much success yet.
+
 Capybara.default_driver = :rack_test
 #For this to work chromedriver must be installed on the path. I've
 # taken the gem out of the gemfile since it is generally available and
