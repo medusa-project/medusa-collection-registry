@@ -68,6 +68,11 @@ gem 'uglifier'
 # move is complete we should be able to remove this restriction
 gem 'bootstrap-sass', '~> 3.3.7'
 
+#TODO update to webpacker 4. This is at least a bit involved. There is info here:
+# https://github.com/rails/webpacker and more specifically here
+# https://github.com/rails/webpacker/blob/master/docs/v4-upgrade.md
+# Suffice to say that I naively tried all of that and it did not immediately work, so there
+# is likely at least a bit of thinking to do.
 gem 'webpacker', '~> 3.5.5'
 
 gem 'rails-jquery-autocomplete'
@@ -167,8 +172,13 @@ group :test do
   gem 'launchy'
   #testing with javascript - requires phantomjs to be installed on the test machine
   gem 'poltergeist'
+
   #other js testing options
-  gem 'selenium-webdriver'
+  #TODO pinned selenium-webdriver. If I go to 3.142.2 then performance suffers greatly when using chrome
+  # headless. I do not know why at this time. Since this still works it seems worth waiting to see if
+  # if gets chased down. Also the gem is about to go to 4.0, so maybe wait for that.
+  gem 'selenium-webdriver', '3.142.1'
+
   gem 'sunspot_test'
   gem 'connection_pool'
   #need my version of bunny-mock where the default exchange works as expected. Wait to see if the fix gets merged
