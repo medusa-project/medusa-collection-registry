@@ -28,6 +28,7 @@ Capybara.default_driver = :rack_test
 # taken the gem out of the gemfile since it is generally available and
 # more up to date through brew, npm, or the like
 Capybara.javascript_driver = :selenium_chrome_headless
+#Capybara.javascript_driver = :firefox_headless
 #Capybara.javascript_driver = :poltergeist
 #Capybara.javascript_driver = :webkit
 #Capybara.javascript_driver = :selenium
@@ -72,7 +73,7 @@ def last_json
   page.source
 end
 
-%i(selenium chrome selenium_chrome_headless selenium_chrome poltergeist webkit selenium_chrome_headless_downloading).each do |driver|
+%i(selenium chrome selenium_chrome_headless selenium_chrome poltergeist webkit selenium_chrome_headless_downloading firefox_headless).each do |driver|
   Around("@#{driver}") do |scenario, block|
     begin
       Capybara.current_driver = driver
@@ -81,6 +82,12 @@ end
       Capybara.use_default_driver
     end
   end
+end
+
+Capybara.register_driver(:firefox_headless) do |app|
+  options = Selenium::WebDriver::Firefox::Options.new
+  options.args << '--headless'
+  Capybara::Selenium::Driver.new(app, browser: :firefox, options: options)
 end
 
 # Register a driver specially for downloading stuff
