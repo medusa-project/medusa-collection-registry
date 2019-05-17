@@ -4,7 +4,7 @@ class AccessSystemsController < ApplicationController
   before_action :find_access_system, only: [:show, :edit, :update, :destroy, :collections]
 
   def index
-    @access_systems = AccessSystem.all
+    @access_systems = AccessSystem.all.order(:name)
   end
 
   def show

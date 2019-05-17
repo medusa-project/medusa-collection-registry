@@ -166,7 +166,7 @@ Rails.application.routes.draw do
     end
   end
   resources :archived_accrual_jobs, only: [:show, :index]
-
+  resources :resource_types, only: :index
 
   match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
 
