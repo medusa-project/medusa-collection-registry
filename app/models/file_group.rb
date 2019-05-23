@@ -18,6 +18,7 @@ class FileGroup < ApplicationRecord
   has_many :source_file_groups, through: :source_file_group_joins
   has_many :attachments, as: :attachable, dependent: :destroy
 
+  before_save :set_collection_uuid
   before_save :canonicalize_cfs_root
   before_save :strip_fields
   before_validation :initialize_file_info
@@ -73,6 +74,10 @@ class FileGroup < ApplicationRecord
 
   def strip_fields
     self.staged_file_location.try(:strip!)
+  end
+
+  def set_collection_uuid
+    self.collection_uuid ||= self.collection&.uuid
   end
 
   #override in subclasses that do

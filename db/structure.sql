@@ -5,6 +5,7 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
@@ -1705,7 +1706,8 @@ CREATE TABLE public.file_groups (
     cfs_root character varying(255),
     type character varying(255),
     access_url character varying,
-    acquisition_method character varying
+    acquisition_method character varying,
+    collection_uuid character varying
 );
 
 
@@ -7886,6 +7888,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190422162120'),
 ('20190422190028'),
 ('20190503165005'),
-('20190503171349');
+('20190503171349'),
+('20190523150351');
 
 
