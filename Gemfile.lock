@@ -154,14 +154,13 @@ GEM
       sshkit (~> 1.3)
     capistrano-yarn (2.0.2)
       capistrano (~> 3.0)
-    capybara (3.20.0)
+    capybara (3.20.2)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
       rack (>= 1.6.0)
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.2)
-      uglifier
       xpath (~> 3.2)
     capybara-email (3.0.1)
       capybara (>= 2.4, < 4.0)
@@ -290,7 +289,7 @@ GEM
     haml (5.1.0)
       temple (>= 0.8.0)
       tilt
-    haml-rails (2.0.0)
+    haml-rails (2.0.1)
       actionpack (>= 5.1)
       activesupport (>= 5.1)
       haml (>= 4.0.6, < 6.0)
@@ -563,6 +562,10 @@ GEM
     valid_email (0.1.2)
       activemodel
       mail (>= 2.6.1)
+    webdrivers (3.9.4)
+      nokogiri (~> 1.6)
+      rubyzip (~> 1.0)
+      selenium-webdriver (~> 3.0)
     webpacker (3.5.5)
       activesupport (>= 4.2)
       rack-proxy (>= 0.6.1)
@@ -670,6 +673,7 @@ DEPENDENCIES
   uglifier
   uuid
   valid_email
+  webdrivers
   webpacker (~> 3.5.5)
   will_paginate
   will_paginate-bootstrap

@@ -178,6 +178,7 @@ group :test do
   # headless. I do not know why at this time. Since this still works it seems worth waiting to see if
   # if gets chased down. Also the gem is about to go to 4.0, so maybe wait for that.
   gem 'selenium-webdriver', '3.142.1'
+  gem 'webdrivers'
 
   gem 'sunspot_test'
   gem 'connection_pool'
