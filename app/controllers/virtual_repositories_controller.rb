@@ -1,9 +1,14 @@
 class VirtualRepositoriesController < ApplicationController
   include ModelsToCsv
 
-  before_action :require_medusa_user
+  before_action :require_medusa_user, except: :index
+  before_action :require_medusa_user_or_basic_auth, only: :index
   before_action :find_virtual_repository, only: [:edit, :update, :destroy, :show, :show_file_stats]
   helper_method :load_virtual_repository_file_extension_stats, :load_virtual_repository_content_type_stats
+
+  def index
+
+  end
 
   def show
 
