@@ -7,7 +7,7 @@
     "checkboxes.js": "1.2.2",
     "clipboard": "^2.0.1",
     "expose-loader": "^0.7.4",
-    "jquery": "3.3.1",
+    "jquery": "^3.4.0",
     "jquery-ui": "^1.12.1",
     "jquery-ujs": "^1.2.2",
     "local-time": "^2.0.0",
