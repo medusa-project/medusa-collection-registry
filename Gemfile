@@ -42,17 +42,6 @@ gem 'delayed_job_web'
 gem 'daemons'
 gem 'daemons-rails'
 
-#image processing for file previews
-#problem installing 1.0.5 - couldn't compile dependency glib2(3.0.8) on the servers
-#revisit this later
-#I think that this may have to wait until we get off RHEL 6 on these servers - even by
-#hand I can't install the necessary libraries because of old dependencies.
-#It also appears that ruby-vips -> 1.0.0 corresponds to vips7 -> vips8, which
-#introduces some API changes and other complications - see the ruby-vips github page
-#Alternately, we may just decide that Cantaloupe is good enough and get rid of the fallback, or revert
-#the fallback to ImageMagick.
-#gem 'ruby-vips', '~>0.3.14', require: 'vips'
-
 gem 'bunny'
 gem 'amq-protocol'
 gem 'amqp_helper', '~>0.2.0', git: 'git://github.com/medusa-project/amqp_helper.git'
@@ -64,9 +53,7 @@ gem 'coffee-rails'
 
 gem 'uglifier'
 
-#TODO update is available, but depends on sassc gem, which won't compile on the DCL servers. One the AWS
-# move is complete we should be able to remove this restriction
-gem 'bootstrap-sass', '~> 3.3.7'
+gem 'bootstrap-sass'
 
 #TODO update to webpacker 4. This is at least a bit involved. There is info here:
 # https://github.com/rails/webpacker and more specifically here
