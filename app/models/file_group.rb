@@ -24,6 +24,7 @@ class FileGroup < ApplicationRecord
   before_validation :initialize_file_info
 
   delegate :repository, to: :collection
+  delegate :uuid, to: :collection, prefix: true
 
   validates_uniqueness_of :cfs_root, allow_blank: true
   validates_presence_of :title, :total_files, :total_file_size

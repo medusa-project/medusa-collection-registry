@@ -24,6 +24,7 @@ class Project < ApplicationRecord
   standard_auto_html(:specifications, :summary)
 
   before_save :normalize_ingest_folder
+  before_save :ensure_collection_uuid
 
   def staging_key_prefix
     ingest_folder
@@ -50,6 +51,10 @@ class Project < ApplicationRecord
       self.ingest_folder = ingest_folder.sub(/^\/*/, '')
       self.ingest_folder = ingest_folder.sub(/\/*$/, '')
     end
+  end
+
+  def ensure_collection_uuid
+    self.collection_uuid ||= self.collection.uuid
   end
 
 end

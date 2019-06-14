@@ -105,6 +105,7 @@ wait_delete_content delete_content restore_content email_restored_content email_
   def cache_fields
     self.cached_file_group_title ||= file_group.title
     self.cached_collection_id ||= file_group.collection_id
+    self.cached_collection_uuid ||= file_group.collection_uuid
     self.cached_cfs_directory_id ||= file_group.cfs_directory_id
   end
 

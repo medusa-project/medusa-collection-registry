@@ -3280,7 +3280,8 @@ CREATE TABLE public.projects (
     ingest_folder character varying,
     destination_folder_uuid character varying,
     summary_html text,
-    specifications_html text
+    specifications_html text,
+    collection_uuid character varying
 );
 
 
@@ -4308,7 +4309,8 @@ CREATE TABLE public.workflow_file_group_deletes (
     cached_collection_id integer,
     cached_cfs_directory_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    cached_collection_uuid character varying
 );
 
 
@@ -6579,6 +6581,13 @@ CREATE INDEX index_projects_on_collection_id ON public.projects USING btree (col
 
 
 --
+-- Name: index_projects_on_collection_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_projects_on_collection_uuid ON public.projects USING btree (collection_uuid);
+
+
+--
 -- Name: index_pronoms_on_file_format_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6856,6 +6865,13 @@ CREATE INDEX index_workflow_accrual_keys_on_workflow_accrual_job_id ON public.wo
 --
 
 CREATE INDEX index_workflow_file_group_deletes_on_approver_id ON public.workflow_file_group_deletes USING btree (approver_id);
+
+
+--
+-- Name: index_workflow_file_group_deletes_on_cached_collection_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workflow_file_group_deletes_on_cached_collection_uuid ON public.workflow_file_group_deletes USING btree (cached_collection_uuid);
 
 
 --
@@ -7889,6 +7905,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190422190028'),
 ('20190503165005'),
 ('20190503171349'),
-('20190523150351');
+('20190523150351'),
+('20190614150050'),
+('20190614150232');
 
 
