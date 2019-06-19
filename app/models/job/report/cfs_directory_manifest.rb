@@ -17,5 +17,5 @@ class Job::Report::CfsDirectoryManifest < Job::Base
     report.generate_tsv(io)
     ReportMailer.cfs_directory_manifest(self, io).deliver_now
   end
-  
+
 end
