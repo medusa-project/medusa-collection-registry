@@ -96,11 +96,6 @@ When(/^I download the cfs file for the file group titled '([^']*)' for the path 
   visit download_cfs_file_path(file_group.find_file_at_relative_path(path))
 end
 
-
-When(/^I run an initial cfs file assessment on the file group titled '([^']*)'$/) do |title|
-  FileGroup.find_by(title: title).schedule_initial_cfs_assessment
-end
-
 Then(/^the file group titled '([^']*)' should have a cfs file for the path '([^']*)' with results:$/) do |title, path, table|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     expect(cfs_file).not_to be_nil
