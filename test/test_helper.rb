@@ -2,12 +2,7 @@ ENV["RAILS_ENV"] = "test"
 require 'simplecov'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
-
-
-# SimpleCov.start 'rails' do
-#   #command_name 'minitest'
-#   merge_timeout 1.week.to_i
-# end
+require 'mocha/minitest'
 
 Dir[File.join(Rails.root, 'features', 'factories', '**', '*.rb')].each do |file|
   load(file)
