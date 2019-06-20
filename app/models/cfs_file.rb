@@ -421,14 +421,6 @@ class CfsFile < ApplicationRecord
     end
   end
 
-  def safe_size
-    self.size || 0
-  end
-
-  def safe_size_was
-    self.size_was || 0
-  end
-
   def self.random
     self.offset(rand(self.fast_count)).first
   end
