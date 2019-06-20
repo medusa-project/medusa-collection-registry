@@ -2,6 +2,7 @@ ENV["RAILS_ENV"] = "test"
 require 'simplecov'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require 'rspec/expectations/minitest_integration'
 require 'mocha/minitest'
 
 Dir[File.join(Rails.root, 'features', 'factories', '**', '*.rb')].each do |file|
