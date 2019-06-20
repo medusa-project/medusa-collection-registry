@@ -291,8 +291,8 @@ class CfsDirectory < ApplicationRecord
                   else
                     CfsDirectory.where(id: self.recursive_subdirectory_ids)
                   end
-    unless include_self
-      directories.where('id != ?', self.id)
+    if not include_self
+      directories = directories.where('id != ?', self.id)
     end
     directories
   end
