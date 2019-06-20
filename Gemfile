@@ -159,6 +159,8 @@ group :test do
   gem 'launchy'
   #testing with javascript - requires phantomjs to be installed on the test machine
   gem 'poltergeist'
+  #simpler mocking than minitest
+  gem 'mocha'
 
   #other js testing options
   #TODO pinned selenium-webdriver. If I go to 3.142.2 then performance suffers greatly when using chrome
