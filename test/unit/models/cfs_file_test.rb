@@ -22,30 +22,34 @@ class CfsFileTest < ActiveSupport::TestCase
   end
 
   test 'cfs file updates fixity status to ok' do
-    cfs_file = FactoryBot.create(:cfs_file)
-    assert_difference -> {cfs_file.fixity_check_results.where(status: :ok).count}, 1 do
-      cfs_file.update_fixity_status_ok
+    [nil, '254e6fa26f5fce3ef58bdc3358d06886'].each do |md5_sum|
+      cfs_file = FactoryBot.create(:cfs_file, md5_sum: md5_sum)
+      cfs_file.stubs('exists_on_storage?': true, storage_md5_sum: '254e6fa26f5fce3ef58bdc3358d06886')
+      assert_difference -> {cfs_file.fixity_check_results.where(status: :ok).count}, 1 do
+        cfs_file.update_fixity_status_with_event
+      end
+      assert_equal 'ok', cfs_file.fixity_check_status
     end
-    assert_equal 'ok', cfs_file.fixity_check_status
   end
 
   test 'cfs file update fixity status to bad' do
-    cfs_file = FactoryBot.create(:cfs_file)
-    cfs_file.expects(:storage_md5_sum).returns('254e6fa26f5fce3ef58bdc3358d06886')
+    cfs_file = FactoryBot.create(:cfs_file, md5_sum: '123456a26f5fce3ef58bdc3358d06886')
+    cfs_file.stubs(:storage_md5_sum).returns('254e6fa26f5fce3ef58bdc3358d06886')
+    cfs_file.stubs(:exists_on_storage? => true)
     assert_difference -> {cfs_file.fixity_check_results.where(status: :bad).count} => 1,
                       -> {cfs_file.events.count} => 1,
                       -> {cfs_file.red_flags.count} => 1 do
-      cfs_file.update_fixity_status_bad_with_event
+      cfs_file.update_fixity_status_with_event
     end
     assert_equal 'bad', cfs_file.fixity_check_status
   end
 
-  test 'cfs file update fixity status to nf' do
+  test 'cfs file update fixity status when not found' do
     cfs_file = FactoryBot.create(:cfs_file)
     assert_difference -> {cfs_file.fixity_check_results.where(status: :not_found).count} => 1,
                       -> {cfs_file.events.count} => 1,
                       -> {cfs_file.red_flags.count} => 1 do
-      cfs_file.update_fixity_status_not_found_with_event
+      cfs_file.update_fixity_status_with_event
     end
     assert_equal 'nf', cfs_file.fixity_check_status
   end
