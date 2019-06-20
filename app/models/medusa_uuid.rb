@@ -20,7 +20,7 @@ class MedusaUuid < ApplicationRecord
   end
 
   def self.generate
-    Utils::Luhn.add_check_character(UUID.generate)
+    Utils::Luhn.generate_checked_uuid
   end
 
 end
