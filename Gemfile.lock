@@ -351,6 +351,8 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
+    minitest-matchers_vaccine (1.0.4)
+      minitest (~> 5.0)
     mocha (1.9.0)
       metaclass (~> 0.0.1)
     multi_json (1.13.1)
@@ -510,8 +512,8 @@ GEM
       childprocess (>= 0.5, < 2.0)
       rubyzip (~> 1.2, >= 1.2.2)
     sexp_processor (4.12.0)
-    shoulda-matchers (4.0.1)
-      activesupport (>= 4.2.0)
+    shoulda-matchers (2.8.0)
+      activesupport (>= 3.0.0)
     simple_form (4.1.0)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
@@ -638,6 +640,7 @@ DEPENDENCIES
   logger
   marcel
   medusa_storage!
+  minitest-matchers_vaccine
   mocha
   multi_json
   net-http-digest_auth!
@@ -669,7 +672,7 @@ DEPENDENCIES
   sass-rails
   selenium-webdriver (= 3.142.1)
   send_file_with_range!
-  shoulda-matchers
+  shoulda-matchers (~> 2.0)
   simple_form
   simple_memoize
   simplecov

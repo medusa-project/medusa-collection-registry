@@ -132,7 +132,10 @@ gem 'browser'
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
-  gem 'shoulda-matchers'
+  #Version pin is for the matchers to work with minitest-matchers_vaccine - see should-matchers docs (it actually
+  # talks about shoulda, but it seems necessary for minitest-matchers_vaccine too)
+  gem 'shoulda-matchers', '~> 2.0'
+  gem "minitest-matchers_vaccine"
   gem 'sunspot_solr'
   gem 'byebug'
   gem 'puma'
