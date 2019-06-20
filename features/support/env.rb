@@ -11,6 +11,7 @@ require 'capybara/poltergeist'
 require 'sunspot_test/cucumber'
 require 'capybara/mechanize/cucumber'
 require 'fileutils'
+require 'simplecov'
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd
@@ -158,3 +159,8 @@ puts "Webpack compiled"
      puts "Problem dumping html: #{e}"
    end
  end
+
+# SimpleCov.start 'rails' do
+#   #command_name 'features'
+#   merge_timeout 1.week.to_i
+# end
