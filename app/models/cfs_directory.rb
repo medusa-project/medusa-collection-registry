@@ -269,8 +269,8 @@ class CfsDirectory < ApplicationRecord
   end
 
   #yield each CfsDirectory in the tree to the block.
-  def each_directory_in_tree(include_self = true)
-    self.directories_in_tree(include_self).find_each do |directory|
+  def each_directory_in_tree(include_self: true)
+    self.directories_in_tree(include_self: include_self).find_each do |directory|
       yield directory
     end
   end
@@ -284,7 +284,7 @@ class CfsDirectory < ApplicationRecord
     end
   end
 
-  def directories_in_tree(include_self = true)
+  def directories_in_tree(include_self: true)
     #for roots we can do this easily - for non roots we need to do it recursively
     directories = if self.root?
                     CfsDirectory.where(root_cfs_directory_id: self.id)
