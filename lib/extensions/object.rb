@@ -4,7 +4,4 @@ class Object
     self.blank? ? response : self
   end
 
-  def method_value_or_default(method, default)
-    self.respond_to?(method) ? self.send(method) : default
-  end
 end
