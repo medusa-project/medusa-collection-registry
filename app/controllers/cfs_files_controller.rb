@@ -10,7 +10,7 @@ class CfsFilesController < ApplicationController
   before_action :find_file, only: [:show, :fits, :download, :view, :events,
                                    :preview_content, :preview_pdf,
                                    :preview_iiif_image, :thumbnail]
-  before_action :find_previewer, only: [:show, :preview_content, :preview_pdf, :preview_iiif_image, :thumbnail]
+  before_action :find_image_helper, only: %i(preview_iiif_image thumbnail)
 
   helper_method :cfs_file_download_link, :cfs_file_view_link, :cfs_file_content_preview_link
 
@@ -75,14 +75,14 @@ class CfsFilesController < ApplicationController
 
   def preview_iiif_image
     authorize! :download, @file.file_group
-    response_info = @previewer.iiif_image_response_info(params)
+    response_info = @image_helper.iiif_image_response_info(params)
     send_data response_info[:data], type: response_info[:response_type], disposition: disposition('inline', @file)
   end
 
   def thumbnail
     authorize! :download, @file.file_group
-    render nothing: true, status: 404 unless @previewer.respond_to?(:thumbnail_data) and @file.exists_on_storage?
-    send_data @previewer.thumbnail_data, type: 'image/jpeg', disposition: 'inline'
+    render nothing: true, status: 404 unless @image_helper.respond_to?(:thumbnail_data) and @file.exists_on_storage?
+    send_data @image_helper.thumbnail_data, type: 'image/jpeg', disposition: 'inline'
   end
 
   def preview_content
@@ -108,8 +108,8 @@ class CfsFilesController < ApplicationController
     @breadcrumbable = @file
   end
 
-  def find_previewer
-    @previewer = safe_can?(:download, @file.file_group) ? @file.previewer : Preview::Default.new(@file)
+  def find_image_helper
+    @image_helper = Preview::ImageHelper.new(@file)
   end
 
   #In this and cfs_file_view_link if possible we give a direct link to the content,

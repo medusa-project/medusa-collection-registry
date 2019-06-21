@@ -1,3 +1,5 @@
+#This uses the configuration settings to decide which previewer to use for a file.
+# By convention, this viewer should be a partial called "previewer_viewer_#{type}".
 require 'singleton'
 
 #TODO possibly revise this to use a regexp search, at least on the content types,
@@ -16,21 +18,7 @@ module Preview
     def find_preview_viewer_type(cfs_file)
       mime_type_viewers[cfs_file.content_type_name&.split(';')&.first] ||
           extension_viewers[File.extname(cfs_file.name).sub(/^\./, '').downcase] ||
-          :none
-    end
-
-    PREVIEWER_MAP = {
-        image: Image,
-        video: Video,
-        audio: Audio,
-        text: Text,
-        pdf: Pdf,
-        none: Default
-    }
-    def find_previewer(cfs_file)
-      previewer_class = PREVIEWER_MAP[find_preview_viewer_type(cfs_file)]
-      raise 'Unrecognized previewer type' unless previewer_class
-      previewer_class.new(cfs_file)
+          :default
     end
 
     protected

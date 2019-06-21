@@ -1,11 +1,9 @@
 module Preview
-  class Image < Base
+  class ImageHelper
+
+    attr_accessor :cfs_file
 
     delegate :image_server_config, to: :class
-
-    def view_partial
-      'preview_viewer_iiif_image'
-    end
 
     def is_iiif_compatible?
       return false if image_server_config[:disabled].present?
