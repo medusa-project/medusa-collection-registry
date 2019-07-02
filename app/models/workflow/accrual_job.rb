@@ -208,6 +208,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_send_copy_messages
+    reset_conflict_fixities_and_fits if has_serious_conflicts?
     amqp = AmqpHelper::Connector[:medusa]
     staging_root, source_prefix = staging_root_and_prefix
     staging_root_name = staging_root.name
@@ -271,6 +272,8 @@ class Workflow::AccrualJob < Workflow::Base
       raise "There are #{error_count} keys with copying errors."
     end
     if workflow_accrual_keys.reload.count.zero?
+      cfs_directory.events.create!(key: 'deposit_completed', cascadable: true,
+                                   note: "Accrual from #{staging_path}", actor_email: user.email)
       be_in_state_and_requeue('assessing')
     else
       if self.copy_start_time + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout > Time.now
