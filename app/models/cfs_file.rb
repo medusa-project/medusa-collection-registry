@@ -414,7 +414,7 @@ class CfsFile < ApplicationRecord
       when 200
         response.body
       when 404
-        raise RuntimeError, "File not found for FITS: #{self.input_file}"
+        raise RuntimeError, "File not found for FITS: #{input_file}"
       else
         raise RuntimeError, "Bad response from FITS server: Code #{response.code}. Body: #{response.body}"
       end
