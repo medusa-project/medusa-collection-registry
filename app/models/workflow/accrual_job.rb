@@ -114,6 +114,8 @@ class Workflow::AccrualJob < Workflow::Base
     cfs_directory_prefix = cfs_directory.relative_path
     existing_keys = existing_keys_for(cfs_directory_prefix)
     duplicate_keys = ingest_keys.intersection(existing_keys)
+    #TODO we can implement other checks based on size and/or the beginning/end bytes of a file
+    # to try to check for changes more efficiently before computing the entire md5.
     duplicate_keys.each do |key|
       existing_md5 = Application.storage_manager.main_root.md5_sum(File.join(cfs_directory_prefix, key))
       ingest_md5 = root.md5_sum(File.join(prefix, key))
