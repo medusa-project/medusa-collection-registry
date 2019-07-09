@@ -3,22 +3,22 @@ class Workflow::AccrualMailer < MedusaBaseMailer
 
   def done(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: @workflow_accrual.user.email)
+    mail(to: standard_to_list(workflow_accrual))
   end
 
   def initial_approval(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: @workflow_accrual.user.email)
+    mail(to: standard_to_list(workflow_accrual))
   end
 
   def illegal_overwrite(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: @workflow_accrual.user.email)
+    mail(to: standard_to_list(workflow_accrual))
   end
 
   def aborted(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: @workflow_accrual.user.email)
+    mail(to: standard_to_list(workflow_accrual))
   end
 
   def notify_admin_of_incoming_request(workflow_accrual)
@@ -28,7 +28,15 @@ class Workflow::AccrualMailer < MedusaBaseMailer
 
   def assessment_done(workflow_accrual)
     @workflow_accrual = workflow_accrual
-    mail(to: [@workflow_accrual.user.email, @workflow_accrual.collection&.contact&.email].compact.uniq)
+    mail(to: standard_to_list(workflow_accrual, add_collection_contact: true))
+  end
+
+  protected
+
+  def standard_to_list(workflow_accrual, add_collection_contact: false)
+    to_list = [workflow_accrual.user.email]
+    to_list << workflow_accrual.collection&.contact&.email if add_collection_contact
+    to_list
   end
 
 end
