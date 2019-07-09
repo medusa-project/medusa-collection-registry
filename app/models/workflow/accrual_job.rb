@@ -288,8 +288,9 @@ class Workflow::AccrualJob < Workflow::Base
   # as well, i.e. just automatically try this one or two times if we get into a bad state.
   def retry_failed_copies
     self.delayed_jobs.each {|j| j.destroy!}
-    self.workflow_accrual_keys.each do |key|
+    self.workflow_accrual_keys.where('error is not null').each do |key|
       key.copy_requested = false
+      key.error = nil
       key.save!
     end
     self.be_in_state_and_requeue('send_copy_messages')
