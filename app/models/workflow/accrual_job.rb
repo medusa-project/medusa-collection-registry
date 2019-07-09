@@ -284,6 +284,17 @@ class Workflow::AccrualJob < Workflow::Base
     end
   end
 
+  #At this time this is meant for calling in a console if we get some failures that need to be retried. This might be automated
+  # as well, i.e. just automatically try this one or two times if we get into a bad state.
+  def retry_failed_copies
+    self.delayed_jobs.each {|j| j.destroy!}
+    self.workflow_accrual_keys.each do |key|
+      key.copy_requested = false
+      key.save!
+    end
+    self.be_in_state_and_requeue('send_copy_messages')
+  end
+
   def reset_conflict_fixities_and_fits
     workflow_accrual_conflicts.where(different: true).find_each {|conflict| conflict.reset_cfs_file}
   end
