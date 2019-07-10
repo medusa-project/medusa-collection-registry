@@ -8,6 +8,8 @@ classes:
   workflow:
     accrual_job:
       assessment_requeue_interval: <%= (0.1).seconds %>
+dls:
+  base_url: https://dls.example.com
 download_users:
   joe_downloader_user:
     - 1

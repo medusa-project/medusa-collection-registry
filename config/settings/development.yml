@@ -30,6 +30,9 @@ copy_server:
   roots:
     - storage_root_name_1
     - storage_root_name_2
+#The root of the DLS application, needed to make links and such from the collection registry
+dls:
+  base_url: https://dls.example.com
 #this is a map of netids to an array of collection ids - the users will get
 #download and export permissions on files in that collection
 download_users: {}
