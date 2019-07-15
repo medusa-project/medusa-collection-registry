@@ -32,6 +32,7 @@ Rails.application.routes.draw do
 
   resources :collections, concerns: %i(eventable red_flaggable assessable attachable) do
     get :show_file_stats, on: :member
+    get :view_in_dls, on: :member
   end
 
   resources :repositories, concerns: %i(eventable red_flaggable assessable collection_indexer) do
