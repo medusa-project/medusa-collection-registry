@@ -16,6 +16,7 @@ amqp_accrual:
     #whether or not to return some extra information in amqp messages - this may be restructured to allow clients to be
     #configured to get exactly the information they want
     return_directory_information: true
+#This will go away when the book tracker is removed from the collection registry
 book_tracker:
   import_path: ~/Projects/mbt_marcxml
   library_nuc_code: UIU
@@ -34,7 +35,8 @@ copy_server:
 dls:
   base_url: https://dls.example.com
 #this is a map of netids to an array of collection ids - the users will get
-#download and export permissions on files in that collection
+#download and export permissions on files in that collection. Intended to allow this in
+#a temporary, ad-hoc fashion
 download_users: {}
 #settings for communication with downloader
 downloader:
@@ -65,11 +67,10 @@ handle_client:
     password: handle_user_password
 #connection to the iiif image server
 iiif:
-  host: localhost
-  port: 3000
-  #this is the path from the loris server's base path, e.g. /usr/local/share/images for the docker version, to
-  #the cfs root for this environment
-  root: dev
+  host: iiif.example.com
+  port: 80
+  #this is the path from the iiif server's base path
+  root: medusa/iiif/2
 ldap:
   host: ad.uillinois.edu
   port: 389
@@ -80,8 +81,8 @@ ldap:
   search: ^CN=([^,]+),((CN|OU)=[^,]+,)*DC=ad,DC=uillinois,DC=edu$
 mailer:
   #You can set the following to add an extra bit into the subjects of emails that go out,
-  #making is easier to distinguish production/staging/etc.
-  #system_name: Test
+  #making is easier to distinguish production/staging/etc. This is done with an interceptor in config/initializers.
+  system_name: development
 #general medusa configuration
 medusa:
   #medusa server information for generating certain urls that need more than just the path
