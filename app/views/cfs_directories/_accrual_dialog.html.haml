@@ -19,3 +19,10 @@
       .btn-group
         = submit_button(f, value: 'Ingest')
         = cancel_modal_button
+
+= render layout: 'layouts/bootstrap_modal', locals: {id: 'cant-add-files-dialog'} do
+  .modal-header
+    %h4 Add files
+  .modal-body
+    There is already an accrual in progress for this directory. Please wait for that
+    accrual to finish before initiating another.
