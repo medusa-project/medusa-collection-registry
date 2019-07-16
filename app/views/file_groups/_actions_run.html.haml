@@ -8,4 +8,7 @@
     - if @file_group.is_a?(ExternalFileGroup) and @file_group.lacks_related_bit_level_file_group? and safe_can?(:update, @file_group)
       %li= link_to 'Create Bit Level File Group', create_bit_level_external_file_group_path(@file_group), method: :post
     - if @accrual.present? and safe_can?(:accrue, @directory)
-      %li= link_to 'Add files', '#', 'data-toggle' => 'modal', 'data-target' => '#add-files-dialog'
+      - if @accrual.directory_accruable?
+        %li= link_to 'Add files', '#', 'data-toggle' => 'modal', 'data-target' => '#add-files-dialog'
+      - else
+        %li= 'Wait for current accrual to finish to add files'
