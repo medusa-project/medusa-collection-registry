@@ -16,10 +16,9 @@ amqp_accrual:
     #whether or not to return some extra information in amqp messages - this may be restructured to allow clients to be
     #configured to get exactly the information they want
     return_directory_information: true
-#This will go away when the book tracker is removed from the collection registry
 book_tracker:
-  import_path: ~/Projects/mbt_marcxml
-  library_nuc_code: UIU
+  items_url: https://book-tracker.example.com/books
+  tasks_url: https://book-tracker.example.com/tasks
 #If this is set then Workflow::AccrualJobs (and potentially other accruals in the future) may use a
 #separate copying server to do copying work. The queues are hooked up with the medusa.amqp information.
 #The copying server is used if both the source and target root names appear in the 'roots' config below,

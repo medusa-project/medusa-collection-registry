@@ -13,7 +13,6 @@
 
 //= require bootstrap-sprockets
 //= require autocomplete-rails-uncompressed
-//= require local-time
 //= require common
 //= require react
 //= require react_ujs

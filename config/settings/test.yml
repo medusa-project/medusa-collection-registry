@@ -2,6 +2,9 @@
 #You should use the settings/<env>.local.yml for actual configuration, with the exception of a few
 #settings below that are expected for the tests#
 
+book_tracker:
+  items_url: https://book-tracker.example.com/books
+  tasks_url: https://book-tracker.example.com/tasks
 #TODO by setting up the tests correctly we could probably remove this dependence - i.e. have the tests
 #take this information directly out of the settings instead of hard coding it
 classes:

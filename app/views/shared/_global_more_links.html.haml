@@ -27,9 +27,8 @@
             %li= link_to 'Timeline', timeline_path
         %strong Book Tracker:
         %ul
-          %li= link_to 'Items', book_tracker_items_path
-          - if safe_can?(:update, BookTracker::Item)
-            %li= link_to 'Tasks', book_tracker_tasks_path
+          %li= link_to 'Items', Settings.book_tracker.items_url
+          %li= link_to 'Tasks', Settings.book_tracker.tasks_url
       .col-sm-4
         %strong Quick Links:
         %ul
