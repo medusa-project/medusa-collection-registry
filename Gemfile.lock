@@ -28,10 +28,10 @@ GIT
 
 GIT
   remote: https://github.com/medusa-project/medusa_storage.git
-  revision: 2be86f1c4f3ce82e009775d8c1a98986a35b3180
+  revision: 8fe0298a5bbe87081df757edbf417aea7adceddb
   branch: master
   specs:
-    medusa_storage (0.6.3)
+    medusa_storage (0.6.4)
       aws-sdk-s3
       hex_string
       io-like
