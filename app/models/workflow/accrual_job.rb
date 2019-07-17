@@ -310,7 +310,7 @@ class Workflow::AccrualJob < Workflow::Base
 
   #TODO - this could maybe target the content of the ingest more precisely and thus be more
   # efficient. As is it may run over a lot of stuff that is already there unnecessarily.
-  # Maybe just assess any direct file keys directly and do the directory keys by making the
+  # Maybe just assess any workflow_accrual_files keys directly and do the workflow_accrual_directory keys by making the
   # directories if they don't exist and then assessing them.
   def perform_assessing
     cfs_directory.make_and_assess_tree
