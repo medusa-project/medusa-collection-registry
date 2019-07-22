@@ -48,4 +48,8 @@ class Accrual
     Application.storage_manager.accrual_roots.all_root_names.sort
   end
 
+  def directory_accruable?
+    Workflow::AccrualJob.where(cfs_directory_id: cfs_directory.id).count.zero?
+  end
+
 end

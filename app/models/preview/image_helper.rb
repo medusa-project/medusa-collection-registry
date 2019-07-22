@@ -5,6 +5,10 @@ module Preview
 
     delegate :image_server_config, to: :class
 
+    def initialize(cfs_file)
+      self.cfs_file = cfs_file
+    end
+
     def is_iiif_compatible?
       return false if image_server_config[:disabled].present?
       result = Net::HTTP.get_response(URI.parse(iiif_info_json_url))

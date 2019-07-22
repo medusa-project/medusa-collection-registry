@@ -113,9 +113,6 @@ gem 'lmdb'
 ## For this group we are installing the js via webpack/yarn,
 ## but it is still useful to get the view helpers
 gem 'chartkick'
-# Medusa Book Tracker compatibility
-gem 'local_time'
-
 
 #date parsing
 gem 'chronic'

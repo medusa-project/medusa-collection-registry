@@ -32,6 +32,7 @@ Rails.application.routes.draw do
 
   resources :collections, concerns: %i(eventable red_flaggable assessable attachable) do
     get :show_file_stats, on: :member
+    get :view_in_dls, on: :member
   end
 
   resources :repositories, concerns: %i(eventable red_flaggable assessable collection_indexer) do
@@ -136,20 +137,6 @@ Rails.application.routes.draw do
   end
 
   match '/timeline', to: 'timeline#show', as: :timeline, via: :get
-
-  namespace :book_tracker do
-    match 'items', to: 'items#index', as: :items, via: [:get, :post]
-    match 'items/:id', to: 'items#show', as: :item, via: :get
-    resources 'tasks', only: 'index'
-
-    match 'check-google', to: 'tasks#check_google', via: 'post',
-          as: 'check_google'
-    match 'check-hathitrust', to: 'tasks#check_hathitrust', via: 'post',
-          as: 'check_hathitrust'
-    match 'check-internet-archive', to: 'tasks#check_internet_archive',
-          via: 'post', as: 'check_internet_archive'
-    match 'import', to: 'tasks#import', via: 'post'
-  end
 
   namespace :workflow do
     resources 'accrual_jobs', only: [] do

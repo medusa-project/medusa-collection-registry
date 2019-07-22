@@ -287,6 +287,18 @@ class Workflow::AccrualJob < Workflow::Base
     end
   end
 
+  #At this time this is meant for calling in a console if we get some failures that need to be retried. This might be automated
+  # as well, i.e. just automatically try this one or two times if we get into a bad state.
+  def retry_failed_copies
+    self.delayed_jobs.each {|j| j.destroy!}
+    self.workflow_accrual_keys.where('error is not null').each do |key|
+      key.copy_requested = false
+      key.error = nil
+      key.save!
+    end
+    self.be_in_state_and_requeue('send_copy_messages')
+  end
+
   def reset_conflict_fixities_and_fits
     workflow_accrual_conflicts.where(different: true).find_each {|conflict| conflict.reset_cfs_file}
   end
@@ -297,6 +309,10 @@ class Workflow::AccrualJob < Workflow::Base
     be_in_state_and_requeue('end')
   end
 
+  #TODO - this could maybe target the content of the ingest more precisely and thus be more
+  # efficient. As is it may run over a lot of stuff that is already there unnecessarily.
+  # Maybe just assess any workflow_accrual_files keys directly and do the workflow_accrual_directory keys by making the
+  # directories if they don't exist and then assessing them.
   def perform_assessing
     cfs_directory.make_and_assess_tree
     update_attribute(:assessment_start_time, Time.now)

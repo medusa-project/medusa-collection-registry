@@ -9,6 +9,7 @@
   .col-xs-6
     .btn-toolbar.pull-right
       .btn-group
+        = default_button('Access', view_in_dls_collection_path(@collection))
         = assessments_button(assessments_collection_path(@collection))
         = events_button(events_collection_path(@collection))
         = red_flags_button(red_flags_collection_path(@collection))

@@ -13,7 +13,10 @@
         = render 'shared/dropdown_toggle', title: :Run, icon: 'cog'
         %ul.dropdown-menu.dropdown-menu-right
           - if @accrual.present? and safe_can?(:accrue, @directory)
-            %li= link_to 'Add files', '#', 'data-toggle': 'modal', 'data-target': '#add-files-dialog'
+            - if @accrual.directory_accruable?
+              %li= link_to 'Add files', '#', 'data-toggle': 'modal', 'data-target': '#add-files-dialog'
+            - else
+              %li= link_to 'Add files', '#', 'data-toggle' => 'modal', 'data-target' => '#cant-add-files-dialog'
       - if can? :export, @file_group
         = render partial: 'download_menu'
         = render partial: 'report_menu'

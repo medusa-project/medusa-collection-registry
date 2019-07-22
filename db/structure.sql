@@ -1437,88 +1437,6 @@ ALTER SEQUENCE public.attachments_id_seq OWNED BY public.attachments.id;
 
 
 --
--- Name: book_tracker_items; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.book_tracker_items (
-    id integer NOT NULL,
-    bib_id integer,
-    oclc_number character varying(255),
-    obj_id character varying(255),
-    title character varying(255),
-    author character varying(255),
-    volume character varying(255),
-    date character varying(255),
-    exists_in_hathitrust boolean DEFAULT false,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    ia_identifier character varying(255),
-    exists_in_internet_archive boolean DEFAULT false,
-    raw_marcxml text,
-    exists_in_google boolean DEFAULT false,
-    source_path text,
-    hathitrust_rights character varying,
-    hathitrust_access character varying,
-    language character varying,
-    subject character varying
-);
-
-
---
--- Name: book_tracker_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.book_tracker_items_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: book_tracker_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.book_tracker_items_id_seq OWNED BY public.book_tracker_items.id;
-
-
---
--- Name: book_tracker_tasks; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.book_tracker_tasks (
-    id integer NOT NULL,
-    name character varying(255),
-    service numeric(1,0),
-    status numeric(1,0),
-    percent_complete double precision DEFAULT 0.0,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    completed_at timestamp without time zone
-);
-
-
---
--- Name: book_tracker_tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.book_tracker_tasks_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: book_tracker_tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.book_tracker_tasks_id_seq OWNED BY public.book_tracker_tasks.id;
-
-
---
 -- Name: cache_content_type_stats_by_collection; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4482,20 +4400,6 @@ ALTER TABLE ONLY public.attachments ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
--- Name: book_tracker_items id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.book_tracker_items ALTER COLUMN id SET DEFAULT nextval('public.book_tracker_items_id_seq'::regclass);
-
-
---
--- Name: book_tracker_tasks id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.book_tracker_tasks ALTER COLUMN id SET DEFAULT nextval('public.book_tracker_tasks_id_seq'::regclass);
-
-
---
 -- Name: cascaded_event_joins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5068,22 +4972,6 @@ ALTER TABLE ONLY public.assessments
 
 ALTER TABLE ONLY public.attachments
     ADD CONSTRAINT attachments_pkey PRIMARY KEY (id);
-
-
---
--- Name: book_tracker_items book_tracker_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.book_tracker_items
-    ADD CONSTRAINT book_tracker_items_pkey PRIMARY KEY (id);
-
-
---
--- Name: book_tracker_tasks book_tracker_tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.book_tracker_tasks
-    ADD CONSTRAINT book_tracker_tasks_pkey PRIMARY KEY (id);
 
 
 --
@@ -5878,83 +5766,6 @@ CREATE INDEX index_assessments_on_updated_at ON public.assessments USING btree (
 --
 
 CREATE INDEX index_attachments_on_updated_at ON public.attachments USING btree (updated_at);
-
-
---
--- Name: index_book_tracker_items_on_author; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_book_tracker_items_on_author ON public.book_tracker_items USING btree (author);
-
-
---
--- Name: index_book_tracker_items_on_bib_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_book_tracker_items_on_bib_id ON public.book_tracker_items USING btree (bib_id);
-
-
---
--- Name: index_book_tracker_items_on_date; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_book_tracker_items_on_date ON public.book_tracker_items USING btree (date);
-
-
---
--- Name: index_book_tracker_items_on_exists_in_hathitrust; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_book_tracker_items_on_exists_in_hathitrust ON public.book_tracker_items USING btree (exists_in_hathitrust);
-
-
---
--- Name: index_book_tracker_items_on_exists_in_internet_archive; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_book_tracker_items_on_exists_in_internet_archive ON public.book_tracker_items USING btree (exists_in_internet_archive);
-
-
---
--- Name: index_book_tracker_items_on_hathitrust_access; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_book_tracker_items_on_hathitrust_access ON public.book_tracker_items USING btree (hathitrust_access);
-
-
---
--- Name: index_book_tracker_items_on_ia_identifier; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_book_tracker_items_on_ia_identifier ON public.book_tracker_items USING btree (ia_identifier);
-
-
---
--- Name: index_book_tracker_items_on_obj_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_book_tracker_items_on_obj_id ON public.book_tracker_items USING btree (obj_id);
-
-
---
--- Name: index_book_tracker_items_on_oclc_number; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_book_tracker_items_on_oclc_number ON public.book_tracker_items USING btree (oclc_number);
-
-
---
--- Name: index_book_tracker_items_on_title; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_book_tracker_items_on_title ON public.book_tracker_items USING btree (title);
-
-
---
--- Name: index_book_tracker_items_on_volume; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_book_tracker_items_on_volume ON public.book_tracker_items USING btree (volume);
 
 
 --
@@ -7907,6 +7718,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190503171349'),
 ('20190523150351'),
 ('20190614150050'),
-('20190614150232');
+('20190614150232'),
+('20190718135009');
 
 

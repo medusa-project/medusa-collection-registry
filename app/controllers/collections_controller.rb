@@ -4,7 +4,7 @@ class CollectionsController < ApplicationController
   before_action :require_medusa_user_or_basic_auth, only: [:show, :index]
   before_action :find_collection_and_repository, only: [:show, :destroy, :edit, :update, :red_flags,
                                                         :assessments, :attachments, :events,
-                                                        :show_file_stats]
+                                                        :show_file_stats, :view_in_dls]
 
   helper_method :load_collection_file_extension_stats, :load_collection_content_type_stats
 
@@ -121,6 +121,15 @@ class CollectionsController < ApplicationController
         file_extension_hashes = load_collection_file_extension_stats(@collection)
         send_data file_stats_to_csv(content_type_hashes, file_extension_hashes), type: 'text/csv', filename: 'file-statistics.csv'
       end
+    end
+  end
+
+  def view_in_dls
+    dls_url = Dls::Collection.new(@collection).best_url
+    if dls_url
+      redirect_to dls_url, status: 307
+    else
+      redirect_to @collection, status: 307, alert: 'This collection could not be found in the DLS'
     end
   end
 
