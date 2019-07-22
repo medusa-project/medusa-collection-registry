@@ -101,7 +101,8 @@ class Workflow::AccrualJob < Workflow::Base
       end
       size = 0
       keys.each do |key|
-        key_size = root.size(File.join(prefix, key))
+        full_key = prefix.blank? ? key : File.join(prefix, key)
+        key_size = root.size(full_key)
         size += key_size
         empty_files.puts(key) if key_size.zero?
       end
