@@ -16,14 +16,14 @@ Feature: File Formats
   Scenario: View index of file formats
     Given I am logged in as a visitor
     When I go to the site home
-    And I click on 'File Formats'
+    And I click on 'Digital Content Format Registry'
     Then I should see all of:
       | tiff | fmt/360 (2.1) | x-fmt/387 (2.2) | what we do with TIFF files | jp2 | what we do with JPEG 2000 files |
 
   Scenario: View XML index of file formats
     Given I am logged in as a visitor
     When I go to the site home
-    And I click on 'File Formats (XML)'
+    And I click on 'Digital Content Formats (XML)'
     Then I should see all of:
       | tiff | fmt/360 | 2.1 | x-fmt/387 | 2.2 | what we do with TIFF files | jp2 | what we do with JPEG 2000 files |
 
@@ -36,7 +36,7 @@ Feature: File Formats
   Scenario: Create file format
     Given I am logged in as an admin
     When I go to the file format index page
-    And I click on 'Add File Format'
+    And I click on 'Add Digital Content Format'
     And I fill in fields:
       | Name           | XML        |
       | Policy summary | xml policy |

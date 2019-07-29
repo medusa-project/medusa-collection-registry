@@ -1,7 +1,7 @@
 = render 'layouts/page_header' do
-  File Formats
+  Digital Content Format Registry
 
 -if can?(:create, FileFormat)
-  = primary_button('Add File Format', new_file_format_path)
+  = primary_button('Add Digital Content Format', new_file_format_path)
 
 = render 'index_table'
