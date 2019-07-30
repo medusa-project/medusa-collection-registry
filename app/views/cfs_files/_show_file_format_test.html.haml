@@ -1,7 +1,7 @@
 %hr
   .row
     #file-format-test.col-sm-12
-      %h4 File Format Test
+      %h4 Digital Content Format Test
       = show_field @file_format_test, :tester_email
       = show_field @file_format_test, :date
       = show_value @file_format_test.file_format_profile_name, 'File Rendering Profile'
@@ -9,7 +9,7 @@
       = show_field @file_format_test, :notes
       - if @file_format_test.file_format_test_reasons.present?
         %div
-          %strong File Format Test Failure Reasons
+          %strong Digital Content Format Test Failure Reasons
           %ul
             - @file_format_test.file_format_test_reasons.each do |reason|
               %li= reason.label

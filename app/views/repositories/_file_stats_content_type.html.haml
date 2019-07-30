@@ -1,5 +1,5 @@
 - cache([@repository, 'content_type']) do
-  = render 'layouts/standard_table', id: :file_stats_content_type, classes: %w(table-bordered table-condensed), headers: ['File Format', 'Number of Files', 'Tested', 'Size'] do
+  = render 'layouts/standard_table', id: :file_stats_content_type, classes: %w(table-bordered table-condensed), headers: ['Digital Content Format', 'Number of Files', 'Tested', 'Size'] do
     - @content_type_hashes.each do |info|
       %tr
         %td= link_to info['name'], cfs_files_content_type_path(info['content_type_id'], repository_id: @repository.id)

@@ -52,7 +52,7 @@ module ModelsToCsv
 
   def file_stats_to_csv(content_type_hashes, file_extension_hashes)
     CSV.generate do |csv|
-      csv << ['File Format', 'Number of Files', 'Number Tested', 'Percentage Tested', 'Size']
+      csv << ['Digital Content Format', 'Number of Files', 'Number Tested', 'Percentage Tested', 'Size']
       content_type_hashes.each do |info|
         csv << [info['name'], info['file_count'].to_i, info['tested_count'].to_i, (100 * info['tested_count'].to_d / info['file_count'].to_d), info['file_size']]
       end

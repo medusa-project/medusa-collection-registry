@@ -19,8 +19,8 @@
           %li= link_to 'Digital Content Format Registry', file_formats_path
           %li= link_to 'Digital Content Formats (XML)', file_formats_path(format: :xml)
           %li= link_to 'File Rendering Profiles', file_format_profiles_path
-          %li= link_to 'File Format Tests', file_format_tests_path
-          %li= link_to 'File Format Tests (CSV)', file_format_tests_path(format: :csv)
+          %li= link_to 'Digital Content Format Tests', file_format_tests_path
+          %li= link_to 'Digital Content Format Tests (CSV)', file_format_tests_path(format: :csv)
           - if safe_can?(:read, ArchivedAccrualJob)
             %li= link_to 'Archived Accrual Jobs', archived_accrual_jobs_path
           - if medusa_user?

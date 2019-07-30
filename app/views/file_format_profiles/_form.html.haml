@@ -9,7 +9,7 @@
       = f.input :os_environment, label: 'OS environment'
       = f.input :os_version, label: 'OS version'
       = f.input :notes
-      = render 'shared/layout_modal_edit', id: 'edit_file_formats_list', title: 'Select File Formats' do
+      = render 'shared/layout_modal_edit', id: 'edit_file_formats_list', title: 'Select Digital Content Formats' do
         = f.association :file_formats, as: :check_boxes, label_method: :name, label: ''
       = render 'shared/layout_modal_edit', id: 'edit_content_type_list', title: 'Select Content Types' do
         = f.association :content_types, as: :check_boxes, label_method: :name, label: ''

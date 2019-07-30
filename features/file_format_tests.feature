@@ -19,7 +19,7 @@ Feature: File Format Tests
   Scenario: Add file format test to cfs file
     Given I am logged in as a manager
     When I view the cfs file with name 'Ruthie'
-    And I click on 'Create File format test'
+    And I click on 'Create Digital Content format test'
     And I select 'TIFF' from 'File format profile'
     And I choose 'Fail'
     And I check all of:
@@ -40,7 +40,7 @@ Feature: File Format Tests
     Given I am logged in as a manager
     And the cfs file with name 'Ruthie' is associated with the file format test with tester email 'sugar@example.com'
     When I view the cfs file with name 'Ruthie'
-    And I click on 'Edit File format test'
+    And I click on 'Edit Digital Content format test'
     And I select 'TIFF' from 'File format profile'
     And I choose 'Fail'
     And I check all of:
@@ -61,7 +61,7 @@ Feature: File Format Tests
   Scenario: Checking pass should clear and disable checked reasons
     Given I am logged in as a manager
     When I view the cfs file with name 'Ruthie'
-    And I click on 'Create File format test'
+    And I click on 'Create Digital Content format test'
     And I choose 'Fail'
     And I check all of:
       | corrupt | software unavailable |
@@ -75,7 +75,7 @@ Feature: File Format Tests
     #make sure this isn't left over after an error or something
     And I destroy the file format test reason with label 'ancient format'
     When I view the cfs file with name 'Ruthie'
-    And I click on 'Create File format test'
+    And I click on 'Create Digital Content format test'
     And I select 'TIFF' from 'File format profile'
     And I choose 'Fail'
     And I fill in fields:
@@ -91,7 +91,7 @@ Feature: File Format Tests
   Scenario: Inactive file format profiles should not show
     Given I am logged in as a manager
     When I view the cfs file with name 'Ruthie'
-    And I click on 'Create File format test'
+    And I click on 'Create Digital Content format test'
     Then I should see all of:
       | JPEG2000 | TIFF |
     And I should not see 'GIF'
@@ -99,7 +99,7 @@ Feature: File Format Tests
   Scenario: Navigate to index of file format tests
     Given I am logged in as a user
     When I go to the dashboard
-    And I click on 'File Format Tests'
+    And I click on 'Digital Content Format Tests'
     Then I should be on the file format tests index page
 
   Scenario: View index of file format tests

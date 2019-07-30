@@ -20,7 +20,7 @@
       - if safe_can?(:download, @file.file_group)
         = view_button(cfs_file_view_link(@file))
       - if @file.file_format_test.present?
-        = icon_default_button('Edit File format test', 'balance-scale', edit_file_format_test_path(@file.file_format_test))
+        = icon_default_button('Edit Digital Content format test', 'balance-scale', edit_file_format_test_path(@file.file_format_test))
       - else
-        = icon_default_button('Create File format test', 'balance-scale', new_file_format_test_path(cfs_file_id: @file.id))
+        = icon_default_button('Create Digital Content format test', 'balance-scale', new_file_format_test_path(cfs_file_id: @file.id))
 = yield

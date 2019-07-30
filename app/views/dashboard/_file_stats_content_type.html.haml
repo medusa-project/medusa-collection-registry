@@ -1,5 +1,5 @@
 - cache(cache_key_for_all(ContentType)) do
-  - headers = ['File Format', 'Number of Files', 'Tested', 'Size']
+  - headers = ['Digital Content Format', 'Number of Files', 'Tested', 'Size']
   = render layout: 'layouts/standard_table', locals: {id: :file_stats_content_type, classes: %w(table-bordered table-condensed), headers: headers} do
     - @content_type_hashes.each do |info|
       %tr
