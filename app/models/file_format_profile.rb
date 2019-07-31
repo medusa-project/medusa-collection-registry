@@ -1,4 +1,4 @@
-#Note that we now label these in the interface as File Rendering Profiles, but
+#Note that we now label these in the interface as Rendering Profiles, but
 #we haven't changed the model name, etc.
 class FileFormatProfile < ApplicationRecord
 
