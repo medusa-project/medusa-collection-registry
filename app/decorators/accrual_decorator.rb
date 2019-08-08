@@ -33,15 +33,6 @@ class AccrualDecorator < BaseDecorator
         end
       end
     end
-    # h.content_tag(:ul, class: 'accrual-list list-group') do
-    #   h.collection_check_boxes(:accrual, :accrual_files, self.files, :itself, :itself) do |box|
-    #     h.content_tag(:li, class: 'list-group-item') do
-    #       box.label do
-    #         box.check_box(class: 'accrual_file') + " " + box.text
-    #       end
-    #     end
-    #   end
-    # end
   end
 
   def directory_checkboxes
