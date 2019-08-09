@@ -1,30 +1,24 @@
 ActiveRecord::Base.transaction do
 
 #Storage media
-  ['CD-Rom', 'DVD', 'Blu-Ray', 'other optical disk',
-   'external hard drive', 'internal hard drive',
-   'Iomega media (e.g. ZIP, JAZ disks)', 'other computer disk cartridge',
-   'file server', 'cloud storage',
-   'computer tape reel', 'computer tape cartridge', 'computer tape cassette',
-   'flash drive', 'memory card (e.g SD card, CompactFlash',
-   'computer card (e.g. punchboard)', 'paper tape'].each do |media_name|
+  Settings.classes.storage_medium.media_names.each do |media_name|
     StorageMedium.find_or_create_by(name: media_name)
   end
 
 #Resource types
-  TYPES = ['text', 'still image', 'three dimensional object', 'mixed material',
-           'maps', 'sheet music', 'audio', 'video',
-           'newspapers', 'archives', 'photographs', 'born digital materials', 'oral histories',
-           'books and manuscripts', 'scholarly publications', 'posters', 'audiovisual materials',
-           'postcards', 'thesis and dissertations']
-  TYPES.each do |name|
+  Settings.classes.resource_type.type_names.each do |name|
     ResourceType.find_or_create_by(name: name)
   end
 
-  %w(help landing down create_a_collection feedback policies technology staff).each do |key|
+  Settings.classes.static_page.default_pages.each do |key|
     unless StaticPage.find_by(key: key)
       StaticPage.create(key: key, page_text: "#{key.humanize} page")
     end
+  end
+
+#Some initial file format test reasons
+  Settings.classes.file_format_test_reason.initial_reasons.each do |label|
+    FileFormatTestReason.find_or_create_by(label: label)
   end
 
 #load all views and functions used by the application
@@ -32,11 +26,6 @@ ActiveRecord::Base.transaction do
     Dir['*.sql'].sort.each do |view_file|
       ActiveRecord::Base.connection.execute(File.read(view_file))
     end
-  end
-
-#Some initial file format test reasons
-  ['saved with incorrect extension', 'corrupt', 'software unavailable'].each do |label|
-    FileFormatTestReason.find_or_create_by(label: label)
   end
 
 end

@@ -139,6 +139,11 @@ classes:
       - .DS_Store
   file_extensions_controller:
     default_per_page: 25
+  file_format_test_reason:
+    initial_reasons:
+      - corrupt
+      - saved with incorrect extension
+      - software unavailable
   file_group:
     acquisition_methods:
       - internal digitization
@@ -221,6 +226,55 @@ classes:
       - Sent to IPM
       - Sent for cataloging
       - Send to IA for digitization
+  resource_type:
+    type_names:
+      - archives
+      - audio
+      - audiovisual materials
+      - books and manuscripts
+      - born digital materials
+      - maps
+      - mixed material
+      - newspapers
+      - oral histories
+      - photographs
+      - postcards
+      - posters
+      - scholarly publications
+      - sheet music
+      - still image
+      - text
+      - thesis and dissertations
+      - three dimensional object
+      - video
+  static_page:
+    default_pages:
+      - create_a_collection
+      - down
+      - feedback
+      - help
+      - landing
+      - policies
+      - staff
+      - technology
+  storage_medium:
+    media_names:
+      - Blu-Ray
+      - CD-Rom
+      - cloud storage
+      - computer card (e.g. punchboard)
+      - computer tape cartridge
+      - computer tape cassette
+      - computer tape reel
+      - DVD
+      - external hard drive
+      - file server
+      - flash drive
+      - internal hard drive
+      - Iomega media (e.g. ZIP, JAZ disks)
+      - memory card (e.g SD card, CompactFlash
+      - other computer disk cartridge
+      - other optical disk- paper tape
   workflow:
     accrual_job:
       assessment_error_reporting_timeout: <%= 1.day %>
