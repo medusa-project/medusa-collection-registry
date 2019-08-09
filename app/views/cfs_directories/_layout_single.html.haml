@@ -12,6 +12,7 @@
       .btn-group
         = render 'shared/dropdown_toggle', title: :Run, icon: 'cog'
         %ul.dropdown-menu.dropdown-menu-right
+          %li= link_to 'Run Simple Assessment', create_initial_cfs_assessment_cfs_directory_path(@directory), method: :post
           - if @accrual.present? and safe_can?(:accrue, @directory)
             - if @accrual.directory_accruable?
               %li= link_to 'Add files', '#', 'data-toggle': 'modal', 'data-target': '#add-files-dialog'

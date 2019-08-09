@@ -3,7 +3,8 @@ class CfsDirectoriesController < ApplicationController
   before_action :require_medusa_user, except: [:show, :show_tree]
   before_action :require_medusa_user_or_basic_auth, only: [:show, :show_tree]
   before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree,
-                                        :show_tree, :cfs_files, :cfs_directories, :report_manifest, :report_map]
+                                        :show_tree, :cfs_files, :cfs_directories, :report_manifest, :report_map,
+                                        :create_initial_cfs_assessment]
   before_action :find_directory_with_includes, only: [:show]
 
   def show
@@ -91,6 +92,13 @@ class CfsDirectoriesController < ApplicationController
         redirect_to @directory, notice: 'Your report will be emailed to you shortly.'
       end
     end
+  end
+
+  def create_initial_cfs_assessment
+    authorize! :create_cfs_fits, @directory.file_group
+    @directory.make_and_assess_tree
+    flash[:notice] = 'Cfs simple assessment scheduled'
+    redirect_to @directory
   end
 
   protected

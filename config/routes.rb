@@ -97,6 +97,7 @@ Rails.application.routes.draw do
     get :cfs_directories, on: :member
     get :report_map, on: :member
     get :report_manifest, on: :member
+    post :create_initial_cfs_assessment, on: :member
   end
   resources :content_types, only: [] do
     get :cfs_files, on: :member
