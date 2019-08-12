@@ -18,6 +18,7 @@ download_users:
     - 1
 medusa:
   basic_auth: machine_user:machine_password
+  #Some tests may assume the following
   email:
     feedback: medusa-feedback@example.com
     dev: medusa-dev@example.com
