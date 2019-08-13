@@ -1,6 +1,6 @@
 #see development.yml for a template.
 #You should use the settings/<env>.local.yml for actual configuration, with the exception of a few
-#settings below that are expected for the tests#
+#settings below that are expected for the tests. _Don't_ change those in test.local.yml!
 
 book_tracker:
   items_url: https://book-tracker.example.com/books
