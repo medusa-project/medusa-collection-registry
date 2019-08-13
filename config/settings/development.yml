@@ -81,6 +81,7 @@ ldap:
 mailer:
   #You can set the following to add an extra bit into the subjects of emails that go out,
   #making is easier to distinguish production/staging/etc. This is done with an interceptor in config/initializers.
+  #You should leave this key out (comment it out) in the test environment!
   system_name: development
 #general medusa configuration
 medusa:

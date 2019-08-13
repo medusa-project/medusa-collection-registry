@@ -2,7 +2,7 @@
 class EmailSubjectModifier
 
   def self.delivering_email(message)
-    prefix = if system_name = Settings&.mailer&.system_name
+    prefix = if system_name = Settings&.mailer&.system_name.present?
                "Medusa[#{system_name}]"
              else
                "Medusa"
