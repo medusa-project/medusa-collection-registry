@@ -28,10 +28,10 @@ GIT
 
 GIT
   remote: https://github.com/medusa-project/medusa_storage.git
-  revision: 8fe0298a5bbe87081df757edbf417aea7adceddb
+  revision: 30090d921e7e09f1fbf271bebf77d491ee1a7f6f
   branch: master
   specs:
-    medusa_storage (0.6.4)
+    medusa_storage (0.6.5)
       aws-sdk-s3
       hex_string
       io-like
@@ -108,7 +108,7 @@ GEM
     autoprefixer-rails (9.6.1)
       execjs
     aws-eventstream (1.0.3)
-    aws-partitions (1.196.0)
+    aws-partitions (1.200.0)
     aws-sdk-core (3.62.0)
       aws-eventstream (~> 1.0, >= 1.0.2)
       aws-partitions (~> 1.0)
