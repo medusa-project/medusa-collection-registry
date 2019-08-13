@@ -119,7 +119,8 @@ medusa:
   public_view_on: true
   #where certain types of email should go. It should work for these to be single emails or arrays, though
   #a single email to a list is preferable for mass distribution. noreply is the address used for from when
-  #appropriate
+  #appropriate. Note that tests will assume that these are set as they are in test.yml, so don't change or
+  #override what is there!
   email:
     admin: hding2@illinois.edu
     feedback: hding2@illinois.edu
