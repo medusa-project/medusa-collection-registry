@@ -18,6 +18,10 @@ class Dls::Collection
     Settings.dls.base_url + "/admin/collections/#{medusa_collection.uuid}"
   end
 
+  def admin_items_url
+    admin_collection_url + "/items"
+  end
+
   def best_url
     #This is just so we can do these two in parallel, even though we might not need this one.
     collection_response_thread = Thread.new do
