@@ -125,7 +125,7 @@ class CollectionsController < ApplicationController
   end
 
   def view_in_dls
-    dls_url = Dls::Collection.new(@collection).best_admin_url
+    dls_url = Dls::Collection.new(@collection).admin_collection_url
     if dls_url
       redirect_to dls_url, status: 307
     else
