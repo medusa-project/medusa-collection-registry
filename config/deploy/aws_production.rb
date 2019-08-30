@@ -18,19 +18,20 @@
 set :home, '/home/medusa'
 set :deploy_to, "#{fetch(:home)}/medusa-cr-capistrano"
 set :bin, "#{fetch(:home)}/bin"
-# set :ssh_options, {
-#     forward_agent: true,
-#     auth_methods: ["publickey"],
-#     keys: ["/Users/jmtroy2/.ssh/medusa_prod.pem"]
-# }
+set :ssh_options, {
+    forward_agent: true,
+    auth_methods: ["publickey"],
+    keys: ["~/.ssh/medusa_prod.pem"]
+}
 
 
 #server 'medusa.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
-server 'aws-medusa-prod.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true,
-       :ssh_options => {
-           :keepalive => true,
-           :keepalive_interval => 30 #seconds
-       }
+server 'aws-medusa-prod.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
+# ,
+#        :ssh_options => {
+#            :keepalive => true,
+#            :keepalive_interval => 30 #seconds
+#        }
 
 # Custom SSH Options
 # ==================
