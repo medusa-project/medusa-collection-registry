@@ -26,7 +26,7 @@ set :ssh_options, {
 
 
 #server 'medusa.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
-server 'aws-medusa-demo.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true,
+server 'aws-medusa-demo.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
        # :ssh_options => {
        #     :keepalive => true,
        #     :keepalive_interval => 30 #seconds
