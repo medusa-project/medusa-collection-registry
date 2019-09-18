@@ -59,6 +59,7 @@ class Workflow::AccrualJob < Workflow::Base
     #The form of staging_path is /root_name/pre/fix/. Note that splitting gives this blank entry
     # for the leading '/', but not the trailing one.
     path_components = staging_path.split('/').drop(1)
+    # shift removes the first element of self and returns it https://apidock.com/ruby/Array/shift
     staging_root_name = path_components.shift
     staging_root = accrual_root(staging_root_name)
     prefix = path_components.join('/')
@@ -82,10 +83,15 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   #TODO See if we can't break this down a bit. It might do to have a class that does this work.
+  # The files and directories should have been selected for existance in
+  # submit method of AccrualsController
+  # If there are duplicate files and overwrites are not allowed, quit and complain about it.
+  # If there are empty files, mention it in passing.
   def perform_check
     root, prefix = staging_root_and_prefix
     ingest_keys = Set.new
     empty_files = StringIO.new
+    Rails.warn("#{Time.current} START adding workflow_accrual_files to ingest_keys")
     workflow_accrual_files.each do |file|
       key = file.name
       ingest_keys << key
@@ -93,6 +99,8 @@ class Workflow::AccrualJob < Workflow::Base
       file.save!
       empty_files.puts(key) if file.size.zero?
     end
+    Rails.warn("#{Time.current} END adding workflow_accrual_files to ingest_keys")
+    Rails.warn("#{Time.current} START adding files within workflow_accrual_directories to ingest_keys.")
     workflow_accrual_directories.each do |directory|
       #get the keys in this directory relative to the accrual prefix
       directory_key = prefix.blank? ? directory.name : File.join(prefix, directory.name)
@@ -111,6 +119,7 @@ class Workflow::AccrualJob < Workflow::Base
       directory.save!
       ingest_keys += keys
     end
+    Rails.warn("#{Time.current} END adding files within workflow_accrual_directories to ingest_keys.")
     update_attribute(:empty_file_report, empty_files.string)
     cfs_directory_prefix = cfs_directory.relative_path
     existing_keys = existing_keys_for(cfs_directory_prefix)
@@ -118,12 +127,13 @@ class Workflow::AccrualJob < Workflow::Base
     #TODO we can implement other checks based on size and/or the beginning/end bytes of a file
     # to try to check for changes more efficiently before computing the entire md5.
     duplicate_keys.each do |key|
-      existing_md5 = Application.storage_manager.main_root.md5_sum(File.join(cfs_directory_prefix, key))
-      ingest_md5 = root.md5_sum(File.join(prefix, key))
-      file_changed = (existing_md5 != ingest_md5)
+      # existing_md5 = Application.storage_manager.main_root.md5_sum(File.join(cfs_directory_prefix, key))
+      #       # ingest_md5 = root.md5_sum(File.join(prefix, key))
+      #       # file_changed = (existing_md5 != ingest_md5)
+      file_changed = TRUE
       workflow_accrual_conflicts.create!(path: key, different: file_changed)
     end
-    if has_serious_conflicts? and (not allow_overwrite)
+    if duplicate_keys.count.positive? and not allow_overwrite
       Workflow::AccrualMailer.illegal_overwrite(self).deliver_now
       be_in_state_and_requeue('end')
     else
@@ -135,7 +145,8 @@ class Workflow::AccrualJob < Workflow::Base
 
   def existing_keys_for(prefix)
     Application.storage_manager.main_root.unprefixed_subtree_keys(prefix)
-  rescue MedusaStorage::Error::InvalidDirectory
+  rescue MedusaStorage::Error::InvalidDirectory => invalid_directory_error
+    # getting here means directory does not exist, which is expected for new accruals
     Array.new
   end
 
