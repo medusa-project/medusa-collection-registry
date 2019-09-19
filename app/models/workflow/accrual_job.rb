@@ -91,7 +91,7 @@ class Workflow::AccrualJob < Workflow::Base
     root, prefix = staging_root_and_prefix
     ingest_keys = Set.new
     empty_files = StringIO.new
-    Rails.warn("#{Time.current} START adding workflow_accrual_files to ingest_keys")
+    Rails.logger.warn("#{Time.current} START adding workflow_accrual_files to ingest_keys")
     workflow_accrual_files.each do |file|
       key = file.name
       ingest_keys << key
@@ -99,8 +99,8 @@ class Workflow::AccrualJob < Workflow::Base
       file.save!
       empty_files.puts(key) if file.size.zero?
     end
-    Rails.warn("#{Time.current} END adding workflow_accrual_files to ingest_keys")
-    Rails.warn("#{Time.current} START adding files within workflow_accrual_directories to ingest_keys.")
+    Rails.logger.warn("#{Time.current} END adding workflow_accrual_files to ingest_keys")
+    Rails.logger.warn("#{Time.current} START adding files within workflow_accrual_directories to ingest_keys.")
     workflow_accrual_directories.each do |directory|
       #get the keys in this directory relative to the accrual prefix
       directory_key = prefix.blank? ? directory.name : File.join(prefix, directory.name)
@@ -119,7 +119,7 @@ class Workflow::AccrualJob < Workflow::Base
       directory.save!
       ingest_keys += keys
     end
-    Rails.warn("#{Time.current} END adding files within workflow_accrual_directories to ingest_keys.")
+    Rails.logger.warn("#{Time.current} END adding files within workflow_accrual_directories to ingest_keys.")
     update_attribute(:empty_file_report, empty_files.string)
     cfs_directory_prefix = cfs_directory.relative_path
     existing_keys = existing_keys_for(cfs_directory_prefix)
