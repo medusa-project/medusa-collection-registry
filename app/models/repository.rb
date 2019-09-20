@@ -26,9 +26,9 @@ class Repository < ApplicationRecord
 
   standard_auto_html(:notes)
 
-  breadcrumbs parent: :nil, label: :name
-  cascades_events parent: :nil
-  cascades_red_flags parent: :nil
+  breadcrumbs parent: nil, label: :title
+  cascades_events parent: nil
+  cascades_red_flags parent: nil
 
   def total_size
     self.collections.collect { |c| c.total_size }.sum
