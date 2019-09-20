@@ -10,6 +10,8 @@ class Repository < ApplicationRecord
 
   email_person_association(:contact)
   belongs_to :institution
+  belongs_to :parent, class_name: 'Institution', foreign_key: 'institution_id'
+
   has_many :collections, dependent: :destroy
   has_many :assessments, as: :assessable, dependent: :destroy
   has_many :virtual_repositories, dependent: :destroy
@@ -24,9 +26,9 @@ class Repository < ApplicationRecord
 
   standard_auto_html(:notes)
 
-  breadcrumbs parent: nil, label: :title
-  cascades_events parent: nil
-  cascades_red_flags parent: nil
+  breadcrumbs parent: :nil, label: :name
+  cascades_events parent: :nil
+  cascades_red_flags parent: :nil
 
   def total_size
     self.collections.collect { |c| c.total_size }.sum
@@ -51,10 +53,6 @@ class Repository < ApplicationRecord
 
   def repository
     self
-  end
-
-  def parent
-    nil
   end
 
   def self.title_order
