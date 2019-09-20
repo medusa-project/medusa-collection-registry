@@ -12,7 +12,7 @@ end
 module MedusaCollectionRegistry
   class Application < Rails::Application
     attr_accessor :shibboleth_host
-    attr_accessor :handle_client, :medusa_host
+    attr_accessor :medusa_host
     attr_accessor :bit_file_tmp_dir
     attr_accessor :group_resolver
     attr_accessor :glacier_logger

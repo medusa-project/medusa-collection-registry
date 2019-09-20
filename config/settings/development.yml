@@ -54,16 +54,8 @@ fits:
   binary: /path/to/fits/binary
   #url for fits server
   server_url: http://localhost:4567
-handle_client:
-  #medusa_host is used by the models to help generate the appropriate URLs to
-  #pass to the handle server
-  medusa_host: medusa.library.illinois.edu
-  #these are the connection parameters to the handle server itself
-  handle_server:
-    host: media.library.uiuc.edu
-    port: 8080
-    user_name: handle_user
-    password: handle_user_password
+#medusa_host is used by the models to help generate the appropriate URLs
+medusa_host: medusa.library.illinois.edu
 #connection to the iiif image server
 iiif:
   host: iiif.example.com

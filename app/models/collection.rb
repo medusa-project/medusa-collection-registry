@@ -1,9 +1,7 @@
-require 'registers_handle'
 require 'mods_helper'
 
 class Collection < ApplicationRecord
   include MedusaAutoHtml
-  include RegistersHandle
   include Uuidable
   include Breadcrumb
   include CascadedEventable
@@ -39,8 +37,6 @@ class Collection < ApplicationRecord
   validates_uniqueness_of :title, scope: :repository_id
   validates_presence_of :repository_id
 
-  after_create :delayed_ensure_handle
-  before_destroy :remove_handle
   before_validation :ensure_rights_declaration
 
   accepts_nested_attributes_for :rights_declaration
@@ -76,7 +72,7 @@ class Collection < ApplicationRecord
   end
 
   def medusa_url
-    Rails.application.routes.url_helpers.collection_url(self, host: MedusaCollectionRegistry::Application.medusa_host, protocol: 'https')
+    Rails.application.routes.url_helpers.collection_url(self, only_path: false, host: MedusaCollectionRegistry::Application.medusa_host, protocol: 'https')
   end
 
   def ensure_rights_declaration

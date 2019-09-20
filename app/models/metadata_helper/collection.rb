@@ -13,7 +13,6 @@ class MetadataHelper::Collection
         xml.title collection.title
       end
       xml.identifier(collection.uuid, type: 'uuid')
-      xml.identifier(collection.handle, type: 'handle')
       collection.resource_types_to_mods(xml)
       xml.abstract collection.description
       xml.location do

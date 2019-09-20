@@ -28,7 +28,6 @@ Feature: MODS for collection
       | abstract                                                  | Collection of dogs                                  |
       | originInfo publisher                                      | Animals                                             |
       | identifier[type="uuid"]                                   | 3da0fae0-e3fa-012f-ac10-005056b22849-8              |
-      | identifier[type="handle"]                                 | 10111/MEDUSA:3da0fae0-e3fa-012f-ac10-005056b22849-8 |
 
   Scenario: The MODS document is viewable by basic auth user
     Given I provide basic authentication
