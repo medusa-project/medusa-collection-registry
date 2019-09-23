@@ -88,6 +88,16 @@ class ApplicationController < ActionController::Base
                   alert: 'The record you are trying to delete has some associated database records so cannot be deleted. Please contact the medusa admins for help.')
   end
 
+  rescue_from ActionController::RoutingError do |exception|
+    logger.error exception.message
+    render plain: '404 Not found', status: 404
+  end
+
+  rescue_from ActionView::MissingTemplate do |exception|
+    logger.error exception.message
+    render plain: '404 Not found', status: 404
+  end
+
   def record_event(eventable, key, user = current_user)
     eventable.events.create(actor_email: user.email, key: key, date: Date.today)
   end
