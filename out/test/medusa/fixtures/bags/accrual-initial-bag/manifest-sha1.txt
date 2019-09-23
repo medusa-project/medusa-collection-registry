@@ -1,0 +1,4 @@
+5367846013571fd5d323db2331c474e6dec195dd data/intro.txt
+f4798e869aabc45f22175461a02b43580a0dd843 data/pugs/description.txt
+18a42acc5891e82c21d95caef0d37579db230006 data/pugs/picture.txt
+6e07e524091d0de77c6b33574020ab410cd14e04 data/pugs/toys/something.txt

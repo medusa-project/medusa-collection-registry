@@ -60,7 +60,7 @@ gem 'bootstrap-sass'
 # https://github.com/rails/webpacker/blob/master/docs/v4-upgrade.md
 # Suffice to say that I naively tried all of that and it did not immediately work, so there
 # is likely at least a bit of thinking to do.
-gem 'webpacker', '~> 3.5.5'
+gem 'webpacker', '~> 4.x'
 
 gem 'rails-jquery-autocomplete'
 

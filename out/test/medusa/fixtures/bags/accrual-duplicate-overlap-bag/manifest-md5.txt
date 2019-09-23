@@ -1,0 +1,4 @@
+efb99e4eb8c4890e2eff43b1eb8a463b data/intro.txt
+ab078b302de9153b5b24727cda3504b0 data/joe.txt
+ac42471d47109d477f1d25d294cc8bda data/pugs/description.txt
+fbb32a08f380dd10510e41eab9b32dc0 data/stuff/more.txt

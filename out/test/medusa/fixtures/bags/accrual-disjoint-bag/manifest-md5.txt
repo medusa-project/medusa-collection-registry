@@ -1,0 +1,3 @@
+ab078b302de9153b5b24727cda3504b0 data/joe.txt
+19ba15f2c9fde8eaeaca81a674441b44 data/pete.txt
+fbb32a08f380dd10510e41eab9b32dc0 data/stuff/more.txt

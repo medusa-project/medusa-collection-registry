@@ -1,0 +1,6 @@
+683d09838c46e6ddad98711f7ef5c5ad83cbc4d8 data/intro.txt
+5367846013571fd5d323db2331c474e6dec195dd data/intro.txt~
+410ed6a3ec83f0fad56f2d7d7422bc9ce5e657e6 data/joe.txt
+8f2b6e73b57c92ded4487cfea29d8a5daa138a07 data/pugs/description.txt
+f4798e869aabc45f22175461a02b43580a0dd843 data/pugs/description.txt~
+93017f12ce606acc3a74f3862081049e8d0099e6 data/stuff/more.txt

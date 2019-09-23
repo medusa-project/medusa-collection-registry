@@ -1,3 +1,5 @@
-//const environment = require('./environment')
+process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
-module.exports = require('./shared');
+const environment = require('./environment')
+
+module.exports = environment.toWebpackConfig()
