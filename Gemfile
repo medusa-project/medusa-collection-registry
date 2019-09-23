@@ -66,7 +66,7 @@ gem 'rails-jquery-autocomplete'
 
 gem 'react-rails', '~> 2.4.0'
 
-gem 'nokogiri'
+gem "nokogiri", ">= 1.10.4"
 
 gem 'omniauth'
 gem 'omniauth-shibboleth'
