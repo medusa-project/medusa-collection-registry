@@ -20,6 +20,7 @@ class AmqpAccrual::IngestJob < Job::Base
     end
   rescue Exception => e
     Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Error: #{e}"
+    logger.error e.backtrace.join("\n")
     send_unknown_error_message(client, message, e)
   end
 
