@@ -2,9 +2,9 @@
 
 require ::File.expand_path('../config/environment',  __FILE__)
 #set up delayed_job_web
-if Rails.env.production?
-  DelayedJobWeb.use Rack::Auth::Basic do |username, password|
-    username == ENV['DJ_WEB_USER'] && password == ENV['DJ_WEB_PASSWORD'] and username.present? and password.present?
-  end
+
+DelayedJobWeb.use Rack::Auth::Basic do |username, password|
+  username == Settings.medusa.amqp.user && password == Settings.medusa.amqp.password and username.present? and password.present?
 end
+
 run Rails.application
