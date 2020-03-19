@@ -5,7 +5,7 @@ set :application, 'medusa-collection-registry'
 set :repo_url, 'https://github.com/medusa-project/medusa-collection-registry.git'
 
 # Default branch is :master
-#ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
+ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
 set :rails_env, 'production'
 
