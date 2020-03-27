@@ -10,6 +10,20 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
 -- Name: access_system_collection_joins_touch_access_system(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -4252,6 +4266,45 @@ ALTER SEQUENCE public.workflow_file_group_deletes_id_seq OWNED BY public.workflo
 
 
 --
+-- Name: workflow_globus_transfers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.workflow_globus_transfers (
+    id bigint NOT NULL,
+    workflow_accrual_key_id bigint,
+    source_uuid character varying NOT NULL,
+    destination_uuid character varying NOT NULL,
+    source_path character varying NOT NULL,
+    destination_path character varying NOT NULL,
+    recursive boolean DEFAULT false,
+    task_id character varying,
+    task_link character varying,
+    request_id character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: workflow_globus_transfers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.workflow_globus_transfers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: workflow_globus_transfers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.workflow_globus_transfers_id_seq OWNED BY public.workflow_globus_transfers.id;
+
+
+--
 -- Name: workflow_ingests; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4887,6 +4940,13 @@ ALTER TABLE ONLY public.workflow_accrual_keys ALTER COLUMN id SET DEFAULT nextva
 --
 
 ALTER TABLE ONLY public.workflow_file_group_deletes ALTER COLUMN id SET DEFAULT nextval('public.workflow_file_group_deletes_id_seq'::regclass);
+
+
+--
+-- Name: workflow_globus_transfers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workflow_globus_transfers ALTER COLUMN id SET DEFAULT nextval('public.workflow_globus_transfers_id_seq'::regclass);
 
 
 --
@@ -5532,6 +5592,14 @@ ALTER TABLE ONLY public.workflow_accrual_keys
 
 ALTER TABLE ONLY public.workflow_file_group_deletes
     ADD CONSTRAINT workflow_file_group_deletes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_globus_transfers workflow_globus_transfers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workflow_globus_transfers
+    ADD CONSTRAINT workflow_globus_transfers_pkey PRIMARY KEY (id);
 
 
 --
@@ -6707,6 +6775,13 @@ CREATE INDEX index_workflow_file_group_deletes_on_state ON public.workflow_file_
 
 
 --
+-- Name: index_workflow_globus_transfers_on_workflow_accrual_key_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workflow_globus_transfers_on_workflow_accrual_key_id ON public.workflow_globus_transfers USING btree (workflow_accrual_key_id);
+
+
+--
 -- Name: index_workflow_ingests_on_bit_level_file_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7719,6 +7794,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190523150351'),
 ('20190614150050'),
 ('20190614150232'),
-('20190718135009');
+('20190718135009'),
+('20200323221242'),
+('20200324194925'),
+('20200327172104');
 
 

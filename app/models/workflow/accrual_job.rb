@@ -1,4 +1,6 @@
-#Note that there are (currently) two paths through copying - one where the CR does the copying itself,
+# frozen_string_literal: true
+
+# Note that there are (currently) two paths through copying - one where the CR does the copying itself,
 # and one using a copy server. Configuration determines if the copy server can be used for a given ingest.
 # One goes through the 'copying' state, the other through 'send_copy_messages' and 'await_copy_messages'
 require 'render_anywhere'
@@ -16,27 +18,27 @@ class Workflow::AccrualJob < Workflow::Base
   has_many :workflow_accrual_directories, class_name: 'Workflow::AccrualDirectory', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
   has_many :workflow_accrual_files, class_name: 'Workflow::AccrualFile', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
   has_many :workflow_accrual_conflicts, class_name: 'Workflow::AccrualConflict', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
-  has_many :workflow_accrual_comments, -> {order 'created_at desc'}, class_name: 'Workflow::AccrualComment', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
-  has_many :workflow_accrual_keys, :class_name => 'Workflow::AccrualKey', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
+  has_many :workflow_accrual_comments, -> { order 'created_at desc' }, class_name: 'Workflow::AccrualComment', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
+  has_many :workflow_accrual_keys, class_name: 'Workflow::AccrualKey', dependent: :delete_all, foreign_key: 'workflow_accrual_job_id'
 
   delegate :file_group, :root_cfs_directory, :collection, :repository, to: :cfs_directory
 
   validates_presence_of :cfs_directory_id, :user_id
   validates_uniqueness_of :staging_path, scope: :cfs_directory_id
 
-  STATE_HASH = {'start' => 'Start', 'check' => 'Checking for existing files', 'check_sync' => 'Checking sync',
-                'initial_approval' => 'Awaiting approval',
-                'copying' => 'Copying',
-                'send_copy_messages' => 'Sending copying messages', 'await_copy_messages' => 'Awaiting copy messages',
-                'admin_approval' => 'Awaiting admin approval',
-                'assessing' => 'Starting Assessments', 'await_assessment' => 'Running Assessment',
-                'email_done' => 'Emailing completion',
-                'aborting' => 'Aborting', 'end' => 'Ending'}
+  STATE_HASH = { 'start' => 'Start', 'check' => 'Checking for existing files', 'check_sync' => 'Checking sync',
+                 'initial_approval' => 'Awaiting approval',
+                 'copying' => 'Copying',
+                 'send_copy_messages' => 'Sending copying messages', 'await_copy_messages' => 'Awaiting copy messages',
+                 'admin_approval' => 'Awaiting admin approval',
+                 'assessing' => 'Starting Assessments', 'await_assessment' => 'Running Assessment',
+                 'email_done' => 'Emailing completion',
+                 'aborting' => 'Aborting', 'end' => 'Ending' }.freeze
   STATES = STATE_HASH.keys
 
   def self.create_for(user, cfs_directory, staging_path, requested_files, requested_directories, allow_overwrite)
     transaction do
-      workflow = self.create!(cfs_directory: cfs_directory, user: user, staging_path: staging_path, state: 'start', allow_overwrite: allow_overwrite)
+      workflow = create!(cfs_directory: cfs_directory, user: user, staging_path: staging_path, state: 'start', allow_overwrite: allow_overwrite)
       workflow.create_accrual_requests(requested_files, requested_directories)
       workflow.put_in_queue
     end
@@ -48,7 +50,9 @@ class Workflow::AccrualJob < Workflow::Base
 
   def create_accrual_requests(requested_files, requested_directories)
     requested_files.each do |file|
-      Workflow::AccrualFile.create!(name: file, workflow_accrual_job: self) unless excluded_file?(file)
+      unless excluded_file?(file)
+        Workflow::AccrualFile.create!(name: file, workflow_accrual_job: self)
+      end
     end
     requested_directories.each do |directory|
       Workflow::AccrualDirectory.create!(name: directory, workflow_accrual_job: self)
@@ -56,14 +60,23 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def staging_root_and_prefix
-    #The form of staging_path is /root_name/pre/fix/. Note that splitting gives this blank entry
+    # The form of staging_path is /root_name/pre/fix/. Note that splitting gives this blank entry
     # for the leading '/', but not the trailing one.
     path_components = staging_path.split('/').drop(1)
     # shift removes the first element of self and returns it https://apidock.com/ruby/Array/shift
     staging_root_name = path_components.shift
     staging_root = accrual_root(staging_root_name)
     prefix = path_components.join('/')
-    return staging_root, prefix
+    [staging_root, prefix]
+  end
+
+  def staging_globus_endpoint
+    # The form of staging_path is /root_name/pre/fix/. Note that splitting gives this blank entry
+    # for the leading '/', but not the trailing one.
+    path_components = staging_path.split('/').drop(1)
+    # shift removes the first element of self and returns it https://apidock.com/ruby/Array/shift
+    staging_root_name = path_components.shift
+    Application.storage_manager.globus_endpoint_at(staging_root_name)
   end
 
   def accrual_root(name)
@@ -74,7 +87,7 @@ class Workflow::AccrualJob < Workflow::Base
     be_in_state_and_requeue('check_sync')
   end
 
-  #TODO: I'm going to assume for now that we are going to get rid of this step by having a
+  # TODO: I'm going to assume for now that we are going to get rid of this step by having a
   # saner way to stage the content. If not we can revisit this stuff later. For now just
   # assume there is no sync and we're dealing directly with the staged content as the user
   # did it.
@@ -82,7 +95,7 @@ class Workflow::AccrualJob < Workflow::Base
     be_in_state_and_requeue('check')
   end
 
-  #TODO See if we can't break this down a bit. It might do to have a class that does this work.
+  # TODO: See if we can't break this down a bit. It might do to have a class that does this work.
   # The files and directories should have been selected for existance in
   # submit method of AccrualsController
   # If there are duplicate files and overwrites are not allowed, quit and complain about it.
@@ -91,7 +104,7 @@ class Workflow::AccrualJob < Workflow::Base
     root, prefix = staging_root_and_prefix
     ingest_keys = Set.new
     empty_files = StringIO.new
-    #Rails.logger.warn("#{Time.current} START adding workflow_accrual_files to ingest_keys")
+    # Rails.logger.warn("#{Time.current} START adding workflow_accrual_files to ingest_keys")
     workflow_accrual_files.each do |file|
       key = file.name
       ingest_keys << key
@@ -99,10 +112,10 @@ class Workflow::AccrualJob < Workflow::Base
       file.save!
       empty_files.puts(key) if file.size.zero?
     end
-    #Rails.logger.warn("#{Time.current} END adding workflow_accrual_files to ingest_keys")
-    #Rails.logger.warn("#{Time.current} START adding files within workflow_accrual_directories to ingest_keys.")
+    # Rails.logger.warn("#{Time.current} END adding workflow_accrual_files to ingest_keys")
+    # Rails.logger.warn("#{Time.current} START adding files within workflow_accrual_directories to ingest_keys.")
     workflow_accrual_directories.each do |directory|
-      #get the keys in this directory relative to the accrual prefix
+      # get the keys in this directory relative to the accrual prefix
       directory_key = prefix.blank? ? directory.name : File.join(prefix, directory.name)
       keys = root.unprefixed_subtree_keys(directory_key).collect do |unprefixed_key|
         File.join(directory.name, unprefixed_key)
@@ -119,12 +132,12 @@ class Workflow::AccrualJob < Workflow::Base
       directory.save!
       ingest_keys += keys
     end
-    #Rails.logger.warn("#{Time.current} END adding files within workflow_accrual_directories to ingest_keys.")
+    # Rails.logger.warn("#{Time.current} END adding files within workflow_accrual_directories to ingest_keys.")
     update_attribute(:empty_file_report, empty_files.string)
     cfs_directory_prefix = cfs_directory.relative_path
     existing_keys = existing_keys_for(cfs_directory_prefix)
     duplicate_keys = ingest_keys.intersection(existing_keys)
-    #TODO we can implement other checks based on size and/or the beginning/end bytes of a file
+    # TODO: we can implement other checks based on size and/or the beginning/end bytes of a file
     # to try to check for changes more efficiently before computing the entire md5.
     duplicate_keys.each do |key|
       # existing_md5 = Application.storage_manager.main_root.md5_sum(File.join(cfs_directory_prefix, key))
@@ -133,7 +146,7 @@ class Workflow::AccrualJob < Workflow::Base
       file_changed = TRUE
       workflow_accrual_conflicts.create!(path: key, different: file_changed)
     end
-    if duplicate_keys.count.positive? and not allow_overwrite
+    if duplicate_keys.count.positive? && !allow_overwrite
       Workflow::AccrualMailer.illegal_overwrite(self).deliver_now
       be_in_state_and_requeue('end')
     else
@@ -145,15 +158,17 @@ class Workflow::AccrualJob < Workflow::Base
 
   def existing_keys_for(prefix)
     Application.storage_manager.main_root.unprefixed_subtree_keys(prefix)
-  rescue MedusaStorage::Error::InvalidDirectory => invalid_directory_error
+  rescue MedusaStorage::Error::InvalidDirectory => e
     # getting here means directory does not exist, which is expected for new accruals
-    Array.new
+    []
   end
 
   def create_workflow_accrual_keys(keys)
     workflow_accrual_keys.clear
     keys.each do |key|
-      workflow_accrual_keys.create(key: key) unless excluded_file?(File.basename(key))
+      unless excluded_file?(File.basename(key))
+        workflow_accrual_keys.create(key: key)
+      end
     end
   end
 
@@ -210,108 +225,89 @@ class Workflow::AccrualJob < Workflow::Base
                                  note: "Accrual from #{staging_path}", actor_email: user.email)
   end
 
-  def use_copy_server
-    #TODO - use the configuration available to decide what to do
-    # If we have a configuration section for a copy server and the appropriate roots are covered, then
-    # use it.
-    return false unless Settings.copy_server.present?
-    staging_root, prefix = staging_root_and_prefix
-    staging_root_name = staging_root.name
-    target_root_name = Application.storage_manager.main_root.name
-    return (Settings.copy_server.roots.include?(staging_root_name) && Settings.copy_server.roots.include?(target_root_name))
+  def use_globus_transfer
+    return false unless Settings.globus.present?
+
+    !staging_globus_endpoint.nil?
   end
 
   def perform_send_copy_messages
     reset_conflict_fixities_and_fits if has_serious_conflicts?
-    amqp = AmqpHelper::Connector[:medusa]
-    staging_root, source_prefix = staging_root_and_prefix
-    staging_root_name = staging_root.name
+    source_endpoint = staging_globus_endpoint
+    target_endpoint = Application.storage_manager.globus_endpoint_at('main_storage')
     target_prefix = cfs_directory.relative_path
-    target_root_name = Application.storage_manager.main_root.name
     workflow_accrual_keys.copy_not_requested.find_each do |workflow_accrual_key|
-      source_key = File.join(source_prefix, workflow_accrual_key.key).gsub(/^\//, '')
-      target_key = File.join(target_prefix, workflow_accrual_key.key)
-      amqp.send_message(Settings.copy_server.outgoing_queue,
-                        copy_message(staging_root_name, source_key, target_root_name, target_key, workflow_accrual_key))
+      source_key = File.join(workflow_accrual_key.key).gsub(%r{^/}, '')
+      target_key = File.join(workflow_accrual_key.key)
+      source_path = File.join(source_endpoint.path.gsub(%r{^/}, ''), source_key)
+      destination_path = File.join(target_endpoint.path.gsub(%r{^/}, ''), target_prefix, target_key)
+      globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
+                                                     source_uuid: source_endpoint.uuid,
+                                                     destination_uuid: target_endpoint.uuid,
+                                                     source_path: source_path,
+                                                     destination_path: destination_path,
+                                                     recursive: false)
+      globus_transfer.submit
+      globus_transfer.save!
       workflow_accrual_key.copy_requested = true
       workflow_accrual_key.save!
     end
-    be_in_state_and_requeue('await_copy_messages') if workflow_accrual_keys.copy_not_requested.count.zero?
+    if workflow_accrual_keys.copy_not_requested.count.zero?
+      be_in_state_and_requeue('await_copy_messages')
+    end
+
   end
 
-  def copy_message(source_root_name, source_key, target_root_name, target_key, workflow_accrual_key)
-    {
-        action: 'copyto',
-        pass_through: {
-            workflow_accrual_key_id: workflow_accrual_key.id
-        },
-        parameters: {
-            source_root: source_root_name,
-            target_root: target_root_name,
-            source_key: source_key,
-            target_key: target_key
-        }
-    }
-  end
-
-  #Note that the way this works when this is run by _any_ job using the copying server, it will (potentially)
-  # pick up and deal with the messages for _any_ jobs that have incoming messages. This is fine, as the check
-  # on whether to proceed is just to check if this job has no more messages remaining. So if the current job
-  # processes messages for another job's copy, it just means that that part got a head start - the other job
-  # will still make the necessary check when _its_ delayed job is run, it just will have received a head start
-  # on processing the messages.
+  # checks the status of all globus transfers for all accrual keys for this accrual job
   def perform_await_copy_messages
-    #TODO - pick up any incoming messages and remove the associated accrual keys or report errors
-    # Mark errors directly on the workflow_accrual_key, and then after getting all of the incoming
-    # messages check for errors and report once if there are any present.
-    amqp = AmqpHelper::Connector[:medusa]
-    continue_processing = true
-    while continue_processing
-      amqp.with_parsed_message(Settings.copy_server.incoming_queue) do |message|
-        if message
-          workflow_accrual_key = Workflow::AccrualKey.find(message['pass_through']['workflow_accrual_key_id'])
-          if message['status'] == 'success'
-            workflow_accrual_key.destroy!
-          else
-            workflow_accrual_key.error = message['message']
-            workflow_accrual_key.save!
-          end
+    workflow_accrual_keys.where(copy_requested: true).where(error: nil).each do |workflow_accrual_key|
+      status = workflow_accrual_key.workflow_globus_transfer.status
+      case status
+      when 'SUCCEEDED'
+        workflow_accrual_key.destroy!
+      when 'ACTIVE'
+        #do nothing
+      when 'INACTIVE', 'FAILED'
+        message = "#{status}: https://www.globus.org/app/console/#{workflow_accrual_key.workflow_globus_transfer.task_link}"
+        workflow_accrual_key.error = message
+        workflow_accrual_key.save!
+      end
+
+      error_count = workflow_accrual_keys.has_error.count
+
+      unless error_count.zero?
+        raise "There are #{error_count} keys with copying errors."
+      end
+
+      if workflow_accrual_keys.reload.count.zero?
+        cfs_directory.events.create!(key: 'deposit_completed', cascadable: true,
+                                     note: "Accrual from #{staging_path}", actor_email: user.email)
+        be_in_state_and_requeue('assessing')
+      else
+        if copy_start_time + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout > Time.now
+          put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
         else
-          continue_processing = false
+          raise "Copy server jobs are still pending (#{workflow_accrual_keys.count} remaining). Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
         end
       end
     end
-    error_count = workflow_accrual_keys.has_error.count
-    unless error_count.zero?
-      raise "There are #{error_count} keys with copying errors."
-    end
-    if workflow_accrual_keys.reload.count.zero?
-      cfs_directory.events.create!(key: 'deposit_completed', cascadable: true,
-                                   note: "Accrual from #{staging_path}", actor_email: user.email)
-      be_in_state_and_requeue('assessing')
-    else
-      if self.copy_start_time + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout > Time.now
-        self.put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
-      else
-        raise RuntimeError, "Copy server jobs are still pending (#{workflow_accrual_keys.count} remaining). Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
-      end
-    end
   end
 
-  #At this time this is meant for calling in a console if we get some failures that need to be retried. This might be automated
+  # At this time this is meant for calling in a console if we get some failures that need to be retried. This might be automated
   # as well, i.e. just automatically try this one or two times if we get into a bad state.
   def retry_failed_copies
-    self.delayed_jobs.each {|j| j.destroy!}
-    self.workflow_accrual_keys.where('error is not null').each do |key|
+    delayed_jobs.each(&:destroy!)
+    workflow_accrual_keys.where('error is not null').each do |key|
+      key.workflow_globus_transfer.cancel
       key.copy_requested = false
       key.error = nil
       key.save!
     end
-    self.be_in_state_and_requeue('send_copy_messages')
+    be_in_state_and_requeue('send_copy_messages')
   end
 
   def reset_conflict_fixities_and_fits
-    workflow_accrual_conflicts.where(different: true).find_each {|conflict| conflict.reset_cfs_file}
+    workflow_accrual_conflicts.where(different: true).find_each(&:reset_cfs_file)
   end
 
   def perform_aborting
@@ -320,7 +316,7 @@ class Workflow::AccrualJob < Workflow::Base
     be_in_state_and_requeue('end')
   end
 
-  #TODO - this could maybe target the content of the ingest more precisely and thus be more
+  # TODO: - this could maybe target the content of the ingest more precisely and thus be more
   # efficient. As is it may run over a lot of stuff that is already there unnecessarily.
   # Maybe just assess any workflow_accrual_files keys directly and do the workflow_accrual_directory keys by making the
   # directories if they don't exist and then assessing them.
@@ -332,10 +328,10 @@ class Workflow::AccrualJob < Workflow::Base
 
   def perform_await_assessment
     if has_pending_assessments?
-      if self.assessment_start_time + Settings.classes.workflow.accrual_job.assessment_error_reporting_timeout > Time.now
-        self.put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
+      if assessment_start_time + Settings.classes.workflow.accrual_job.assessment_error_reporting_timeout > Time.now
+        put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
       else
-        raise RuntimeError, "Assessments are still pending. Accrual Job: #{self.id}. Cfs Directory: #{self.cfs_directory.id}"
+        raise "Assessments are still pending. Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
       end
     else
       Workflow::AccrualMailer.assessment_done(self).deliver_now
@@ -343,11 +339,11 @@ class Workflow::AccrualJob < Workflow::Base
     end
   end
 
-  #Are there any initial directory assessments belonging to a subdirectory of this accrual jobs cfs directory?
+  # Are there any initial directory assessments belonging to a subdirectory of this accrual jobs cfs directory?
   def has_pending_assessments?
     transaction do
-      subdirectory_ids = self.cfs_directory.recursive_subdirectory_ids.to_set
-      possible_assessment_job_ids = Job::CfsInitialDirectoryAssessment.where(file_group_id: self.cfs_directory.file_group.id).pluck(:cfs_directory_id).to_set
+      subdirectory_ids = cfs_directory.recursive_subdirectory_ids.to_set
+      possible_assessment_job_ids = Job::CfsInitialDirectoryAssessment.where(file_group_id: cfs_directory.file_group.id).pluck(:cfs_directory_id).to_set
       return subdirectory_ids.intersect?(possible_assessment_job_ids)
     end
   end
@@ -356,11 +352,11 @@ class Workflow::AccrualJob < Workflow::Base
     Workflow::AccrualMailer.done(self).deliver_now
     archive('completed')
     be_in_state_and_requeue('end')
-    #TODO - perhaps delete staged content, perhaps not
+    # TODO: - perhaps delete staged content, perhaps not
   end
 
   def status_label
-    STATE_HASH[self.state]
+    STATE_HASH[state]
   end
 
   def approve_and_proceed
@@ -370,18 +366,18 @@ class Workflow::AccrualJob < Workflow::Base
       notify_admin_of_request
     when 'admin_approval'
       update_attribute(:copy_start_time, Time.now)
-      if use_copy_server
+      if use_globus_server
         be_in_state_and_requeue('send_copy_messages')
       else
         be_in_state_and_requeue('copying')
       end
     else
-      raise RuntimeError, 'Job approved from unallowed initial state'
+      raise 'Job approved from unallowed initial state'
     end
   end
 
   def archive(completion_state)
-    ArchivedAccrualJob.create!(workflow_accrual_job_id: self.id, file_group_id: file_group.id, cfs_directory_id: cfs_directory_id,
+    ArchivedAccrualJob.create!(workflow_accrual_job_id: id, file_group_id: file_group.id, cfs_directory_id: cfs_directory_id,
                                user_id: user_id, state: completion_state, staging_path: staging_path, report: render_report)
   end
 
@@ -398,7 +394,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def has_report?
-    !self.state.in?(%w(start check))
+    !state.in?(%w[start check])
   end
 
   def file_group
@@ -406,7 +402,9 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def file_group_title
-    file_group.try(:title) rescue '[UNKNOWN]'
+    file_group.try(:title)
+  rescue StandardError
+    '[UNKNOWN]'
   end
 
   def relative_target_path
@@ -441,5 +439,4 @@ class Workflow::AccrualJob < Workflow::Base
     set_instance_variable('workflow_accrual', self)
     render partial: 'workflow/accrual_mailer/view_report'
   end
-
 end
