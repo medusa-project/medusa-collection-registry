@@ -366,7 +366,7 @@ class Workflow::AccrualJob < Workflow::Base
       notify_admin_of_request
     when 'admin_approval'
       update_attribute(:copy_start_time, Time.now)
-      if use_globus_server
+      if use_globus_transfer
         be_in_state_and_requeue('send_copy_messages')
       else
         be_in_state_and_requeue('copying')
