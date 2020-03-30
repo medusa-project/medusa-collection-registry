@@ -1,7 +1,7 @@
 class StorageManager
 
   attr_accessor :main_root, :main_root_rclone, :main_root_backup, :amqp_roots, :project_staging_root, :accrual_roots,
-                :fits_root, :tmpdir
+                :fits_root, :tmpdir, :globus_endpoints
 
   def initialize
     initialize_main_storage
@@ -12,6 +12,7 @@ class StorageManager
     initialize_accrual_storage
     initialize_fits_root
     initialize_tmpdir
+    initialize_globus_endpoints
   end
 
   def initialize_main_storage
@@ -31,10 +32,10 @@ class StorageManager
   def initialize_main_storage_backup
     root_config = Settings.storage.main_root_backup
     self.main_root_backup = if root_config.present?
-      MedusaStorage::RootFactory.create_root(root_config.to_h)
-    else
-      nil
-    end
+                              MedusaStorage::RootFactory.create_root(root_config.to_h)
+                            else
+                              nil
+                            end
   end
 
   def initialize_amqp_storage
@@ -61,8 +62,20 @@ class StorageManager
     amqp_roots.at(name)
   end
 
+  def globus_endpoint_at(name)
+    globus_endpoints[name]
+  end
+
   def initialize_tmpdir
     self.tmpdir = Settings.storage.tmpdir.if_blank(ENV['TMPDIR'])
+  end
+
+  def initialize_globus_endpoints
+    endpoint_config = Settings.globus.accrual.collect(&:to_h)
+    self.globus_endpoints = Hash.new
+    endpoint_config.each do |endpoint|
+      self.globus_endpoints[endpoint[:name]] = endpoint
+    end
   end
 
 end
