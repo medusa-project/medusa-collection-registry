@@ -46,8 +46,9 @@ class Workflow::GlobusTransfer < ApplicationRecord
       self.task_link = transfer_response['task_link']['href']
       self.submitted = Time.now
     rescue StandardError => e
-      Rails.logger.warn("#{e.class} when trying Globus transfer for workflow accrual job #{workflow_accrual_job_id}, #{e.message}")
-      return false
+      Rails.logger.warn("#{e.class} when trying Globus transfer for workflow accrual key #{workflow_accrual_key_id}, #{e.message}")
+      raise e
+      #return false
     end
   end
 
@@ -73,7 +74,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
       self.submitted = nil
       save
     rescue StandardError => e
-      Rails.logger.warn("#{e.class} when cancelling Globus transfer for workflow accrual job #{workflow_accrual_job_id}, #{e.message}")
+      Rails.logger.warn("#{e.class} when cancelling Globus transfer for workflow accrual key #{workflow_accrual_key_id}, #{e.message}")
       return false
     end
 
@@ -123,8 +124,8 @@ class Workflow::GlobusTransfer < ApplicationRecord
   end
 
   def self.bearer_token
-    client_id = Rails.application.credentials[:client_id]
-    client_secret = Rails.application.credentials[:client_secret]
+    client_id = Rails.application.credentials[:globus][:client_id]
+    client_secret = Rails.application.credentials[:globus][:client_secret]
     auth_root = 'https://auth.globus.org'
     token_path = '/v2/oauth2/token'
     body = { 'grant_type' => 'client_credentials',
