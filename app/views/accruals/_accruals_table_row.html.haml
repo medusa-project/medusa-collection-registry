@@ -14,7 +14,7 @@
     - if accrual_job.state == 'copying' or accrual_job.state == 'await_copy_messages'
       (#{accrual_job.workflow_accrual_keys.count})
     %br
-    = accrual_job.delayed_job_has_error? ? "Job ERROR" : "Job OK"
+    = accrual_job.delayed_job_has_error? ? "JOB ERROR" : "JOB OK"
   %td.dropdown{id: "accrual_actions_#{accrual_job.id}"}
     - if accrual_job.approvable_by?(current_user)
       = render 'shared/small_dropdown_toggle', title: :Actions, icon: 'cog'
