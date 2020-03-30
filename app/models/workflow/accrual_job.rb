@@ -239,8 +239,8 @@ class Workflow::AccrualJob < Workflow::Base
     workflow_accrual_keys.copy_not_requested.find_each do |workflow_accrual_key|
       source_key = File.join(workflow_accrual_key.key).gsub(%r{^/}, '')
       target_key = File.join(workflow_accrual_key.key)
-      source_path = File.join(source_endpoint.path.gsub(%r{^/}, ''), source_key)
-      destination_path = File.join(target_endpoint.path.gsub(%r{^/}, ''), target_prefix, target_key)
+      source_path = File.join(source_endpoint[:path].gsub(%r{^/}, ''), source_key)
+      destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
       globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
                                                      source_uuid: source_endpoint.uuid,
                                                      destination_uuid: target_endpoint.uuid,
