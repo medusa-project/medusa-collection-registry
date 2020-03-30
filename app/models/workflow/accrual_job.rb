@@ -242,8 +242,8 @@ class Workflow::AccrualJob < Workflow::Base
       source_path = File.join(source_endpoint[:path].gsub(%r{^/}, ''), source_key)
       destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
       globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
-                                                     source_uuid: source_endpoint.uuid,
-                                                     destination_uuid: target_endpoint.uuid,
+                                                     source_uuid: source_endpoint[:uuid],
+                                                     destination_uuid: target_endpoint[:uuid],
                                                      source_path: source_path,
                                                      destination_path: destination_path,
                                                      recursive: false)
