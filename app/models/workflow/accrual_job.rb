@@ -397,6 +397,13 @@ class Workflow::AccrualJob < Workflow::Base
     !state.in?(%w[start check])
   end
 
+  def delayed_job_has_error?
+    delayed_jobs.each do |job|
+      return true unless job.last_error.nil?
+    end
+    return false
+  end
+
   def file_group
     cfs_directory.file_group
   end
