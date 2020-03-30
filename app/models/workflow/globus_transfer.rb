@@ -124,8 +124,8 @@ class Workflow::GlobusTransfer < ApplicationRecord
   end
 
   def self.bearer_token
-    client_id = Rails.application.credentials[:globus][:client_id]
-    client_secret = Rails.application.credentials[:globus][:client_secret]
+    client_id = Settings.globus.client_id
+    client_secret = Settings.globus.client_secret
     auth_root = 'https://auth.globus.org'
     token_path = '/v2/oauth2/token'
     body = { 'grant_type' => 'client_credentials',
