@@ -58,11 +58,11 @@ class StorageManager
     self.fits_root = MedusaStorage::RootFactory.create_root(fits_config)
   end
 
-  def self.amqp_root_at(name)
+  def amqp_root_at(name)
     amqp_roots.at(name)
   end
 
-  def self.globus_endpoint_at(name)
+  def globus_endpoint_at(name)
     globus_endpoints[name]
   end
 
