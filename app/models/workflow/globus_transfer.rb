@@ -30,7 +30,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
                           sync_level: nil,
                           DATA: [{ source_path: source_path,
                                    destination_path: destination_path,
-                                   recursive: is_directory,
+                                   recursive: recursive,
                                    DATA_TYPE: 'transfer_item' }] }.to_json
       transfer_response = HTTParty.post("#{TRANSFER_ROOT}/transfer",
                                         body: submission_json,
