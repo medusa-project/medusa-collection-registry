@@ -247,10 +247,10 @@ class Workflow::AccrualJob < Workflow::Base
                                                      source_path: source_path,
                                                      destination_path: destination_path,
                                                      recursive: false)
-      globus_transfer.submit
-      globus_transfer.save!
-      workflow_accrual_key.copy_requested = true
-      workflow_accrual_key.save!
+      #globus_transfer.submit
+      #globus_transfer.save!
+      #workflow_accrual_key.copy_requested = true
+      #workflow_accrual_key.save!
     end
     if workflow_accrual_keys.copy_not_requested.count.zero?
       be_in_state_and_requeue('await_copy_messages')
