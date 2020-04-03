@@ -240,21 +240,20 @@ class Workflow::AccrualJob < Workflow::Base
       source_key = File.join(workflow_accrual_key.key).gsub(%r{^/}, '')
       target_key = File.join(workflow_accrual_key.key)
       source_path = File.join(source_endpoint[:path].gsub(%r{^/}, ''), source_key)
+      source_path = "/#{source_path}"
       destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
-      Rails.logger.warn ("source_key: #{source_key}\ntarget_key: #{target_key}\nsource_path: #{source_path}\ndestination_path: #{destination_path}")
-
-
-
-      # globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
-      #                                                source_uuid: source_endpoint[:uuid],
-      #                                                destination_uuid: target_endpoint[:uuid],
-      #                                                source_path: source_path,
-      #                                                destination_path: destination_path,
-      #                                                recursive: false)
-      #globus_transfer.submit
-      #globus_transfer.save!
-      #workflow_accrual_key.copy_requested = true
-      #workflow_accrual_key.save!
+      destination_path = "/#{destination_path}"
+      #Rails.logger.warn ("source_key: #{source_key}\ntarget_key: #{target_key}\nsource_path: #{source_path}\ndestination_path: #{destination_path}")
+      globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
+                                                     source_uuid: source_endpoint[:uuid],
+                                                     destination_uuid: target_endpoint[:uuid],
+                                                     source_path: source_path,
+                                                     destination_path: destination_path,
+                                                     recursive: false)
+      globus_transfer.submit
+      globus_transfer.save!
+      workflow_accrual_key.copy_requested = true
+      workflow_accrual_key.save!
     end
     if workflow_accrual_keys.copy_not_requested.count.zero?
       be_in_state_and_requeue('await_copy_messages')
