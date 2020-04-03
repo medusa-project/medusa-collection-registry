@@ -241,12 +241,16 @@ class Workflow::AccrualJob < Workflow::Base
       target_key = File.join(workflow_accrual_key.key)
       source_path = File.join(source_endpoint[:path].gsub(%r{^/}, ''), source_key)
       destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
-      globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
-                                                     source_uuid: source_endpoint[:uuid],
-                                                     destination_uuid: target_endpoint[:uuid],
-                                                     source_path: source_path,
-                                                     destination_path: destination_path,
-                                                     recursive: false)
+      Rails.logger.warn ("source_key: #{source_key}\ntarget_key: #{target_key}\nsource_path: #{source_path}\ndestination_path: #{destination_path}")
+
+
+
+      # globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
+      #                                                source_uuid: source_endpoint[:uuid],
+      #                                                destination_uuid: target_endpoint[:uuid],
+      #                                                source_path: source_path,
+      #                                                destination_path: destination_path,
+      #                                                recursive: false)
       #globus_transfer.submit
       #globus_transfer.save!
       #workflow_accrual_key.copy_requested = true
