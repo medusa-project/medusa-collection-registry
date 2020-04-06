@@ -94,12 +94,11 @@ class Workflow::GlobusTransfer < ApplicationRecord
         raise("Globus status response for #{id}: #{response.code}, #{response.message}")
       end
 
-      Rails.logger.warn JSON.parse(response.body)
-      raise("debug break")
+      response_json =  JSON.parse(response.body)
+      response_json["status"]
     rescue StandardError => e
       Rails.logger.warn "error getting status for #{id}: #{e.message}"
-      'error getting status'
-      raise e
+      "ERROR"
     end
   end
 

@@ -242,7 +242,7 @@ class Workflow::AccrualJob < Workflow::Base
       source_path = File.join(staging_path, source_key)
       destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
       destination_path = "/#{destination_path}"
-      #Rails.logger.warn ("source_key: #{source_key}\ntarget_key: #{target_key}\nsource_path: #{source_path}\ndestination_path: #{destination_path}")
+      Rails.logger.warn ("source_key: #{source_key}\ntarget_key: #{target_key}\nsource_path: #{source_path}\ndestination_path: #{destination_path}")
       globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
                                                      source_uuid: source_endpoint[:uuid],
                                                      destination_uuid: target_endpoint[:uuid],
@@ -273,8 +273,11 @@ class Workflow::AccrualJob < Workflow::Base
         message = "#{status}: https://www.globus.org/app/console/#{workflow_accrual_key.workflow_globus_transfer.task_link}"
         workflow_accrual_key.error = message
         workflow_accrual_key.save!
+      when 'ERROR'
+        workflow_accrual_key.error = "error getting status"
+        workflow_accrual_key.save!
       else
-        Rails.logger.warn status
+        raise("Invalid status in perform_await_copy_messages for workflow_accrual_key: #{workflow_accrual_key}")
       end
 
       error_count = workflow_accrual_keys.has_error.count
