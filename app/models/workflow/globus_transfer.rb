@@ -4,20 +4,20 @@ require 'json'
 
 class Workflow::GlobusTransfer < ApplicationRecord
   belongs_to :workflow_accrual_key, :class_name => 'Workflow::AccrualKey', foreign_key: 'workflow_accrual_key_id'
-  TRANSFER_ROOT = 'https://transfer.api.globus.org/v0.10'
+  API_BASE = 'https://transfer.api.globus.org/v0.10'
   def submit
     begin
       bearer_token = Workflow::GlobusTransfer.bearer_token
 
       raise('Missing Globus bearer_token') unless bearer_token
 
-      source_activation_path = "#{TRANSFER_ROOT}/endpoint/#{source_uuid}/autoactivate"
-      destination_activation_path = "#{TRANSFER_ROOT}/endpoint/#{destination_uuid}/autoactivate"
+      source_activation_path = "#{Workflow::GlobusTransfer::API_BASE}/endpoint/#{source_uuid}/autoactivate"
+      destination_activation_path = "#{Workflow::GlobusTransfer::API_BASE}/endpoint/#{destination_uuid}/autoactivate"
 
       HTTParty.post(source_activation_path, headers: { 'Authorization' => "Bearer #{bearer_token}" })
       HTTParty.post(destination_activation_path, headers: { 'Authorization' => "Bearer #{bearer_token}" })
 
-      submission_id_response = HTTParty.get("#{TRANSFER_ROOT}/submission_id",
+      submission_id_response = HTTParty.get("#{Workflow::GlobusTransfer::API_BASE}/submission_id",
                                             headers: { 'Authorization' => "Bearer #{bearer_token}",
                                                        'Content-Type' => 'application/json' })
       submission_id = submission_id_response['value']
@@ -32,7 +32,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
                                    destination_path: destination_path,
                                    recursive: recursive,
                                    DATA_TYPE: 'transfer_item' }] }.to_json
-      transfer_response = HTTParty.post("#{TRANSFER_ROOT}/transfer",
+      transfer_response = HTTParty.post("#{Workflow::GlobusTransfer::API_BASE}/transfer",
                                         body: submission_json,
                                         headers: { 'Authorization' => "Bearer #{bearer_token}",
                                                    'Content-Type' => 'application/json' })
@@ -40,7 +40,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
         raise("Globus transfer response for #{id}: #{transfer_response.code}, #{transfer_response.message}")
       end
 
-      Rails.logger.warn ("Globus transfer response for #{id}: #{transfer_response.code}, #{transfer_response.message}")
+      Rails.logger.warn("Globus transfer response for #{id}: #{transfer_response.code}, #{transfer_response.message}")
       self.request_id = transfer_response['request_id']
       self.task_id = transfer_response['task_id']
       self.task_link = transfer_response['task_link']['href']
@@ -59,7 +59,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
 
       raise('Missing Globus bearer_token') unless bearer_token
 
-      cancel_response = HTTParty.post("#{TRANSFER_ROOT}task/#{task_id}/cancel",
+      cancel_response = HTTParty.post("#{Workflow::GlobusTransfer::API_BASE}task/#{task_id}/cancel",
                                       headers: { 'Authorization' => "Bearer #{bearer_token}",
                                                  'Content-Type' => 'application/json' })
       unless cancel_response.code == 200 || cancel_response.code == 404
@@ -86,7 +86,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
       bearer_token = Transfer.bearer_token
       raise('Missing Globus bearer_token') unless bearer_token
 
-      response = HTTParty.get("#{TRANSFER_ROOT}/task/#{task_id}",
+      response = HTTParty.get("#{Workflow::GlobusTransfer::API_BASE}/task/#{task_id}",
                               headers: { 'Authorization' => "Bearer #{bearer_token}",
                                          'Content-Type' => 'application/json' })
       unless response.code == 200
@@ -108,7 +108,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
 
       raise('Missing Globus bearer_token') unless bearer_token
 
-      response = HTTParty.get("#{TRANSFER_ROOT}/task/#{task_id}/event_list",
+      response = HTTParty.get("#{Workflow::GlobusTransfer::API_BASE}/task/#{task_id}/event_list",
                               headers: { 'Authorization' => "Bearer #{bearer_token}",
                                          'Content-Type' => 'application/json' })
       unless response.code == 200
