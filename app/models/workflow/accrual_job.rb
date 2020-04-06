@@ -239,8 +239,7 @@ class Workflow::AccrualJob < Workflow::Base
     workflow_accrual_keys.copy_not_requested.find_each do |workflow_accrual_key|
       source_key = File.join(workflow_accrual_key.key).gsub(%r{^/}, '')
       target_key = File.join(workflow_accrual_key.key)
-      source_path = File.join(source_endpoint[:path].gsub(%r{^/}, ''), source_key)
-      source_path = "/#{source_path}"
+      source_path = File.join(staging_path, source_key)
       destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
       destination_path = "/#{destination_path}"
       Rails.logger.warn ("source_key: #{source_key}\ntarget_key: #{target_key}\nsource_path: #{source_path}\ndestination_path: #{destination_path}")
