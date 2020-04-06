@@ -40,7 +40,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
         raise("Globus transfer response for #{id}: #{transfer_response.code}, #{transfer_response.message}")
       end
 
-      Rails.logger.warn("Globus transfer response for #{id}: #{transfer_response.code}, #{transfer_response.message}")
+      Rails.logger.warn("Globus transfer response for #{self.id}: #{transfer_response.code}, #{transfer_response.message}")
       self.request_id = transfer_response['request_id']
       self.task_id = transfer_response['task_id']
       self.task_link = transfer_response['task_link']['href']
@@ -55,7 +55,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
     return 'no task_id present' unless task_id.present?
 
     begin
-      bearer_token = Transfer.bearer_token
+      bearer_token = Workflow::GlobusTransfer.bearer_token
 
       raise('Missing Globus bearer_token') unless bearer_token
 
@@ -83,7 +83,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
     return 'no task_id present' unless task_id.present?
 
     begin
-      bearer_token = Transfer.bearer_token
+      bearer_token = Workflow::GlobusTransfer.bearer_token
       raise('Missing Globus bearer_token') unless bearer_token
 
       response = HTTParty.get("#{Workflow::GlobusTransfer::API_BASE}/task/#{task_id}",
@@ -104,7 +104,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
     return 'no task_id present' unless task_id.present?
 
     begin
-      bearer_token = Transfer.bearer_token
+      bearer_token = Workflow::GlobusTransfer.bearer_token
 
       raise('Missing Globus bearer_token') unless bearer_token
 
