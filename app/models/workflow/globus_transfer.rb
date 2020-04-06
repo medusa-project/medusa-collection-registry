@@ -37,13 +37,14 @@ class Workflow::GlobusTransfer < ApplicationRecord
                                         headers: { 'Authorization' => "Bearer #{bearer_token}",
                                                    'Content-Type' => 'application/json' })
       unless transfer_response.code == 202
-        raise("Globus transfer response for #{id}: #{transfer_response.code}, #{transfer_response.message}")
+        raise("Globus transfer response for #{workflow_accrual_key_id}: #{transfer_response.code}, #{transfer_response.message}")
       end
 
-      Rails.logger.warn("Globus transfer response for #{self.id}: #{transfer_response.code}, #{transfer_response.message}")
+      Rails.logger.warn("Globus transfer response for #{workflow_accrual_key_id}: #{transfer_response.code}, #{transfer_response.message}")
       self.request_id = transfer_response['request_id']
       self.task_id = transfer_response['task_id']
       self.task_link = transfer_response['task_link']['href']
+      Rails.logger.warn(transfer_response['message'])
     rescue StandardError => e
       Rails.logger.warn("#{e.class} when trying Globus transfer for workflow accrual key #{workflow_accrual_key_id}, #{e.message}")
       raise e

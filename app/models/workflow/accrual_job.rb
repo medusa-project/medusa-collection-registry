@@ -262,6 +262,7 @@ class Workflow::AccrualJob < Workflow::Base
 
   # checks the status of all globus transfers for all accrual keys for this accrual job
   def perform_await_copy_messages
+    Rails.logger.warn("performing await copy messages for Accrual Job: #{id}")
     workflow_accrual_keys.where(copy_requested: true).where(error: nil).each do |workflow_accrual_key|
       status = workflow_accrual_key.workflow_globus_transfer.status
       case status
