@@ -410,6 +410,8 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def delayed_job_has_error?
+    return false unless delayed_jobs.count.positive?
+
     delayed_jobs.each do |job|
       return true unless job.last_error.nil?
     end
