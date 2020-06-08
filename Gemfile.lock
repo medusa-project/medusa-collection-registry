@@ -14,17 +14,17 @@ GIT
       bunny-mock
 
 GIT
-  remote: git://github.com/medusa-project/handle-server.git
-  revision: d4f9632d60601073e06d0905c9ab9b1bff05b2fe
-  specs:
-    handle-server (1.0.1)
-      httparty
-
-GIT
   remote: git://github.com/medusa-project/net-http-digest_auth.git
   revision: 4816df9f44f27c774ea8172fab66eae74dd304ba
   specs:
     net-http-digest_auth (1.4)
+
+GIT
+  remote: https://github.com/UIUCLibrary/alma-api-batch
+  revision: 68a7054fd494d362c9ad87eb09329ad5b92e638a
+  specs:
+    alma_api (0.3.2)
+      ruby-limiter
 
 GIT
   remote: https://github.com/medusa-project/medusa_storage.git
@@ -493,6 +493,7 @@ GEM
     rspec-support (3.8.2)
     rsync (1.0.9)
     ruby-filemagic (0.7.2)
+    ruby-limiter (1.1.0)
     ruby_parser (3.13.1)
       sexp_processor (~> 4.9)
     rubyzip (1.3.0)
@@ -595,6 +596,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  alma_api!
   amq-protocol
   amqp_helper (~> 0.2.0)!
   auto_html
@@ -631,7 +633,6 @@ DEPENDENCIES
   font-awesome-rails
   haml
   haml-rails
-  handle-server (~> 1.0.1)!
   hex_string
   httparty
   jbuilder

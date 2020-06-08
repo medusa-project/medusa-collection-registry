@@ -1,25 +1,24 @@
 source 'https://rubygems.org'
 
-gem 'sass'
-gem 'rails', "~> 5.1"
-gem 'responders'
+gem 'rails', '~> 5.1'
 
-gem 'pg'
-gem 'postgresql_cursor'
+gem 'alma_api', git: 'https://github.com/UIUCLibrary/alma-api-batch'
 
-#deployment webserver
-gem 'passenger'
+gem 'auto_html'
+gem 'auto_strip_attributes'
+gem 'config'
+gem 'dalli'
 gem 'haml'
 gem 'haml-rails'
-
-gem 'simple_form'
-gem 'auto_html'
-gem 'simple_memoize'
-gem 'auto_strip_attributes'
-gem 'dalli'
-gem 'valid_email'
+gem 'passenger'
+gem 'pg'
+gem 'postgresql_cursor'
+gem 'responders'
 gem 'rsync'
-gem 'config'
+gem 'sass'
+gem 'simple_form'
+gem 'simple_memoize'
+gem 'valid_email'
 
 gem 'logger'
 #need slightly patched version of this
@@ -33,130 +32,91 @@ gem 'ruby-filemagic'
 # hence might work with S3 better. I'm adding it in order to have it available to do some testing.
 # It actually might be used by rails itself, but I want to be explicit about it if we're using
 # it directly.
-gem 'marcel'
-
-gem 'jbuilder'
-
-gem 'delayed_job_active_record'
-gem 'delayed_job_web'
-gem 'daemons'
-gem 'daemons-rails'
-
-gem 'bunny'
 gem 'amq-protocol'
 gem 'amqp_helper', '~>0.2.0', git: 'git://github.com/medusa-project/amqp_helper.git'
-
-gem 'sass-rails'
-gem 'coffee-rails'
-
-#make sure node.js is installed for asset compilation - no longer use therubyracer
-
-gem 'uglifier'
-
 gem 'bootstrap-sass'
-
-#TODO update to webpacker 4. This is at least a bit involved. There is info here:
-# https://github.com/rails/webpacker and more specifically here
-# https://github.com/rails/webpacker/blob/master/docs/v4-upgrade.md
-# Suffice to say that I naively tried all of that and it did not immediately work, so there
-# is likely at least a bit of thinking to do.
-gem 'webpacker', '~> 4.x'
-
-gem 'rails-jquery-autocomplete'
-
-gem 'react-rails', '~> 2.4.0'
-
-gem "nokogiri", ">= 1.10.4"
-
+gem 'bunny'
+gem 'cancancan'
+gem 'coffee-rails'
+gem 'daemons'
+gem 'daemons-rails'
+gem 'delayed_job_active_record'
+gem 'delayed_job_web'
+gem 'httparty'
+gem 'jbuilder'
+gem 'marcel'
+gem 'net-ldap'
+gem 'nokogiri', '>= 1.10.4'
 gem 'omniauth'
 gem 'omniauth-shibboleth'
-gem 'cancancan'
-gem 'handle-server', '~> 1.0.1', git: 'git://github.com/medusa-project/handle-server.git'
-gem 'httparty'
-gem 'net-ldap'
+gem 'rails-jquery-autocomplete'
+gem 'react-rails', '~> 2.4.0'
+gem 'sass-rails'
+gem 'uglifier'
+gem 'webpacker', '~> 4.x'
 
 # Deploy with Capistrano
-gem 'capistrano-rails'
 gem 'capistrano-bundler'
-gem 'capistrano-rbenv'
 gem 'capistrano-passenger'
+gem 'capistrano-rails'
+gem 'capistrano-rbenv'
 gem 'capistrano-yarn'
 
 #memory/active record usage monitoring
+gem 'draper'
 gem 'oink'
-
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
-gem 'draper'
 
 gem 'uuid'
 #There are test failures going to 6.0, but I'm not sure why and it
 # doesn't seem worth tracking them down when we may move to a different
 # system for handling this.
-gem 'paperclip', '~> 5.2'
-
-gem 'font-awesome-rails'
-
-gem 'multi_json'
-gem 'yajl-ruby'
 gem 'csv_builder'
+gem 'font-awesome-rails'
+gem 'multi_json'
+gem 'paperclip', '~> 5.2'
+gem 'yajl-ruby'
 
 #search
-gem 'sunspot_rails'
 gem 'progress_bar'
-
-gem 'render_anywhere', require: false
-
-gem 'os'
-gem 'lmdb'
-
-## For this group we are installing the js via webpack/yarn,
-## but it is still useful to get the view helpers
-gem 'chartkick'
-
-#date parsing
-gem 'chronic'
-
-gem 'send_file_with_range', git: 'https://github.com/tom-sherman/send_file_with_range.git', branch: 'master'
-gem 'pdfjs_viewer-rails'
-
-gem 'medusa_storage', git: 'https://github.com/medusa-project/medusa_storage.git', branch: 'master'
-
-gem 'hex_string'
+gem 'sunspot_rails'
 
 gem 'browser'
+gem 'chartkick'
+gem 'chronic'
+gem 'hex_string'
+gem 'lmdb'
+gem 'medusa_storage', git: 'https://github.com/medusa-project/medusa_storage.git', branch: 'master'
+gem 'os'
+gem 'pdfjs_viewer-rails'
+gem 'render_anywhere', require: false
+gem 'send_file_with_range', git: 'https://github.com/tom-sherman/send_file_with_range.git', branch: 'master'
 
 group :development, :test do
-  gem 'rspec-rails'
-  gem 'factory_bot_rails'
-  #Version pin is for the matchers to work with minitest-matchers_vaccine - see should-matchers docs (it actually
-  # talks about shoulda, but it seems necessary for minitest-matchers_vaccine too)
-  gem 'shoulda-matchers', '~> 2.0'
-  gem "minitest-matchers_vaccine"
-  gem 'sunspot_solr'
   gem 'byebug'
+  gem 'factory_bot_rails'
+  gem 'minitest-matchers_vaccine'
   gem 'puma'
+  gem 'rspec-rails'
+  gem 'shoulda-matchers', '~> 2.0'
+  gem 'sunspot_solr'
 end
 
 group :development do
-  #gem 'newrelic_rpm'
-  gem 'traceroute'
   gem 'routler'
-  #gem 'rack-mini-profiler'
-  #gem 'bullet'
-  #gem 'brakeman', require: false
+  gem 'traceroute'
 end
 
 group :test do
-  gem 'cucumber-rails', require: false
-  gem 'database_cleaner'
-  gem 'simplecov', require: false
-  gem 'json_spec'
-  #Lock this on 2.x, as going to 3 will probably require some fixing up
-  gem 'capybara'#, '~> 2.18'
+  gem 'capybara'
   gem 'capybara-email'
   gem 'capybara-mechanize'
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
+  gem 'json_spec'
   gem 'launchy'
+  gem 'simplecov', require: false
   #testing with javascript - requires phantomjs to be installed on the test machine
   gem 'poltergeist'
   #simpler mocking than minitest
@@ -166,11 +126,10 @@ group :test do
   #TODO pinned selenium-webdriver. If I go to 3.142.2 then performance suffers greatly when using chrome
   # headless. I do not know why at this time. Since this still works it seems worth waiting to see if
   # if gets chased down. Also the gem is about to go to 4.0, so maybe wait for that.
-  gem 'selenium-webdriver', '3.142.1'
-  gem 'webdrivers'
-
-  gem 'sunspot_test'
   gem 'connection_pool'
+  gem 'selenium-webdriver', '3.142.1'
+  gem 'sunspot_test'
+  gem 'webdrivers'
   #need my version of bunny-mock where the default exchange works as expected. Wait to see if the fix gets merged
   gem 'bunny-mock', git: 'git://github.com/hading/bunny-mock.git'
   gem 'rack_session_access'
