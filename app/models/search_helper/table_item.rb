@@ -67,7 +67,7 @@ class SearchHelper::TableItem < SearchHelper::TableBase
      {header: 'Item Done', solr_field: :item_done, value_method: :item_done},
      {header: 'Ingested', value_method: :ingested, unsortable: true},
      {header: 'Local Description', solr_field: :local_description, value_method: :local_description, searchable: true, shorten: true},
-     #Voyager Fields
+     #Catalog Fields
      {header: 'Call Number', solr_field: :call_number, value_method: :call_number, searchable: true},
      {header: 'Title', solr_field: :title, value_method: :title, searchable: true, shorten: true},
      {header: 'Author', solr_field: :author, value_method: :author, searchable: true, shorten: true},

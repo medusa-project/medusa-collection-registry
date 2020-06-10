@@ -61,8 +61,6 @@ class BarcodeLookup < Object
         puts ' ' * 2 + network_num_node.text
       end
 
-      # DisplayCallNo
-      # I think Alma only has display call numbers, not display + normalized like Voyager
     end
 
     puts 'Call Numbers:'
