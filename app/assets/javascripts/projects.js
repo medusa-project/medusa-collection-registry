@@ -11,13 +11,16 @@ var barcode_item_data = [];
 var prevent_enter_in_barcode_field = true;
 
 function watch_item_barcode(barcode_field_selector) {
+    console.log("inside watch_item_barcode");
     query_barcode($(barcode_field_selector).val());
     $(barcode_field_selector).on("input", function () {
+        console.log("inside on input")
             query_barcode($(barcode_field_selector).val());
         }
     );
     $(barcode_field_selector).keypress(function (event) {
         if (event.keyCode == 13 && prevent_enter_in_barcode_field) {
+            console.log("inside keypress")
             event.preventDefault();
         }
     });
