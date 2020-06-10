@@ -41,7 +41,7 @@ function query_barcode(value) {
             prevent_enter_in_barcode_field = false;
         })
     } else {
-        console("impossible barcode detected!")
+        console.log("impossible barcode detected! " + value )
         clear_barcode_items();
     }
 }
