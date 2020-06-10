@@ -24,11 +24,11 @@ class ItemsController < ApplicationController
     if params[:source_id]
       @source_item = Item.find(params[:source_id])
       @project = @source_item.project
-      #authorize! :create_item, @project
+      authorize! :create_item, @project
       @item = clone_item(@source_item)
     else
       @project = Project.find(params[:project_id])
-      #authorize! :create_item, @project
+      authorize! :create_item, @project
       @item = Item.new(project_id: @project.id)
     end
     respond_to do |format|
