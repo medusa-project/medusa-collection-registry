@@ -5,15 +5,15 @@ require 'alma_api/batch'
 require 'alma_api/error_response'
 
 class BarcodeLookup < Object
-  attr_accessor :barcode, :lookup_doc, :active_item_barcode, :call_number
-  @@alma_api = AlmaApi::Batch::ApiCaller.new(ENV['ALMA_HOST'], ENV['ALMA_API_KEY'])
+  attr_accessor :barcode, :lookup_doc, :call_number
+  @@alma_api = AlmaApi::Batch::ApiCaller.new(Settings.alma.host, Settings.alma.key)
   def initialize(barcode)
     self.barcode = barcode
     fetch_and_parse
   end
 
   def valid?
-    lookup_doc.present? && active_item_barcode.present?
+    lookup_doc.present?
   end
 
   def item_hashes
@@ -93,16 +93,10 @@ class BarcodeLookup < Object
     options = { 'item_barcode' => barcode }
     lookup_doc_response = @api.get(item_records, options)
     self.lookup_doc = Nokogiri::XML(lookup_doc_response.body)
-    set_active_item_barcode
   rescue OpenURI::HTTPError
     self.lookup_doc = nil
   end
 
-  def set_active_item_barcode
-    self.active_item_barcode = lookup_doc.css('ItemBarcode').detect do |item_barcode|
-      item_barcode.at_css('BarcodeStatus').text == 'Active'
-    end
-  end
 
   def call_number
     arr = Array.new

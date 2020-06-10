@@ -15,6 +15,9 @@ namespace :alma do
     item_records = '/almaws/v1/items'
     options = {'item_barcode' => barcode }
     items_xml_response = @alma.get(item_records, options)
-    puts items_xml_response.body
+    lookup_doc = Nokogiri::XML(items_xml_response.body)
+    puts lookup_doc
+    puts "\n******\n"
+    puts lookup_doc.xpath('item/bib_data')
   end
 end

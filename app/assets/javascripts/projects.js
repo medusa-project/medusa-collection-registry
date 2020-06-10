@@ -11,7 +11,6 @@ var barcode_item_data = [];
 var prevent_enter_in_barcode_field = true;
 
 function watch_item_barcode(barcode_field_selector) {
-    console.log("inside watch_item_barcode");
     query_barcode($(barcode_field_selector).val());
     $(barcode_field_selector).on("input", function () {
             console.log("inside on input");
@@ -20,16 +19,13 @@ function watch_item_barcode(barcode_field_selector) {
     );
     $(barcode_field_selector).keypress(function (event) {
         if (event.keyCode == 13 && prevent_enter_in_barcode_field) {
-            console.log("inside keypress");
             event.preventDefault();
         }
     });
 }
 
 function query_barcode(value) {
-    console.log("inside query_barcode" + value)
     if (possible_barcode(value)) {
-        console.log("possible barcode detected")
         $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
             barcode_item_data = jsonResult;
             populate_barcode_items();
@@ -41,7 +37,6 @@ function query_barcode(value) {
             prevent_enter_in_barcode_field = false;
         })
     } else {
-        console.log("impossible barcode detected! " + value )
         clear_barcode_items();
     }
 }
