@@ -14,20 +14,22 @@ function watch_item_barcode(barcode_field_selector) {
     console.log("inside watch_item_barcode");
     query_barcode($(barcode_field_selector).val());
     $(barcode_field_selector).on("input", function () {
-        console.log("inside on input")
+            console.log("inside on input");
             query_barcode($(barcode_field_selector).val());
         }
     );
     $(barcode_field_selector).keypress(function (event) {
         if (event.keyCode == 13 && prevent_enter_in_barcode_field) {
-            console.log("inside keypress")
+            console.log("inside keypress");
             event.preventDefault();
         }
     });
 }
 
 function query_barcode(value) {
+    console.log("inside query_barcode" + value)
     if (possible_barcode(value)) {
+        console.log("possible barcode detected")
         $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
             barcode_item_data = jsonResult;
             populate_barcode_items();
@@ -39,6 +41,7 @@ function query_barcode(value) {
             prevent_enter_in_barcode_field = false;
         })
     } else {
+        console("impossible barcode detected!")
         clear_barcode_items();
     }
 }
@@ -114,7 +117,9 @@ function set_up_bibid_clipboard() {
 function selected_bibids() {
     var rows = checked_rows('#items');
     var bib_id_column = column_with_header('#items', 'Bib Id');
-    var bibids = _.reject(_.map(rows, function (row) {return row[bib_id_column];}), _.string.isBlank);
+    var bibids = _.reject(_.map(rows, function (row) {
+        return row[bib_id_column];
+    }), _.string.isBlank);
     //var checked = $('#items input:checked');
     //var bibids = _.reject($.map(checked, checkbox_to_bibid), _.string.isBlank);
     if (_.isEmpty(bibids)) {
@@ -126,23 +131,23 @@ function selected_bibids() {
 }
 
 function checked_rows(table_selector) {
-  var rows = $(table_selector).DataTable().rows().data();
-  var checkbox_column = column_with_header(table_selector, 'Mass Action');
-  var checked_rows = _.filter(rows, function (row) {
-    var checkbox_id = $(row[checkbox_column]).attr('id');
-    var checked = $('#' + checkbox_id).prop('checked');
-    return checked;
-  });
-  return checked_rows;
+    var rows = $(table_selector).DataTable().rows().data();
+    var checkbox_column = column_with_header(table_selector, 'Mass Action');
+    var checked_rows = _.filter(rows, function (row) {
+        var checkbox_id = $(row[checkbox_column]).attr('id');
+        var checked = $('#' + checkbox_id).prop('checked');
+        return checked;
+    });
+    return checked_rows;
 }
 
 function column_with_header(table_selector, header_text) {
-  var columns = $(table_selector).DataTable().columns();
-  var headers = columns.header();
-  var header = _.find(headers, function(header) {
-    return $(header).text() == header_text;
-  });
-  return $(header).attr('data-column-index');
+    var columns = $(table_selector).DataTable().columns();
+    var headers = columns.header();
+    var header = _.find(headers, function (header) {
+        return $(header).text() == header_text;
+    });
+    return $(header).attr('data-column-index');
 }
 
 function show_item_mass_edit() {
@@ -152,7 +157,7 @@ function show_item_mass_edit() {
     $('#item_mass_edit_modal').modal('show');
 }
 
-function reset_item_mass_edit_form () {
+function reset_item_mass_edit_form() {
     var form = $('#item_mass_edit_modal form');
     $('input[type="text"]', form).val('');
     $('input[type="checkbox"]', form).prop('checked', false);
