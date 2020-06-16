@@ -19,9 +19,9 @@ class BarcodeLookup < Object
 
   def item_hashes
     h = Hash.new
-    return h unless valid?
+    return [h] unless valid?
 
-    return h if lookup_doc.nil?
+    return [h] if lookup_doc.nil?
 
     bib_data_node = lookup_doc.xpath('item/bib_data')
     h[:title] = safe_node_xpath_text(bib_data_node, 'title')
@@ -30,7 +30,7 @@ class BarcodeLookup < Object
     h[:imprint] = safe_node_xpath_text(lookup_doc, 'item/item_data/imprint')
     h[:oclc_number] = oclc_number
     h[:call_number] = safe_node_xpath_text(lookup_doc, 'item/holding_data/call_number')
-    h
+    [h]
   end
 
   protected

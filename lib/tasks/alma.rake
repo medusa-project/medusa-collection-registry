@@ -39,6 +39,9 @@ namespace :alma do
   end
 
   task barcode: :environment do
-    puts BarcodeLookup.new('25279'.strip).item_hashes
+    thingy = BarcodeLookup.new('25279'.strip).item_hashes
+    puts "thingy: #{thingy}"
+    puts "thingy.class: #{thingy.class}"
+    puts "thingy.length: #{thingy.length.to_s}"
   end
 end

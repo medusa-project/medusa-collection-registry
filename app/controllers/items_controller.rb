@@ -67,6 +67,7 @@ class ItemsController < ApplicationController
   end
 
   def barcode_lookup
+    Rails.logger.warn("barcode lookup params: #{params.to_yaml}")
     respond_to do |format|
       format.json do
         render json: BarcodeLookup.new(params[:barcode].strip).item_hashes

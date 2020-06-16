@@ -17,7 +17,7 @@ function watch_item_barcode(barcode_field_selector) {
         }
     );
     $(barcode_field_selector).keypress(function (event) {
-        if (event.keyCode == 13 && prevent_enter_in_barcode_field) {
+        if (event.keyCode === 13 && prevent_enter_in_barcode_field) {
             event.preventDefault();
         }
     });
@@ -28,9 +28,9 @@ function query_barcode(value) {
         $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
             barcode_item_data = jsonResult;
             populate_barcode_items();
-            if (barcode_item_data.length == 1) {
+            if (barcode_item_data.length === 1) {
                 insert_barcode_item(0);
-            } else if (barcode_item_data.length == 0) {
+            } else if (barcode_item_data.length === 0) {
                 show_barcode_error();
             }
             prevent_enter_in_barcode_field = false;
@@ -51,7 +51,7 @@ function clear_barcode_items() {
 function populate_barcode_items() {
     clear_barcode_items();
     for (i = 0; i < barcode_item_data.length; i++) {
-        if (i != 0) {
+        if (i !== 0) {
             $('#barcode_items').append('<hr/>')
         }
         $('#barcode_items').append(barcode_item_html(i));
@@ -125,19 +125,17 @@ function selected_bibids() {
 function checked_rows(table_selector) {
     var rows = $(table_selector).DataTable().rows().data();
     var checkbox_column = column_with_header(table_selector, 'Mass Action');
-    var checked_rows = _.filter(rows, function (row) {
+    return _.filter(rows, function (row) {
         var checkbox_id = $(row[checkbox_column]).attr('id');
-        var checked = $('#' + checkbox_id).prop('checked');
-        return checked;
+        return $('#' + checkbox_id).prop('checked');
     });
-    return checked_rows;
 }
 
 function column_with_header(table_selector, header_text) {
     var columns = $(table_selector).DataTable().columns();
     var headers = columns.header();
     var header = _.find(headers, function(header) {
-        return $(header).text() == header_text;
+        return $(header).text() === header_text;
     });
     return $(header).attr('data-column-index');
 }
