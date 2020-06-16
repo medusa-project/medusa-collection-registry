@@ -20,6 +20,9 @@ class BarcodeLookup < Object
   def item_hashes
     h = Hash.new
     return h unless valid?
+
+    return h if lookup_doc.nil?
+
     bib_data_node = lookup_doc.xpath('item/bib_data')
     h[:title] = safe_node_xpath_text(bib_data_node, 'title')
     h[:author] = safe_node_xpath_text(bib_data_node, 'author')
@@ -37,7 +40,8 @@ class BarcodeLookup < Object
     options = {:item_barcode => barcode, :view => 'label'}
     lookup_doc_response = @@alma_api.get(item_records, options)
     self.lookup_doc = Nokogiri::XML(lookup_doc_response.body)
-  rescue OpenURI::HTTPError
+  rescue OpenURI::HTTPError => error
+    Rails.logger.warn error.message
     self.lookup_doc = nil
   end
 
