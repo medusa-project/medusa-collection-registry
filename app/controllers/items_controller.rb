@@ -69,9 +69,14 @@ class ItemsController < ApplicationController
   def barcode_lookup
     respond_to do |format|
       format.json do
-        render json: BarcodeLookup.new(params[:barcode].strip).item_hashes
+        render json: []
       end
     end
+    # respond_to do |format|
+    #   format.json do
+    #     render json: BarcodeLookup.new(params[:barcode].strip).item_hashes
+    #   end
+    # end
   end
 
   protected
