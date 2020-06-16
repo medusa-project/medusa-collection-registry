@@ -67,13 +67,9 @@ class ItemsController < ApplicationController
   end
 
   def barcode_lookup
-    Rails.logger.warn("inside barcode_lookup before actual lookup")
-    Rails.logger.warn(params.to_yaml)
-    item_info = BarcodeLookup.new(params[:barcode].strip).item_hashes
-    Rails.logger.warn("inside barcode_lookup: #{item_info}")
     respond_to do |format|
       format.json do
-        render json: item_info
+        render json: BarcodeLookup.new(params[:barcode].strip).item_hashes
       end
     end
   end
