@@ -44,7 +44,9 @@ function query_barcode(value) {
 }
 
 function possible_barcode(s) {
-    return _.isString(s) && s.length >= 14;
+    //return _.isString(s) && s.length >= 14;
+    // test system barcodes can be 5 characters long
+    return _.isString(s) && s.length >= 5;
 }
 
 function clear_barcode_items() {
