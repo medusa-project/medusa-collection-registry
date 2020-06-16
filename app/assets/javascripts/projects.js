@@ -41,9 +41,7 @@ function query_barcode(value) {
 }
 
 function possible_barcode(s) {
-    //return _.isString(s) && s.length >= 14;
-    // test system barcodes can be 5 characters long
-    return _.isString(s) && s.length >= 5;
+    return _.isString(s) && s.length >= 14;
 }
 
 function clear_barcode_items() {
@@ -113,9 +111,7 @@ function set_up_bibid_clipboard() {
 function selected_bibids() {
     var rows = checked_rows('#items');
     var bib_id_column = column_with_header('#items', 'Bib Id');
-    var bibids = _.reject(_.map(rows, function (row) {
-        return row[bib_id_column];
-    }), _.string.isBlank);
+    var bibids = _.reject(_.map(rows, function (row) {return row[bib_id_column];}), _.string.isBlank);
     //var checked = $('#items input:checked');
     //var bibids = _.reject($.map(checked, checkbox_to_bibid), _.string.isBlank);
     if (_.isEmpty(bibids)) {
@@ -140,7 +136,7 @@ function checked_rows(table_selector) {
 function column_with_header(table_selector, header_text) {
     var columns = $(table_selector).DataTable().columns();
     var headers = columns.header();
-    var header = _.find(headers, function (header) {
+    var header = _.find(headers, function(header) {
         return $(header).text() == header_text;
     });
     return $(header).attr('data-column-index');
@@ -153,7 +149,7 @@ function show_item_mass_edit() {
     $('#item_mass_edit_modal').modal('show');
 }
 
-function reset_item_mass_edit_form() {
+function reset_item_mass_edit_form () {
     var form = $('#item_mass_edit_modal form');
     $('input[type="text"]', form).val('');
     $('input[type="checkbox"]', form).prop('checked', false);
