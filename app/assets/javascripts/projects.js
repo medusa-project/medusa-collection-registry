@@ -25,9 +25,11 @@ function watch_item_barcode(barcode_field_selector) {
 }
 
 function query_barcode(value) {
+    console.log('inside query_barcode, value: ' + value);
     if (possible_barcode(value)) {
         $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
             barcode_item_data = jsonResult;
+            console.log('barcode_item_data: ' + barcode_item_data);
             populate_barcode_items();
             if (barcode_item_data.length == 1) {
                 insert_barcode_item(0);

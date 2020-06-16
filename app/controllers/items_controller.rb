@@ -69,7 +69,9 @@ class ItemsController < ApplicationController
   def barcode_lookup
     respond_to do |format|
       format.json do
-        render json: BarcodeLookup.new(params[:barcode].strip).item_hashes
+        item_info = BarcodeLookup.new(params[:barcode].strip).item_hashes
+        Rails.logger.warn("inside barcode_lookup: #{item_info}")
+        render json: item_info
       end
     end
   end

@@ -19,8 +19,8 @@ class BarcodeLookup < Object
 
   def item_hashes
     h = []
+    Rails.logger.warn("valid?: #{valid?.to_s}")
     return h unless valid?
-
     bib_data_node = lookup_doc.xpath('item/bib_data')
     h[:title] = safe_node_xpath_text(bib_data_node, 'title')
     h[:author] = safe_node_xpath_text(bib_data_node, 'author')
@@ -28,6 +28,7 @@ class BarcodeLookup < Object
     h[:imprint] = safe_node_xpath_text(lookup_doc, 'item/item_data/imprint')
     h[:oclc_number] = oclc_number
     h[:call_number] = safe_node_xpath_text(lookup_doc, 'item/holding_data/call_number')
+    Rails.logger.warn(h)
     h
   end
 
