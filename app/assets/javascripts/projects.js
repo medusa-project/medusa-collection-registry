@@ -41,7 +41,8 @@ function query_barcode(value) {
 }
 
 function possible_barcode(s) {
-    return _.isString(s) && s.length >= 14;
+    return _.isString(s) && s.length >= 5;
+    //return _.isString(s) && s.length >= 14;
 }
 
 function clear_barcode_items() {
