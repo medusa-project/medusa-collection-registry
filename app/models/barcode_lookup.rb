@@ -18,8 +18,7 @@ class BarcodeLookup < Object
   end
 
   def item_hashes
-    h = []
-    Rails.logger.warn("valid?: #{valid?.to_s}")
+    h = Hash.new
     return h unless valid?
     bib_data_node = lookup_doc.xpath('item/bib_data')
     h[:title] = safe_node_xpath_text(bib_data_node, 'title')
@@ -28,7 +27,6 @@ class BarcodeLookup < Object
     h[:imprint] = safe_node_xpath_text(lookup_doc, 'item/item_data/imprint')
     h[:oclc_number] = oclc_number
     h[:call_number] = safe_node_xpath_text(lookup_doc, 'item/holding_data/call_number')
-    Rails.logger.warn(h)
     h
   end
 
@@ -37,7 +35,7 @@ class BarcodeLookup < Object
   def fetch_and_parse
     item_records = '/almaws/v1/items'
     options = {:item_barcode => barcode, :view => 'label'}
-    lookup_doc_response = @api.get(item_records, options)
+    lookup_doc_response = @@alma_api.get(item_records, options)
     self.lookup_doc = Nokogiri::XML(lookup_doc_response.body)
   rescue OpenURI::HTTPError
     self.lookup_doc = nil

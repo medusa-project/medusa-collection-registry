@@ -37,4 +37,8 @@ namespace :alma do
     puts "\n****** imprint\n"
     puts lookup_doc.xpath('item/item_data/imprint').text
   end
+
+  task barcode: :environment do
+    puts BarcodeLookup.new('25279'.strip).item_hashes
+  end
 end
