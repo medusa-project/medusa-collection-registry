@@ -26,14 +26,14 @@ class Workflow::AccrualJob < Workflow::Base
   validates_presence_of :cfs_directory_id, :user_id
   validates_uniqueness_of :staging_path, scope: :cfs_directory_id
 
-  STATE_HASH = { 'start' => 'Start', 'check' => 'Checking for existing files', 'check_sync' => 'Checking sync',
-                 'initial_approval' => 'Awaiting approval',
-                 'copying' => 'Copying',
-                 'send_copy_messages' => 'Sending copying messages', 'await_copy_messages' => 'Awaiting copy messages',
-                 'admin_approval' => 'Awaiting admin approval',
-                 'assessing' => 'Starting Assessments', 'await_assessment' => 'Running Assessment',
-                 'email_done' => 'Emailing completion',
-                 'aborting' => 'Aborting', 'end' => 'Ending' }.freeze
+  STATE_HASH = {'start' => 'Start', 'check' => 'Checking for existing files', 'check_sync' => 'Checking sync',
+                'initial_approval' => 'Awaiting approval',
+                'copying' => 'Copying',
+                'send_copy_messages' => 'Sending copying messages', 'await_copy_messages' => 'Awaiting copy messages',
+                'admin_approval' => 'Awaiting admin approval',
+                'assessing' => 'Starting Assessments', 'await_assessment' => 'Running Assessment',
+                'email_done' => 'Emailing completion',
+                'aborting' => 'Aborting', 'end' => 'Ending'}.freeze
   STATES = STATE_HASH.keys
 
   def self.create_for(user, cfs_directory, staging_path, requested_files, requested_directories, allow_overwrite)
@@ -284,23 +284,21 @@ class Workflow::AccrualJob < Workflow::Base
         workflow_accrual_key.save!
         raise("Invalid status in perform_await_copy_messages for workflow_accrual_key: #{workflow_accrual_key}")
       end
+    end
+    error_count = workflow_accrual_keys.has_error.count
+    unless error_count.zero?
+      raise "There are #{error_count} keys with copying errors."
+    end
 
-      error_count = workflow_accrual_keys.has_error.count
-
-      unless error_count.zero?
-        raise "There are #{error_count} keys with copying errors."
-      end
-
-      if workflow_accrual_keys.reload.count.zero?
-        cfs_directory.events.create!(key: 'deposit_completed', cascadable: true,
-                                     note: "Accrual from #{staging_path}", actor_email: user.email)
-        be_in_state_and_requeue('assessing')
+    if workflow_accrual_keys.reload.count.zero?
+      cfs_directory.events.create!(key: 'deposit_completed', cascadable: true,
+                                   note: "Accrual from #{staging_path}", actor_email: user.email)
+      be_in_state_and_requeue('assessing')
+    else
+      if copy_start_time + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout > Time.now
+        put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
       else
-        if copy_start_time + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout > Time.now
-          put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
-        else
-          raise "Copy server jobs are still pending (#{workflow_accrual_keys.count} remaining). Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
-        end
+        raise "Copy server jobs are still pending (#{workflow_accrual_keys.count} remaining). Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
       end
     end
   end
