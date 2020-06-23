@@ -11,7 +11,7 @@ namespace :alma do
     puts host
     puts key
     @alma = AlmaApi::Batch::ApiCaller.new(host,key)
-    barcode = '25279'
+    barcode = '30112104682585'
     item_records = '/almaws/v1/items'
     options = {:item_barcode => barcode }
     items_xml_response = @alma.get(item_records, options)
@@ -28,7 +28,7 @@ namespace :alma do
     puts host
     puts key
     @alma = AlmaApi::Batch::ApiCaller.new(host,key)
-    barcode = '25279'
+    barcode = '30112104682585'
     item_records = '/almaws/v1/items'
     options = {:item_barcode => barcode, :view => 'label' }
     items_xml_response = @alma.get(item_records, options)
