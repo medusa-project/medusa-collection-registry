@@ -383,6 +383,32 @@ $$;
 
 
 --
+-- Name: collections_touch_preservation_priority(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.collections_touch_preservation_priority() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT') THEN
+        UPDATE preservation_priorities
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.preservation_priority_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE preservation_priorities
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.preservation_priority_id OR id = OLD.preservation_priority_id);
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE preservation_priorities
+        SET updated_at = localtimestamp
+        WHERE id = OLD.preservation_priority_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
 -- Name: collections_touch_repository(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -470,6 +496,32 @@ CREATE FUNCTION public.file_groups_touch_collection() RETURNS trigger
         UPDATE collections
         SET updated_at = localtimestamp
         WHERE id = OLD.collection_id;
+      END IF;
+      RETURN NULL;
+    END;
+$$;
+
+
+--
+-- Name: file_groups_touch_package_profile(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.file_groups_touch_package_profile() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (TG_OP = 'INSERT') THEN
+        UPDATE package_profiles
+        SET updated_at = NEW.updated_at
+        WHERE id = NEW.package_profile_id;
+      ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE package_profiles
+        SET updated_at = NEW.updated_at
+        WHERE (id = NEW.package_profile_id OR id = OLD.package_profile_id);
+      ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE package_profiles
+        SET updated_at = localtimestamp
+        WHERE id = OLD.package_profile_id;
       END IF;
       RETURN NULL;
     END;
@@ -3941,21 +3993,6 @@ CREATE VIEW public.view_tested_file_file_extension_counts_by_collection AS
     count(*) AS count
    FROM public.view_tested_file_relations
   GROUP BY view_tested_file_relations.file_extension_id, view_tested_file_relations.collection_id;
-
-
---
--- Name: view_tested_file_stats; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.view_tested_file_stats AS
- SELECT f.id,
-    f.content_type_id,
-    f.file_extension_id,
-    p.repository_id
-   FROM ((public.file_format_tests fft
-     JOIN public.cfs_files f ON ((fft.cfs_file_id = f.id)))
-     JOIN public.view_cfs_files_to_parents p ON ((f.id = p.cfs_file_id)))
- LIMIT 10;
 
 
 --
@@ -7795,8 +7832,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190614150050'),
 ('20190614150232'),
 ('20190718135009'),
-('20200323221242'),
-('20200324194925'),
 ('20200327172104');
 
 
