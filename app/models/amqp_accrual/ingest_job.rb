@@ -13,8 +13,8 @@ class AmqpAccrual::IngestJob < Job::Base
       begin
         job.save!
         job.enqueue_job
-      rescue
-        Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Probably a duplicate request."
+      rescue => e
+        Rails.logger.error "Failed to create Amqp Accrual Job for client: #{client} message: #{message}. Probably a duplicate request. Original error: #{e}"
         send_duplicate_file_message(client, message)
       end
     end
