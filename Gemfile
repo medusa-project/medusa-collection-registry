@@ -55,13 +55,6 @@ gem 'sass-rails'
 gem 'uglifier'
 gem 'webpacker', '~> 4.x'
 
-# Deploy with Capistrano
-gem 'capistrano-bundler'
-gem 'capistrano-passenger'
-gem 'capistrano-rails'
-gem 'capistrano-rbenv'
-gem 'capistrano-yarn'
-
 #memory/active record usage monitoring
 gem 'draper'
 gem 'oink'
@@ -104,6 +97,13 @@ group :development, :test do
 end
 
 group :development do
+  # Deploy with Capistrano
+  gem 'capistrano', '~> 3.14.1'
+  gem 'capistrano-bundler'
+  gem 'capistrano-passenger'
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
+  gem 'capistrano-yarn'
   gem 'routler'
   gem 'traceroute'
 end
