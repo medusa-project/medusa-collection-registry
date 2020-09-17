@@ -42,8 +42,10 @@ class AmqpAccrual::IngestJob < Job::Base
     do_assessment
     send_return_message
   rescue Exception => e
-    Rails.logger.error("Error ingesting Amqp Accrual file. Job: #{self.id}\nError: #{e}")
-    raise
+    Rails.logger.error("Error ingesting Amqp Accrual file. Job info:\n\n"\
+        "#{YAML::dump(self)}\n\n"\
+        "Error: #{e}\n#{e.backtrace}")
+    raise e
   end
 
   def content_exists?
