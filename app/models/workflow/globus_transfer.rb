@@ -81,6 +81,9 @@ class Workflow::GlobusTransfer < ApplicationRecord
   end
 
   def status
+
+    return 'SUCCEEDED' if object_copied
+
     return 'no task_id present' unless task_id.present?
 
     begin
@@ -100,6 +103,10 @@ class Workflow::GlobusTransfer < ApplicationRecord
       Rails.logger.warn "error getting status for #{id}: #{e.message}"
       "ERROR"
     end
+  end
+
+  def object_copied
+    Application.storage_manager.main_root.exist?(workflow_accrual_key.key)
   end
 
   def event_list
