@@ -66,8 +66,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
       unless cancel_response.code == 200 || cancel_response.code == 404
         raise("Globus cancel response for #{id}: #{cancel_response.code}, #{cancel_response.message}")
       end
-
-      self.message = nil
+      
       self.request_id = nil
       self.task_id = nil
       self.task_link = nil
