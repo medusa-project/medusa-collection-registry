@@ -51,6 +51,9 @@ module MedusaCollectionRegistry
     # like if you have constraints or database-specific column types
     config.active_record.schema_format = :sql
 
+    # configure mailer
+    config.action_mailer.perform_caching = false
+    config.action_mailer.delivery_method = :smtp
 
     # Enable the asset pipeline
     config.assets.enabled = true
