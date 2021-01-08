@@ -1,5 +1,5 @@
 class Workflow::AccrualMailer < MedusaBaseMailer
-  default from: "medusa-noreply@#{self.smtp_settings['domain'].if_blank('library.illinois.edu')}"
+  default from: "medusa-noreply@library.illinois.edu"
 
   def done(workflow_accrual)
     @workflow_accrual = workflow_accrual

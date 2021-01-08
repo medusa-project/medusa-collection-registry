@@ -61,7 +61,7 @@ module MedusaCollectionRegistry
       enable_starttls_auto: true,
       user_name: "SMTP_Injection",
       password: Settings.smtp.smtp_settings.password,
-      domain: 'library.illinois.edu '
+      domain: 'library.illinois.edu'
     }
 
     # Enable the asset pipeline
