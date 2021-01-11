@@ -455,7 +455,7 @@ GEM
       execjs
       railties (>= 3.2)
       tilt
-    redcarpet (3.5.0)
+    redcarpet (3.5.1)
     regexp_parser (1.6.0)
     render_anywhere (0.0.12)
       rails (>= 3.0.7)
