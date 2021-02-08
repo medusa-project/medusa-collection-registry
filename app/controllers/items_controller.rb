@@ -15,8 +15,10 @@ class ItemsController < ApplicationController
           end
         end
       end
+    else
+      render json: params
     end
-    render json: {}
+
   end
 
   def show
