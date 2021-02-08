@@ -9,9 +9,9 @@ class ItemsController < ApplicationController
       respond_to do |format|
         format.json do
           if @items.count.positive?
-            render json: @items
+            render json: @items.as_json
           else
-            render json: {}
+            render json: {negative: params}
           end
         end
       end
