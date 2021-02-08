@@ -26,7 +26,23 @@ function watch_item_barcode(barcode_field_selector) {
 function query_barcode(value) {
     if (possible_barcode(value)) {
         $.getJSON( '/items.json', {"barcode": value}, function (data) {
-            console.log('barcode items data:' + data);
+            console.log('barcode items data length:' + data.length.to_s);
+            if (data.length > 0) {
+                show_duplicate_error(toString(data));
+            }
+            else {
+                $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
+                    barcode_item_data = jsonResult;
+                    populate_barcode_items();
+                    if (barcode_item_data.length === 1) {
+                        insert_barcode_item(0);
+                    } else if (barcode_item_data.length === 0) {
+                        show_barcode_error();
+                    }
+                    prevent_enter_in_barcode_field = false;
+                })
+            }
+
         })
     } else {
         clear_barcode_items();
@@ -51,9 +67,9 @@ function populate_barcode_items() {
     }
 }
 
-function show_duplicate_error(jsonResult) {
-    $('#barcode_items').append('<span class="bg-danger">Warning! The barcode you are attempting to retrieve is already in item.</span>')
-    $('#barcode_items').append('<span class="bg-danger">'+ jsonResult + '</span>')
+function show_duplicate_error(data_string) {
+    $('#barcode_items').append('<span class="bg-danger">Warning! The barcode you are attempting to retrieve is already associated with item.</span>')
+    $('#barcode_items').append('<span class="bg-danger">'+ data_string + '</span>')
 }
 
 function show_barcode_error() {
