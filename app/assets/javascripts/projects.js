@@ -25,24 +25,9 @@ function watch_item_barcode(barcode_field_selector) {
 
 function query_barcode(value) {
     if (possible_barcode(value)) {
-        if (duplicate_barcode(value)) {
-            $.get('/items.json', {"barcode": value}, function (jsonResult) {
-                console.log(jsonResult)
-                show_duplicate_error(jsonResult);
-                prevent_enter_in_barcode_field = false;
-            })
-        } else {
-            $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
-                barcode_item_data = jsonResult;
-                populate_barcode_items();
-                if (barcode_item_data.length === 1) {
-                    insert_barcode_item(0);
-                } else if (barcode_item_data.length === 0) {
-                    show_barcode_error();
-                }
-                prevent_enter_in_barcode_field = false;
-            })
-        }
+        $.getJSON( '/items.json', {"barcode": value}, function (data) {
+            console.log('barcode items data:' + data);
+        })
     } else {
         clear_barcode_items();
     }
