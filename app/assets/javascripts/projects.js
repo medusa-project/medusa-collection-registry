@@ -25,16 +25,24 @@ function watch_item_barcode(barcode_field_selector) {
 
 function query_barcode(value) {
     if (possible_barcode(value)) {
-        $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
-            barcode_item_data = jsonResult;
-            populate_barcode_items();
-            if (barcode_item_data.length === 1) {
-                insert_barcode_item(0);
-            } else if (barcode_item_data.length === 0) {
-                show_barcode_error();
-            }
-            prevent_enter_in_barcode_field = false;
-        })
+        if (duplicate_barcode(value)) {
+            $.get('/items.json', {"barcode": value}, function (jsonResult) {
+                console.log(jsonResult)
+                show_duplicate_error(jsonResult);
+                prevent_enter_in_barcode_field = false;
+            })
+        } else {
+            $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
+                barcode_item_data = jsonResult;
+                populate_barcode_items();
+                if (barcode_item_data.length === 1) {
+                    insert_barcode_item(0);
+                } else if (barcode_item_data.length === 0) {
+                    show_barcode_error();
+                }
+                prevent_enter_in_barcode_field = false;
+            })
+        }
     } else {
         clear_barcode_items();
     }
@@ -56,6 +64,11 @@ function populate_barcode_items() {
         }
         $('#barcode_items').append(barcode_item_html(i));
     }
+}
+
+function show_duplicate_error(jsonResult) {
+    $('#barcode_items').append('<span class="bg-danger">Warning! The barcode you are attempting to retrieve is already in item.</span>')
+    $('#barcode_items').append('<span class="bg-danger">'+ jsonResult + '</span>')
 }
 
 function show_barcode_error() {
@@ -111,7 +124,9 @@ function set_up_bibid_clipboard() {
 function selected_bibids() {
     var rows = checked_rows('#items');
     var bib_id_column = column_with_header('#items', 'Bib Id');
-    var bibids = _.reject(_.map(rows, function (row) {return row[bib_id_column];}), _.string.isBlank);
+    var bibids = _.reject(_.map(rows, function (row) {
+        return row[bib_id_column];
+    }), _.string.isBlank);
     //var checked = $('#items input:checked');
     //var bibids = _.reject($.map(checked, checkbox_to_bibid), _.string.isBlank);
     if (_.isEmpty(bibids)) {
@@ -134,7 +149,7 @@ function checked_rows(table_selector) {
 function column_with_header(table_selector, header_text) {
     var columns = $(table_selector).DataTable().columns();
     var headers = columns.header();
-    var header = _.find(headers, function(header) {
+    var header = _.find(headers, function (header) {
         return $(header).text() === header_text;
     });
     return $(header).attr('data-column-index');
@@ -147,7 +162,7 @@ function show_item_mass_edit() {
     $('#item_mass_edit_modal').modal('show');
 }
 
-function reset_item_mass_edit_form () {
+function reset_item_mass_edit_form() {
     var form = $('#item_mass_edit_modal form');
     $('input[type="text"]', form).val('');
     $('input[type="checkbox"]', form).prop('checked', false);
