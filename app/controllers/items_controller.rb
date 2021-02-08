@@ -4,8 +4,8 @@ class ItemsController < ApplicationController
   before_action :find_item_and_project, only: [:show, :edit, :update, :destroy]
 
   def index
-    if params[:barcode]
-      @items = Item.where(barcode: params[:barcode].strip)
+    if params['barcode']
+      @items = Item.where(barcode: params['barcode'].strip)
       respond_to do |format|
         format.json do
           if @items.count.positive?
