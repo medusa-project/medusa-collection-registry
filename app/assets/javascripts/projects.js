@@ -25,29 +25,28 @@ function watch_item_barcode(barcode_field_selector) {
 
 function query_barcode(value) {
     if (possible_barcode(value)) {
-        $.getJSON( '/items.json', {"barcode": value}, function (data) {
-            itemdata = data;
-            if ((itemdata.length != undefined) && (itemdata.length > 0)) {
-                show_duplicate_error(itemdata);
+        $.getJSON( '/items.json', {"barcode": value}, function (jsonResult) {
+            item_data = jsonResult;
+            if ((item_data.length != undefined) && (item_data.length > 0)) {
+                show_duplicate_error(item_data);
+            } else {
+                lookup_barcode(value)
             }
-            else {
-                clear_barcode_items();
-                $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
-                    barcode_item_data = jsonResult;
-                    populate_barcode_items();
-                    if (barcode_item_data.length === 1) {
-                        insert_barcode_item(0);
-                    } else if (barcode_item_data.length === 0) {
-                        show_barcode_error();
-                    }
-                    prevent_enter_in_barcode_field = false;
-                })
-            }
-
         })
-    } else {
-        clear_barcode_items();
     }
+}
+
+function lookup_barcode(value){
+    $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
+        barcode_item_data = jsonResult;
+        populate_barcode_items();
+        if (barcode_item_data.length === 1) {
+            insert_barcode_item(0);
+        } else if (barcode_item_data.length === 0) {
+            show_barcode_error();
+        }
+        prevent_enter_in_barcode_field = false;
+    })
 }
 
 function possible_barcode(s) {
