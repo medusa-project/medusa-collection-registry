@@ -69,9 +69,11 @@ function populate_barcode_items() {
 }
 
 function show_duplicate_error(itemdata) {
-    $('#barcode_items').append('<span class="bg-danger">Warning! The barcode you are attempting to retrieve is already associated with item.</span>')
+    let warning = 'Warning! The barcode you are attempting to retrieve is'
+    warning = warning + 'already associated with' + itemdata.length.toString() + 'item(s):'
+    $('#barcode_items').append('<span class="bg-danger">' + warning + '</span>')
     $.each(itemdata, function(i, item) {
-        $('#barcode_items').append('<span class="bg-info">'+ item + '</span>')
+        $('#barcode_items').append('<span class="bg-info">'+ JSON.stringify(item) + '</span>')
     });
 
 
