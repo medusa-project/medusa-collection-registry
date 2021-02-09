@@ -27,11 +27,11 @@ function query_barcode(value) {
     if (possible_barcode(value)) {
         $.getJSON( '/items.json', {"barcode": value}, function (data) {
             itemdata = data;
-            console.log('barcode items data length:' + itemdata.length.toString());
-            if (itemdata.length > 0) {
+            if ((itemdata.length != undefined) && (itemdata.length > 0)) {
                 show_duplicate_error(itemdata);
             }
             else {
+                clear_barcode_items();
                 $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
                     barcode_item_data = jsonResult;
                     populate_barcode_items();
