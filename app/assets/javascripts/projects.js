@@ -73,7 +73,7 @@ function show_duplicate_error(itemdata) {
     warning = warning + 'already associated with an item:'
     $('#barcode_items').append('<span class="bg-danger">' + warning + '</span>')
     $.each(itemdata, function(i, item) {
-        $('#barcode_items').append('<a href="/items/' + item.id.to_String() + '">'+ item.title +'</a>')
+        $('#barcode_items').append('<a href="/items/' + item.id + '">'+ item.title +'</a>')
     });
 
 
