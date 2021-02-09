@@ -27,8 +27,7 @@ function query_barcode(value) {
     if (possible_barcode(value)) {
         $.getJSON( '/items.json', {"barcode": value}, function (data) {
             itemdata = data;
-            console.log(itemdata);
-            console.log('barcode items data length:' + itemdata.length.to_s);
+            console.log('barcode items data length:' + itemdata.length.toString());
             if (itemdata.length > 0) {
                 show_duplicate_error(itemdata);
             }
