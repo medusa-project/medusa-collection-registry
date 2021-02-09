@@ -70,10 +70,10 @@ function populate_barcode_items() {
 
 function show_duplicate_error(itemdata) {
     let warning = 'Warning! The barcode you are attempting to retrieve is'
-    warning = warning + 'already associated with' + itemdata.length.toString() + 'item(s):'
+    warning = warning + 'already associated with an item:'
     $('#barcode_items').append('<span class="bg-danger">' + warning + '</span>')
     $.each(itemdata, function(i, item) {
-        $('#barcode_items').append('<span class="bg-info">'+ JSON.stringify(item) + '</span>')
+        $('#barcode_items').append('<a href="/items/' + item.id.to_String() + '">'+ item.title +'</a>')
     });
 
 
@@ -85,14 +85,14 @@ function show_barcode_error() {
 }
 
 function barcode_item_html(i) {
-    var item_data = barcode_item_data[i];
-    var item_div = $('<div></div>');
-    var item_link = $('<a href="#" class="btn btn-xs btn-default">Use</a>');
+    let item_data = barcode_item_data[i];
+    let item_div = $('<div></div>');
+    let item_link = $('<a href="#" class="btn btn-xs btn-default">Use</a>');
     item_link.click(function () {
         insert_barcode_item(i);
         return false;
     });
-    var item_text = $('<span>&nbsp;' + item_data['bib_id'] + ': ' + item_data['title'] + '<span>');
+    let item_text = $('<span>&nbsp;' + item_data['bib_id'] + ': ' + item_data['title'] + '<span>');
     item_div.append(item_link);
     item_div.append(item_text);
     return item_div;
