@@ -28,14 +28,16 @@ function query_barcode(item_id, value) {
         $.getJSON('/items.json', {"barcode": value}, function (jsonResult) {
             console.log('item_id: ' + item_id)
             let item_data = jsonResult;
-            console.log('item_data[0].id' + item_data[0].id);
             if ((item_data.length != undefined) && (item_data.length > 0)) {
-                console.log('item_data[0].id.toString(): ' + item_data[0].id);
+                console.log('item_data[0].id.toString(): ' + item_data[0].id.toString());
                 console.log('item_id: ' + item_id);
                 if (item_data[0].id.toString() != item_id.toString()) {
                     show_duplicate_error(item_data);
+                } else {
+                    console.log("how did we get here?")
                 }
             } else {
+                console.log("should be looking up barcode now")
                 lookup_barcode(value);
             }
         })
