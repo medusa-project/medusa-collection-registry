@@ -4,6 +4,7 @@
     = f.input :barcode, input_html: {class: 'barcode_input'}, autofocus: true
     = f.input :item_number
     = f.input :project_id, as: :hidden, input_html: {value: @item.project.id}
+    = f.input :item_id, as: :hidden, input_html: {class: 'item_id', value: @item.id}
     = f.input :local_title
     = f.input :batch
     = f.input :file_count

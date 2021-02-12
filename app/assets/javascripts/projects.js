@@ -1,7 +1,7 @@
 initialize_data_table("table#projects", {});
 
 $(function () {
-    watch_item_barcode(".barcode_input");
+    watch_item_barcode(".item_id", ".barcode_input");
     set_up_bibid_clipboard();
 });
 
@@ -10,8 +10,8 @@ $(function () {
 var barcode_item_data = [];
 var prevent_enter_in_barcode_field = true;
 
-function watch_item_barcode(barcode_field_selector) {
-    query_barcode($(barcode_field_selector).val());
+function watch_item_barcode(item_field_selector, barcode_field_selector) {
+    query_barcode($(item_field_selector).val(), $(barcode_field_selector).val());
     $(barcode_field_selector).on("input", function () {
             query_barcode($(barcode_field_selector).val());
         }
@@ -23,12 +23,17 @@ function watch_item_barcode(barcode_field_selector) {
     });
 }
 
-function query_barcode(value) {
+function query_barcode(item_id, value) {
     if (possible_barcode(value)) {
         $.getJSON( '/items.json', {"barcode": value}, function (jsonResult) {
             let item_data = jsonResult;
             if ((item_data.length != undefined) && (item_data.length > 0)) {
-                show_duplicate_error(item_data);
+                console.log('item_data[0].id.toString(): ' + item_data[0].id.toString());
+                console.log('item_id: ' + item_data[0].id.toString());
+                if (item_data[0].id.toString()!=item_id.toString())
+                {
+                    show_duplicate_error(item_data);
+                }
             } else {
                 lookup_barcode(value);
             }
