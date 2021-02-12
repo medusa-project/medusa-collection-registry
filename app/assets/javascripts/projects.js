@@ -30,13 +30,9 @@ function query_barcode(item_id, value) {
             if ((item_data.length != undefined) && (item_data.length > 0)) {
                 if (item_data[0].id.toString() != item_id.toString()) {
                     show_duplicate_error(item_data);
-                    lookup_barcode(value);
-                } else {
-                    lookup_barcode(value);
                 }
-            } else {
-                lookup_barcode(value);
             }
+            lookup_barcode(value);
         })
     } else {
         clear_warnings();
