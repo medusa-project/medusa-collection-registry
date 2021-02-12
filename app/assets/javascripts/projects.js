@@ -13,7 +13,7 @@ var prevent_enter_in_barcode_field = true;
 function watch_item_barcode(item_field_selector, barcode_field_selector) {
     query_barcode($(item_field_selector).val(), $(barcode_field_selector).val());
     $(barcode_field_selector).on("input", function () {
-            query_barcode($(barcode_field_selector).val());
+            query_barcode($(item_field_selector).val(), $(barcode_field_selector).val());
         }
     );
     $(barcode_field_selector).keypress(function (event) {
@@ -25,15 +25,14 @@ function watch_item_barcode(item_field_selector, barcode_field_selector) {
 
 function query_barcode(item_id, value) {
     if (possible_barcode(value)) {
-        $.getJSON( '/items.json', {"barcode": value}, function (jsonResult) {
-            console.log('item_id: ' + item_id )
+        $.getJSON('/items.json', {"barcode": value}, function (jsonResult) {
+            console.log('item_id: ' + item_id)
             let item_data = jsonResult;
-            console.log( 'item_data[0].id' + item_data[0].id );
+            console.log('item_data[0].id' + item_data[0].id);
             if ((item_data.length != undefined) && (item_data.length > 0)) {
                 console.log('item_data[0].id.toString(): ' + item_data[0].id);
                 console.log('item_id: ' + item_id);
-                if (item_data[0].id.toString()!=item_id.toString())
-                {
+                if (item_data[0].id.toString() != item_id.toString()) {
                     show_duplicate_error(item_data);
                 }
             } else {
@@ -45,7 +44,7 @@ function query_barcode(item_id, value) {
     }
 }
 
-function lookup_barcode(value){
+function lookup_barcode(value) {
     $.get('/items/barcode_lookup.json', {"barcode": value}, function (jsonResult) {
         barcode_item_data = jsonResult;
         populate_barcode_items();
@@ -80,8 +79,8 @@ function show_duplicate_error(itemdata) {
     let warning = 'Warning! The barcode you are attempting to retrieve is '
     warning = warning + 'already associated with an item:'
     $('#barcode_items').append('<span class="bg-danger">' + warning + '</span>')
-    $.each(itemdata, function(i, item) {
-        $('#barcode_items').append('<a href="/items/' + item.id + '">'+ item.title +'</a>')
+    $.each(itemdata, function (i, item) {
+        $('#barcode_items').append('<a href="/items/' + item.id + '">' + item.title + '</a>')
     });
 
 
