@@ -30,6 +30,8 @@ function query_barcode(item_id, value) {
             if ((item_data.length != undefined) && (item_data.length > 0)) {
                 if (item_data[0].id.toString() != item_id.toString()) {
                     show_duplicate_error(item_data);
+                } else {
+                    $('#warnings').append('<span class="bg-danger">This item: </span>')
                 }
             }
             lookup_barcode(value);
