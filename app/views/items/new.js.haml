@@ -2,4 +2,4 @@
 $("#new_item_form_placeholder").html("#{escape_javascript(render 'modal_form')}");
 $("#modal_item_form").on("shown.bs.modal", function () { $("#item_barcode").focus()});
 $("#modal_item_form").modal("show");
-watch_item_barcode(".barcode_input");
+watch_item_barcode(".item_id", ".barcode_input");
