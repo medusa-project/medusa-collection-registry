@@ -2,7 +2,7 @@ module DashboardHelper
   include ActionView::Helpers::NumberHelper
 
   def dashboard_tab_list
-    tabs = ['storage-overview', 'running-processes', 'file-statistics', 'red-flags', %w(combined-events-tab events), 'accruals']
+    tabs = ['storage-overview', 'running-processes', 'file-statistics', 'red-flags', %w(combined-events-tab Events), 'accruals']
     tabs << 'file-group-deletions' if current_user and current_user.superuser?
     tabs
   end
