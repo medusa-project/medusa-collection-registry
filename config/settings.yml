@@ -220,6 +220,8 @@ classes:
       - RCAM
       - Canon Sheetfed
       - Epson Flatbed
+      - ATOM
+      - DIY
     statuses:
       - Sent to Conservation
       - Sent to Preservation
