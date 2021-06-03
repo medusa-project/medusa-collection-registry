@@ -36,7 +36,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
                                         body: submission_json,
                                         headers: { 'Authorization' => "Bearer #{bearer_token}",
                                                    'Content-Type' => 'application/json' })
-      unless transfer_response.code == 202
+      unless [202, 200].include?(transfer_response.code)
         raise("Globus transfer response for #{workflow_accrual_key_id}: #{transfer_response.code}, #{transfer_response.message}")
       end
 
