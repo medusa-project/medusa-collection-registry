@@ -72,6 +72,16 @@ class RepositoriesController < ApplicationController
     @assessments = @assessable.recursive_assessments
   end
 
+  def timeline
+    @repository = Repository.find_by(id: params[:id])
+    unless @repository.timeline_directory_ids.empty?
+      timeline = Timeline.new(object: @repository)
+      @yearly_stats = timeline.yearly_stats
+      @monthly_stats = timeline.monthly_stats
+      @all_monthly_stats = timeline.all_monthly_stats
+    end
+  end
+
   def index
     @repositories = Repository.all.includes(collections: :bit_level_file_groups).includes(:contact)
     respond_to do |format|

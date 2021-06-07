@@ -13,4 +13,14 @@ class BitLevelFileGroupsController < FileGroupsController
     redirect_to @file_group
   end
 
+  def timeline
+    @file_group = BitLevelFileGroup.find(params[:id])
+    @file_group.ensure_cfs_directory
+    @directory = @file_group.cfs_directory
+    timeline = Timeline.new(object: @directory)
+    @yearly_stats = timeline.yearly_stats
+    @monthly_stats = timeline.monthly_stats
+    @all_monthly_stats = timeline.all_monthly_stats
+  end
+
 end

@@ -55,6 +55,14 @@ class Repository < ApplicationRecord
     self
   end
 
+  def timeline_directory_ids
+    directory_ids = []
+    self.collections.each do |collection|
+      directory_ids.push(*collection.timeline_directory_ids) unless collection.timeline_directory_ids.empty?
+    end
+    directory_ids
+  end
+
   def self.title_order
     order(:title)
   end

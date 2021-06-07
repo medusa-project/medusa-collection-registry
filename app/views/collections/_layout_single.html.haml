@@ -13,6 +13,7 @@
         = assessments_button(assessments_collection_path(@collection))
         = events_button(events_collection_path(@collection))
         = red_flags_button(red_flags_collection_path(@collection))
+        = timeline_button(timeline_collection_path(@collection))
         = attachments_button(attachments_collection_path(@collection))
         .btn-group
           = render 'shared/dropdown_toggle', title: :Export, text: :Export

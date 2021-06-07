@@ -1,0 +1,8 @@
+= render layout: 'layout_single' do
+  -if @repository.timeline_directory_ids.empty?
+    .jumbotron
+      Empty Repository
+  -else
+    = render partial: 'timeline/timeline_stats', locals: {all_monthly_stats: @all_monthly_stats,
+    monthly_stats: @monthly_stats,
+    yearly_stats: @yearly_stats}

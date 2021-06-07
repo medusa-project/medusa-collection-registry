@@ -71,6 +71,17 @@ class Collection < ApplicationRecord
     self.bit_level_file_groups.sum('file_groups.total_files')
   end
 
+  def timeline_directory_ids
+    directory_ids = []
+    self.bit_level_file_groups.each do |group|
+      directory = group.cfs_directory
+      next if directory.nil?
+
+      directory_ids.push(*directory.recursive_subdirectory_ids) unless directory.is_empty?
+    end
+    directory_ids
+  end
+
   def medusa_url
     Rails.application.routes.url_helpers.collection_url(self, only_path: false, host: MedusaCollectionRegistry::Application.medusa_host, protocol: 'https')
   end

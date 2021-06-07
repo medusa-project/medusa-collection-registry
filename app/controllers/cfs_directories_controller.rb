@@ -4,7 +4,7 @@ class CfsDirectoriesController < ApplicationController
   before_action :require_medusa_user_or_basic_auth, only: [:show, :show_tree]
   before_action :find_directory, only: [:events, :create_fits_for_tree, :export, :export_tree,
                                         :show_tree, :cfs_files, :cfs_directories, :report_manifest, :report_map,
-                                        :create_initial_cfs_assessment]
+                                        :create_initial_cfs_assessment, :timeline]
   before_action :find_directory_with_includes, only: [:show]
 
   def show
@@ -43,6 +43,15 @@ class CfsDirectoriesController < ApplicationController
       format.json do
         render json: directory_tree_as_hashes(@directory)
       end
+    end
+  end
+
+  def timeline
+    unless @directory.is_empty?
+      timeline = Timeline.new(object: @directory)
+      @yearly_stats = timeline.yearly_stats
+      @monthly_stats = timeline.monthly_stats
+      @all_monthly_stats = timeline.all_monthly_stats
     end
   end
 

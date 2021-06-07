@@ -33,10 +33,12 @@ Rails.application.routes.draw do
   resources :collections, concerns: %i(eventable red_flaggable assessable attachable) do
     get :show_file_stats, on: :member
     get :view_in_dls, on: :member
+    get :timeline, on: :member
   end
 
   resources :repositories, concerns: %i(eventable red_flaggable assessable collection_indexer) do
     get :edit_ldap_admins, on: :collection
+    get :timeline, on: :member
     put :update_ldap_admin, on: :member
     %i(show_file_stats show_running_processes show_red_flags show_events show_accruals).each do |action|
       get action, on: :member
@@ -49,12 +51,18 @@ Rails.application.routes.draw do
   resources :assessments, only: [:show, :edit, :update, :new, :create, :destroy]
   resources :attachments, only: [:show, :edit, :update, :new, :create, :destroy], concerns: :downloadable
 
-  resources :events, concerns: :autocomplete_email
+  resources :events, concerns: :autocomplete_email do
+    get :report, on: :collection
+    post :report, on: :collection
+    get :filter, on: :collection
+    post :download_csv, on: :collection
+  end
 
   [:file_groups, :external_file_groups, :bit_level_file_groups].each do |file_group_type|
     resources file_group_type, only: [:show, :edit, :update, :new, :create, :destroy],
               concerns: %i(eventable red_flaggable assessable attachable) do
       post :create_initial_cfs_assessment, on: :member if file_group_type == :bit_level_file_groups
+      get :timeline, on: :member if file_group_type == :bit_level_file_groups
       if file_group_type == :external_file_groups
         post :create_bit_level, on: :member
       end
@@ -97,6 +105,7 @@ Rails.application.routes.draw do
     get :cfs_directories, on: :member
     get :report_map, on: :member
     get :report_manifest, on: :member
+    get :timeline, on: :member
     post :create_initial_cfs_assessment, on: :member
   end
   resources :content_types, only: [] do

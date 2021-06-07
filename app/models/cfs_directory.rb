@@ -188,6 +188,10 @@ class CfsDirectory < ApplicationRecord
     end
   end
 
+  def timeline_directory_ids
+    recursive_subdirectory_ids
+  end
+
   def make_initial_entries
     subdirs = storage_subdirectories
     subdirs.each do |dir|

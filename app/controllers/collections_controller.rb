@@ -4,7 +4,7 @@ class CollectionsController < ApplicationController
   before_action :require_medusa_user_or_basic_auth, only: [:show, :index]
   before_action :find_collection_and_repository, only: [:show, :destroy, :edit, :update, :red_flags,
                                                         :assessments, :attachments, :events,
-                                                        :show_file_stats, :view_in_dls]
+                                                        :show_file_stats, :view_in_dls, :timeline]
 
   helper_method :load_collection_file_extension_stats, :load_collection_content_type_stats
 
@@ -16,6 +16,15 @@ class CollectionsController < ApplicationController
       format.html
       format.xml {render xml: @collection.to_mods}
       format.json
+    end
+  end
+
+  def timeline
+    if @collection.total_files.positive?
+      timeline = Timeline.new(object: @collection)
+      @yearly_stats = timeline.yearly_stats
+      @monthly_stats = timeline.monthly_stats
+      @all_monthly_stats = timeline.all_monthly_stats
     end
   end
 

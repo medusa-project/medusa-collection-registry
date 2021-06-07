@@ -12,6 +12,7 @@
         = assessments_button(assessments_repository_path(@repository))
         = events_button(events_repository_path(@repository))
         = red_flags_button(red_flags_repository_path(@repository))
+        = timeline_button(timeline_repository_path(@repository))
         = edit_button(@repository)
         .btn-group
           = render 'shared/dropdown_toggle', title: :Expand, icon: :plus

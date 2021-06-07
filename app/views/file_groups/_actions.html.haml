@@ -5,6 +5,7 @@
   = attachments_button(attachments_file_group_path(@file_group))
   = render 'actions_run'
   - if @directory.present?
+    = timeline_button(timeline_cfs_directory_path(@directory))
     = render 'actions_download'
     = render 'actions_report'
 

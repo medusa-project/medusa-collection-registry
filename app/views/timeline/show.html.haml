@@ -1,19 +1,4 @@
 %p These statistics are generated daily and hence may be slightly out of date.
-
-%h3 Yearly
-= render 'layouts/standard_table', id: :yearly_timeline, headers: %w(Period Count Size) do
-  = render partial: 'table_row', collection: @yearly_stats, as: :info
-
-%hr
-
-%h3 Monthly (Past year)
-= render 'layouts/standard_table', id: :monthly_timeline, headers: %w(Period Count Size) do
-  = render partial: 'table_row', collection: @monthly_stats, as: :info
-
-%hr
-
-%h3 Monthly Size Graph
-= line_chart @all_monthly_stats.collect {|k,v| [k, v[:size] / 1.terabyte.to_f]}, xtitle: 'Month', ytitle: 'Size (TB)'
-
-%h3 Monthly Count Graph
-= line_chart @all_monthly_stats.collect {|k,v| [k, v[:count] / 1000000.0]}, xtitle: 'Month', ytitle: 'Count (Millions)'
+= render partial: 'timeline/timeline_stats', locals: {all_monthly_stats: @all_monthly_stats,
+monthly_stats: @monthly_stats,
+yearly_stats: @yearly_stats}
