@@ -19,7 +19,7 @@ class Timeline
     filtered_by_directory = "SELECT id, created_at, size FROM cfs_files WHERE cfs_directory_id in (#{directory_list})"
     date_just_month = "SELECT id, date_trunc('month', created_at) AS month, size FROM (#{filtered_by_directory}) AS T"
     coalesce_sizes = "SELECT month, count(*) AS count, coalesce(sum(size), 0) AS size FROM (#{date_just_month}) AS S"
-    sql = "#{coalesce_sizes} GROUP BY month"
+    sql = "#{coalesce_sizes} GROUP BY month ORDER BY month ASC"
     result = CfsFile.connection.select_all(sql).to_hash
     result.map{ |row| row["size"] = row["size"].to_i}
     result
@@ -62,8 +62,6 @@ class Timeline
     end
   end
 
-  protected
-
   def years_for_stats
     start = CfsFile.order(:created_at).first.created_at.to_date
     current = Date.today
@@ -88,7 +86,7 @@ class Timeline
   def stats_for_period(start, finish)
     subset = self.timeline_stats.select{ |row|  row["month"] >= "#{start}" && row["month"] <= "#{finish}" }
     count = subset.sum(&:count)
-    size = subset.sum(&:size)
+    size = subset.pluck("size").sum
     size ||= 0
     count ||= 0
     result = ActiveSupport::HashWithIndifferentAccess.new
@@ -105,7 +103,7 @@ class Timeline
     Hash.new.tap do |h|
       hashes.each do |month_info|
         day = Date.parse(month_info['month'])
-        h[day] = {count: month_info['count'], size: month_info['size']}
+        h[day] = {count: month_info['count'].to_i, size: month_info['size'].to_i}
       end
     end
   end
