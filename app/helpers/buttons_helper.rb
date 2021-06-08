@@ -58,7 +58,7 @@ module ButtonsHelper
   end
 
   def timeline_button(url)
-    icon_default_button('Timeline', Settings.icon.timeline_button, url)
+    icon_default_button('Timeline', Settings.icons.timeline_button, url)
   end
 
   def attachments_button(url)
