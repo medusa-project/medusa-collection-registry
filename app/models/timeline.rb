@@ -5,7 +5,7 @@ class Timeline
 
   def initialize(object: nil)
     if object.nil?
-      self.timeline_stats = self.base_for_system_totals
+      self.timeline_stats = Timeline.base_for_system_totals
     else
       self.timeline_stats = Timeline.base_for_directories(directory_ids: object.timeline_directory_ids)
     end
