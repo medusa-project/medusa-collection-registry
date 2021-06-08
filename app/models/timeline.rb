@@ -27,7 +27,9 @@ class Timeline
 
   def self.base_for_system_totals
     sql = "SELECT month, count, size FROM timeline_stats ORDER BY month ASC"
-    CfsFile.connection.select_all(sql).to_hash
+    result = CfsFile.connection.select_all(sql).to_hash
+    result.map{ |row| row["size"] = row["size"].to_i}
+    result
   end
 
   def yearly_stats
