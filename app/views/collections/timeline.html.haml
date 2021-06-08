@@ -1,0 +1,8 @@
+= render layout: 'layout_single' do
+  -if @collection.total_files.zero?
+    .jumbotron
+      Empty Collection
+  -else
+    = render partial: 'timeline/timeline_stats', locals: {all_monthly_stats: @all_monthly_stats,
+    monthly_stats: @monthly_stats,
+    yearly_stats: @yearly_stats}
