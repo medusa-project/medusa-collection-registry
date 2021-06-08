@@ -390,7 +390,7 @@ icons:
   red_flags_button: flag
   view_button: eye
   wiki_link: group
-  timeline_button: chart-line
+  timeline_button: line-chart
 medusa:
   faq_url: https://wiki.cites.illinois.edu/wiki/display/LibraryDigitalPreservation/Medusa+FAQ
   fg_delete:
