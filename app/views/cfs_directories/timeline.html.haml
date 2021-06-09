@@ -1,0 +1,15 @@
+.row.vertical-align
+  .col-xs-5
+    = render layout: 'layouts/page_header' do
+      Timeline for Directory:
+      %small #{@directory.path}
+      = content_for :page_header_extra do
+        UUID: #{@directory.uuid}
+-if @directory.is_empty?
+  .jumbotron
+    Empty Directory
+-else
+  = render partial: 'timeline/timeline_stats', locals: {all_monthly_stats: @all_monthly_stats,
+  monthly_stats: @monthly_stats,
+  yearly_stats: @yearly_stats}
+  

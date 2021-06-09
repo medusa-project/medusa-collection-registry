@@ -1,0 +1,22 @@
+.row.vertical-align
+  .col-xs-5
+    = render 'layouts/page_header' do
+      - if content_for?(:title)
+        = yield(:title)
+      - else
+        File Group:
+      %small #{@file_group.title}
+    #export_message
+  .col-xs-7
+    .btn-toolbar.pull-right
+      = render 'actions'
+      - if content_for?(:extra_links)
+        .btn-group
+          = yield(:extra_links)
+-if @directory.is_empty?
+  .jumbotron
+    Empty File Group
+-else
+  = render partial: 'timeline/timeline_stats', locals: {all_monthly_stats: @all_monthly_stats,
+  monthly_stats: @monthly_stats,
+  yearly_stats: @yearly_stats}
