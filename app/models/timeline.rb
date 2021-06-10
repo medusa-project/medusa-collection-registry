@@ -87,7 +87,7 @@ class Timeline
 
   def stats_for_period(start, finish)
     subset = self.timeline_stats.select{ |row|  row["month"] >= "#{start}" && row["month"] <= "#{finish}" }
-    count = subset.sum(&:count)
+    count = subset.pluck("count").sum
     size = subset.pluck("size").sum
     size ||= 0
     count ||= 0
