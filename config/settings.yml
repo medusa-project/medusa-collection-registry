@@ -391,7 +391,7 @@ icons:
   view_button: eye
   wiki_link: group
   timeline_button: line-chart
-  access_button: external-link-alt
+  access_button: external-link
   assessments_button: cogs
 medusa:
   faq_url: https://wiki.cites.illinois.edu/wiki/display/LibraryDigitalPreservation/Medusa+FAQ
