@@ -54,7 +54,11 @@ module ButtonsHelper
   end
 
   def assessments_button(url)
-    default_button('Assessments', url)
+    icon_default_button('Assessments', Settings.icons.assessments_button,url)
+  end
+
+  def access_button(url)
+    icon_default_button('Access', Settings.icons.access_button, url)
   end
 
   def timeline_button(url)

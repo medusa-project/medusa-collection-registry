@@ -9,6 +9,7 @@
   .col-xs-7
     .btn-group.pull-right
       = events_button(events_cfs_directory_path(@directory))
+      = timeline_button(timeline_cfs_directory_path(@directory))
       .btn-group
         = render 'shared/dropdown_toggle', title: :Run, icon: 'cog'
         %ul.dropdown-menu.dropdown-menu-right
