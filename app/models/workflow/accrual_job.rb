@@ -275,8 +275,15 @@ class Workflow::AccrualJob < Workflow::Base
         workflow_accrual_key.error = message
         workflow_accrual_key.save!
       when 'ERROR'
-        workflow_accrual_key.copy_requested = false
-        workflow_accrual_key.error = "error getting status"
+        if workflow_accrual_key.attempt_count.nil?
+          workflow_accrual_key.attempt_count = 1
+        elsif workflow_accrual_key.attempt_count < 10
+          workflow_accrual_key.attempt_count += 1
+          sleep(2)
+        else
+          workflow_accrual_key.copy_requested = false
+          workflow_accrual_key.error = "error getting status"
+        end
         workflow_accrual_key.save!
       else
         workflow_accrual_key.copy_requested = false

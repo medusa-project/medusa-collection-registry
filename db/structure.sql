@@ -4239,7 +4239,8 @@ CREATE TABLE public.workflow_accrual_keys (
     key text,
     workflow_accrual_job_id bigint,
     error text,
-    copy_requested boolean DEFAULT false
+    copy_requested boolean DEFAULT false,
+    attempt_count integer DEFAULT 0
 );
 
 
@@ -7832,6 +7833,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190614150050'),
 ('20190614150232'),
 ('20190718135009'),
-('20200327172104');
+('20200327172104'),
+('20210712163120');
 
 
