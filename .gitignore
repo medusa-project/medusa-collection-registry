@@ -16,6 +16,7 @@
 
 #ignore ide stuff
 /.idea
+/build
 
 #ignore emacs backup files
 *~
