@@ -1,14 +1,14 @@
 class ReportMailer < MedusaBaseMailer
 
-  def cfs_directory_map(job, report_string)
+  def cfs_directory_map(job, report_path)
     @job = job
-    attachments['report.txt'] = report_string
+    attachments['report.txt'] = File.read(report_path)
     mail(to: job.user.email)
   end
 
-  def cfs_directory_manifest(job, report_io)
+  def cfs_directory_manifest(job, report_path)
     @job = job
-    attachments['report.tsv'] = report_io.string
+    attachments['report.tsv'] = File.read(report_path)
     mail(to: job.user.email)
   end
 

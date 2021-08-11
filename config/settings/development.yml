@@ -172,16 +172,20 @@ storage:
   #want to put this on an EFS volume, as their local storage is typically small.
   #Note that we have code to use local storage for 'small' files, whatever that
   #means, that will eventually be configurable
-  tmpdir: /Users/hding2/repos/medusa-collection-registry/tmp
+  tmpdir: /path/to/medusa-collection-registry/tmp
   #For each root the name gives a tag to be shown to start in the browser when accruing
   accrual:
     - :name: staging-1
       :type: filesystem
-      :path: /Users/hding2/repos/medusa-collection-registry/tmp/staging-roots/dev-1
+      :path: /path/to/staging-roots/dev-1
   fits:
     :name: fits
     :type: filesystem
-    :path: /Users/hding2/repos/medusa-collection-registry/tmp/storage-dev/fits
+    :path: /path/to/fits
+  reports:
+    :name: reports
+    :type: filesystem
+    :path: /path/to/reports
 superusers:
   - superadmin@example.com
 #settings for triple store integration

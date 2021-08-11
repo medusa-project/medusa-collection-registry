@@ -1,7 +1,7 @@
 class StorageManager
 
   attr_accessor :main_root, :main_root_rclone, :main_root_backup, :amqp_roots, :project_staging_root, :accrual_roots,
-                :fits_root, :tmpdir, :globus_endpoints
+                :fits_root, :tmpdir, :globus_endpoints, :reports_root
 
   def initialize
     initialize_main_storage
@@ -13,6 +13,7 @@ class StorageManager
     initialize_fits_root
     initialize_tmpdir
     initialize_globus_endpoints
+    initialize_reports_root
   end
 
   def initialize_main_storage
@@ -76,6 +77,11 @@ class StorageManager
     endpoint_config.each do |endpoint|
       self.globus_endpoints[endpoint[:name]] = endpoint
     end
+  end
+
+  def initialize_reports_root
+    reports_config = Settings.storage.reports.to_h
+    self.reports_root = MedusaStorage::RootFactory.create_root(reports_config)
   end
 
 end

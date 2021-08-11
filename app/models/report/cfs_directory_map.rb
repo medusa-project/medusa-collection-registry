@@ -1,22 +1,23 @@
 class Report::CfsDirectoryMap
 
-  attr_accessor :root_cfs_directory, :io
+  attr_accessor :root_cfs_directory, :storage_path
 
   def initialize(cfs_directory)
     self.root_cfs_directory = cfs_directory
   end
 
-  def generate(io)
-    self.io = io
+  def generate(storage_path)
+    self.storage_path = storage_path
     add_header
     print_directory(root_cfs_directory)
   end
 
   def add_header
-    #io.write "\u00ef\u00bb\u00bf"
-    io.puts root_cfs_directory.parent.breadcrumbs.collect(&:breadcrumb_label).join(' > ')
-    io.puts "Exported #{Time.now}"
-    io.puts
+    File.open(self.storage_path, "a" ) do |f|
+      f.puts root_cfs_directory.parent.breadcrumbs.collect(&:breadcrumb_label).join(' > ')
+      f.puts "Exported #{Time.now}"
+      f.puts
+    end
   end
 
   def print_directory(cfs_directory, level: 0, last: false, prefix: '')
@@ -26,25 +27,29 @@ class Report::CfsDirectoryMap
               cfs_directory.path
             end
     subdirectory_count = cfs_directory.subdirectories.count
-    io.write prefix
-    io.write directory_marker(level, last)
-    io.puts label
-    file_info(cfs_directory).each do |file_info|
-      io.write prefix
-      unless level.zero?
-        if last
-          io.write '    '
-        else
-          io.write '│   '
+
+    File.open(self.storage_path, "a" ) do |f|
+      f.write prefix
+      f.write directory_marker(level, last)
+      f.puts label
+      file_info(cfs_directory).each do |file_info|
+        f.write prefix
+        unless level.zero?
+          if last
+            f.write '    '
+          else
+            f.write '│   '
+          end
         end
+        if subdirectory_count.zero?
+          f.write '    '
+        else
+          f.write '│   '
+        end
+        f.puts file_info
       end
-      if subdirectory_count.zero?
-        io.write '    '
-      else
-        io.write '│   '
-      end
-      io.puts file_info
     end
+
     cfs_directory.subdirectories.each.with_index do |subdirectory, i|
       last_subdir = i == (subdirectory_count - 1)
       new_prefix = if level.zero?

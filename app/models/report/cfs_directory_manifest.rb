@@ -1,7 +1,7 @@
 require 'csv'
 class Report::CfsDirectoryManifest
 
-  attr_accessor :root_cfs_directory, :tsv
+  attr_accessor :root_cfs_directory, :storage_path
 
   HEADERS = ["Path", "Index", "Name", "Extension", "MIME", "Date Created", "Time Created", "Size Bytes", "UUID"]
 
@@ -9,8 +9,8 @@ class Report::CfsDirectoryManifest
     self.root_cfs_directory = cfs_directory
   end
 
-  def generate_tsv(io)
-    self.tsv = initialize_tsv(io)
+  def generate_tsv(storage_path)
+    self.storage_path = storage_path
     add_headers
     directory_stack = [root_cfs_directory]
     while current_directory = directory_stack.pop
@@ -21,9 +21,13 @@ class Report::CfsDirectoryManifest
     end
   end
 
+  def write_line(array)
+    File.open(self.storage_path, "a" ) { |f|  f.puts array.join('/t') }
+  end
+  
   def add_directory_to_tsv(cfs_directory)
     current_path = cfs_directory.relative_path + '/'
-    self.tsv << directory_row(current_path, cfs_directory.uuid)
+    write_line(directory_row(current_path, cfs_directory.uuid))
     index = 0
     cfs_directory.subdirectories.order(:path).includes(:medusa_uuid).each do |subdirectory|
       index += 1
@@ -33,7 +37,7 @@ class Report::CfsDirectoryManifest
       index += 1
       add_cfs_file_to_tsv(current_path, cfs_file, index)
     end
-    self.tsv << blank_line
+    write_line(blank_line)
   end
 
   def directory_row(current_path, uuid)
@@ -42,25 +46,21 @@ class Report::CfsDirectoryManifest
   end
 
   def add_headers
-    self.tsv << HEADERS
-    self.tsv << breadcrumbs
-    self.tsv << blank_line
+    write_line(HEADERS)
+    write_line(breadcrumbs)
+    write_line(blank_line)
   end
 
   def add_subdirectory_to_tsv(current_path, cfs_directory, index)
-    self.tsv << [current_path, index, cfs_directory.path + '/', '', '',
+    write_line([current_path, index, cfs_directory.path + '/', '', '',
                  to_date(cfs_directory), to_time(cfs_directory),
-                 '', cfs_directory.uuid].collect!(&:to_s)
+                 '', cfs_directory.uuid].collect!(&:to_s))
   end
 
   def add_cfs_file_to_tsv(current_path, cfs_file, index)
-    self.tsv << [current_path, index, cfs_file.name, cfs_file.file_extension.extension,
+    write_line([current_path, index, cfs_file.name, cfs_file.file_extension.extension,
                  cfs_file.content_type.name, to_date(cfs_file), to_time(cfs_file),
-                 cfs_file.size, cfs_file.uuid].collect(&:to_s)
-  end
-
-  def initialize_tsv(io)
-    self.tsv = CSV.new(io, col_sep: "\t")
+                 cfs_file.size, cfs_file.uuid].collect(&:to_s))
   end
 
   def breadcrumbs
