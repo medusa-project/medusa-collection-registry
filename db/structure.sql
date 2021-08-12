@@ -2509,7 +2509,11 @@ CREATE TABLE public.items (
     item_number character varying,
     source_media character varying,
     ingested boolean DEFAULT false,
-    cfs_directory_id integer
+    cfs_directory_id integer,
+    requester_info text,
+    ebook_status text,
+    permalink text,
+    reviewed_by text
 );
 
 
@@ -7834,6 +7838,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190614150232'),
 ('20190718135009'),
 ('20200327172104'),
-('20210712163120');
+('20210712163120'),
+('20210812203815');
 
 

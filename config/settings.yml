@@ -228,6 +228,15 @@ classes:
       - Sent to IPM
       - Sent for cataloging
       - Send to IA for digitization
+    ebook_statuses:
+      - "E-book not available"
+      - "Reason for rejection: IA"
+      - "Reason for rejection: Gobi"
+      - "Reason for rejection: Hathi"
+      - "Reason for rejection: Primo"
+      - "Reason for rejection: found in Redshelf"
+      - "Reason for rejection: page count"
+      - "Reason for rejection: backlog"
   resource_type:
     type_names:
       - archives

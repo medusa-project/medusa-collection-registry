@@ -12,4 +12,8 @@ module ItemsHelper
     [["<Leave blank>", ""]] + Item.statuses.zip(Item.statuses)
   end
 
+  def ebook_statuses_collection
+    [["<Leave blank>", ""]] + Item.ebook_statuses.zip(Item.ebook_statuses)
+  end
+
 end

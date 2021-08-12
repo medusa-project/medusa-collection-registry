@@ -8,8 +8,9 @@
   before_validation :ensure_barcode
   auto_strip_attributes :barcode, nullify: false
 
-  expose_class_config :source_media_types, :equipment_types, :statuses
+  expose_class_config :source_media_types, :equipment_types, :statuses, :ebook_statuses
   validates :status, inclusion: {in: :statuses}, allow_blank: true
+  validates :ebook_status, inclusion: {in: :ebook_statuses}, allow_blank: true
   validates :source_media, inclusion: {in: :source_media_types}, allow_blank: true
   validates :barcode, allow_blank: true, format: /\d{14}/
 
