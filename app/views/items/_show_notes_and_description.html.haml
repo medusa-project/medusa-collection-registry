@@ -2,3 +2,7 @@
 %div= @item.notes
 %h4 Local Description
 %div= @item.local_description
+= show_field @item, :requester_info
+= show_field @item, :ebook_status
+= show_field @item, :external_link
+= show_field @item, :reviewed_by

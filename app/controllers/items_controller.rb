@@ -105,7 +105,7 @@ class ItemsController < ApplicationController
                          :reformatting_operator, :equipment, :foldout_present, :foldout_done, :item_done, :ingested, :unique_identifier, :source_media,
                          :call_number, :title, :author, :imprint, :bib_id, :oclc_number,
                          :record_series_id, :archival_management_system_url, :series, :sub_series, :box, :folder,
-                         :item_title, :creator, :date, :rights_information, :requester_info, :ebook_status, :permalink, :reviewed_by)
+                         :item_title, :creator, :date, :rights_information, :requester_info, :ebook_status, :external_link, :reviewed_by)
   end
 
   def clone_item(source)

@@ -237,6 +237,7 @@ classes:
       - "Reason for rejection: found in Redshelf"
       - "Reason for rejection: page count"
       - "Reason for rejection: backlog"
+      - "Reason for rejection: other"
   resource_type:
     type_names:
       - archives
