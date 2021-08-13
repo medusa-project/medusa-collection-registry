@@ -26,7 +26,9 @@ module ModelsToCsv
   end
 
   def items_to_csv(items, csv_options = {})
-    models_to_csv(items, {barcode: 'Barcode', item_number: 'Item Number', local_title: 'Local Title', local_description: 'Local Description',
+    models_to_csv(items, {requester_info: 'Requester Info', ebook_status: 'E-Book Status',
+                          permalink: 'Permalink', reviewed_by: 'Reviewed By', barcode: 'Barcode',
+                          item_number: 'Item Number', local_title: 'Local Title', local_description: 'Local Description',
                           notes: 'Notes', batch: 'Batch', file_count: 'File Count', status: 'Status',
                           reformatting_date: 'Reformatting Date', reformatting_operator: 'Reformatting Operator',
                           equipment: 'Equipment', foldout_present: 'Foldout Present', ingested: 'Ingested',
