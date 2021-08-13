@@ -22,7 +22,7 @@
     end
     %i(some_title bib_id call_number title author record_series_id oclc_number imprint local_title local_description
 reformatting_operator archival_management_system_url series sub_series box folder item_title creator date
-rights_information status equipment unique_identifier item_number source_media).each do |field|
+rights_information status equipment unique_identifier item_number source_media requester_info).each do |field|
       text field
       string field
     end
@@ -34,7 +34,9 @@ rights_information status equipment unique_identifier item_number source_media).
     date :reformatting_date
     text :file_count
     integer :file_count
-
+    string :reviewed_by
+    string :external_link
+    string :ebook_status
     string :project_title
     integer :project_id
     time :updated_at
