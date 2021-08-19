@@ -50,7 +50,6 @@ class SearchHelper::TableItem < SearchHelper::TableBase
      {header: 'Item information', value_method: :item_information, unsortable: true, item_info: true},
      {header: 'Unique Identifier', solr_field: :unique_identifier, value_method: :unique_identifier, searchable: true},
      {header: 'Batch', solr_field: :batch, value_method: :search_batch_link, searchable: true},
-     {header: 'Requester Info', solr_field: :requester_info, value_method: :requester_info, searchable: true},
      {header: 'E-Book Status', solr_field: :ebook_status, value_method: :ebook_status, searchable: true},
      {header: 'External Link', solr_field: :external_link, value_method: :external_link, searchable: true},
      {header: 'Reviewed By', solr_field: :reviewed_by, value_method: :reviewed_by, searchable: true},
