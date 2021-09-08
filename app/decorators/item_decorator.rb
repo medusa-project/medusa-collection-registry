@@ -18,6 +18,12 @@ class ItemDecorator < BaseDecorator
     end
   end
 
+  def search_ebook_status
+    return self.ebook_status if self.ebook_status.present?
+
+    ''
+  end
+
   #TODO: create the checkbox - disable unless user can actually use
   def assign_checkbox(project)
     h.check_box_tag('', self.id, false, name: 'mass_action[item][]', id: "mass_action_item_#{self.id}",
