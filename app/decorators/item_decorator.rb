@@ -24,6 +24,24 @@ class ItemDecorator < BaseDecorator
     ''
   end
 
+  def search_requester_info
+    return self.requester_info if self.requester_info.present?
+
+    ''
+  end
+
+  def search_external_link
+    return self.external_link if self.external_link.present?
+
+    ''
+  end
+
+  def search_reviewed_by
+    return self.reviewed_by if self.reviewed_by.present?
+
+    ''
+  end
+
   #TODO: create the checkbox - disable unless user can actually use
   def assign_checkbox(project)
     h.check_box_tag('', self.id, false, name: 'mass_action[item][]', id: "mass_action_item_#{self.id}",

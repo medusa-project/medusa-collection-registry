@@ -22,7 +22,7 @@
     end
     %i(some_title bib_id call_number title author record_series_id oclc_number imprint local_title local_description
 reformatting_operator archival_management_system_url series sub_series box folder item_title creator date
-rights_information status equipment unique_identifier item_number source_media requester_info).each do |field|
+rights_information status equipment unique_identifier item_number source_media requester_info ebook_status external_link reviewed_by).each do |field|
       text field
       string field
     end
@@ -37,10 +37,6 @@ rights_information status equipment unique_identifier item_number source_media r
     string :project_title
     integer :project_id
     time :updated_at
-    string :ebook_status
-    text :ebook_status
-    string :external_link
-    string :reviewed_by
   end
 
   def self.uningested
