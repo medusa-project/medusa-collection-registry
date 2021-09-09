@@ -22,13 +22,14 @@
     end
     %i(some_title bib_id call_number title author record_series_id oclc_number imprint local_title local_description
 reformatting_operator archival_management_system_url series sub_series box folder item_title creator date
-rights_information status equipment unique_identifier item_number source_media requester_info ebook_status external_link reviewed_by).each do |field|
+rights_information status equipment unique_identifier item_number source_media ebook_status external_link reviewed_by).each do |field|
       text field
       string field
     end
     %i(foldout_present foldout_done item_done).each do |field|
       boolean field
     end
+    text :requester_info
     text :notes
     text :reformatting_date
     date :reformatting_date
