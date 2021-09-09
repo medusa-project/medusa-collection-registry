@@ -52,7 +52,7 @@ class SearchHelper::TableItem < SearchHelper::TableBase
      {header: 'Batch', solr_field: :batch, value_method: :search_batch_link, searchable: true},
      {header: 'Requester Info', solr_field: :requester_info, value_method: :search_requester_info, searchable: true, shorten: true},
      {header: 'E-Book Status', solr_field: :ebook_status, value_method: :search_ebook_status, searchable: true},
-     {header: 'External Link', solr_field: :external_link, value_method: :search_external_link, searchable: true},
+     {header: 'External Link', solr_field: :external_link, value_method: :search_external_link, searchable: false},
      {header: 'Reviewed By', solr_field: :reviewed_by, value_method: :search_reviewed_by, searchable: true},
      {header: 'Barcode', solr_field: :barcode, value_method: :search_barcode_link, searchable: true},
      {header: 'File Count', solr_field: :file_count, value_method: :file_count, searchable: true},
