@@ -38,6 +38,7 @@ rights_information status equipment unique_identifier item_number source_media r
     integer :project_id
     time :updated_at
     string :ebook_status
+    text :ebook_status
     string :external_link
     string :reviewed_by
   end
