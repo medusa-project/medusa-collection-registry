@@ -51,7 +51,6 @@ class SearchHelper::TableItem < SearchHelper::TableBase
      {header: 'Unique Identifier', solr_field: :unique_identifier, value_method: :unique_identifier, searchable: true},
      {header: 'Batch', solr_field: :batch, value_method: :search_batch_link, searchable: true},
      {header: 'Requester Info', solr_field: :requester_info, value_method: :search_requester_info, searchable: true, shorten: true},
-     {header: 'E-Book Status', solr_field: :ebook_status, value_method: :search_ebook_status, searchable: true, shorten: true},
      {header: 'Barcode', solr_field: :barcode, value_method: :search_barcode_link, searchable: true},
      {header: 'File Count', solr_field: :file_count, value_method: :file_count, searchable: true},
      {header: 'Notes', solr_field: :notes, value_method: :notes, searchable: true, shorten: true},
