@@ -137,6 +137,7 @@ classes:
     excluded_files:
       - Thumbs.db
       - .DS_Store
+      - CaptureOne
   file_extensions_controller:
     default_per_page: 25
   file_format_test_reason:

@@ -274,7 +274,7 @@ class Workflow::AccrualJob < Workflow::Base
         message = "#{status}: https://www.globus.org/app/console/#{workflow_accrual_key.workflow_globus_transfer.task_link}"
         workflow_accrual_key.error = message
         workflow_accrual_key.save!
-      when 'ERROR'
+      when 'ERROR', 'CONFLICT'
         if workflow_accrual_key.attempt_count.nil?
           workflow_accrual_key.attempt_count = 1
         elsif workflow_accrual_key.attempt_count < 10

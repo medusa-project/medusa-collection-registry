@@ -92,12 +92,17 @@ class Workflow::GlobusTransfer < ApplicationRecord
       response = HTTParty.get("#{Workflow::GlobusTransfer::API_BASE}/task/#{task_id}",
                               headers: { 'Authorization' => "Bearer #{bearer_token}",
                                          'Content-Type' => 'application/json' })
-      unless response.code == 200
+
+      case response.code
+
+      when 200
+        response_json =  JSON.parse(response.body)
+        return response_json["status"]
+      when 409
+        return "CONFLICT"
+      else
         raise("Globus status response for #{id}: #{response.code}, #{response.message}")
       end
-
-      response_json =  JSON.parse(response.body)
-      response_json["status"]
     rescue StandardError => e
       Rails.logger.warn "error getting status for #{id}: #{e.message}"
       "ERROR"
