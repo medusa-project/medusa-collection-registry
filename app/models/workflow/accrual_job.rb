@@ -274,16 +274,12 @@ class Workflow::AccrualJob < Workflow::Base
         message = "#{status}: https://www.globus.org/app/console/#{workflow_accrual_key.workflow_globus_transfer.task_link}"
         workflow_accrual_key.error = message
         workflow_accrual_key.save!
-      when 'ERROR', 'CONFLICT'
-        if workflow_accrual_key.attempt_count.nil?
-          workflow_accrual_key.attempt_count = 1
-        elsif workflow_accrual_key.attempt_count < 10
-          workflow_accrual_key.attempt_count += 1
-          sleep(2)
-        else
-          workflow_accrual_key.copy_requested = false
-          workflow_accrual_key.error = "error getting status"
-        end
+      when 'CONFLICT'
+        workflow_accrual_key.error = "conflict error getting status"
+        workflow_accrual_key.save!
+      when 'ERROR'
+        workflow_accrual_key.copy_requested = false
+        workflow_accrual_key.error = "error getting status"
         workflow_accrual_key.save!
       else
         workflow_accrual_key.copy_requested = false
@@ -420,6 +416,18 @@ class Workflow::AccrualJob < Workflow::Base
       return true unless job.last_error.nil?
     end
     return false
+  end
+
+  def delayed_job_status
+    return "JOB OK" unless delayed_job_has_error?
+
+    delayed_jobs.each do |job|
+      last_error =  job.last_error
+      break unless last_error.nil?
+    end
+
+    return "JOB DELAY-RETRYING" if last_error.downcase.include("conflict")
+
   end
 
   def file_group

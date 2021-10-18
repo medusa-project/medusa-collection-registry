@@ -81,7 +81,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
 
   def status
 
-    return 'SUCCEEDED' if object_copied
+    return 'SUCCEEDED' if object_copied?
 
     return 'no task_id present' unless task_id.present?
 
@@ -92,16 +92,18 @@ class Workflow::GlobusTransfer < ApplicationRecord
       response = HTTParty.get("#{Workflow::GlobusTransfer::API_BASE}/task/#{task_id}",
                               headers: { 'Authorization' => "Bearer #{bearer_token}",
                                          'Content-Type' => 'application/json' })
-
       case response.code
-
       when 200
         response_json =  JSON.parse(response.body)
         return response_json["status"]
       when 409
+        30.times do
+          return 'SUCCEEDED' if object_copied?
+          sleep(2)
+        end
         return "CONFLICT"
       else
-        raise("Globus status response for #{id}: #{response.code}, #{response.message}")
+        raise("Unhandled Globus status response for #{id}: #{response.code}, #{response.message}")
       end
     rescue StandardError => e
       Rails.logger.warn "error getting status for #{id}: #{e.message}"
@@ -109,7 +111,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
     end
   end
 
-  def object_copied
+  def object_copied?
     Application.storage_manager.main_root.exist?(workflow_accrual_key.key)
   end
 

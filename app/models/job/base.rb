@@ -40,7 +40,7 @@ class Job::Base < ApplicationRecord
       job.run_at = Time.now
       job.locked_at = nil
       job.locked_by = nil
-      job.last_error = ''
+      job.last_error = nil
       job.save!
     end
   end
