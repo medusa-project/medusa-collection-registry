@@ -39,6 +39,12 @@
     %pre
       = @workflow_accrual.empty_file_report
 
+- if @workflow_accrual.unsafe_characters_report.present?
+  %div
+    Some unsafe characters were detectd in the ingest request
+    %pre
+      @workflow_accrual.unsafe_characters_report
+
 %p
   If this seems incorrect, please take a close look at source and
   destination files before proceeding.

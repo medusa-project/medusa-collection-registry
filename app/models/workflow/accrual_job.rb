@@ -101,6 +101,7 @@ class Workflow::AccrualJob < Workflow::Base
   # If there are duplicate files and overwrites are not allowed, quit and complain about it.
   # If there are empty files, mention it in passing.
   def perform_check
+    safe_characters_regex = /\A[0-9a-zA-Z\/!.*'()-]*\z/
     root, prefix = staging_root_and_prefix
     ingest_keys = Set.new
     empty_files = StringIO.new
