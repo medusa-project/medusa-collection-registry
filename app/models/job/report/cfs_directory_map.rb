@@ -13,7 +13,7 @@ class Job::Report::CfsDirectoryMap < Job::Base
 
   def perform
     storage_key = unique_key
-    storage_path = File.join(Application.storage_manager.reports_root, storage_key)
+    storage_path = File.join(Application.storage_manager.reports_root.path, storage_key)
     File.open(storage_path, "w" ){}
     report = Report::CfsDirectoryMap.new(cfs_directory)
     report.generate(storage_path)
