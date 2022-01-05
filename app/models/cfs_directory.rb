@@ -194,6 +194,7 @@ class CfsDirectory < ApplicationRecord
 
   def make_initial_entries
     subdirs = storage_subdirectories
+    subdirs = subdirs.subtract(excluded_directories)
     subdirs.each do |dir|
       self.ensure_directory_at_relative_path(dir)
     end

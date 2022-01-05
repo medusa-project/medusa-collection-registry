@@ -93,6 +93,7 @@ class CfsFile < ApplicationRecord
     storage_root.delete_content(self.key)
   end
 
+  # depends on rclone mount
   #wrap the storage root's ability to yield a file path having the appropriate content in it
   # Use only for reading
   def with_input_file
@@ -128,6 +129,7 @@ class CfsFile < ApplicationRecord
     Application.storage_manager.main_root_rclone
   end
 
+  # depends on rclone mount
   def read_only_storage_root
     #TODO this first line is only to work around a current 'rclone mount' bug. When that is fixed,
     # it can be removed.
@@ -303,6 +305,7 @@ class CfsFile < ApplicationRecord
     end
   end
 
+  # depends on rclone mount
   def storage_md5_sum
     read_only_storage_root.hex_md5_sum(self.key)
   end
@@ -405,6 +408,7 @@ class CfsFile < ApplicationRecord
 
   protected
 
+  # depends on rclone mount
   def get_fits_xml
     with_input_file do |input_file|
       uri = URI(File.join(Settings.fits.server_url, 'fits/file'))
