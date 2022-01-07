@@ -29,7 +29,7 @@ namespace :utility do
     end
     # remove CaptureOne directories and any files in them
     cfs_directories.each do |dir|
-      files = storage_files
+      files = dir.storage_files
       files.each do |file|
         file_key = File.join(dir.key, file)
         dir.storage_root.delete_content(file_key) if storage_root.exist?(file_key)
