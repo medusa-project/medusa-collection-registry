@@ -32,9 +32,15 @@ namespace :utility do
       files = dir.storage_files
       files.each do |file|
         file_key = File.join(dir.key, file)
+        puts "#{file_key} exists" if dir.storage_root.exist?(file_key)
         dir.storage_root.delete_content(file_key) if dir.storage_root.exist?(file_key)
       end
       dir.storage_root.delete_content(dir.key) if dir.storage_root.exist?(dir.key)
+    end
+
+    # re-assess containing file groups
+    groups.each do |group|
+      group.schedule_initial_cfs_assessment if group.is_currently_assessable?
     end
 
     # re-assess containing collections
@@ -56,5 +62,6 @@ namespace :utility do
                                   total_files: nil,
                                   author_email: args[:author_email])
     end
+    Sunspot.commit
   end
 end
