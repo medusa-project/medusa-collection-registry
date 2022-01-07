@@ -14,18 +14,18 @@ namespace :utility do
     paths = Set.new
 
     cfs_directories.each do |dir|
-      groups.add(dir.file_group)
-      collections.add(dir.collection)
+      groups.add(dir.file_group.id.to_s)
+      collections.add(dir.collection.id.to_s)
       paths.add(dir.relative_path)
     end
     File.open('//tmp/paths.txt', 'w') do |f|
-      paths.each { |path| f << "#{path}/n" }
+      paths.each { |path| f << "#{path}\n" }
     end
     File.open('//tmp/groups.txt', 'w') do |f|
-      groups.each { |group| f << "#{group}/n" }
+      groups.each { |group| f << "#{group}\n" }
     end
     File.open('//tmp/collections.txt', 'w') do |f|
-      collections.each { |collection| f << "#{collection}/n" }
+      collections.each { |collection| f << "#{collection}\n" }
     end
     # TODO remove CaptureOne directories
     # TODO re-assess collections
