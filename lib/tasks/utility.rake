@@ -32,9 +32,9 @@ namespace :utility do
       files = dir.storage_files
       files.each do |file|
         file_key = File.join(dir.key, file)
-        dir.storage_root.delete_content(file_key) if storage_root.exist?(file_key)
+        dir.storage_root.delete_content(file_key) if dir.storage_root.exist?(file_key)
       end
-      dir.storage_root.delete_content(dir.key) if storage_root.exist?(dir.key)
+      dir.storage_root.delete_content(dir.key) if dir.storage_root.exist?(dir.key)
     end
 
     # re-assess containing collections
