@@ -125,12 +125,14 @@ class CfsFile < ApplicationRecord
     Application.storage_manager.main_root
   end
 
+  # depends on rclone mount
   def rclone_storage_root
     Application.storage_manager.main_root_rclone
   end
 
   # depends on rclone mount
   def read_only_storage_root
+    #TODO remove rclone dependency
     #TODO this first line is only to work around a current 'rclone mount' bug. When that is fixed,
     # it can be removed.
     return storage_root if size.present? and size.zero?
@@ -142,7 +144,8 @@ class CfsFile < ApplicationRecord
     self.cfs_directory.ancestors_and_self
   end
 
-  #run an initial assessment on files that need it - skip if we've already done it and the mtime hasn't changed
+  # depends on rclone mount
+  # run an initial assessment on files that need it - skip if we've already done it and the mtime hasn't changed
   def run_initial_assessment
     external_mtime = storage_root.mtime(self.key)
     external_size = storage_root.size(self.key)
