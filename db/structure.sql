@@ -1466,6 +1466,75 @@ ALTER SEQUENCE public.assessments_id_seq OWNED BY public.assessments.id;
 
 
 --
+-- Name: assessor_responses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.assessor_responses (
+    id bigint NOT NULL,
+    assessor_task_id bigint,
+    subtask character varying,
+    success boolean,
+    content text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: assessor_responses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.assessor_responses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: assessor_responses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.assessor_responses_id_seq OWNED BY public.assessor_responses.id;
+
+
+--
+-- Name: assessor_tasks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.assessor_tasks (
+    id bigint NOT NULL,
+    cfs_file_id bigint,
+    checksum boolean,
+    mediatype boolean,
+    fits boolean,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    sent_at timestamp without time zone
+);
+
+
+--
+-- Name: assessor_tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.assessor_tasks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: assessor_tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.assessor_tasks_id_seq OWNED BY public.assessor_tasks.id;
+
+
+--
 -- Name: attachments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4488,6 +4557,20 @@ ALTER TABLE ONLY public.assessments ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
+-- Name: assessor_responses id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.assessor_responses ALTER COLUMN id SET DEFAULT nextval('public.assessor_responses_id_seq'::regclass);
+
+
+--
+-- Name: assessor_tasks id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.assessor_tasks ALTER COLUMN id SET DEFAULT nextval('public.assessor_tasks_id_seq'::regclass);
+
+
+--
 -- Name: attachments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5066,6 +5149,22 @@ ALTER TABLE ONLY public.archived_accrual_jobs
 
 ALTER TABLE ONLY public.assessments
     ADD CONSTRAINT assessments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: assessor_responses assessor_responses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.assessor_responses
+    ADD CONSTRAINT assessor_responses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: assessor_tasks assessor_tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.assessor_tasks
+    ADD CONSTRAINT assessor_tasks_pkey PRIMARY KEY (id);
 
 
 --
@@ -5869,6 +5968,20 @@ CREATE INDEX index_assessments_on_collection_id ON public.assessments USING btre
 --
 
 CREATE INDEX index_assessments_on_updated_at ON public.assessments USING btree (updated_at);
+
+
+--
+-- Name: index_assessor_responses_on_assessor_task_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_assessor_responses_on_assessor_task_id ON public.assessor_responses USING btree (assessor_task_id);
+
+
+--
+-- Name: index_assessor_tasks_on_cfs_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_assessor_tasks_on_cfs_file_id ON public.assessor_tasks USING btree (cfs_file_id);
 
 
 --
@@ -7287,6 +7400,14 @@ ALTER TABLE ONLY public.workflow_accrual_files
 
 
 --
+-- Name: assessor_tasks fk_rails_398341b802; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.assessor_tasks
+    ADD CONSTRAINT fk_rails_398341b802 FOREIGN KEY (cfs_file_id) REFERENCES public.cfs_files(id);
+
+
+--
 -- Name: collection_virtual_repository_joins fk_rails_3c52875c13; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7508,6 +7629,14 @@ ALTER TABLE ONLY public.job_fits_content_type_batches
 
 ALTER TABLE ONLY public.archived_accrual_jobs
     ADD CONSTRAINT fk_rails_d8a84160a7 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: assessor_responses fk_rails_dbbe5441fc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.assessor_responses
+    ADD CONSTRAINT fk_rails_dbbe5441fc FOREIGN KEY (assessor_task_id) REFERENCES public.assessor_tasks(id);
 
 
 --
@@ -7840,6 +7969,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200327172104'),
 ('20210712163120'),
 ('20210812203815'),
-('20210813203918');
+('20210813203918'),
+('20220120203756'),
+('20220120205207'),
+('20220120214651');
 
 
