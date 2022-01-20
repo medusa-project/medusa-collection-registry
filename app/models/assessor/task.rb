@@ -42,6 +42,10 @@ class Assessor::Task < ApplicationRecord
     update(sent_at: Time.current)
   end
 
+  def cfs_file
+    CfsFile.find_by(id: self.cfs_file_id)
+  end
+
   def subtask_array_string
     subtasks = Array.new
     subtasks << 'checksum' if self.checksum == true
