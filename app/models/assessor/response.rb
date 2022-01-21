@@ -13,7 +13,10 @@ class Assessor::Response < ApplicationRecord
     puts message
 
     SQS.delete_message({queue_url: QUEUE_URL, receipt_handle: response.data.messages[0].receipt_handle})
-    cfs_file_id = message["file_identifier"]
+    file_identifier = message["file_identifier"]
+    raise StandardError.new("test assessor message: #{message}") if file_identifier == "test-id"
+    
+    cfs_file_id = file_identifier.to_i
     message_type = message["type"]
     subtask = "fits" if message_type == "FITS"
     subtask = "checksum" if message_type == "CHECKSUM"
