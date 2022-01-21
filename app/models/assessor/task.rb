@@ -36,8 +36,9 @@ class Assessor::Task < ApplicationRecord
       task_definition:       Settings.assessor.task_definition
     }
     resp = client.run_task(task)
+    puts resp.to_s
     failure_count = resp[:failures].count
-    raise StandardError.new("error in Extractor Task for #{web_id}: #{resp}") unless failure_count.zero?
+    raise StandardError.new("error in Extractor Task for #{cfs_file}: #{resp}") unless failure_count.zero?
 
     update(sent_at: Time.current)
   end
