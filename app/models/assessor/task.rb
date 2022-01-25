@@ -49,9 +49,9 @@ class Assessor::Task < ApplicationRecord
 
   def subtask_array_string
     subtasks = Array.new
-    subtasks << 'checksum' if self.checksum == true
-    subtasks << 'mediatype' if self.mediatype == true
-    subtasks << 'fits' if self.fits == true
+    subtasks << 'CHECKSUM' if self.checksum == true
+    subtasks << 'CONTENT_TYPE' if self.mediatype == true
+    subtasks << 'FITS' if self.fits == true
     subtasks.to_s.gsub("\"", "'")
   end
 
