@@ -22,8 +22,10 @@ class Assessor::Response < ApplicationRecord
     subtask = "checksum" if message_type == "CHECKSUM"
     subtask = "mediatype" if message_type == "CONTENT_TYPE"
     raise StandardError.new("missing type for assessor message: #{message}") if subtask.nil?
+    task = Assessor::Task.find_by(cfs_file_id: cfs_file_id)
+    raise StandardError.new("cannot find task for response: #{message}")
 
-    Assessor::Response.create(cfs_file_id: cfs_file_id, subtask: subtask, content: message)
+    Assessor::Response.create(assessor_task_id: task.id, subtask: subtask, content: message)
   end
 
   def handle
