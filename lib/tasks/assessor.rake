@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'json'
+require 'models/queue_manager'
 
 QUEUE_URL = Settings.message_queues.assessor_to_medusa_url
 SQS = QueueManager.instance.sqs_client
