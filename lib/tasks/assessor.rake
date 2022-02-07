@@ -1,14 +1,14 @@
 require 'fileutils'
 require 'json'
 
-namespace :assessor do
+QUEUE_URL = Settings.message_queues.assessor_to_medusa_url
+SQS = QueueManager.instance.sqs_client
+CLUSTER = Settings.assessor.cluster
+ECS_CLIENT = ContainerManager.instance.ecs_client
+MAX_TASK_COUNT = 49
+MAX_BATCH_COUNT = 9
 
-  QUEUE_URL = Settings.message_queues.assessor_to_medusa_url
-  SQS = QueueManager.instance.sqs_client
-  CLUSTER = Settings.assessor.cluster
-  ECS_CLIENT = ContainerManager.instance.ecs_client
-  MAX_TASK_COUNT = 49
-  MAX_BATCH_COUNT = 9
+namespace :assessor do
 
   def initiate_task_batch
     unsent = Assessor::Task.where(sent_at: nil)
