@@ -7,6 +7,37 @@ class Assessor::Response < ApplicationRecord
   SQS = QueueManager.instance.sqs_client
   FITS_STOP_FILE = File.join(Rails.root, 'fits_stop.txt')
 
+  def self.fetch_message
+    response = SQS.receive_message(queue_url: QUEUE_URL, max_number_of_messages: 1)
+    return nil if response.data.messages.count.zero?
+
+    message = JSON.parse(response.data.messages[0].body)
+    puts message
+
+    SQS.delete_message({queue_url: QUEUE_URL, receipt_handle: response.data.messages[0].receipt_handle})
+    file_identifier = message["file_identifier"]
+    raise StandardError.new("test assessor message: #{message}") if file_identifier == "test-id"
+
+    cfs_file_id = file_identifier.to_i
+
+    message_type = message["type"]
+    case message_type
+    when "FITS"
+      subtask = "fits"
+    when "CHECKSUM"
+      subtask = "checksum"
+    when "CONTENT_TYPE"
+      subtask = "mediatype"
+    else
+      subtask = "error"
+    end
+
+    task = Assessor::Task.find_by(cfs_file_id: cfs_file_id)
+    raise StandardError.new("cannot find task for response: #{message}") if task.nil?
+
+    Assessor::Response.create(assessor_task_id: task.id, subtask: subtask, content: message, status: "fetched")
+  end
+
   def handle
 
     self.status = "processing"
