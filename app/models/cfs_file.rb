@@ -3,6 +3,8 @@ require 'set'
 
 class CfsFile < ApplicationRecord
 
+  AWS_S3_MD5_SIZE_LIMIT = 5*(2^20) # 5 MB
+
   include Eventable
   include CascadedEventable
   include CascadedRedFlaggable
@@ -145,7 +147,10 @@ class CfsFile < ApplicationRecord
     self.cfs_directory.ancestors_and_self
   end
 
-  # depends on rclone mount
+  # md5 checksum value is set if this file is smaller than 5 MB (the size limit for aws s3 etag being the md5 checksum)
+  # md5 checksum value is not set if this file is larger than 5 MB, and is set later after processing by Assessor
+  # initial value for content type is based on filename
+  # computed content type is updated after processing by the Medusa Assessor Service
   # run an initial assessment on files that need it - skip if we've already done it and the mtime hasn't changed
   def run_initial_assessment
     external_mtime = storage_root.mtime(self.key)
@@ -154,15 +159,30 @@ class CfsFile < ApplicationRecord
     #down to the second
     if self.mtime.blank? or (external_mtime > self.mtime) or (external_size != self.size)
       self.size = external_size
+      self.md5_sum = aws_etag if self.size < AWS_S3_MD5_SIZE_LIMIT
       self.mtime = external_mtime
-      computed_content_type = with_input_file do |input_file|
-        (FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(input_file) rescue 'application/octet-stream')
-      end
-      self.set_fixity(self.storage_md5_sum)
-      transaction do
-        self.content_type_name = computed_content_type
-        self.save!
-      end
+      self.content_type_name = content_type_by_filename
+      # TODO hook up fits
+      Assessor::Task.create(cfs_file_id: self.id,
+                            checksum: self.size >= AWS_S3_MD5_SIZE_LIMIT,
+                            mediatype: true,
+                            fits: false)
+                            # fits: self.fits_result.new?)
+      self.save!
+    end
+  end
+
+  def aws_etag
+    obj = self.storage_root.s3_object(self.key)
+    obj.etag.delete_prefix('"').delete_suffix('"')
+  end
+
+  def content_type_by_filename
+    content_type_set = MIME::Types.type_for(self.name.downcase)
+    if content_type_set && content_type_set.length > 0
+      return content_type_set[0].content_type
+    else
+      return 'application/octet-stream'
     end
   end
 
@@ -274,11 +294,36 @@ class CfsFile < ApplicationRecord
     end
   end
 
+  def update_md5_sum_from_assessor(new_md5_sum)
+    if (!cfs_file.md5_sum.nil?) && (cfs_file.md5_sum != new_md5_sum)
+      flag_message = "Md5 Sum changed. Old: #{self}.md5_sum} New: #{new_md5_sum}}"
+      cfs_file.red_flags.create(message: flag_message) unless self.md5_sum.blank?
+    end
+    cfs_file.update_attribute(:md5_sum, new_md5_sum) unless cfs_file.md5_sum == new_md5_sum
+  end
+
   #TODO this and the method it calls are ripe for cleaning up and possibly setting through configuration
   def update_content_type_from_fits(new_content_type_name)
     #don't update something to a less specific content type
     return if new_content_type_name == 'application/octet-stream' and content_type_name.present?
     return if new_content_type_name == 'text/plain' and content_type_name.present? and content_type_name.start_with?('text/')
+    if content_type_name != new_content_type_name
+      #For this one we don't report a red flag if this is the first generation of
+      #the fits xml overwriting the content type found by the 'file' command
+      if content_type.present? and !fits_result.new? and !expected_content_type_change?(content_type_name, new_content_type_name)
+        self.red_flags.create(message: "Content Type changed. Old: #{content_type_name} New: #{new_content_type_name}")
+      end
+      self.content_type_name = new_content_type_name
+    end
+  end
+
+  def update_content_type_from_assessor(new_content_type_name)
+
+    #don't update something to a less specific content type
+    return if new_content_type_name == 'application/octet-stream' && content_type_name.present?
+
+    return if new_content_type_name == 'text/plain' && content_type_name.present? && content_type_name.start_with?('text/')
+
     if content_type_name != new_content_type_name
       #For this one we don't report a red flag if this is the first generation of
       #the fits xml overwriting the content type found by the 'file' command

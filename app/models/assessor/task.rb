@@ -56,6 +56,7 @@ class Assessor::Task < ApplicationRecord
   end
 
   def command_string
+
     str_arr = ["Assessor.assess #{subtask_array_string}",
                ", '",
                cfs_file.id.to_s,
@@ -63,6 +64,8 @@ class Assessor::Task < ApplicationRecord
                cfs_file.storage_root.bucket,
                "', '",
                cfs_file.key,
+               "', '",
+               cfs_file.fits_result.storage_key,
                "'"]
     str_arr.join
   end
@@ -85,7 +88,5 @@ class Assessor::Task < ApplicationRecord
 
     task_list.task_arns
   end
-
-
 
 end

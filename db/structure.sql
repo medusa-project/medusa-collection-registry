@@ -1476,7 +1476,8 @@ CREATE TABLE public.assessor_responses (
     success boolean,
     content text,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    status character varying
 );
 
 
@@ -7972,6 +7973,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210813203918'),
 ('20220120203756'),
 ('20220120205207'),
-('20220120214651');
+('20220120214651'),
+('20220204220447');
 
 

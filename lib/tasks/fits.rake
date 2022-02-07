@@ -9,6 +9,7 @@ namespace :fits do
 
   DEFAULT_FITS_BATCH_SIZE = 1000
   FITS_STOP_FILE = File.join(Rails.root, 'fits_stop.txt')
+
   desc "Run fits on a number of currently unchecked files. [FITS_]BATCH_SIZE sets number (default #{DEFAULT_FITS_BATCH_SIZE})"
   task run_batch: :environment do
     batch_size = (ENV['FITS_BATCH_SIZE'] || ENV['BATCH_SIZE'] || DEFAULT_FITS_BATCH_SIZE).to_i
@@ -59,6 +60,12 @@ namespace :fits do
     report_errors(handle_incoming_messages) if incoming_message_count > 0
   end
 
+  desc "Handle incoming fits messages."
+  task handle_incoming_messages: :environment do
+    report_errors(handle_incoming_messages) if incoming_message_count > 0
+  end
+
+
   MAX_SLEEPS = 12
   SLEEP_TIME = 10
   #return a hash of any errors
@@ -107,7 +114,7 @@ namespace :fits do
       errors.each do |id, error|
         error_string.puts "#{id}: #{error}"
       end
-      GenericErrorMailer.error(error_string.string, subject: 'FITS AMQP batch error').deliver_now
+      GenericErrorMailer.error(error_string.string, subject: 'FITS batch error').deliver_now
     end
   end
 
