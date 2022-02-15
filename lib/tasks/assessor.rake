@@ -3,6 +3,11 @@ require 'json'
 
 namespace :assessor do
 
+  desc "initiate a batch of tasks"
+  task initiate_task_batch: :environment do
+    Assessor::Task.initiate_task_batch
+  end
+
   desc "fetch messages from Asessor"
   task fetch_messages: :environment do
     response = Assessor::Response.fetch_message
