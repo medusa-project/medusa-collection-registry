@@ -111,6 +111,7 @@ Then(/^the file group titled '([^']*)' should have a cfs file for the path '([^'
   end
 end
 
+=begin
 Then(/^the file group titled '([^']*)' should have a cfs file for the path '([^']*)' matching '([^']*)'$/) do |title, path, text|
   with_cfs_file_at_path_for_file_group_titled(path, title) do |cfs_file, file_group|
     expect(cfs_file).not_to be_nil
@@ -120,6 +121,7 @@ Then(/^the file group titled '([^']*)' should have a cfs file for the path '([^'
     expect(file_content).to match(text)
   end
 end
+=end
 
 Then(/^the file group titled '([^']*)' should have a cfs directory for the path '([^']*)'$/) do |title, path|
   file_group = FileGroup.find_by(title: title)

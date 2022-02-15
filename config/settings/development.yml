@@ -148,6 +148,7 @@ storage:
     :name: main_storage
     :type: filesystem
     :path: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-dev
+    # rclone mount use deprecated
   #For some operations if the main bucket is S3, it is useful and much more efficient to have this
   #bucket also mounted via 'rclone mount'. If that is done, configure a filesystem root under
   #the main_root_rclone key. For example, FITS generation and running 'file' are much

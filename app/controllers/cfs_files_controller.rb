@@ -47,8 +47,12 @@ class CfsFilesController < ApplicationController
     filename = URI.encode(@file.name)
     if current_user.present?
       authorize!(:download, @file.file_group)
-      @file.with_input_file do |input_file|
-        send_file input_file, type: safe_content_type(@file), disposition: 'attachment', filename: filename
+      if @file.storage_root.root_type == :filesystem
+        @file.with_input_file do |input_file|
+          send_file input_file, type: safe_content_type(@file), disposition: 'attachment', filename: filename
+        end
+      else
+        redirect_to(cfs_file_download_link(@file))
       end
     else
       #basic auth
@@ -68,9 +72,19 @@ class CfsFilesController < ApplicationController
     authorize! :download, @file.file_group
     #disposition_string = disposition('inline', @file)
     filename = URI.encode(@file.name)
-    @file.with_input_file do |input_file|
-      send_file input_file, type: safe_content_type(@file), disposition: 'inline', filename: filename
+
+    case cfs_file.storage_root.root_type
+    when :filesystem
+      @file.with_input_file do |input_file|
+        send_file input_file, type: safe_content_type(@file), disposition: 'inline', filename: filename
+      end
+    when :s3
+      cfs_file.storage_root.presigned_get_url(cfs_file.key, response_content_disposition: disposition('inline', cfs_file),
+                                              response_content_type: safe_content_type(cfs_file))
+    else
+      raise "Unrecognized storage root type #{cfs_file.storage_root.type}"
     end
+
   end
 
   def preview_iiif_image
@@ -87,9 +101,18 @@ class CfsFilesController < ApplicationController
 
   def preview_content
     authorize! :download, @file.file_group
-    @file.with_input_file do |input_file|
-      send_file input_file, type: safe_content_type(@file), disposition: 'inline', range: true, buffer_size: 100000
+    case cfs_file.storage_root.root_type
+    when :filesystem
+      @file.with_input_file do |input_file|
+        send_file input_file, type: safe_content_type(@file), disposition: 'inline', range: true, buffer_size: 100000
+      end
+    when :s3
+      cfs_file.storage_root.presigned_get_url(cfs_file.key, response_content_disposition: disposition('inline', cfs_file),
+                                              response_content_type: safe_content_type(cfs_file))
+    else
+      raise "Unrecognized storage root type #{cfs_file.storage_root.type}"
     end
+
   end
 
   def preview_pdf

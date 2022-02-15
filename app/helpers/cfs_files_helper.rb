@@ -18,9 +18,22 @@ module CfsFilesHelper
   end
 
   def raw_text_preview
-    cfs_file.with_input_io do |io|
-      io.readline(nil, 500)
+    max_bytes = 2000
+    bytes_to_get = min(cfs_file.size, max_bytes)
+    preview = 'error getting text preview'
+
+    case cfs_file.storage_root.root_type
+    when :filesystem
+      File.open(filepath) do |file|
+        preview = file.read(bytes_to_get)
+      end
+    when :s3
+      preview = cfs_file.storage_root.get_bytes(cfs_file.key, 0, bytes_to_get)
+    else
+      raise "Unrecognized storage root type #{cfs_file.storage_root.type}"
     end
+    return preview
+
   rescue StandardError
     'error getting text preview'
   end

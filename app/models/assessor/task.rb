@@ -43,6 +43,25 @@ class Assessor::Task < ApplicationRecord
     update(sent_at: Time.current)
   end
 
+  def complete?
+    return false if self.checksum == true && !subtask_complete?("checksum")
+
+    return false if self.mediatype == true && !subtask_complete?("mediatype")
+
+    return false if self.fits == true && !subtask_complete?("fits")
+
+    true
+  end
+
+  def subtask_complete?(subtask)
+    responses = task.assessor_responses.where(task.subtask = subtask)
+    return false if responses.count.zero?
+
+    responses.each { |response| return true if response.status == "handled" }
+
+    false
+  end
+
   def cfs_file
     CfsFile.find_by(id: self.cfs_file_id)
   end

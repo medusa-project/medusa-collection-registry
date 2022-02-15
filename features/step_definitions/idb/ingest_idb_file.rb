@@ -34,6 +34,7 @@ When(/^the IDB ingest delayed job is run$/) do
   AmqpAccrual::IngestJob.where(client: 'idb').first.perform
 end
 
+=begin
 Then(/^the IDB file named '(.*)' should be present in medusa storage$/) do |file_name|
   expect(AmqpAccrual::Config.file_group('idb').total_files).to eq(1)
   AmqpAccrual::Config.cfs_directory('idb').each_file_in_tree do |file|
@@ -47,6 +48,7 @@ Then(/^the IDB file named '(.*)' should be present in medusa storage$/) do |file
   expect(file).to be_a(CfsFile)
   expect(file.events.where(key: 'amqp_accrual').count).to eq(1)
 end
+=end
 
 And(/^Medusa should have sent an ingest return message to IDB$/) do
   AmqpHelper::Connector[:medusa].with_message(AmqpAccrual::Config.outgoing_queue('idb')) do |raw_message|

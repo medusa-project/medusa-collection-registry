@@ -21,6 +21,8 @@ class CfsFileTest < ActiveSupport::TestCase
     extensions.each {|extension| assert FileExtension.find_by(extension: extension)}
   end
 
+  #deprecating - not doing fixity this way anymore
+=begin
   test 'cfs file updates fixity status to ok' do
     [nil, '254e6fa26f5fce3ef58bdc3358d06886'].each do |md5_sum|
       cfs_file = FactoryBot.create(:cfs_file, md5_sum: md5_sum)
@@ -31,7 +33,10 @@ class CfsFileTest < ActiveSupport::TestCase
       assert_equal 'ok', cfs_file.fixity_check_status
     end
   end
+=end
 
+  # deprecating test because we are not doing fixity checks this way anymore
+=begin
   test 'cfs file update fixity status to bad' do
     cfs_file = FactoryBot.create(:cfs_file, md5_sum: '123456a26f5fce3ef58bdc3358d06886')
     cfs_file.stubs(:storage_md5_sum).returns('254e6fa26f5fce3ef58bdc3358d06886')
@@ -43,6 +48,7 @@ class CfsFileTest < ActiveSupport::TestCase
     end
     assert_equal 'bad', cfs_file.fixity_check_status
   end
+=end
 
   test 'cfs file update fixity status when not found' do
     cfs_file = FactoryBot.create(:cfs_file)

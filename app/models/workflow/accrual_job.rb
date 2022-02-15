@@ -354,6 +354,12 @@ class Workflow::AccrualJob < Workflow::Base
 
   # Are there any initial directory assessments belonging to a subdirectory of this accrual jobs cfs directory?
   def has_pending_assessments?
+
+    cfs_directory.each_file_in_tree.each do |file|
+      assessor_tasks = Assessor::Task.where(cfs_file_id: file.id)
+      assessor_tasks.each { |task| return true unless task.complete? }
+    end
+
     transaction do
       subdirectory_ids = cfs_directory.recursive_subdirectory_ids.to_set
       possible_assessment_job_ids = Job::CfsInitialDirectoryAssessment.where(file_group_id: cfs_directory.file_group.id).pluck(:cfs_directory_id).to_set

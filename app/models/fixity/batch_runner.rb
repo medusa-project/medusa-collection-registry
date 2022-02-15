@@ -1,3 +1,5 @@
+# deprecated -- not doing fixity this way anymore
+=begin
 require 'fileutils'
 
 class Fixity::BatchRunner
@@ -105,3 +107,4 @@ class Fixity::BatchRunner
   end
 
 end
+=end

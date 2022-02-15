@@ -96,11 +96,13 @@ class CfsFile < ApplicationRecord
     storage_root.delete_content(self.key)
   end
 
-  # depends on rclone mount
-  #wrap the storage root's ability to yield a file path having the appropriate content in it
+  # wrap the storage root's ability to yield a file path having the appropriate content in it
+  # Use only for filesystem type roots
   # Use only for reading
   def with_input_file
-    read_only_storage_root.with_input_file(self.key, tmp_dir: tmpdir_for_with_input_file) do |file|
+    raise StandardError.new("storage_root must be of filesystem type") unless storage_root.root_type == :filesystem
+
+    storage_root.with_input_file(self.key, tmp_dir: tmpdir_for_with_input_file) do |file|
       yield file
     end
   end
@@ -117,30 +119,36 @@ class CfsFile < ApplicationRecord
     end
   end
 
+  # depends on rclone mount - deprecated
   #wrap the storage root's ability to yield an io on the content. Use only for reading
+=begin
   def with_input_io
     read_only_storage_root.with_input_io(self.key) do |io|
       yield io
     end
   end
+=end
 
   def storage_root
     Application.storage_manager.main_root
   end
 
-  # depends on rclone mount
+  # depends on rclone mount - deprecated
+=begin
   def rclone_storage_root
     Application.storage_manager.main_root_rclone
   end
+=end
 
-  # depends on rclone mount
+  # depends on rclone mount - deprecated
+=begin
   def read_only_storage_root
-    #TODO remove rclone dependency
     #TODO this first line is only to work around a current 'rclone mount' bug. When that is fixed,
     # it can be removed.
     return storage_root if size.present? and size.zero?
     rclone_storage_root || storage_root
   end
+=end
 
   #the directories leading up to the file
   def ancestors
@@ -162,12 +170,11 @@ class CfsFile < ApplicationRecord
       self.md5_sum = aws_etag if self.size < AWS_S3_MD5_SIZE_LIMIT
       self.mtime = external_mtime
       self.content_type_name = content_type_by_filename
-      # TODO hook up fits
+      # since md5 is calculated with fits, and we are waiting for fits, no need to be redundant
       Assessor::Task.create(cfs_file_id: self.id,
-                            checksum: self.size >= AWS_S3_MD5_SIZE_LIMIT,
+                            checksum: false,
                             mediatype: true,
-                            fits: false)
-                            # fits: self.fits_result.new?)
+                            fits: self.fits_result.new?)
       self.save!
     end
   end
@@ -205,14 +212,13 @@ class CfsFile < ApplicationRecord
     self.fixity_check_time = Time.now
   end
 
-  def update_fixity_status_with_event(md5sum: nil, actor_email: nil)
+  def update_fixity_status_with_event(md5sum:, actor_email: nil)
     update_fixity_status_not_found_with_event(actor_email: actor_email) and return unless exists_on_storage?
-    md5sum ||= self.storage_md5_sum
     if self.md5_sum.present?
       if self.md5_sum == md5sum
         update_fixity_status_ok
       else
-        update_fixity_status_bad_with_event(actor_email: actor_email)
+        update_fixity_status_bad_with_event(md5sum: md5sum, actor_email: actor_email)
       end
     else
       update_fixity_status_ok
@@ -227,12 +233,12 @@ class CfsFile < ApplicationRecord
     end
   end
 
-  def update_fixity_status_bad_with_event(actor_email: nil)
+  def update_fixity_status_bad_with_event(md5sum:, actor_email: nil)
     actor_email ||= MedusaBaseMailer.admin_address
     transaction do
       fixity_check_results.create!(status: :bad)
       create_fixity_event(cascadable: true, note: 'FAILED', actor_email: actor_email)
-      red_flags.create!(message: "Md5 Sum changed. Recorded: #{md5_sum} Current: #{storage_md5_sum}. Cfs File Id: #{self.id}")
+      red_flags.create!(message: "Md5 Sum changed. Recorded: #{md5_sum} Current: #{md5sum}. Cfs File Id: #{self.id}")
       set_fixity_status('bad')
       save!
     end
@@ -354,10 +360,10 @@ class CfsFile < ApplicationRecord
     end
   end
 
-  # depends on rclone mount
-  def storage_md5_sum
-    read_only_storage_root.hex_md5_sum(self.key)
-  end
+  # depends on rclone mount - deprecated
+  # def storage_md5_sum
+  #   read_only_storage_root.hex_md5_sum(self.key)
+  # end
 
   def ensure_current_file_extension
     self.file_extension = FileExtension.ensure_for_name(self.name)
@@ -457,7 +463,8 @@ class CfsFile < ApplicationRecord
 
   protected
 
-  # depends on rclone mount
+  # depends on rclone mount - deprecated
+=begin
   def get_fits_xml
     with_input_file do |input_file|
       uri = URI(File.join(Settings.fits.server_url, 'fits/file'))
@@ -473,6 +480,7 @@ class CfsFile < ApplicationRecord
       end
     end
   end
+=end
 
   def self.random
     self.offset(rand(self.fast_count)).first
