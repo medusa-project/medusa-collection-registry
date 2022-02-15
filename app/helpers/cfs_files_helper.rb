@@ -13,14 +13,15 @@ module CfsFilesHelper
       candidate_string.encode('UTF-8', invalid: :replace, undef: :replace)
     end
     candidate_string
-  rescue StandardError
-    'error encoding text preview'
+  rescue StandardError => error
+    #TODO remove debug display
+    "error encoding text preview: #{error.message}"
   end
 
   def raw_text_preview
     max_bytes = 2000
     bytes_to_get = [cfs_file.size, max_bytes].min
-    preview = 'error getting text preview'
+    preview = "Unexpected storage root type #{cfs_file.storage_root.type}"
 
     case cfs_file.storage_root.root_type
     when :filesystem
@@ -34,8 +35,9 @@ module CfsFilesHelper
     end
     return preview
 
-  rescue StandardError
-    'error getting text preview'
+  rescue StandardError => error
+    #TODO remove debug display
+    "error getting text preview: #{error.message}"
   end
 
   def preview_view(cfs_file)
