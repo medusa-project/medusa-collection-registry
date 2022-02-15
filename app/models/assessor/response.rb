@@ -12,7 +12,6 @@ class Assessor::Response < ApplicationRecord
     return nil if response.data.messages.count.zero?
 
     message = JSON.parse(response.data.messages[0].body)
-    puts message
 
     SQS.delete_message({queue_url: QUEUE_URL, receipt_handle: response.data.messages[0].receipt_handle})
     file_identifier = message["file_identifier"]
@@ -37,7 +36,7 @@ class Assessor::Response < ApplicationRecord
     task = Assessor::Task.find_by(id: passthrough["medusa_assessor_task"])
     raise StandardError.new("cannot find task for response: #{message}") if task.nil?
 
-    Assessor::Response.create(assessor_task_id: task.id, subtask: subtask, content: message, status: "fetched")
+    Assessor::Response.create(assessor_task_id: task.id, subtask: subtask, content: message.to_json, status: "fetched")
   end
 
   def handle
@@ -45,7 +44,9 @@ class Assessor::Response < ApplicationRecord
     self.status = "processing"
     self.save!
 
-    cfs_file = CfsFile.find_by(id: self.cfs_file_id)
+    message = JSON.parse(self.content)
+
+    cfs_file = CfsFile.find_by(id: message["file_identifier"])
     raise StandardError.new("no CfsFile found for assessor message: #{self.content}") unless cfs_file
 
     case self.subtask
@@ -65,7 +66,7 @@ class Assessor::Response < ApplicationRecord
       raise StandardError.new("Error response from Medusa Assessor Service: #{self.content}")
     end
     sunspot.commit
-    # maybe delete instead of change status ?
+    # TODO maybe delete instead of change status ?
     self.status = "handled"
     self.save!
   end

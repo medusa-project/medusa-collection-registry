@@ -8,10 +8,12 @@ namespace :assessor do
     Assessor::Task.initiate_task_batch
   end
 
-  desc "fetch messages from Asessor"
+  desc "fetch messages"
   task fetch_messages: :environment do
     response = Assessor::Response.fetch_message
-    fetch_messages unless response.nil?
+    while response != nil
+      response = Assessor::Response.fetch_messages
+    end
   end
 
   desc "handle fetched messages"
