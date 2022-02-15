@@ -31,7 +31,7 @@ module Preview
     end
 
     def iiif_base_url
-      image_server_base_url = "http://#{iiif_host}:#{iiif_port}/#{image_server_config[:root]}"
+      image_server_base_url = "https://#{iiif_host}:#{iiif_port}/#{image_server_config[:root]}"
       "#{image_server_base_url}/#{CGI.escape(cfs_file.relative_path)}"
     end
 

@@ -78,6 +78,8 @@ class Assessor::Task < ApplicationRecord
 
     str_arr = ["Assessor.assess #{subtask_array_string}",
                ", '",
+               {"medusa_assessor_task": self.id}.to_json,
+               ", '",
                cfs_file.id.to_s,
                "', '",
                cfs_file.storage_root.bucket,

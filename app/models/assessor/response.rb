@@ -32,7 +32,9 @@ class Assessor::Response < ApplicationRecord
       subtask = "error"
     end
 
-    task = Assessor::Task.find_by(cfs_file_id: cfs_file_id)
+    passthrough = JSON.parse(message["passthrough"])
+
+    task = Assessor::Task.find_by(passthrough["medusa_assessor_task"])
     raise StandardError.new("cannot find task for response: #{message}") if task.nil?
 
     Assessor::Response.create(assessor_task_id: task.id, subtask: subtask, content: message, status: "fetched")
