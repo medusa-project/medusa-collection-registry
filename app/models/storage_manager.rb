@@ -1,11 +1,10 @@
 class StorageManager
 
-  attr_accessor :main_root, :main_root_rclone, :main_root_backup, :amqp_roots, :project_staging_root, :accrual_roots,
+  attr_accessor :main_root, :main_root_backup, :amqp_roots, :project_staging_root, :accrual_roots,
                 :fits_root, :tmpdir, :globus_endpoints, :reports_root
 
   def initialize
     initialize_main_storage
-    initialize_main_storage_rclone
     initialize_main_storage_backup
     initialize_amqp_storage
     initialize_project_staging_storage
@@ -19,15 +18,6 @@ class StorageManager
   def initialize_main_storage
     root_config = Settings.storage.main_root.to_h
     self.main_root = MedusaStorage::RootFactory.create_root(root_config)
-  end
-
-  def initialize_main_storage_rclone
-    if Settings.storage.main_root_rclone.present?
-      rclone_config = Settings.storage.main_root_rclone.to_h
-      self.main_root_rclone = MedusaStorage::RootFactory.create_root(rclone_config)
-    else
-      self.main_root_rclone = nil
-    end
   end
 
   def initialize_main_storage_backup
