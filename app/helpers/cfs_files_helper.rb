@@ -5,7 +5,7 @@ module CfsFilesHelper
   module_function
 
   def text_preview(cfs_file)
-    candidate_string = raw_text_preview
+    candidate_string = raw_text_preview(cfs_file)
     if candidate_string.encoding == Encoding::ASCII_8BIT
       candidate_string.force_encoding(Encoding::UTF_8)
     end
@@ -18,7 +18,7 @@ module CfsFilesHelper
     "error encoding text preview: #{error.message}"
   end
 
-  def raw_text_preview
+  def raw_text_preview(cfs_file)
     max_bytes = 2000
     bytes_to_get = [cfs_file.size, max_bytes].min
     preview = "Unexpected storage root type #{cfs_file.storage_root.type}"
