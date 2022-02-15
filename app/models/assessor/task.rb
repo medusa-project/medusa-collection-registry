@@ -1,6 +1,6 @@
 class Assessor::Task < ApplicationRecord
   belongs_to :cfs_file
-  has_many :assessor_responses, class_name: 'Assessor::Response', dependent: :destroy
+  has_many :assessor_responses, class_name: 'Assessor::Response', dependent: :destroy, foreign_key: "assessor_task_id"
 
   CLUSTER = Settings.assessor.cluster
   ECS_CLIENT = ContainerManager.instance.ecs_client
