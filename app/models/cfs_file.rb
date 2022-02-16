@@ -282,7 +282,7 @@ class CfsFile < ApplicationRecord
     if !self.md5_sum.nil? && self.md5_sum != new_md5_sum
       self.red_flags.create(message: "Md5 Sum changed. Old: #{self}.md5_sum} New: #{new_md5_sum}}") unless self.md5_sum.blank?
     end
-    self.md5_sum = new_md5_sum unless self.md5_sum == new_md5_sum
+    self.set_fixity(new_md5_sum)
   end
 
   def update_md5_sum_from_assessor(new_md5_sum)
