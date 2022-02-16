@@ -65,7 +65,7 @@ class Assessor::Response < ApplicationRecord
     else
       raise StandardError.new("Error response from Medusa Assessor Service: #{self.content}")
     end
-    sunspot.commit
+    Sunspot.commit
     # TODO maybe delete instead of change status ?
     self.status = "handled"
     self.save!
