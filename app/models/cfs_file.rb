@@ -260,27 +260,12 @@ class CfsFile < ApplicationRecord
     events.create!(params)
   end
 
-  def ensure_fits_xml
-    self.update_fits_xml unless fits_serialized
-  end
-
-  def ensure_fits_xml_for_large_file
-    self.delay(priority: Settings.delayed_job.priority.large_file_fits).ensure_fits_xml if
-        !fits_serialized? and self.size.present? and self.size > Settings.classes.cfs_file.large_file_fits_cutoff_size
-  end
-
-  def update_fits_xml(xml: nil)
-    xml ||= get_fits_xml
-    self.fits_xml = xml
-    self.update_fields_from_fits
-    self.save!
-  end
-
   def update_fields_from_fits
     doc = Nokogiri::XML::Document.parse(self.fits_xml)
     update_size_from_fits(doc.at_css('fits fileinfo size').text.to_d)
     update_md5_sum_from_fits(doc.at_css('fits fileinfo md5checksum').text)
     update_content_type_from_fits(doc.at_css('fits identification identity')['mimetype'])
+    self.save!
   rescue Exception
     Rails.logger.error("*********** Couldn't update cfs file #{self.id} from FITS: #{self.fits_xml}")
     raise
@@ -294,21 +279,18 @@ class CfsFile < ApplicationRecord
   end
 
   def update_md5_sum_from_fits(new_md5_sum)
-    if self.md5_sum.nil?
-      self.md5_sum = new_md5_sum
-    elsif self.md5_sum != new_md5_sum
+    if !self.md5_sum.nil? && self.md5_sum != new_md5_sum
       self.red_flags.create(message: "Md5 Sum changed. Old: #{self}.md5_sum} New: #{new_md5_sum}}") unless self.md5_sum.blank?
-      self.md5_sum = new_md5_sum
     end
+    self.md5_sum = new_md5_sum unless self.md5_sum == new_md5_sum
   end
 
   def update_md5_sum_from_assessor(new_md5_sum)
-    if (!cfs_file.md5_sum.nil?) && (cfs_file.md5_sum != new_md5_sum)
+    if (!self.md5_sum.nil?) && (self.md5_sum != new_md5_sum)
       flag_message = "Md5 Sum changed. Old: #{self}.md5_sum} New: #{new_md5_sum}}"
-      cfs_file.red_flags.create(message: flag_message) unless self.md5_sum.blank?
+      self.red_flags.create(message: flag_message) unless self.md5_sum.blank?
     end
-    cfs_file.update_attribute(:md5_sum, new_md5_sum) unless cfs_file.md5_sum == new_md5_sum
-    Sunspot.commit
+    self.update_attribute(:md5_sum, new_md5_sum) unless self.md5_sum == new_md5_sum
   end
 
   #TODO this and the method it calls are ripe for cleaning up and possibly setting through configuration

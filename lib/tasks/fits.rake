@@ -49,23 +49,30 @@ namespace :fits do
     Sunspot.commit
   end
 
+=begin
   desc "Run fits via AMQP on a number of currently unchecked files. [FITS_]BATCH_SIZE sets number (default #{DEFAULT_FITS_BATCH_SIZE})"
   task run_amqp_batch: :environment do
     request_fits_amqp if outgoing_message_count.zero? and incoming_message_count.zero?
     report_errors(handle_incoming_messages) if incoming_message_count > 0
   end
+=end
 
+=begin
   desc "Handle incoming fits amqp messages."
   task handle_incoming_amqp_messages: :environment do
     report_errors(handle_incoming_messages) if incoming_message_count > 0
   end
+=end
 
+=begin
   desc "Handle incoming fits messages."
   task handle_incoming_messages: :environment do
     report_errors(handle_incoming_messages) if incoming_message_count > 0
   end
+=end
 
 
+=begin
   MAX_SLEEPS = 12
   SLEEP_TIME = 10
   #return a hash of any errors
@@ -106,7 +113,9 @@ namespace :fits do
     Sunspot.commit
     return errors
   end
+=end
 
+=begin
   def report_errors(errors)
     if errors.present?
       error_string = StringIO.new
@@ -117,16 +126,22 @@ namespace :fits do
       GenericErrorMailer.error(error_string.string, subject: 'FITS batch error').deliver_now
     end
   end
+=end
 
+=begin
   def incoming_message_count
     amqp_connector.with_queue(Settings.fits.incoming_queue) {|q| q.message_count}
   end
+=end
 
+=begin
   def outgoing_message_count
     amqp_connector.with_queue(Settings.fits.outgoing_queue) {|q| q.message_count}
   end
+=end
 
   #returns number of requests sent
+=begin
   def request_fits_amqp
     batch_size = (ENV['FITS_BATCH_SIZE'] || ENV['BATCH_SIZE'] || DEFAULT_FITS_BATCH_SIZE).to_i
     count = 0 #keep separately, since we might not get batch_size
@@ -138,12 +153,15 @@ namespace :fits do
     end
     return count
   end
+=end
 
+=begin
   def fits_request(cfs_file)
     {action: 'fits',
      pass_through: {cfs_file_id: cfs_file.id},
      parameters: {path: cfs_file.relative_path}}
   end
+=end
 
 end
 
