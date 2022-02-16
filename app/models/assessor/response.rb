@@ -51,8 +51,8 @@ class Assessor::Response < ApplicationRecord
 
     case self.subtask
     when "fits"
-      fits_result = FitsResult.new(cfs_file: cfs_file)
-      raise StandardError.new("fits file not found Assessor::Response #{self.id.to_s}") if fits_result.new?
+
+      raise StandardError.new("fits file not found after success assessor response") if cfs_file.fits_result.new?
 
       cfs_file.update_attribute(:fits_serialized, true)
       cfs_file.update_fields_from_fits

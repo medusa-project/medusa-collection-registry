@@ -12,7 +12,7 @@ namespace :assessor do
   task fetch_messages: :environment do
     response = Assessor::Response.fetch_message
     while response != nil
-      response = Assessor::Response.fetch_messages
+      response = Assessor::Response.fetch_message
     end
   end
 
