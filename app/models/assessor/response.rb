@@ -58,8 +58,8 @@ class Assessor::Response < ApplicationRecord
       cfs_file.update_fields_from_fits
     when "checksum"
       new_md5_sum = message["CHECKSUM"]
-      cfs_file.update_md5_sum_from_assessor(new_md5_sum)
       cfs_file.set_fixity(new_md5_sum)
+      cfs_file.save
     when "mediatype"
       new_content_type_name = message["CONTENT_TYPE"]
       cfs_file.update_content_type_from_assessor(new_content_type_name)
