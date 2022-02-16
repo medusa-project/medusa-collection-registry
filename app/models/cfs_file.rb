@@ -294,7 +294,9 @@ class CfsFile < ApplicationRecord
   end
 
   def update_md5_sum_from_fits(new_md5_sum)
-    if self.md5_sum != new_md5_sum
+    if self.md5_sum.nil?
+      self.md5_sum = new_md5_sum
+    elsif self.md5_sum != new_md5_sum
       self.red_flags.create(message: "Md5 Sum changed. Old: #{self}.md5_sum} New: #{new_md5_sum}}") unless self.md5_sum.blank?
       self.md5_sum = new_md5_sum
     end
@@ -306,6 +308,7 @@ class CfsFile < ApplicationRecord
       cfs_file.red_flags.create(message: flag_message) unless self.md5_sum.blank?
     end
     cfs_file.update_attribute(:md5_sum, new_md5_sum) unless cfs_file.md5_sum == new_md5_sum
+    Sunspot.commit
   end
 
   #TODO this and the method it calls are ripe for cleaning up and possibly setting through configuration
