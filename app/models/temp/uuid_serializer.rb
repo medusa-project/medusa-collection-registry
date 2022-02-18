@@ -25,6 +25,8 @@ module Temp
         directory_hash[path_from_root(directory.relative_path, root_path)] = directory.uuid
       end
       root_directory.each_file_in_tree do |file|
+        next if file.nil?
+
         file_hash[path_from_root(file.relative_path, root_path)] = file.uuid
       end
       File.open(file_name, 'w') do |f|
@@ -58,6 +60,8 @@ module Temp
           end
         end
         root_directory.each_file_in_tree do |file|
+          next if file.nil?
+
           FileGroup.transaction do
             new_uuid = uuids['files'][path_from_root(file.relative_path, root_path)]
             if new_uuid
