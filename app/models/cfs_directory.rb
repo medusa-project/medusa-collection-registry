@@ -188,6 +188,14 @@ class CfsDirectory < ApplicationRecord
     end
   end
 
+  def recursive_cfs_file_ids
+    CfsFile.where(cfs_directory_id: recursive_subdirectory_ids).pluck(:id)
+  end
+
+  def incomplete_task_count
+    Assessor::Task.where(cfs_file_id: recursive_cfs_file_ids).select(&:incomplete).count
+  end
+
   def timeline_directory_ids
     recursive_subdirectory_ids
   end

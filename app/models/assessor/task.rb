@@ -53,6 +53,10 @@ class Assessor::Task < ApplicationRecord
     true
   end
 
+  def incomplete?
+    !complete?
+  end
+
   def subtask_complete?(subtask)
     responses = self.assessor_responses.where(subtask: subtask)
     return false if responses.count.zero?
