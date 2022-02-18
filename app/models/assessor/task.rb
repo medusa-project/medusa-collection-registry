@@ -54,7 +54,7 @@ class Assessor::Task < ApplicationRecord
   end
 
   def subtask_complete?(subtask)
-    responses = self.assessor_responses.where(self.subtask = subtask)
+    responses = self.assessor_responses.where(subtask: subtask)
     return false if responses.count.zero?
 
     responses.each { |response| return true if response.status == "handled" }
