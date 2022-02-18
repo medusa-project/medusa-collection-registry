@@ -284,7 +284,7 @@ class CfsDirectory < ApplicationRecord
   def each_file_in_tree
     self.directories_in_tree.find_each do |directory|
       directory.cfs_files.find_each do |cfs_file|
-        yield cfs_file
+        yield cfs_file unless cfs_file.nil?
       end
     end
   end

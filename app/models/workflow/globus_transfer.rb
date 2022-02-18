@@ -6,7 +6,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
   belongs_to :workflow_accrual_key, :class_name => 'Workflow::AccrualKey', foreign_key: 'workflow_accrual_key_id'
   API_BASE = 'https://transfer.api.globus.org/v0.10'
   def submit
-    sleep(2)
+    sleep(1)
     begin
       bearer_token = Workflow::GlobusTransfer.bearer_token
 
@@ -46,7 +46,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
                                             headers: { 'Authorization' => "Bearer #{bearer_token}",
                                                        'Content-Type' => 'application/json' })
           next if transfer_response != 409
-          sleep(30)
+          sleep(60)
         end
       end
 

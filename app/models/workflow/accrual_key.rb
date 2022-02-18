@@ -7,6 +7,10 @@ class Workflow::AccrualKey < ApplicationRecord
     where(copy_requested: false)
   end
 
+  def self.copy_requested
+    where(copy_requested: true)
+  end
+
   def self.has_error
     where('error IS NOT NULL')
   end
