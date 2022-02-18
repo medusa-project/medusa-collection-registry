@@ -283,8 +283,11 @@ class CfsDirectory < ApplicationRecord
   #yield each file in the tree to the block
   def each_file_in_tree
     self.directories_in_tree.find_each do |directory|
+      next if directory.nil?
       directory.cfs_files.find_each do |cfs_file|
-        yield cfs_file unless cfs_file.nil?
+        next if cfs_file.nil?
+
+        yield cfs_file if block_given?
       end
     end
   end
