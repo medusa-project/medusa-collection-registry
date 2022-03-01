@@ -37,6 +37,7 @@ gem 'ruby-filemagic'
 gem "jquery-datatables-rails"
 gem "jquery-rails"
 gem "jquery-ui-rails"
+gem "babel"
 gem "babel-transpiler"
 gem "babel-source"
 gem 'amq-protocol'

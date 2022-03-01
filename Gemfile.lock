@@ -1153,6 +1153,8 @@ GEM
     aws-sigv2 (1.0.1)
     aws-sigv4 (1.2.2)
       aws-eventstream (~> 1, >= 1.0.2)
+    babel (0.1.4)
+      hoe (>= 1.1.4)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -1353,6 +1355,8 @@ GEM
     hex_string (1.0.1)
     highline (2.0.3)
     hodel_3000_compliant_logger (0.1.1)
+    hoe (3.23.1)
+      rake (>= 0.8, < 15.0)
     html2haml (2.2.0)
       erubis (~> 2.7.0)
       haml (>= 4.0, < 6)
@@ -1673,6 +1677,7 @@ DEPENDENCIES
   auto_html
   auto_strip_attributes
   aws-sdk
+  babel
   babel-source
   babel-transpiler
   bootstrap-sass
