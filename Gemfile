@@ -103,7 +103,6 @@ group :development do
   gem 'capistrano-passenger'
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
-  gem 'capistrano-yarn'
   gem 'routler'
   gem 'traceroute'
 end
