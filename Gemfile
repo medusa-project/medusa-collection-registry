@@ -32,6 +32,11 @@ gem 'ruby-filemagic'
 # hence might work with S3 better. I'm adding it in order to have it available to do some testing.
 # It actually might be used by rails itself, but I want to be explicit about it if we're using
 # it directly.
+#
+# Use jquery as the JavaScript library
+gem "jquery-datatables-rails"
+gem "jquery-rails"
+gem "jquery-ui-rails"
 gem 'amq-protocol'
 gem 'amqp_helper', '~>0.2.0', git: 'git://github.com/medusa-project/amqp_helper.git'
 gem 'aws-sdk'
