@@ -37,9 +37,6 @@ gem 'ruby-filemagic'
 gem "jquery-datatables-rails"
 gem "jquery-rails"
 gem "jquery-ui-rails"
-gem "babel"
-gem "babel-transpiler"
-gem "babel-source"
 gem 'amq-protocol'
 gem 'amqp_helper', '~>0.2.0', git: 'git://github.com/medusa-project/amqp_helper.git'
 gem 'aws-sdk'

@@ -56,7 +56,7 @@ function lookup_barcode(value) {
 }
 
 function possible_barcode(s) {
-    return _.isString(s) && s.length >= 14;
+    return (typeof s === 'string' || s instanceof String) && s.length >= 14;
 }
 
 function clear_barcode_items() {
