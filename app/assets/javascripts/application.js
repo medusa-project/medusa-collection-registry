@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require babel/transpiler
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require jquery-ui/widgets/datepicker

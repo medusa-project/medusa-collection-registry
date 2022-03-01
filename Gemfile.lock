@@ -1673,6 +1673,8 @@ DEPENDENCIES
   auto_html
   auto_strip_attributes
   aws-sdk
+  babel-source
+  babel-transpiler
   bootstrap-sass
   browser
   bunny
