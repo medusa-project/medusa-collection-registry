@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 5.1'
+gem 'rails', '~> 5.2.6.2'
 
 gem 'alma_api', git: 'https://github.com/UIUCLibrary/alma-api-batch'
 
