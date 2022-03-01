@@ -34,9 +34,17 @@ gem 'ruby-filemagic'
 # it directly.
 #
 # Use jquery as the JavaScript library
-gem "jquery-datatables-rails"
-gem "jquery-rails"
-gem "jquery-ui-rails"
+gem 'jquery-datatables-rails'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'clipboard-rails'
+gem 'chart-js-rails'
+gem 'localtime-rails'
+gem 'tinymce-rails'
+gem 'underscore-rails'
+
+
+
 gem 'amq-protocol'
 gem 'amqp_helper', '~>0.2.0', git: 'git://github.com/medusa-project/amqp_helper.git'
 gem 'aws-sdk'
