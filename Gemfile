@@ -54,7 +54,6 @@ gem 'rails-jquery-autocomplete'
 gem 'react-rails', '~> 2.4.0'
 gem 'sass-rails'
 gem 'uglifier'
-gem 'webpacker', '~> 4.x'
 
 #memory/active record usage monitoring
 gem 'draper'
