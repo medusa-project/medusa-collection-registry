@@ -2507,6 +2507,39 @@ ALTER SEQUENCE public.fixity_check_results_id_seq OWNED BY public.fixity_check_r
 
 
 --
+-- Name: identities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.identities (
+    id bigint NOT NULL,
+    name character varying,
+    email character varying,
+    password_digest character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.identities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.identities_id_seq OWNED BY public.identities.id;
+
+
+--
 -- Name: institutions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4754,6 +4787,13 @@ ALTER TABLE ONLY public.fixity_check_results ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: identities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.identities ALTER COLUMN id SET DEFAULT nextval('public.identities_id_seq'::regclass);
+
+
+--
 -- Name: institutions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5374,6 +5414,14 @@ ALTER TABLE ONLY public.fits_data
 
 ALTER TABLE ONLY public.fixity_check_results
     ADD CONSTRAINT fixity_check_results_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: identities identities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.identities
+    ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
 
 
 --
@@ -7974,6 +8022,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220120203756'),
 ('20220120205207'),
 ('20220120214651'),
-('20220204220447');
+('20220204220447'),
+('20220302205736');
 
 

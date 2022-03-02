@@ -14,10 +14,13 @@
 //= require jquery_ujs
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
-//= require jquery-ui/widgets/datepicker
-//= require jquery-ui/widgets/sortable
-//= require jquery-ui/effects/effect-highlight
 //= require bootstrap-sprockets
+//= require clipboard
+//= require Chart.min
+//= require tinymce-jquery
+//= require localtime
+//= require underscore
+//= require underscore.string
 //= require autocomplete-rails-uncompressed
 //= require common
 //= require react

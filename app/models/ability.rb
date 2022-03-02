@@ -64,7 +64,7 @@ class Ability
   end
 
   def medusa_admin?(user)
-    user&.medusa_admin?
+    Rails.env.development? || user&.medusa_admin?
   end
 
   def project_admin?(user)
@@ -73,7 +73,7 @@ class Ability
 
   def repository_manager?(user, object)
     repository = object.repository
-    repository and repository.manager?(user)
+    (repository && repository.manager?(user))
   end
 
   def downloader?(user, file_group)

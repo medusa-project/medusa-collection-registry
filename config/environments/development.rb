@@ -33,6 +33,9 @@ MedusaCollectionRegistry::Application.configure do
 
   config.eager_load = false
 
+  # See everything in the log (default is :info)
+  config.log_level = :warn
+
   config.after_initialize do
     if defined? Bullet
       Bullet.enable = true

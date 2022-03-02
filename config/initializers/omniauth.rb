@@ -5,7 +5,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     provider :shibboleth, opts.to_h.symbolize_keys
     MedusaCollectionRegistry::Application.shibboleth_host = opts.host
   else
-    provider :developer
+    provider :identity, on_failed_registration: lambda { |env|
+      IdentitiesController.action(:new).call(env)
+    }
   end
 end
 OmniAuth.config.logger = Rails.logger

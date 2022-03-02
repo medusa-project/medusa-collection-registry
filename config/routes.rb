@@ -148,6 +148,8 @@ Rails.application.routes.draw do
 
   match '/timeline', to: 'timeline#show', as: :timeline, via: :get
 
+  resources :identities
+
   namespace :workflow do
     resources 'accrual_jobs', only: [] do
       post :proceed, on: :member

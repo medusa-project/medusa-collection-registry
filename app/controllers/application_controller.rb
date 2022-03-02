@@ -23,7 +23,11 @@ class ApplicationController < ActionController::Base
   end
 
   def medusa_user?
-    logged_in? and Application.group_resolver.is_ad_user?(current_user)
+    if Rails.env.production?
+      logged_in? && Application.group_resolver.is_ad_user?(current_user)
+    else
+      logged_in?
+    end
   end
 
   def require_medusa_user
