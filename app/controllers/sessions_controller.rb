@@ -16,8 +16,8 @@ class SessionsController < ApplicationController
     if Rails.env.production?
       #auth_hash[:uid] should have the uid (for shib as configured in shibboleth.yml)
       #auth_hash[:info][:email] should have the email address
+      auth_hash = request.env['omniauth.auth']
       if auth_hash and auth_hash[:uid]
-        auth_hash = request.env['omniauth.auth']
         user = User.find_or_create_by!(uid: auth_hash[:uid], email: auth_hash[:info][:email])
         reset_ldap_cache(user)
         set_current_user(user)
