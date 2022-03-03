@@ -15,6 +15,7 @@
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require bootstrap-sprockets
+//= require bootstrap-datepicker
 //= require clipboard
 //= require Chart.min
 //= require tinymce-jquery

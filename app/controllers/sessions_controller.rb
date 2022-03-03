@@ -26,7 +26,6 @@ class SessionsController < ApplicationController
         redirect_to login_url
       end
     else
-      Rails.logger.warn "params: #{params}"
       if params.has_key?("auth_key")
         user = User.find_or_create_by!(uid: params["auth_key"], email: params["auth_key"])
         set_current_user(user)

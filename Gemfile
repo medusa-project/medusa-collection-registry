@@ -48,8 +48,10 @@ gem 'amqp_helper', '~>0.2.0', git: 'git://github.com/medusa-project/amqp_helper.
 gem 'aws-sdk'
 gem 'bcrypt-ruby'
 gem 'bootstrap-sass'
+gem 'bootstrap-datepicker-rails'
 gem 'bunny'
 gem 'cancancan'
+
 gem 'coffee-rails'
 gem 'daemons'
 gem 'daemons-rails'

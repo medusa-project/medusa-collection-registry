@@ -131,7 +131,7 @@ function item_table_storage_name() {
 }
 
 function set_up_bibid_clipboard() {
-    new ClipboardJS('#bibids-to-clipboard-btn', {
+    new Clipboard('#bibids-to-clipboard-btn', {
         text: function () {
             return selected_bibids();
         }
