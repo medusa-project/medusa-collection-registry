@@ -22,7 +22,7 @@ gem 'valid_email'
 
 gem 'logger'
 #need slightly patched version of this
-gem 'net-http-digest_auth', git: 'git://github.com/medusa-project/net-http-digest_auth.git'
+gem 'net-http-digest_auth', git: 'https://github.com/medusa-project/net-http-digest_auth.git'
 
 #pinned for a problem compiling 0.7.1 on our servers
 # I think I have the problem fixed, but if it won't compile then repin this
@@ -44,7 +44,7 @@ gem 'tinymce-rails'
 gem 'underscore-rails'
 gem 'underscore-string-rails'
 gem 'amq-protocol'
-gem 'amqp_helper', '~>0.2.0', git: 'git://github.com/medusa-project/amqp_helper.git'
+gem 'amqp_helper', '~>0.2.0', git: 'https://github.com/medusa-project/amqp_helper.git'
 gem 'aws-sdk'
 gem 'bcrypt-ruby'
 gem 'bootstrap-sass'
@@ -113,7 +113,7 @@ end
 
 group :development do
   # Deploy with Capistrano
-  gem 'capistrano', '~> 3.14.1'
+  gem 'capistrano', '~> 3.15.0'
   gem 'capistrano-bundler'
   gem 'capistrano-passenger'
   gem 'capistrano-rails'
@@ -145,6 +145,6 @@ group :test do
   gem 'sunspot_test'
   gem 'webdrivers'
   #need my version of bunny-mock where the default exchange works as expected. Wait to see if the fix gets merged
-  gem 'bunny-mock', git: 'git://github.com/hading/bunny-mock.git'
+  gem 'bunny-mock', git: 'https://github.com/hading/bunny-mock.git'
   gem 'rack_session_access'
 end
