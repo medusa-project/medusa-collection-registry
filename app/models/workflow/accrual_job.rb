@@ -341,7 +341,9 @@ class Workflow::AccrualJob < Workflow::Base
 
   def perform_await_assessment
     if has_pending_assessments?
-      if assessment_start_time + Settings.classes.workflow.accrual_job.assessment_error_reporting_timeout > Time.now
+      # TEMPORARY OVERRIDE BECAUSE OF SOME delayed DelayedJobs
+      if true
+      #if assessment_start_time + Settings.classes.workflow.accrual_job.assessment_error_reporting_timeout > Time.now
         put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
       else
         raise "Assessments are still pending. Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
