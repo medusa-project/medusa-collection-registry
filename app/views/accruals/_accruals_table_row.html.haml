@@ -11,15 +11,15 @@
   %td= small_icon_default_button('View Report', 'eye', view_report_workflow_accrual_job_path(accrual_job), remote: true) if accrual_job.has_report?
   %td{id: "accrual_status_#{accrual_job.id}", class: accrual_conflict_indicator_class(accrual_job)}
     #{accrual_job.status_label}
-    - if accrual_job.state == 'copying' or accrual_job.state == 'await_copy_messages'
-      (#{accrual_job.workflow_accrual_keys.count})
-    - if accrual_job.state == "send_copy_messages"
-      ="(#{accrual_job.workflow_accrual_keys.copy_requested.count} of #{accrual_job.workflow_accrual_keys.count})"
-    - if accrual_job.state == "assessing" or accrual_job.state == 'await_assessment'
-      ="All subdirectory records are created before any file records are created."
-      ="(subdirectories: #{accrual_job.cfs_directory.recursive_subdirectory_ids.count} records created)\n"
-      ="(files: #{accrual_job.cfs_directory.recursive_cfs_file_ids.count} records created)"
-      ="(incomplete task count: #{accrual_job.cfs_directory.incomplete_task_count})"
+    -# - if accrual_job.state == 'copying' or accrual_job.state == 'await_copy_messages'
+    -#   (#{accrual_job.workflow_accrual_keys.count})
+    -# - if accrual_job.state == "send_copy_messages"
+    -#   ="(#{accrual_job.workflow_accrual_keys.copy_requested.count} of #{accrual_job.workflow_accrual_keys.count})"
+    -# - if accrual_job.state == "assessing" or accrual_job.state == 'await_assessment'
+    -#   ="All subdirectory records are created before any file records are created."
+    -#   ="(subdirectories: #{accrual_job.cfs_directory.recursive_subdirectory_ids.count} records created)\n"
+    -#   ="(files: #{accrual_job.cfs_directory.recursive_cfs_file_ids.count} records created)"
+    -#   ="(incomplete task count: #{accrual_job.cfs_directory.incomplete_task_count})"
     %br
     = accrual_job.delayed_job_has_error? ? "JOB ERROR" : "JOB OK"
   %td.dropdown{id: "accrual_actions_#{accrual_job.id}"}
