@@ -165,7 +165,8 @@ class CfsFile < ApplicationRecord
     external_size = storage_root.size(self.key)
     #This won't guarantee that we rerun if the file has changed, but it should pick up most of the cases. mtime only seems to go
     #down to the second
-    if self.mtime.blank? or (external_mtime > self.mtime) or (external_size != self.size)
+    #if self.mtime.blank? or (external_mtime > self.mtime) or (external_size != self.size)
+    if self.fits_result.new? || external_size != self.size
       self.size = external_size
       self.md5_sum = aws_etag if self.size < AWS_S3_MD5_SIZE_LIMIT
       self.mtime = external_mtime
