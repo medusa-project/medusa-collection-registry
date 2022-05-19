@@ -5,7 +5,6 @@ class Assessor::Task < ApplicationRecord
   CLUSTER = Settings.assessor.cluster
   ECS_CLIENT = ContainerManager.instance.ecs_client
   MAX_TASK_COUNT = 49
-  MAX_BATCH_COUNT = 9
 
   def initiate_task
     client = ECS_CLIENT
@@ -103,7 +102,7 @@ class Assessor::Task < ApplicationRecord
     return nil unless current_task_count < MAX_TASK_COUNT
 
     task_capacity = MAX_TASK_COUNT - current_task_count
-    to_send = unsent.limit([task_capacity, MAX_BATCH_COUNT].min)
+    to_send = unsent.limit(task_capacity)
     to_send.map(&:initiate_task)
   end
 
