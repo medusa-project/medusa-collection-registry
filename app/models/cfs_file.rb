@@ -175,7 +175,7 @@ class CfsFile < ApplicationRecord
       Assessor::Task.create(cfs_file_id: self.id,
                             checksum: false,
                             mediatype: true,
-                            fits: self.fits_result.new?)
+                            fits: true)
       self.save!
     end
   end
