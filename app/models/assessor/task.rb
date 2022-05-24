@@ -4,8 +4,8 @@ class Assessor::Task < ApplicationRecord
 
   CLUSTER = Settings.assessor.cluster
   ECS_CLIENT = ContainerManager.instance.ecs_client
-  MAX_TASK_COUNT = 9999
-  MAX_BATCH_SIZE = 499
+  MAX_TASK_COUNT = 50
+  MAX_BATCH_SIZE = 50
 
   def initiate_task
     client = ECS_CLIENT
