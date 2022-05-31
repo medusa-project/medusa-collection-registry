@@ -359,7 +359,7 @@ class Workflow::AccrualJob < Workflow::Base
     cfs_directory.each_file_in_tree do |file|
       next if file.nil?
 
-      assessor_tasks = Assessor::Task.where(cfs_file_id: file.id)
+      assessor_tasks = Assessor::TaskElement.where(cfs_file_id: file.id)
       assessor_tasks.each { |task| return true unless task.complete? }
     end
 

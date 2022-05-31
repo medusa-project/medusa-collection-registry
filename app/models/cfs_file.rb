@@ -21,7 +21,7 @@ class CfsFile < ApplicationRecord
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
   has_many :fixity_check_results, -> {order 'created_at DESC'}, dependent: :destroy
-  has_many :assessor_tasks, class_name: 'Assessor::Task', dependent: :destroy
+  has_many :assessor_tasks, class_name: 'TaskElement', dependent: :destroy
 
   delegate :repository, :collection, :file_group, :root_cfs_directory, to: :cfs_directory
   delegate :name, to: :content_type, prefix: true, allow_nil: true
@@ -172,10 +172,10 @@ class CfsFile < ApplicationRecord
       self.mtime = external_mtime
       self.content_type_name = content_type_by_filename
       # since md5 is calculated with fits, and we are waiting for fits, no need to be redundant
-      Assessor::Task.create(cfs_file_id: self.id,
-                            checksum: false,
-                            mediatype: true,
-                            fits: true)
+      Assessor::TaskElement.create(cfs_file_id: self.id,
+                                   checksum: false,
+                                   mediatype: true,
+                                   fits: true)
       self.save!
     end
   end

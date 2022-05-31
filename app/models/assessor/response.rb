@@ -1,5 +1,5 @@
 class Assessor::Response < ApplicationRecord
-  belongs_to :assessor_task, class_name: 'Assessor::Task'
+  belongs_to :assessor_task, class_name: 'TaskElement'
   validates_inclusion_of :subtask, in: %w(checksum mediatype fits error), allow_blank: true
   validates_inclusion_of :status, in: %w(fetched processing handled), allow_blank: true
 
@@ -33,7 +33,7 @@ class Assessor::Response < ApplicationRecord
 
     passthrough = JSON.parse(message["passthrough"])
 
-    task = Assessor::Task.find_by(id: passthrough["medusa_assessor_task"])
+    task = Assessor::TaskElement.find_by(id: passthrough["medusa_assessor_task"])
     raise StandardError.new("cannot find task for response: #{message}") if task.nil?
 
     Assessor::Response.create(assessor_task_id: task.id, subtask: subtask, content: message.to_json, status: "fetched")

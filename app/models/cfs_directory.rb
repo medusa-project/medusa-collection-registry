@@ -193,7 +193,7 @@ class CfsDirectory < ApplicationRecord
   end
 
   def incomplete_task_count
-    Assessor::Task.where(cfs_file_id: recursive_cfs_file_ids).select(&:incomplete?).count
+    Assessor::TaskElement.where(cfs_file_id: recursive_cfs_file_ids).select(&:incomplete?).count
   end
 
   def timeline_directory_ids

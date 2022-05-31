@@ -1,29 +1,33 @@
 class Assessor::Task < ApplicationRecord
-  belongs_to :cfs_file
-  has_many :assessor_responses, class_name: 'Assessor::Response', dependent: :destroy, foreign_key: "assessor_task_id"
 
   CLUSTER = Settings.assessor.cluster
   ECS_CLIENT = ContainerManager.instance.ecs_client
   MAX_TASK_COUNT = 50
   MAX_BATCH_SIZE = 50
 
-  def initiate_task
+  attr_accessor :element_group
+
+  def initialize(element_group_ids:)
+    self.element_group = Assessor::TaskElement.where(id: element_group_ids)
+  end
+
+  def initiate
     client = ECS_CLIENT
     task = {
-      cluster:               CLUSTER,
-      count:                 1,
-      launch_type:           "FARGATE",
+      cluster: CLUSTER,
+      count: 1,
+      launch_type: "FARGATE",
       network_configuration: {
         awsvpc_configuration: {
-          subnets:          Settings.assessor.subnets,
-          security_groups:  Settings.assessor.security_groups,
+          subnets: Settings.assessor.subnets,
+          security_groups: Settings.assessor.security_groups,
           assign_public_ip: "ENABLED"
         }
       },
-      overrides:             {
+      overrides: {
         container_overrides: [
           {
-            name:    Settings.assessor.container_name,
+            name: Settings.assessor.container_name,
             command: ["ruby",
                       "-r",
                       "./lib/assessor.rb",
@@ -32,80 +36,69 @@ class Assessor::Task < ApplicationRecord
           }
         ]
       },
-      platform_version:      Settings.assessor.platform_version,
-      task_definition:       Settings.assessor.task_definition
+      platform_version: Settings.assessor.platform_version,
+      task_definition: Settings.assessor.task_definition
     }
     resp = client.run_task(task)
-    puts resp.to_s
+    #puts resp.to_s
     failure_count = resp[:failures].count
-    raise StandardError.new("error in Extractor Task for #{cfs_file}: #{resp}") unless failure_count.zero?
+    raise StandardError.new("error in Extractor TaskElement for #{cfs_file}: #{resp}") unless failure_count.zero?
 
-    update(sent_at: Time.current)
-  end
-
-  def complete?
-    return false if self.checksum == true && !subtask_complete?("checksum")
-
-    return false if self.mediatype == true && !subtask_complete?("mediatype")
-
-    return false if self.fits == true && !subtask_complete?("fits")
-
-    true
-  end
-
-  def incomplete?
-    !complete?
-  end
-
-  def subtask_complete?(subtask)
-    responses = self.assessor_responses.where(subtask: subtask)
-    return false if responses.count.zero?
-
-    responses.each { |response| return true if response.status == "handled" }
-
-    false
-  end
-
-  def cfs_file
-    CfsFile.find_by(id: self.cfs_file_id)
-  end
-
-  def subtask_array_string
-    subtasks = Array.new
-    subtasks << 'CHECKSUM' if self.checksum == true
-    subtasks << 'CONTENT_TYPE' if self.mediatype == true
-    subtasks << 'FITS' if self.fits == true
-    subtasks.to_s.gsub("\"", "'")
+    element_group.each do |element|
+      element.update(sent_at: Time.current)
+    end
   end
 
   def command_string
-
-    str_arr = ["Assessor.assess #{subtask_array_string}",
-               ", '",
-               {"medusa_assessor_task": self.id}.to_json,
-               "', '",
-               cfs_file.id.to_s,
-               "', '",
-               cfs_file.storage_root.bucket,
-               "', '",
-               cfs_file.key,
-               "', '",
-               cfs_file.fits_result.storage_key,
-               "'"]
-    str_arr.join
+    element_ary = Array.new
+    element_ary << "Assessor.assess ["
+    self.element_group.each_with_index do |element, index|
+      element_ary << ", " unless index == 0
+      element_ary << element.command_ary
+    end
+    element_ary << "]"
+    element_ary.join
   end
 
   def self.initiate_task_batch
-    unsent = Assessor::Task.where(sent_at: nil)
+    unsent = Assessor::TaskElement.where(sent_at: nil)
     return nil unless unsent.count.positive?
 
-    current_task_count = Assessor::Task.current_tasks.count
+    current_task_count = Assessor::TaskElement.current_tasks.count
     return nil unless current_task_count < MAX_TASK_COUNT
 
     task_capacity = MAX_TASK_COUNT - current_task_count
 
     to_send = unsent.limit([task_capacity, MAX_BATCH_SIZE].min)
-    to_send.map(&:initiate_task)
+
+    to_send.times do |i|
+      task = new Task(Assessor::Task.next_group_ids)
+      task.initiate
+      sleep 0.1
+    end
+
+  end
+
+  def self.next_group_ids
+    oldest_unsent = Assessor.TaskElement.where(sent_at: nil).first
+    return nil unless oldest_unsent
+
+    b_in_mb = 2**20
+    small_max = 5*b_in_mb
+    medium_max = 150*b_in_mb
+    case oldest_unsent.size_category
+    when "small"
+      range_q = "c.size < #{small_max.to_s}"
+      limit_q = 30.to_s
+    when "medium"
+      range_q = "c.size > #{small_max.to_s} AND c.size < #{medium_max} "
+      limit_q = 5.to_s
+    when "large"
+      return [oldest_unsent.id]
+    end
+    sql = "SELECT t.id FROM assessor_task_elements t, cfs_files c WHERE t.cfs_file_id = c.id AND #{range_q} LIMIT #{limit_q}"
+    batch = ActiveRecord::Base.connection.execute(sql)
+    return batch.pluck("id")
   end
 
   def self.current_tasks
