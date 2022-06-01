@@ -1501,10 +1501,10 @@ ALTER SEQUENCE public.assessor_responses_id_seq OWNED BY public.assessor_respons
 
 
 --
--- Name: assessor_tasks; Type: TABLE; Schema: public; Owner: -
+-- Name: assessor_task_elements; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.assessor_tasks (
+CREATE TABLE public.assessor_task_elements (
     id bigint NOT NULL,
     cfs_file_id bigint,
     checksum boolean,
@@ -1517,10 +1517,10 @@ CREATE TABLE public.assessor_tasks (
 
 
 --
--- Name: assessor_tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: assessor_task_elements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.assessor_tasks_id_seq
+CREATE SEQUENCE public.assessor_task_elements_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1529,10 +1529,10 @@ CREATE SEQUENCE public.assessor_tasks_id_seq
 
 
 --
--- Name: assessor_tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: assessor_task_elements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.assessor_tasks_id_seq OWNED BY public.assessor_tasks.id;
+ALTER SEQUENCE public.assessor_task_elements_id_seq OWNED BY public.assessor_task_elements.id;
 
 
 --
@@ -4598,10 +4598,10 @@ ALTER TABLE ONLY public.assessor_responses ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
--- Name: assessor_tasks id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: assessor_task_elements id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.assessor_tasks ALTER COLUMN id SET DEFAULT nextval('public.assessor_tasks_id_seq'::regclass);
+ALTER TABLE ONLY public.assessor_task_elements ALTER COLUMN id SET DEFAULT nextval('public.assessor_task_elements_id_seq'::regclass);
 
 
 --
@@ -5201,11 +5201,11 @@ ALTER TABLE ONLY public.assessor_responses
 
 
 --
--- Name: assessor_tasks assessor_tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: assessor_task_elements assessor_task_elements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.assessor_tasks
-    ADD CONSTRAINT assessor_tasks_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.assessor_task_elements
+    ADD CONSTRAINT assessor_task_elements_pkey PRIMARY KEY (id);
 
 
 --
@@ -6027,10 +6027,10 @@ CREATE INDEX index_assessor_responses_on_assessor_task_id ON public.assessor_res
 
 
 --
--- Name: index_assessor_tasks_on_cfs_file_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_assessor_task_elements_on_cfs_file_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_assessor_tasks_on_cfs_file_id ON public.assessor_tasks USING btree (cfs_file_id);
+CREATE INDEX index_assessor_task_elements_on_cfs_file_id ON public.assessor_task_elements USING btree (cfs_file_id);
 
 
 --
@@ -7449,10 +7449,10 @@ ALTER TABLE ONLY public.workflow_accrual_files
 
 
 --
--- Name: assessor_tasks fk_rails_398341b802; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: assessor_task_elements fk_rails_398341b802; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.assessor_tasks
+ALTER TABLE ONLY public.assessor_task_elements
     ADD CONSTRAINT fk_rails_398341b802 FOREIGN KEY (cfs_file_id) REFERENCES public.cfs_files(id);
 
 
@@ -7685,7 +7685,7 @@ ALTER TABLE ONLY public.archived_accrual_jobs
 --
 
 ALTER TABLE ONLY public.assessor_responses
-    ADD CONSTRAINT fk_rails_dbbe5441fc FOREIGN KEY (assessor_task_id) REFERENCES public.assessor_tasks(id);
+    ADD CONSTRAINT fk_rails_dbbe5441fc FOREIGN KEY (assessor_task_id) REFERENCES public.assessor_task_elements(id);
 
 
 --
@@ -8024,6 +8024,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220120214651'),
 ('20220204220447'),
 ('20220302205736'),
-('20220531165346');
+('20220531165346'),
+('20220601133442');
 
 
