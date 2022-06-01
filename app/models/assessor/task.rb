@@ -32,7 +32,7 @@ class Assessor::Task < ApplicationRecord
                       "-r",
                       "./lib/assessor.rb",
                       "-e",
-                      command_string]
+                      "Assessor.assess #{element_group.map(&:command_json)}"]
           }
         ]
       },
@@ -47,17 +47,6 @@ class Assessor::Task < ApplicationRecord
     element_group.each do |element|
       element.update(sent_at: Time.current)
     end
-  end
-
-  def command_string
-    element_ary = Array.new
-    element_ary << "Assessor.assess ["
-    self.element_group.each_with_index do |element, index|
-      element_ary << ", " unless index == 0
-      element_ary << element.command_ary
-    end
-    element_ary << "]"
-    element_ary.join
   end
 
   def self.initiate_task_batch
@@ -80,8 +69,8 @@ class Assessor::Task < ApplicationRecord
   end
 
   def self.next_group_ids
+    # assumes set of unset not empty, checked by calling method
     oldest_unsent = Assessor.TaskElement.where(sent_at: nil).first
-    return nil unless oldest_unsent
 
     b_in_mb = 2**20
     small_max = 5*b_in_mb
@@ -95,6 +84,8 @@ class Assessor::Task < ApplicationRecord
       limit_q = 5.to_s
     when "large"
       return [oldest_unsent.id]
+    else
+      raise StandardError.new("Unexpected size category for oldest unset task element.")
     end
     sql = "SELECT t.id FROM assessor_task_elements t, cfs_files c WHERE t.cfs_file_id = c.id AND #{range_q} LIMIT #{limit_q}"
     batch = ActiveRecord::Base.connection.execute(sql)

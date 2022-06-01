@@ -35,31 +35,30 @@ class Assessor::TaskElement < ApplicationRecord
     when 0..5 then "small"
     when 5..150 then "medium"
     when 150..Float::INFINITY then "large"
+    else
+      raise StandardError.new("Unexpected size for task element file #{cfs_file.id}.")
     end
   end
 
-  def subtask_array_string
+  def subtask_array
     subtasks = Array.new
     subtasks << 'CHECKSUM' if self.checksum == true
     subtasks << 'CONTENT_TYPE' if self.mediatype == true
     subtasks << 'FITS' if self.fits == true
-    subtasks.to_s.gsub("\"", "'")
+    subtasks
   end
 
-  def command_ary
+  def command_json
+    {"objective_list" => subtask_array,
+     "passthrough" => passthrough_hash.to_json,
+     "file_identifier" => cfs_file.id.to_s,
+     "object_root" => cfs_file.storage_root.bucket,
+     "object_key" => cfs_file.key,
+     "fits_key" => cfs_file.fits_result.storage_key}.to_json
+  end
 
-    ["[#{subtask_array_string}",
-     ", '",
-     { "medusa_assessor_task": self.id }.to_json,
-     "', '",
-     cfs_file.id.to_s,
-     "', '",
-     cfs_file.storage_root.bucket,
-     "', '",
-     cfs_file.key,
-     "', '",
-     cfs_file.fits_result.storage_key,
-     "']"]
+  def passthrough_hash
+    {"medusa_assessor_task" => self.id}
   end
 
 end
