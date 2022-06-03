@@ -358,16 +358,20 @@ class Workflow::AccrualJob < Workflow::Base
   def has_pending_assessments?
     cfs_directory.each_file_in_tree do |file|
       next if file.nil?
+      return true if file.md5_sum.nil?
 
-      assessor_tasks = Assessor::TaskElement.where(cfs_file_id: file.id)
-      assessor_tasks.each { |task| return true unless task.complete? }
+      return true if file.has_unsent_assessor_task?
+
+      return true if file.has_incomplete_assessor_task?
     end
 
-    transaction do
-      subdirectory_ids = cfs_directory.recursive_subdirectory_ids.to_set
-      possible_assessment_job_ids = Job::CfsInitialDirectoryAssessment.where(file_group_id: cfs_directory.file_group.id).pluck(:cfs_directory_id).to_set
-      return subdirectory_ids.intersect?(possible_assessment_job_ids)
-    end
+    false
+
+    # transaction do
+    #   subdirectory_ids = cfs_directory.recursive_subdirectory_ids.to_set
+    #   possible_assessment_job_ids = Job::CfsInitialDirectoryAssessment.where(file_group_id: cfs_directory.file_group.id).pluck(:cfs_directory_id).to_set
+    #   return subdirectory_ids.intersect?(possible_assessment_job_ids)
+    # end
   end
 
   def perform_email_done

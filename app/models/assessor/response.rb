@@ -63,8 +63,10 @@ class Assessor::Response < ApplicationRecord
     when "mediatype"
       new_content_type_name = message["CONTENT_TYPE"]
       cfs_file.update_content_type_from_assessor(new_content_type_name)
+    when "error"
+
     else
-      raise StandardError.new("Error response from Medusa Assessor Service: #{self.content}")
+      raise StandardError.new("Unexpected response from Medusa Assessor Service: #{self.content}")
     end
     Sunspot.commit
     # TODO maybe delete instead of change status ?

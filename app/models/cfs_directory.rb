@@ -300,6 +300,16 @@ class CfsDirectory < ApplicationRecord
     end
   end
 
+  def file_ids_in_tree
+    file_ids = []
+    self.each_file_in_tree {|file| file_ids << file.id}
+    file_ids
+  end
+
+  def files_in_tree
+    CfsFile.where(id: file_ids_in_tree)
+  end
+
   def directories_in_tree(include_self: true)
     #for roots we can do this easily - for non roots we need to do it recursively
     directories = if self.root?

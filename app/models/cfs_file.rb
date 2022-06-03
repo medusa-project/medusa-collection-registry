@@ -180,6 +180,20 @@ class CfsFile < ApplicationRecord
     end
   end
 
+  def assessor_tasks
+    Assessor::TaskElement.where(id: self.id)
+  end
+
+  def has_unsent_assessor_task?
+    assessor_tasks.where(sent_at: nil).count.nonzero?
+  end
+
+  def has_incomplete_assessor_task?
+    assessor_tasks.each do |task|
+      return true if task.incomplete?
+    end
+  end
+
   def aws_etag
     obj = self.storage_root.s3_object(self.key)
     obj.etag.delete_prefix('"').delete_suffix('"')
