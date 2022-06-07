@@ -240,6 +240,7 @@ class CfsDirectory < ApplicationRecord
     #TODO I might like to do this with Parallel, but my attempts have hung the tests for
     # reasons that are unclear to me [Howard]. This includes modifying the call to run_initial_assessment
     # so that the save happens in a mutex synchronized block.
+
     self.cfs_files.reload.each {|cfs_file| cfs_file.run_initial_assessment}
     self.subdirectories.reload.each {|subdirectory| subdirectory.schedule_assessment_job} if recursive
     Sunspot.commit

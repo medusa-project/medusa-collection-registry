@@ -51,11 +51,14 @@ class Assessor::Response < ApplicationRecord
 
     case self.subtask
     when "fits"
-
-      raise StandardError.new("fits file not found after success assessor response") if cfs_file.fits_result.new?
-
-      cfs_file.update_attribute(:fits_serialized, true)
-      cfs_file.update_fields_from_fits
+      if cfs_file.fits_result.new?
+        #TODO alert and otherwise improve handling
+        Rails.logger.warn("fits file not found after success assessor response")
+        cfs_file.update_attribute(:fits_serialized, false)
+      else
+        cfs_file.update_attribute(:fits_serialized, true)
+        cfs_file.update_fields_from_fits
+      end
     when "checksum"
       new_md5_sum = message["CHECKSUM"]
       cfs_file.set_fixity(new_md5_sum)
@@ -63,10 +66,9 @@ class Assessor::Response < ApplicationRecord
     when "mediatype"
       new_content_type_name = message["CONTENT_TYPE"]
       cfs_file.update_content_type_from_assessor(new_content_type_name)
-    when "error"
-
     else
-      raise StandardError.new("Unexpected response from Medusa Assessor Service: #{self.content}")
+      #TODO alert and otherwise improve handling
+      Rails.logger.warn("Error response from Medusa Assessor Service: #{self.content}")
     end
     Sunspot.commit
     # TODO maybe delete instead of change status ?
