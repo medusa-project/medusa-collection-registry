@@ -69,7 +69,10 @@ class Assessor::Task < ApplicationRecord
   end
 
   def self.next_group_ids
-    #There is a hard 8192 character limit on the task command
+    # There is a hard 8192 character limit on the task command
+    # Leaving about 192 characters for other parts, and estimating
+    # about 300 characters per command
+    # 20 is probably a reasonably safe number of files to send per command
     # assumes set of unset not empty, checked by calling method
     oldest_unsent = Assessor.TaskElement.where(sent_at: nil).first
 
@@ -79,7 +82,7 @@ class Assessor::Task < ApplicationRecord
     case oldest_unsent.size_category
     when "small"
       range_q = "c.size < #{small_max.to_s}"
-      limit_q = 30.to_s
+      limit_q = 20.to_s
     when "medium"
       range_q = "c.size > #{small_max.to_s} AND c.size < #{medium_max} "
       limit_q = 5.to_s
