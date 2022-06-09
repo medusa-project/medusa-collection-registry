@@ -163,9 +163,6 @@ class CfsFile < ApplicationRecord
   def run_initial_assessment
     external_mtime = storage_root.mtime(self.key)
     external_size = storage_root.size(self.key)
-    #This won't guarantee that we rerun if the file has changed, but it should pick up most of the cases. mtime only seems to go
-    #down to the second
-    #if self.mtime.blank? or (external_mtime > self.mtime) or (external_size != self.size)
     if self.fits_result.new? || external_size != self.size
       self.size = external_size
       self.md5_sum = aws_etag if self.size < AWS_S3_MD5_SIZE_LIMIT
@@ -282,8 +279,13 @@ class CfsFile < ApplicationRecord
     update_content_type_from_fits(doc.at_css('fits identification identity')['mimetype'])
     self.save!
   rescue Exception
-    Rails.logger.error("*********** Couldn't update cfs file #{self.id} from FITS: #{self.fits_xml}")
-    raise
+    if self.md5_sum.nil?
+      Assessor::TaskElement.create(cfs_file_id: self.id,
+                                   checksum: true,
+                                   mediatype: true,
+                                   fits: false)
+    end
+    #otherwise don't worry about it
   end
 
   def update_size_from_fits(new_size)

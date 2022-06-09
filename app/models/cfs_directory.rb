@@ -241,6 +241,7 @@ class CfsDirectory < ApplicationRecord
     # reasons that are unclear to me [Howard]. This includes modifying the call to run_initial_assessment
     # so that the save happens in a mutex synchronized block.
 
+    # TODO send all assessor command elements at once (one task per directory assessment)
     self.cfs_files.reload.each {|cfs_file| cfs_file.run_initial_assessment}
     self.subdirectories.reload.each {|subdirectory| subdirectory.schedule_assessment_job} if recursive
     Sunspot.commit
