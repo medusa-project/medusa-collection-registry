@@ -69,6 +69,7 @@ class Assessor::Task < ApplicationRecord
   end
 
   def self.next_group_ids
+    #There is a hard 8192 character limit on the task command
     # assumes set of unset not empty, checked by calling method
     oldest_unsent = Assessor.TaskElement.where(sent_at: nil).first
 
