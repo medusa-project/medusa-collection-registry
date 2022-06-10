@@ -96,14 +96,18 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   # TODO: See if we can't break this down a bit. It might do to have a class that does this work.
-  # The files and directories should have been selected for existance in
+  # The files and directories should have been selected for existence in
   # submit method of AccrualsController
   # If there are duplicate files and overwrites are not allowed, quit and complain about it.
   # If there are empty files, mention it in passing.
+  def ok_chars(input, pattern); result = input=~pattern; !result.nil? end
   def perform_check
     # safe_characters_regex = /\A[0-9a-zA-Z\/!.*'()-]*\z/
+    safe_chars_regex = /^[@ a-zA-Z0-9!_.*'(\/)-]+(\/[@ a-zA-Z0-9!_.*'()-]+)*$/
+    pattern = Regexp.new(safe_chars_regex).freeze
     root, prefix = staging_root_and_prefix
     ingest_keys = Set.new
+    unsafe_path_strings = Set.new
     empty_files = StringIO.new
     # Rails.logger.warn("#{Time.current} START adding workflow_accrual_files to ingest_keys")
     workflow_accrual_files.each do |file|
@@ -112,6 +116,8 @@ class Workflow::AccrualJob < Workflow::Base
       file.size = root.size(File.join(prefix, key))
       file.save!
       empty_files.puts(key) if file.size.zero?
+      matches_safe_regex = file.relative_path=~pattern
+      unsafe_path_strings.puts(file.relative_path) unless ok_chars(file.relative_path, pattern)
     end
     # Rails.logger.warn("#{Time.current} END adding workflow_accrual_files to ingest_keys")
     # Rails.logger.warn("#{Time.current} START adding files within workflow_accrual_directories to ingest_keys.")
@@ -149,6 +155,9 @@ class Workflow::AccrualJob < Workflow::Base
     end
     if duplicate_keys.count.positive? && !allow_overwrite
       Workflow::AccrualMailer.illegal_overwrite(self).deliver_now
+      be_in_state_and_requeue('end')
+    elsif unsafe_path_strings.count.positive?
+      Workflow::AccrualMailer.unsafe_characters(self, unsafe_path_strings).deliver_now
       be_in_state_and_requeue('end')
     else
       create_workflow_accrual_keys(ingest_keys)

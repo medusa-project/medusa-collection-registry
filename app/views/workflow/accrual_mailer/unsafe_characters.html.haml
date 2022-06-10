@@ -1,0 +1,33 @@
+%p
+  The automated accrual of the staging path #{@workflow_accrual.staging_path} to
+  the cfs directory #{@workflow_accrual.cfs_directory.relative_path} has been cancelled.
+  Some of the files contain characters that cause problems in processing using cloud resources.
+
+%p
+  More information on characters and their safety can be found at
+  %a(href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html")
+    https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html
+
+%p
+  Individual path strings can be tested using the Rubular regular expression tester.
+  %a(href="https://rubular.com" )
+  If using the rubular tester, you can put the following regular expression in the box labeled "Your regular expression:"
+%p
+  %pre
+    ^[@ a-zA-Z0-9!_.*'(\/)-]+(\/[@ a-zA-Z0-9!_.*'()-]+)*$
+%p
+  Then put the full path in the box labeled "Your test string:"
+
+%p
+  The report below may help you identify the files causing the problems.
+
+- if file_group = @workflow_accrual.cfs_directory.file_group
+  %p
+    This belongs to the file group #{file_group.title}, collection #{file_group.collection.title}
+    - if file_group.collection.external_id.present?
+      [#{file_group.collection.external_id}]
+    and repository #{file_group.repository.title}.
+
+= render partial: 'accrual_summary'
+
+= render partial: 'unsafe_character_in_path'

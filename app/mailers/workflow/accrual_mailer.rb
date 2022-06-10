@@ -11,6 +11,12 @@ class Workflow::AccrualMailer < MedusaBaseMailer
     mail(to: standard_to_list(workflow_accrual))
   end
 
+  def unsafe_characters(workflow_accrual, unsafe_path_strings)
+    @workflow_accrual = workflow_accrual
+    @unsafe_path_strings = unsafe_path_strings
+    mail(to: standard_to_list(workflow_accrual))
+  end
+
   def illegal_overwrite(workflow_accrual)
     @workflow_accrual = workflow_accrual
     mail(to: standard_to_list(workflow_accrual))
