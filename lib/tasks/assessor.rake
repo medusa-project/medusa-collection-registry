@@ -22,9 +22,4 @@ namespace :assessor do
     fetched_responses.each(&:handle)
   end
 
-  desc "destroy handled responses"
-  task destroy_handled_responses: :environment do
-    Assessor::Response.where(status: "handled").destroy_all
-  end
-
 end

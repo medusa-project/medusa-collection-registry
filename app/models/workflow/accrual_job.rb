@@ -358,8 +358,16 @@ class Workflow::AccrualJob < Workflow::Base
         raise "Assessments are still pending. Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
       end
     else
+      destroy_complete_task_elements
       Workflow::AccrualMailer.assessment_done(self).deliver_now
       be_in_state_and_requeue('email_done')
+    end
+  end
+
+  def destroy_complete_task_elements
+    cfs_directory.each_file_in_tree do |file|
+      tasks = Assessor::TaskElement.where(cfs_file_id: file.id)
+      tasks.each{|task| task.destroy if task.complete?}
     end
   end
 
