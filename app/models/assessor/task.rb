@@ -2,8 +2,8 @@ class Assessor::Task < ApplicationRecord
 
   CLUSTER = Settings.assessor.cluster
   ECS_CLIENT = ContainerManager.instance.ecs_client
-  MAX_TASK_COUNT = 50
-  MAX_BATCH_SIZE = 50
+  MAX_TASK_COUNT = 999
+  MAX_BATCH_SIZE = 99
 
   attr_accessor :element_group
 
