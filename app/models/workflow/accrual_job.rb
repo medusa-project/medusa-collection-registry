@@ -247,20 +247,23 @@ class Workflow::AccrualJob < Workflow::Base
     target_endpoint = Application.storage_manager.globus_endpoint_at('main_storage')
     target_prefix = cfs_directory.relative_path
     workflow_accrual_keys.copy_not_requested.find_each do |workflow_accrual_key|
-      source_key = File.join(workflow_accrual_key.key).gsub(%r{^/}, '')
-      target_key = File.join(workflow_accrual_key.key)
-      source_path = File.join(staging_path, source_key)
-      destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
-      destination_path = "/#{destination_path}"
-      #Rails.logger.warn ("source_key: #{source_key}\ntarget_key: #{target_key}\nsource_path: #{source_path}\ndestination_path: #{destination_path}")
-      globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
-                                                     source_uuid: source_endpoint[:uuid],
-                                                     destination_uuid: target_endpoint[:uuid],
-                                                     source_path: source_path,
-                                                     destination_path: destination_path,
-                                                     recursive: false)
-      globus_transfer.submit
-      globus_transfer.save!
+      unless workflow_accrual_key.exists_on_main_root?
+        source_key = File.join(workflow_accrual_key.key).gsub(%r{^/}, '')
+        target_key = File.join(workflow_accrual_key.key)
+        source_path = File.join(staging_path, source_key)
+        destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
+        destination_path = "/#{destination_path}"
+
+        #Rails.logger.warn ("source_key: #{source_key}\ntarget_key: #{target_key}\nsource_path: #{source_path}\ndestination_path: #{destination_path}")
+        globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
+                                                       source_uuid: source_endpoint[:uuid],
+                                                       destination_uuid: target_endpoint[:uuid],
+                                                       source_path: source_path,
+                                                       destination_path: destination_path,
+                                                       recursive: false)
+        globus_transfer.submit
+        globus_transfer.save!
+      end
       workflow_accrual_key.copy_requested = true
       workflow_accrual_key.save!
     end
@@ -376,6 +379,8 @@ class Workflow::AccrualJob < Workflow::Base
     cfs_directory.each_file_in_tree do |file|
       next if file.nil?
       return true if file.md5_sum.nil?
+
+      return true if file.fits_serialized == false
 
       return true if file.has_unsent_assessor_task?
 
