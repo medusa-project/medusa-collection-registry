@@ -5,7 +5,7 @@ namespace :assessor do
 
   desc "initiate a batch of tasks"
   task initiate_task_batch: :environment do
-    Assessor::TaskElement.initiate_task_batch
+    Assessor::Task.initiate_task_batch
   end
 
   desc "fetch messages"
