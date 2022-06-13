@@ -1,5 +1,5 @@
 class Assessor::Response < ApplicationRecord
-  belongs_to :assessor_task_element, class_name: Assessor::TaskElement, foreign_key: :assessor_task_id
+  belongs_to :assessor_task_element, class_name: 'Assessor::TaskElement'
   validates_inclusion_of :subtask, in: %w(checksum content_type fits error), allow_blank: true
   validates_inclusion_of :status, in: %w(fetched processing handled), allow_blank: true
 

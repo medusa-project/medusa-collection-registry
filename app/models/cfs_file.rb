@@ -21,7 +21,7 @@ class CfsFile < ApplicationRecord
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
   has_many :fixity_check_results, -> {order 'created_at DESC'}, dependent: :destroy
-  has_many :assessor_task_elements, class_name: Assessor::TaskElement, dependent: :destroy, foreign_key: 'cfs_file_id'
+  has_many :assessor_task_elements, class_name: 'Assessor::Element', dependent: :destroy, foreign_key: 'cfs_file_id'
 
   delegate :repository, :collection, :file_group, :root_cfs_directory, to: :cfs_directory
   delegate :name, to: :content_type, prefix: true, allow_nil: true
