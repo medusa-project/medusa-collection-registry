@@ -1,6 +1,6 @@
 class Assessor::TaskElement < ApplicationRecord
   belongs_to :cfs_file
-  has_many :assessor_responses, class_name: 'Assessor::Response', dependent: :destroy
+  has_many :assessor_responses, class_name: 'Assessor::Response', dependent: :destroy, foreign_key: 'assessor_task_element_id'
 
   def complete?
     return false if self.checksum == true && !subtask_complete?("checksum")
