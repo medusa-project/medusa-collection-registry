@@ -63,7 +63,7 @@ class Assessor::Task < ApplicationRecord
     unsent = Assessor::TaskElement.where(sent_at: nil)
     return nil unless unsent.count.positive?
 
-    current_task_count = Assessor::TaskElement.current_tasks.count
+    current_task_count = Assessor::Task.current_tasks.count
     return nil unless current_task_count < MAX_TASK_COUNT
 
     task_capacity = MAX_TASK_COUNT - current_task_count
