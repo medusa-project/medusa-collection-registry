@@ -68,9 +68,10 @@ class Assessor::Task < ApplicationRecord
 
     task_capacity = MAX_TASK_COUNT - current_task_count
 
-    to_send = unsent.limit([task_capacity, MAX_BATCH_SIZE].min)
+    batch_size = [task_capacity, MAX_BATCH_SIZE].min
 
-    to_send.times do |i|
+    batch_size.times do |i|
+      break unless Assessor::TaskElement.where(sent_at: nil).positive?
       task = new Task(Assessor::Task.next_group_ids)
       task.initiate
       sleep 0.1
