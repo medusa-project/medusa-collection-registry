@@ -74,7 +74,7 @@ class Assessor::Task
 
     batch_size.times do |i|
       break unless Assessor::TaskElement.where(sent_at: nil).count.positive?
-      task = Task.new(Assessor::Task.next_group_ids)
+      task = Assessor::Task.new(element_group_ids: Assessor::Task.next_group_ids)
       task.initiate
       sleep 0.1
     end
