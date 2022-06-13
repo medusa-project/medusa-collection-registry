@@ -72,7 +72,7 @@ class Assessor::Task < ApplicationRecord
 
     batch_size.times do |i|
       break unless Assessor::TaskElement.where(sent_at: nil).count.positive?
-      task = new Task(Assessor::Task.next_group_ids)
+      task = Task.new(Assessor::Task.next_group_ids)
       task.initiate
       sleep 0.1
     end
