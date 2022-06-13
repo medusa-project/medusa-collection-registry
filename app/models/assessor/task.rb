@@ -86,7 +86,7 @@ class Assessor::Task < ApplicationRecord
     # about 300 characters per command
     # 20 is probably a reasonably safe number of files to send per command
     # assumes set of unset not empty, checked by calling method
-    oldest_unsent = Assessor.TaskElement.where(sent_at: nil).first
+    oldest_unsent = Assessor::TaskElement.where(sent_at: nil).first
 
     b_in_mb = 2**20
     small_max = 5*b_in_mb
