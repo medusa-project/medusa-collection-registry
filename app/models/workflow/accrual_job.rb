@@ -352,10 +352,12 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_await_assessment
+    if has_assessment_errors?
+      raise "One or more assessment task has error. Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
+    end
+
     if has_pending_assessments?
-      # TEMPORARY OVERRIDE BECAUSE OF SOME delayed DelayedJobs
-      if true
-      #if assessment_start_time + Settings.classes.workflow.accrual_job.assessment_error_reporting_timeout > Time.now
+      if assessment_start_time + Settings.classes.workflow.accrual_job.assessment_error_reporting_timeout > Time.now
         put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
       else
         raise "Assessments are still pending. Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
@@ -372,6 +374,14 @@ class Workflow::AccrualJob < Workflow::Base
       tasks = Assessor::TaskElement.where(cfs_file_id: file.id)
       tasks.each{|task| task.destroy if task.complete?}
     end
+  end
+
+  def has_assessment_errors?
+    cfs_directory.assessor_task_elements do |element|
+      return true if element.has_errors?
+    end
+
+    false
   end
 
   # Are there any initial directory assessments belonging to a subdirectory of this accrual jobs cfs directory?

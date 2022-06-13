@@ -308,6 +308,10 @@ class CfsDirectory < ApplicationRecord
     file_ids
   end
 
+  def assessor_task_elements
+    Assessor::TaskElement.where(cfs_file_id: file_ids_in_tree)
+  end
+
   def files_in_tree
     CfsFile.where(id: file_ids_in_tree)
   end

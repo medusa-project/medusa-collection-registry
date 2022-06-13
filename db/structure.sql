@@ -1471,7 +1471,7 @@ ALTER SEQUENCE public.assessments_id_seq OWNED BY public.assessments.id;
 
 CREATE TABLE public.assessor_responses (
     id bigint NOT NULL,
-    assessor_task_id bigint,
+    assessor_task_element_id bigint,
     subtask character varying,
     success boolean,
     content text,
@@ -1508,7 +1508,7 @@ CREATE TABLE public.assessor_task_elements (
     id bigint NOT NULL,
     cfs_file_id bigint,
     checksum boolean,
-    mediatype boolean,
+    content_type boolean,
     fits boolean,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -6020,10 +6020,10 @@ CREATE INDEX index_assessments_on_updated_at ON public.assessments USING btree (
 
 
 --
--- Name: index_assessor_responses_on_assessor_task_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_assessor_responses_on_assessor_task_element_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_assessor_responses_on_assessor_task_id ON public.assessor_responses USING btree (assessor_task_id);
+CREATE INDEX index_assessor_responses_on_assessor_task_element_id ON public.assessor_responses USING btree (assessor_task_element_id);
 
 
 --
@@ -7685,7 +7685,7 @@ ALTER TABLE ONLY public.archived_accrual_jobs
 --
 
 ALTER TABLE ONLY public.assessor_responses
-    ADD CONSTRAINT fk_rails_dbbe5441fc FOREIGN KEY (assessor_task_id) REFERENCES public.assessor_task_elements(id);
+    ADD CONSTRAINT fk_rails_dbbe5441fc FOREIGN KEY (assessor_task_element_id) REFERENCES public.assessor_task_elements(id);
 
 
 --
@@ -8025,6 +8025,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220204220447'),
 ('20220302205736'),
 ('20220531165346'),
-('20220601133442');
+('20220601133442'),
+('20220613135706');
 
 

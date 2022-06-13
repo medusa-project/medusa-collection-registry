@@ -1,6 +1,6 @@
 class Assessor::Response < ApplicationRecord
-  belongs_to :assessor_task, class_name: 'TaskElement'
-  validates_inclusion_of :subtask, in: %w(checksum mediatype fits error), allow_blank: true
+  belongs_to :assessor_task_element, class_name: Assessor::TaskElement, foreign_key: :assessor_task_id
+  validates_inclusion_of :subtask, in: %w(checksum content_type fits error), allow_blank: true
   validates_inclusion_of :status, in: %w(fetched processing handled), allow_blank: true
 
   QUEUE_URL = Settings.message_queues.assessor_to_medusa_url
@@ -26,17 +26,17 @@ class Assessor::Response < ApplicationRecord
     when "CHECKSUM"
       subtask = "checksum"
     when "CONTENT_TYPE"
-      subtask = "mediatype"
+      subtask = "content_type"
     else
       subtask = "error"
     end
 
     passthrough = JSON.parse(message["passthrough"])
 
-    task = Assessor::TaskElement.find_by(id: passthrough["medusa_assessor_task"])
+    element = Assessor::TaskElement.find_by(id: passthrough["medusa_assessor_task"])
     raise StandardError.new("cannot find task for response: #{message}") if task.nil?
 
-    Assessor::Response.create(assessor_task_id: task.id, subtask: subtask, content: message.to_json, status: "fetched")
+    Assessor::Response.create(assessor_task_element_id: task.id, subtask: subtask, content: message.to_json, status: "fetched")
   end
 
   def handle
@@ -63,7 +63,7 @@ class Assessor::Response < ApplicationRecord
       new_md5_sum = message["CHECKSUM"]
       cfs_file.set_fixity(new_md5_sum)
       cfs_file.save
-    when "mediatype"
+    when "content_type"
       new_content_type_name = message["CONTENT_TYPE"]
       cfs_file.update_content_type_from_assessor(new_content_type_name)
     else

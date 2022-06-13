@@ -21,7 +21,7 @@ class CfsFile < ApplicationRecord
 
   has_many :red_flags, as: :red_flaggable, dependent: :destroy
   has_many :fixity_check_results, -> {order 'created_at DESC'}, dependent: :destroy
-  has_many :assessor_tasks, class_name: 'TaskElement', dependent: :destroy
+  has_many :assessor_task_elements, class_name: Assessor::TaskElement, dependent: :destroy, foreign_key: 'cfs_file_id'
 
   delegate :repository, :collection, :file_group, :root_cfs_directory, to: :cfs_directory
   delegate :name, to: :content_type, prefix: true, allow_nil: true
@@ -177,17 +177,17 @@ class CfsFile < ApplicationRecord
     end
   end
 
-  def assessor_tasks
-    Assessor::TaskElement.where(id: self.id)
+  def assessor_task_elements
+    Assessor::TaskElement.where(cfs_file_id: self.id)
   end
 
   def has_unsent_assessor_task?
-    assessor_tasks.where(sent_at: nil).count.nonzero?
+    assessor_task_elements.where(sent_at: nil).count.nonzero?
   end
 
   def has_incomplete_assessor_task?
-    assessor_tasks.each do |task|
-      return true if task.incomplete?
+    assessor_task_elements.each do |element|
+      return true if element.incomplete?
     end
   end
 

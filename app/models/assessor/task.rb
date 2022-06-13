@@ -6,9 +6,11 @@ class Assessor::Task < ApplicationRecord
   MAX_BATCH_SIZE = 99
 
   attr_accessor :element_group
+  attr_accessor :element_group_ids
 
   def initialize(element_group_ids:)
     self.element_group = Assessor::TaskElement.where(id: element_group_ids)
+    self.element_group_ids = element_group_ids
   end
 
   def initiate
@@ -44,6 +46,14 @@ class Assessor::Task < ApplicationRecord
     failure_count = resp[:failures].count
     raise StandardError.new("error in Extractor TaskElement for #{cfs_file}: #{resp}") unless failure_count.zero?
 
+    if failure_count.positive?
+      flag = element_group.first
+      Assessor::Response.create(assessor_task_element_id: flag.id,
+                                subtask: "error",
+                                content: "#{failure_count} failure(s) in sending task elements #{self.element_group_ids}",
+                                status: "fetched")
+    end
+
     element_group.each do |element|
       element.update(sent_at: Time.current)
     end
@@ -65,6 +75,7 @@ class Assessor::Task < ApplicationRecord
       task.initiate
       sleep 0.1
     end
+
 
   end
 

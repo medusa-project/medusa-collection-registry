@@ -5,7 +5,7 @@ class Assessor::TaskElement < ApplicationRecord
   def complete?
     return false if self.checksum == true && !subtask_complete?("checksum")
 
-    return false if self.mediatype == true && !subtask_complete?("mediatype")
+    return false if self.content_type == true && !subtask_complete?("content_type")
 
     return false if self.fits == true && !subtask_complete?("fits")
 
@@ -14,6 +14,10 @@ class Assessor::TaskElement < ApplicationRecord
 
   def incomplete?
     !complete?
+  end
+
+  def has_errors?
+    assessor_responses.where(subtask: "error").count.positive?
   end
 
   def subtask_complete?(subtask)
@@ -43,7 +47,7 @@ class Assessor::TaskElement < ApplicationRecord
   def subtask_array
     subtasks = Array.new
     subtasks << 'CHECKSUM' if self.checksum == true
-    subtasks << 'CONTENT_TYPE' if self.mediatype == true
+    subtasks << 'CONTENT_TYPE' if self.content_type == true
     subtasks << 'FITS' if self.fits == true
     subtasks
   end
