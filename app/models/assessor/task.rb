@@ -87,6 +87,7 @@ class Assessor::Task
     # Leaving about 192 characters for other parts, and estimating
     # about 300 characters per command
     # 20 is probably a reasonably safe number of files to send per command
+    # update - nope, trying 10
     # assumes set of unset not empty, checked by calling method
     oldest_unsent = Assessor::TaskElement.where(sent_at: nil).first
 
@@ -96,7 +97,7 @@ class Assessor::Task
     case oldest_unsent.size_category
     when "small"
       range_q = "c.size < #{small_max.to_s}"
-      limit_q = 20.to_s
+      limit_q = 10.to_s
     when "medium"
       range_q = "c.size > #{small_max.to_s} AND c.size < #{medium_max} "
       limit_q = 5.to_s
