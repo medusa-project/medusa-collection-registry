@@ -1,4 +1,6 @@
-class Assessor::Task < ApplicationRecord
+class Assessor::Task
+
+  include ActiveModel::Model
 
   CLUSTER = Settings.assessor.cluster
   ECS_CLIENT = ContainerManager.instance.ecs_client
