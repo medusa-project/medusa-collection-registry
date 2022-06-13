@@ -171,7 +171,7 @@ class CfsFile < ApplicationRecord
       # since md5 is calculated with fits, and we are waiting for fits, no need to be redundant
       Assessor::TaskElement.create(cfs_file_id: self.id,
                                    checksum: false,
-                                   mediatype: true,
+                                   content_type: true,
                                    fits: true)
       self.save!
     end
@@ -282,7 +282,7 @@ class CfsFile < ApplicationRecord
     if self.md5_sum.nil?
       Assessor::TaskElement.create(cfs_file_id: self.id,
                                    checksum: true,
-                                   mediatype: true,
+                                   content_type: true,
                                    fits: false)
     end
     #otherwise don't worry about it
