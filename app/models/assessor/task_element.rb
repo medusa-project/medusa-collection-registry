@@ -21,6 +21,11 @@ class Assessor::TaskElement < ApplicationRecord
     assessor_responses.where(subtask: "error").count.positive?
   end
 
+  def reset
+    assessor_responses.destroy_all
+    self.update_attribute(:sent_at, nil)
+  end
+
   def subtask_complete?(subtask)
     responses = self.assessor_responses.where(subtask: subtask)
     return false if responses.count.zero?

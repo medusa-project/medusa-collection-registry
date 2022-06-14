@@ -49,11 +49,13 @@ class Assessor::Task
     raise StandardError.new("error in Extractor TaskElement for #{cfs_file}: #{resp}") unless failure_count.zero?
 
     if failure_count.positive?
-      flag = element_group.first
-      Assessor::Response.create(assessor_task_element_id: flag.id,
+
+      element_group.each do |element|
+      Assessor::Response.create(assessor_task_element_id: element.id,
                                 subtask: "error",
                                 content: "#{failure_count} failure(s) in sending task elements #{self.element_group_ids}",
                                 status: "fetched")
+      end
     end
 
     element_group.each do |element|

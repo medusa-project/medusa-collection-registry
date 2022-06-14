@@ -351,6 +351,13 @@ class Workflow::AccrualJob < Workflow::Base
     be_in_state_and_requeue('await_assessment')
   end
 
+  def retry_incomplete_assessments
+    self.update_attribute(:assessment_start_time, Time.current)
+    cfs_directory.assessor_task_elements.each do |element|
+      element.reset unless element.complete?
+    end
+  end
+
   def perform_await_assessment
     if has_assessment_errors?
       raise "One or more assessment task has error. Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
@@ -363,13 +370,13 @@ class Workflow::AccrualJob < Workflow::Base
         raise "Assessments are still pending. Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
       end
     else
-      destroy_complete_task_elements
+      destroy_complete_assessments
       Workflow::AccrualMailer.assessment_done(self).deliver_now
       be_in_state_and_requeue('email_done')
     end
   end
 
-  def destroy_complete_task_elements
+  def destroy_complete_assessments
     cfs_directory.each_file_in_tree do |file|
       tasks = Assessor::TaskElement.where(cfs_file_id: file.id)
       tasks.each{|task| task.destroy if task.complete?}
