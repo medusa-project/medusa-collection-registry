@@ -190,6 +190,7 @@ class CfsFile < ApplicationRecord
     assessor_task_elements.each do |element|
       return true if element.incomplete?
     end
+    false
   end
 
   def aws_etag

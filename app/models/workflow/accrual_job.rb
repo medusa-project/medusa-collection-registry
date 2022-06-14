@@ -357,9 +357,6 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def perform_await_assessment
-    if has_assessment_errors?
-      raise "One or more assessment task has error. Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
-    end
 
     if has_pending_assessments?
       if assessment_start_time + Settings.classes.workflow.accrual_job.assessment_error_reporting_timeout > Time.now
@@ -390,6 +387,7 @@ class Workflow::AccrualJob < Workflow::Base
   def has_pending_assessments?
     cfs_directory.each_file_in_tree do |file|
       next if file.nil?
+
       return true if file.md5_sum.nil?
 
       return true if file.fits_serialized == false
