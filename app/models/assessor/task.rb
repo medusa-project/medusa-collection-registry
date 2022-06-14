@@ -57,7 +57,7 @@ class Assessor::Task
     end
 
     element_group.each do |element|
-      element.update(sent_at: Time.current)
+      element.update_attribute(sent_at: Time.current)
     end
   end
 
@@ -78,8 +78,6 @@ class Assessor::Task
       task.initiate
       sleep 0.1
     end
-
-
   end
 
   def self.next_group_ids
@@ -106,8 +104,9 @@ class Assessor::Task
     else
       raise StandardError.new("Unexpected size category for oldest unset task element.")
     end
-    sql = "SELECT t.id FROM assessor_task_elements t, cfs_files c WHERE t.cfs_file_id = c.id AND #{range_q} LIMIT #{limit_q}"
+    sql = "SELECT t.id FROM assessor_task_elements t, cfs_files c WHERE t.cfs_file_id = c.id AND t.sent_at = null AND #{range_q} LIMIT #{limit_q}"
     batch = ActiveRecord::Base.connection.execute(sql)
+    batch.each {|task_element| task_element.update_attribute(:sent_at, Time.current)}
     return batch.pluck("id")
   end
 
