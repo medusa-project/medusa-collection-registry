@@ -106,8 +106,10 @@ class Assessor::Task
     end
     sql = "SELECT t.id FROM assessor_task_elements t, cfs_files c WHERE t.cfs_file_id = c.id AND t.sent_at IS NULL AND #{range_q} LIMIT #{limit_q}"
     batch = ActiveRecord::Base.connection.execute(sql)
-    batch.each {|task_element| task_element.update_attribute(:sent_at, Time.current)}
-    return batch.pluck("id")
+    batch_ids = batch.pluck("id")
+    batch_elements = Assessor::TaskElement.where(id: batch_ids)
+    batch_elements.each {|task_element| task_element.update_attribute(:sent_at, Time.current)}
+    batch_ids
   end
 
   def self.current_tasks
