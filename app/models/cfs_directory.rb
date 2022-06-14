@@ -248,9 +248,11 @@ class CfsDirectory < ApplicationRecord
   end
 
   def retry_incomplete_assessments
-    assessor_task_elements.each do |element|
-      element.reset unless element.complete?
-    end
+    assessor_task_elements.each {|element| element.reset unless element.complete?}
+  end
+
+  def destroy_complete_assessments
+    assessor_task_elements.each {|element| element.destroy if element.complete?}
   end
 
   def handle_cfs_assessment

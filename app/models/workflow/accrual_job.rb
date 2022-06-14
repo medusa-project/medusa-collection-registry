@@ -375,10 +375,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def destroy_complete_assessments
-    cfs_directory.each_file_in_tree do |file|
-      tasks = Assessor::TaskElement.where(cfs_file_id: file.id)
-      tasks.each{|task| task.destroy if task.complete?}
-    end
+    cfs_directory.destroy_complete_assessments
   end
 
   def has_assessment_errors?
