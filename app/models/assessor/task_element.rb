@@ -4,11 +4,11 @@ class Assessor::TaskElement < ApplicationRecord
 
   def complete?
 
-    return false if self.checksum == true && (!subtask_complete?("checksum") || this.cfs_file.md5_sum.nil?)
+    return false if self.checksum == true && (!subtask_complete?("checksum") || cfs_file.md5_sum.nil?)
 
     return false if self.content_type == true && !subtask_complete?("content_type")
 
-    return false if self.fits == true && (!subtask_complete?("fits") || this.cfs_file.md5_sum.nil?)
+    return false if self.fits == true && (!subtask_complete?("fits") || cfs_file.md5_sum.nil?)
 
     true
   end
