@@ -247,6 +247,12 @@ class CfsDirectory < ApplicationRecord
     Sunspot.commit
   end
 
+  def retry_incomplete_assessments
+    assessor_task_elements.each do |element|
+      element.reset unless element.complete?
+    end
+  end
+
   def handle_cfs_assessment
     #It is important to do the following in order
 

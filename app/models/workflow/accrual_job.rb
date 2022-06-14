@@ -353,9 +353,7 @@ class Workflow::AccrualJob < Workflow::Base
 
   def retry_incomplete_assessments
     self.update_attribute(:assessment_start_time, Time.current)
-    cfs_directory.assessor_task_elements.each do |element|
-      element.reset unless element.complete?
-    end
+    cfs_directory.retry_incomplete_assessments
   end
 
   def perform_await_assessment
