@@ -57,7 +57,7 @@ class Assessor::Task
     end
 
     element_group.each do |element|
-      element.update_attribute(sent_at: Time.current)
+      element.update_attribute(:sent_at, Time.current)
     end
   end
 
