@@ -3,11 +3,12 @@ class Assessor::TaskElement < ApplicationRecord
   has_many :assessor_responses, class_name: 'Assessor::Response', dependent: :destroy, foreign_key: 'assessor_task_element_id'
 
   def complete?
-    return false if self.checksum == true && !subtask_complete?("checksum")
+
+    return false if self.checksum == true && (!subtask_complete?("checksum") || this.cfs_file.md5_sum.nil?)
 
     return false if self.content_type == true && !subtask_complete?("content_type")
 
-    return false if self.fits == true && !subtask_complete?("fits")
+    return false if self.fits == true && (!subtask_complete?("fits") || this.cfs_file.md5_sum.nil?)
 
     true
   end

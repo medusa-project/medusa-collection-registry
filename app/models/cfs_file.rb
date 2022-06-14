@@ -169,6 +169,7 @@ class CfsFile < ApplicationRecord
       self.mtime = external_mtime
       self.content_type_name = content_type_by_filename
       # since md5 is calculated with fits, and we are waiting for fits, no need to be redundant
+      # if we can't get md5_sum from fits, the response handler automatically creates an md5_checksum request
       Assessor::TaskElement.create(cfs_file_id: self.id,
                                    checksum: false,
                                    content_type: true,
