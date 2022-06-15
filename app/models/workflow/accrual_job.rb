@@ -347,12 +347,13 @@ class Workflow::AccrualJob < Workflow::Base
   # directories if they don't exist and then assessing them.
   def perform_assessing
     cfs_directory.make_and_assess_tree
-    update_attribute(:assessment_start_time, Time.now)
+    update_attribute(:assessment_start_time, Time.current)
+    sleep(30)
     be_in_state_and_requeue('await_assessment')
   end
 
   def retry_incomplete_assessments
-    self.update_attribute(:assessment_start_time, Time.current)
+    update_attribute(:assessment_start_time, Time.current)
     cfs_directory.retry_incomplete_assessments
   end
 

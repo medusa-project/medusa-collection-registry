@@ -62,6 +62,8 @@ module Preview
           h[:data] = Net::HTTP.get(URI.parse(iiif_url(params[:iiif_parameters], params[:format])))
         end
       end
+    rescue JSON::ParserError
+      return nil
     end
 
     def thumbnail_data

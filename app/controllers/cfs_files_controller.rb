@@ -90,6 +90,7 @@ class CfsFilesController < ApplicationController
   def preview_iiif_image
     authorize! :download, @file.file_group
     response_info = @image_helper.iiif_image_response_info(params)
+    render nothing: true, status: 500 if response_info.nil?
     send_data response_info[:data], type: response_info[:response_type], disposition: disposition('inline', @file)
   end
 
