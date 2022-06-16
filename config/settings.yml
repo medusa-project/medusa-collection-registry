@@ -291,8 +291,10 @@ classes:
       - other optical disk- paper tape
   workflow:
     accrual_job:
+      assessment_retry_interval: <%= 8.hours %>
+      assessment_attempt_count_max: <%= 3 %>
       assessment_error_reporting_timeout: <%= 1.day %>
-      assessment_requeue_interval: <%= 5.minutes %>
+      assessment_requeue_interval: <%= 10.minutes %>
       copying_batch_size: 100
       copying_parallel_threads: 3
       copy_server_error_reporting_timeout: <%= 1.day %>

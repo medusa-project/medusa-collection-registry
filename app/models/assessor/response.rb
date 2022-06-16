@@ -16,9 +16,7 @@ class Assessor::Response < ApplicationRecord
     SQS.delete_message({queue_url: QUEUE_URL, receipt_handle: response.data.messages[0].receipt_handle})
     file_identifier = message["file_identifier"]
     raise StandardError.new("test assessor message: #{message}") if file_identifier == "test-id"
-
-    cfs_file_id = file_identifier.to_i
-
+    
     message_type = message["type"]
     case message_type
     when "FITS"
@@ -71,7 +69,6 @@ class Assessor::Response < ApplicationRecord
       Rails.logger.warn("Error response from Medusa Assessor Service: #{self.content}")
     end
     Sunspot.commit
-    # TODO maybe delete instead of change status ?
     self.status = "handled"
     self.save!
   end

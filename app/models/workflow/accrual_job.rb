@@ -348,23 +348,32 @@ class Workflow::AccrualJob < Workflow::Base
   def perform_assessing
     cfs_directory.make_and_assess_tree
     update_attribute(:assessment_start_time, Time.current)
+    update_attribute(:assessment_attempt_count, 1)
     sleep(30)
     be_in_state_and_requeue('await_assessment')
   end
 
   def retry_incomplete_assessments
     update_attribute(:assessment_start_time, Time.current)
+    update_attribute(:assessment_attempt_count, assessment_attempt_count + 1)
     cfs_directory.retry_incomplete_assessments
   end
 
   def perform_await_assessment
 
     if has_pending_assessments?
-      if assessment_start_time + Settings.classes.workflow.accrual_job.assessment_error_reporting_timeout > Time.now
-        put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
-      else
+
+      if assessment_attempt_count > Settings.classes.workflow.accrual_job.assessment_attempt_count_max
         raise "Assessments are still pending. Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
       end
+
+      if assessment_start_time + Settings.classes.workflow.accrual_job.assessment_retry_interval > Time.now
+        put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
+      else
+        destroy_complete_assessments
+        retry_incomplete_assessments
+      end
+
     else
       destroy_complete_assessments
       Workflow::AccrualMailer.assessment_done(self).deliver_now

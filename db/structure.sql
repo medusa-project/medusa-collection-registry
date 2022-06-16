@@ -4314,7 +4314,8 @@ CREATE TABLE public.workflow_accrual_jobs (
     allow_overwrite boolean DEFAULT false,
     empty_file_report text DEFAULT ''::text,
     copy_start_time timestamp without time zone,
-    assessment_start_time timestamp without time zone
+    assessment_start_time timestamp without time zone,
+    assessment_attempt_count integer
 );
 
 
@@ -8026,6 +8027,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220302205736'),
 ('20220531165346'),
 ('20220601133442'),
-('20220613135706');
+('20220613135706'),
+('20220616113913');
 
 
