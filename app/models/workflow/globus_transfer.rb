@@ -53,7 +53,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
         raise("Globus transfer response for #{workflow_accrual_key_id}: #{transfer_response.code}, #{transfer_response.message}")
       end
 
-      Rails.logger.warn("Globus transfer response for #{workflow_accrual_key_id}: #{transfer_response.code}, #{transfer_response.message}")
+      #Rails.logger.warn("Globus transfer response for #{workflow_accrual_key_id}: #{transfer_response.code}, #{transfer_response.message}")
       self.request_id = transfer_response['request_id']
       self.task_id = transfer_response['task_id']
       self.task_link = transfer_response['task_link']['href']
