@@ -407,7 +407,11 @@ class Workflow::AccrualJob < Workflow::Base
       return true if file.has_incomplete_assessor_task?
     end
 
-    false
+    transaction do
+      subdirectory_ids = cfs_directory.recursive_subdirectory_ids.to_set
+      possible_assessment_job_ids = Job::CfsInitialDirectoryAssessment.where(file_group_id: cfs_directory.file_group.id).pluck(:cfs_directory_id).to_set
+      return subdirectory_ids.intersect?(possible_assessment_job_ids)
+    end
 
     # transaction do
     #   subdirectory_ids = cfs_directory.recursive_subdirectory_ids.to_set
