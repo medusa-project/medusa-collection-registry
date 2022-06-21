@@ -412,12 +412,7 @@ class Workflow::AccrualJob < Workflow::Base
       possible_assessment_job_ids = Job::CfsInitialDirectoryAssessment.where(file_group_id: cfs_directory.file_group.id).pluck(:cfs_directory_id).to_set
       return subdirectory_ids.intersect?(possible_assessment_job_ids)
     end
-
-    # transaction do
-    #   subdirectory_ids = cfs_directory.recursive_subdirectory_ids.to_set
-    #   possible_assessment_job_ids = Job::CfsInitialDirectoryAssessment.where(file_group_id: cfs_directory.file_group.id).pluck(:cfs_directory_id).to_set
-    #   return subdirectory_ids.intersect?(possible_assessment_job_ids)
-    # end
+    
   end
 
   def perform_email_done
