@@ -168,5 +168,5 @@ Rails.application.routes.draw do
   resources :resource_types, only: :index
 
   match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
-
+  match '*unmatched', to: 'application#route_not_found', via: :all
 end
