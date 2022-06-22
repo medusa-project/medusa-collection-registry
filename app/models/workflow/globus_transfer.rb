@@ -57,7 +57,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
       self.request_id = transfer_response['request_id']
       self.task_id = transfer_response['task_id']
       self.task_link = transfer_response['task_link']['href']
-      Rails.logger.warn(transfer_response['message'])
+      #Rails.logger.warn(transfer_response['message'])
     rescue StandardError => e
       Rails.logger.warn("#{e.class} when trying Globus transfer for workflow accrual key #{workflow_accrual_key_id}, #{e.message}")
       raise e
