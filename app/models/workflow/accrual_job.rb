@@ -116,8 +116,7 @@ class Workflow::AccrualJob < Workflow::Base
       file.size = root.size(File.join(prefix, key))
       file.save!
       empty_files.puts(key) if file.size.zero?
-      matches_safe_regex = file.relative_path=~pattern
-      unsafe_path_strings.puts(file.relative_path) unless ok_chars(file.relative_path, pattern)
+      unsafe_path_strings.puts(file.name) unless ok_chars(file.name, pattern)
     end
     # Rails.logger.warn("#{Time.current} END adding workflow_accrual_files to ingest_keys")
     # Rails.logger.warn("#{Time.current} START adding files within workflow_accrual_directories to ingest_keys.")
@@ -133,6 +132,7 @@ class Workflow::AccrualJob < Workflow::Base
         key_size = root.size(full_key)
         size += key_size
         empty_files.puts(key) if key_size.zero?
+        unsafe_path_strings.puts(full_key) unless ok_chars(full_key, pattern)
       end
       directory.size = size
       directory.count = keys.count
