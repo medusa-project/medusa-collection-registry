@@ -282,12 +282,15 @@ class CfsFile < ApplicationRecord
     self.save!
   rescue Exception
     if self.md5_sum.nil?
-      Assessor::TaskElement.create(cfs_file_id: self.id,
-                                   checksum: true,
-                                   content_type: true,
-                                   fits: false)
+      create_checksum_task_element unless  Assessor::TaskElement.exists?(cfs_file_id: self.id, checksum: true)
     end
-    #otherwise don't worry about it
+  end
+
+  def create_checksum_task_element
+    Assessor::TaskElement.create(cfs_file_id: self.id,
+                                 checksum: true,
+                                 content_type: true,
+                                 fits: false)
   end
 
   def update_size_from_fits(new_size)
