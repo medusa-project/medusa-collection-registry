@@ -113,7 +113,7 @@ class CfsFile < ApplicationRecord
   def tmpdir_for_with_input_file
     expected_size = size || storage_root.size(key)
     if expected_size > Settings.classes.cfs_file.tmpdir_cutoff_size
-      Application.storage_manager.tmpdir
+      StorageManager.instance.tmpdir
     else
       Dir.tmpdir
     end
@@ -130,13 +130,13 @@ class CfsFile < ApplicationRecord
 =end
 
   def storage_root
-    Application.storage_manager.main_root
+    StorageManager.instance.main_root
   end
 
   # depends on rclone mount - deprecated
 =begin
   def rclone_storage_root
-    Application.storage_manager.main_root_rclone
+    StorageManager.instance.main_root_rclone
   end
 =end
 

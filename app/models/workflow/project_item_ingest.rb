@@ -57,11 +57,11 @@ class Workflow::ProjectItemIngest < Workflow::Base
   end
 
   def staging_root
-    Application.storage_manager.project_staging_root
+    StorageManager.instance.project_staging_root
   end
 
   def main_root
-    Application.storage_manager.main_root
+    StorageManager.instance.main_root
   end
 
   protected

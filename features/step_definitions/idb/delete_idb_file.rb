@@ -20,7 +20,7 @@ Given(/^there is a valid IDB delete delayed job$/) do
 
   content_string = 'Some content'
   md5_sum = Digest::MD5.base64digest(content_string)
-  storage_root = Application.storage_manager.main_root
+  storage_root = StorageManager.instance.main_root
   storage_root.copy_io_to(cfs_file.key, StringIO.new(content_string), md5_sum, content_string.length)
 
   idb_file_group.reload

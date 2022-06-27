@@ -1,5 +1,9 @@
-class StorageManager
+# frozen_string_literal: true
 
+require 'singleton'
+
+class StorageManager
+  include Singleton
   attr_accessor :main_root, :main_root_backup, :amqp_roots, :project_staging_root, :accrual_roots,
                 :fits_root, :tmpdir, :globus_endpoints, :reports_root
 

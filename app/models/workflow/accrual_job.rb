@@ -76,11 +76,11 @@ class Workflow::AccrualJob < Workflow::Base
     path_components = staging_path.split('/').drop(1)
     # shift removes the first element of self and returns it https://apidock.com/ruby/Array/shift
     staging_root_name = path_components.shift
-    Application.storage_manager.globus_endpoint_at(staging_root_name)
+    StorageManager.instance.globus_endpoint_at(staging_root_name)
   end
 
   def accrual_root(name)
-    Application.storage_manager.accrual_roots.at(name)
+    StorageManager.instance.accrual_roots.at(name)
   end
 
   def perform_start
@@ -147,7 +147,7 @@ class Workflow::AccrualJob < Workflow::Base
     # TODO: we can implement other checks based on size and/or the beginning/end bytes of a file
     # to try to check for changes more efficiently before computing the entire md5.
     duplicate_keys.each do |key|
-      # existing_md5 = Application.storage_manager.main_root.md5_sum(File.join(cfs_directory_prefix, key))
+      # existing_md5 = StorageManager.instance.main_root.md5_sum(File.join(cfs_directory_prefix, key))
       #       # ingest_md5 = root.md5_sum(File.join(prefix, key))
       #       # file_changed = (existing_md5 != ingest_md5)
       file_changed = TRUE
@@ -167,7 +167,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def existing_keys_for(prefix)
-    Application.storage_manager.main_root.unprefixed_subtree_keys(prefix)
+    StorageManager.instance.main_root.unprefixed_subtree_keys(prefix)
   rescue MedusaStorage::Error::InvalidDirectory => e
     # getting here means directory does not exist, which is expected for new accruals
     []
@@ -193,7 +193,7 @@ class Workflow::AccrualJob < Workflow::Base
   def internal_perform_copying(overwrite: false)
     source_root, source_prefix = staging_root_and_prefix
     target_prefix = cfs_directory.relative_path
-    target_root = Application.storage_manager.main_root
+    target_root = StorageManager.instance.main_root
     #TODO - this could run through Parallel if advisable -
     # however, with the try below I get database connection issues
     # could not obtain a connectino from the pool withing 5.000 seconds ...
@@ -244,7 +244,7 @@ class Workflow::AccrualJob < Workflow::Base
   def perform_send_copy_messages
     reset_conflict_fixities_and_fits if has_serious_conflicts?
     source_endpoint = staging_globus_endpoint
-    target_endpoint = Application.storage_manager.globus_endpoint_at('main_storage')
+    target_endpoint = StorageManager.instance.globus_endpoint_at('main_storage')
     target_prefix = cfs_directory.relative_path
     workflow_accrual_keys.copy_not_requested.find_each do |workflow_accrual_key|
       unless workflow_accrual_key.exists_on_main_root?

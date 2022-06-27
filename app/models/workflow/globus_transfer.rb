@@ -121,7 +121,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
   end
 
   def object_copied?
-    Application.storage_manager.main_root.exist?(workflow_accrual_key.key)
+    StorageManager.instance.main_root.exist?(workflow_accrual_key.key)
   end
 
   def event_list

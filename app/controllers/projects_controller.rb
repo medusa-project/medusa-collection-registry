@@ -224,7 +224,7 @@ ALERT
 
   def ingest_directory_info(key)
     key = key.sub(/^\/*/, '')
-    children = Application.storage_manager.project_staging_root.subdirectory_keys(key).collect {|k| File.join(File.basename(k), '/')}.sort rescue []
+    children = StorageManager.instance.project_staging_root.subdirectory_keys(key).collect {|k| File.join(File.basename(k), '/')}.sort rescue []
     if key == ''
       Hash.new.tap do |h|
         h[:current] = '/'

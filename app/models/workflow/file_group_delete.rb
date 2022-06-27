@@ -112,11 +112,11 @@ wait_delete_content delete_content restore_content email_restored_content email_
   protected
 
   def main_root
-    Application.storage_manager.main_root
+    StorageManager.instance.main_root
   end
 
   def backup_root
-    Application.storage_manager.main_root_backup
+    StorageManager.instance.main_root_backup
   end
 
   def initial_handle_content

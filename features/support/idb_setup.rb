@@ -26,7 +26,7 @@ module IdbTestHelper
 
   def stage_content_to(key, content_string)
     md5_sum = Digest::MD5.base64digest(content_string)
-    storage_root = Application.storage_manager.amqp_root_at('idb')
+    storage_root = StorageManager.instance.amqp_root_at('idb')
     storage_root.copy_io_to(key, StringIO.new(content_string), md5_sum, content_string.length)
   end
 
@@ -34,7 +34,7 @@ end
 
 Before('@idb') do
   #clear idb staging directories - test should set these up as desired
-  Application.storage_manager.amqp_root_at('idb').delete_all_content
+  StorageManager.instance.amqp_root_at('idb').delete_all_content
 end
 
 Around('@idb-no-deletions') do |scenario, block|

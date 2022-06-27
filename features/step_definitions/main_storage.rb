@@ -29,7 +29,7 @@ And(/^the main storage should not have content under '(.*)'$/) do |key|
 end
 
 def main_storage_root
-  Application.storage_manager.main_root
+  StorageManager.instance.main_root
 end
 
 def main_storage_content_exists_under?(key)

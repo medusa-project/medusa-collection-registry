@@ -69,7 +69,7 @@ module ApplicationHelper
 
   #TODO Obviously this could be much more general in the future
   def has_notifications?
-    current_user and Application.group_resolver.is_ad_admin?(current_user) and
+    current_user and GroupManager.instance.is_ad_admin?(current_user) and
         Workflow::AccrualJob.awaiting_admin.present?
   end
 

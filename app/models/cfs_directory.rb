@@ -157,7 +157,7 @@ class CfsDirectory < ApplicationRecord
   end
 
   def storage_root
-    Application.storage_manager.main_root
+    StorageManager.instance.main_root
   end
 
   def relative_path_from_root

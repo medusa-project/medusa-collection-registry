@@ -80,7 +80,7 @@ class AmqpAccrual::IngestJob < Job::Base
   end
 
   def target_root
-    Application.storage_manager.main_root
+    StorageManager.instance.main_root
   end
 
   def cfs_directory
@@ -96,7 +96,7 @@ class AmqpAccrual::IngestJob < Job::Base
   end
 
   def source_root
-    Application.storage_manager.amqp_root_at(self.client)
+    StorageManager.instance.amqp_root_at(self.client)
   end
 
   def ensure_cfs_directory_parents

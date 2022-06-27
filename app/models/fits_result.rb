@@ -9,7 +9,7 @@ class FitsResult < Object
   end
 
   def self.storage_root
-    Application.storage_manager.fits_root
+    StorageManager.instance.fits_root
   end
 
   def storage_key

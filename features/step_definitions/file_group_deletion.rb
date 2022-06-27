@@ -35,10 +35,10 @@ end
 
 And(/^the delete notification file should exist for '(.*)'$/) do |key_prefix|
   key = File.join(key_prefix, 'THIS_DIRECTORY_TO_BE_DELETED')
-  expect(Application.storage_manager.main_root.exist?(key)).to be_truthy
+  expect(StorageManager.instance.main_root.exist?(key)).to be_truthy
 end
 
 And(/^the delete notification file should not exist for '(.*)'$/) do |key_prefix|
   key = File.join(key_prefix, 'THIS_DIRECTORY_TO_BE_DELETED')
-  expect(Application.storage_manager.main_root.exist?(key)).to be_falsey
+  expect(StorageManager.instance.main_root.exist?(key)).to be_falsey
 end

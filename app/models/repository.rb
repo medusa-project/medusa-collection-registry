@@ -48,7 +48,7 @@ class Repository < ApplicationRecord
   end
 
   def manager?(user)
-    Application.group_resolver.is_member_of?(self.ldap_admin_group, user)
+    GroupManager.instance.is_member_of?(self.ldap_admin_group, user)
   end
 
   def repository

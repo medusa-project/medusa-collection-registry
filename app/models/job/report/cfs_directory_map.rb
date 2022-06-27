@@ -13,12 +13,12 @@ class Job::Report::CfsDirectoryMap < Job::Base
 
   def perform
     storage_key = unique_key
-    storage_path = File.join(Application.storage_manager.reports_root.path, storage_key)
+    storage_path = File.join(StorageManager.instance.reports_root.path, storage_key)
     File.open(storage_path, "w" ){}
     report = Report::CfsDirectoryMap.new(cfs_directory)
     report.generate(storage_path)
     ReportMailer.cfs_directory_map(self, storage_path).deliver_now
-    Application.storage_manager.reports_root.delete_content(storage_key)
+    StorageManager.instance.reports_root.delete_content(storage_key)
   end
 
   private
@@ -28,7 +28,7 @@ class Job::Report::CfsDirectoryMap < Job::Base
     loop do
       timestamp = Time.now.strftime('%Y-%m-%d_%H-%M-%S')
       proposed_key = "map_id#{self.cfs_directory.id.to_s}_ts#{timestamp}"
-      break unless Application.storage_manager.reports_root.exist?(proposed_key)
+      break unless StorageManager.instance.reports_root.exist?(proposed_key)
       sleep(1)
     end
     proposed_key

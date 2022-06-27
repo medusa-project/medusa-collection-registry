@@ -23,7 +23,7 @@ class Accrual
   end
 
   def staging_root
-    Application.storage_manager.accrual_roots.at(staging_root_name)
+    StorageManager.instance.accrual_roots.at(staging_root_name)
   end
 
   def staging_root_name
@@ -45,7 +45,7 @@ class Accrual
   end
 
   def self.available_root_names
-    Application.storage_manager.accrual_roots.all_root_names.sort
+    StorageManager.instance.accrual_roots.all_root_names.sort
   end
 
   def directory_accruable?

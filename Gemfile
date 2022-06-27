@@ -1,9 +1,7 @@
 source 'https://rubygems.org'
-
-gem 'rails', '~> 5.2.6.2'
-
+ruby '3.0.3'
+gem 'rails', '~> 7.0'
 gem 'alma_api', git: 'https://github.com/UIUCLibrary/alma-api-batch'
-
 gem 'auto_html'
 gem 'auto_strip_attributes'
 gem 'config'
@@ -107,7 +105,7 @@ group :development, :test do
   gem 'minitest-matchers_vaccine'
   gem 'puma'
   gem 'rspec-rails'
-  gem 'shoulda-matchers', '~> 2.0'
+  gem 'shoulda-matchers'
   gem 'sunspot_solr'
 end
 

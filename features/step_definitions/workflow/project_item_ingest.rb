@@ -54,7 +54,7 @@ And(/^there exists staged content for the items with ingest identifiers:$/) do |
     content.puts item.ingest_identifier
     content.puts 'content'
     content.rewind
-    Application.storage_manager.project_staging_root.copy_io_to(content_key, content, Digest::MD5.base64digest(content.string), content.string.length)
+    StorageManager.instance.project_staging_root.copy_io_to(content_key, content, Digest::MD5.base64digest(content.string), content.string.length)
   end
 end
 
