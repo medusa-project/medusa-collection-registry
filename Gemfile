@@ -82,7 +82,7 @@ gem 'uuid'
 gem 'csv_builder'
 gem 'font-awesome-rails'
 gem 'multi_json'
-gem 'paperclip', '~> 5.2'
+gem 'paperclip', git: 'https://github.com/sd/paperclip', branch: 'remove-mimemagic'
 gem 'yajl-ruby'
 
 #search
