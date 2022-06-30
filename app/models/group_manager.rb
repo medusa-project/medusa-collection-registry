@@ -5,11 +5,13 @@ require 'singleton'
 class GroupManager
   include Singleton
 
-  def resolver
-    return GroupResolver::Ad.new if Rails.env.production?
+  attr_accessor :resolver
 
-    GroupResolver::Test.new
+  def initialize
+    if Rails.env.production?
+      self.resolver = GroupResolver::Ad.new
+    else
+      self.resolver = GroupResolver::Test.new
+    end
   end
-
-
 end

@@ -58,7 +58,7 @@ SQL
   end
 
   def accruals
-    if GroupManager.instance.is_ad_admin?(current_user)
+    if GroupManager.instance.resolver.is_ad_admin?(current_user)
       @accrual_jobs = Workflow::AccrualJob.order(:created_at).all.decorate
     else
       @accrual_jobs = current_user.workflow_accrual_jobs.order(:created_at).decorate

@@ -17,15 +17,15 @@ class User < ApplicationRecord
   end
 
   def superuser?
-    GroupManager.instance.is_ad_superuser?(self)
+    GroupManager.instance.resolver.is_ad_superuser?(self)
   end
 
   def project_admin?
-    GroupManager.instance.is_ad_project_admin?(self)
+    GroupManager.instance.resolver.is_ad_project_admin?(self)
   end
 
   def medusa_admin?
-    GroupManager.instance.is_ad_admin?(self)
+    GroupManager.instance.resolver.is_ad_admin?(self)
   end
 
 end
