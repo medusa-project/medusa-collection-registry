@@ -64,8 +64,9 @@ gem 'omniauth'
 gem 'omniauth-shibboleth'
 gem 'omniauth-identity'
 gem 'rails-jquery-autocomplete'
-gem 'react-rails', '~> 2.4.0'
-gem 'sass-rails'
+gem 'react-rails'
+gem 'babel-transpiler'
+gem 'sassc-rails'
 gem 'uglifier'
 
 #memory/active record usage monitoring
