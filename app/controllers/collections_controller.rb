@@ -169,7 +169,7 @@ class CollectionsController < ApplicationController
 
   def load_collection_file_extension_stats(collection)
     ActiveRecord::Base.connection.
-        select_all(load_collection_file_extension_sql, nil, [[nil, collection.id]]).to_hash
+        select_all(load_collection_file_extension_sql, nil, [[nil, collection.id]]).to_unsafe_h
   end
 
   def load_collection_content_type_sql

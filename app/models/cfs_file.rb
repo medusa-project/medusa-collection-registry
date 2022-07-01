@@ -469,7 +469,7 @@ class CfsFile < ApplicationRecord
   end
 
   protected
-  
+
   def self.random
     self.offset(rand(self.fast_count)).first
   end

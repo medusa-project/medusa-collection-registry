@@ -172,7 +172,7 @@ class RepositoriesController < ApplicationController
 
   def load_file_extension_stats(repository)
     ActiveRecord::Base.connection.
-        select_all(load_repository_dashboard_file_extension_sql, nil, [[nil, repository.id]]).to_hash
+        select_all(load_repository_dashboard_file_extension_sql, nil, [[nil, repository.id]]).to_unsafe_h
   end
 
   def load_repository_dashboard_content_type_sql

@@ -90,7 +90,7 @@ class VirtualRepositoriesController < ApplicationController
 
   def load_virtual_repository_file_extension_stats(virtual_repository)
     ActiveRecord::Base.connection.
-        select_all(load_virtual_repository_dashboard_file_extension_sql(virtual_repository.collection_ids)).to_hash
+        select_all(load_virtual_repository_dashboard_file_extension_sql(virtual_repository.collection_ids)).to_unsafe_h
   end
 
   def load_virtual_repository_dashboard_content_type_sql(collection_ids)
