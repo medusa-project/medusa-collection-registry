@@ -163,16 +163,21 @@ class CollectionsController < ApplicationController
   end
 
   def load_collection_content_type_stats(collection)
-    ActiveRecord::Base.connection.
-        select_all(load_collection_content_type_sql, nil, [[nil, collection.id]])
+    bind = ActiveRecord::Relation::QueryAttribute.new(
+      nil,
+      collection.id,
+      ActiveRecord::Type::Value.new
+    )
+    ActiveRecord::Base.connection.select_all(load_collection_content_type_sql, nil, bind)
   end
 
   def load_collection_file_extension_stats(collection)
-    result = ActiveRecord::Base.connection.
-        select_all(load_collection_file_extension_sql, nil, [[nil, collection.id]])
-    Rails.logger.warn("DEBUG collection stats report")
-    Rails.logger.warn(result.class)
-    return result
+    bind = ActiveRecord::Relation::QueryAttribute.new(
+      nil,
+      collection.id,
+      ActiveRecord::Type::Value.new
+    )
+    ActiveRecord::Base.connection.select_all(load_collection_file_extension_sql, nil, bind)
   end
 
   def load_collection_content_type_sql
