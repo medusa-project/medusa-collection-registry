@@ -168,7 +168,7 @@ class CollectionsController < ApplicationController
       collection.id,
       ActiveRecord::Type::Value.new
     )]
-    ActiveRecord::Base.connection.select_all(load_collection_content_type_sql, nil, bind)
+    ActiveRecord::Base.connection.select_all(load_collection_content_type_sql, nil, binds)
   end
 
   def load_collection_file_extension_stats(collection)
