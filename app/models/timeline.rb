@@ -20,14 +20,14 @@ class Timeline
     date_just_month = "SELECT id, date_trunc('month', created_at) AS month, size FROM (#{filtered_by_directory}) AS T"
     coalesce_sizes = "SELECT month, count(*) AS count, coalesce(sum(size), 0) AS size FROM (#{date_just_month}) AS S"
     sql = "#{coalesce_sizes} GROUP BY month ORDER BY month ASC"
-    result = CfsFile.connection.select_all(sql).to_unsafe_h
+    result =  CfsFile.connection.select_all(sql)
     result.map{ |row| row["size"] = row["size"].to_i}
     result
   end
 
   def self.base_for_system_totals
     sql = "SELECT month, count, size FROM timeline_stats ORDER BY month ASC"
-    result = CfsFile.connection.select_all(sql).to_unsafe_h
+    result = CfsFile.connection.select_all(sql)
     result.map{ |row| row["size"] = row["size"].to_i}
     result
   end
