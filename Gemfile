@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 ruby '3.0.3'
 gem 'rails', '~> 7.0'
+gem 'addressable'
 gem 'alma_api', git: 'https://github.com/UIUCLibrary/alma-api-batch'
 gem 'auto_html'
 gem 'auto_strip_attributes'
