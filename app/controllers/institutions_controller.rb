@@ -33,7 +33,7 @@ class InstitutionsController < ApplicationController
 
   def update
     authorize! :update, @institution
-    if @institution.update_attributes(allowed_params)
+    if @institution.update(allowed_params)
       redirect_to institution_path(@institution)
     else
       render 'edit'

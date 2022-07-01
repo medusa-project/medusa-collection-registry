@@ -99,7 +99,7 @@ class RepositoriesController < ApplicationController
     authorize! :update, @repository
     #disallow changing the owning institution
     params[:repository].delete(:institution_id)
-    if @repository.update_attributes(allowed_params)
+    if @repository.update(allowed_params)
       redirect_to repository_path(@repository), notice: 'Repository was successfully updated.'
     else
       render 'edit'
@@ -132,7 +132,7 @@ class RepositoriesController < ApplicationController
 
   def update_ldap_admin
     authorize! :update_ldap_admins, Repository
-    @success = @repository.update_attributes(params[:repository].permit(:ldap_admin_domain, :ldap_admin_group))
+    @success = @repository.update(params[:repository].permit(:ldap_admin_domain, :ldap_admin_group))
     if request.xhr?
       respond_to { |format| format.js }
     else

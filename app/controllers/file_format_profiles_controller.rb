@@ -17,7 +17,7 @@ class FileFormatProfilesController < ApplicationController
 
   def update
     authorize! :update, @file_format_profile
-    if @file_format_profile.update_attributes(allowed_params)
+    if @file_format_profile.update(allowed_params)
       redirect_to @file_format_profile
     else
       render 'edit'

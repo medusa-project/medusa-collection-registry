@@ -56,7 +56,7 @@ class VirtualRepositoriesController < ApplicationController
   def update
     authorize! :update, @virtual_repository.repository
     params[:virtual_repository].delete(:repository_id) if params[:virtual_repository][:repository_id].present?
-    if @virtual_repository.update_attributes(allowed_params)
+    if @virtual_repository.update(allowed_params)
       redirect_to @virtual_repository
     else
       render 'edit'

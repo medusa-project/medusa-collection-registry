@@ -57,7 +57,7 @@ class CollectionsController < ApplicationController
 
   def update
     authorize! :update, @collection
-    if @collection.update_attributes(allowed_params)
+    if @collection.update(allowed_params)
       redirect_to collection_path(@collection)
     else
       render 'edit'
@@ -84,7 +84,7 @@ class CollectionsController < ApplicationController
     @collection = Collection.new
     @collection.repository = Repository.find(params[:collection][:repository_id]) rescue nil
     authorize! :create, @collection if @collection.repository
-    if @collection.repository and @collection.update_attributes(allowed_params)
+    if @collection.repository and @collection.update(allowed_params)
       redirect_to collection_path(@collection)
     else
       @repositories = repository_select_collection(current_user)

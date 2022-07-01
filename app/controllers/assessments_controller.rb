@@ -21,7 +21,7 @@ class AssessmentsController < ApplicationController
 
   def update
     authorize! :update_assessment, @assessable
-    if @assessment.update_attributes(allowed_params)
+    if @assessment.update(allowed_params)
       redirect_to assessment_path(@assessment)
     else
       render 'edit'

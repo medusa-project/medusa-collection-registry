@@ -45,7 +45,7 @@ class FileGroupsController < ApplicationController
   def update
     authorize! :update, @file_group
     handle_related_file_groups do
-      if @file_group.update_attributes(allowed_params)
+      if @file_group.update(allowed_params)
         redirect_to @file_group
       else
         render 'edit'
@@ -66,7 +66,7 @@ class FileGroupsController < ApplicationController
       klass = determine_creation_class(params[:file_group])
       @file_group = klass.new(collection: @collection)
       authorize! :create, @file_group
-      @file_group.update_attributes(allowed_params)
+      @file_group.update(allowed_params)
       if @file_group.save
         @file_group.record_creation_event(current_user)
         redirect_to @file_group

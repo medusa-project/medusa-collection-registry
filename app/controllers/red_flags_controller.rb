@@ -12,7 +12,7 @@ class RedFlagsController < ApplicationController
 
   def update
     authorize! :update, @red_flag
-    if @red_flag.update_attributes(allowed_params)
+    if @red_flag.update(allowed_params)
       redirect_to red_flag_path(@red_flag)
     else
       render 'edit'

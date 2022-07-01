@@ -14,7 +14,7 @@ end
 
 And(/^the file group titled '([^']*)' has a cfs file for the path '([^']*)' with fields:$/) do |title, path, table|
   ensuring_cfs_file_at_path_for_file_group_titled(path, title) do |file|
-    file.update_attributes!(table.hashes.first)
+    file.update!(table.hashes.first)
   end
 end
 
@@ -180,7 +180,7 @@ end
 
 When(/^I update the cfs file with name '([^']*)' with fields:$/) do |name, table|
   cfs_file = CfsFile.find_by(name: name)
-  cfs_file.update_attributes!(table.hashes.first)
+  cfs_file.update!(table.hashes.first)
 end
 
 Then(/^(\d+) cfs files should have fits attached$/) do |count|

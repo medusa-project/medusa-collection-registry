@@ -41,7 +41,7 @@ class ProducersController < ApplicationController
 
   def update
     authorize! :update, Producer
-    if @producer.update_attributes(allowed_params)
+    if @producer.update(allowed_params)
       redirect_to @producer
     else
       render 'edit'

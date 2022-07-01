@@ -45,7 +45,7 @@ class PronomsController < ApplicationController
   def update
     @pronom = Pronom.find(params[:id])
     authorize! :update, @pronom.file_format
-    @updated = @pronom.update_attributes(allowed_pronom_params)
+    @updated = @pronom.update(allowed_pronom_params)
     respond_to do |format|
       format.js
     end
