@@ -104,7 +104,7 @@ class Timeline
     hashes = self.timeline_stats
     Hash.new.tap do |h|
       hashes.each do |month_info|
-        day = Date.parse(month_info['month'])
+        day = Date.parse(month_info['month']).to_s
         h[day] = {count: month_info['count'].to_i, size: month_info['size'].to_i}
       end
     end
