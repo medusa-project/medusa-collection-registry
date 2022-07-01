@@ -163,21 +163,21 @@ class CollectionsController < ApplicationController
   end
 
   def load_collection_content_type_stats(collection)
-    bind = ActiveRecord::Relation::QueryAttribute.new(
+    binds = [ActiveRecord::Relation::QueryAttribute.new(
       nil,
       collection.id,
       ActiveRecord::Type::Value.new
-    )
+    )]
     ActiveRecord::Base.connection.select_all(load_collection_content_type_sql, nil, bind)
   end
 
   def load_collection_file_extension_stats(collection)
-    bind = ActiveRecord::Relation::QueryAttribute.new(
+    binds = [ActiveRecord::Relation::QueryAttribute.new(
       nil,
       collection.id,
       ActiveRecord::Type::Value.new
-    )
-    ActiveRecord::Base.connection.select_all(load_collection_file_extension_sql, nil, bind)
+    )]
+    ActiveRecord::Base.connection.select_all(load_collection_file_extension_sql, "file_exts", binds)
   end
 
   def load_collection_content_type_sql
