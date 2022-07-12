@@ -16,7 +16,7 @@ Given /^I am not logged in$/ do
 end
 
 Then /^I should be on the login page$/ do
-  current_path.should == '/auth/developer'
+  current_path.should == '/auth/identity'
 end
 
 Given /^I logout$/ do
@@ -32,8 +32,16 @@ private
 def login_user(opts = {})
   opts[:email] ||= opts[:uid] if opts[:uid]
   user = User.find_by(uid: opts[:uid]) || FactoryBot.create(:user, opts)
+
+  identity = Identity.find_or_create_by(name: user.email, email: user.email)
+  salt = BCrypt::Engine.generate_salt
+  encrypted_password = BCrypt::Engine.hash_secret(user.email, salt)
+  identity.password_digest = encrypted_password
+  identity.update(password: user.email, password_confirmation: user.email)
+  identity.save!
+
   visit(login_path)
-  fill_in('name', with: user.uid)
-  fill_in('email', with: user.email) #this is to accommodate the developer strategy, which uses the email as the UIN
-  click_button('Sign In')
+  fill_in('auth_key', with: user.email)
+  fill_in('password', with: user.email) #this is to accommodate the identity strategy
+  click_button('Connect')
 end

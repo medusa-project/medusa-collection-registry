@@ -26,9 +26,9 @@ copyright_statements default_copyright_statement access_restrictions default_acc
   end
 
   validates_inclusion_of :rights_basis, in: Proc.new { self.rights_bases }
-  validates_inclusion_of :copyright_jurisdiction, in: Proc.new { self.copyright_jurisdictions.keys }
-  validates_inclusion_of :copyright_statement, in: Proc.new { self.copyright_statements.keys }, allow_blank: true
-  validates_inclusion_of :access_restrictions, in: Proc.new { self.access_restrictions.keys }
+  validates_inclusion_of :copyright_jurisdiction, in: Proc.new { self.copyright_jurisdictions.stringify_keys.keys }
+  validates_inclusion_of :copyright_statement, in: Proc.new { self.copyright_statements.stringify_keys.keys }, allow_blank: true
+  validates_inclusion_of :access_restrictions, in: Proc.new { self.access_restrictions.stringify_keys.keys }
   validates_presence_of :custom_copyright_statement, if: ->(rights_declaration) { rights_declaration.custom_copyright? }
   validates_absence_of :custom_copyright_statement, unless: ->(rights_declaration) { rights_declaration.custom_copyright? }
 

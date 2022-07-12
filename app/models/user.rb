@@ -28,4 +28,18 @@ class User < ApplicationRecord
     GroupManager.instance.resolver.is_ad_admin?(self)
   end
 
+  def self.find_or_create_local_user(name:, email:, password:)
+    return nil if Rails.env.production?
+
+    identity = Identity.find_or_create_by(name: name, email: email)
+    salt = BCrypt::Engine.generate_salt
+    encrypted_password = BCrypt::Engine.hash_secret(password, salt)
+    identity.password_digest = encrypted_password
+    identity.update(password: password, password_confirmation: password)
+    identity.save!
+
+    return User.find_or_create_by!(uid: email, email: email)
+
+  end
+
 end

@@ -62,20 +62,24 @@ ActionController::Base.allow_rescue = false
 #make sure database is seeded before loading test code - this is necessary because some of the factories, etc. assume
 #that the seeded stuff is there
 def ensure_db_is_seeded
+  # constrains_off_sql = "SET session_replication_role = 'replica'"
+  # ActiveRecord::Base.connection.execute(constrains_off_sql)
+  # DatabaseCleaner.clean_with(:truncation)
+  # constraints_on_sql = "SET session_replication_role = 'origin'"
+  # ActiveRecord::Base.connection.execute(constraints_on_sql)
   if StaticPage.count == 0
     load File.join(Rails.root, 'db', 'seeds.rb')
   end
 end
 
-ensure_db_is_seeded
-
 DatabaseCleaner.strategy = :transaction
 # Possible values are :truncation and :transaction
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
-Cucumber::Rails::Database.javascript_strategy = :truncation,
-    {except: %w(storage_media resource_types preservation_priorities static_pages file_format_test_reasons),
-     pre_count: true}
+Cucumber::Rails::Database.javascript_strategy = :transaction
+# ,
+#     {except: %w(storage_media producers job_report_producers cfs_files resource_types preservation_priorities static_pages file_format_test_reasons),
+#      pre_count: true}
 
 def last_json
   page.source
@@ -135,11 +139,11 @@ end
 require 'capybara/email'
 World(Capybara::Email::DSL)
 
-puts "Compiling webpack"
-Dir.chdir(Rails.root) do
-  system("RAILS_ENV=test bundle exec rake webpacker:compile")
-end
-puts "Webpack compiled"
+# puts "Compiling webpack"
+# Dir.chdir(Rails.root) do
+#   system("RAILS_ENV=test bundle exec rake webpacker:compile")
+# end
+# puts "Webpack compiled"
 
 #Uncommenting the following will look at the HTML after each step. If it has not yet been seen it will be
 # dumped into Rails.root/tmp/html_dump. Also a file named 'manifest' will be dumped that associates the

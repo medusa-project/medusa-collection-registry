@@ -142,7 +142,7 @@ GEM
     autoprefixer-rails (10.4.7.0)
       execjs (~> 2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.602.0)
+    aws-partitions (1.603.0)
     aws-sdk (3.1.0)
       aws-sdk-resources (~> 3)
     aws-sdk-accessanalyzer (1.29.0)
@@ -259,7 +259,7 @@ GEM
     aws-sdk-chimesdkmediapipelines (1.0.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-chimesdkmeetings (1.12.0)
+    aws-sdk-chimesdkmeetings (1.13.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-chimesdkmessaging (1.11.0)
@@ -274,7 +274,7 @@ GEM
     aws-sdk-clouddirectory (1.41.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-cloudformation (1.69.0)
+    aws-sdk-cloudformation (1.70.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-cloudfront (1.65.0)
@@ -358,7 +358,7 @@ GEM
     aws-sdk-computeoptimizer (1.33.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-configservice (1.77.0)
+    aws-sdk-configservice (1.78.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-connect (1.74.0)
@@ -390,7 +390,7 @@ GEM
     aws-sdk-customerprofiles (1.21.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-databasemigrationservice (1.68.0)
+    aws-sdk-databasemigrationservice (1.70.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-dataexchange (1.26.0)
@@ -576,7 +576,7 @@ GEM
     aws-sdk-inspector2 (1.4.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-iot (1.91.0)
+    aws-sdk-iot (1.92.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-iot1clickdevicesservice (1.37.0)
@@ -618,7 +618,7 @@ GEM
     aws-sdk-iottwinmaker (1.5.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-iotwireless (1.23.0)
+    aws-sdk-iotwireless (1.24.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-ivs (1.20.0)
@@ -678,7 +678,7 @@ GEM
     aws-sdk-lexmodelbuildingservice (1.57.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-lexmodelsv2 (1.23.0)
+    aws-sdk-lexmodelsv2 (1.24.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-lexruntimev2 (1.15.0)
@@ -858,13 +858,13 @@ GEM
     aws-sdk-qldbsession (1.22.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-quicksight (1.65.0)
+    aws-sdk-quicksight (1.66.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-ram (1.39.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-rds (1.146.0)
+    aws-sdk-rds (1.148.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-rdsdataservice (1.36.0)
@@ -894,7 +894,7 @@ GEM
     aws-sdk-resourcegroupstaggingapi (1.47.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-resources (3.135.0)
+    aws-sdk-resources (3.136.0)
       aws-sdk-accessanalyzer (~> 1)
       aws-sdk-account (~> 1)
       aws-sdk-acm (~> 1)
@@ -1144,6 +1144,7 @@ GEM
       aws-sdk-resourcegroups (~> 1)
       aws-sdk-resourcegroupstaggingapi (~> 1)
       aws-sdk-robomaker (~> 1)
+      aws-sdk-rolesanywhere (~> 1)
       aws-sdk-route53 (~> 1)
       aws-sdk-route53domains (~> 1)
       aws-sdk-route53recoverycluster (~> 1)
@@ -1207,6 +1208,9 @@ GEM
     aws-sdk-robomaker (1.51.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
+    aws-sdk-rolesanywhere (1.0.0)
+      aws-sdk-core (~> 3, >= 3.127.0)
+      aws-sigv4 (~> 1.1)
     aws-sdk-route53 (1.63.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
@@ -1235,7 +1239,7 @@ GEM
     aws-sdk-s3outposts (1.13.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-sagemaker (1.129.0)
+    aws-sdk-sagemaker (1.130.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-sagemakeredgemanager (1.11.0)
@@ -1307,7 +1311,7 @@ GEM
     aws-sdk-ssmcontacts (1.14.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-ssmincidents (1.14.0)
+    aws-sdk-ssmincidents (1.15.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-ssoadmin (1.16.0)
@@ -1328,7 +1332,7 @@ GEM
     aws-sdk-swf (1.36.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-synthetics (1.27.0)
+    aws-sdk-synthetics (1.28.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-textract (1.38.0)
@@ -1443,8 +1447,7 @@ GEM
     chart-js-rails (0.1.7)
       railties (> 3.1)
     chartkick (4.2.0)
-    childprocess (1.0.1)
-      rake (< 13.0)
+    childprocess (4.1.0)
     chronic (0.10.2)
     climate_control (0.2.0)
     clipboard-rails (1.7.1)
@@ -1509,8 +1512,6 @@ GEM
       daemons
       multi_json (~> 1.0)
     dalli (3.2.2)
-    database_cleaner (2.0.1)
-      database_cleaner-active_record (~> 2.0.0)
     database_cleaner-active_record (2.0.1)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
@@ -1662,7 +1663,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
-    minitest (5.16.1)
+    minitest (5.16.2)
     minitest-matchers_vaccine (1.0.6)
       minitest (~> 5.0)
     mocha (1.14.0)
@@ -1693,8 +1694,6 @@ GEM
     net-ssh (7.0.1)
     nio4r (2.5.8)
     nokogiri (1.13.6-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.13.6-x86_64-linux)
       racc (~> 1.4)
     ntlm-http (0.1.1)
     oink (0.10.1)
@@ -1770,7 +1769,7 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0)
       zeitwerk (~> 2.5)
-    rake (12.3.3)
+    rake (13.0.6)
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -1824,7 +1823,7 @@ GEM
     ruby2_keywords (0.0.5)
     ruby_parser (3.19.1)
       sexp_processor (~> 4.16)
-    rubyzip (1.3.0)
+    rubyzip (2.3.2)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -1840,9 +1839,11 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (3.142.1)
-      childprocess (>= 0.5, < 2.0)
-      rubyzip (~> 1.2, >= 1.2.2)
+    selenium-webdriver (4.3.0)
+      childprocess (>= 0.5, < 5.0)
+      rexml (~> 3.2, >= 3.2.5)
+      rubyzip (>= 1.2.2, < 3.0)
+      websocket (~> 1.0)
     set (1.0.2)
     sexp_processor (4.16.1)
     shoulda-matchers (5.1.0)
@@ -1916,12 +1917,13 @@ GEM
       activemodel
       mail (>= 2.6.1)
       simpleidn
-    webdrivers (4.7.0)
+    webdrivers (5.0.0)
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
-      selenium-webdriver (> 3.141, < 5.0)
+      selenium-webdriver (~> 4.0)
     webrick (1.7.0)
     webrobots (0.1.2)
+    websocket (1.2.9)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -1935,7 +1937,6 @@ GEM
 
 PLATFORMS
   x86_64-darwin-21
-  x86_64-linux
 
 DEPENDENCIES
   addressable
@@ -1974,7 +1975,7 @@ DEPENDENCIES
   daemons
   daemons-rails
   dalli
-  database_cleaner
+  database_cleaner-active_record
   delayed_job_active_record
   delayed_job_web
   draper
@@ -2026,7 +2027,7 @@ DEPENDENCIES
   ruby-filemagic
   sass
   sassc-rails
-  selenium-webdriver (= 3.142.1)
+  selenium-webdriver
   send_file_with_range!
   shoulda-matchers
   simple_form

@@ -78,7 +78,7 @@ class Ability
 
   def downloader?(user, file_group)
     return false unless Settings.download_users.present?
-    return false unless permissible_collection_ids = Settings.download_users[user.netid]
+    return false unless (permissible_collection_ids = Settings.download_users[user.netid])
     permissible_collection_ids.include?(file_group.collection_id)
   rescue
     false

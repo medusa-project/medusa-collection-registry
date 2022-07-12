@@ -127,7 +127,7 @@ group :test do
   gem 'capybara-email'
   gem 'capybara-mechanize'
   gem 'cucumber-rails', require: false
-  gem 'database_cleaner'
+  gem 'database_cleaner-active_record'
   gem 'json_spec'
   gem 'launchy'
   gem 'simplecov', require: false
@@ -137,11 +137,9 @@ group :test do
   gem 'mocha'
 
   #other js testing options
-  #TODO pinned selenium-webdriver. If I go to 3.142.2 then performance suffers greatly when using chrome
-  # headless. I do not know why at this time. Since this still works it seems worth waiting to see if
-  # if gets chased down. Also the gem is about to go to 4.0, so maybe wait for that.
+
   gem 'connection_pool'
-  gem 'selenium-webdriver', '3.142.1'
+  gem 'selenium-webdriver'
   gem 'sunspot_test'
   gem 'webdrivers'
   #need my version of bunny-mock where the default exchange works as expected. Wait to see if the fix gets merged

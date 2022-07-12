@@ -9,6 +9,6 @@
         %td #{link_to collection.title, collection}
         %td #{link_to collection.repository.title, collection.repository}
         %td #{collection.contact_email}
-        %td #{collection.total_size.to_s(:rounded, precision: 3)}
+        %td #{collection.total_size.to_fs(:rounded, precision: 3)}
         %td
           = small_edit_button(collection)

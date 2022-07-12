@@ -53,6 +53,9 @@ class SessionsController < ApplicationController
   protected
 
   def clear_and_return_return_path
+
+    return root_path unless Rails.env.production?
+
     return_url = session[:login_return_uri] || session[:login_return_referer] || root_path
     session[:login_return_uri] = session[:login_return_referer] = nil
     reset_ldap_cache(current_user)

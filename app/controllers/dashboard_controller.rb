@@ -13,8 +13,8 @@ class DashboardController < ApplicationController
   end
 
   def file_stats
-    @content_type_hashes = ContentType.connection.select_all(content_type_sql).to_unsafe_h
-    @file_extension_hashes = FileExtension.connection.select_all(file_extension_sql).to_unsafe_h
+    @content_type_hashes = ContentType.connection.select_all(content_type_sql)
+    @file_extension_hashes = FileExtension.connection.select_all(file_extension_sql)
     respond_to do |format|
       format.html { render partial: 'file_stats_table', layout: false }
       format.csv do
