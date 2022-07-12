@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '3.0.3'
+ruby '3.1.2'
 gem 'rails', '~> 7.0'
 gem 'addressable'
 gem 'alma_api', git: 'https://github.com/UIUCLibrary/alma-api-batch'
