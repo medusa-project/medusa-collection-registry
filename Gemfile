@@ -113,7 +113,7 @@ end
 
 group :development do
   # Deploy with Capistrano
-  gem 'capistrano', '~> 3.15.0'
+  gem 'capistrano', '~> 3.17.0'
   gem 'capistrano-bundler'
   gem 'capistrano-passenger'
   gem 'capistrano-rails'
