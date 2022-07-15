@@ -1694,6 +1694,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.7-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.13.7-x86_64-linux)
+      racc (~> 1.4)
     ntlm-http (0.1.1)
     oink (0.10.1)
       activerecord
@@ -1936,6 +1938,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   addressable
