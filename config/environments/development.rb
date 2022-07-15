@@ -33,8 +33,11 @@ MedusaCollectionRegistry::Application.configure do
 
   config.eager_load = false
 
-  # See everything in the log (default is :info)
+  # (default is :info)
   config.log_level = :warn
+
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  config.log_formatter = ::Logger::Formatter.new
 
   config.after_initialize do
     if defined? Bullet
