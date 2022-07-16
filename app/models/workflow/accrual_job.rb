@@ -523,7 +523,7 @@ class Workflow::AccrualJob < Workflow::Base
 
   def render_report
     rendered_html = ApplicationController.render(
-      template: 'workflow/accrual_mailer/view_report',
+      partial: 'workflow/accrual_mailer/view_report',
       assigns: {
         workflow_accrual: self
       }
