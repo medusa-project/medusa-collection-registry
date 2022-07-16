@@ -522,7 +522,12 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def render_report
-    set_instance_variable('workflow_accrual', self)
-    render partial: 'workflow/accrual_mailer/view_report'
+    rendered_html = ApplicationController.render(
+      template: 'reports/income_statement',
+      assigns: {
+        workflow_accrual: self
+      }
+    )
+    rendered_html
   end
 end
