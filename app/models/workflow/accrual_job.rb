@@ -517,7 +517,7 @@ class Workflow::AccrualJob < Workflow::Base
     workflow_accrual_directories.sum(:size) + workflow_accrual_files.sum(:size)
   end
 
-  class RenderingController < RenderAnywhere::RenderingController
+  class RenderingController < ActionController::Renderer
     attr_accessor :workflow_accrual
   end
 
