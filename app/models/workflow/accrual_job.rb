@@ -196,7 +196,7 @@ class Workflow::AccrualJob < Workflow::Base
     target_root = StorageManager.instance.main_root
     #TODO - this could run through Parallel if advisable -
     # however, with the try below I get database connection issues
-    # could not obtain a connectino from the pool withing 5.000 seconds ...
+    # could not obtain a connection from the pool withing 5.000 seconds ...
     # all pooled connections were in use
     # So I'm going to revert for now
     # workflow_accrual_keys.find_each do |key|
@@ -353,10 +353,10 @@ class Workflow::AccrualJob < Workflow::Base
     be_in_state_and_requeue('await_assessment')
   end
 
-  def retry_incomplete_assessments
+  def retry_stale_assessments
     update_attribute(:assessment_start_time, Time.current)
     update_attribute(:assessment_attempt_count, assessment_attempt_count + 1)
-    cfs_directory.retry_incomplete_assessments
+    cfs_directory.retry_stale_assessments
   end
 
   def perform_await_assessment
@@ -371,7 +371,7 @@ class Workflow::AccrualJob < Workflow::Base
         put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
       else
         destroy_complete_assessments
-        retry_incomplete_assessments
+        retry_stale_assessments
       end
 
     else

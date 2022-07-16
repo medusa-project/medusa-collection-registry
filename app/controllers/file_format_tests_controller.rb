@@ -10,7 +10,7 @@ class FileFormatTestsController < ApplicationController
 
   def update
     authorize! :update_file_format_test, @cfs_file
-    if @file_format_test.update_attributes(allowed_update_params)
+    if @file_format_test.update(allowed_update_params)
       redirect_to @cfs_file
     else
       render 'edit'

@@ -43,7 +43,7 @@ class ProjectsController < ApplicationController
   def update
     authorize! :update, @project
     authorize! :update, Collection.find(params[:project][:collection_id]) unless current_user and current_user.project_admin?
-    if @project.update_attributes(allowed_params)
+    if @project.update(allowed_params)
       redirect_to @project
     else
       render 'edit'

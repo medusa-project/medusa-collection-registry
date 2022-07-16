@@ -8,8 +8,8 @@
   %td #{file_group.storage_level}
   %td #{file_group.created_at.to_date}
   %td #{link_to(file_group.producer.title, file_group.producer) if file_group.producer}
-  %td #{file_group.file_count.to_s(:delimited) rescue ''}
-  %td #{file_group.file_size.to_s(:rounded, precision: 2, delimiter: ',')}
+  %td #{file_group.file_count.to_fs(:delimited) rescue ''}
+  %td #{file_group.file_size.to_fs(:rounded, precision: 2, delimiter: ',')}
   %td.related_file_groups
     = render 'file_group_related_file_groups', file_group: file_group
   = render 'file_group_actions', file_group: file_group

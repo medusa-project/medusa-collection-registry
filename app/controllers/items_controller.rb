@@ -31,7 +31,7 @@ class ItemsController < ApplicationController
 
   def update
     #authorize! :edit_item, @project
-    if @item.update_attributes(allowed_params)
+    if @item.update(allowed_params)
       redirect_to @project
     else
       render 'edit'

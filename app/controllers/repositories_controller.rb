@@ -58,7 +58,7 @@ class RepositoriesController < ApplicationController
   end
 
   def show_accruals
-    if GroupManager.instance.is_ad_admin?(current_user)
+    if GroupManager.instance.resolver.is_ad_admin?(current_user)
       accrual_jobs = Workflow::AccrualJob.order(:created_at).all.decorate
     else
       accrual_jobs = current_user.workflow_accrual_jobs.order(:created_at).decorate
@@ -99,7 +99,7 @@ class RepositoriesController < ApplicationController
     authorize! :update, @repository
     #disallow changing the owning institution
     params[:repository].delete(:institution_id)
-    if @repository.update_attributes(allowed_params)
+    if @repository.update(allowed_params)
       redirect_to repository_path(@repository), notice: 'Repository was successfully updated.'
     else
       render 'edit'
@@ -132,7 +132,7 @@ class RepositoriesController < ApplicationController
 
   def update_ldap_admin
     authorize! :update_ldap_admins, Repository
-    @success = @repository.update_attributes(params[:repository].permit(:ldap_admin_domain, :ldap_admin_group))
+    @success = @repository.update(params[:repository].permit(:ldap_admin_domain, :ldap_admin_group))
     if request.xhr?
       respond_to { |format| format.js }
     else
@@ -172,7 +172,7 @@ class RepositoriesController < ApplicationController
 
   def load_file_extension_stats(repository)
     ActiveRecord::Base.connection.
-        select_all(load_repository_dashboard_file_extension_sql, nil, [[nil, repository.id]]).to_hash
+        select_all(load_repository_dashboard_file_extension_sql, nil, [[nil, repository.id]]).to_unsafe_h
   end
 
   def load_repository_dashboard_content_type_sql

@@ -470,25 +470,6 @@ class CfsFile < ApplicationRecord
 
   protected
 
-  # depends on rclone mount - deprecated
-=begin
-  def get_fits_xml
-    with_input_file do |input_file|
-      uri = URI(File.join(Settings.fits.server_url, 'fits/file'))
-      uri.query = URI.encode_www_form({path: input_file.gsub(/^\/+/, '')})
-      response = HTTParty.get(uri.to_s, timeout: 3600 * 24)
-      case response.code
-      when 200
-        response.body
-      when 404
-        raise RuntimeError, "File not found for FITS: #{input_file}"
-      else
-        raise RuntimeError, "Bad response from FITS server: Code #{response.code}. Body: #{response.body}"
-      end
-    end
-  end
-=end
-
   def self.random
     self.offset(rand(self.fast_count)).first
   end

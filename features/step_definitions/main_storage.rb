@@ -2,6 +2,15 @@ And(/^the main storage has a key '([^']*)' with contents '([^']*)'$/) do |key, c
   main_storage_root.write_string_to(key, contents)
 end
 
+
+And(/^the main storage should have a key '([^']*)' with contents '([^']*)'$/) do |key, contents|
+  expect(main_storage_root.exist?(key)).to be_truthy
+  file_content = main_storage_root.with_input_io(key) do |io|
+    io.read
+  end
+  expect(file_content).to match(contents)
+end
+
 And(/^the main storage has a directory key '([^']*)' containing a file$/) do |key|
   step "the main storage has a key '#{key}/stuff' with contents 'some stuff'"
 end

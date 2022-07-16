@@ -13,8 +13,8 @@ class DashboardController < ApplicationController
   end
 
   def file_stats
-    @content_type_hashes = ContentType.connection.select_all(content_type_sql).to_hash
-    @file_extension_hashes = FileExtension.connection.select_all(file_extension_sql).to_hash
+    @content_type_hashes = ContentType.connection.select_all(content_type_sql)
+    @file_extension_hashes = FileExtension.connection.select_all(file_extension_sql)
     respond_to do |format|
       format.html { render partial: 'file_stats_table', layout: false }
       format.csv do
@@ -58,7 +58,7 @@ SQL
   end
 
   def accruals
-    if GroupManager.instance.is_ad_admin?(current_user)
+    if GroupManager.instance.resolver.is_ad_admin?(current_user)
       @accrual_jobs = Workflow::AccrualJob.order(:created_at).all.decorate
     else
       @accrual_jobs = current_user.workflow_accrual_jobs.order(:created_at).decorate

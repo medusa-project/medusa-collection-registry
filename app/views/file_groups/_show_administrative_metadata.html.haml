@@ -19,5 +19,5 @@
         #{link_to(target_file_group.title, target_file_group)} - #{@file_group.target_relation_note(target_file_group)}
 = show_field @file_group, :external_file_location
 = show_field @file_group, :staged_file_location
-= show_value (@file_group.file_size * 1.gigabyte).to_s(:human_size, precision: 3), 'Total file size'
-= show_value @file_group.file_count.to_s(:delimited), 'Total files'
+= show_value (@file_group.file_size * 1.gigabyte).to_fs(:human_size, precision: 3), 'Total file size'
+= show_value @file_group.file_count.to_fs(:delimited), 'Total files'

@@ -45,7 +45,7 @@ class FileFormatNormalizationPathsController < ApplicationController
   def update
     @normalization_path = FileFormatNormalizationPath.find(params[:id])
     authorize! :update, @normalization_path.file_format
-    @updated = @normalization_path.update_attributes(allowed_normalization_path_params)
+    @updated = @normalization_path.update(allowed_normalization_path_params)
     respond_to do |format|
       format.js
     end

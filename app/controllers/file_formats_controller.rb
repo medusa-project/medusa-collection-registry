@@ -17,7 +17,7 @@ class FileFormatsController < ApplicationController
 
   def update
     authorize! :update, @file_format
-    if @file_format.update_attributes(allowed_params)
+    if @file_format.update(allowed_params)
       redirect_to @file_format
     else
       render 'edit'

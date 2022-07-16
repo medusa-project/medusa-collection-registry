@@ -17,7 +17,7 @@ class AccessSystemsController < ApplicationController
 
   def update
     authorize! :update, @access_system
-    if @access_system.update_attributes(allowed_params)
+    if @access_system.update(allowed_params)
       redirect_to @access_system
     else
       render 'edit'

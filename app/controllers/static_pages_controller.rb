@@ -26,7 +26,7 @@ class StaticPagesController < ApplicationController
 
   def update
     authorize! :update, @static_page
-    if @static_page.update_attributes(params[:static_page].permit(:page_text))
+    if @static_page.update(params[:static_page].permit(:page_text))
       redirect_to static_page_path(key: @static_page.key)
     else
       render 'edit'

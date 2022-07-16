@@ -126,7 +126,7 @@ class BitLevelFileGroup < FileGroup
   end
 
   def content_type_summary(start, count)
-    self.class.connection.select_all("select * from file_group_content_type_report(#{id}, #{start.to_i}, #{count.to_i})").to_hash
+    self.class.connection.select_all("select * from file_group_content_type_report(#{id}, #{start.to_i}, #{count.to_i})").to_unsafe_h
   end
 
 end

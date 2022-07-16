@@ -47,7 +47,7 @@ class FileFormatNotesController < ApplicationController
   def update
     @note = FileFormatNote.find(params[:id])
     authorize! :update, @note.file_format
-    @updated = @note.update_attributes(allowed_note_params)
+    @updated = @note.update(allowed_note_params)
     respond_to do |format|
       format.js
     end

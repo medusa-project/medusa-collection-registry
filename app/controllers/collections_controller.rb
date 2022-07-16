@@ -57,7 +57,7 @@ class CollectionsController < ApplicationController
 
   def update
     authorize! :update, @collection
-    if @collection.update_attributes(allowed_params)
+    if @collection.update(allowed_params)
       redirect_to collection_path(@collection)
     else
       render 'edit'
@@ -84,7 +84,7 @@ class CollectionsController < ApplicationController
     @collection = Collection.new
     @collection.repository = Repository.find(params[:collection][:repository_id]) rescue nil
     authorize! :create, @collection if @collection.repository
-    if @collection.repository and @collection.update_attributes(allowed_params)
+    if @collection.repository and @collection.update(allowed_params)
       redirect_to collection_path(@collection)
     else
       @repositories = repository_select_collection(current_user)
@@ -163,13 +163,21 @@ class CollectionsController < ApplicationController
   end
 
   def load_collection_content_type_stats(collection)
-    ActiveRecord::Base.connection.
-        select_all(load_collection_content_type_sql, nil, [[nil, collection.id]])
+    binds = [ActiveRecord::Relation::QueryAttribute.new(
+      nil,
+      collection.id,
+      ActiveRecord::Type::Value.new
+    )]
+    ActiveRecord::Base.connection.select_all(load_collection_content_type_sql, nil, binds)
   end
 
   def load_collection_file_extension_stats(collection)
-    ActiveRecord::Base.connection.
-        select_all(load_collection_file_extension_sql, nil, [[nil, collection.id]]).to_hash
+    binds = [ActiveRecord::Relation::QueryAttribute.new(
+      nil,
+      collection.id,
+      ActiveRecord::Type::Value.new
+    )]
+    ActiveRecord::Base.connection.select_all(load_collection_file_extension_sql, "file_exts", binds)
   end
 
   def load_collection_content_type_sql

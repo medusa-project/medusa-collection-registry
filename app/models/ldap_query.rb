@@ -1,4 +1,5 @@
-require 'uri'
+require "addressable/uri"
+
 class LdapQuery < Object
 
   delegate :ldap_cache_key, to: :class
@@ -30,7 +31,7 @@ class LdapQuery < Object
   end
 
   def ldap_url(group, net_id)
-    "https://quest.library.illinois.edu/directory/ad/#{net_id}/ismemberof/#{URI.encode(group)}"
+    "https://quest.library.illinois.edu/directory/ad/#{net_id}/ismemberof/#{Addressable::URI.encode(group)}"
   end
 
   def self.ldap_cache_key(net_id)

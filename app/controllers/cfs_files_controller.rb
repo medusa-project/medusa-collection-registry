@@ -44,7 +44,7 @@ class CfsFilesController < ApplicationController
 
   def download
     #disposition_string = disposition('attachment', @file)
-    filename = URI.encode(@file.name)
+    filename = Addressable::URI.encode(@file.name)
     if current_user.present?
       authorize!(:download, @file.file_group)
       if @file.storage_root.root_type == :filesystem
@@ -71,7 +71,7 @@ class CfsFilesController < ApplicationController
   def view
     authorize! :download, @file.file_group
     #disposition_string = disposition('inline', @file)
-    filename = URI.encode(@file.name)
+    filename = Addressable::URI.encode(@file.name)
 
     case cfs_file.storage_root.root_type
     when :filesystem
@@ -185,7 +185,7 @@ class CfsFilesController < ApplicationController
   # it. The current code seems to work properly in Chrome/Firefox/Safari, so I'm going to go with it for now
   # and fix up the filesystem type stuff that goes through Rails instead of AWS presigned links to do the same.
   def disposition(type, cfs_file)
-    return %Q(#{type}; filename="#{URI.encode(cfs_file.name)}")
+    return %Q(#{type}; filename="#{Addressable::URI.encode(cfs_file.name)}")
     # if browser.chrome? or browser.safari?
     #   %Q(#{type}; filename="#{cfs_file.name}"; filename*=utf-8''#{URI.encode(cfs_file.name)})
     # elsif browser.ie? or browser.edge?
