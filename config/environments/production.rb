@@ -33,8 +33,11 @@ MedusaCollectionRegistry::Application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
-  # See everything in the log (default is :info)
+  # (default is :info)
   config.log_level = :warn
+
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  config.log_formatter = ::Logger::Formatter.new
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]

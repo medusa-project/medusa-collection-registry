@@ -14,7 +14,7 @@ class Job::Base < ApplicationRecord
   end
 
   def delayed_jobs
-    Delayed::Job.all.select {|job| YAML.load(job.handler) == self}
+    Delayed::Job.all.select {|job| YAML.unsafe_load(job.handler) == self}
   end
 
   def success(job)

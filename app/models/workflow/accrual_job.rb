@@ -103,7 +103,7 @@ class Workflow::AccrualJob < Workflow::Base
   def ok_chars(input, pattern); result = input=~pattern; !result.nil? end
   def perform_check
     # safe_characters_regex = /\A[0-9a-zA-Z\/!.*'()-]*\z/
-    safe_chars_regex = /^[@ a-zA-Z0-9!_.*'(\/)-]+(\/[@ a-zA-Z0-9!_.*'()-]+)*$/
+    safe_chars_regex = /^[@ a-zA-Z\d&!_.*'(\/)-]+(\/[@ a-zA-Z\d&!_.*'()-]+)*$/
     pattern = Regexp.new(safe_chars_regex).freeze
     root, prefix = staging_root_and_prefix
     ingest_keys = Set.new

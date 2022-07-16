@@ -76,6 +76,8 @@ module MedusaCollectionRegistry
     #https://guides.rubyonrails.org/active_record_multiple_databases.html#migrate-to-the-new-connection-handling
     config.active_record.legacy_connection_handling = false
 
+    config.active_job.queue_adapter = :delayed_job
+
   end
 end
 
