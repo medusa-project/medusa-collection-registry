@@ -3,11 +3,9 @@
 # Note that there are (currently) two paths through copying - one where the CR does the copying itself,
 # and one using a copy server. Configuration determines if the copy server can be used for a given ingest.
 # One goes through the 'copying' state, the other through 'send_copy_messages' and 'await_copy_messages'
-require 'render_anywhere'
 require 'set'
 
 class Workflow::AccrualJob < Workflow::Base
-  include RenderAnywhere
   include ExcludedFiles
 
   attr_accessor :comment

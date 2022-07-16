@@ -97,7 +97,6 @@ gem 'lmdb'
 gem 'medusa_storage', git: 'https://github.com/medusa-project/medusa_storage.git', branch: 'master'
 gem 'os'
 gem 'pdfjs_viewer-rails'
-gem 'render_anywhere', require: false
 gem 'send_file_with_range', git: 'https://github.com/tom-sherman/send_file_with_range.git', branch: 'master'
 
 group :development, :test do

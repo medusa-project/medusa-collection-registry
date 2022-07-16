@@ -1776,8 +1776,6 @@ GEM
       tilt
     redcarpet (3.5.1)
     regexp_parser (2.5.0)
-    render_anywhere (0.0.12)
-      rails (>= 3.0.7)
     request_store (1.5.1)
       rack (>= 1.4)
     responders (3.0.1)
@@ -2008,7 +2006,6 @@ DEPENDENCIES
   rails (~> 7.0)
   rails-jquery-autocomplete
   react-rails
-  render_anywhere
   responders
   routler
   rspec-rails
