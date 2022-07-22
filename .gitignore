@@ -42,6 +42,12 @@ yarn-error.log*
 spec/
 vendor/bundle
 
+# temporarily ignore transitional files
+app/config/
+app/config/*
+config/credentials/
+config/credentials/*
+
 attic
 /public/packs
 /public/packs-test
