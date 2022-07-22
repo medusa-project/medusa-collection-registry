@@ -1,12 +1,12 @@
-# Simple Role Syntax
+﻿# Simple Role Syntax
 # ==================
 # Supports bulk-adding hosts to roles, the primary server in each group
 # is considered to be the first unless any hosts have the primary
 # property set.  Don't declare `role :all`, it's a meta role.
 
-#role :app, %w{medusatest.library.illinois.edu}
-#role :web, %w{medusatest.library.illinois.edu}
-#role :db,  %w{medusatest.library.illinois.edu}
+#role :app, %w{deploy@example.com}
+#role :web, %w{deploy@example.com}
+#role :db,  %w{deploy@example.com}
 
 
 # Extended Server Syntax
@@ -14,18 +14,24 @@
 # This can be used to drop a more detailed server definition into the
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
-
-set :home, '/home/centos'
-set :deploy_to, "#{fetch(:home)}/repos/medusa-cr-capistrano"
+#set :home, '/services/medusa'
+set :rails_env, 'demo'
+set :home, '/home/medusa'
+set :deploy_to, "#{fetch(:home)}/medusa-cr-capistrano"
 set :bin, "#{fetch(:home)}/bin"
+set :ssh_options, {
+    forward_agent: true,
+    auth_methods: ["publickey"],
+    keys: ["~/.ssh/medusa_prod.pem"]
+}
 
-server 'medusa-pilot.library.illinois.edu', user: 'centos', roles: %w{web app db}, primary: true
-ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
-set :keep_releases, 2
-
-#server 'medusatest.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
-#ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
+#server 'medusa.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
+server 'aws-medusa-demo.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
+       # :ssh_options => {
+       #     :keepalive => true,
+       #     :keepalive_interval => 30 #seconds
+       # }
 
 # Custom SSH Options
 # ==================

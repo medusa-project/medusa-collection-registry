@@ -1,6 +1,6 @@
 require_relative 'config'
 Rails.application.config.middleware.use OmniAuth::Builder do
-  if Rails.env.production?
+  if Rails.env.production? || Rails.env.demo?
     opts = Settings.shibboleth
     provider :shibboleth, opts.to_h.symbolize_keys
     MedusaCollectionRegistry::Application.shibboleth_host = opts.host

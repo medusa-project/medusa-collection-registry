@@ -29,7 +29,7 @@ class User < ApplicationRecord
   end
 
   def self.find_or_create_local_user(name:, email:, password:)
-    return nil if Rails.env.production?
+    return nil if (Rails.env.production? || Rails.env.demo?)
 
     identity = Identity.find_or_create_by(name: name, email: email)
     salt = BCrypt::Engine.generate_salt

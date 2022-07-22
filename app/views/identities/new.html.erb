@@ -1,4 +1,4 @@
-<% if Rails.env.production? %>
+<% if Rails.env.production? || Rails.env.demo? %>
   Unauthorized
 <% else %>
   <%= form_tag "/auth/identity/register" do %>

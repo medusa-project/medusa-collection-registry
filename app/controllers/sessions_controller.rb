@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 
   def new
     session[:login_return_referer] = request.env['HTTP_REFERER']
-    if Rails.env.production?
+    if Rails.env.production? || Rails.env.demo?
       redirect_to(shibboleth_login_path(MedusaCollectionRegistry::Application.shibboleth_host))
     else
       redirect_to('/auth/identity')
@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
 
   def create
     return_url = clear_and_return_return_path
-    if Rails.env.production?
+    if Rails.env.production? || Rails.env.demo?
       #auth_hash[:uid] should have the uid (for shib as configured in shibboleth.yml)
       #auth_hash[:info][:email] should have the email address
       auth_hash = request.env['omniauth.auth']
@@ -54,7 +54,7 @@ class SessionsController < ApplicationController
 
   def clear_and_return_return_path
 
-    return root_path unless Rails.env.production?
+    return root_path unless (Rails.env.production? || Rails.env.demo?)
 
     return_url = session[:login_return_uri] || session[:login_return_referer] || root_path
     session[:login_return_uri] = session[:login_return_referer] = nil

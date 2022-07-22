@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def medusa_user?
-    if Rails.env.production?
+    if Rails.env.production? || Rails.env.demo?
       logged_in? && GroupManager.instance.resolver.is_ad_user?(current_user)
     else
       logged_in?
