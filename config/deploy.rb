@@ -21,12 +21,6 @@ set :bundle_path, nil
 # Default value for :pty is false
 # set :pty, true
 
-# Default value for :linked_files is []
-set :linked_files, %w(config/database.yml config/sunspot.yml config/settings/demo.local.yml nginx.conf.erb)
-
-# Default value for linked_dirs is []
-set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle',
-                                               'public/system', 'tmp/item_upload_csv', 'public/packs', 'node_modules')
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
