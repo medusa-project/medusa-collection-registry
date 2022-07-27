@@ -53,7 +53,7 @@ SQL
   end
 
   def events
-    @events = Event.descending_date.recent.cascadable.includes(eventable: :parent)
+    @events = Event.descending_date.recent.cascadable.includes(eventable: :parent).limit(100)
     render partial: 'events', layout: false
   end
 
