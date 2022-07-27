@@ -166,13 +166,23 @@ class RepositoriesController < ApplicationController
   end
 
   def load_content_type_stats(repository)
+    binds = [ActiveRecord::Relation::QueryAttribute.new(
+      nil,
+      repository.id,
+      ActiveRecord::Type::Value.new
+    )]
     ActiveRecord::Base.connection.
-        select_all(load_repository_dashboard_content_type_sql, nil, [[nil, repository.id]])
+        select_all(load_repository_dashboard_content_type_sql, nil, binds)
   end
 
   def load_file_extension_stats(repository)
+    binds = [ActiveRecord::Relation::QueryAttribute.new(
+      nil,
+      repository.id,
+      ActiveRecord::Type::Value.new
+    )]
     ActiveRecord::Base.connection.
-        select_all(load_repository_dashboard_file_extension_sql, nil, [[nil, repository.id]]).to_unsafe_h
+        select_all(load_repository_dashboard_file_extension_sql, nil, binds)
   end
 
   def load_repository_dashboard_content_type_sql

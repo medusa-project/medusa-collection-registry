@@ -437,7 +437,7 @@ class Workflow::AccrualJob < Workflow::Base
         be_in_state_and_requeue('copying')
       end
     else
-      raise 'Job approved from unallowed initial state'
+      raise "Job approved from unallowed initial state : #{state}"
     end
   end
 
