@@ -15,7 +15,7 @@ class Event < ApplicationRecord
   end
 
   def self.recent(interval = nil)
-    interval ||= 7.days
+    interval ||= 2.days
     where('events.updated_at >= ?', Time.now - interval)
   end
 

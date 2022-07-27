@@ -48,7 +48,7 @@ SQL
   end
 
   def red_flags
-    @red_flags = RedFlag.order(created_at: :desc).includes(:red_flaggable).load
+    @red_flags = RedFlag.order(created_at: :desc).limit(100).includes(:red_flaggable).load
     render partial: 'shared/red_flags_table', layout: false
   end
 
