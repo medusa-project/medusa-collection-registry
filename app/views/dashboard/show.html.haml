@@ -7,7 +7,7 @@
     #running-processes.tab-pane
       = render 'shared_js/simple_load', id: 'running-processes', path: running_processes_dashboard_path
     #file-statistics.tab-pane
-      #= render 'shared_js/datatables_load', id: 'file-statistics', path: file_stats_dashboard_path, table_ids: %w(file_stats_content_type file_stats_file_extension)
+      = render 'shared_js/datatables_load', id: 'file-statistics', path: file_stats_dashboard_path, table_ids: %w(file_stats_content_type file_stats_file_extension)
     #red-flags.tab-pane
       = render 'shared_js/datatables_load', id: 'red-flags', path: red_flags_dashboard_path, table_ids: 'red-flags-table'
     #combined-events-tab.tab-pane
