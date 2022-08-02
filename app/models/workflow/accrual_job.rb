@@ -148,7 +148,7 @@ class Workflow::AccrualJob < Workflow::Base
       # existing_md5 = StorageManager.instance.main_root.md5_sum(File.join(cfs_directory_prefix, key))
       #       # ingest_md5 = root.md5_sum(File.join(prefix, key))
       #       # file_changed = (existing_md5 != ingest_md5)
-      file_changed = TRUE
+      file_changed = true
       workflow_accrual_conflicts.create!(path: key, different: file_changed)
     end
     if duplicate_keys.count.positive? && !allow_overwrite
