@@ -25,6 +25,9 @@ class Downloader::DirectoryHandler < Downloader::AbstractHandler
 
   def handle_request_completed(response)
     DownloaderMailer.directory_complete(cfs_directory, email, response).deliver_now
+  rescue StandardError => e
+    Rails.logger.warn(e.message)
+    Rails.logger.warn(response)
   end
 
 end
