@@ -15,6 +15,10 @@ class Downloader::Request < ApplicationRecord
                              action_callback: ->(payload) {handle_response(payload)}).listen
   end
 
+  def self.fetch_incoming_message
+
+  end
+
   def self.handle_response(payload)
     response = JSON.parse(payload)
     request = find_request(response)
