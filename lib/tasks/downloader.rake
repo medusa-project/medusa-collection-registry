@@ -10,7 +10,7 @@ namespace :downloader do
     config = Settings.downloader
 
     loop do
-      AmqpHelper::Connector[:databank].with_message(config.incoming_queue) do |payload|
+      AmqpHelper::Connector[:medusa].with_message(config.incoming_queue) do |payload|
         exit if payload.nil?
         Downloader.Request.handle_response(payload)
       end
