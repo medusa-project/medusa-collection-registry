@@ -8,16 +8,12 @@ class Downloader::Request < ApplicationRecord
   ALLOWED_ACTIONS = %w(request_received request_completed error)
   validates :status, inclusion: STATUSES, allow_blank: false
 
-  def self.listen
-    config = Settings.downloader
-    AmqpHelper::Listener.new(amqp_config: config.amqp, name: 'downloader',
-                             queue_name: config.incoming_queue,
-                             action_callback: ->(payload) {handle_response(payload)}).listen
-  end
-
-  def self.fetch_incoming_message
-
-  end
+  # def self.listen
+  #   config = Settings.downloader
+  #   AmqpHelper::Listener.new(amqp_config: config.amqp, name: 'downloader',
+  #                            queue_name: config.incoming_queue,
+  #                            action_callback: ->(payload) {handle_response(payload)}).listen
+  # end
 
   def self.handle_response(payload)
     response = JSON.parse(payload)
