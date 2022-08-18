@@ -14,7 +14,7 @@ namespace :downloader do
       AmqpHelper::Connector[:downloader].with_message(config.incoming_queue) do |payload|
         puts payload
         exit if payload.nil?
-        Downloader.Request.handle_response(payload)
+        Downloader::Request.handle_response(payload)
       end
     end
 
