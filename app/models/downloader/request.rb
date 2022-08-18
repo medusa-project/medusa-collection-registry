@@ -18,6 +18,11 @@ class Downloader::Request < ApplicationRecord
   def self.handle_response(payload)
     response = JSON.parse(payload)
     request = find_request(response)
+    if request.nil?
+      Rails.logger.warn "request not found for downloader message #{payload}"
+      return nil
+    end
+
     handler = request.find_handler
     if ALLOWED_ACTIONS.include?(response['action'])
       #The send to request updates status information and so on, the same across all types
