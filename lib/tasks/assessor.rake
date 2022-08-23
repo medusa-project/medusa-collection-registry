@@ -22,4 +22,10 @@ namespace :assessor do
     fetched_responses.each(&:handle)
   end
 
+  desc "destroy complete task elements"
+  task destroy_complete: :environment do
+    elements = Assessor::TaskElement.all
+    elements.each {|e| e.destroy if e.complete?}
+  end
+
 end
