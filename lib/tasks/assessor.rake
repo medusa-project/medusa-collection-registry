@@ -30,7 +30,7 @@ namespace :assessor do
 
   desc "update from storage"
   task update_from_storage: :environment do
-    CfsFile.each do |file|
+    CfsFile.all.each do |file|
       dirty = false
 
       if file.md5_sum.nil?
