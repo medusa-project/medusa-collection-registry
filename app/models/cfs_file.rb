@@ -68,6 +68,10 @@ class CfsFile < ApplicationRecord
     where(fits_serialized: true)
   end
 
+  def self.aws_s3_chunk_limit
+    AWS_S3_MD5_SIZE_LIMIT
+  end
+
   def self.without_fits
     where(fits_serialized: false)
   end
@@ -163,6 +167,7 @@ class CfsFile < ApplicationRecord
   def run_initial_assessment
     external_mtime = storage_root.mtime(self.key)
     external_size = storage_root.size(self.key)
+
     if self.fits_result.new? || external_size != self.size
       self.size = external_size
       self.md5_sum = aws_etag if self.size < AWS_S3_MD5_SIZE_LIMIT
@@ -174,8 +179,12 @@ class CfsFile < ApplicationRecord
                                    checksum: false,
                                    content_type: true,
                                    fits: true)
-      self.save!
+    else
+      self.size = external_size if self.size.nil?
+      self.md5_sum = aws_etag if (self.md5_sum.nil? && self.size < AWS_S3_MD5_SIZE_LIMIT)
+      self.mtime = external_mtime if self.mtime.nil?
     end
+    self.save!
   end
 
   def assessor_task_elements
@@ -280,10 +289,12 @@ class CfsFile < ApplicationRecord
     update_md5_sum_from_fits(doc.at_css('fits fileinfo md5checksum').text)
     update_content_type_from_fits(doc.at_css('fits identification identity')['mimetype'])
     self.save!
+    self
   rescue Exception
     if self.md5_sum.nil?
       create_checksum_task_element unless  Assessor::TaskElement.exists?(cfs_file_id: self.id, checksum: true)
     end
+    self
   end
 
   def create_checksum_task_element

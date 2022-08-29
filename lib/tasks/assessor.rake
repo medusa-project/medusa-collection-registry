@@ -28,4 +28,38 @@ namespace :assessor do
     elements.each {|e| e.destroy if e.complete?}
   end
 
+  desc "update from storage"
+  task update_from_storage: :environment do
+    CfsFile.each do |file|
+      dirty = false
+
+      if file.md5_sum.nil?
+        if file.md5_sum.nil? && self.size < CfsFile.aws_s3_chunk_limit
+          file.md5_sum = file.aws_etag
+          dirty = true
+        end
+        if file.fits_result.new?
+          Assessor::TaskElement.create(cfs_file_id: self.id,
+                                       checksum: false,
+                                       content_type: true,
+                                       fits: true)
+        else
+          file = file.update_fields_from_fits
+          # this will trigger a checksum assessor task if fits does not have md5_sum
+        end
+
+      end
+      if file.size.nil?
+        file.size = storage_root.size(self.key)
+        dirty = true
+      end
+      if file.mtime.nil?
+        file.mtime = storage_root.mtime(self.key)
+        dirty = true
+      end
+      file.save if dirty == true
+
+    end
+  end
+
 end
