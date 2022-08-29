@@ -320,8 +320,8 @@ class CfsFile < ApplicationRecord
         self.size = storage_root.size(self.key)
         dirty = true
       end
-      if file.mtime.nil?
-        file.mtime = storage_root.mtime(self.key)
+      if self.mtime.nil?
+        self.mtime = storage_root.mtime(self.key)
         dirty = true
       end
       self.save if dirty == true
