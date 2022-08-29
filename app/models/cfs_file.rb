@@ -297,6 +297,36 @@ class CfsFile < ApplicationRecord
     self
   end
 
+  def update_missing_attributes
+      dirty = false
+
+      if self.md5_sum.nil?
+        if self.md5_sum.nil? && self.size < CfsFile.aws_s3_chunk_limit
+          self.md5_sum = self.aws_etag
+          dirty = true
+        end
+        if self.fits_result.new?
+          Assessor::TaskElement.create(cfs_file_id: self.id,
+                                       checksum: false,
+                                       content_type: true,
+                                       fits: true)
+        else
+          update_fields_from_fits
+          # this will trigger a checksum assessor task if fits does not have md5_sum
+        end
+
+      end
+      if self.size.nil?
+        self.size = storage_root.size(self.key)
+        dirty = true
+      end
+      if file.mtime.nil?
+        file.mtime = storage_root.mtime(self.key)
+        dirty = true
+      end
+      self.save if dirty == true
+  end
+
   def create_checksum_task_element
     Assessor::TaskElement.create(cfs_file_id: self.id,
                                  checksum: true,
