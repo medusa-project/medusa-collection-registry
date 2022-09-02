@@ -18,7 +18,7 @@ class Job::CfsInitialFileGroupAssessment < Job::Base
   end
 
   def perform
-    raise RuntimeError, "No cfs directory defined for file group #{self.file_group.id}. Cannot run assessment job." unless self.file_group.cfs_directory.present?
+    raise RuntimeError, "No cfs directory defined for file group #{self.file_group.id}. Cannot run assessment job." unless self.file_group && self.file_group.cfs_directory.present?
     self.file_group.run_initial_cfs_assessment
   end
 
