@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.17.0'
+lock '3.17.1'
 
 set :application, 'medusa-collection-registry'
 set :repo_url, 'https://github.com/medusa-project/medusa-collection-registry.git'
