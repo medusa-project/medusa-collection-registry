@@ -20,6 +20,7 @@ class Assessor::Task
     task = {
       cluster: CLUSTER,
       count: 1,
+      enable_ecs_managed_tags: true,
       launch_type: "FARGATE",
       network_configuration: {
         awsvpc_configuration: {
@@ -41,6 +42,7 @@ class Assessor::Task
         ]
       },
       platform_version: Settings.assessor.platform_version,
+      propagate_tags: "TASK_DEFINITION",
       task_definition: Settings.assessor.task_definition
     }
     resp = client.run_task(task)
