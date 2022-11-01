@@ -4,7 +4,8 @@ class Workflow::AccrualKey < ApplicationRecord
   has_one :workflow_globus_transfer, class_name: 'Workflow::GlobusTransfer', dependent: :destroy, foreign_key: 'workflow_accrual_key_id'
 
   def exists_on_main_root?
-    StorageManager.instance.main_root.exist?(self.key)
+    source_root, source_prefix = workflow_accrual_job.staging_root_and_prefix
+    StorageManager.instance.main_root.exist?("#{source_prefix}/#{self.key}")
   end
 
   def self.exists_on_main_root

@@ -122,6 +122,7 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'selenium-webdriver'
   gem 'capybara-email'
   gem 'capybara-mechanize'
   gem 'cucumber-rails', require: false

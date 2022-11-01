@@ -245,7 +245,10 @@ class Workflow::AccrualJob < Workflow::Base
     target_endpoint = StorageManager.instance.globus_endpoint_at('main_storage')
     target_prefix = cfs_directory.relative_path
     workflow_accrual_keys.copy_not_requested.find_each do |workflow_accrual_key|
-      unless workflow_accrual_key.exists_on_main_root?
+
+      if workflow_accrual_key.exists_on_main_root?
+        workflow_accrual_key.update_attribute(:copy_requested, true)
+      else
         source_key = File.join(workflow_accrual_key.key).gsub(%r{^/}, '')
         target_key = File.join(workflow_accrual_key.key)
         source_path = File.join(staging_path, source_key)
@@ -253,17 +256,26 @@ class Workflow::AccrualJob < Workflow::Base
         destination_path = "/#{destination_path}"
 
         #Rails.logger.warn ("source_key: #{source_key}\ntarget_key: #{target_key}\nsource_path: #{source_path}\ndestination_path: #{destination_path}")
-        globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
-                                                       source_uuid: source_endpoint[:uuid],
-                                                       destination_uuid: target_endpoint[:uuid],
-                                                       source_path: source_path,
-                                                       destination_path: destination_path,
-                                                       recursive: false)
-        globus_transfer.submit
-        globus_transfer.save!
+        begin
+          globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
+                                                         source_uuid: source_endpoint[:uuid],
+                                                         destination_uuid: target_endpoint[:uuid],
+                                                         source_path: source_path,
+                                                         destination_path: destination_path,
+                                                         recursive: false)
+          submitted = globus_transfer.submit
+
+          if submitted == true
+            globus_transfer.save
+            workflow_accrual_key.update_attribute(:copy_requested, true)
+          end
+
+        rescue StandardError => e
+          Rails.logger.warn("Accrual Job #{self.id} | Accrual Key #{workflow_accrual_key.id} | #{e.message}")
+          workflow_accrual_key.update_attribute(:copy_requested, false)
+        end
+
       end
-      workflow_accrual_key.copy_requested = true
-      workflow_accrual_key.save!
     end
     if workflow_accrual_keys.copy_not_requested.count.zero?
       be_in_state_and_requeue('await_copy_messages')

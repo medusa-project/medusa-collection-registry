@@ -35,11 +35,11 @@ Capybara.default_driver = :rack_test
 #For this to work chromedriver must be installed on the path. I've
 # taken the gem out of the gemfile since it is generally available and
 # more up to date through brew, npm, or the like
-Capybara.javascript_driver = :selenium_chrome_headless
+#Capybara.javascript_driver = :selenium_chrome_headless
 #Capybara.javascript_driver = :firefox_headless
 #Capybara.javascript_driver = :poltergeist
 #Capybara.javascript_driver = :webkit
-#Capybara.javascript_driver = :selenium
+Capybara.javascript_driver = :selenium
 #Capybara.javascript_driver = :selenium_chrome
 
 # By default, any exception happening in your Rails application will bubble up

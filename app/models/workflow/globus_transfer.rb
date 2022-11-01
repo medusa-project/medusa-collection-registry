@@ -50,18 +50,18 @@ class Workflow::GlobusTransfer < ApplicationRecord
       end
 
       unless [202, 200].include?(transfer_response.code)
-        raise("Globus transfer response for #{workflow_accrual_key_id}: #{transfer_response.code}, #{transfer_response.message}")
+        Rails.logger.warn "Globus transfer response for #{workflow_accrual_key_id}: #{transfer_response.code}, #{transfer_response.message}"
+        return false
       end
 
       #Rails.logger.warn("Globus transfer response for #{workflow_accrual_key_id}: #{transfer_response.code}, #{transfer_response.message}")
       self.request_id = transfer_response['request_id']
       self.task_id = transfer_response['task_id']
       self.task_link = transfer_response['task_link']['href']
-      #Rails.logger.warn(transfer_response['message'])
+      return true
     rescue StandardError => e
       Rails.logger.warn("#{e.class} when trying Globus transfer for workflow accrual key #{workflow_accrual_key_id}, #{e.message}")
-      raise e
-      #return false
+      return false
     end
   end
 
