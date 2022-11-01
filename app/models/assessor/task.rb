@@ -20,6 +20,7 @@ class Assessor::Task
     task = {
       cluster: CLUSTER,
       count: 1,
+      enable_ecs_managed_tags: true,
       launch_type: "FARGATE",
       network_configuration: {
         awsvpc_configuration: {
