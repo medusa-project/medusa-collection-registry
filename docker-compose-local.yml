@@ -1,0 +1,69 @@
+#
+# invocation:
+# 1. docker-compose -f docker-compose-local.yml up -d --build
+
+# tear down:
+# 1. docker-compose -f docker-compose-local.yml down --volumes
+
+version: "3.7"
+
+services:
+  sunspot:
+    hostname: sunspot
+    build:
+      context: docker/sunspot/.
+      dockerfile: Dockerfile
+    ports:
+      - "8983:8983"
+  minio:
+    image: minio/minio
+    hostname: minio
+    command: server ~/storage/minio --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set minio http://minio:9000 minioadmin minioadmin;
+      /usr/bin/mc mb minio/medusa-local-main;
+      /usr/bin/mc policy set public minio/medusa-local-main;
+      exit 0;"
+  sqs-mock:
+    build:
+      context: docker/sqs-mock/.
+      dockerfile: Dockerfile
+    hostname: sqs-mock
+    ports:
+      - "9324:9324"
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_DB: medusa
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: medusa
+    hostname: postgres
+  rabbitmq:
+    image: rabbitmq
+    hostname: rabbitmq
+  memcached:
+    image: memcached
+    hostname: memcached
+    ports:
+      - '11211:11211'
+  medusa:
+    depends_on:
+      - postgres
+      - rabbitmq
+      - memcached
+      - sqs-mock
+      - minio
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    command: bash -c 'sleep 30 && curl "http://sunspot:8983/solr/admin/cores?action=CREATE&name=development&instanceDir=development" && bundle exec rails db:prepare && rails local_identity:make_admins && ./local/delayed_job start default 1 && ./local/delayed_job start initial_assessment 1 && bundle exec rails server -b 0.0.0.0'
