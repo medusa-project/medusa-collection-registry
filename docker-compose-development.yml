@@ -1,9 +1,9 @@
 #
 # invocation:
-# 1. docker-compose -f docker-compose-local.yml up -d --build
+# 1. docker-compose -f docker-compose-development.yml up -d --build
 
 # tear down:
-# 1. docker-compose -f docker-compose-local.yml down --volumes
+# 1. docker-compose -f docker-compose-development.yml down --volumes
 
 version: "3.7"
 
