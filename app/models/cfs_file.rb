@@ -3,7 +3,7 @@ require 'set'
 
 class CfsFile < ApplicationRecord
 
-  AWS_S3_MD5_SIZE_LIMIT = 5*(2^20) # 5 MB
+  AWS_S3_MD5_SIZE_LIMIT = 5*(2**20) # 5 MB
 
   include Eventable
   include CascadedEventable
