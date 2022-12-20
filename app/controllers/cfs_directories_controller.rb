@@ -109,6 +109,8 @@ class CfsDirectoriesController < ApplicationController
     flash[:notice] = 'Cfs simple assessment scheduled'
     redirect_to @directory
   end
+  def accrual_clean_staging_tool
+  end
 
   protected
 

@@ -1,0 +1,22 @@
+%h3 Medusa Clean Staging Directory Tool
+%p To facilitate more performant ingest, clean excluded files and directories from staged directories.
+%p To use the tool, Save the medusa-clean-staging.py file anywhere convenient.
+%h4 Python 3 script
+%p Python version 3 must be installed.
+%p On Windows you can type "Python" in the Windows Search Bar.
+%p On a Mac, you open a terminal and type
+%pre
+  python --version
+%p If python version 3 is not installed on your system, work with Library IT to get it installed.
+%h4 Usage
+%p On Windows open a command prompt (press Windows start and type cmd) or on a Mac open a terminal.
+%p Navigate to the directory where you saved the script file (or adjust the below commands for relative path).
+%pre.example-code
+  python medusa-clean-staging.py
+%p or
+%pre.example-code
+  python medusa-clean-staging.py Drive:\path\to\staging\directory
+%p
+  The difference is that if you include the path to the staging directory, the program will use that. Otherwise, if you omit it, the program will prompt you for the path.
+
+= primary_button 'Download Tool', '/medusa-clean-staging.py'

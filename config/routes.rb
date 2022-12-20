@@ -107,6 +107,7 @@ Rails.application.routes.draw do
     get :report_manifest, on: :member
     get :timeline, on: :member
     post :create_initial_cfs_assessment, on: :member
+    get :accrual_clean_staging_tool, on: :collection
   end
   resources :content_types, only: [] do
     get :cfs_files, on: :member

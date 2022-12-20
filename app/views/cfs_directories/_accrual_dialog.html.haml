@@ -2,6 +2,12 @@
   .modal-header
     %h4 Add files
   .modal-body
+    %p.strong Directory must not contain files named Thumbs.db or .DS_Store, or directories named CaptureOne.
+    %p
+      To avoid delays, use the
+      %a(href="/cfs_directories/accrual_clean_staging_tool")
+        Medusa Clean Staging Tool
+      to detect and remove any excluded files or directories before accrual.
     = simple_form_for :accrual, url: submit_accruals_path, html: {id: 'add-files-form'} do |f|
       .btn-toolbar
         .btn-group
