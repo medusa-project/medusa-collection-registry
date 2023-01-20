@@ -1,8 +1,10 @@
 MedusaCollectionRegistry::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  settings = YAML.load("/config/settings.yml").symbolize_keys
-  local_settings = YAML.load("/config/settings/test.local.yml").symbolize_keys
+  Rails.root.join('config', 'settings.yml')
+
+  settings = YAML.load(Rails.root.join('config', 'settings.yml') ).symbolize_keys
+  local_settings = YAML.load(Rails.root.join('config', 'settings', 'test.local.yml') ).symbolize_keys
   settings.merge!(local_settings)
 
   # configure mailer

@@ -1,7 +1,7 @@
 MedusaCollectionRegistry::Application.configure do
 
-  settings = YAML.load("/config/settings.yml").symbolize_keys
-  local_settings = YAML.load("/config/settings/demo.local.yml").symbolize_keys
+  settings = YAML.load(Rails.root.join('config', 'settings.yml') ).symbolize_keys
+  local_settings = YAML.load(Rails.root.join('config', 'settings', 'demo.local.yml') ).symbolize_keys
   settings.merge!(local_settings)
 
   # configure mailer
