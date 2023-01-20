@@ -1,9 +1,7 @@
 MedusaCollectionRegistry::Application.configure do
 
-  config.active_record.yaml_column_permitted_classes = [Symbol]
-
-  settings = YAML.load(File.open(Rails.root.join('config', 'settings.yml')))
-  local_settings = YAML.load(File.open(Rails.root.join('config', 'settings', 'demo.local.yml')))
+  settings = YAML.unsafe_load(File.open(Rails.root.join('config', 'settings.yml')))
+  local_settings = YAML.unsafe_load(File.open(Rails.root.join('config', 'settings', 'demo.local.yml')))
   settings.merge!(local_settings)
 
   # configure mailer
