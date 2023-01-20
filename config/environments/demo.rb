@@ -1,8 +1,9 @@
 MedusaCollectionRegistry::Application.configure do
 
-  settings = YAML.safe_load(File.open(Rails.root.join('config', 'settings.yml'))).symbolize_keys
-  local_settings = YAML.safe_load(File.open(Rails.root.join('config', 'settings', 'demo.local.yml'))).symbolize_keys
+  settings = YAML.safe_load(File.open(Rails.root.join('config', 'settings.yml')))
+  local_settings = YAML.safe_load(File.open(Rails.root.join('config', 'settings', 'demo.local.yml')))
   settings.merge!(local_settings)
+  Rails.logger.warn settings
 
   # configure mailer
   config.action_mailer.perform_caching = false
