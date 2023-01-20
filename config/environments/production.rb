@@ -1,6 +1,23 @@
 MedusaCollectionRegistry::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  settings = YAML.load("/config/settings.yml").symbolize_keys
+  local_settings = YAML.load("/config/settings/production.local.yml").symbolize_keys
+  settings.merge!(local_settings)
+
+  # configure mailer
+  config.action_mailer.perform_caching = false
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+    address: "smtp.sparkpostmail.com",
+    port: 587,
+    enable_starttls_auto: true,
+    user_name: "SMTP_Injection",
+    password: settings.smtp.smtp_settings.password,
+    domain: 'library.illinois.edu'
+  }
+
   # Code is not reloaded between requests
   config.cache_classes = true
 

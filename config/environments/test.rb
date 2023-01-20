@@ -1,6 +1,23 @@
 MedusaCollectionRegistry::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  settings = YAML.load("/config/settings.yml").symbolize_keys
+  local_settings = YAML.load("/config/settings/test.local.yml").symbolize_keys
+  settings.merge!(local_settings)
+
+  # configure mailer
+  config.action_mailer.perform_caching = false
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+    address: "smtp.sparkpostmail.com",
+    port: 587,
+    enable_starttls_auto: true,
+    user_name: "SMTP_Injection",
+    password: settings.smtp.smtp_settings.password,
+    domain: 'library.illinois.edu'
+  }
+  
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped

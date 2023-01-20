@@ -53,18 +53,7 @@ module MedusaCollectionRegistry
     # like if you have constraints or database-specific column types
     config.active_record.schema_format = :sql
 
-    # configure mailer
-    config.action_mailer.perform_caching = false
-    config.action_mailer.delivery_method = :smtp
 
-    config.action_mailer.smtp_settings = {
-      address: "smtp.sparkpostmail.com",
-      port: 587,
-      enable_starttls_auto: true,
-      user_name: "SMTP_Injection",
-      password: Settings.smtp.smtp_settings.password,
-      domain: 'library.illinois.edu'
-    }
 
     # Enable the asset pipeline
     config.assets.enabled = true
