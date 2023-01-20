@@ -1,8 +1,8 @@
 MedusaCollectionRegistry::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  settings = YAML.load(Rails.root.join('config', 'settings.yml') ).symbolize_keys
-  local_settings = YAML.load(Rails.root.join('config', 'settings', 'production.local.yml') ).symbolize_keys
+  settings = YAML.unsafe_load(File.open(Rails.root.join('config', 'settings.yml')))
+  local_settings = YAML.unsafe_load(File.open(Rails.root.join('config', 'settings', 'production.local.yml')))
   settings.merge!(local_settings)
 
   # configure mailer
@@ -14,10 +14,9 @@ MedusaCollectionRegistry::Application.configure do
     port: 587,
     enable_starttls_auto: true,
     user_name: "SMTP_Injection",
-    password: settings.smtp.smtp_settings.password,
+    password: settings["smtp"]["smtp_settings"]["password"],
     domain: 'library.illinois.edu'
   }
-
   # Code is not reloaded between requests
   config.cache_classes = true
 
