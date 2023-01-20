@@ -31,8 +31,14 @@ solr/
 
 .capistrano
 config/settings.local.yml
-config/settings/*.local.yml
-config/environments/*.local.yml
+config/settings/development.local.yml
+config/settings/test.local.yml
+config/settings/demo.local.yml
+config/settings/production.local.yml
+config/environments/development.local.yml
+config/environments/test.local.yml
+config/environments/demo.local.yml
+config/environments/production.local.yml
 /public/packs
 /public/packs-test
 /node_modules

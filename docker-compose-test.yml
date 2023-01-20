@@ -48,6 +48,8 @@ services:
   rabbitmq:
     image: rabbitmq
     hostname: rabbitmq
+    ports:
+      - "5672:5672"
   memcached:
     image: memcached
     hostname: memcached

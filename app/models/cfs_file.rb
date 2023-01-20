@@ -173,12 +173,21 @@ class CfsFile < ApplicationRecord
       self.md5_sum = aws_etag if self.size < AWS_S3_MD5_SIZE_LIMIT
       self.mtime = external_mtime
       self.content_type_name = content_type_by_filename
-      # since md5 is calculated with fits, and we are waiting for fits, no need to be redundant
-      # if we can't get md5_sum from fits, the response handler automatically creates an md5_checksum request
-      Assessor::TaskElement.create(cfs_file_id: self.id,
-                                   checksum: false,
-                                   content_type: true,
-                                   fits: true)
+      if Rails.env.development? || Rails.env.test?
+        self.md5_sum = Settings.amqp_accrual.placeholder_md5 if self.md5_sum.nil?
+        self.content_type_name = 'application/octet-stream' if self.content_type_name.nil?
+        builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
+          xml.placeholder "placeholder-fits"
+        end
+        self.fits_result.xml= builder.to_xml
+      else
+        # since md5 is calculated with fits, and we are waiting for fits, no need to be redundant
+        # if we can't get md5_sum from fits, the response handler automatically creates an md5_checksum request
+        Assessor::TaskElement.create(cfs_file_id: self.id,
+                                     checksum: false,
+                                     content_type: true,
+                                     fits: true)
+      end
     else
       self.size = external_size if self.size.nil?
       self.md5_sum = aws_etag if (self.md5_sum.nil? && self.size < AWS_S3_MD5_SIZE_LIMIT)

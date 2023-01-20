@@ -234,6 +234,9 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def use_globus_transfer
+
+    return false if Rails.env.development? || Rails.env.test?
+
     return false unless Settings.globus.present?
 
     !staging_globus_endpoint.nil?
