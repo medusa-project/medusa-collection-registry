@@ -13,7 +13,7 @@ MedusaCollectionRegistry::Application.configure do
     port: 587,
     enable_starttls_auto: true,
     user_name: "SMTP_Injection",
-    password: settings.smtp.smtp_settings.password,
+    password: settings["smtp"]["smtp_settings"]["password"],
     domain: 'library.illinois.edu'
   }
 
