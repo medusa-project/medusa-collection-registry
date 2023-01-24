@@ -137,18 +137,7 @@ wait_delete_content delete_content restore_content email_restored_content email_
   end
 
   def delete_held_content
-    if main_root.versioned
-      main_root.delete_tree_versions(content_key_prefix)
-    else
-      main_root.delete_tree(content_key_prefix)
-    end
-    if backup_root.present?
-      if backup_root.versioned
-        backup_root.delete_tree_versions(content_key_prefix)
-      else
-        backup_root.delete_tree(content_key_prefix)
-      end
-    end
+    main_root.delete_tree(content_key_prefix)
   end
 
   def content_key_prefix
