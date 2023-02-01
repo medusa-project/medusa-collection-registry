@@ -18,7 +18,7 @@ namespace :assessor do
 
   desc "handle fetched messages"
   task handle_fetched_messages: :environment do
-    fetched_responses = Assessor::Response.where(status: "fetched").limit(5000)
+    fetched_responses = Assessor::Response.where(status: "fetched").limit(1000)
     fetched_responses.each(&:handle)
   end
 
