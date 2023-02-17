@@ -5,6 +5,9 @@ class Workflow::AccrualJobsController < ApplicationController
                 only: [:proceed, :proceed_form, :abort, :abort_form, :view_report]
   before_action :record_comment, only: [:proceed, :abort]
 
+  def show
+  end
+
   def proceed
     @accrual_job.approve_and_proceed
     respond_to do |format|
