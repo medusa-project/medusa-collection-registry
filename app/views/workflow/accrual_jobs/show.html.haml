@@ -1,15 +1,16 @@
 %p Some of the information on this page may take several minutes to compute.
-
-- if accrual_job.state == 'copying' or accrual_job.state == 'await_copy_messages'
-  (#{accrual_job.workflow_accrual_keys.count})
-- if accrual_job.state == "send_copy_messages"
-  ="(#{accrual_job.workflow_accrual_keys.copy_requested.count} of #{accrual_job.workflow_accrual_keys.count})"
-- if accrual_job.state == "assessing" or accrual_job.state == 'await_assessment'
+= "STATUS: #{@accrual_job.status_label}"
+- if @accrual_job.state == 'copying' or @accrual_job.state == 'await_copy_messages'
+  ="#{@accrual_job.workflow_accrual_keys.where(copy_requested: true).where(error: nil).count} objects left to copy"
+  ="#{@accrual_job.workflow_accrual_keys.where(copy_requested: true).where.not(error: nil).count} objects have errors"
+- if @accrual_job.state == "send_copy_messages"
+  ="#{@accrual_job.workflow_accrual_keys.copy_requested.count} of #{@accrual_job.workflow_accrual_keys.count} sent"
+- if @accrual_job.state == "assessing" or @accrual_job.state == 'await_assessment'
   ="All subdirectory records are created before any file records are created."
-  ="(subdirectories: #{accrual_job.cfs_directory.recursive_subdirectory_ids.count} records created)\n"
-  ="(files: #{accrual_job.cfs_directory.recursive_cfs_file_ids.count} records created)"
-  ="(incomplete task count: #{accrual_job.cfs_directory.incomplete_task_count})"
+  ="(subdirectories: #{@accrual_job.cfs_directory.recursive_subdirectory_ids.count} records created)\n"
+  ="(files: #{@accrual_job.cfs_directory.recursive_cfs_file_ids.count} records created)"
+  ="(incomplete task count: #{@accrual_job.cfs_directory.incomplete_task_count})"
 %br
-  = accrual_job.delayed_job_has_error? ? "JOB ERROR" : "JOB OK"
+  = @accrual_job.delayed_job_has_error? ? "JOB ERROR" : "JOB OK"
 %hr
 =debug(@accrual_job)
