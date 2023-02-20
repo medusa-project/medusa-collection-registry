@@ -2,7 +2,7 @@ class Workflow::AccrualJobsController < ApplicationController
 
   before_action :require_medusa_user
   before_action :get_accrual_job_and_authorize,
-                only: [:proceed, :proceed_form, :abort, :abort_form, :view_report]
+                only: [:proceed, :show, :proceed_form, :abort, :abort_form, :view_report]
   before_action :record_comment, only: [:proceed, :abort]
 
   def show
