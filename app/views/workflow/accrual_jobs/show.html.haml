@@ -1,5 +1,21 @@
-%p Some of the information on this page may take several minutes to compute.
-= "STATUS: #{@accrual_job.status_label}"
+-accrual_job = @accrual_job
+%h2
+  Accrual Job Status Detail
+%em Some of the information on this page may take several minutes to compute.
+%table.table
+  %tr{id: "accrual_job_#{accrual_job.id}"}
+    %td= accrual_job.id
+    %td= accrual_job.created_at.to_date
+    %td= accrual_job.file_group.try(:title)
+    %td
+      #{accrual_job.collection.try(:title)}
+      - if accrual_job.collection.try(:external_id).present?
+        [#{accrual_job.collection.external_id}]
+    %td= accrual_job.user.net_id
+    %td= small_icon_default_button('View Report', 'eye', view_report_workflow_accrual_job_path(accrual_job), remote: true) if accrual_job.has_report?
+    %td{id: "accrual_status_#{accrual_job.id}", class: accrual_conflict_indicator_class(accrual_job)}
+      #{accrual_job.status_label}
+
 - if @accrual_job.state == 'copying' or @accrual_job.state == 'await_copy_messages'
   ="#{@accrual_job.workflow_accrual_keys.where(copy_requested: true).where(error: nil).count} objects left to copy"
   ="#{@accrual_job.workflow_accrual_keys.where(copy_requested: true).where.not(error: nil).count} objects have errors"
@@ -12,5 +28,3 @@
   ="(incomplete task count: #{@accrual_job.cfs_directory.incomplete_task_count})"
 %br
   = @accrual_job.delayed_job_has_error? ? "JOB ERROR" : "JOB OK"
-%hr
-=debug(@accrual_job)
