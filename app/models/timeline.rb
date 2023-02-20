@@ -82,7 +82,7 @@ class Timeline
 
   def months_for_stats
     start = Date.today.change(day: 1)
-    (0..12).collect { |offset| start - offset.months }.reverse
+    (0..13).collect { |offset| start - offset.months }.reverse
   end
 
   def stats_for_period(start, finish)

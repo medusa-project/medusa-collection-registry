@@ -11,5 +11,6 @@
 %p All the things that are BitLevelFileGroups are also CfsDirectories and the other way around.  1:1
 %h3 Relationship between BitLevelFileGroup, interface routes, and bucket keys:
 %p A BitLevelFileGroup has an attribute called cfs_root with a value in the form 123/456. The 123 is the id of the Collection and the 456 is the id of the BitLevelFileGroup. In the interface, you can get to it with the route
-%p ="/collections/123, then looking in the displayed list file the file group with the number 456.  Or is the route /bit_level_file_groups/456. In the s3 bucket, you can go to the key 123/456 to access the content."
+%p
+  ="/collections/123, then looking in the displayed list file the file group with the number 456.  Or is the route /bit_level_file_groups/456. In the s3 bucket, you can go to the key 123/456 to access the content."
 %p The BitLevelFileGroup is part of the configuration of the relationship between MCR and other elements such as IDEALS and Illinois Data Bank.
