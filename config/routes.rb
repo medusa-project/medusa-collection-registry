@@ -87,6 +87,9 @@ Rails.application.routes.draw do
   resources :items do
     get :barcode_lookup, on: :collection
   end
+  resources :red_flags do
+    get :overview, on: :collection
+  end
   resources :producers do
     get :report, on: :member
   end
@@ -95,6 +98,7 @@ Rails.application.routes.draw do
   resources :cfs_files, only: :show, concerns: %i(downloadable eventable) do
     %i(fits view preview_pdf preview_content thumbnail).each {|action| get action, on: :member}
     get :random, on: :collection
+    get :info, on: :collection
   end
   get 'cfs_files/:id/preview_iiif_image/*iiif_parameters', to: 'cfs_files#preview_iiif_image', as: 'preview_iiif_image_cfs_file'
 

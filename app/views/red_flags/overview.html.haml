@@ -1,0 +1,26 @@
+%h2 Red Flags Overview
+%p Red flags are generated when events occur in background or automated processes which my require attention.
+%p Each red flag has a type, message, priority, status, and (optional) notes.
+%p
+  The only current type is CfsFile, which is the object type that represents a file. See
+  %a(href="/cfs_files/info") File Organization
+  for more context.
+%ul Triggers for CfsFile red flags:
+  %li
+    %p
+      %strong Checksum changed during fixity check
+  %li
+    %p
+      %strong File not found during fixity check
+  %li
+    %p
+      %strong Size changed
+    %em
+      This red flag can be created in response to size changing between what was detected during ingest
+      vs. what was calculated during fits analysis.
+  %li
+    %p
+      %strong Content type changed
+    %em
+      This red flag can be created in response to a more specific content type being detected during fit analysis
+      than was guessed by file extension during initial ingest.

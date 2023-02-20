@@ -1,0 +1,15 @@
+%h2 File Organization in Medusa Collection Registry (MCR)
+%p 'Files' can mean binary objects in an object store for the purpose of this document
+%p Files in MCR are represented as CfsFile objects. The Cfs part is a vestige of a type of object storage device that was tried but failed in the early days of MCR development. The name stayed, in part, because File is a reserved keyword for core rails functionality.
+%p Every CfsFile belongs to a CfsDirectory, which represents the concept of a directory.
+%p CfsDirectories can be organized into subdirectories, which are themselves instances of CfsDirectory.
+%p Every CfsDirectory belongs to one FileGroup.
+%p Every FileGroup has zero or one CfsDirectory. Zero? What is that about? Type!
+%p File Groups come in two types: ExternalFileGroup and BitLevelFileGroup
+%p Every BitLevelFileGroup has exactly one CfsDirectory, but ExternalFileGroups don't have one.
+%p That is because a BitLevelFileGroup represents a set of file stored in storage managed by MCR, but ExternalFileGroups represent a record of the source of the files.
+%p All the things that are BitLevelFileGroups are also CfsDirectories and the other way around.  1:1
+%h3 Relationship between BitLevelFileGroup, interface routes, and bucket keys:
+%p A BitLevelFileGroup has an attribute called cfs_root with a value in the form 123/456. The 123 is the id of the Collection and the 456 is the id of the BitLevelFileGroup. In the interface, you can get to it with the route
+%p ="/collections/123, then looking in the displayed list file the file group with the number 456.  Or is the route /bit_level_file_groups/456. In the s3 bucket, you can go to the key 123/456 to access the content."
+%p The BitLevelFileGroup is part of the configuration of the relationship between MCR and other elements such as IDEALS and Illinois Data Bank.

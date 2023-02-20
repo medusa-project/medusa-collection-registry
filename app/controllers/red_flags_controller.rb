@@ -6,6 +6,9 @@ class RedFlagsController < ApplicationController
   def show
   end
 
+  def overview
+  end
+
   def edit
     authorize! :update, @red_flag
   end
