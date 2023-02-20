@@ -153,7 +153,7 @@ Rails.application.routes.draw do
 
   namespace :workflow do
     resources 'accrual_jobs', only: [] do
-      get :index, on: :member
+      get :index, on: :collection
       get :show, on: :member
       post :proceed, on: :member
       get :proceed_form, on: :member
