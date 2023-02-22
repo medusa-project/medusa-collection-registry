@@ -25,6 +25,8 @@
   ="All subdirectory records are created before any file records are created."
   ="(subdirectories: #{@accrual_job.cfs_directory.recursive_subdirectory_ids.count} records created)\n"
   ="(files: #{@accrual_job.cfs_directory.recursive_cfs_file_ids.count} records created)"
-  ="(incomplete task count: #{@accrual_job.cfs_directory.incomplete_task_count})"
 %br
-  = @accrual_job.delayed_job_has_error? ? "JOB ERROR" : "JOB OK"
+  = "Number of associated Delayed::Job records: #{@accrual_job.delayed_jobs.count}"
+  = "Number of associated Delayed::Job records with errors: #{@accrual_job.delayed_jobs.where.not(last_error: nil).count}"
+  - if @accrual_job.delayed_jobs.count.positive?
+    = @accrual_job.delayed_job_has_error? ? "JOB ERROR" : "JOB OK"
