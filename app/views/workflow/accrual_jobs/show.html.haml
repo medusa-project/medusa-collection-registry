@@ -27,6 +27,7 @@
   ="(files: #{@accrual_job.cfs_directory.recursive_cfs_file_ids.count} records created)"
 %br
 = "Number of associated Delayed::Job records: #{@accrual_job.delayed_jobs.count}"
-= "Number of associated Delayed::Job records with errors: #{@accrual_job.delayed_jobs.where.not(last_error: nil).count}"
+- error_jobs = @accrual_job.delayed_jobs.reject {|dj| dj.last_error.nil?}
+= "Number of associated Delayed::Job records with errors: #{error_jobs.count}"
 - if @accrual_job.delayed_jobs.count.positive?
   = @accrual_job.delayed_job_has_error? ? "JOB ERROR" : "JOB OK"
