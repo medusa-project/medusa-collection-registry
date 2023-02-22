@@ -17,7 +17,8 @@ namespace :quest do
       netid = email_parts.first
       begin
         puts "checking #{netid}"
-        open("https://quest.library.illinois.edu/directory/ad/#{netid}/ismemberof/#{Addressable::URI.encode(group)}").read
+        open("https://ismemberof.library.illinois.edu/ismemberof/#{Addressable::URI.encode(group)}/#{netid}").read
+        #open("https://quest.library.illinois.edu/directory/ad/#{netid}/ismemberof/#{Addressable::URI.encode(group)}").read
         puts "OK"
       rescue OpenURI::HTTPError
         puts "netid #{netid} not found"
