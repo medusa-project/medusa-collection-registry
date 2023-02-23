@@ -300,18 +300,19 @@ class Workflow::AccrualJob < Workflow::Base
         message = "#{status}: https://www.globus.org/app/console/#{workflow_accrual_key.workflow_globus_transfer.task_link}"
         workflow_accrual_key.error = message
         workflow_accrual_key.save!
-      when 'CONFLICT'
-        workflow_accrual_key.error = "conflict error getting status"
-        workflow_accrual_key.save!
-      when 'ERROR'
-        workflow_accrual_key.copy_requested = false
-        workflow_accrual_key.error = "error getting status"
-        workflow_accrual_key.save!
+        #when 'CONFLICT'
+        #workflow_accrual_key.error = "conflict error getting status"
+        #workflow_accrual_key.save!
+        #when 'ERROR'
+        #workflow_accrual_key.copy_requested = false
+        #workflow_accrual_key.error = "error getting status"
+        #workflow_accrual_key.save!
       else
-        workflow_accrual_key.copy_requested = false
-        workflow_accrual_key.error = "error getting status"
-        workflow_accrual_key.save!
-        raise("Invalid status in perform_await_copy_messages for workflow_accrual_key: #{workflow_accrual_key}")
+        # do nothing
+        #workflow_accrual_key.copy_requested = false
+        #workflow_accrual_key.error = "error getting status"
+        #workflow_accrual_key.save!
+        #raise("Invalid status in perform_await_copy_messages for workflow_accrual_key: #{workflow_accrual_key}")
       end
     end
     error_count = workflow_accrual_keys.has_error.count
