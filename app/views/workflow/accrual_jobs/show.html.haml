@@ -23,7 +23,7 @@
     .panel-heading(role="tab" id="reportHeading")
       %h4(class="panel-title")
         %a( role="button" data-toggle="collapse" data-parent="#report" href="#reportPanel" aria-expanded="false" aria-controls="reportPanel" class="accordion-toggle collapsed" )
-          %h4 Pre-Ingest Report
+          %h4 Pre-Ingest Report (click to expand)
     .panel-collapse.collapse(id="reportPanel" role="tabpanel" aria-labelledby="reportHeading" )
       .panel-body
         = render partial: 'workflow/accrual_mailer/accrual_summary'
@@ -32,22 +32,22 @@
     .panel-heading(role="tab" id="statusHeading")
       %h4(class="panel-title")
         %a( role="button" data-toggle="collapse" data-parent="#status" href="#statusPanel" aria-expanded="false" aria-controls="statusPanel" class="accordion-toggle collapsed" )
-          %h4 Status Detail
+          %h4 Status Detail (click to expand)
     .panel-collapse.collapse(id="statusPanel" role="tabpanel" aria-labelledby="statusHeading" )
-  .panel-body
-    .level-1-diagnostic
-      -accrual_job.level_1_diagnostic.each do |row|
-        =row
-        %br
+      .panel-body
+        .level-1-diagnostic
+          -accrual_job.level_1_diagnostic.each do |row|
+            =row
+            %br
 .panel-group(id="status" role="tablist" aria-multiselectable="true")
   .panel.panel-default
-.panel-heading(role="tab" id="diagnosticHeading")
-  %h4(class="panel-title")
-    %a( role="button" data-toggle="collapse" data-parent="#status" href="#diagnosticPanel" aria-expanded="false" aria-controls="diagnosticPanel" class="accordion-toggle collapsed" )
-      %h4 Developer Reference
-  .panel-collapse.collapse(id="diagnosticPanel" role="tabpanel" aria-labelledby="diagnosticHeading" )
-    .panel-body
-      .level-2-diagnostic
-        -accrual_job.level_2_diagnostic.each do |row|
-          =row
-          %br
+    .panel-heading(role="tab" id="diagnosticHeading")
+      %h4(class="panel-title")
+        %a( role="button" data-toggle="collapse" data-parent="#status" href="#diagnosticPanel" aria-expanded="false" aria-controls="diagnosticPanel" class="accordion-toggle collapsed" )
+          %h4 Developer Reference (click to expand)
+      .panel-collapse.collapse(id="diagnosticPanel" role="tabpanel" aria-labelledby="diagnosticHeading" )
+        .panel-body
+          .level-2-diagnostic
+            -accrual_job.level_2_diagnostic.each do |row|
+              =row
+              %br
