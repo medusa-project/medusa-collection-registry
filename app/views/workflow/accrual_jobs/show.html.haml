@@ -15,11 +15,14 @@
     %td{id: "accrual_status_#{accrual_job.id}", class: accrual_conflict_indicator_class(accrual_job)}
       #{accrual_job.status_label}
 %hr
-%h3 Pre-ingest Report
-= render partial: 'workflow/accrual_mailer/accrual_summary'
+
 %hr
 %h3 Diagnostic Information
+%h4 Pre-ingest Report
+= render partial: 'workflow/accrual_mailer/accrual_summary'
+%h4 Status Detail
 .level-1-diagnostic
   =accrual_job.level_1_diagnostic.each do |row|
     =row
+    %br
 .level-2-diagnostic
