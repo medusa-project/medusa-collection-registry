@@ -18,11 +18,23 @@
 
 %hr
 %h3 Diagnostic Information
-%h4 Pre-ingest Report
-= render partial: 'workflow/accrual_mailer/accrual_summary'
-%h4 Status Detail
-.level-1-diagnostic
-  =accrual_job.level_1_diagnostic.each do |row|
-    =row
-    %br
-.level-2-diagnostic
+.panel.panel-default
+  .panel-heading
+    %h4 Pre-ingest Report
+  .panel-body
+    = render partial: 'workflow/accrual_mailer/accrual_summary'
+.panel.panel-default
+  .panel-heading
+    %h4 Status Detail
+    .level-1-diagnostic
+      -accrual_job.level_1_diagnostic.each do |row|
+        =row
+        %br
+    .level-2-diagnostic
+.panel.panel-default
+  .panel-heading
+    %h4 Developer Reference
+    .level-1-diagnostic
+      -accrual_job.level_2_diagnostic.each do |row|
+        =row
+        %br
