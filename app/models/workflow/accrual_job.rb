@@ -24,14 +24,19 @@ class Workflow::AccrualJob < Workflow::Base
   validates_presence_of :cfs_directory_id, :user_id
   validates_uniqueness_of :staging_path, scope: :cfs_directory_id
 
-  STATE_HASH = {'start' => 'Start', 'check' => 'Checking for existing files', 'check_sync' => 'Checking sync',
+  STATE_HASH = {'start' => 'Start',
+                'check' => 'Checking for existing files',
+                'check_sync' => 'Checking sync',
                 'initial_approval' => 'Awaiting approval',
                 'copying' => 'Copying',
-                'send_copy_messages' => 'Sending copying messages', 'await_copy_messages' => 'Awaiting copy messages',
+                'send_copy_messages' => 'Sending copying messages',
+                'await_copy_messages' => 'Awaiting copy messages',
                 'admin_approval' => 'Awaiting admin approval',
-                'assessing' => 'Starting Assessments', 'await_assessment' => 'Running Assessment',
+                'assessing' => 'Starting Assessments',
+                'await_assessment' => 'Running Assessment',
                 'email_done' => 'Emailing completion',
-                'aborting' => 'Aborting', 'end' => 'Ending'}.freeze
+                'aborting' => 'Aborting',
+                'end' => 'Ending'}.freeze
   STATES = STATE_HASH.keys
 
   def self.create_for(user, cfs_directory, staging_path, requested_files, requested_directories, allow_overwrite)
@@ -282,6 +287,9 @@ class Workflow::AccrualJob < Workflow::Base
     end
     if workflow_accrual_keys.copy_not_requested.count.zero?
       be_in_state_and_requeue('await_copy_messages')
+    else
+      # TODO: maybe requeue?
+      raise("Copy not requested for #{workflow_accrual_keys.copy_not_requested.count} keys. Too many requests?")
     end
 
   end
@@ -548,19 +556,16 @@ class Workflow::AccrualJob < Workflow::Base
     rendered_html
   end
 
-  def level_1_diagnostic
+  def status_detail
     report_array = Array.new
+    report_array << "Status: #{status_label}"
     case state
     when "start"
       report_array << "The only thing that happens in #{status_label} is moving onto the checking sync state."
       report_array << "Status should not remain #{status_label} for more than a few minutes."
-      report_array << "If job is stuck here, background jobs are not running."
-      report_array << "Someone in the Medusa Developers group may need to reboot server."
     when "check"
       report_array << "The only thing that happens in #{status_label} is moving into the checking for existing files states."
       report_array << "Status should not remain #{status_label} for more than a few minutes."
-      report_array << "If job is stuck here, background jobs are not running."
-      report_array << "Someone in the Medusa Developers group may need to reboot server."
     when "check_sync"
       report_array << "The directories and files in the staged content are compared to the objects already ingested."
       report_array << "If duplicates are found and the overwrites are specified as not allowed in the ingest then a"
@@ -602,41 +607,37 @@ class Workflow::AccrualJob < Workflow::Base
       report_array << "have those done, which is expected to be exactly the newly ingested objects."
       report_array << "Once those tasks have been initiated, the state changes to running assessment."
     when "await_assessment"
-      report_array << "Each of the processes initiated in the previous state are checked continuously over and over"
+      report_array << "Each of the processes initiated while in assessing status are checked continuously over and over"
       report_array << "until they are all complete. After all are complete, the state changes to emailing completion."
     when "email_done"
       report_array << "The done email is sent and the state changes to ending."
       report_array << "Status should not remain #{status_label} for more than a few minutes."
-      report_array << "If job is stuck here, background jobs are not running."
-      report_array << "Someone in the Medusa Developers group may need to reboot server."
     when "aborting"
       report_array << "A Workflow::AccrualJob in this state sends an aborted message and then the state changes to end"
       report_array << "Status should not remain #{status_label} for more than a few minutes."
-      report_array << "If job is stuck here, background jobs are not running."
-      report_array << "Someone in the Medusa Developers group may need to reboot server."
     when "end"
       report_array << "Destroys the accrual job record and any associated background job records."
       report_array << "Status should not remain #{status_label} for more than a few minutes."
-      report_array << "If job is stuck here, background jobs are not running."
-      report_array << "Someone in the Medusa Developers group may need to reboot server."
     else
-      report_array << "Invalid state: #{state}"
+      report_array << "Invalid status: #{state}"
     end
-    report_array << "Number of associated background jobs: #{self.delayed_jobs.count}"
-    error_jobs = self.delayed_jobs.reject {|dj| dj.last_error.nil?}
-    report_array << "Number of associated background jobs with errors: #{error_jobs.count}"
-    job_status = delayed_job_has_error? ? "BACKGROUND JOB ERROR" : "BACKGROUND JOB OK"
-    report_array << job_status
   end
 
-  def level_2_diagnostic
-    report_array = level_1_diagnostic
+  def diagnostic_info
+    report_array = Array.new
     case state
-    when "start", "check", "check_sync", "initial_approval", "copying"
-      report_array <<  "no additional information specific to this status"
+    when "start", "check", "check_sync", "email_done", "aborting", "end"
+      report_array << "Status should not remain #{status_label} for more than a few minutes."
+      report_array << "If job is stuck here, background jobs are not running."
+      report_array << "Rebooting the server is probably necessary and sufficient."
+      report_array << "If this happens shortly after a reboot, check logs for exception reports."
+      report_array << "An exception in a Delayed::Job might be making Delayed:Job objects fail."
     when  "copying"
-      report_array << "#{self.workflow_accrual_keys.where(copy_requested: true).where(error: nil).count} objects left to copy"
-      report_array << "#{self.workflow_accrual_keys.where(copy_requested: true).where.not(error: nil).count} objects have errors"
+      report_array << "#{self.workflow_accrual_keys.count} total files"
+      report_array << "#{self.workflow_accrual_keys.where(copy_requested: true).where(error: nil).count} files left to copy"
+      report_array << "#{self.workflow_accrual_keys.where(copy_requested: true).where.not(error: nil).count} requests have errors"
+      report_array << "If the number of files left to copy is not zero, but keeps going down on successive refreshes on the scale of minutes,"
+      report_array << "Then "
     when "send_copy_messages"
       report_array <<  "#{self.workflow_accrual_keys.copy_requested.count} of #{self.workflow_accrual_keys.count} sent"
     when  "await_copy_messages"
@@ -651,11 +652,15 @@ class Workflow::AccrualJob < Workflow::Base
       report_array << "All subdirectory records are created before any file records are created."
       report_array << "(subdirectories: #{self.cfs_directory.recursive_subdirectory_ids.count} records created)\n"
       report_array << "(files: #{self.cfs_directory.recursive_cfs_file_ids.count} records created)"
-    when "email_done", "aborting", "end"
-      report_array <<  "no additional information specific to this status"
     else
       report_array << "Invalid state: #{state}"
     end
+    report_array << "If there are 0 background jobs, "
+    report_array << "Number of associated background jobs: #{self.delayed_jobs.count}"
+    error_jobs = self.delayed_jobs.reject {|dj| dj.last_error.nil?}
+    report_array << "Number of associated background jobs with errors: #{error_jobs.count}"
+    job_status = delayed_job_has_error? ? "BACKGROUND JOB ERROR" : "BACKGROUND JOB OK"
+    report_array << job_status
     report_array
   end
 end

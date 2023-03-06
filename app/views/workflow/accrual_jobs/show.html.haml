@@ -35,10 +35,9 @@
           %h4 Status Detail (click to expand)
     .panel-collapse.collapse(id="statusPanel" role="tabpanel" aria-labelledby="statusHeading" )
       .panel-body
-        .level-1-diagnostic
-          -accrual_job.level_1_diagnostic.each do |row|
-            =row
-            %br
+        -accrual_job.status_detail.each do |row|
+          =row
+          %br
 .panel-group(id="status" role="tablist" aria-multiselectable="true")
   .panel.panel-default
     .panel-heading(role="tab" id="diagnosticHeading")
@@ -47,7 +46,6 @@
           %h4 Developer Reference (click to expand)
       .panel-collapse.collapse(id="diagnosticPanel" role="tabpanel" aria-labelledby="diagnosticHeading" )
         .panel-body
-          .level-2-diagnostic
-            -accrual_job.level_2_diagnostic.each do |row|
-              =row
-              %br
+          -accrual_job.diagnostic_info.each do |row|
+            =row
+            %br
