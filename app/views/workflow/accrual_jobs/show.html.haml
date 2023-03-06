@@ -18,23 +18,36 @@
 
 %hr
 %h3 Diagnostic Information
-.panel.panel-default
-  .panel-heading
-    %h4 Pre-ingest Report
+.panel-group(id="report" role="tablist" aria-multiselectable="true")
+  .panel.panel-default
+    .panel-heading(role="tab" id="reportHeading")
+      %h4(class="panel-title")
+        %a( role="button" data-toggle="collapse" data-parent="#report" href="#reportPanel" aria-expanded="false" aria-controls="reportPanel" class="accordion-toggle collapsed" )
+          %h4 Pre-Ingest Report
+    .panel-collapse.collapse(id="reportPanel" role="tabpanel" aria-labelledby="reportHeading" )
+      .panel-body
+        = render partial: 'workflow/accrual_mailer/accrual_summary'
+.panel-group(id="status" role="tablist" aria-multiselectable="true")
+  .panel.panel-default
+    .panel-heading(role="tab" id="statusHeading")
+      %h4(class="panel-title")
+        %a( role="button" data-toggle="collapse" data-parent="#status" href="#statusPanel" aria-expanded="false" aria-controls="statusPanel" class="accordion-toggle collapsed" )
+          %h4 Status Detail
+    .panel-collapse.collapse(id="statusPanel" role="tabpanel" aria-labelledby="statusHeading" )
   .panel-body
-    = render partial: 'workflow/accrual_mailer/accrual_summary'
-.panel.panel-default
-  .panel-heading
-    %h4 Status Detail
     .level-1-diagnostic
       -accrual_job.level_1_diagnostic.each do |row|
         =row
         %br
-    .level-2-diagnostic
-.panel.panel-default
-  .panel-heading
-    %h4 Developer Reference
-    .level-1-diagnostic
-      -accrual_job.level_2_diagnostic.each do |row|
-        =row
-        %br
+.panel-group(id="status" role="tablist" aria-multiselectable="true")
+  .panel.panel-default
+.panel-heading(role="tab" id="diagnosticHeading")
+  %h4(class="panel-title")
+    %a( role="button" data-toggle="collapse" data-parent="#status" href="#diagnosticPanel" aria-expanded="false" aria-controls="diagnosticPanel" class="accordion-toggle collapsed" )
+      %h4 Developer Reference
+  .panel-collapse.collapse(id="diagnosticPanel" role="tabpanel" aria-labelledby="diagnosticHeading" )
+    .panel-body
+      .level-2-diagnostic
+        -accrual_job.level_2_diagnostic.each do |row|
+          =row
+          %br
