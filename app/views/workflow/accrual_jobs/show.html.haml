@@ -1,4 +1,5 @@
--accrual_job = @accrual_job
+- accrual_job = @accrual_job
+- @workflow_accrual = @accrual_job
 %h2Accrual Job Status Detail
 %table.table
   %tr{id: "accrual_job_#{accrual_job.id}"}
@@ -14,20 +15,11 @@
     %td{id: "accrual_status_#{accrual_job.id}", class: accrual_conflict_indicator_class(accrual_job)}
       #{accrual_job.status_label}
 %hr
-- if @accrual_job.state == 'copying' or @accrual_job.state == 'await_copy_messages'
-  ="#{@accrual_job.workflow_accrual_keys.where(copy_requested: true).where(error: nil).count} objects left to copy"
-  ="#{@accrual_job.workflow_accrual_keys.where(copy_requested: true).where.not(error: nil).count} objects have errors"
-- if @accrual_job.state == "send_copy_messages"
-  ="#{@accrual_job.workflow_accrual_keys.copy_requested.count} of #{@accrual_job.workflow_accrual_keys.count} sent"
-- if @accrual_job.state == "assessing" or @accrual_job.state == 'await_assessment'
-  ="All subdirectory records are created before any file records are created."
-  ="(subdirectories: #{@accrual_job.cfs_directory.recursive_subdirectory_ids.count} records created)\n"
-  ="(files: #{@accrual_job.cfs_directory.recursive_cfs_file_ids.count} records created)"
+%h3 Pre-ingest Report
+= render partial: 'accrual_summary'
 %hr
-= "Number of associated Delayed::Job records: #{@accrual_job.delayed_jobs.count}"
-- error_jobs = @accrual_job.delayed_jobs.reject {|dj| dj.last_error.nil?}
-%br
-= "Number of associated Delayed::Job records with errors: #{error_jobs.count}"
-- if @accrual_job.delayed_jobs.count.positive?
-  = @accrual_job.delayed_job_has_error? ? "JOB ERROR" : "JOB OK"
-%hr
+%h3 Diagnostic Information
+.level-1-diagnostic
+  =accrual_job.level_1_diagnostic.each do |row|
+    =row
+.level-2-diagnostic
