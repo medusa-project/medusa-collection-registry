@@ -16,11 +16,16 @@ RUN apt-get update && apt-get install -y \
     memcached
 
 EXPOSE 3000
-WORKDIR ./
-# Copy the Gemfile as well as the Gemfile.lock and install gems.
-# This is a separate step so the dependencies will be cached.
-COPY Gemfile Gemfile.lock  ./
-RUN gem install bundler && bundle install --jobs 20 --retry 5
 
-# Copy the main application, except whatever is listed in .dockerignore.
-COPY . ./
+# This is a host volume.
+WORKDIR /app
+
+COPY Gemfile /tmp
+COPY Gemfile.lock /tmp
+RUN cd /tmp \
+    && gem install bundler \
+    && bundle install \
+    && cd /app
+
+# Everything else has to be done in the entry command because /app will be
+# empty until we launch via docker compose.

@@ -1,15 +1,17 @@
 version: "3.7"
 services:
   medusa-development:
-    depends_on:
+    build:
+      context: .
+      dockerfile: docker/medusa/Dockerfile-development
+    depends_on: # docker-compose will NOT actually wait for these to start, hence the `sleep` in the command
       - postgres
       - rabbitmq
       - memcached
       - sqs-mock
       - minio
-    build:
-      context: .
-      dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    volumes:
+      - .:/app
     command: bash -c 'sleep 30 && curl "http://sunspot:8983/solr/admin/cores?action=CREATE&name=development&instanceDir=development" && bundle exec rails db:prepare && rails local_identity:make_admins && ./local/delayed_job start default 1 && ./local/delayed_job start initial_assessment 1 && bundle exec rails server -b 0.0.0.0'

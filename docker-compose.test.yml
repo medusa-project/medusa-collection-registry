@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+  medusa-test:
+    depends_on:
+      - postgres
+      - rabbitmq
+      - memcached
+      - sqs-mock
+      - minio
+    build:
+      context: .
+      dockerfile: docker/medusa/Dockerfile-test
+    ports:
+      - "3000:3000"
+    command: bash -c 'sleep 30 && curl "http://sunspot:8983/solr/admin/cores?action=CREATE&name=test&instanceDir=test" && bundle exec rails db:prepare && rails local_identity:make_admins && ./local/delayed_job start default 1 && ./local/delayed_job start initial_assessment 1 && bundle exec rails server -b 0.0.0.0'

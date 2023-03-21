@@ -1,5 +1,4 @@
 version: "3.7"
-
 services:
   sunspot:
     hostname: sunspot
@@ -21,6 +20,7 @@ services:
       - minio
     entrypoint: >
       /bin/sh -c "
+      sleep 10;
       /usr/bin/mc alias set minio http://minio:9000 minioadmin minioadmin;
       /usr/bin/mc mb minio/medusa-local-main;
       /usr/bin/mc policy set public minio/medusa-local-main;
