@@ -10,20 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
 -- Name: access_system_collection_joins_touch_access_system(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1232,7 +1218,7 @@ $$;
 
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+SET default_table_access_method = heap;
 
 --
 -- Name: access_system_collection_joins; Type: TABLE; Schema: public; Owner: -
@@ -4427,7 +4413,8 @@ CREATE TABLE public.workflow_globus_transfers (
     task_link character varying,
     request_id character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    state character varying
 );
 
 
@@ -7074,259 +7061,259 @@ CREATE INDEX workflow_item_ingest_requests_pii_index ON public.workflow_item_ing
 -- Name: access_system_collection_joins access_system_collection_joins_touch_access_system_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER access_system_collection_joins_touch_access_system_trigger AFTER INSERT OR DELETE OR UPDATE ON public.access_system_collection_joins FOR EACH ROW EXECUTE PROCEDURE public.access_system_collection_joins_touch_access_system();
+CREATE TRIGGER access_system_collection_joins_touch_access_system_trigger AFTER INSERT OR DELETE OR UPDATE ON public.access_system_collection_joins FOR EACH ROW EXECUTE FUNCTION public.access_system_collection_joins_touch_access_system();
 
 
 --
 -- Name: access_system_collection_joins access_system_collection_joins_touch_collection_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER access_system_collection_joins_touch_collection_trigger AFTER INSERT OR DELETE OR UPDATE ON public.access_system_collection_joins FOR EACH ROW EXECUTE PROCEDURE public.access_system_collection_joins_touch_collection();
+CREATE TRIGGER access_system_collection_joins_touch_collection_trigger AFTER INSERT OR DELETE OR UPDATE ON public.access_system_collection_joins FOR EACH ROW EXECUTE FUNCTION public.access_system_collection_joins_touch_collection();
 
 
 --
 -- Name: assessments assessments_touch_storage_medium_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER assessments_touch_storage_medium_trigger AFTER INSERT OR DELETE OR UPDATE ON public.assessments FOR EACH ROW EXECUTE PROCEDURE public.assessments_touch_storage_medium();
+CREATE TRIGGER assessments_touch_storage_medium_trigger AFTER INSERT OR DELETE OR UPDATE ON public.assessments FOR EACH ROW EXECUTE FUNCTION public.assessments_touch_storage_medium();
 
 
 --
 -- Name: cfs_directories cfs_dir_update_bit_level_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER cfs_dir_update_bit_level_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.cfs_directories FOR EACH ROW EXECUTE PROCEDURE public.cfs_dir_update_bit_level_file_group();
+CREATE TRIGGER cfs_dir_update_bit_level_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.cfs_directories FOR EACH ROW EXECUTE FUNCTION public.cfs_dir_update_bit_level_file_group();
 
 
 --
 -- Name: cfs_directories cfs_dir_update_cfs_dir_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER cfs_dir_update_cfs_dir_trigger AFTER INSERT OR DELETE OR UPDATE ON public.cfs_directories FOR EACH ROW EXECUTE PROCEDURE public.cfs_dir_update_cfs_dir();
+CREATE TRIGGER cfs_dir_update_cfs_dir_trigger AFTER INSERT OR DELETE OR UPDATE ON public.cfs_directories FOR EACH ROW EXECUTE FUNCTION public.cfs_dir_update_cfs_dir();
 
 
 --
 -- Name: cfs_files cfs_file_update_cfs_directory_and_extension_and_content_type_tr; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER cfs_file_update_cfs_directory_and_extension_and_content_type_tr AFTER INSERT OR DELETE OR UPDATE ON public.cfs_files FOR EACH ROW EXECUTE PROCEDURE public.cfs_file_update_cfs_directory_and_extension_and_content_type();
+CREATE TRIGGER cfs_file_update_cfs_directory_and_extension_and_content_type_tr AFTER INSERT OR DELETE OR UPDATE ON public.cfs_files FOR EACH ROW EXECUTE FUNCTION public.cfs_file_update_cfs_directory_and_extension_and_content_type();
 
 
 --
 -- Name: cfs_files cfs_files_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER cfs_files_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON public.cfs_files FOR EACH ROW EXECUTE PROCEDURE public.cfs_files_touch_cfs_directory();
+CREATE TRIGGER cfs_files_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON public.cfs_files FOR EACH ROW EXECUTE FUNCTION public.cfs_files_touch_cfs_directory();
 
 
 --
 -- Name: cfs_files cfs_files_touch_content_type_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER cfs_files_touch_content_type_trigger AFTER INSERT OR DELETE OR UPDATE ON public.cfs_files FOR EACH ROW EXECUTE PROCEDURE public.cfs_files_touch_content_type();
+CREATE TRIGGER cfs_files_touch_content_type_trigger AFTER INSERT OR DELETE OR UPDATE ON public.cfs_files FOR EACH ROW EXECUTE FUNCTION public.cfs_files_touch_content_type();
 
 
 --
 -- Name: cfs_files cfs_files_touch_file_extension_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER cfs_files_touch_file_extension_trigger AFTER INSERT OR DELETE OR UPDATE ON public.cfs_files FOR EACH ROW EXECUTE PROCEDURE public.cfs_files_touch_file_extension();
+CREATE TRIGGER cfs_files_touch_file_extension_trigger AFTER INSERT OR DELETE OR UPDATE ON public.cfs_files FOR EACH ROW EXECUTE FUNCTION public.cfs_files_touch_file_extension();
 
 
 --
 -- Name: collections collections_touch_repository_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER collections_touch_repository_trigger AFTER INSERT OR DELETE OR UPDATE ON public.collections FOR EACH ROW EXECUTE PROCEDURE public.collections_touch_repository();
+CREATE TRIGGER collections_touch_repository_trigger AFTER INSERT OR DELETE OR UPDATE ON public.collections FOR EACH ROW EXECUTE FUNCTION public.collections_touch_repository();
 
 
 --
 -- Name: file_groups file_groups_touch_collection_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER file_groups_touch_collection_trigger AFTER INSERT OR DELETE OR UPDATE ON public.file_groups FOR EACH ROW EXECUTE PROCEDURE public.file_groups_touch_collection();
+CREATE TRIGGER file_groups_touch_collection_trigger AFTER INSERT OR DELETE OR UPDATE ON public.file_groups FOR EACH ROW EXECUTE FUNCTION public.file_groups_touch_collection();
 
 
 --
 -- Name: file_groups file_groups_touch_producer_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER file_groups_touch_producer_trigger AFTER INSERT OR DELETE OR UPDATE ON public.file_groups FOR EACH ROW EXECUTE PROCEDURE public.file_groups_touch_producer();
+CREATE TRIGGER file_groups_touch_producer_trigger AFTER INSERT OR DELETE OR UPDATE ON public.file_groups FOR EACH ROW EXECUTE FUNCTION public.file_groups_touch_producer();
 
 
 --
 -- Name: job_cfs_directory_exports job_cfs_directory_exports_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER job_cfs_directory_exports_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_cfs_directory_exports FOR EACH ROW EXECUTE PROCEDURE public.job_cfs_directory_exports_touch_cfs_directory();
+CREATE TRIGGER job_cfs_directory_exports_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_cfs_directory_exports FOR EACH ROW EXECUTE FUNCTION public.job_cfs_directory_exports_touch_cfs_directory();
 
 
 --
 -- Name: job_cfs_directory_exports job_cfs_directory_exports_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER job_cfs_directory_exports_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_cfs_directory_exports FOR EACH ROW EXECUTE PROCEDURE public.job_cfs_directory_exports_touch_user();
+CREATE TRIGGER job_cfs_directory_exports_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_cfs_directory_exports FOR EACH ROW EXECUTE FUNCTION public.job_cfs_directory_exports_touch_user();
 
 
 --
 -- Name: job_cfs_initial_file_group_assessments job_cfs_initial_file_group_assessments_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER job_cfs_initial_file_group_assessments_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_cfs_initial_file_group_assessments FOR EACH ROW EXECUTE PROCEDURE public.job_cfs_initial_file_group_assessments_touch_file_group();
+CREATE TRIGGER job_cfs_initial_file_group_assessments_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_cfs_initial_file_group_assessments FOR EACH ROW EXECUTE FUNCTION public.job_cfs_initial_file_group_assessments_touch_file_group();
 
 
 --
 -- Name: job_fits_directories job_fits_directories_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER job_fits_directories_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_fits_directories FOR EACH ROW EXECUTE PROCEDURE public.job_fits_directories_touch_cfs_directory();
+CREATE TRIGGER job_fits_directories_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_fits_directories FOR EACH ROW EXECUTE FUNCTION public.job_fits_directories_touch_cfs_directory();
 
 
 --
 -- Name: job_fits_directories job_fits_directories_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER job_fits_directories_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_fits_directories FOR EACH ROW EXECUTE PROCEDURE public.job_fits_directories_touch_file_group();
+CREATE TRIGGER job_fits_directories_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_fits_directories FOR EACH ROW EXECUTE FUNCTION public.job_fits_directories_touch_file_group();
 
 
 --
 -- Name: job_fits_directory_trees job_fits_directory_trees_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER job_fits_directory_trees_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_fits_directory_trees FOR EACH ROW EXECUTE PROCEDURE public.job_fits_directory_trees_touch_cfs_directory();
+CREATE TRIGGER job_fits_directory_trees_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_fits_directory_trees FOR EACH ROW EXECUTE FUNCTION public.job_fits_directory_trees_touch_cfs_directory();
 
 
 --
 -- Name: job_fits_directory_trees job_fits_directory_trees_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER job_fits_directory_trees_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_fits_directory_trees FOR EACH ROW EXECUTE PROCEDURE public.job_fits_directory_trees_touch_file_group();
+CREATE TRIGGER job_fits_directory_trees_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_fits_directory_trees FOR EACH ROW EXECUTE FUNCTION public.job_fits_directory_trees_touch_file_group();
 
 
 --
 -- Name: job_ingest_staging_deletes job_ingest_staging_deletes_touch_external_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER job_ingest_staging_deletes_touch_external_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_ingest_staging_deletes FOR EACH ROW EXECUTE PROCEDURE public.job_ingest_staging_deletes_touch_external_file_group();
+CREATE TRIGGER job_ingest_staging_deletes_touch_external_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_ingest_staging_deletes FOR EACH ROW EXECUTE FUNCTION public.job_ingest_staging_deletes_touch_external_file_group();
 
 
 --
 -- Name: job_ingest_staging_deletes job_ingest_staging_deletes_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER job_ingest_staging_deletes_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_ingest_staging_deletes FOR EACH ROW EXECUTE PROCEDURE public.job_ingest_staging_deletes_touch_user();
+CREATE TRIGGER job_ingest_staging_deletes_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_ingest_staging_deletes FOR EACH ROW EXECUTE FUNCTION public.job_ingest_staging_deletes_touch_user();
 
 
 --
 -- Name: job_virus_scans job_virus_scans_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER job_virus_scans_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_virus_scans FOR EACH ROW EXECUTE PROCEDURE public.job_virus_scans_touch_file_group();
+CREATE TRIGGER job_virus_scans_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.job_virus_scans FOR EACH ROW EXECUTE FUNCTION public.job_virus_scans_touch_file_group();
 
 
 --
 -- Name: projects projects_touch_collection_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER projects_touch_collection_trigger AFTER INSERT OR DELETE OR UPDATE ON public.projects FOR EACH ROW EXECUTE PROCEDURE public.projects_touch_collection();
+CREATE TRIGGER projects_touch_collection_trigger AFTER INSERT OR DELETE OR UPDATE ON public.projects FOR EACH ROW EXECUTE FUNCTION public.projects_touch_collection();
 
 
 --
 -- Name: related_file_group_joins related_file_group_joins_touch_source_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER related_file_group_joins_touch_source_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.related_file_group_joins FOR EACH ROW EXECUTE PROCEDURE public.related_file_group_joins_touch_source_file_group();
+CREATE TRIGGER related_file_group_joins_touch_source_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.related_file_group_joins FOR EACH ROW EXECUTE FUNCTION public.related_file_group_joins_touch_source_file_group();
 
 
 --
 -- Name: related_file_group_joins related_file_group_joins_touch_target_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER related_file_group_joins_touch_target_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.related_file_group_joins FOR EACH ROW EXECUTE PROCEDURE public.related_file_group_joins_touch_target_file_group();
+CREATE TRIGGER related_file_group_joins_touch_target_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.related_file_group_joins FOR EACH ROW EXECUTE FUNCTION public.related_file_group_joins_touch_target_file_group();
 
 
 --
 -- Name: repositories repositories_touch_institution_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER repositories_touch_institution_trigger AFTER INSERT OR DELETE OR UPDATE ON public.repositories FOR EACH ROW EXECUTE PROCEDURE public.repositories_touch_institution();
+CREATE TRIGGER repositories_touch_institution_trigger AFTER INSERT OR DELETE OR UPDATE ON public.repositories FOR EACH ROW EXECUTE FUNCTION public.repositories_touch_institution();
 
 
 --
 -- Name: resource_typeable_resource_type_joins resource_typeable_resource_type_joins_touch_resource_type_trigg; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER resource_typeable_resource_type_joins_touch_resource_type_trigg AFTER INSERT OR DELETE OR UPDATE ON public.resource_typeable_resource_type_joins FOR EACH ROW EXECUTE PROCEDURE public.resource_typeable_resource_type_joins_touch_resource_type();
+CREATE TRIGGER resource_typeable_resource_type_joins_touch_resource_type_trigg AFTER INSERT OR DELETE OR UPDATE ON public.resource_typeable_resource_type_joins FOR EACH ROW EXECUTE FUNCTION public.resource_typeable_resource_type_joins_touch_resource_type();
 
 
 --
 -- Name: virus_scans virus_scans_touch_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER virus_scans_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.virus_scans FOR EACH ROW EXECUTE PROCEDURE public.virus_scans_touch_file_group();
+CREATE TRIGGER virus_scans_touch_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.virus_scans FOR EACH ROW EXECUTE FUNCTION public.virus_scans_touch_file_group();
 
 
 --
 -- Name: workflow_accrual_comments workflow_accrual_comments_touch_workflow_accrual_job_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER workflow_accrual_comments_touch_workflow_accrual_job_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_comments FOR EACH ROW EXECUTE PROCEDURE public.workflow_accrual_comments_touch_workflow_accrual_job();
+CREATE TRIGGER workflow_accrual_comments_touch_workflow_accrual_job_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_comments FOR EACH ROW EXECUTE FUNCTION public.workflow_accrual_comments_touch_workflow_accrual_job();
 
 
 --
 -- Name: workflow_accrual_conflicts workflow_accrual_conflicts_touch_workflow_accrual_job_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER workflow_accrual_conflicts_touch_workflow_accrual_job_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_conflicts FOR EACH ROW EXECUTE PROCEDURE public.workflow_accrual_conflicts_touch_workflow_accrual_job();
+CREATE TRIGGER workflow_accrual_conflicts_touch_workflow_accrual_job_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_conflicts FOR EACH ROW EXECUTE FUNCTION public.workflow_accrual_conflicts_touch_workflow_accrual_job();
 
 
 --
 -- Name: workflow_accrual_directories workflow_accrual_directories_touch_workflow_accrual_job_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER workflow_accrual_directories_touch_workflow_accrual_job_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_directories FOR EACH ROW EXECUTE PROCEDURE public.workflow_accrual_directories_touch_workflow_accrual_job();
+CREATE TRIGGER workflow_accrual_directories_touch_workflow_accrual_job_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_directories FOR EACH ROW EXECUTE FUNCTION public.workflow_accrual_directories_touch_workflow_accrual_job();
 
 
 --
 -- Name: workflow_accrual_files workflow_accrual_files_touch_workflow_accrual_job_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER workflow_accrual_files_touch_workflow_accrual_job_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_files FOR EACH ROW EXECUTE PROCEDURE public.workflow_accrual_files_touch_workflow_accrual_job();
+CREATE TRIGGER workflow_accrual_files_touch_workflow_accrual_job_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_files FOR EACH ROW EXECUTE FUNCTION public.workflow_accrual_files_touch_workflow_accrual_job();
 
 
 --
 -- Name: workflow_accrual_jobs workflow_accrual_jobs_touch_cfs_directory_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER workflow_accrual_jobs_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_jobs FOR EACH ROW EXECUTE PROCEDURE public.workflow_accrual_jobs_touch_cfs_directory();
+CREATE TRIGGER workflow_accrual_jobs_touch_cfs_directory_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_jobs FOR EACH ROW EXECUTE FUNCTION public.workflow_accrual_jobs_touch_cfs_directory();
 
 
 --
 -- Name: workflow_accrual_jobs workflow_accrual_jobs_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER workflow_accrual_jobs_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_jobs FOR EACH ROW EXECUTE PROCEDURE public.workflow_accrual_jobs_touch_user();
+CREATE TRIGGER workflow_accrual_jobs_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_accrual_jobs FOR EACH ROW EXECUTE FUNCTION public.workflow_accrual_jobs_touch_user();
 
 
 --
 -- Name: workflow_ingests workflow_ingests_touch_bit_level_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER workflow_ingests_touch_bit_level_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_ingests FOR EACH ROW EXECUTE PROCEDURE public.workflow_ingests_touch_bit_level_file_group();
+CREATE TRIGGER workflow_ingests_touch_bit_level_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_ingests FOR EACH ROW EXECUTE FUNCTION public.workflow_ingests_touch_bit_level_file_group();
 
 
 --
 -- Name: workflow_ingests workflow_ingests_touch_external_file_group_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER workflow_ingests_touch_external_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_ingests FOR EACH ROW EXECUTE PROCEDURE public.workflow_ingests_touch_external_file_group();
+CREATE TRIGGER workflow_ingests_touch_external_file_group_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_ingests FOR EACH ROW EXECUTE FUNCTION public.workflow_ingests_touch_external_file_group();
 
 
 --
 -- Name: workflow_ingests workflow_ingests_touch_user_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER workflow_ingests_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_ingests FOR EACH ROW EXECUTE PROCEDURE public.workflow_ingests_touch_user();
+CREATE TRIGGER workflow_ingests_touch_user_trigger AFTER INSERT OR DELETE OR UPDATE ON public.workflow_ingests FOR EACH ROW EXECUTE FUNCTION public.workflow_ingests_touch_user();
 
 
 --
@@ -8029,6 +8016,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220601133442'),
 ('20220613135706'),
 ('20220616113913'),
-('20220816141858');
+('20220816141858'),
+('20230320144647');
 
 

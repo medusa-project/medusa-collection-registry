@@ -9,22 +9,15 @@ services:
       - "8983:8983"
   minio:
     image: minio/minio
+    environment:
+      MINIO_ROOT_USER: MinioUser
+      MINIO_ROOT_PASSWORD: OpenSesame
     hostname: minio
     command: server ~/storage/minio --console-address ":9001"
     ports:
       - "9000:9000"
       - "9001:9001"
-  createbuckets:
-    image: minio/mc
-    depends_on:
-      - minio
-    entrypoint: >
-      /bin/sh -c "
-      sleep 10;
-      /usr/bin/mc alias set minio http://minio:9000 minioadmin minioadmin;
-      /usr/bin/mc mb minio/medusa-local-main;
-      /usr/bin/mc policy set public minio/medusa-local-main;
-      exit 0;"
+
   sqs-mock:
     build:
       context: docker/sqs-mock/.

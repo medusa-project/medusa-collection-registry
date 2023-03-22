@@ -187,8 +187,8 @@ storage:
     :type: s3
     :endpoint: "http://minio:9000"
     :region: "us-east-2"
-    :aws_access_key_id: "minioadmin"
-    :aws_secret_access_key: "minioadmin"
+    :aws_access_key_id: "MinioUser"
+    :aws_secret_access_key: "OpenSesame"
     :force_path_style: true
     :bucket: medusa-local-main
   #For some operations if the main bucket is S3, it is useful and much more efficient to have this
