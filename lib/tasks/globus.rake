@@ -27,7 +27,7 @@ namespace :globus do
     Workflow::GlobusTransfer.all.each do |transfer|
       accrual_key = Workflow::AccrualKey.find_by(id: transfer.workflow_accrual_key_id)
       if accrual_key.nil?
-        puts "accrual_key #{accrual_key.id} not found for transfer #{transfer.id}"
+        puts "accrual_key #{transfer.workflow_accrual_key_id} not found for transfer #{transfer.id}"
         transfer.destroy!
       else
         puts "accrual_key #{accrual_key.id} found for transfer #{transfer.id}"
