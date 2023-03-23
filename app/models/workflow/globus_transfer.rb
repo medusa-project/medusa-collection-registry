@@ -8,7 +8,10 @@ class Workflow::GlobusTransfer < ApplicationRecord
 
   def process
     if state.nil?
-      Rails.logger.warn workflow_accrual_key.id
+      accrual_key = Workflow::AccrualKey.find_by(self.workflow_accrual_key_id)
+      Rails.logger.warn "Accrual key not found for #{self.workflow_accrual_key_id}" unless accrual_key
+
+      return false unless accrual_key
 
       submitted = self.submit
       if submitted == true
