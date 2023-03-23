@@ -24,7 +24,7 @@ namespace :globus do
   task remove_orphans: :environment do
     Workflow::GlobusTransfer.all do |transfer|
       accrual_key = Workflow::AccrualKey.find_by(id: transfer.workflow_accrual_key_id)
-      self.destroy unless accrual_key
+      transfer.destroy unless accrual_key
     end
   end
 end
