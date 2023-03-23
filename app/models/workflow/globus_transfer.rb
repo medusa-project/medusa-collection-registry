@@ -13,9 +13,11 @@ class Workflow::GlobusTransfer < ApplicationRecord
         self.state = "SENT"
         self.save
         self.workflow_accrual_key.update_attribute(:copy_requested, true)
+      else
+        Rails.logger.warn("submitted was false for Workflow::GlobusTransfer #{self.id}")
       end
     else
-      self.update_attribute('state', self.status)
+      self.update_attribute(:state, self.status)
     end
   end
 
