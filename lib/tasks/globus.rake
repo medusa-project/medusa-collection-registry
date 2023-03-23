@@ -24,14 +24,14 @@ namespace :globus do
   task remove_orphans: :environment do
     puts "inside remove orphans"
     puts "count: #{Workflow::GlobusTransfer.all.count}"
-    Workflow::GlobusTransfer.all do |transfer|
+    Workflow::GlobusTransfer.all.each do |transfer|
       accrual_key = Workflow::AccrualKey.find_by(id: transfer.workflow_accrual_key_id)
-      if accrual_key
-        puts "accrual_key #{accrual_key.id} found for transfer #{transfer.id}"
-      else
+      if accrual_key.nil?
         puts "accrual_key #{accrual_key.id} not found for transfer #{transfer.id}"
+        transfer.destroy!
+      else
+        puts "accrual_key #{accrual_key.id} found for transfer #{transfer.id}"
       end
-      transfer.destroy if accrual_key.nil?
     end
   end
 end
