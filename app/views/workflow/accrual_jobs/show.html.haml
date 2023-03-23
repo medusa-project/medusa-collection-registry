@@ -43,7 +43,7 @@
     .panel-heading(role="tab" id="diagnosticHeading")
       %h4(class="panel-title")
         %a( role="button" data-toggle="collapse" data-parent="#status" href="#diagnosticPanel" aria-expanded="false" aria-controls="diagnosticPanel" class="accordion-toggle collapsed" )
-          %h4 Developer Reference (click to expand)
+          %h4 Diagnostic Info (click to expand)
       .panel-collapse.collapse(id="diagnosticPanel" role="tabpanel" aria-labelledby="diagnosticHeading" )
         .panel-body
           -accrual_job.diagnostic_info.each do |row|

@@ -274,6 +274,7 @@ class Workflow::AccrualJob < Workflow::Base
       end
 
       be_in_state_and_requeue('await_copy_messages')
+    end
   end
 
   # checks the status of all globus transfers for all accrual keys for this accrual job
@@ -611,6 +612,7 @@ class Workflow::AccrualJob < Workflow::Base
 
   def diagnostic_info
     report_array = Array.new
+    report_array << "*** DIAGNOSTIC TIPS ***"
     case state
     when "start", "check_sync", "email_done", "aborting", "end"
       report_array << "Status should not remain #{status_label} for more than a few minutes."
@@ -645,12 +647,10 @@ class Workflow::AccrualJob < Workflow::Base
     else
       report_array << "Invalid state: #{state}"
     end
-    report_array << "If there are 0 background jobs, "
+    report_array < "*** BACKGROUND JOBS ****"
     report_array << "Number of associated background jobs: #{self.delayed_jobs.count}"
     error_jobs = self.delayed_jobs.reject {|dj| dj.last_error.nil?}
     report_array << "Number of associated background jobs with errors: #{error_jobs.count}"
-    job_status = delayed_job_has_error? ? "BACKGROUND JOB ERROR" : "BACKGROUND JOB OK"
-    report_array << job_status
     report_array
   end
 end
