@@ -5,11 +5,24 @@ require 'json'
 class Workflow::GlobusTransfer < ApplicationRecord
   belongs_to :workflow_accrual_key, :class_name => 'Workflow::AccrualKey', foreign_key: 'workflow_accrual_key_id'
   API_BASE = 'https://transfer.api.globus.org/v0.10'
+
+  def process
+    if state.nil?
+      submitted = self.submit
+      if submitted == true
+        self.state = "SENT"
+        self.save
+        self.workflow_accrual_key.update_attribute(:copy_requested, true)
+      end
+    else
+      self.update_attribute('state', self.status)
+    end
+  end
+
   def submit
     begin
       bearer_token = Workflow::GlobusTransfer.bearer_token
-
-      raise('Missing Globus bearer_token') unless bearer_token
+      return false unless bearer_token
 
       source_activation_path = "#{Workflow::GlobusTransfer::API_BASE}/endpoint/#{source_uuid}/autoactivate"
       destination_activation_path = "#{Workflow::GlobusTransfer::API_BASE}/endpoint/#{destination_uuid}/autoactivate"
@@ -36,18 +49,6 @@ class Workflow::GlobusTransfer < ApplicationRecord
                                         body: submission_json,
                                         headers: { 'Authorization' => "Bearer #{bearer_token}",
                                                    'Content-Type' => 'application/json' })
-
-      if transfer_response.code == 409
-        5.times do
-          sleep(30)
-          transfer_response = HTTParty.post("#{Workflow::GlobusTransfer::API_BASE}/transfer",
-                                            body: submission_json,
-                                            headers: { 'Authorization' => "Bearer #{bearer_token}",
-                                                       'Content-Type' => 'application/json' })
-          next if transfer_response != 409
-
-        end
-      end
 
       unless [202, 200].include?(transfer_response.code)
         Rails.logger.warn "Globus transfer response for #{workflow_accrual_key_id}: #{transfer_response.code}, #{transfer_response.message}"

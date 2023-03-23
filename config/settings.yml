@@ -294,11 +294,11 @@ classes:
       assessment_retry_interval: <%= 4.hours %>
       assessment_attempt_count_max: <%= 3 %>
       assessment_error_reporting_timeout: <%= 1.day %>
-      assessment_requeue_interval: <%= 10.minutes %>
+      assessment_requeue_interval: <%= 30.minutes %>
       copying_batch_size: 100
       copying_parallel_threads: 3
-      copy_server_error_reporting_timeout: <%= 1.day %>
-      copy_server_requeue_interval: <%= 5.minutes %>
+      copy_server_error_reporting_timeout: <%= 2.days %>
+      copy_server_requeue_interval: <%= 30.minutes %>
 #set up delayed job related stuff
 delayed_job:
   #Workflow objects will use the default_queue by default. That can be changed by overriding their 'queue' method.

@@ -263,42 +263,28 @@ class Workflow::AccrualJob < Workflow::Base
         destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
         destination_path = "/#{destination_path}"
 
-        #Rails.logger.warn ("source_key: #{source_key}\ntarget_key: #{target_key}\nsource_path: #{source_path}\ndestination_path: #{destination_path}")
-        begin
-          globus_transfer = Workflow::GlobusTransfer.new(workflow_accrual_key_id: workflow_accrual_key.id,
-                                                         source_uuid: source_endpoint[:uuid],
-                                                         destination_uuid: target_endpoint[:uuid],
-                                                         source_path: source_path,
-                                                         destination_path: destination_path,
-                                                         recursive: false)
-          submitted = globus_transfer.submit
 
-          if submitted == true
-            globus_transfer.save
-            workflow_accrual_key.update_attribute(:copy_requested, true)
-          end
-
-        rescue StandardError => e
-          Rails.logger.warn("Accrual Job #{self.id} | Accrual Key #{workflow_accrual_key.id} | #{e.message}")
-          workflow_accrual_key.update_attribute(:copy_requested, false)
-        end
+        Workflow::GlobusTransfer.create(workflow_accrual_key_id: workflow_accrual_key.id,
+                                                       source_uuid: source_endpoint[:uuid],
+                                                       destination_uuid: target_endpoint[:uuid],
+                                                       source_path: source_path,
+                                                       destination_path: destination_path,
+                                                       recursive: false)
 
       end
-    end
-    if workflow_accrual_keys.copy_not_requested.count.zero?
-      be_in_state_and_requeue('await_copy_messages')
-    else
-      # TODO: maybe requeue?
-      raise("Copy not requested for #{workflow_accrual_keys.copy_not_requested.count} keys. Too many requests?")
-    end
 
+      be_in_state_and_requeue('await_copy_messages')
   end
 
   # checks the status of all globus transfers for all accrual keys for this accrual job
   def perform_await_copy_messages
+
+    if workflow_accrual_keys.where(copy_requested: false).count.positive?
+      put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
+    end
+
     workflow_accrual_keys.where(copy_requested: true).where(error: nil).each do |workflow_accrual_key|
-      status = workflow_accrual_key.workflow_globus_transfer.status
-      case status
+      case workflow_accrual_key.workflow_globus_transfer.state
       when 'SUCCEEDED'
         workflow_accrual_key.destroy!
       when 'ACTIVE'
