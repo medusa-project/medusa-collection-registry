@@ -17,7 +17,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
       if submitted == true
         self.state = "SENT"
         self.save
-        self.workflow_accrual_key.update_attribute(:copy_requested, true)
+        accrual_key.update_attribute(:copy_requested, true)
       else
         Rails.logger.warn("submitted was false for Workflow::GlobusTransfer #{self.id}")
       end
