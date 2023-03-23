@@ -8,8 +8,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
 
   def process
     if state.nil?
-      Rails.logger.warn self.workflow_accrual_key.id
-      return false unless self.workflow_accrual_key
+      Rails.logger.warn workflow_accrual_key.id
 
       submitted = self.submit
       if submitted == true
