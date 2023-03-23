@@ -4,7 +4,10 @@ namespace :globus do
     min_batch_seconds = 10
     max_count = 190
     start_time = Time.now
-    while Time.now < start_time + 58.minutes do
+    end_time = start_time + 58.minutes
+    while (Time.now < end_time) do
+      break unless Workflow::GlobusTransfer.where(state: [nil, 'SENT', 'ACTIVE']).count.positive?
+
       batch_start_seconds = Time.now.sec
       unsent_batch = Workflow::GlobusTransfer.where(state: nil).limit(max_count)
       spare_room = max_count - unsent_batch.count

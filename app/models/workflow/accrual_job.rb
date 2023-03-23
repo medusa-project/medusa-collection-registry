@@ -647,7 +647,7 @@ class Workflow::AccrualJob < Workflow::Base
     else
       report_array << "Invalid state: #{state}"
     end
-    report_array < "*** BACKGROUND JOBS ****"
+    report_array << "*** BACKGROUND JOBS ****"
     report_array << "Number of associated background jobs: #{self.delayed_jobs.count}"
     error_jobs = self.delayed_jobs.reject {|dj| dj.last_error.nil?}
     report_array << "Number of associated background jobs with errors: #{error_jobs.count}"
