@@ -6,23 +6,24 @@ class Workflow::GlobusTransfer < ApplicationRecord
   belongs_to :workflow_accrual_key, :class_name => 'Workflow::AccrualKey', foreign_key: 'workflow_accrual_key_id'
   API_BASE = 'https://transfer.api.globus.org/v0.10'
 
+  def self.remove_orphans
+    Workflow::GlobusTransfer.all.each do |transfer|
+      transfer.destroy! unless self.workflow_accrual_key
+    end
+  end
+
   def process
     if state.nil?
-      accrual_key = Workflow::AccrualKey.find_by(id: self.workflow_accrual_key_id)
-      unless accrual_key
-        msg ="Workflow::AccruaKey #{self.workflow_accrual_key_id} not found for Workflow::GlobusTransfer #{self.id}"
-        Rails.logger.warn msg
-      end
-
-      return false unless accrual_key
+      return false unless self.workflow_accrual_key
 
       submitted = self.submit
-      if submitted == true
+      if submitted
         self.state = "SENT"
         self.save
-        accrual_key.update_attribute(:copy_requested, true)
+        self.workflow_accrual_key.update_attribute(:copy_requested, true)
       else
         Rails.logger.warn("submitted was false for Workflow::GlobusTransfer #{self.id}")
+        return false
       end
     else
       self.update_attribute(:state, self.status)

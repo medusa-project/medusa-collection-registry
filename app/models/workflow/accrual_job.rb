@@ -282,47 +282,47 @@ class Workflow::AccrualJob < Workflow::Base
 
     if workflow_accrual_keys.where(copy_requested: false).count.positive?
       put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
-    end
-
-    workflow_accrual_keys.where(copy_requested: true).where(error: nil).each do |workflow_accrual_key|
-      case workflow_accrual_key.workflow_globus_transfer.state
-      when 'SUCCEEDED'
-        workflow_accrual_key.destroy!
-      when 'ACTIVE'
-        #do nothing
-      when 'INACTIVE', 'FAILED'
-        workflow_accrual_key.copy_requested = false
-        message = "#{status}: https://www.globus.org/app/console/#{workflow_accrual_key.workflow_globus_transfer.task_link}"
-        workflow_accrual_key.error = message
-        workflow_accrual_key.save!
-        #when 'CONFLICT'
-        #workflow_accrual_key.error = "conflict error getting status"
-        #workflow_accrual_key.save!
-        #when 'ERROR'
-        #workflow_accrual_key.copy_requested = false
-        #workflow_accrual_key.error = "error getting status"
-        #workflow_accrual_key.save!
-      else
-        # do nothing
-        #workflow_accrual_key.copy_requested = false
-        #workflow_accrual_key.error = "error getting status"
-        #workflow_accrual_key.save!
-        #raise("Invalid status in perform_await_copy_messages for workflow_accrual_key: #{workflow_accrual_key}")
-      end
-    end
-    error_count = workflow_accrual_keys.has_error.count
-    unless error_count.zero?
-      raise "There are #{error_count} keys with copying errors."
-    end
-    if workflow_accrual_keys.reload.count.zero?
-      cfs_directory.events.create!(key: 'deposit_completed', cascadable: true,
-                                   note: "Accrual from #{staging_path}", actor_email: user.email)
-      be_in_state_and_requeue('assessing')
     else
-      if copy_start_time + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout > Time.now
-        put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
+      workflow_accrual_keys.where(copy_requested: true).where(error: nil).each do |workflow_accrual_key|
+        case workflow_accrual_key.workflow_globus_transfer.state
+        when 'SUCCEEDED'
+          workflow_accrual_key.destroy!
+        when 'ACTIVE'
+          #do nothing
+        when 'INACTIVE', 'FAILED'
+          workflow_accrual_key.copy_requested = false
+          message = "#{status}: https://www.globus.org/app/console/#{workflow_accrual_key.workflow_globus_transfer.task_link}"
+          workflow_accrual_key.error = message
+          workflow_accrual_key.save!
+          #when 'CONFLICT'
+          #workflow_accrual_key.error = "conflict error getting status"
+          #workflow_accrual_key.save!
+          #when 'ERROR'
+          #workflow_accrual_key.copy_requested = false
+          #workflow_accrual_key.error = "error getting status"
+          #workflow_accrual_key.save!
+        else
+          # do nothing
+          #workflow_accrual_key.copy_requested = false
+          #workflow_accrual_key.error = "error getting status"
+          #workflow_accrual_key.save!
+          #raise("Invalid status in perform_await_copy_messages for workflow_accrual_key: #{workflow_accrual_key}")
+        end
+      end
+      error_count = workflow_accrual_keys.has_error.count
+      unless error_count.zero?
+        raise "There are #{error_count} keys with copying errors."
+      end
+      if workflow_accrual_keys.reload.count.zero?
+        cfs_directory.events.create!(key: 'deposit_completed', cascadable: true,
+                                     note: "Accrual from #{staging_path}", actor_email: user.email)
+        be_in_state_and_requeue('assessing')
       else
-        raise "Copy server jobs are still pending (#{workflow_accrual_keys.count} remaining). Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
+        if copy_start_time + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout > Time.now
+          put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
+        else
+          raise "Copy server jobs are still pending (#{workflow_accrual_keys.count} remaining). Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
+        end
       end
     end
   end
