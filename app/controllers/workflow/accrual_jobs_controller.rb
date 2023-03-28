@@ -7,9 +7,7 @@ class Workflow::AccrualJobsController < ApplicationController
 
   def show
   end
-
-  def index
-  end
+  
   def proceed
     @accrual_job.approve_and_proceed
     respond_to do |format|
