@@ -1,9 +1,17 @@
 - accrual_job = @accrual_job
 - @workflow_accrual = @accrual_job
 %h2
-  ="Accrual Job #{accrual_job.id}"
+  ="Accrual Job #{accrual_job.id} | #{accrual_job.status_label}"
 %table.table
-  %tr{id: "accrual_job_#{accrual_job.id}"}
+  %thead
+    %tr
+      %td Ingest ID
+      %td Date submitted
+      %td File Group
+      %td Collection
+      %td Submitted by
+  %tbody
+    %tr{id: "accrual_job_#{accrual_job.id}"}
     %td= accrual_job.id
     %td= accrual_job.created_at.to_date
     %td= accrual_job.file_group.try(:title)
@@ -12,9 +20,6 @@
       - if accrual_job.collection.try(:external_id).present?
         [#{accrual_job.collection.external_id}]
     %td= accrual_job.user.net_id
-    %td= small_icon_default_button('View Report', 'eye', view_report_workflow_accrual_job_path(accrual_job), remote: true) if accrual_job.has_report?
-    %td{id: "accrual_status_#{accrual_job.id}", class: accrual_conflict_indicator_class(accrual_job)}
-      #{accrual_job.status_label}
 %hr
 
 %hr
