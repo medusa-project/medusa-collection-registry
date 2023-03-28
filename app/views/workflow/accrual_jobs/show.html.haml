@@ -1,6 +1,7 @@
 - accrual_job = @accrual_job
 - @workflow_accrual = @accrual_job
-%h2Accrual Job Status Detail
+%h2
+  ="Accrual Job #{accrual_job.id}"
 %table.table
   %tr{id: "accrual_job_#{accrual_job.id}"}
     %td= accrual_job.id
@@ -43,7 +44,7 @@
     .panel-heading(role="tab" id="diagnosticHeading")
       %h4(class="panel-title")
         %a( role="button" data-toggle="collapse" data-parent="#status" href="#diagnosticPanel" aria-expanded="false" aria-controls="diagnosticPanel" class="accordion-toggle collapsed" )
-          %h4 Diagnostic Info (click to expand)
+          %h4 Technical Reference (click to expand)
       .panel-collapse.collapse(id="diagnosticPanel" role="tabpanel" aria-labelledby="diagnosticHeading" )
         .panel-body
           -accrual_job.diagnostic_info.each do |row|

@@ -522,7 +522,7 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def total_accrual_key_count
-    workflow_accrual_keys.count
+    Workflow::AccrualKey.where(workflow_accrual_job_id: self.id).count
   end
 
   def size
