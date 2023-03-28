@@ -24,11 +24,13 @@ namespace :globus do
   end
 
   def process_batch(batch:, manager:)
-    batch.each |transfer|
+
+    batch.each do |transfer|
       unless manager.too_soon?
         transfer.process
-        globus_rate_manager.add_call
+        manager.add_call
       end
+    end
   end
 
 end
