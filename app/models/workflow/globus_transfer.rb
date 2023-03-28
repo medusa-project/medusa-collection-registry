@@ -8,7 +8,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
 
   def self.remove_orphans
     Workflow::GlobusTransfer.all.each do |transfer|
-      transfer.destroy! unless self.workflow_accrual_key
+      transfer.destroy! unless transfer.workflow_accrual_key
     end
   end
 

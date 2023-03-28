@@ -570,16 +570,17 @@ class Workflow::AccrualJob < Workflow::Base
       report_array << "vs. filesystems, but generally requires a fast, reliable connection to the staging and"
       report_array << "medusa storage systems. When copying is finished, the state is changed to starting assessments."
     when "send_copy_messages"
-      report_array << "A Globus transfer request call is made for each individual file."
-      report_array << "After all transfer requests are sent, the state is changed to await copy messages."
+      report_array << "A Globus transfer request records is made for each individual file."
+      report_array << "After all transfer records are sent, the state is changed to await copy messages."
     when  "await_copy_messages"
+      report_array << "Globus transfer requests are sent asynchronously by a background job."
       report_array << "Each Workflow::AccrualKey's Globus transfer request status is checked."
       report_array << "Checking the transfer status first checks if the object has been copied."
       report_array << "If it has been copied, the Workflow::AccrualKey record is destroyed."
       report_array << "If there is a reported error, that error is recorded."
       report_array << "If there is no error, but the object has not yet been copied yet,"
       report_array << "then nothing happens during that check."
-      report_array << "This happens in a loop until all of the transfers succeed or have a reported error."
+      report_array << "Checking status happens in a loop until all of the transfers succeed or have a reported error."
       report_array << " Currently, errors need to be cleared up manually by developer."
       report_array << "After all files are confirmed copied, the state changes to starting assessments."
     when "admin_approval"
@@ -610,6 +611,22 @@ class Workflow::AccrualJob < Workflow::Base
     end
   end
 
+  def globus_transfers
+    Workflow::GlobusTransfer.where(workflow_accrual_key_id: workflow_accrual_keys.pluck(:id))
+  end
+
+  def globus_transfers_unsent
+    globus_transfers.where(state: nil)
+  end
+
+  def globus_transfers_with_error
+    globus_transfers.where(state: 'ERROR')
+  end
+
+  def globus_transfers_active
+    globus_transfers.where(state: 'ACTIVE')
+  end
+
   def diagnostic_info
     report_array = Array.new
     report_array << "*** DIAGNOSTIC TIPS ***"
@@ -632,8 +649,8 @@ class Workflow::AccrualJob < Workflow::Base
       report_array << "Then "
     when "send_copy_messages"
       report_array <<  "This step just creates the Workflow::GlobusTransfer record."
-      report_array << "The call to Globus is made in the Awaiting copy messages stage."
-      report_array << "This stage should not last more than 15 minutes."
+      report_array << "The call to Globus is made asynchronously via background job in the Awaiting copy messages stage."
+      report_array << "This stage should usually not last more than 15 minutes."
     when  "await_copy_messages"
       report_array << "#{self.workflow_accrual_keys.count} objects left to copy"
       "#{self.workflow_accrual_keys.where.not(error: nil).count} objects have errors"

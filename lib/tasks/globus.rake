@@ -2,7 +2,6 @@ namespace :globus do
   desc "process workflow globus transfers"
   task process_transfers: :environment do
     manager = GlobusRateManager.instance()
-    Workflow::GlobusTransfer.remove_orphans
     start_time = Time.now
     end_time = start_time + 58.minutes
     max_count = 190
