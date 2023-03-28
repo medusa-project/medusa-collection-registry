@@ -26,7 +26,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
         return false
       end
     else
-      self.update_attribute(:state, self.status)
+      self.update_attribute(:state, self.status) unless self.state == "SUCCEEDED"
     end
   end
 
