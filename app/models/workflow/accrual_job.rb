@@ -632,9 +632,9 @@ class Workflow::AccrualJob < Workflow::Base
     report_array << "*** DIAGNOSTIC TIPS ***"
     case state
     when "start", "check_sync", "email_done", "aborting", "end"
-      report_array << "Status should not remain #{status_label} for more than a few minutes."
-      report_array << "If job is stuck here, background jobs are not running."
-      report_array << "Rebooting the server is probably necessary and sufficient."
+      report_array << "Shares a queue with the background job that checks for existing files."
+      report_array << "If job is stuck here, background jobs may not not running."
+      report_array << "Rebooting the server may necessary and sufficient."
       report_array << "If this happens shortly after a reboot, check logs for exception reports."
       report_array << "An exception in a Delayed::Job might be making Delayed:Job objects fail."
     when "check"
