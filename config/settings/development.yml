@@ -139,8 +139,13 @@ shibboleth:
 smtp:
   #These are settings as expected for ActionMailer::Base.smtp_settings
   smtp_settings:
-    address: express-smtp.cites.uiuc.edu
-  #used by mailer to construct urls
+    address: hostname.com
+    port: 587
+    enable_starttls_auto: true
+    authentication: :login
+    user_name: username
+    password: password
+    domain: domain.edu
   web_host: "localhost:3000"
 #These are config for roots or lists of roots as required by the medusa_storage gem.
 #You may want to use YAML facilities to extract commonalities for S3 roots if they exist
@@ -148,7 +153,7 @@ storage:
   main_root:
     :name: main_storage
     :type: filesystem
-    :path: /home/hading/repos/medusa-collection-registry/tmp/cfs-root-dev
+    :path: /path/to/storage/root
     # rclone mount use deprecated
   #For some operations if the main bucket is S3, it is useful and much more efficient to have this
   #bucket also mounted via 'rclone mount'. If that is done, configure a filesystem root under
