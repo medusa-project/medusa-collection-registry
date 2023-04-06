@@ -3,27 +3,18 @@ require 'singleton'
 class GlobusToken < ApplicationRecord
   include Singleton
 
-  def bearer_token
-
-    if self.nil?
-      update_bearer_token
-    end
-
-    if self.expired?
-      update_bearer_token
-    end
-
-    return nil unless self && self.access_token
-
-    self.access_token
-
-  end
-
   def expired?
+    return true if self.created_at.nil?
+
     Time.now.utc > self.created_at + self.expires_in - 5.seconds
   end
 
-  def update_bearer_token
+  def bearer_token
+
+    unless access_token.nil?
+      return access_token unless expired?
+    end
+
     client_id = Settings.globus.client_id
     client_secret = Settings.globus.client_secret
     auth_root = 'https://auth.globus.org'
