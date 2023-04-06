@@ -110,6 +110,8 @@ class Workflow::GlobusTransfer < ApplicationRecord
 
     return 'no task_id present' unless task_id.present?
 
+    return state if updated_at < Time.now.utc - 5.minutes
+
     begin
       bearer_token = Workflow::GlobusTransfer.bearer_token
       raise('Missing Globus bearer_token') unless bearer_token
