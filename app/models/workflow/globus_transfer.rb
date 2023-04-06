@@ -86,7 +86,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
     return 'no task_id present' unless task_id.present?
 
     begin
-      bearer_token = Workflow::GlobusTransfer.bearer_token
+      bearer_token = GlobusToken.instance.bearer_token
 
       raise('Missing Globus bearer_token') unless bearer_token
 
@@ -118,7 +118,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
     return state if updated_at > 5.minutes.ago
 
     begin
-      bearer_token = Workflow::GlobusTransfer.bearer_token
+      bearer_token = GlobusToken.instance.bearer_token
       raise('Missing Globus bearer_token') unless bearer_token
 
       response = HTTParty.get("#{Workflow::GlobusTransfer::API_BASE}/task/#{task_id}",
