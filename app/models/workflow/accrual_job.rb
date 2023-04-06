@@ -314,8 +314,8 @@ class Workflow::AccrualJob < Workflow::Base
                                      note: "Accrual from #{staging_path}", actor_email: user.email)
         be_in_state_and_requeue('assessing')
       else
-        if copy_start_time + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout < Time.now
-          put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
+        if Time.now.utc < Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout + copy_start_time
+          put_in_queue(run_at: Time.now.utc + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
         else
           raise "Copy server jobs are still pending (#{workflow_accrual_keys.count} remaining). Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
         end
@@ -431,7 +431,7 @@ class Workflow::AccrualJob < Workflow::Base
       be_in_state('admin_approval')
       notify_admin_of_request
     when 'admin_approval'
-      update_attribute(:copy_start_time, Time.now)
+      update_attribute(:copy_start_time, Time.now.utc)
       if use_globus_transfer
         be_in_state_and_requeue('send_copy_messages')
       else
