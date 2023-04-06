@@ -279,10 +279,7 @@ class Workflow::AccrualJob < Workflow::Base
 
   # checks the status of all globus transfers for all accrual keys for this accrual job
   def perform_await_copy_messages
-
-    if workflow_accrual_keys.where(copy_requested: false).count.positive?
-      put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
-    else
+    if workflow_accrual_keys.where(copy_requested: false).count.zero?
       workflow_accrual_keys.where(copy_requested: true).where(error: nil).each do |workflow_accrual_key|
         case workflow_accrual_key.workflow_globus_transfer.state
         when 'SUCCEEDED'
@@ -378,8 +375,6 @@ class Workflow::AccrualJob < Workflow::Base
       end
 
       if assessment_start_time + Settings.classes.workflow.accrual_job.assessment_retry_interval > Time.now
-        put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
-      else
         destroy_complete_assessments
         retry_stale_assessments
       end
