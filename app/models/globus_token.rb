@@ -37,6 +37,7 @@ class GlobusToken < ApplicationRecord
     self.expires_in = token_response['expires_in']
     self.body = token_response.to_s
     self.save
+    access_token
   rescue StandardError => e
     Rails.logger.warn("#{e.class} getting bearer_token for Globus: #{e.message}")
     return nil
