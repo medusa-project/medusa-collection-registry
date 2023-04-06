@@ -272,20 +272,12 @@ class Workflow::AccrualJob < Workflow::Base
                                                        recursive: false)
 
       end
-
-      be_in_state_and_requeue('await_copy_messages')
     end
+    be_in_state_and_requeue('await_copy_messages')
   end
 
   # checks the status of all globus transfers for all accrual keys for this accrual job
   def perform_await_copy_messages
-
-    if Time.now < 30.minutes + copy_start_time
-      sleep(60*30)
-    else
-      sleep(300)
-    end
-
     if workflow_accrual_keys.where(copy_requested: false).count.zero?
       workflow_accrual_keys.where(copy_requested: true).where(error: nil).each do |workflow_accrual_key|
         case workflow_accrual_key.workflow_globus_transfer.state
@@ -322,8 +314,8 @@ class Workflow::AccrualJob < Workflow::Base
                                      note: "Accrual from #{staging_path}", actor_email: user.email)
         be_in_state_and_requeue('assessing')
       else
-        if copy_start_time + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout > Time.now
-          be_in_state_and_requeue('await_assessment')
+        if copy_start_time + Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout < Time.now
+          put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
         else
           raise "Copy server jobs are still pending (#{workflow_accrual_keys.count} remaining). Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
         end
@@ -362,6 +354,7 @@ class Workflow::AccrualJob < Workflow::Base
     cfs_directory.make_and_assess_tree
     update_attribute(:assessment_start_time, Time.current)
     update_attribute(:assessment_attempt_count, 1)
+    # sleep to give make_and_assess_tree process time to create records for has_pending_assessments? to detect
     sleep(30)
     be_in_state_and_requeue('await_assessment')
   end
@@ -370,14 +363,17 @@ class Workflow::AccrualJob < Workflow::Base
     update_attribute(:assessment_start_time, Time.current)
     update_attribute(:assessment_attempt_count, assessment_attempt_count + 1)
     cfs_directory.retry_stale_assessments
-    sleep(1200)
-    be_in_state_and_requeue('await_assessment')
+    put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
   end
 
   def perform_await_assessment
     destroy_complete_assessments
     if has_pending_assessments?
-      retry_stale_assessments
+      if assessment_attempt_count > Settings.classes.workflow.accrual_job.assessment_attempt_count_max
+        raise "Assessments are still pending. Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
+      else
+        retry_stale_assessments
+      end
     else
       Workflow::AccrualMailer.assessment_done(self).deliver_now
       be_in_state_and_requeue('email_done')
