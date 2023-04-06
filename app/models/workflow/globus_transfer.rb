@@ -61,6 +61,11 @@ class Workflow::GlobusTransfer < ApplicationRecord
                                         headers: { 'Authorization' => "Bearer #{bearer_token}",
                                                    'Content-Type' => 'application/json' })
 
+      if transfer_response.code == 409
+        Rails.logger.warn "Globus conflict in submit for #{workflow_accrual_key_id}"
+        Rails.logger.warn transfer_response.pause_message
+      end
+
       unless [202, 200].include?(transfer_response.code)
         Rails.logger.warn "Globus transfer response for #{workflow_accrual_key_id}: #{transfer_response.code}, #{transfer_response.message}"
         return false

@@ -657,6 +657,7 @@ class Workflow::AccrualJob < Workflow::Base
       report_array << "Invalid state: #{state}"
     end
     report_array << "*** BACKGROUND JOBS ****"
+    report_array << "May be 0 while waiting for copying or assessing, because of scheduled periodic retries. "
     report_array << "Number of associated background jobs: #{self.delayed_jobs.count}"
     error_jobs = self.delayed_jobs.reject {|dj| dj.last_error.nil?}
     report_array << "Number of associated background jobs with errors: #{error_jobs.count}"
