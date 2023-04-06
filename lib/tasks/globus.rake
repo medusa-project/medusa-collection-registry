@@ -23,6 +23,23 @@ namespace :globus do
     Workflow::GlobusTransfer.remove_orphans
   end
 
+  desc "display access token response"
+  task display_token_response: :environment do
+    client_id = Settings.globus.client_id
+    client_secret = Settings.globus.client_secret
+    auth_root = 'https://auth.globus.org'
+    token_path = '/v2/oauth2/token'
+    body = { 'grant_type' => 'client_credentials',
+             'client_id' => client_id,
+             'client_secret' => client_secret,
+             'scope' => 'urn:globus:auth:scope:transfer.api.globus.org:all' }
+
+    token_response = HTTParty.post("#{auth_root}#{token_path}", body: body)
+
+    Rails.logger.warn token_response.to_yaml
+    puts token_response.to_yaml
+  end
+
   def process_batch(batch:, manager:)
 
     batch.each do |transfer|
@@ -32,5 +49,6 @@ namespace :globus do
       end
     end
   end
+
 
 end
