@@ -1,3 +1,5 @@
+require 'json'
+
 namespace :globus do
   desc "process workflow globus transfers"
   task process_transfers: :environment do
@@ -38,6 +40,21 @@ namespace :globus do
 
     Rails.logger.warn token_response.to_yaml
     puts token_response.to_yaml
+  end
+
+  desc "get task list"
+  task get_task_list: :environment do
+    bearer_token = GlobusToken.instance.bearer_token
+    query = {
+      "num_results"     => "None"
+    }
+    response = HTTParty.get("#{Workflow::GlobusTransfer::API_BASE}/task_list",
+                            query: query,
+                            headers: { 'Authorization' => "Bearer #{bearer_token}",
+                                       'Content-Type' => 'application/json' })
+
+    Rails.logger.warn response.to_yaml
+    puts response.to_yaml
   end
 
   def process_batch(batch:, manager:)

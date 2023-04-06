@@ -63,7 +63,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
 
       if transfer_response.code == 409
         Rails.logger.warn "Globus conflict in submit for #{workflow_accrual_key_id}"
-        Rails.logger.warn transfer_response.pause_message
+        Rails.logger.warn transfer_response.message
       end
 
       unless [202, 200].include?(transfer_response.code)
