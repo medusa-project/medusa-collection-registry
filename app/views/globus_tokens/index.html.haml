@@ -1,0 +1,25 @@
+%h1 Listing globus_tokens
+
+%table
+  %thead
+    %tr
+      %th Access token
+      %th Expires in
+      %th Body
+      %th
+      %th
+      %th
+
+  %tbody
+    - @globus_tokens.each do |globus_token|
+      %tr
+        %td= globus_token.access_token
+        %td= globus_token.expires_in
+        %td= globus_token.body
+        %td= link_to 'Show', globus_token
+        %td= link_to 'Edit', edit_globus_token_path(globus_token)
+        %td= link_to 'Destroy', globus_token, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Globus token', new_globus_token_path

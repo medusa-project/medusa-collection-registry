@@ -1,3 +1,5 @@
+# used by docker-run.sh
+
 version: "3.7"
 services:
   sunspot:

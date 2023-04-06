@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :globus_tokens
 
   resources :static_pages, only: [:show, :edit, :update], param: :key do
     member do

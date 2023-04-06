@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Access token:
+  = @globus_token.access_token
+%p
+  %b Expires in:
+  = @globus_token.expires_in
+%p
+  %b Body:
+  = @globus_token.body
+
+= link_to 'Edit', edit_globus_token_path(@globus_token)
+\|
+= link_to 'Back', globus_tokens_path

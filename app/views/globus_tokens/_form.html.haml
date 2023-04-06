@@ -1,0 +1,10 @@
+= simple_form_for(@globus_token) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :access_token
+    = f.input :expires_in
+    = f.input :body
+
+  .form-actions
+    = f.button :submit

@@ -2493,6 +2493,39 @@ ALTER SEQUENCE public.fixity_check_results_id_seq OWNED BY public.fixity_check_r
 
 
 --
+-- Name: globus_tokens; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.globus_tokens (
+    id bigint NOT NULL,
+    access_token character varying,
+    expires_in integer,
+    body character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: globus_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.globus_tokens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: globus_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.globus_tokens_id_seq OWNED BY public.globus_tokens.id;
+
+
+--
 -- Name: identities; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4775,6 +4808,13 @@ ALTER TABLE ONLY public.fixity_check_results ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: globus_tokens id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.globus_tokens ALTER COLUMN id SET DEFAULT nextval('public.globus_tokens_id_seq'::regclass);
+
+
+--
 -- Name: identities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5402,6 +5442,14 @@ ALTER TABLE ONLY public.fits_data
 
 ALTER TABLE ONLY public.fixity_check_results
     ADD CONSTRAINT fixity_check_results_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: globus_tokens globus_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.globus_tokens
+    ADD CONSTRAINT globus_tokens_pkey PRIMARY KEY (id);
 
 
 --
@@ -8017,6 +8065,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220613135706'),
 ('20220616113913'),
 ('20220816141858'),
-('20230320144647');
+('20230320144647'),
+('20230406142700');
 
 

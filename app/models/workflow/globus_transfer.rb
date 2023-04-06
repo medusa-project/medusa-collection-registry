@@ -32,7 +32,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
 
   def submit
     begin
-      bearer_token = Workflow::GlobusTransfer.bearer_token
+      bearer_token = GlobusToken.instance.bearer_token
       return false unless bearer_token
 
       source_activation_path = "#{Workflow::GlobusTransfer::API_BASE}/endpoint/#{source_uuid}/autoactivate"
@@ -158,25 +158,4 @@ class Workflow::GlobusTransfer < ApplicationRecord
     end
   end
 
-  def self.bearer_token
-    client_id = Settings.globus.client_id
-    client_secret = Settings.globus.client_secret
-    auth_root = 'https://auth.globus.org'
-    token_path = '/v2/oauth2/token'
-    body = { 'grant_type' => 'client_credentials',
-             'client_id' => client_id,
-             'client_secret' => client_secret,
-             'scope' => 'urn:globus:auth:scope:transfer.api.globus.org:all' }
-
-    token_response = HTTParty.post("#{auth_root}#{token_path}", body: body)
-
-    unless token_response.code == 200
-      raise("Globus token_response: #{token_response.code}, #{token_response.message}")
-    end
-
-    token_response['access_token']
-  rescue StandardError => e
-    Rails.logger.warn("#{e.class} getting bearer_token for Globus: #{e.message}")
-    nil
-  end
 end
