@@ -261,7 +261,7 @@ class Workflow::AccrualJob < Workflow::Base
         target_key = File.join(workflow_accrual_key.key)
         source_path = File.join(staging_path, source_key)
         destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
-        destination_path = "/#{destination_path}"
+        destination_path = "/#{destination_path}" unless destination_path[0] == "/"
 
 
         Workflow::GlobusTransfer.create(workflow_accrual_key_id: workflow_accrual_key.id,

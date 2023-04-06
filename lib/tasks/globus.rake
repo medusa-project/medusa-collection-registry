@@ -42,11 +42,11 @@ namespace :globus do
     puts token_response.to_yaml
   end
 
-  desc "get task list"
-  task get_task_list: :environment do
+  desc "get active task list"
+  task get_active_task_list: :environment do
     bearer_token = GlobusToken.instance.bearer_token
     query = {
-      "num_results"     => "None"
+      "filter"     => "status:ACTIVE",
     }
     response = HTTParty.get("#{Workflow::GlobusTransfer::API_BASE}/task_list",
                             query: query,
@@ -57,8 +57,44 @@ namespace :globus do
     puts response.to_yaml
   end
 
-  def process_batch(batch:, manager:)
+  desc "get task list"
+  task get_task_list: :environment do
+    bearer_token = GlobusToken.instance.bearer_token
+    response = HTTParty.get("#{Workflow::GlobusTransfer::API_BASE}/task_list",
+                            headers: { 'Authorization' => "Bearer #{bearer_token}",
+                                       'Content-Type' => 'application/json' })
 
+    Rails.logger.warn response.to_yaml
+    puts response.to_yaml
+  end
+
+  desc "cancel demo tasks"
+  task cancel_demo_tasks: :environment do
+    bearer_token = GlobusToken.instance.bearer_token
+    query = {
+      "filter"     => "status:ACTIVE",
+      "num_results"     => "None",
+    }
+    response = HTTParty.get("#{Workflow::GlobusTransfer::API_BASE}/task_list",
+                            query: query,
+                            headers: { 'Authorization' => "Bearer #{bearer_token}",
+                                       'Content-Type' => 'application/json' })
+
+    response.parsed_response["DATA"].each do |task|
+      task_id = CGI.escapeHTML(task["task_id"])
+      if task["destination_endpoint_display_name"] == "medusa-demo-main"
+        puts task_id
+        cancel_response = HTTParty.post("#{Workflow::GlobusTransfer::API_BASE}/task/#{task_id}/cancel",
+                                        headers: { 'Authorization' => "Bearer #{bearer_token}",
+                                                   'Content-Type' => 'application/json' })
+        puts "#{cancel_response.code} | #{cancel_response.message}"
+      end
+    end
+
+
+  end
+
+  def process_batch(batch:, manager:)
     batch.each do |transfer|
       unless manager.too_soon?
         transfer.process
@@ -66,6 +102,7 @@ namespace :globus do
       end
     end
   end
+
 
 
 end

@@ -90,7 +90,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
 
       raise('Missing Globus bearer_token') unless bearer_token
 
-      cancel_response = HTTParty.post("#{Workflow::GlobusTransfer::API_BASE}task/#{task_id}/cancel",
+      cancel_response = HTTParty.post("#{Workflow::GlobusTransfer::API_BASE}/task/#{task_id}/cancel",
                                       headers: { 'Authorization' => "Bearer #{bearer_token}",
                                                  'Content-Type' => 'application/json' })
       unless cancel_response.code == 200 || cancel_response.code == 404
@@ -115,7 +115,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
 
     return 'no task_id present' unless task_id.present?
 
-    return state if updated_at < Time.now.utc - 5.minutes
+    return state if updated_at > 5.minutes.ago
 
     begin
       bearer_token = Workflow::GlobusTransfer.bearer_token
