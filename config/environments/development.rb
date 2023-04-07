@@ -12,6 +12,7 @@ MedusaCollectionRegistry::Application.configure do
   config.action_mailer.smtp_settings = {
     address: settings["smtp"]["smtp_settings"]["address"],
     port: settings["smtp"]["smtp_settings"]["port"],
+    authentication: :login,
     enable_starttls_auto: settings["smtp"]["smtp_settings"]["enable_starttls_auto"],
     user_name:settings["smtp"]["smtp_settings"]["user_name"],
     password: settings["smtp"]["smtp_settings"]["password"],
