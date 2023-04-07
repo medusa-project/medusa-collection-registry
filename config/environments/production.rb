@@ -10,12 +10,12 @@ MedusaCollectionRegistry::Application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.sparkpostmail.com",
-    port: 587,
-    enable_starttls_auto: true,
-    user_name: "SMTP_Injection",
+    address: settings["smtp"]["smtp_settings"]["address"],
+    port: settings["smtp"]["smtp_settings"]["port"],
+    enable_starttls_auto: settings["smtp"]["smtp_settings"]["enable_starttls_auto"],
+    user_name:settings["smtp"]["smtp_settings"]["user_name"],
     password: settings["smtp"]["smtp_settings"]["password"],
-    domain: 'library.illinois.edu'
+    domain: settings["smtp"]["smtp_settings"]["domain"]
   }
   # Code is not reloaded between requests
   config.cache_classes = true
