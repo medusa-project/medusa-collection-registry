@@ -361,13 +361,29 @@ class Workflow::AccrualJob < Workflow::Base
 
   def retry_stale_assessments
     begin
-    update_attribute(:assessment_start_time, Time.current)
-    update_attribute(:assessment_attempt_count, assessment_attempt_count + 1)
-    cfs_directory.retry_stale_assessments if Assessor::Task.current_tasks.count.zero?
+      response = Assessor::Response.fetch_message
+      while response != nil
+        response = Assessor::Response.fetch_message
+      end
+      fetched_responses = Assessor::Response.where(status: "fetched").limit(100)
+      while fetched_responses.count.positive?
+        fetched_responses.each(&:handle)
+        fetched_responses = Assessor::Response.where(status: "fetched").limit(100)
+      end
+      destroy_complete_assessments
+      if has_pending_assessments?
+        update_attribute(:assessment_start_time, Time.current)
+        update_attribute(:assessment_attempt_count, assessment_attempt_count + 1)
+        cfs_directory.retry_stale_assessments if Assessor::Task.current_tasks.count.zero?
+        put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
+      else
+        Workflow::AccrualMailer.assessment_done(self).deliver_now
+        be_in_state_and_requeue('email_done')
+      end
     rescue StandardError => ex
       Rails.logger.warn ex.message
     end
-    put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
+
   end
 
   def perform_await_assessment
