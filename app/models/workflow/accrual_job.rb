@@ -360,9 +360,13 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def retry_stale_assessments
+    begin
     update_attribute(:assessment_start_time, Time.current)
     update_attribute(:assessment_attempt_count, assessment_attempt_count + 1)
     cfs_directory.retry_stale_assessments if Assessor::Task.current_tasks.count.zero?
+    rescue StandardError => ex
+      Rails.logger.warn ex.message
+    end
     put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
   end
 
