@@ -140,7 +140,10 @@ class Workflow::GlobusTransfer < ApplicationRecord
   end
 
   def object_copied?
-    StorageManager.instance.main_root.exist?(workflow_accrual_key.key)
+    check_key = destination_path
+    # remove leading slash
+    check_key = check_key[1..-1] if check_key[0] == "/"
+    StorageManager.instance.main_root.exist?(check_key)
   end
 
   def event_list
