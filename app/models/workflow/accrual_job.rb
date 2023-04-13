@@ -314,11 +314,7 @@ class Workflow::AccrualJob < Workflow::Base
                                      note: "Accrual from #{staging_path}", actor_email: user.email)
         be_in_state_and_requeue('assessing')
       else
-        if Time.now.utc < Settings.classes.workflow.accrual_job.copy_server_error_reporting_timeout + copy_start_time
-          put_in_queue(run_at: Time.now.utc + Settings.classes.workflow.accrual_job.copy_server_requeue_interval)
-        else
-          raise "Copy server jobs are still pending (#{workflow_accrual_keys.count} remaining). Accrual Job: #{id}. Cfs Directory: #{cfs_directory.id}"
-        end
+        put_in_queue(run_at: 30.minutes.from_now)
       end
     end
   end
@@ -360,6 +356,9 @@ class Workflow::AccrualJob < Workflow::Base
   end
 
   def retry_stale_assessments
+
+    Assessor::Response.where(status: "processing").where("updated_at >= created_at + interval '1' hour").each(&:handle)
+
     begin
       response = Assessor::Response.fetch_message
       while response != nil
@@ -372,10 +371,10 @@ class Workflow::AccrualJob < Workflow::Base
       end
       destroy_complete_assessments
       if has_pending_assessments?
-        update_attribute(:assessment_start_time, Time.current)
+        update_attribute(:assessment_start_time, Time.now.utc)
         update_attribute(:assessment_attempt_count, assessment_attempt_count + 1)
         cfs_directory.retry_stale_assessments if Assessor::Task.current_tasks.count.zero?
-        put_in_queue(run_at: Time.now + Settings.classes.workflow.accrual_job.assessment_requeue_interval)
+        put_in_queue(run_at: 30.minutes.from_now)
       else
         Workflow::AccrualMailer.assessment_done(self).deliver_now
         be_in_state_and_requeue('email_done')
