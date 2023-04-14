@@ -278,45 +278,44 @@ class Workflow::AccrualJob < Workflow::Base
 
   # checks the status of all globus transfers for all accrual keys for this accrual job
   def perform_await_copy_messages
-    if workflow_accrual_keys.where(copy_requested: false).count.zero?
-      workflow_accrual_keys.where(copy_requested: true).where(error: nil).each do |workflow_accrual_key|
-        case workflow_accrual_key.workflow_globus_transfer.state
-        when 'SUCCEEDED'
-          workflow_accrual_key.destroy!
-        when 'ACTIVE'
-          #do nothing
-        when 'INACTIVE', 'FAILED'
-          workflow_accrual_key.copy_requested = false
-          message = "#{status}: https://www.globus.org/app/console/#{workflow_accrual_key.workflow_globus_transfer.task_link}"
-          workflow_accrual_key.error = message
-          workflow_accrual_key.save!
-          #when 'CONFLICT'
-          #workflow_accrual_key.error = "conflict error getting status"
-          #workflow_accrual_key.save!
-          #when 'ERROR'
-          #workflow_accrual_key.copy_requested = false
-          #workflow_accrual_key.error = "error getting status"
-          #workflow_accrual_key.save!
-        else
-          # do nothing
-          #workflow_accrual_key.copy_requested = false
-          #workflow_accrual_key.error = "error getting status"
-          #workflow_accrual_key.save!
-          #raise("Invalid status in perform_await_copy_messages for workflow_accrual_key: #{workflow_accrual_key}")
-        end
-      end
-      error_count = workflow_accrual_keys.has_error.count
-      unless error_count.zero?
-        raise "There are #{error_count} keys with copying errors."
-      end
-      if workflow_accrual_keys.reload.count.zero?
-        cfs_directory.events.create!(key: 'deposit_completed', cascadable: true,
-                                     note: "Accrual from #{staging_path}", actor_email: user.email)
-        be_in_state_and_requeue('assessing')
+    workflow_accrual_keys.where(copy_requested: true).where(error: nil).each do |workflow_accrual_key|
+      case workflow_accrual_key.workflow_globus_transfer.state
+      when 'SUCCEEDED'
+        workflow_accrual_key.destroy!
+      when 'ACTIVE'
+        #do nothing
+      when 'INACTIVE', 'FAILED'
+        workflow_accrual_key.copy_requested = false
+        message = "#{status}: https://www.globus.org/app/console/#{workflow_accrual_key.workflow_globus_transfer.task_link}"
+        workflow_accrual_key.error = message
+        workflow_accrual_key.save!
+        #when 'CONFLICT'
+        #workflow_accrual_key.error = "conflict error getting status"
+        #workflow_accrual_key.save!
+        #when 'ERROR'
+        #workflow_accrual_key.copy_requested = false
+        #workflow_accrual_key.error = "error getting status"
+        #workflow_accrual_key.save!
       else
-        put_in_queue(run_at: 30.minutes.from_now)
+        # do nothing
+        #workflow_accrual_key.copy_requested = false
+        #workflow_accrual_key.error = "error getting status"
+        #workflow_accrual_key.save!
+        #raise("Invalid status in perform_await_copy_messages for workflow_accrual_key: #{workflow_accrual_key}")
       end
     end
+    error_count = workflow_accrual_keys.has_error.count
+    unless error_count.zero?
+      raise "There are #{error_count} keys with copying errors."
+    end
+    if workflow_accrual_keys.reload.count.zero?
+      cfs_directory.events.create!(key: 'deposit_completed', cascadable: true,
+                                   note: "Accrual from #{staging_path}", actor_email: user.email)
+      be_in_state_and_requeue('assessing')
+    else
+      put_in_queue(run_at: 30.minutes.from_now)
+    end
+
   end
 
   # At this time this is meant for calling in a console if we get some failures that need to be retried. This might be automated
@@ -347,6 +346,12 @@ class Workflow::AccrualJob < Workflow::Base
   # Maybe just assess any workflow_accrual_files keys directly and do the workflow_accrual_directory keys by making the
   # directories if they don't exist and then assessing them.
   def perform_assessing
+
+    raise("Directory assessment jobs pending, duplicate attempt to assess.") if has_pending_assessments?
+
+    assessor_task_elements_exist = cfs_directory.assessor_task_elements.count.positive?
+    raise("Assessor::TaskElements already created, duplicate attempt assess.") if assessor_task_elements_exist
+
     cfs_directory.make_and_assess_tree
     update_attribute(:assessment_start_time, Time.current)
     update_attribute(:assessment_attempt_count, 1)
@@ -410,7 +415,6 @@ class Workflow::AccrualJob < Workflow::Base
 
     false
   end
-
   # Are there any initial directory assessments belonging to a subdirectory of this accrual jobs cfs directory?
   def has_pending_assessments?
     cfs_directory.each_file_in_tree do |file|
@@ -420,19 +424,44 @@ class Workflow::AccrualJob < Workflow::Base
 
       return true if file.fits_serialized == false
 
-      return true if file.has_unsent_assessor_task?
-
       return true if file.has_incomplete_assessor_task?
     end
 
+    has_pending_assessment_jobs?
+  end
+  def files_missing_checksum
+    missing = []
+    cfs_directory.each_file_in_tree do |file|
+      next if file.nil?
+      missing << file if file.has_incomplete_assessor_task?
+    end
+    missing
+  end
+
+  def files_missing_fits
+    missing = []
+    cfs_directory.each_file_in_tree do |file|
+      next if file.nil?
+      missing << file if file.fits_serialized == false
+    end
+    missing
+  end
+  def incomplete_assessor_tasks
+    destroy_complete_assessments
+    cfs_directory.assessor_task_elements
+  end
+  def has_pending_assessment_jobs?
     transaction do
       subdirectory_ids = cfs_directory.recursive_subdirectory_ids.to_set
       possible_assessment_job_ids = Job::CfsInitialDirectoryAssessment.where(file_group_id: cfs_directory.file_group.id).pluck(:cfs_directory_id).to_set
       return subdirectory_ids.intersect?(possible_assessment_job_ids)
     end
-    
   end
-
+  def pending_assessment_jobs
+      subdirectory_ids = cfs_directory.recursive_subdirectory_ids.to_set
+      possible_assessment_job_ids = Job::CfsInitialDirectoryAssessment.where(file_group_id: cfs_directory.file_group.id).pluck(:cfs_directory_id).to_set
+      subdirectory_ids.intersect(possible_assessment_job_ids)
+  end
   def perform_email_done
     Workflow::AccrualMailer.done(self).deliver_now
     archive('completed')
