@@ -701,6 +701,7 @@ class Workflow::AccrualJob < Workflow::Base
       report_array << "All subdirectory records are created before any file records are created."
       report_array << "(subdirectories: #{self.cfs_directory.recursive_subdirectory_ids.count} records created)\n"
       report_array << "(files: #{self.cfs_directory.recursive_cfs_file_ids.count} records created)"
+      report_array << "Assessments are checked every 30 minutes up to 100 times. Attempts so far: #{assessment_attempt_count}"
     else
       report_array << "Invalid state: #{state}"
     end
