@@ -5,21 +5,35 @@ require 'singleton'
 class GlobusRateManager
   include Singleton
   attr_accessor :call_timestamps
+  attr_accessor :error_timestamps
 
   DURATION = 10.seconds
   MAX_CALLS_PER_DURATION = 190
 
+  ERROR_TIMEOUT = 5.minutes
+
   def initialize
     self.call_timestamps = Array.new()
+    self.error_timestamps = Array.new()
   end
 
   def add_call
-    self.call_timestamps << Time.current
+    self.call_timestamps << Time.now.utc
+  end
+
+  def add_error
+    self.call_timestamps << Time.now.utc
   end
 
   def remove_old_calls
     self.call_timestamps.each_with_index do |call_timestamp, i|
-      self.call_timestamps.delete_at(i) if call_timestamp < (Time.current - DURATION)
+      self.call_timestamps.delete_at(i) if call_timestamp < (Time.now.utc - DURATION)
+    end
+  end
+
+  def remove_old_errors
+    self.call_timestamps.each_with_index do |call_timestamp, i|
+      self.call_timestamps.delete_at(i) if call_timestamp < (Time.now.utc - ERROR_TIMEOUT)
     end
   end
 
@@ -29,7 +43,8 @@ class GlobusRateManager
   end
 
   def too_soon?
-    num_calls_in_duration >= MAX_CALLS_PER_DURATION
+    remove_old_errors
+    num_calls_in_duration >= MAX_CALLS_PER_DURATION || self.error_timestamps.length.positive?
   end
 
 end

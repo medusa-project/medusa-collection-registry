@@ -3,14 +3,15 @@ require 'json'
 namespace :globus do
   desc "process workflow globus transfers"
   task process_transfers: :environment do
-    manager = GlobusRateManager.instance()
-    start_time = Time.now
+    start_time = Time.now.utc
     end_time = start_time + 58.minutes
+    manager = GlobusRateManager.instance
     max_count = 190
-    while (Time.now < end_time) do
+    Workflow::GlobusTransfer.remove_orphans
+    while Time.now.utc < end_time do
       if Workflow::GlobusTransfer.where(state: nil).count.positive?
         batch = Workflow::GlobusTransfer.where(state: nil).limit(max_count)
-        process_batch(batch: batch, manager: manager)
+        sleep 300 unless process_batch(batch: batch, manager: manager)
       elsif Workflow::GlobusTransfer.where(state: ['SENT', 'ACTIVE']).count.positive?
         batch = Workflow::GlobusTransfer.where(state: ['SENT', 'ACTIVE']).limit(max_count)
         process_batch(batch: batch, manager: manager)
@@ -96,9 +97,11 @@ namespace :globus do
 
   def process_batch(batch:, manager:)
     batch.each do |transfer|
-      unless manager.too_soon?
-        transfer.process
+      if manager.too_soon?
+        sleep(30)
+      else
         manager.add_call
+        return false if transfer.process == false
       end
     end
   end
