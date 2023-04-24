@@ -347,7 +347,7 @@ class Workflow::AccrualJob < Workflow::Base
   # directories if they don't exist and then assessing them.
   def perform_assessing
 
-    raise("Directory assessment jobs pending, duplicate attempt to assess.") if has_pending_assessments?
+    raise("Directory assessment jobs pending, duplicate attempt to assess.") if has_pending_assessment_jobs?
 
     assessor_task_elements_exist = cfs_directory.assessor_task_elements.count.positive?
     raise("Assessor::TaskElements already created, duplicate attempt assess.") if assessor_task_elements_exist
