@@ -433,7 +433,7 @@ class Workflow::AccrualJob < Workflow::Base
     missing = []
     cfs_directory.each_file_in_tree do |file|
       next if file.nil?
-      missing << file if file.has_incomplete_assessor_task?
+      missing << file if file.md5_sum.nil?
     end
     missing
   end
@@ -706,7 +706,6 @@ class Workflow::AccrualJob < Workflow::Base
       report_array << "Invalid state: #{state}"
     end
     report_array << "*** BACKGROUND JOBS ****"
-    report_array << "May be 0 while waiting for copying or assessing, because of scheduled periodic retries. "
     report_array << "Number of associated background jobs: #{self.delayed_jobs.count}"
     error_jobs = self.delayed_jobs.reject {|dj| dj.last_error.nil?}
     report_array << "Number of associated background jobs with errors: #{error_jobs.count}"
