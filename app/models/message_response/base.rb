@@ -48,7 +48,7 @@ class MessageResponse::Base < Object
   end
 
   #redundant except for testing
-  def self.handle_responses()
+  def self.handle_responses
 
     sqs = QueueManager.instance.sqs_client
 
@@ -59,9 +59,9 @@ class MessageResponse::Base < Object
       raw_payload = response.data.messages[0].body
       break unless raw_payload
 
-      sqs.delete_message({queue_url: queue_url, receipt_handle: response.data.messages[0].receipt_handle})
+      sqs.delete_message({queue_url: incoming_queue, receipt_handle: response.data.messages[0].receipt_handle})
       handle_response(raw_payload: raw_payload)
-      response = sqs.receive_message(queue_url: queue_url, max_number_of_messages: 1)
+      response = sqs.receive_message(queue_url: incoming_queue, max_number_of_messages: 1)
     end
   end
 
