@@ -61,8 +61,8 @@ class MessageResponse::Base < Object
       raw_payload = response.data.messages[0].body
       break unless raw_payload
 
+      MessageResponse::Fixity.handle_response(raw_payload: raw_payload)
       sqs.delete_message({queue_url: self.incoming_queue, receipt_handle: response.data.messages[0].receipt_handle})
-      MedusaResponse::Fixity.handle_response(raw_payload: raw_payload)
       response = sqs.receive_message(queue_url: self.incoming_queue, max_number_of_messages: 1)
     end
   end
