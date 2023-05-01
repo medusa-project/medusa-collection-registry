@@ -51,18 +51,18 @@ class MessageResponse::Base < Object
   def self.handle_responses
 
     sqs = QueueManager.instance.sqs_client
-    Rails.logger.warn "handle response #{self.incoming_queue}"
-    Rails.logger.warn "incoming queue: #{self.incoming_queue}"
+    Rails.logger.warn "handle response incoming queue #{self.incoming_queue}"
 
     response = sqs.receive_message(queue_url: self.incoming_queue, max_number_of_messages: 1)
     return nil if response.data.messages.count.zero?
 
     while response.data.messages.count.positive? do
+      Rails.logger.warn response.data.messages.count
       raw_payload = response.data.messages[0].body
       break unless raw_payload
 
       sqs.delete_message({queue_url: self.incoming_queue, receipt_handle: response.data.messages[0].receipt_handle})
-      handle_response(raw_payload: raw_payload)
+      MedusaResponse::Fixity.handle_response(raw_payload: raw_payload)
       response = sqs.receive_message(queue_url: self.incoming_queue, max_number_of_messages: 1)
     end
   end
