@@ -1,31 +1,16 @@
 require 'active_support/concern'
 
-module CfsFileAmqp
+module CfsFileMessage
   extend ActiveSupport::Concern
 
   included do
-    delegate :incoming_queue, :outgoing_queue, to: :class
+    delegate :incoming_queue, to: :class
   end
 
   module ClassMethods
     def incoming_queue
-      Settings.medusa.fixity_server.incoming_queue
+      Settings.message_queues.fixity_to_medusa_url
     end
-
-    def outgoing_queue
-      Settings.medusa.fixity_server.outgoing_queue
-    end
-
-  end
-
-  def send_amqp_fixity_message
-    AmqpHelper::Connector[:medusa].send_message(self.outgoing_queue, create_amqp_fixity_message)
-  end
-
-  def create_amqp_fixity_message
-    {action: :file_fixity,
-     parameters: {path: self.relative_path, algorithms: [:md5]},
-     pass_through: {cfs_file_id: self.id, cfs_file_class: self.class.to_s}}
   end
 
   def on_fixity_success(response)

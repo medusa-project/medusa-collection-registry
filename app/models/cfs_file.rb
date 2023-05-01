@@ -10,7 +10,7 @@ class CfsFile < ApplicationRecord
   include CascadedRedFlaggable
   include Uuidable
   include Breadcrumb
-  include CfsFileAmqp
+  include CfsFileMessage
 
   belongs_to :cfs_directory
   belongs_to :content_type

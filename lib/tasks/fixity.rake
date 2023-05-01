@@ -10,6 +10,11 @@ namespace :fixity do
     runner.run
   end
 
+  desc "Fetch and handle fixity responses"
+  task handle_fixity_responses: :environment do
+    MessageResponse::Fixity.handle_responses
+  end
+
   desc "Email about any bad fixity reports"
   task report_problems: :environment do
     if CfsFile.not_found_fixity.count > 0 or CfsFile.bad_fixity.count > 0

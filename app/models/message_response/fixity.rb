@@ -1,4 +1,4 @@
-class AmqpResponse::Fixity < AmqpResponse::Base
+class MessageResponse::Fixity < MessageResponse::Base
 
   def pass_through_id_key
     'cfs_file_id'
@@ -10,10 +10,6 @@ class AmqpResponse::Fixity < AmqpResponse::Base
 
   def self.incoming_queue
     ::CfsFile.incoming_queue
-  end
-
-  def self.listener_name
-    'fixity'
   end
 
   def success_method
