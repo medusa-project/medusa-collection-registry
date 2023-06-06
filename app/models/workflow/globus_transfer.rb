@@ -12,6 +12,18 @@ class Workflow::GlobusTransfer < ApplicationRecord
     end
   end
 
+  def self.process_completed_transfers
+    num_sent = Workflow::GlobusTransfer.where(state: 'SENT').count
+    num_checked = 0
+    while num_checked < num_sent
+      batch = Workflow::GlobusTransfer.where(state: 'SENT').limit(1000)
+      batch.each do |transfer|
+        transfer.update_attribute(:state, 'SUCCEEDED') if transfer.object_copied?
+        num_checked = num_checked + 1
+      end
+    end
+  end
+
   def process
     if state.nil?
       return false unless self.workflow_accrual_key

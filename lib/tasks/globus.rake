@@ -8,6 +8,7 @@ namespace :globus do
     manager = GlobusRateManager.instance
     max_count = 190
     Workflow::GlobusTransfer.remove_orphans
+    Workflow::GlobusTransfer.process_completed_transfers
     while Time.now.utc < end_time do
       if Workflow::GlobusTransfer.where(state: nil).count.positive?
         batch = Workflow::GlobusTransfer.where(state: nil).limit(max_count)
@@ -105,6 +106,7 @@ namespace :globus do
       end
     end
   end
+
 
 
 

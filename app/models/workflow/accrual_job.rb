@@ -385,7 +385,10 @@ class Workflow::AccrualJob < Workflow::Base
         be_in_state_and_requeue('email_done')
       end
     rescue StandardError => ex
+      Rails.logger.warn "Error retrying assessment for Workflow::AccrualJob #{self.id}: #{ex.class}"
       Rails.logger.warn ex.message
+      update_attribute(:assessment_attempt_count, assessment_attempt_count + 1)
+      put_in_queue(run_at: 30.minutes.from_now)
     end
 
   end
