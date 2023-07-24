@@ -14,18 +14,13 @@ module CfsFileMessage
   end
 
   def on_fixity_success(response)
-    if response.found?
-      if response.md5.present?
-        incoming_md5 = response.md5
-        if incoming_md5 == self.md5_sum
-          self.update_fixity_status_ok
-        else
-          self.update_fixity_status_bad_with_event
-        end
-      end
-    else
-      self.update_fixity_status_not_found_with_event
-    end
+    return self.update_fixity_status_not_found_with_event unless response.found?
+
+    return self.update_fixity_status_bad_with_event unless response.md5.present?
+
+    return self.update_fixity_status_bad_with_event(md5sum: response.md5) unless response.md5 == self.md5_sum
+
+    self.update_fixity_status_ok
   end
 
   def on_fixity_failure(response)

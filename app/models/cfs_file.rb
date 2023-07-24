@@ -244,8 +244,9 @@ class CfsFile < ApplicationRecord
     self.fixity_check_time = Time.now
   end
 
-  def update_fixity_status_with_event(md5sum:, actor_email: nil)
+  def update_fixity_status_with_event(md5sum: nil, actor_email: nil)
     update_fixity_status_not_found_with_event(actor_email: actor_email) and return unless exists_on_storage?
+
     if self.md5_sum.present?
       if self.md5_sum == md5sum
         update_fixity_status_ok
@@ -259,20 +260,21 @@ class CfsFile < ApplicationRecord
 
   def update_fixity_status_ok
     transaction do
-      fixity_check_results.create!(status: :ok)
+      fixity_check_results.create(status: :ok)
       set_fixity_status('ok')
-      save!
+      self.save
     end
   end
 
-  def update_fixity_status_bad_with_event(md5sum:, actor_email: nil)
+  def update_fixity_status_bad_with_event(md5sum: nil, actor_email: nil)
+    md5sum = "missing" if md5sum.nil?
     actor_email ||= MedusaBaseMailer.admin_address
     transaction do
       fixity_check_results.create!(status: :bad)
       create_fixity_event(cascadable: true, note: 'FAILED', actor_email: actor_email)
-      red_flags.create!(message: "Md5 Sum changed. Recorded: #{md5_sum} Current: #{md5sum}. Cfs File Id: #{self.id}")
+      red_flags.create(message: "Md5 Sum changed. Recorded: #{md5_sum} Current: #{md5sum}. Cfs File Id: #{self.id}")
       set_fixity_status('bad')
-      save!
+      self.save
     end
   end
 
