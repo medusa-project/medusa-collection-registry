@@ -16,6 +16,9 @@ class Assessor::Task
   end
 
   def initiate
+    command = element_group.map(&:command_json)
+    raise("Unexpectedly empty command array") if command.empty?
+
     client = ECS_CLIENT
     task = {
       cluster: CLUSTER,
@@ -37,7 +40,7 @@ class Assessor::Task
                       "-r",
                       "./lib/assessor.rb",
                       "-e",
-                      "Assessor.assess #{element_group.map(&:command_json)}"]
+                      "Assessor.assess #{command}"]
           }
         ]
       },
@@ -78,9 +81,12 @@ class Assessor::Task
 
     batch_size.times do |i|
       break unless Assessor::TaskElement.where(sent_at: nil).count.positive?
-      task = Assessor::Task.new(element_group_ids: Assessor::Task.next_group_ids)
+      next_group_ids = Assessor::Task.next_group_ids
+      raise StandardError.new("Unexpectedly empty next_group_ids") if next_group_ids.empty?
+
+      task = Assessor::Task.new(element_group_ids: next_group_ids)
       task.initiate
-      sleep 0.1
+      sleep 0.5 # to avoid throttling
     end
   end
 
