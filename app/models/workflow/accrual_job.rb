@@ -162,6 +162,14 @@ class Workflow::AccrualJob < Workflow::Base
     # elsif unsafe_path_strings.count.positive?
     #   Workflow::AccrualMailer.unsafe_characters(self, unsafe_path_strings).deliver_now
     #   be_in_state_and_requeue('end')
+    elsif Settings.globus.copy_mode=="bulk"
+      accrual_directory_keys=[]
+      workflow_accrual_directories.each do |directory|
+        accrual_directory_keys+=prefix.blank? ? directory.name : File.join(prefix, directory.name)
+      end
+      create_workflow_accrual_keys(accrual_directory_keys)
+      be_in_state('initial_approval')
+      Workflow::AccrualMailer.initial_approval(self).deliver_now
     else
       create_workflow_accrual_keys(ingest_keys)
       be_in_state('initial_approval')
@@ -262,18 +270,22 @@ class Workflow::AccrualJob < Workflow::Base
         source_path = File.join(staging_path, source_key)
         destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
         destination_path = "/#{destination_path}" unless destination_path[0] == "/"
-
+        is_bulk = is_globus_bulk?
 
         Workflow::GlobusTransfer.create(workflow_accrual_key_id: workflow_accrual_key.id,
                                                        source_uuid: source_endpoint[:uuid],
                                                        destination_uuid: target_endpoint[:uuid],
                                                        source_path: source_path,
                                                        destination_path: destination_path,
-                                                       recursive: false)
+                                                       recursive: is_bulk)
 
       end
     end
     be_in_state_and_requeue('await_copy_messages')
+  end
+
+  def is_globus_bulk?
+    use_globus_transfer and Settings.globus.copy_mode=="bulk"
   end
 
   # checks the status of all globus transfers for all accrual keys for this accrual job
