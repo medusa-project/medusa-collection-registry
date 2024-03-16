@@ -165,7 +165,7 @@ class Workflow::AccrualJob < Workflow::Base
     elsif Settings.globus.copy_mode=="bulk"
       accrual_directory_keys=[]
       workflow_accrual_directories.each do |directory|
-        accrual_directory_keys+=prefix.blank? ? directory.name : File.join(prefix, directory.name)
+        accrual_directory_keys<<prefix.blank? ? directory.name : File.join(prefix, directory.name)
       end
       create_workflow_accrual_keys(accrual_directory_keys)
       be_in_state('initial_approval')
@@ -188,6 +188,7 @@ class Workflow::AccrualJob < Workflow::Base
     workflow_accrual_keys.clear
     keys.each do |key|
       unless excluded_file?(File.basename(key))
+        Rails.logger.warn("accrual_job 191: creating Accrual key for #{key}")
         workflow_accrual_keys.create(key: key)
       end
     end
