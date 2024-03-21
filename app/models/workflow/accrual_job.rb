@@ -163,10 +163,18 @@ class Workflow::AccrualJob < Workflow::Base
     #   Workflow::AccrualMailer.unsafe_characters(self, unsafe_path_strings).deliver_now
     #   be_in_state_and_requeue('end')
     elsif Settings.globus.copy_mode=="bulk"
+      Rails.logger.warn("In elsif block cause globus copy mode is bulk")
       accrual_directory_keys=[]
+      Rails.logger.warn("Workflow Accrual Directories: #{workflow_accrual_directories.inspect} #####")
+      Rails.logger.warn("accrual_directory_keys: #{accrual_directory_keys.inspect} ###########")
+      Rails.logger.warn("prefix: #{prefix.inspect}")
+      Rails.logger.warn("directory name: #{workflow_accrual_directories[0].name}")
       workflow_accrual_directories.each do |directory|
-        accrual_directory_keys<<prefix.blank? ? directory.name : File.join(prefix, directory.name)
+        accrual_directory_key = prefix.blank? ? directory.name : File.join(prefix, directory.name)
+        accrual_directory_keys << accrual_directory_key
+        Rails.logger.warn("Workflow Accrual Directories: #{accrual_directory_keys.inspect} #####")
       end
+      Rails.logger.warn("finished key building loop")
       create_workflow_accrual_keys(accrual_directory_keys)
       be_in_state('initial_approval')
       Workflow::AccrualMailer.initial_approval(self).deliver_now
@@ -292,7 +300,7 @@ class Workflow::AccrualJob < Workflow::Base
   # checks the status of all globus transfers for all accrual keys for this accrual job
   def perform_await_copy_messages
     workflow_accrual_keys.where(copy_requested: true).where(error: nil).each do |workflow_accrual_key|
-      case workflow_accrual_key.workflow_globus_transfer.state
+      case workflow_accrual_key.f.state
       when 'SUCCEEDED'
         workflow_accrual_key.destroy!
       when 'ACTIVE'
