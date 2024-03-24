@@ -300,7 +300,7 @@ class Workflow::AccrualJob < Workflow::Base
   # checks the status of all globus transfers for all accrual keys for this accrual job
   def perform_await_copy_messages
     workflow_accrual_keys.where(copy_requested: true).where(error: nil).each do |workflow_accrual_key|
-      case workflow_accrual_key.f.state
+      case workflow_accrual_key.state
       when 'SUCCEEDED'
         workflow_accrual_key.destroy!
       when 'ACTIVE'
