@@ -134,7 +134,7 @@ class Workflow::AccrualJob < Workflow::Base
       Rails.logger.warn("directory.size: #{directory.size.inspect} ###########")
       directory.count=root.subtree_keys(directory_key).count
       Rails.logger.warn("directory.count: #{directory.count.inspect} ###########")
-      Rais.logger.info("directory object inspect: #{directory.inspect}")
+      Rails.logger.info("directory object inspect: #{directory.inspect}")
 #       Remove the following comment once bulk accrual feature is confimred working
 #       keys.each do |key|
 #         full_key = prefix.blank? ? key : File.join(prefix, key)
