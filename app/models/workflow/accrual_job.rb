@@ -171,11 +171,8 @@ class Workflow::AccrualJob < Workflow::Base
     #   be_in_state_and_requeue('end')
     else
       Rails.logger.warn("Workflow Accrual Directories: #{workflow_accrual_directories.inspect} #####")
-
-
-      Rails.logger.warn("Workflow Accrual Directories: #{accrual_directory_keys.inspect} #####")
-      Rails.logger.warn("finished key building loop")
       create_workflow_accrual_keys(ingest_keys)
+      Rails.logger.warn("finished key building loop")
       be_in_state('initial_approval')
       Workflow::AccrualMailer.initial_approval(self).deliver_now
     end
