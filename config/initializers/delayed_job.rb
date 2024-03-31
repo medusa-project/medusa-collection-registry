@@ -6,7 +6,7 @@ Delayed::Worker.delay_jobs = true
 #Delayed::Worker.delay_jobs = !Rails.env.test?
 #Delay only in production
 #Delayed::Worker.delay_jobs = (Rails.env.production? || Rails.env.demo?)
-
+Delayed::Worker.logger =  Logger.new(File.join(Rails.root, 'log', 'demo.log'))
 #We set this in order to have some room on either side - recall that lower numbers take higher priority, with
 #0 being maximum priority (and the default unless we set it as in the following line)
 Delayed::Worker.default_priority = 50
