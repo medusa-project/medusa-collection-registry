@@ -189,7 +189,7 @@ class Workflow::AccrualJob < Workflow::Base
     workflow_accrual_keys.clear
     keys.each do |key|
       unless excluded_file?(File.basename(key))
-        Rails.logger.warn("accrual_job 191: creating Accrual key for #{key}")
+        Rails.logger.info("creating Accrual key for #{key}")
         workflow_accrual_keys.create(key: key)
       end
     end
@@ -272,14 +272,14 @@ class Workflow::AccrualJob < Workflow::Base
         source_path = File.join(staging_path, source_key)
         destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
         destination_path = "/#{destination_path}" unless destination_path[0] == "/"
-        is_bulk = true
+        is_recursive = File.directory?(source_path)
 
         Workflow::GlobusTransfer.create(workflow_accrual_key_id: workflow_accrual_key.id,
                                                        source_uuid: source_endpoint[:uuid],
                                                        destination_uuid: target_endpoint[:uuid],
                                                        source_path: source_path,
                                                        destination_path: destination_path,
-                                                       recursive: is_bulk)
+                                                       recursive: is_recursive)
 
       end
     end
