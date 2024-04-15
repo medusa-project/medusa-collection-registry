@@ -195,7 +195,7 @@ class Workflow::AccrualJob < Workflow::Base
       end
     end
     Rails.logger.info("excludable keys #{excludable_keys.inspect}")
-    raise "directory #{directory} contains excludable files. #{excludable_keys}" unless excludable_keys.empty
+    raise "directory #{directory} contains excludable files. #{excludable_keys}" unless excludable_keys.empty?
   end
   def create_workflow_accrual_keys(keys)
     workflow_accrual_keys.clear
