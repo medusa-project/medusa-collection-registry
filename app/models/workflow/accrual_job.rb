@@ -189,10 +189,8 @@ class Workflow::AccrualJob < Workflow::Base
     root, prefix = staging_root_and_prefix
     directory_key = prefix.blank? ? directory.name : File.join(prefix, directory.name)
     Rails.logger.info("in excluded files check method")
-    excludable_keys = root.subtree_keys(directory_key).collect do |key|
-      if excluded_file?(File.basename(key)) || excluded_directory?(File.basename(key))
-        key
-      end
+    excludable_keys = root.subtree_keys(directory_key).select do |key|
+      excluded_file?(File.basename(key)) || excluded_directory?(File.basename(key))
     end
     Rails.logger.info("excludable keys #{excludable_keys.inspect}")
     raise "directory #{directory} contains excludable files. #{excludable_keys}" unless excludable_keys.empty?
