@@ -124,6 +124,7 @@ class Workflow::AccrualJob < Workflow::Base
     Rails.logger.warn("#{Time.current} END adding workflow_accrual_files to #{ingest_keys.inspect}")
     Rails.logger.warn("#{Time.current} START adding files within workflow_accrual_directories to ingest_keys.")
     workflow_accrual_directories.each do |directory|
+      excluded_files_in_directory? directory
       # get the keys in this directory relative to the accrual prefix
       directory_key = prefix.blank? ? directory.name : File.join(prefix, directory.name)
 #       Remove the following comment once bulk accrual feature is confimred working
@@ -184,7 +185,18 @@ class Workflow::AccrualJob < Workflow::Base
     # getting here means directory does not exist, which is expected for new accruals
     []
   end
-
+  def excluded_files_in_directory?(directory)
+    root, prefix = staging_root_and_prefix
+    directory_key = prefix.blank? ? directory.name : File.join(prefix, directory.name)
+    Rails.logger.info("in excluded files check method")
+    excludable_keys = root.subtree_keys(directory_key).collect do |key|
+      if excluded_file?(File.basename(key)) || excluded_directory?(File.basename(key))
+        key
+      end
+    end
+    Rails.logger.info("excludable keys #{excludable_keys.inpect}")
+    raise "directory #{directory} contains excludable files. #{excludable_keys}" unless excludable_keys.empty
+  end
   def create_workflow_accrual_keys(keys)
     workflow_accrual_keys.clear
     keys.each do |key|
