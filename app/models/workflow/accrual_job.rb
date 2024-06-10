@@ -8,7 +8,7 @@ require 'set'
 class Workflow::AccrualJob < Workflow::Base
   include ExcludedFiles
 
-  attr_accessor :comment
+  attr_accessor :comment, :excluded_file_conflicts
 
   belongs_to :cfs_directory
   belongs_to :user
@@ -170,6 +170,9 @@ class Workflow::AccrualJob < Workflow::Base
     # elsif unsafe_path_strings.count.positive?
     #   Workflow::AccrualMailer.unsafe_characters(self, unsafe_path_strings).deliver_now
     #   be_in_state_and_requeue('end')
+    elsif !excluded_file_conflicts.empty?
+      Workflow::AccrualMailer.excluded_files_present(self).deliver_now
+      be_in_state_and_requeue('end')
     else
       Rails.logger.warn("Workflow Accrual Directories: #{workflow_accrual_directories.inspect} #####")
       create_workflow_accrual_keys(ingest_keys)
@@ -192,8 +195,9 @@ class Workflow::AccrualJob < Workflow::Base
     excludable_keys = root.subtree_keys(directory_key).select do |key|
       excluded_file?(File.basename(key)) || excluded_directory?(File.basename(key))
     end
+    excluded_file_conflicts=excludable_keys
     Rails.logger.info("excludable keys #{excludable_keys.inspect}")
-    raise "directory #{directory} contains excludable files. #{excludable_keys}" unless excludable_keys.empty?
+    Rails.logger.info("directory #{directory} contains excludable files. #{excludable_keys}")
   end
   def create_workflow_accrual_keys(keys)
     workflow_accrual_keys.clear
