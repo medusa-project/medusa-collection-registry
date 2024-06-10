@@ -1,0 +1,20 @@
+%p
+  The automated accrual of the staging path #{@workflow_accrual.staging_path} to
+  the cfs directory #{@workflow_accrual.cfs_directory.relative_path} has been cancelled.
+  Overwriting was not permitted. However, there were files selected that would overwrite
+  existing files.
+
+%p
+  If you wish to overwrite files, please check the appropriate box when submitting the accrual job.
+  The report below may help you identify the files causing the problems.
+
+- if file_group = @workflow_accrual.cfs_directory.file_group
+  %p
+    This belongs to the file group #{file_group.title}, collection #{file_group.collection.title}
+    - if file_group.collection.external_id.present?
+      [#{file_group.collection.external_id}]
+    and repository #{file_group.repository.title}.
+
+= render partial: 'accrual_summary'
+
+= render partial: 'conflicts'
