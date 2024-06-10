@@ -24,7 +24,6 @@
 
 - if !@workflow_accrual.excluded_file_conflicts.nil?
   %p
-    %p
     The following paths have filenames that have been dissallowed by the system:
   %ul
     - @workflow_accrual.excluded_file_conflicts.each do |conflict_path|
