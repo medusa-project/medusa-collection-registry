@@ -170,7 +170,7 @@ class Workflow::AccrualJob < Workflow::Base
     # elsif unsafe_path_strings.count.positive?
     #   Workflow::AccrualMailer.unsafe_characters(self, unsafe_path_strings).deliver_now
     #   be_in_state_and_requeue('end')
-    elsif !excluded_file_conflicts.empty?
+    elsif !excluded_file_conflicts.nil?
       Workflow::AccrualMailer.excluded_files_present(self).deliver_now
       be_in_state_and_requeue('end')
     else
