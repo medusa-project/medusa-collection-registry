@@ -1,12 +1,9 @@
 %p
   The automated accrual of the staging path #{@workflow_accrual.staging_path} to
   the cfs directory #{@workflow_accrual.cfs_directory.relative_path} has been cancelled.
-  Overwriting was not permitted. However, there were files selected that would overwrite
-  existing files.
+  Files were detected in the accrual directory that are not not allowed in the collection registry.
 
-%p
-  If you wish to overwrite files, please check the appropriate box when submitting the accrual job.
-  The report below may help you identify the files causing the problems.
+
 
 - if file_group = @workflow_accrual.cfs_directory.file_group
   %p
