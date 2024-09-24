@@ -3,6 +3,7 @@ class StaticPagesController < ApplicationController
   before_action :find_static_page
 
   def show
+    require_medusa_user if @static_page.key == 'feedback'
     @form_partial_name = "form_#{@static_page.key}"
     @render_form = template_exists?(@form_partial_name, _prefixes, true)
   end
