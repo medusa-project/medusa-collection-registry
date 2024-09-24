@@ -1,6 +1,7 @@
 class StaticPagesController < ApplicationController
 
   before_action :find_static_page
+  before_action :require_medusa_user, only: [:feedback]
 
   def show
     @form_partial_name = "form_#{@static_page.key}"
