@@ -1,6 +1,7 @@
 class StaticPagesController < ApplicationController
 
   before_action :find_static_page
+  before_action :require_medusa_user, only: [:feedback]
 
   def show
     require_medusa_user if @static_page.key == 'feedback'
