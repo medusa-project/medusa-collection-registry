@@ -253,7 +253,10 @@ class CfsDirectory < ApplicationRecord
 
   def retry_stale_assessments
     best_by = 3.hours.ago
-    assessor_task_elements.each {|element| element.reset unless (element.complete? || element.sent_at > best_by)}
+    assessor_task_elements.each do |element|
+      element_not_stale = element.sent_at.nil? || (!element.sent_at.nil? && element.sent_at > best_by)
+      element.reset unless (element.complete? || element_not_stale)
+    end
   end
 
   def destroy_complete_assessments

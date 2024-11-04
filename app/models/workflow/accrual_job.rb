@@ -8,7 +8,7 @@ require 'set'
 class Workflow::AccrualJob < Workflow::Base
   include ExcludedFiles
 
-  attr_accessor :comment
+  attr_accessor :comment, :excluded_file_conflicts
 
   belongs_to :cfs_directory
   belongs_to :user
@@ -121,31 +121,39 @@ class Workflow::AccrualJob < Workflow::Base
       empty_files.puts(key) if file.size.zero?
       # unsafe_path_strings << key unless ok_chars(key, pattern)
     end
-    # Rails.logger.warn("#{Time.current} END adding workflow_accrual_files to ingest_keys")
-    # Rails.logger.warn("#{Time.current} START adding files within workflow_accrual_directories to ingest_keys.")
+    Rails.logger.warn("#{Time.current} END adding workflow_accrual_files to #{ingest_keys.inspect}")
+    Rails.logger.warn("#{Time.current} START adding files within workflow_accrual_directories to ingest_keys.")
     workflow_accrual_directories.each do |directory|
+      excluded_files_in_directory? directory
       # get the keys in this directory relative to the accrual prefix
       directory_key = prefix.blank? ? directory.name : File.join(prefix, directory.name)
-      keys = root.unprefixed_subtree_keys(directory_key).collect do |unprefixed_key|
-        File.join(directory.name, unprefixed_key)
-      end
-      size = 0
-      keys.each do |key|
-        full_key = prefix.blank? ? key : File.join(prefix, key)
-        key_size = root.size(full_key)
-        size += key_size
-        empty_files.puts(key) if key_size.zero?
-        # unsafe_path_strings << full_key unless ok_chars(full_key, pattern)
-      end
-      directory.size = size
-      directory.count = keys.count
+#       Remove the following comment once bulk accrual feature is confimred working
+#       keys = root.unprefixed_subtree_keys(directory_key).collect do |unprefixed_key|
+#         File.join(directory.name, unprefixed_key)
+#       end
+      directory.size=root.size(directory_key)
+      Rails.logger.warn("directory.size: #{directory.size.inspect} ###########")
+      directory.count=root.subtree_keys(directory_key).count
+      Rails.logger.warn("directory.count: #{directory.count.inspect} ###########")
+      Rails.logger.info("directory object inspect: #{directory.inspect}")
+#       Remove the following comment once bulk accrual feature is confimred working
+#       keys.each do |key|
+#         full_key = prefix.blank? ? key : File.join(prefix, key)
+#         key_size = root.size(full_key)
+#         size += key_size
+#         empty_files.puts(key) if key_size.zero?
+#         # unsafe_path_strings << full_key unless ok_chars(full_key, pattern)
+#       end
+#       directory.size = size
+#       directory.count = keys.count
       directory.save!
-      ingest_keys += keys
+      ingest_keys << directory_key
     end
-    # Rails.logger.warn("#{Time.current} END adding files within workflow_accrual_directories to ingest_keys.")
+    Rails.logger.warn("#{Time.current} END adding files within workflow_accrual_directories to ingest_keys.")
     update_attribute(:empty_file_report, empty_files.string)
     cfs_directory_prefix = cfs_directory.relative_path
     existing_keys = existing_keys_for(cfs_directory_prefix)
+    Rails.logger.info("existing_keys: #{existing_keys.inspect}")
     duplicate_keys = ingest_keys.intersection(existing_keys)
     # TODO: we can implement other checks based on size and/or the beginning/end bytes of a file
     # to try to check for changes more efficiently before computing the entire md5.
@@ -162,8 +170,13 @@ class Workflow::AccrualJob < Workflow::Base
     # elsif unsafe_path_strings.count.positive?
     #   Workflow::AccrualMailer.unsafe_characters(self, unsafe_path_strings).deliver_now
     #   be_in_state_and_requeue('end')
+    elsif !excluded_file_conflicts.nil?
+      Workflow::AccrualMailer.excluded_files_present(self).deliver_now
+      be_in_state_and_requeue('end')
     else
+      Rails.logger.warn("Workflow Accrual Directories: #{workflow_accrual_directories.inspect} #####")
       create_workflow_accrual_keys(ingest_keys)
+      Rails.logger.warn("finished key building loop")
       be_in_state('initial_approval')
       Workflow::AccrualMailer.initial_approval(self).deliver_now
     end
@@ -175,11 +188,22 @@ class Workflow::AccrualJob < Workflow::Base
     # getting here means directory does not exist, which is expected for new accruals
     []
   end
-
+  def excluded_files_in_directory?(directory)
+    root, prefix = staging_root_and_prefix
+    directory_key = prefix.blank? ? directory.name : File.join(prefix, directory.name)
+    Rails.logger.warn("in excluded files check method")
+    excludable_keys = root.subtree_keys(directory_key).select do |key|
+      excluded_file?(File.basename(key)) || excluded_directory?(File.basename(key))
+    end
+    @excluded_file_conflicts=excludable_keys
+    Rails.logger.warn("excludable keys #{@excluded_file_conflicts.inspect}")
+    Rails.logger.warn("directory #{directory} contains excludable files. #{@excluded_file_conflicts}")
+  end
   def create_workflow_accrual_keys(keys)
     workflow_accrual_keys.clear
     keys.each do |key|
       unless excluded_file?(File.basename(key))
+        Rails.logger.info("creating Accrual key for #{key}")
         workflow_accrual_keys.create(key: key)
       end
     end
@@ -262,14 +286,14 @@ class Workflow::AccrualJob < Workflow::Base
         source_path = File.join(staging_path, source_key)
         destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
         destination_path = "/#{destination_path}" unless destination_path[0] == "/"
-
+        is_recursive = File.directory?(source_path)
 
         Workflow::GlobusTransfer.create(workflow_accrual_key_id: workflow_accrual_key.id,
                                                        source_uuid: source_endpoint[:uuid],
                                                        destination_uuid: target_endpoint[:uuid],
                                                        source_path: source_path,
                                                        destination_path: destination_path,
-                                                       recursive: false)
+                                                       recursive: is_recursive)
 
       end
     end
