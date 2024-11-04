@@ -1,0 +1,17 @@
+%p
+  The automated accrual of the staging path #{@workflow_accrual.staging_path} to
+  the cfs directory #{@workflow_accrual.cfs_directory.relative_path} has been cancelled.
+  Files were detected in the accrual directory that are not not allowed in the collection registry.
+
+
+
+- if file_group = @workflow_accrual.cfs_directory.file_group
+  %p
+    This belongs to the file group #{file_group.title}, collection #{file_group.collection.title}
+    - if file_group.collection.external_id.present?
+      [#{file_group.collection.external_id}]
+    and repository #{file_group.repository.title}.
+
+= render partial: 'accrual_summary'
+
+= render partial: 'conflicts'

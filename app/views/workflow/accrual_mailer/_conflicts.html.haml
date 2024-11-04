@@ -21,6 +21,13 @@
   %ul
     - nonserious_conflicts.each do |conflict|
       %li= conflict.path
-- else
+
+- if !@workflow_accrual.excluded_file_conflicts.nil?
   %p
-    There were no conflicts where the checksums agreed.
+    The following paths have filenames that have been dissallowed by the system:
+  %ul
+    - @workflow_accrual.excluded_file_conflicts.each do |conflict_path|
+      %li= conflict_path
+
+
+
