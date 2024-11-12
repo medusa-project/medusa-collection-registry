@@ -170,7 +170,11 @@ class Workflow::AccrualJob < Workflow::Base
     # elsif unsafe_path_strings.count.positive?
     #   Workflow::AccrualMailer.unsafe_characters(self, unsafe_path_strings).deliver_now
     #   be_in_state_and_requeue('end')
+<<<<<<< HEAD
     elsif !excluded_file_conflicts.nil?
+=======
+    elsif excluded_file_conflicts and !excluded_file_conflicts.empty?
+>>>>>>> development
       Workflow::AccrualMailer.excluded_files_present(self).deliver_now
       be_in_state_and_requeue('end')
     else
@@ -271,6 +275,12 @@ class Workflow::AccrualJob < Workflow::Base
     !staging_globus_endpoint.nil?
   end
 
+  def staging_path_is_directory?(source_key)
+    root, prefix = staging_root_and_prefix
+    real_path = root.real_path
+    File.directory?(File.join(real_path, source_key))
+  end
+
   def perform_send_copy_messages
     reset_conflict_fixities_and_fits if has_serious_conflicts?
     source_endpoint = staging_globus_endpoint
@@ -286,7 +296,7 @@ class Workflow::AccrualJob < Workflow::Base
         source_path = File.join(staging_path, source_key)
         destination_path = File.join(target_endpoint[:path].gsub(%r{^/}, ''), target_prefix, target_key)
         destination_path = "/#{destination_path}" unless destination_path[0] == "/"
-        is_recursive = File.directory?(source_path)
+        is_recursive = staging_path_is_directory? source_key
 
         Workflow::GlobusTransfer.create(workflow_accrual_key_id: workflow_accrual_key.id,
                                                        source_uuid: source_endpoint[:uuid],
