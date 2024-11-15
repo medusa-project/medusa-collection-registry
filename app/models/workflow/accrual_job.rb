@@ -147,7 +147,7 @@ class Workflow::AccrualJob < Workflow::Base
 #       directory.size = size
 #       directory.count = keys.count
       directory.save!
-      ingest_keys << directory_key
+      ingest_keys << directory.name
     end
     Rails.logger.warn("#{Time.current} END adding files within workflow_accrual_directories to ingest_keys.")
     update_attribute(:empty_file_report, empty_files.string)
@@ -274,8 +274,8 @@ class Workflow::AccrualJob < Workflow::Base
 
   def staging_path_is_directory?(source_key)
     root, prefix = staging_root_and_prefix
-    real_path = root.real_path
-    File.directory?(File.join(real_path, source_key))
+    local_path = File.join(root.real_path, prefix)
+    File.directory?(File.join(local_path, source_key))
   end
 
   def perform_send_copy_messages
