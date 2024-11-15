@@ -147,7 +147,7 @@ class Workflow::AccrualJob < Workflow::Base
 #       directory.size = size
 #       directory.count = keys.count
       directory.save!
-      ingest_keys << directory_key
+      ingest_keys << directory.name
     end
     Rails.logger.warn("#{Time.current} END adding files within workflow_accrual_directories to ingest_keys.")
     update_attribute(:empty_file_report, empty_files.string)
