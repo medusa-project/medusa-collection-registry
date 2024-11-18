@@ -36,6 +36,9 @@ config/settings/test.local.yml
 config/settings/demo.local.yml
 config/settings/production.local.yml
 config/environments/development.local.yml
+# Allow test.local.yml to be checked in
+# This file is required for GitHub Actions to run tests in the CI/CD pipeline.
+!config/settings/test.local.yml
 config/environments/test.local.yml
 config/environments/demo.local.yml
 config/environments/production.local.yml
