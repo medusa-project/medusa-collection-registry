@@ -124,11 +124,8 @@ class Workflow::GlobusTransfer < ApplicationRecord
 
   def status
 
-    return 'SUCCEEDED' if object_copied?
-
     return 'no task_id present' unless task_id.present?
 
-    return state if updated_at < 5.minutes.ago
 
     begin
       bearer_token = GlobusToken.instance.bearer_token
