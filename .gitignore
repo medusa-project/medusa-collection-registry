@@ -63,3 +63,6 @@ yarn-debug.log*
 
 # Ignore sensitive environment variables
 .env
+
+# Ignore the data/ directory to prevent committing large or temporary data files
+data/
