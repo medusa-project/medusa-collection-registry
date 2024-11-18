@@ -1,0 +1,58 @@
+name: RSpec Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  rspec:
+    name: Run RSpec Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:12-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres_password
+          POSTGRES_DB: medusa_test
+
+      memcached:
+        image: memcached:latest
+        ports:
+          - 11211:11211
+
+      rabbitmq:
+        image: rabbitmq:management-alpine
+        ports:
+          - 5672:5672
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.1.2 # Match the Ruby version
+        bundler-cache: true
+
+    - name: Install dependencies
+      run: bundle install
+
+    - name: Prepare database
+      env:
+        RAILS_ENV: test
+      run: |
+        bundle exec rails db:create db:schema:load
+
+    - name: Run RSpec tests
+      env:
+        RAILS_ENV: test
+      run: bundle exec rspec
