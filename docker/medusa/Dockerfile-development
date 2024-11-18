@@ -1,11 +1,21 @@
 FROM ubuntu:22.04
 FROM ruby:3.1.2
 
+# Copy the wait-for-it.sh script to /usr/local/bin and make it executable.
+# This script is essential for ensuring that dependent services (like databases or message queues)
+# are fully up and running before starting the application. This prevents connection errors
+# during startup and improves the reliability of the application in a Docker environment.
+# Other developers can download the script using the following command:
+# curl -o scripts/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+COPY script/wait-for-it.sh /usr/local/bin/wait-for-it
+RUN chmod +x /usr/local/bin/wait-for-it
+
 ARG rails_env=development
 ENV RAILS_ENV=$rails_env
 ENV RAILS_LOG_TO_STDOUT=true
 ENV RAILS_SERVE_STATIC_FILES=true
 
+# Update package list and install necessary packages
 RUN apt-get update && apt-get install -y \
     systemd \
     nodejs \
@@ -13,7 +23,9 @@ RUN apt-get update && apt-get install -y \
     libmagic-dev \
     yarn \
     postgresql-client \
-    memcached
+    memcached \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 3000
 
