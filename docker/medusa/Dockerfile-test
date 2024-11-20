@@ -29,8 +29,10 @@ RUN gem install bundler:$BUNDLER_VERSION && bundle install --jobs=4 --retry=3
 # Copy application code
 COPY . .
 
+# Copy the settings directory into the Docker image
+COPY config/settings/ /config/settings/
+
 # Copy the wait-for-it script
-# This script ensures dependent services are ready before starting the tests
 COPY script/wait-for-it.sh /usr/local/bin/wait-for-it
 RUN chmod +x /usr/local/bin/wait-for-it
 

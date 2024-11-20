@@ -1,4 +1,4 @@
-name: RSpec Tests
+name: Run RSpec Tests in Docker
 
 on:
   push:
@@ -10,49 +10,23 @@ on:
 
 jobs:
   rspec:
-    name: Run RSpec Tests
+    name: Run RSpec Tests in Docker
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:12-alpine
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres_password
-          POSTGRES_DB: medusa_test
-
-      memcached:
-        image: memcached:latest
-        ports:
-          - 11211:11211
-
-      rabbitmq:
-        image: rabbitmq:management-alpine
-        ports:
-          - 5672:5672
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 3.1.2 # Match the Ruby version
-        bundler-cache: true
-
-    - name: Install dependencies
-      run: bundle install
-
-    - name: Prepare database
-      env:
-        RAILS_ENV: test
+      
+    - name: Set up Docker Compose
       run: |
-        bundle exec rails db:create db:schema:load
+        docker-compose -f docker-compose.test.yml up -d --build
 
-    - name: Run RSpec tests
+    - name: Run Tests Inside Docker
+      run: |
+        docker-compose -f docker-compose.test.yml exec medusa-test bundle exec rspec
       env:
         RAILS_ENV: test
-      run: bundle exec rspec
+
+    - name: Shut Down Docker Compose
+      if: always()
+      run: docker-compose -f docker-compose.test.yml down
