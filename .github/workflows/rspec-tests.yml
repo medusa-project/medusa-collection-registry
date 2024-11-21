@@ -1,4 +1,4 @@
-name: Run RSpec Tests in Docker
+name: CI
 
 on:
   push:
@@ -9,30 +9,20 @@ on:
       - '**'
 
 jobs:
-  rspec:
+  rspec-tests:
     name: Run RSpec Tests in Docker
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Install Docker Compose
-      run: |
-        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        sudo chmod +x /usr/local/bin/docker-compose
-        docker-compose --version
+      - name: Checkout the repository
+        uses: actions/checkout@v3
 
-    - name: Set up Docker Compose
-      run: |
-        docker-compose -f docker-compose.test.yml up -d --build
+      - name: Set up and Run Tests
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.test.yml up --build --exit-code-from medusa-test
 
-    - name: Run Tests Inside Docker
-      run: |
-        docker-compose -f docker-compose.test.yml exec medusa-test bundle exec rspec
-      env:
-        RAILS_ENV: test
+      - name: Clean up
+        if: always()
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.test.yml down
 
-    - name: Shut Down Docker Compose
-      if: always()
-      run: docker-compose -f docker-compose.test.yml down
