@@ -6,7 +6,6 @@ ENV BUNDLER_VERSION=2.3.14
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-  systemd \
   nodejs \
   libmemcached-dev \
   libmagic-dev \
@@ -28,9 +27,6 @@ RUN gem install bundler:$BUNDLER_VERSION && bundle install --jobs=4 --retry=3
 
 # Copy application code
 COPY . .
-
-# Copy the settings directory into the Docker image
-COPY config/settings/ /config/settings/
 
 # Copy the wait-for-it script
 COPY script/wait-for-it.sh /usr/local/bin/wait-for-it

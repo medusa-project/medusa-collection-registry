@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+# Ensure test.local.yml is created from test.local-ci.yml if it doesn't already exist
+if [ ! -f config/settings/test.local.yml ]; then
+  echo "Creating test.local.yml from test.local-ci.yml..."
+  cp config/settings/test-local-ci.yml config/settings/test.local.yml
+fi
+
 # Wait for dependent services to be ready
 wait-for-it postgres:5432 -- echo "PostgreSQL is up"
 wait-for-it memcached:11211 -- echo "Memcached is up"
