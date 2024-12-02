@@ -1,0 +1,40 @@
+FROM ruby:3.1.2
+
+# Set environment variables
+ENV RAILS_ENV=test
+ENV BUNDLER_VERSION=2.3.14
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+  nodejs \
+  libmemcached-dev \
+  libmagic-dev \
+  yarn \
+  curl \
+  postgresql-client \
+  memcached \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory
+WORKDIR /app
+
+# Copy Gemfile and Gemfile.lock
+COPY Gemfile Gemfile.lock ./
+
+# Install Ruby gems
+RUN gem install bundler:$BUNDLER_VERSION && bundle install --jobs=4 --retry=3
+
+# Copy application code
+COPY . .
+
+# Copy the wait-for-it script
+COPY script/wait-for-it.sh /usr/local/bin/wait-for-it
+RUN chmod +x /usr/local/bin/wait-for-it
+
+# Copy the entrypoint script
+COPY docker-entrypoint-test.sh /usr/local/bin/docker-entrypoint-test
+RUN chmod +x /usr/local/bin/docker-entrypoint-test
+
+# Command to run the entrypoint script and execute tests
+CMD ["/usr/local/bin/docker-entrypoint-test", "bundle", "exec", "rspec"]

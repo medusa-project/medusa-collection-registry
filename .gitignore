@@ -45,7 +45,6 @@ config/environments/production.local.yml
 yarn-debug.log*
 yarn-error.log*
 .yarn-integrity
-spec/
 vendor/bundle
 
 # temporarily ignore transitional files
@@ -61,3 +60,9 @@ attic
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Ignore sensitive environment variables
+.env
+
+# Ignore the data/ directory to prevent committing large or temporary data files
+data/

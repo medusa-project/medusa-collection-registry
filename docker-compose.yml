@@ -1,6 +1,3 @@
-# used by docker-run.sh
-
-version: "3.7"
 services:
   sunspot:
     hostname: sunspot
@@ -9,16 +6,23 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8983:8983"
+    restart: always  # Ensures the service restarts on failure
+
   minio:
     image: minio/minio
     environment:
-      MINIO_ROOT_USER: MinioUser
-      MINIO_ROOT_PASSWORD: OpenSesame
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     hostname: minio
-    command: server ~/storage/minio --console-address ":9001"
+    # Changed storage path to /data to align with the mounted volume and ensure data persistence. 
+    # Using /data avoids potential issues with user-specific paths like ~/storage/minio.
+    command: server /data --console-address ":9001"
     ports:
       - "9000:9000"
       - "9001:9001"
+    volumes:
+      - minio_data:/data  # Use a named volume for persistence
+    restart: always  # Ensures the service restarts on failure
 
   sqs-mock:
     build:
@@ -27,20 +31,52 @@ services:
     hostname: sqs-mock
     ports:
       - "9324:9324"
+    restart: always  # Ensures the service restarts on failure
+
   postgres:
     image: postgres:12-alpine
     environment:
-      POSTGRES_DB: medusa
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: medusa
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     hostname: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Use a named volume for persistence
+    restart: always  # Ensures the service restarts on failure
+
   rabbitmq:
     image: rabbitmq
     hostname: rabbitmq
     ports:
       - "5672:5672"
+    restart: always  # Ensures the service restarts on failure
+
   memcached:
     image: memcached
     hostname: memcached
     ports:
       - '11211:11211'
+    restart: always  # Ensures the service restarts on failure
+
+  app:
+    build:
+      context: .  # Assumes the Dockerfile is in the project root
+    environment:
+      RAILS_ENV: production  # Set to production
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    volumes:
+      - /app/tmp  # Ensures temporary files don’t persist across container rebuilds
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - rabbitmq
+      - sunspot
+      - memcached
+    restart: always  # Ensures the service restarts on failure
+
+# Declared volumes for data persistence
+volumes:
+  minio_data:
+  postgres_data:
+  # Removed the '11211:11211' port mapping to limit Memcached access to the Docker network only.

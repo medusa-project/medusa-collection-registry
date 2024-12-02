@@ -1,15 +1,79 @@
-version: "3.7"
 services:
   medusa-test:
+    build:
+      context: .  # Build context is the current directory
+      dockerfile: docker/medusa/Dockerfile-test  # Specify the Dockerfile for testing
     depends_on:
       - postgres
       - rabbitmq
       - memcached
+      - sunspot
       - sqs-mock
       - minio
-    build:
-      context: .
-      dockerfile: docker/medusa/Dockerfile-test
     ports:
-      - "3000:3000"
-    command: bash -c 'sleep 30 && curl "http://sunspot:8983/solr/admin/cores?action=CREATE&name=test&instanceDir=test" && bundle exec rails db:prepare && rails local_identity:make_admins && ./local/delayed_job start default 1 && ./local/delayed_job start initial_assessment 1 && bundle exec rails server -b 0.0.0.0'
+      - "3001:3000"  # Map port 3000 of the container to port 3001 on the host for testing
+    volumes:
+      - .:/app  # Mount the current directory for live code updates
+    environment:
+      RAILS_ENV: test  # Set Rails environment to test
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}  # Database connection string
+    command: >
+      bash -c 'rm -f /app/tmp/pids/server.pid && \
+        /usr/local/bin/docker-entrypoint-test bundle exec rspec'
+
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - "5432:5432"  # Optional: expose PostgreSQL for debugging
+
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - "5672:5672"  # Map RabbitMQ port
+    restart: always
+
+  memcached:
+    image: memcached
+    ports:
+      - "11211:11211"
+    restart: always
+
+  sunspot:
+    hostname: sunspot
+    build:
+      context: docker/sunspot/.
+    ports:
+      - "8983:8983"
+    restart: always
+
+  sqs-mock:
+    build:
+      context: docker/sqs-mock/.
+      dockerfile: Dockerfile
+    ports:
+      - "9324:9324"
+    restart: always
+
+  minio:
+    image: minio/minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    restart: always
+
+volumes:
+  postgres_data:
+  minio_data:

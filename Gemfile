@@ -107,6 +107,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'sunspot_solr'
+  gem 'better_errors' # Replaces the default error page with a more useful, interactive error page.
+  gem 'binding_of_caller' # Enables advanced debugging capabilities by allowing access to variables in stack frames.
 end
 
 group :development do

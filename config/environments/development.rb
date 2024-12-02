@@ -1,9 +1,23 @@
 MedusaCollectionRegistry::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  settings = YAML.unsafe_load(File.open(Rails.root.join('config', 'settings.yml')))
-  local_settings = YAML.unsafe_load(File.open(Rails.root.join('config', 'settings', 'development.local.yml')))
-  settings.merge!(local_settings)
+  # Load main settings file
+  settings = YAML.unsafe_load(File.read(Rails.root.join('config', 'settings.yml')))
+
+  # Load environment-specific settings if they exist
+  if File.exist?(Rails.root.join('config', 'settings', 'development.local.yml'))
+    local_settings = YAML.unsafe_load(File.read(Rails.root.join('config', 'settings', 'development.local.yml')))
+    settings.merge!(local_settings)
+  end
+
+  # Load Docker-specific settings if they exist
+  if File.exist?(Rails.root.join('config', 'settings', 'development-docker.local.yml'))
+    docker_settings = YAML.unsafe_load(File.read(Rails.root.join('config', 'settings', 'development-docker.local.yml')))
+    settings.merge!(docker_settings)
+  end
+
+  # Apply the merged settings to Config
+  Config.load_and_set_settings(settings)
 
   # configure mailer
   config.action_mailer.perform_caching = false
@@ -22,6 +36,10 @@ MedusaCollectionRegistry::Application.configure do
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
+
+  # Allow BetterErrors to be accessed from any IP address. This is useful for debugging in Docker
+  # Only enabled in development environment and not in production.
+  BetterErrors::Middleware.allow_ip! "0.0.0.0/0" if defined?(BetterErrors)
 
   # Show full error reports and disable caching
   config.consider_all_requests_local = true
