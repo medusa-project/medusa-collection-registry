@@ -1,8 +1,8 @@
 services:
   medusa-test:
     build:
-      context: .  # Build context is the current directory
-      dockerfile: docker/medusa/Dockerfile-test  # Specify the Dockerfile for testing
+      context: .
+      dockerfile: docker/medusa/Dockerfile-test
     depends_on:
       - postgres
       - rabbitmq
@@ -11,27 +11,27 @@ services:
       - sqs-mock
       - minio
     ports:
-      - "3001:3000"  # Map port 3000 of the container to port 3001 on the host for testing
+      - "3001:3000"  # Map port 3000 of the container to port 3001 on the host
     volumes:
       - .:/app  # Mount the current directory for live code updates
     environment:
       RAILS_ENV: test  # Set Rails environment to test
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}  # Database connection string
     command: >
       bash -c 'rm -f /app/tmp/pids/server.pid && \
-        /usr/local/bin/docker-entrypoint-test bundle exec rspec'
+        bundle exec rails db:drop db:create db:schema:load db:seed && \
+        bundle exec rspec'
 
   postgres:
     image: postgres:12-alpine
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: medusa_test
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: medusa
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: always
+      - postgres_test_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"  # Optional: expose PostgreSQL for debugging
+      - "5432:5432"  # Expose PostgreSQL for testing
+    restart: always
 
   rabbitmq:
     image: rabbitmq
@@ -64,8 +64,8 @@ services:
   minio:
     image: minio/minio
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_ROOT_USER: MinioUser
+      MINIO_ROOT_PASSWORD: OpenSesame
     command: server /data --console-address ":9001"
     ports:
       - "9000:9000"
@@ -75,5 +75,5 @@ services:
     restart: always
 
 volumes:
-  postgres_data:
+  postgres_test_data:
   minio_data:
