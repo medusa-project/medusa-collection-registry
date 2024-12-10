@@ -1,24 +1,20 @@
+version: "3.7"
+
 services:
   medusa-test:
     build:
       context: .
       dockerfile: docker/medusa/Dockerfile-test
-    depends_on:
-      - postgres
-      - rabbitmq
-      - memcached
-      - sunspot
-      - sqs-mock
-      - minio
-    ports:
-      - "3001:3000"  # Map port 3000 of the container to port 3001 on the host
-    volumes:
-      - .:/app  # Mount the current directory for live code updates
     environment:
-      RAILS_ENV: test  # Set Rails environment to test
+      RAILS_ENV: test
+      POSTGRES_DB: medusa_test
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: medusa
+      POSTGRES_HOST: postgres
+    volumes:
+      - .:/app
     command: >
-      bash -c 'rm -f /app/tmp/pids/server.pid && \
-        /usr/local/bin/docker-entrypoint-test bundle exec rspec'
+      /usr/local/bin/docker-entrypoint-test bundle exec rspec
 
   postgres:
     image: postgres:12-alpine
@@ -26,16 +22,14 @@ services:
       POSTGRES_DB: medusa_test
       POSTGRES_USER: root
       POSTGRES_PASSWORD: medusa
-    volumes:
-      - postgres_test_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"  # Expose PostgreSQL for testing
+      - "5432:5432"
     restart: always
 
   rabbitmq:
     image: rabbitmq
     ports:
-      - "5672:5672"  # Map RabbitMQ port
+      - "5672:5672"
     restart: always
 
   memcached:
@@ -52,19 +46,11 @@ services:
       - "8983:8983"
     restart: always
 
-  sqs-mock:
-    build:
-      context: docker/sqs-mock/.
-      dockerfile: Dockerfile
-    ports:
-      - "9324:9324"
-    restart: always
-
   minio:
     image: minio/minio
     environment:
-      MINIO_ROOT_USER: MinioUser
-      MINIO_ROOT_PASSWORD: OpenSesame
+      MINIO_ROOT_USER: minio_user
+      MINIO_ROOT_PASSWORD: minio_password
     command: server /data --console-address ":9001"
     ports:
       - "9000:9000"
@@ -74,5 +60,5 @@ services:
     restart: always
 
 volumes:
-  postgres_test_data:
+  postgres_data:
   minio_data:
