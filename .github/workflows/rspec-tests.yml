@@ -12,12 +12,6 @@ jobs:
   rspec-tests:
     name: Run RSpec Tests in Docker
     runs-on: ubuntu-latest
-    env:
-      RAILS_ENV: test
-      POSTGRES_DB: medusa_test
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: medusa
-      POSTGRES_HOST: postgres
 
     steps:
       - name: Checkout the repository
