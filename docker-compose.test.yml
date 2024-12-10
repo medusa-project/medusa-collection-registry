@@ -18,8 +18,7 @@ services:
       RAILS_ENV: test  # Set Rails environment to test
     command: >
       bash -c 'rm -f /app/tmp/pids/server.pid && \
-        bundle exec rails db:drop db:create db:schema:load db:seed && \
-        bundle exec rspec'
+        /usr/local/bin/docker-entrypoint-test bundle exec rspec'
 
   postgres:
     image: postgres:12-alpine
