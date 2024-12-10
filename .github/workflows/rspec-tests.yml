@@ -12,6 +12,12 @@ jobs:
   rspec-tests:
     name: Run RSpec Tests in Docker
     runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+      POSTGRES_DB: medusa_test
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: medusa
+      POSTGRES_HOST: postgres
 
     steps:
       - name: Checkout the repository
@@ -24,4 +30,4 @@ jobs:
       - name: Clean up
         if: always()
         run: |
-          docker compose -f docker-compose.yml -f docker-compose.test.yml down
+          docker compose -f docker-compose.test.yml down --volumes --remove-orphans

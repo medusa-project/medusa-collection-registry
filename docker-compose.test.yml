@@ -5,12 +5,6 @@ services:
     build:
       context: .
       dockerfile: docker/medusa/Dockerfile-test
-    environment:
-      RAILS_ENV: test
-      POSTGRES_DB: medusa_test
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: medusa
-      POSTGRES_HOST: postgres
     volumes:
       - .:/app
     command: >
