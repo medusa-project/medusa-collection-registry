@@ -34,17 +34,22 @@ RSpec.describe SessionsController, type: :controller do
     context 'in production environment' do
       before do
         allow(Rails.env).to receive(:production?).and_return(true)
-        request.env['omniauth.auth'] = {
-          provider: 'shibboleth',
-          uid: 'testuser@illinois.edu',
-          info: {
-            email: 'testuser@illinois.edu'
-          }
-        }
+        OmniAuth.config.test_mode = true
         session[:login_return_uri] = '/dashboard'
       end
 
+      after do
+        OmniAuth.config.test_mode = false
+        OmniAuth.config.mock_auth[:shibboleth] = nil
+      end
+
       it 'authenticates the user and sets the session' do
+        OmniAuth.config.mock_auth[:shibboleth] = OmniAuth::AuthHash.new({
+          provider: 'shibboleth',
+          uid: 'testuser@illinois.edu',
+          info: { email: 'testuser@illinois.edu' }
+        })
+        request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:shibboleth]
         post :create, params: { provider: 'shibboleth' }
         user = User.find_by(uid: 'testuser@illinois.edu')
         expect(user).to be_present
@@ -53,7 +58,12 @@ RSpec.describe SessionsController, type: :controller do
       end
 
       it 'redirects to login if Shibboleth attributes are missing' do
-        request.env['omniauth.auth'] = nil
+        OmniAuth.config.mock_auth[:shibboleth] = OmniAuth::AuthHash.new({
+          provider: 'shibboleth',
+          uid: nil,
+          info: { email: nil }
+        })
+        request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:shibboleth]
         post :create, params: { provider: 'shibboleth' }
         expect(session[:current_user_id]).to be_nil
         expect(response).to redirect_to(login_url)
