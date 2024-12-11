@@ -3,92 +3,87 @@ version: "3.7"
 services:
   medusa-development:
     build:
-      context: .  # Build context is the current directory
-      dockerfile: docker/medusa/Dockerfile-development  # Specify the Dockerfile for development
+      context: .
+      dockerfile: docker/medusa/Dockerfile-development
     depends_on:
-      - postgres  # Ensure PostgreSQL starts before this service
-      - rabbitmq  # Ensure RabbitMQ starts before this service
-      - memcached  # Ensure Memcached starts before this service
-      - sunspot  # Ensure Sunspot starts before this service
-      - sqs-mock  # Ensure SQS mock service starts before this service
-      - minio  # Ensure MinIO starts before this service
+      - postgres
+      - rabbitmq
+      - memcached
+      - sunspot
+      - sqs-mock
+      - minio
     ports:
-      - "3000:3000"  # Map port 3000 of the container to port 3000 on the host
+      - "3000:3000"
     volumes:
-      - .:/app  # Mount the current directory for live code updates
-      - /app/tmp  # Ensure temporary files don’t persist across container rebuilds
+      - .:/app
+      - /app/tmp
     environment:
-      RAILS_ENV: development  # Set Rails environment to development
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}  # Database connection string
+      RAILS_ENV: development
+      DATABASE_URL: postgres://root:medusa@postgres:5432/medusa
 
-    # wait-for-it ensures each service (e.g., database, cache) is fully ready before the app starts.
-    # This avoids arbitrary delays, as the app starts as soon as dependencies are available.
-    # It improves reliability by preventing connection errors if a service takes longer to initialize.
     command: >
       bash -c 'rm -f /app/tmp/pids/server.pid && \
         wait-for-it postgres:5432 -- && \
         wait-for-it rabbitmq:5672 -- && \
         wait-for-it memcached:11211 -- && \
         wait-for-it minio:9000 -- && \
-        if bundle exec rails db:exists; then \
-          echo "Database already exists. Skipping initialization."; \
-        else \
-          bundle exec rails db:create db:schema:load db:seed; \
-        fi && \
+        bundle exec rails db:create db:schema:load db:seed && \
+        echo "Starting Rails server..." && \
         bundle exec rails server -b 0.0.0.0'
 
   postgres:
-    image: postgres:12-alpine  # Use a lightweight PostgreSQL image
+    image: postgres:12-alpine
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}  # Database name from environment variable
-      POSTGRES_USER: ${POSTGRES_USER}  # Database user from environment variable
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # Database password from environment variable
+      POSTGRES_DB: medusa
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: medusa
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Use a named volume for data persistence
-    restart: always  # Restart the service on failure
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - "5432:5432"
 
   rabbitmq:
-    image: rabbitmq  # Use the default RabbitMQ image
+    image: rabbitmq
     ports:
-      - "5672:5672"  # Map RabbitMQ port
-    restart: always  # Restart the service on failure
+      - "5672:5672"
+    restart: always
 
   memcached:
-    image: memcached  # Use the default Memcached image
+    image: memcached
     ports:
-      - '11211:11211'  # Map Memcached port
-    restart: always  # Restart the service on failure
+      - "11211:11211"
+    restart: always
 
   sunspot:
     hostname: sunspot
     build:
       context: docker/sunspot/.
     ports:
-      - "8983:8983" # Changed to Solr's default port (8983) for Sunspot to avoid conflicts with other services (e.g., Rails on 3000)
-    restart: always  # Ensures the service restarts on failure
+      - "8983:8983"
+    restart: always
 
   sqs-mock:
     build:
-      context: docker/sqs-mock/.  # Build context for the SQS mock service
-      dockerfile: Dockerfile  # Specify the Dockerfile for the SQS mock
+      context: docker/sqs-mock/.
+      dockerfile: Dockerfile
     ports:
-      - "9324:9324"  # Map SQS mock port
-    restart: always  # Restart the service on failure
+      - "9324:9324"
+    restart: always
 
   minio:
-    image: minio/minio  # Use the MinIO image for object storage
+    image: minio/minio
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}  # MinIO root user from environment variable
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}  # MinIO root password from environment variable
-    command: server /data --console-address ":9001"  # Start MinIO server with console
+      MINIO_ROOT_USER: MinioUser
+      MINIO_ROOT_PASSWORD: OpenSesame
+    command: server /data --console-address ":9001"
     ports:
-      - "9000:9000"  # Map MinIO port
-      - "9001:9001"  # Map MinIO console port
+      - "9000:9000"
+      - "9001:9001"
     volumes:
-      - minio_data:/data  # Use a named volume for data persistence
-    restart: always  # Restart the service on failure
+      - minio_data:/data
+    restart: always
 
-# Declared volumes for data persistence
 volumes:
-  postgres_data:  # Named volume for PostgreSQL data
-  minio_data:  # Named volume for MinIO data
+  postgres_data:
+  minio_data:
