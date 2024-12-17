@@ -62,11 +62,13 @@ services:
     ports:
       - "8983:8983"
     restart: always
+    # platform: linux/amd64 #todo- uncomment if machine runs on amd64
 
   sqs-mock:
     build:
       context: docker/sqs-mock/.
       dockerfile: Dockerfile
+    # platform: linux/amd64 #todo- uncomment if machine runs on amd64
     ports:
       - "9324:9324"
     restart: always
@@ -78,7 +80,7 @@ services:
       MINIO_ROOT_PASSWORD: OpenSesame
     command: server /data --console-address ":9001"
     ports:
-      - "9000:9000"
+      - "9000:9000" #"9002:9000" #todo- replace port if minio uses port 9000 for other apps on your machine
       - "9001:9001"
     volumes:
       - minio_data:/data
