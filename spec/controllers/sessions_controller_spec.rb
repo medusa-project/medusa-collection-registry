@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SessionsController, type: :controller do
   describe 'GET #new' do
-    context 'in production environment' do
+    context 'when in production environment' do
       before { allow(Rails.env).to receive(:production?).and_return(true) }
 
       it 'saves the referring page in the session' do
@@ -20,7 +20,7 @@ RSpec.describe SessionsController, type: :controller do
       end
     end
 
-    context 'in non-production environment' do
+    context 'when in non-production environment' do
       before { allow(Rails.env).to receive(:production?).and_return(false) }
 
       it 'redirects to /auth/identity' do
@@ -31,7 +31,7 @@ RSpec.describe SessionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    context 'in production environment' do
+    context 'when using Shibboleth in production' do
       before do
         allow(Rails.env).to receive(:production?).and_return(true)
         OmniAuth.config.test_mode = true
@@ -44,11 +44,11 @@ RSpec.describe SessionsController, type: :controller do
       end
 
       it 'authenticates the user and sets the session' do
-        OmniAuth.config.mock_auth[:shibboleth] = OmniAuth::AuthHash.new({
+        OmniAuth.config.mock_auth[:shibboleth] = OmniAuth::AuthHash.new(
           provider: 'shibboleth',
           uid: 'testuser@illinois.edu',
           info: { email: 'testuser@illinois.edu' }
-        })
+        )
         request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:shibboleth]
         post :create, params: { provider: 'shibboleth' }
         user = User.find_by(uid: 'testuser@illinois.edu')
@@ -58,11 +58,11 @@ RSpec.describe SessionsController, type: :controller do
       end
 
       it 'redirects to login if Shibboleth attributes are missing' do
-        OmniAuth.config.mock_auth[:shibboleth] = OmniAuth::AuthHash.new({
+        OmniAuth.config.mock_auth[:shibboleth] = OmniAuth::AuthHash.new(
           provider: 'shibboleth',
           uid: nil,
           info: { email: nil }
-        })
+        )
         request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:shibboleth]
         post :create, params: { provider: 'shibboleth' }
         expect(session[:current_user_id]).to be_nil
@@ -70,10 +70,8 @@ RSpec.describe SessionsController, type: :controller do
       end
     end
 
-    context 'in development environment' do
-      before do
-        allow(Rails.env).to receive(:production?).and_return(false)
-      end
+    context 'when using Identity in development' do
+      before { allow(Rails.env).to receive(:production?).and_return(false) }
 
       it 'authenticates the user in development mode' do
         post :create, params: { provider: 'identity', auth_key: 'testuser@illinois.edu' }
@@ -88,6 +86,29 @@ RSpec.describe SessionsController, type: :controller do
         post :create, params: { provider: 'identity' }
         expect(session[:user_id]).to be_nil
         expect(response).to redirect_to(login_url)
+      end
+    end
+
+    context 'when using Developer strategy in development' do
+      before do
+        allow(Rails.env).to receive(:production?).and_return(false)
+        OmniAuth.config.test_mode = true
+        OmniAuth.config.mock_auth[:developer] = OmniAuth::AuthHash.new(
+          provider: 'developer',
+          uid: 'testuser@illinois.edu',
+          info: { email: 'testuser@illinois.edu', name: 'Test User' }
+        )
+      end
+
+      after { OmniAuth.config.test_mode = false }
+
+      it 'authenticates the user with developer strategy' do
+        request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:developer]
+        post :create, params: { provider: 'developer' }
+        user = User.find_by(email: 'testuser@illinois.edu')
+        expect(user).to be_present
+        expect(session[:current_user_id]).to eq(user.id)
+        expect(response).to redirect_to(root_path)
       end
     end
   end

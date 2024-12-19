@@ -13,11 +13,11 @@ class SessionsController < ApplicationController
 
   def create
     return_url = clear_and_return_return_path
+    auth_hash = request.env['omniauth.auth']
+
     if Rails.env.production? || Rails.env.demo?
-      #auth_hash[:uid] should have the uid (for shib as configured in shibboleth.yml)
-      #auth_hash[:info][:email] should have the email address
-      auth_hash = request.env['omniauth.auth']
-      if auth_hash and auth_hash[:uid]
+      # Handle Shibboleth login
+      if auth_hash && auth_hash[:uid]
         user = User.find_or_create_by!(uid: auth_hash[:uid], email: auth_hash[:info][:email])
         reset_ldap_cache(user)
         set_current_user(user)
@@ -26,7 +26,12 @@ class SessionsController < ApplicationController
         redirect_to login_url
       end
     else
-      if params.has_key?("auth_key")
+      # Handle Developer strategy and Identity login
+      if auth_hash && auth_hash[:provider] == 'developer'
+        user = User.find_or_create_by!(uid: auth_hash[:uid], email: auth_hash[:info][:email])
+        set_current_user(user)
+        redirect_to return_url
+      elsif params.has_key?("auth_key")
         user = User.find_or_create_by!(uid: params["auth_key"], email: params["auth_key"])
         set_current_user(user)
         redirect_to return_url
