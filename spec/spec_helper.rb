@@ -39,6 +39,12 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  # Stub Solr-related methods to prevent actual Solr calls during tests
+  config.before(:each) do
+    allow_any_instance_of(Sunspot::Rails::Searchable::InstanceMethods).to receive(:solr_index).and_return(true)
+    allow_any_instance_of(Sunspot::Rails::Searchable::InstanceMethods).to receive(:solr_remove_from_index).and_return(true)
+  end
+
   # This option will default to `:apply_to_host_groups` in RSpec 4 (and will
   # have no way to turn it off -- the option exists only for backwards
   # compatibility in RSpec 3). It causes shared context metadata to be
