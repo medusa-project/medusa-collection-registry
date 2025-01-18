@@ -1,5 +1,4 @@
 class SessionsController < ApplicationController
-
   skip_before_action :verify_authenticity_token
 
   def new
@@ -7,7 +6,8 @@ class SessionsController < ApplicationController
     if Rails.env.production? || Rails.env.demo?
       redirect_to(shibboleth_login_path(MedusaCollectionRegistry::Application.shibboleth_host))
     else
-      redirect_to('/auth/identity')
+      # Render the developer login form in development
+      render :new
     end
   end
 
@@ -26,17 +26,15 @@ class SessionsController < ApplicationController
         redirect_to login_url
       end
     else
-      # Handle Developer strategy and Identity login
+      # Handle OmniAuth Developer Strategy
       if auth_hash && auth_hash[:provider] == 'developer'
         user = User.find_or_create_by!(uid: auth_hash[:uid], email: auth_hash[:info][:email])
         set_current_user(user)
-        redirect_to return_url
-      elsif params.has_key?("auth_key")
-        user = User.find_or_create_by!(uid: params["auth_key"], email: params["auth_key"])
-        set_current_user(user)
-        redirect_to return_url
+
+        roles = current_user_roles.join(', ')
+        redirect_to return_url, notice: "Logged in successfully as #{user.email} with roles: #{roles}."
       else
-        redirect_to login_url
+        redirect_to login_url, alert: "Invalid login attempt."
       end
     end
   end

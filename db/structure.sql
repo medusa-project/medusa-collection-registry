@@ -2526,39 +2526,6 @@ ALTER SEQUENCE public.globus_tokens_id_seq OWNED BY public.globus_tokens.id;
 
 
 --
--- Name: identities; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.identities (
-    id bigint NOT NULL,
-    name character varying,
-    email character varying,
-    password_digest character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: identities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.identities_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.identities_id_seq OWNED BY public.identities.id;
-
-
---
 -- Name: institutions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4815,13 +4782,6 @@ ALTER TABLE ONLY public.globus_tokens ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- Name: identities id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.identities ALTER COLUMN id SET DEFAULT nextval('public.identities_id_seq'::regclass);
-
-
---
 -- Name: institutions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5450,14 +5410,6 @@ ALTER TABLE ONLY public.fixity_check_results
 
 ALTER TABLE ONLY public.globus_tokens
     ADD CONSTRAINT globus_tokens_pkey PRIMARY KEY (id);
-
-
---
--- Name: identities identities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.identities
-    ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
 
 
 --
@@ -8066,6 +8018,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220616113913'),
 ('20220816141858'),
 ('20230320144647'),
-('20230406142700');
+('20230406142700'),
+('20250117222948');
 
 

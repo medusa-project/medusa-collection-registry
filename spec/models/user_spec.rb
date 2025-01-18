@@ -89,34 +89,4 @@ RSpec.describe User, type: :model do
       end
     end
   end
-
-  describe '.find_or_create_local_user' do
-    context 'in development environment' do
-      before { allow(Rails.env).to receive(:production?).and_return(false) }
-
-      it 'creates a local user with identity' do
-        user = User.find_or_create_local_user(
-          name: 'Test User',
-          email: 'localuser@illinois.edu',
-          password: 'password123'
-        )
-
-        expect(user).to be_present
-        expect(user.email).to eq('localuser@illinois.edu')
-        expect(user.uid).to eq('localuser@illinois.edu')
-      end
-
-      it 'returns nil in production' do
-        allow(Rails.env).to receive(:production?).and_return(true)
-
-        user = User.find_or_create_local_user(
-          name: 'Test User',
-          email: 'localuser@illinois.edu',
-          password: 'password123'
-        )
-
-        expect(user).to be_nil
-      end
-    end
-  end
 end

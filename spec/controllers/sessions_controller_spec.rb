@@ -23,9 +23,9 @@ RSpec.describe SessionsController, type: :controller do
     context 'when in non-production environment' do
       before { allow(Rails.env).to receive(:production?).and_return(false) }
 
-      it 'redirects to /auth/identity' do
+      it 'renders the developer login form' do
         get :new
-        expect(response).to redirect_to('/auth/identity')
+        expect(response.status).to eq(200)
       end
     end
   end
@@ -66,25 +66,6 @@ RSpec.describe SessionsController, type: :controller do
         request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:shibboleth]
         post :create, params: { provider: 'shibboleth' }
         expect(session[:current_user_id]).to be_nil
-        expect(response).to redirect_to(login_url)
-      end
-    end
-
-    context 'when using Identity in development' do
-      before { allow(Rails.env).to receive(:production?).and_return(false) }
-
-      it 'authenticates the user in development mode' do
-        post :create, params: { provider: 'identity', auth_key: 'testuser@illinois.edu' }
-        user = User.find_by(uid: 'testuser@illinois.edu')
-        expect(user).to be_present
-        expect(session[:current_user_id]).to eq(user.id)
-        expect(response).to redirect_to(root_path)
-      end
-
-      it 'redirects to login if auth_key is missing' do
-        request.params['auth_key'] = nil
-        post :create, params: { provider: 'identity' }
-        expect(session[:user_id]).to be_nil
         expect(response).to redirect_to(login_url)
       end
     end

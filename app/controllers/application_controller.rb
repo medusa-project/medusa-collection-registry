@@ -6,6 +6,23 @@ class ApplicationController < ActionController::Base
     render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
   end
 
+  if Rails.env.development? || Rails.env.test?
+    helper_method :current_user_roles
+
+    #display the roles of the currently logged-in user in the development and test environments.
+    def current_user_roles
+      return [] unless current_user
+      roles = []
+      roles << 'superuser' if current_user.superuser?
+      roles << 'admin' if current_user.medusa_admin?
+      roles << 'project_admin' if current_user.project_admin?
+      roles << 'manager' if GroupManager.instance.resolver.is_member_of?('manager', current_user)
+      roles << 'user' if GroupManager.instance.resolver.is_ad_user?(current_user)
+
+      roles.uniq
+    end
+  end
+
   protected
 
   def set_current_user(user)
