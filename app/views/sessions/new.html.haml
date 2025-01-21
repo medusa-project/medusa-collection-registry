@@ -1,10 +1,5 @@
 .container
   %h1.text-center Developer Login
-  - if Rails.env.development?
-    .text-center
-      %pre.bg-info.text-white.p-2{style: "display: inline-block; text-align: left;"}
-        %code
-          Debug Params: #{params.inspect}
   = form_with url: "/auth/developer/callback", method: :post, local: true, html: { class: "form-horizontal" } do |f|
     .form-group
       .col-sm-offset-2.col-sm-10
@@ -36,17 +31,15 @@
     .form-group
       %label.col-sm-2.control-label{for: "username"} Role:
       .col-sm-10
-        = f.select :username, options_for_select(                                         |
-            [                                                                             |
-              ["Select a Role", ""],                                                      |
-              ["Superuser (medusa_superuser@illinois.edu)", "medusa_superuser@illinois.edu"],             |
-              ["Admin (medusa_admin@illinois.edu)", "medusa_admin@illinois.edu"],                         |
-              ["Project Admin (medusa_project_admin@illinois.edu)", "medusa_project_admin@illinois.edu"], |
-              ["Manager (medusa_manager@illinois.edu)", "medusa_manager@illinois.edu"],                   |
-              ["User (medusa_user@illinois.edu)", "medusa_user@illinois.edu"],    |
-              ["Visitor (medusa_visitor@illinois.edu)", "medusa_visitor@illinois.edu"]                    |
-            ]                                                                             |
-          ), {}, { class: "form-control", id: "username", required: true }                |
+        = f.select :username, options_for_select([                                                      |
+            ["Select a Role", ""],                                                                      |
+            ["Superuser (medusa_superuser@illinois.edu)", "medusa_superuser@illinois.edu"],             |
+            ["Admin (medusa_admin@illinois.edu)", "medusa_admin@illinois.edu"],                         |
+            ["Project Admin (medusa_project_admin@illinois.edu)", "medusa_project_admin@illinois.edu"], |
+            ["Manager (medusa_manager@illinois.edu)", "medusa_manager@illinois.edu"],                   |
+            ["User (medusa_user@illinois.edu)", "medusa_user@illinois.edu"],                            |
+            ["Visitor (medusa_visitor@illinois.edu)", "medusa_visitor@illinois.edu"]                    |
+          ]), {}, { class: "form-control", id: "username", required: true }                             |
     .form-group
       %label.col-sm-2.control-label{for: "email"} Email:
       .col-sm-10
@@ -66,11 +59,8 @@
 
     dropdown.addEventListener("change", function() {
       const selectedEmail = dropdown.value;
-
-      // Populate the email and name fields if a role is selected
       if (selectedEmail) {
         emailField.value = selectedEmail;
-
         const emailPrefix = selectedEmail.split("@")[0];
         const nameFromEmail = emailPrefix.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
         nameField.value = nameFromEmail;
