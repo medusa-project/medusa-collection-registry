@@ -1,5 +1,4 @@
 class SessionsController < ApplicationController
-
   skip_before_action :verify_authenticity_token
 
   def new
@@ -7,17 +6,18 @@ class SessionsController < ApplicationController
     if Rails.env.production? || Rails.env.demo?
       redirect_to(shibboleth_login_path(MedusaCollectionRegistry::Application.shibboleth_host))
     else
-      redirect_to('/auth/identity')
+      # Render the developer login form in development
+      render :new
     end
   end
 
   def create
     return_url = clear_and_return_return_path
+    auth_hash = request.env['omniauth.auth']
+
     if Rails.env.production? || Rails.env.demo?
-      #auth_hash[:uid] should have the uid (for shib as configured in shibboleth.yml)
-      #auth_hash[:info][:email] should have the email address
-      auth_hash = request.env['omniauth.auth']
-      if auth_hash and auth_hash[:uid]
+      # Handle Shibboleth login
+      if auth_hash && auth_hash[:uid]
         user = User.find_or_create_by!(uid: auth_hash[:uid], email: auth_hash[:info][:email])
         reset_ldap_cache(user)
         set_current_user(user)
@@ -26,12 +26,15 @@ class SessionsController < ApplicationController
         redirect_to login_url
       end
     else
-      if params.has_key?("auth_key")
-        user = User.find_or_create_by!(uid: params["auth_key"], email: params["auth_key"])
+      # Handle OmniAuth Developer Strategy
+      if auth_hash && auth_hash[:provider] == 'developer'
+        user = User.find_or_create_by!(uid: auth_hash[:uid], email: auth_hash[:info][:email])
         set_current_user(user)
-        redirect_to return_url
+
+        roles = current_user_roles.join(', ')
+        redirect_to return_url, notice: "Logged in successfully as #{user.email} with roles: #{roles}."
       else
-        redirect_to login_url
+        redirect_to login_url, alert: "Invalid login attempt."
       end
     end
   end

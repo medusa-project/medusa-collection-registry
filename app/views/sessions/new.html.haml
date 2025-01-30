@@ -1,0 +1,72 @@
+.container
+  %h1.text-center Developer Login
+  = form_with url: "/auth/developer/callback", method: :post, local: true, html: { class: "form-horizontal" } do |f|
+    .form-group
+      .col-sm-offset-2.col-sm-10
+        .alert.alert-info
+          %p.mb-3
+            Select a role to log in as a user with the associated permissions.
+            The email and name fields will update automatically based on your selection.
+          %p
+          %h4.mt-4.mb-2 Role Information
+          %ul.list-unstyled
+            %li
+              %strong Superuser:
+              Full access to all system features, including user management and system settings.
+            %li
+              %strong Admin:
+              Administrative privileges with the ability to manage collections, file groups, and repositories.
+            %li
+              %strong Project Admin:
+              Authority to create, update, and delete projects, as well as manage associated data and attachments.
+            %li
+              %strong Manager:
+              Management of specific teams, with permissions to manage events and file groups within assigned repositories.
+            %li
+              %strong User:
+              Standard access to view and download content, with limited permissions for creating or editing data.
+            %li
+              %strong Visitor:
+              Read-only access for basic usage without the ability to modify any content.
+    .form-group
+      %label.col-sm-2.control-label{for: "username"} Role:
+      .col-sm-10
+        = f.select :username, options_for_select([                                                      |
+            ["Select a Role", ""],                                                                      |
+            ["Superuser (medusa_superuser@illinois.edu)", "medusa_superuser@illinois.edu"],             |
+            ["Admin (medusa_admin@illinois.edu)", "medusa_admin@illinois.edu"],                         |
+            ["Project Admin (medusa_project_admin@illinois.edu)", "medusa_project_admin@illinois.edu"], |
+            ["Manager (medusa_manager@illinois.edu)", "medusa_manager@illinois.edu"],                   |
+            ["User (medusa_user@illinois.edu)", "medusa_user@illinois.edu"],                            |
+            ["Visitor (medusa_visitor@illinois.edu)", "medusa_visitor@illinois.edu"]                    |
+          ]), {}, { class: "form-control", id: "username", required: true }                             |
+    .form-group
+      %label.col-sm-2.control-label{for: "email"} Email:
+      .col-sm-10
+        = f.text_field :email, class: "form-control", required: true, placeholder: "developer@example.com", id: "email", readonly: true
+    .form-group
+      %label.col-sm-2.control-label{for: "name"} Name:
+      .col-sm-10
+        = f.text_field :name, class: "form-control", required: true, placeholder: "Name", id: "name", readonly: true
+    .form-group
+      .col-sm-offset-2.col-sm-10
+        = f.submit "Login as Developer", class: "btn btn-primary"
+:javascript
+  document.addEventListener("DOMContentLoaded", function() {
+    const dropdown = document.getElementById("username");
+    const emailField = document.getElementById("email");
+    const nameField = document.getElementById("name");
+
+    dropdown.addEventListener("change", function() {
+      const selectedEmail = dropdown.value;
+      if (selectedEmail) {
+        emailField.value = selectedEmail;
+        const emailPrefix = selectedEmail.split("@")[0];
+        const nameFromEmail = emailPrefix.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+        nameField.value = nameFromEmail;
+      } else {
+        emailField.value = "";
+        nameField.value = "";
+      }
+    });
+  });
