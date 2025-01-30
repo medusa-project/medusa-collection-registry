@@ -137,14 +137,14 @@ RSpec.describe Ability, type: :model do
   context 'when user is a public user' do
     let(:user) { nil } # unauthenticated public user
 
-    it 'denies edit, update, delete, and view permissions for the producer' do
+    it 'denies edit, update, delete, and view permissions for the producer class' do
       expect(ability).not_to be_able_to(:edit, producer)
       expect(ability).not_to be_able_to(:update, producer)
       expect(ability).not_to be_able_to(:delete, producer)
       expect(ability).not_to be_able_to(:view, producer)
     end
 
-    it 'denies new, create, and view_index permissions for producer collection' do
+    it 'denies new, create, and view_index permissions for producer class' do
       expect(ability).not_to be_able_to(:new, Producer)
       expect(ability).not_to be_able_to(:create, Producer)
       expect(ability).not_to be_able_to(:view_index, Producer)
@@ -158,11 +158,11 @@ RSpec.describe Ability, type: :model do
       allow(repository).to receive(:manager?).with(user).and_return(true)
     end
 
-    it 'denies edit permission on the producer' do
+    it 'denies edit permission on the producer class' do
       expect(ability).not_to be_able_to(:edit, producer)
     end
 
-    it 'denies new and create permissions on the producer collection' do
+    it 'denies new and create permissions on the producer class' do
       expect(ability).not_to be_able_to(:new, Producer)
       expect(ability).not_to be_able_to(:create, Producer)
     end
@@ -175,14 +175,14 @@ RSpec.describe Ability, type: :model do
       allow(repository).to receive(:manager?).with(user).and_return(false)
     end
 
-    it 'denies edit, update, delete, and view permissions for the producer' do
+    it 'denies edit, update, delete, and view permissions for the producer class' do
       expect(ability).not_to be_able_to(:edit, producer)
       expect(ability).not_to be_able_to(:update, producer)
       expect(ability).not_to be_able_to(:delete, producer)
       expect(ability).not_to be_able_to(:view, producer)
     end
 
-    it 'denies new and create permissions on the producer collection' do
+    it 'denies new and create permissions on the producer class' do
       expect(ability).not_to be_able_to(:new, Producer)
       expect(ability).not_to be_able_to(:create, Producer)
     end
