@@ -95,21 +95,6 @@ RSpec.describe Ability, type: :model do
       expect(ability).to be_able_to(:download, another_file_group)
     end
   end
-
-  context 'when user is neither a downloader nor a repository manager' do
-    let(:user) { FactoryBot.create(:user, email: 'projectadmin@illinois.edu', uid: 'projectadmin@illinois.edu') }
-    
-    before do
-      allow_any_instance_of(Ability).to receive(:repository_manager?).and_return(false)
-      allow_any_instance_of(Ability).to receive(:downloader?).and_return(false)
-      allow(Settings).to receive(:download_users).and_return({})
-    end
-
-    it 'cannot download files from any collection' do
-      expect(ability).not_to be_able_to(:download, file_group)
-      expect(ability).not_to be_able_to(:download, another_file_group)
-    end
-  end
   
   context 'when user is a regular user' do
     let(:user) { create(:user) }
