@@ -38,7 +38,6 @@ class Ability
     [FileGroup, BitLevelFileGroup, ExternalFileGroup].each do |klass|
       # Ensure that only users explicitly granted permission through the following `can` statements
       # (e.g., repository managers or downloaders) can perform the :download action.
-      cannot :download, klass
       can [:update, :create, :create_cfs_fits, :download, :export, :destroy], klass do |file_group|
         repository_manager?(user, file_group)
       end
