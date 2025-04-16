@@ -7,4 +7,7 @@ FactoryBot.define do
     total_files { 0 }
     total_file_size { 0 }
   end
+
+  factory :bit_level_file_group, parent: :file_group, class: 'BitLevelFileGroup' do
+  end
 end
