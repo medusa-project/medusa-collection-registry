@@ -11,7 +11,7 @@ MedusaCollectionRegistry::Application.configure do
 
   # configure mailer
   config.action_mailer.perform_caching = false
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :test
 
   config.action_mailer.smtp_settings = {
     address: settings["smtp"]["smtp_settings"]["address"],
@@ -59,6 +59,8 @@ MedusaCollectionRegistry::Application.configure do
 
   config.middleware.use RackSessionAccess::Middleware
 
-  #config.assets.compile = false
-
+  #disable asset compilation during tests
+  # config.assets.compile = false
+  # config.assets.debug = false
+  # config.assets.quiet = true
 end
