@@ -24,6 +24,7 @@ class Assessor::Task
       cluster: CLUSTER,
       count: 1,
       enable_ecs_managed_tags: true,
+      enable_execute_command: true,
       launch_type: "FARGATE",
       network_configuration: {
         awsvpc_configuration: {

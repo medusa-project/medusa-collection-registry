@@ -1771,7 +1771,7 @@ GEM
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rbtree (0.4.5)
+    rbtree (0.4.6)
     react-rails (2.6.2)
       babel-transpiler (>= 0.7.0)
       connection_pool
@@ -1928,6 +1928,8 @@ GEM
     zeitwerk (2.6.0)
 
 PLATFORMS
+  aarch64-linux
+  arm64-darwin-23
   x86_64-darwin-21
   x86_64-darwin-22
   x86_64-darwin-23
@@ -2013,6 +2015,7 @@ DEPENDENCIES
   rack_session_access
   rails (~> 7.0)
   rails-jquery-autocomplete
+  rbtree (~> 0.4.6)
   react-rails
   responders
   routler

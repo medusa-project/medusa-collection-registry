@@ -67,6 +67,7 @@ gem 'babel-transpiler'
 gem 'sassc-rails'
 gem 'uglifier'
 gem 'delayed_job_active_record'
+gem 'rbtree', '~> 0.4.6'
 
 #memory/active record usage monitoring
 gem 'draper'
