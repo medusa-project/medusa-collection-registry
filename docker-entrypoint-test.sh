@@ -22,6 +22,7 @@ RAILS_ENV=test bundle exec rails db:environment:set RAILS_ENV=test
 # Prepare the test database
 echo "Preparing the test database..."
 RAILS_ENV=test bundle exec rails db:drop db:create db:schema:load
+RAILS_ENV=test bundle exec rails db:migrate
 
 # Execute the provided command
 exec "$@"
