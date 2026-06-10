@@ -4,6 +4,7 @@
     = show_field @repository, :contact_email
     = render partial: 'shared/contact_information', locals: {contact_object: @repository}
     = show_value link_to_external(@repository.url, @repository.url), 'URL'
+    = show_field @repository, :public_description, 'Public Description'
     = show_field @repository, :notes_html, 'Notes'
     = show_value @repository.total_size.to_fs(:rounded, precision: 2), 'Total Size (GB)'
     = show_field @repository, :active_start_date, 'Active Start Date'
