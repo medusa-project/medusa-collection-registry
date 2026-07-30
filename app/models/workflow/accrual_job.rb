@@ -34,6 +34,8 @@ class Workflow::AccrualJob < Workflow::Base
                 'admin_approval' => 'Awaiting admin approval',
                 'assessing' => 'Starting Assessments',
                 'await_assessment' => 'Running Assessment',
+                'final_validation' => 'Running Final Validation',
+                'final_validation_failed' => 'Final Validation Failed',
                 'email_done' => 'Emailing completion',
                 'aborting' => 'Aborting',
                 'end' => 'Ending'}.freeze
@@ -413,7 +415,12 @@ class Workflow::AccrualJob < Workflow::Base
         put_in_queue(run_at: 30.minutes.from_now)
       else
         Workflow::AccrualMailer.assessment_done(self).deliver_now
-        be_in_state_and_requeue('email_done')
+
+        # Final validation update:
+        # Assessment has completed, but the accrual should not go directly to the
+        # completion email. Move to final_validation first so the UI can show
+        # Running Final Validation while the final consistency checks run.
+        be_in_state_and_requeue('final_validation')
       end
     rescue StandardError => ex
       Rails.logger.warn "Error retrying assessment for Workflow::AccrualJob #{self.id}: #{ex.class}"
@@ -434,7 +441,12 @@ class Workflow::AccrualJob < Workflow::Base
       end
     else
       Workflow::AccrualMailer.assessment_done(self).deliver_now
-      be_in_state_and_requeue('email_done')
+
+      # Final validation update:
+      # Assessment has completed, but the accrual should not go directly to the
+      # completion email. Move to final_validation first so the UI can show
+      # "Running Final Validation" while the final consistency checks run.
+      be_in_state_and_requeue('final_validation')
     end
   end
 
@@ -496,11 +508,49 @@ class Workflow::AccrualJob < Workflow::Base
       possible_assessment_job_ids = Job::CfsInitialDirectoryAssessment.where(file_group_id: cfs_directory.file_group.id).pluck(:cfs_directory_id).to_set
       subdirectory_ids.intersect(possible_assessment_job_ids)
   end
+
+  def perform_final_validation
+    # Final validation update:
+    #
+    # This step is the UI status "Running Final Validation".
+    # The validation gate runs the final validators sequentially and stops at the
+    # first failure.
+    validation_result = AccrualValidation::ValidationGate.new(self).call
+
+    unless validation_result.valid
+      # Final validation email update:
+      #
+      # The normal completion email should not be sent if final validation fails.
+      Workflow::AccrualMailer.validation_failed(self, validation_result).deliver_now
+      
+      # Set final validation failed state
+      # Delayed job avoids retries for unprocessed accruals
+      be_in_state('final_validation_failed')
+
+      # Update Delayed job process with the workflow did not complete successfully.
+      # Record this as a failed job/error
+      raise AccrualValidation::CompletionValidationError.new(
+        accrual_job: self,
+        validation_result: validation_result
+      )
+    end
+
+    # Final validation passed. Continue to the existing completion email step.
+    be_in_state_and_requeue('email_done')
+  end
+
+  def perform_final_validation_failed
+    unrunnable_state
+  end
+
   def perform_email_done
+    # Final validation update:
+    # Validators now run in perform_final_validation. This method should only
+    # send the normal completion email and finish the accrual.
     Workflow::AccrualMailer.done(self).deliver_now
+
     archive('completed')
     be_in_state_and_requeue('end')
-    # TODO: - perhaps delete staged content, perhaps not
   end
 
   def status_label
@@ -667,7 +717,12 @@ class Workflow::AccrualJob < Workflow::Base
       report_array << "Once those tasks have been initiated, the state changes to running assessment."
     when "await_assessment"
       report_array << "Each of the processes initiated while in assessing status are checked continuously over and over"
-      report_array << "until they are all complete. After all are complete, the state changes to emailing completion."
+      report_array << "until they are all complete. After all are complete, the state changes to running final validation."
+    when "final_validation"
+      report_array << "The final validation checks confirm that destination storage, expected ingest records, and assessment completion are consistent before the completion email is sent."
+      report_array << "If validation passes, the state changes to emailing completion."
+      report_array << "If validation fails, the completion email is not sent and the accrual remains available for review."
+      report_array << "Status should not remain #{status_label} for more than a few minutes unless validation failed."
     when "email_done"
       report_array << "The done email is sent and the state changes to ending."
       report_array << "Status should not remain #{status_label} for more than a few minutes."
@@ -738,6 +793,10 @@ class Workflow::AccrualJob < Workflow::Base
       report_array << "(subdirectories: #{self.cfs_directory.recursive_subdirectory_ids.count} records created)\n"
       report_array << "(files: #{self.cfs_directory.recursive_cfs_file_ids.count} records created)"
       report_array << "Assessments are checked every 30 minutes up to 100 times. Attempts so far: #{assessment_attempt_count}"
+    when "final_validation"
+      report_array << "Final accrual validation is running."
+      report_array << "This checks destination storage, expected ingest records, and assessment completion before the completion email is sent."
+      report_array << "If this state has a failed background job, check the validation failure details and the Delayed Job error."
     else
       report_array << "Invalid state: #{state}"
     end

@@ -1,0 +1,49 @@
+%p
+  The automated accrual of the staging path #{@workflow_accrual.staging_path} could not be completed
+  because final validation failed.
+
+- if @workflow_accrual.cfs_directory
+  %p
+    Destination CFS directory:
+    #{@workflow_accrual.cfs_directory.relative_path}
+
+%p
+  The normal accrual completion email was not sent, and the accrual was not marked as completed.
+
+%p
+  Failed validation step:
+  #{@validation_result.validator_name}
+
+%p
+  Reason:
+
+%ul
+  - @validation_result.blocking_failures.each do |failure|
+    %li= failure
+
+- if @validator_result
+  %p
+    Validation details:
+
+  %ul
+    - @validator_result.each_pair do |key, value|
+      - next if key == :blocking_failures
+      %li
+        #{key}: #{value.inspect}
+
+- if @validation_result.error
+  %p
+    Technical details:
+
+  %ul
+    %li
+      Validator: #{@validation_result.validator_name}
+    %li
+      Error: #{@validation_result.error.class}: #{@validation_result.error.message}
+
+- if @workflow_accrual.cfs_directory && (file_group = @workflow_accrual.cfs_directory.file_group)
+  %p
+    This belongs to the file group #{file_group.title}, collection #{file_group.collection.title}
+    - if file_group.collection.external_id.present?
+      [#{file_group.collection.external_id}]
+    and repository #{file_group.repository.title}.
