@@ -1,5 +1,3 @@
-# app/services/accrual_validation/destination_storage_validator.rb
-
 # frozen_string_literal: true
 
 require "set"
@@ -126,10 +124,10 @@ module AccrualValidation
     def actual_top_level_file_names
       @actual_top_level_file_names ||= begin
         return Set.new if expected_top_level_file_name_set.empty?
-        return Set.new if destination_storage_paths.empty?
+        return Set.new if destination_storage_file_paths.empty?
 
         expected_top_level_file_paths_by_name.each_with_object(Set.new) do |(file_name, expected_path), set|
-          set << file_name if destination_storage_paths.include?(expected_path)
+          set << file_name if destination_storage_file_paths.include?(expected_path)
         end
       end
     end
@@ -149,7 +147,7 @@ module AccrualValidation
       @actual_directory_file_counts ||= begin
         counts = expected_directory_names.index_with { 0 }
 
-        destination_storage_paths.each do |path|
+        destination_storage_file_paths.each do |path|
           directory_name = extract_expected_directory_name(path)
 
           next unless directory_name
@@ -197,11 +195,42 @@ module AccrualValidation
       @destination_storage_paths ||= begin
         return Set.new if destination_prefix.blank?
 
-        storage_paths_for_prefix(destination_prefix)
+        raw_destination_storage_paths
           .map { |path| normalize_storage_path(path) }
           .reject(&:blank?)
           .to_set
       end
+    end
+
+    # ignore storage directory keys from validator count
+    def destination_storage_file_paths
+      @destination_storage_file_paths ||= begin
+        destination_storage_paths.reject do |path|
+          path == destination_prefix || destination_directory_marker_paths.include?(path)
+        end.to_set
+      end
+    end
+
+    def destination_directory_marker_paths
+      @destination_directory_marker_paths ||= begin
+        raw_destination_storage_paths
+          .select { |path| directory_marker_path?(path) }
+          .map { |path| normalize_storage_path(path) }
+          .reject(&:blank?)
+          .to_set
+      end
+    end
+
+    def raw_destination_storage_paths
+      @raw_destination_storage_paths ||= begin
+        return [] if destination_prefix.blank?
+
+        storage_paths_for_prefix(destination_prefix).map(&:to_s)
+      end
+    end
+
+    def directory_marker_path?(path)
+      path.to_s.end_with?("/")
     end
 
     def normalize_storage_path(path)
