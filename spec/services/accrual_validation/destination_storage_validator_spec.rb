@@ -1,4 +1,4 @@
-# spec/services/accrual_validation/destination_storage_validator_spec.rb
+# frozen_string_literal: true
 
 require 'rails_helper'
 
@@ -29,7 +29,7 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
   # StorageManager.instance.main_root
   # => MedusaStorage::Root::S3
   #
-  # stub the storage root so the validator can run without
+  # The spec stubs the storage root so the validator can run without
   # touching real Medusa storage.
   let(:storage_root) { double('MedusaStorage::Root::S3') }
 
@@ -71,7 +71,7 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
           name: 'metadata.csv',
           size: 100.0
         )
-        
+
         create(
           :workflow_accrual_directory,
           workflow_accrual_job: accrual_job,
@@ -106,6 +106,76 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
         expect(storage_root).to have_received(:subtree_keys)
           .with('606/2216')
           .once
+      end
+    end
+
+    context 'when destination storage includes directory marker keys' do
+      let(:storage_keys) do
+        [
+          # Storage APIs may return directory marker keys.
+          #
+          # These prove directories exist, but they are not real files
+          # and should not be counted as accrual files.
+          '606/2216/',
+          '606/2216/1209133/',
+          '606/2216/1209133/access/',
+
+          # Real files.
+          '606/2216/1209133/access/file_001.wav',
+          '606/2216/1209133/access/file_002.wav',
+          '606/2216/1209133/access/file_003.wav',
+          '606/2216/1209133/access/file_004.wav',
+          '606/2216/1209133/access/file_005.wav'
+        ]
+      end
+
+      before do
+        create(
+          :workflow_accrual_directory,
+          workflow_accrual_job: accrual_job,
+          name: '1209133',
+          count: 5,
+          size: 500.0
+        )
+      end
+
+      it 'uses directory marker keys to detect directories but does not count them as files' do
+        expect(result.valid).to eq(true)
+        expect(result.expected_file_count).to eq(5)
+        expect(result.actual_file_count).to eq(5)
+        expect(result.missing_directories).to be_empty
+        expect(result.directory_count_mismatches).to be_empty
+      end
+    end
+
+    context 'when destination storage includes a package directory marker' do
+      let(:storage_keys) do
+        [
+          '606/2216/test_2/',
+          '606/2216/test_2/5958513_highres_opt_opt.pdf',
+          '606/2216/test_2/99162161812205899-001.tif',
+          '606/2216/test_2/99955291084505899-001.tif',
+          '606/2216/test_2/SRS-404.pdf',
+          '606/2216/test_2/SRS-444.pdf'
+        ]
+      end
+
+      before do
+        create(
+          :workflow_accrual_directory,
+          workflow_accrual_job: accrual_job,
+          name: 'test_2',
+          count: 5,
+          size: 500.0
+        )
+      end
+
+      it 'does not count the package directory marker as a file' do
+        expect(result.valid).to eq(true)
+        expect(result.expected_file_count).to eq(5)
+        expect(result.actual_file_count).to eq(5)
+        expect(result.missing_directories).to be_empty
+        expect(result.directory_count_mismatches).to be_empty
       end
     end
 
@@ -148,7 +218,7 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
     context 'when an expected directory is missing from destination storage' do
       let(:storage_keys) do
         [
-          # Storage has a top-level file, but nothing under it
+          # Storage has a top-level file, but nothing under:
           #
           # 606/2216/1209133/
           '606/2216/metadata.csv'
