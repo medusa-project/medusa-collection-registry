@@ -1,5 +1,7 @@
 # app/services/accrual_validation/expected_ingest_set_validator.rb
 
+# frozen_string_literal: true
+
 require "set"
 
 module AccrualValidation
@@ -67,7 +69,7 @@ module AccrualValidation
     end
 
     def destination_prefix
-      destination_root.relative_path
+      @destination_prefix ||= destination_root.relative_path
     end
 
     def expected_top_level_file_names
@@ -108,94 +110,77 @@ module AccrualValidation
       @actual_top_level_file_names ||= begin
         return Set.new if expected_top_level_file_name_set.empty?
 
-        CfsFile.where(cfs_directory_id: destination_root.id, name: expected_top_level_file_name_set.to_a)
-               .pluck(:name)
-               .to_set
+        CfsFile.where(
+          cfs_directory_id: destination_root.id,
+          name: expected_top_level_file_name_set.to_a
+        ).pluck(:name).to_set
       end
     end
 
     def actual_expected_directory_names
-      @actual_expected_directory_names ||= begin
-        return Set.new if expected_directory_paths.empty?
-
-        actual_paths = CfsDirectory.where(
-          root_cfs_directory_id: destination_root.id,
-          path: expected_directory_paths
-        ).pluck(:path).to_set
-
-        expected_directory_paths_by_name.each_with_object(Set.new) do |(directory_name, expected_path), set|
-          set << directory_name if actual_paths.include?(expected_path)
-        end
-      end
+      @actual_expected_directory_names ||= actual_expected_directories_by_name.keys.to_set
     end
 
     def actual_directory_file_counts
       @actual_directory_file_counts ||= begin
         counts = expected_directory_names.index_with { 0 }
-        return counts if expected_directory_paths.empty?
 
-        directory_paths = actual_file_directory_paths_under_expected_directories
-
-        directory_paths.each do |path|
-          directory_name = extract_expected_directory_name(path)
-          next unless directory_name
-          next unless expected_directory_name_set.include?(directory_name)
-
-          counts[directory_name] += 1
+        actual_expected_directories_by_name.each do |directory_name, directory|
+          counts[directory_name] = directory.files_in_tree.count
         end
 
         counts
       end
     end
 
-    def actual_file_directory_paths_under_expected_directories
-      @actual_file_directory_paths_under_expected_directories ||= begin
-        relation = CfsFile.joins(:cfs_directory)
-                          .where(cfs_directories: { root_cfs_directory_id: destination_root.id })
+    def actual_expected_directories_by_name
+      @actual_expected_directories_by_name ||= begin
+        return {} if expected_directory_name_set.empty?
 
-        condition = expected_directory_path_condition
-        return [] unless condition
-
-        relation.where(condition).pluck("cfs_directories.path")
+        expected_directory_names.each_with_object({}) do |directory_name, directories|
+          directory = find_expected_directory(directory_name)
+          directories[directory_name] = directory if directory
+        end
       end
     end
 
-    # Builds a SQL condition that matches each expected accrual directory
-    # and any child directories beneath it, so file counts include the full 
-    # ingested directory tree.
-    def expected_directory_path_condition
-      return nil if expected_directory_paths.empty?
+    #Find the expected directory as a direct CFS child of the destination root,
+    #using the local directory name.
+    def find_expected_directory(directory_name)
+      direct_child_directories_by_path[directory_name] ||
+        root_directories_by_full_path[File.join(destination_prefix, directory_name)]
+    end
 
-      directory_table = CfsDirectory.arel_table
-
-      expected_directory_paths.map do |path|
-        escaped_path = ActiveRecord::Base.sanitize_sql_like(path)
-        directory_table[:path].eq(path).or(directory_table[:path].matches("#{escaped_path}/%"))
-      end.reduce do |combined, clause|
-        combined.or(clause)
+    def direct_child_directories_by_path
+      @direct_child_directories_by_path ||= begin
+        CfsDirectory.where(
+          parent_id: destination_root.id,
+          parent_type: "CfsDirectory",
+          path: expected_directory_names
+        ).index_by(&:path)
       end
     end
 
-    def extract_expected_directory_name(actual_directory_path)
-      # Example:
-      # destination_prefix = "606/2216"
-      # actual_directory_path = "606/2216/1209133/subdir"
-      # => "1209133"
-      suffix = actual_directory_path.delete_prefix("#{destination_prefix}/")
-      suffix.split("/", 2).first
+    def root_directories_by_full_path
+      @root_directories_by_full_path ||= begin
+        CfsDirectory.where(
+          root_cfs_directory_id: destination_root.id,
+          path: expected_directory_paths
+        ).index_by(&:path)
+      end
     end
 
     def build_directory_count_mismatches
       expected_directory_counts.each_with_object([]) do |(directory_name, expected_count), mismatches|
         actual_count = actual_directory_file_counts.fetch(directory_name, 0)
 
-        if actual_count != expected_count
-          mismatches << {
-            directory: directory_name,
-            expected: expected_count,
-            actual: actual_count
-          }
-        end
+        next if actual_count == expected_count
+
+        mismatches << {
+          directory: directory_name,
+          expected: expected_count,
+          actual: actual_count
+        }
       end
     end
   end
