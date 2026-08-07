@@ -29,18 +29,8 @@ RSpec.describe AccrualValidation::ExpectedIngestSetValidator do
   describe '#call' do
     context 'when expected files and directories exist with matching counts' do
       before do
-        create(
-          :workflow_accrual_file,
-          workflow_accrual_job: accrual_job,
-          name: 'metadata.csv'
-        )
-
-        create(
-          :workflow_accrual_directory,
-          workflow_accrual_job: accrual_job,
-          name: '1209133',
-          count: 2
-        )
+        create(:workflow_accrual_file, workflow_accrual_job: accrual_job, name: 'metadata.csv')
+        create(:workflow_accrual_directory, workflow_accrual_job: accrual_job, name: '1209133', count: 2)
 
         package_directory = create(
           :cfs_directory,
@@ -50,23 +40,9 @@ RSpec.describe AccrualValidation::ExpectedIngestSetValidator do
           path: '606/2216/1209133'
         )
 
-        create(
-          :cfs_file,
-          cfs_directory: destination_root,
-          name: 'metadata.csv'
-        )
-
-        create(
-          :cfs_file,
-          cfs_directory: package_directory,
-          name: 'file_001.wav'
-        )
-
-        create(
-          :cfs_file,
-          cfs_directory: package_directory,
-          name: 'file_002.wav'
-        )
+        create(:cfs_file, cfs_directory: destination_root, name: 'metadata.csv')
+        create(:cfs_file, cfs_directory: package_directory, name: 'file_001.wav')
+        create(:cfs_file, cfs_directory: package_directory, name: 'file_002.wav')
       end
 
       it 'returns valid true' do
@@ -82,27 +58,59 @@ RSpec.describe AccrualValidation::ExpectedIngestSetValidator do
         expect(result.actual_file_count).to eq(3)
       end
 
-      it 'has no missing files or directories' do
+      it 'has no missing files, missing directories, or count mismatches' do
         expect(result.missing_files).to be_empty
         expect(result.missing_directories).to be_empty
         expect(result.directory_count_mismatches).to be_empty
       end
     end
 
-    context 'when an expected top-level file is missing' do
+    context 'when the actual CFS package directory path is stored as a local child name' do
       before do
         create(
-          :workflow_accrual_file,
+          :workflow_accrual_directory,
           workflow_accrual_job: accrual_job,
-          name: 'metadata.csv'
+          name: 'Seth_test_2',
+          count: 5,
+          size: 500.0
         )
+
+        package_directory = create(
+          :cfs_directory,
+          :with_parent_directory,
+          parent: destination_root,
+          root_cfs_directory: destination_root,
+          path: 'Seth_test_2'
+        )
+
+        create(:cfs_file, cfs_directory: package_directory, name: '5958513_highres_opt_opt.pdf')
+        create(:cfs_file, cfs_directory: package_directory, name: '99162161812205899-001.tif')
+        create(:cfs_file, cfs_directory: package_directory, name: '99955291084505899-001.tif')
+        create(:cfs_file, cfs_directory: package_directory, name: 'SRS-404.pdf')
+        create(:cfs_file, cfs_directory: package_directory, name: 'SRS-444.pdf')
+      end
+
+      it 'finds the expected package directory and counts its files' do
+        expect(result.valid).to eq(true)
+        expect(result.expected_file_count).to eq(5)
+        expect(result.actual_file_count).to eq(5)
+        expect(result.missing_files).to be_empty
+        expect(result.missing_directories).to be_empty
+        expect(result.directory_count_mismatches).to be_empty
+        expect(result.blocking_failures).to be_empty
+      end
+    end
+
+    context 'when an expected top-level file is missing' do
+      before do
+        create(:workflow_accrual_file, workflow_accrual_job: accrual_job, name: 'metadata.csv')
       end
 
       it 'returns valid false' do
         expect(result.valid).to eq(false)
       end
 
-      it 'reports the missing file' do
+      it 'reports the missing top-level file' do
         expect(result.missing_files).to include('metadata.csv')
       end
 
@@ -112,7 +120,7 @@ RSpec.describe AccrualValidation::ExpectedIngestSetValidator do
         )
       end
 
-      it 'reports the actual file count correctly' do
+      it 'reports actual file count as zero' do
         expect(result.expected_file_count).to eq(1)
         expect(result.actual_file_count).to eq(0)
       end
@@ -120,12 +128,7 @@ RSpec.describe AccrualValidation::ExpectedIngestSetValidator do
 
     context 'when an expected directory is missing' do
       before do
-        create(
-          :workflow_accrual_directory,
-          workflow_accrual_job: accrual_job,
-          name: '1209133',
-          count: 2
-        )
+        create(:workflow_accrual_directory, workflow_accrual_job: accrual_job, name: '1209133', count: 2)
       end
 
       it 'returns valid false' do
@@ -145,12 +148,7 @@ RSpec.describe AccrualValidation::ExpectedIngestSetValidator do
 
     context 'when an expected directory exists but has the wrong file count' do
       before do
-        create(
-          :workflow_accrual_directory,
-          workflow_accrual_job: accrual_job,
-          name: '1209133',
-          count: 2
-        )
+        create(:workflow_accrual_directory, workflow_accrual_job: accrual_job, name: '1209133', count: 2)
 
         package_directory = create(
           :cfs_directory,
@@ -160,18 +158,14 @@ RSpec.describe AccrualValidation::ExpectedIngestSetValidator do
           path: '606/2216/1209133'
         )
 
-        create(
-          :cfs_file,
-          cfs_directory: package_directory,
-          name: 'file_001.wav'
-        )
+        create(:cfs_file, cfs_directory: package_directory, name: 'file_001.wav')
       end
 
       it 'returns valid false' do
         expect(result.valid).to eq(false)
       end
 
-      it 'reports the count mismatch' do
+      it 'reports the directory count mismatch' do
         expect(result.directory_count_mismatches).to include(
           directory: '1209133',
           expected: 2,
