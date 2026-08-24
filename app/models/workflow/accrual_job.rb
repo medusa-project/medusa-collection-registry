@@ -319,7 +319,7 @@ class Workflow::AccrualJob < Workflow::Base
         #do nothing
       when 'INACTIVE', 'FAILED'
         workflow_accrual_key.copy_requested = false
-        message = "#{status}: https://www.globus.org/app/console/#{workflow_accrual_key.workflow_globus_transfer.task_link}"
+        message = "#{workflow_accrual_key.workflow_globus_transfer.status}: https://www.globus.org/app/console/#{workflow_accrual_key.workflow_globus_transfer.task_link}"
         workflow_accrual_key.error = message
         workflow_accrual_key.save!
         #when 'CONFLICT'
