@@ -1,11 +1,12 @@
-FROM ruby:3.1-bookworm
+FROM ruby:3.1.2
 
 # Set environment variables
 ENV RAILS_ENV=test
 ENV BUNDLER_VERSION=2.3.14
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
+# Allow apt update for the legacy Bullseye-based Ruby 3.1.2 CI image until the app Ruby version is upgraded.
+RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -y \
   nodejs \
   libmemcached-dev \
   libmagic-dev \
