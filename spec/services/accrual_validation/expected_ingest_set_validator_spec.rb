@@ -294,11 +294,6 @@ RSpec.describe AccrualValidation::ExpectedIngestSetValidator do
       end
     end
 
-    # Regression:
-    #
-    # A new accrual may use a directory name that already exists in the
-    # destination. Historical files in that directory must not count
-    # against the current accrual.
     context 'when adding a file to an existing directory that already contains files' do
       let(:staging_keys) do
         [
