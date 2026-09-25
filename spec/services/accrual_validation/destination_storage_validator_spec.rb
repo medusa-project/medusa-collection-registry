@@ -22,39 +22,47 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
     )
   end
 
-  # Fake storage root used instead of real S3.
-  #
-  # Production uses:
-  #
-  # StorageManager.instance.main_root
-  # => MedusaStorage::Root::S3
-  #
-  # The spec stubs the storage root so the validator can run without
-  # touching real Medusa storage.
-  let(:storage_root) { double('MedusaStorage::Root::S3') }
-
+  # Fake destination storage root used instead of real S3.
+  let(:storage_root) { double('destination_storage_root') }
   let(:storage_keys) { [] }
+
+  # Fake staging storage root.
+  let(:staging_root) { double('staging_root') }
+  let(:staging_prefix) { 'Sousa/audio' }
+  let(:staging_keys) { [] }
 
   before do
     destination_root.update!(root_cfs_directory: destination_root)
 
-    # Stubs the main Medusa storage root.
-    #
-    # This prevents the spec from calling real S3.
-    allow(StorageManager.instance).to receive(:main_root).and_return(storage_root)
+    allow(StorageManager.instance)
+      .to receive(:main_root)
+      .and_return(storage_root)
 
-    # subtree_keys is from the MedusaStorage API.
-    #
-    # It returns all storage keys under a directory prefix.
-    #
-    # storage_root.subtree_keys("606/2216")
-    allow(storage_root).to receive(:subtree_keys)
+    allow(storage_root)
+      .to receive(:subtree_keys)
       .with('606/2216')
       .and_return(storage_keys)
+
+    allow(accrual_job)
+      .to receive(:staging_root_and_prefix)
+      .and_return([staging_root, staging_prefix])
+
+    allow(staging_root)
+      .to receive(:subtree_keys)
+      .with(staging_prefix)
+      .and_return(staging_keys)
   end
 
   describe '#call' do
     context 'when expected top-level files and directories exist in destination storage' do
+      let(:staging_keys) do
+        [
+          'Sousa/audio/1209133/access/file_001.wav',
+          'Sousa/audio/1209133/access/file_002.wav',
+          'Sousa/audio/1209133/access/file_002.wav.vs'
+        ]
+      end
+
       let(:storage_keys) do
         [
           '606/2216/metadata.csv',
@@ -103,24 +111,31 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
       it 'uses subtree_keys once for the destination prefix' do
         result
 
-        expect(storage_root).to have_received(:subtree_keys)
+        expect(storage_root)
+          .to have_received(:subtree_keys)
           .with('606/2216')
           .once
       end
     end
 
     context 'when destination storage includes directory marker keys' do
+      let(:staging_keys) do
+        [
+          'Sousa/audio/1209133/',
+          'Sousa/audio/1209133/access/',
+          'Sousa/audio/1209133/access/file_001.wav',
+          'Sousa/audio/1209133/access/file_002.wav',
+          'Sousa/audio/1209133/access/file_003.wav',
+          'Sousa/audio/1209133/access/file_004.wav',
+          'Sousa/audio/1209133/access/file_005.wav'
+        ]
+      end
+
       let(:storage_keys) do
         [
-          # Storage APIs may return directory marker keys.
-          #
-          # These prove directories exist, but they are not real files
-          # and should not be counted as accrual files.
           '606/2216/',
           '606/2216/1209133/',
           '606/2216/1209133/access/',
-
-          # Real files.
           '606/2216/1209133/access/file_001.wav',
           '606/2216/1209133/access/file_002.wav',
           '606/2216/1209133/access/file_003.wav',
@@ -149,6 +164,17 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
     end
 
     context 'when destination storage includes a package directory marker' do
+      let(:staging_keys) do
+        [
+          'Sousa/audio/test_2/',
+          'Sousa/audio/test_2/5958513_highres_opt_opt.pdf',
+          'Sousa/audio/test_2/99162161812205899-001.tif',
+          'Sousa/audio/test_2/99955291084505899-001.tif',
+          'Sousa/audio/test_2/SRS-404.pdf',
+          'Sousa/audio/test_2/SRS-444.pdf'
+        ]
+      end
+
       let(:storage_keys) do
         [
           '606/2216/test_2/',
@@ -216,11 +242,15 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
     end
 
     context 'when an expected directory is missing from destination storage' do
+      let(:staging_keys) do
+        [
+          'Sousa/audio/1209133/file_001.wav',
+          'Sousa/audio/1209133/file_002.wav'
+        ]
+      end
+
       let(:storage_keys) do
         [
-          # Storage has a top-level file, but nothing under:
-          #
-          # 606/2216/1209133/
           '606/2216/metadata.csv'
         ]
       end
@@ -251,11 +281,15 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
     end
 
     context 'when an expected directory exists but has the wrong storage file count' do
+      let(:staging_keys) do
+        [
+          'Sousa/audio/1209133/access/file_001.wav',
+          'Sousa/audio/1209133/access/file_002.wav'
+        ]
+      end
+
       let(:storage_keys) do
         [
-          # The expected package directory exists, but it only contains one file.
-          #
-          # Expected count is 2.
           '606/2216/1209133/access/file_001.wav'
         ]
       end
@@ -290,15 +324,16 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
     end
 
     context 'when destination storage contains unrelated extra files' do
+      let(:staging_keys) do
+        [
+          'Sousa/audio/1209133/access/file_001.wav'
+        ]
+      end
+
       let(:storage_keys) do
         [
-          # Expected top-level file.
           '606/2216/metadata.csv',
-
-          # Expected package file.
           '606/2216/1209133/access/file_001.wav',
-
-          # Unrelated package directory.
           '606/2216/9999999/access/extra_file.wav'
         ]
       end
@@ -327,7 +362,14 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
       end
     end
 
-    context 'when .vs files are part of the destination storage result' do
+    context 'when .vs files are part of the accrual' do
+      let(:staging_keys) do
+        [
+          'Sousa/audio/1209133/access/file_001.wav',
+          'Sousa/audio/1209133/access/file_001.wav.vs'
+        ]
+      end
+
       let(:storage_keys) do
         [
           '606/2216/1209133/access/file_001.wav',
@@ -345,7 +387,7 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
         )
       end
 
-      it 'counts .vs files as real destination storage files' do
+      it 'counts .vs files when they belong to the current accrual' do
         expect(result.valid).to eq(true)
         expect(result.expected_file_count).to eq(2)
         expect(result.actual_file_count).to eq(2)
@@ -353,6 +395,13 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
     end
 
     context 'when destination storage is empty' do
+      let(:staging_keys) do
+        [
+          'Sousa/audio/1209133/file_001.wav',
+          'Sousa/audio/1209133/file_002.wav'
+        ]
+      end
+
       let(:storage_keys) { [] }
 
       before do
@@ -384,6 +433,45 @@ RSpec.describe AccrualValidation::DestinationStorageValidator do
       it 'reports actual file count as zero' do
         expect(result.expected_file_count).to eq(3)
         expect(result.actual_file_count).to eq(0)
+      end
+    end
+
+    # Regression for accrual 185 behavior.
+    context 'when adding a file to an existing destination directory' do
+      let(:staging_keys) do
+        [
+          'Sousa/audio/pdi/new_validation_test.txt'
+        ]
+      end
+
+      let(:storage_keys) do
+        [
+          '606/2216/pdi/old_01.txt',
+          '606/2216/pdi/old_02.txt',
+          '606/2216/pdi/old_03.txt',
+          '606/2216/pdi/old_04.txt',
+          '606/2216/pdi/new_validation_test.txt'
+        ]
+      end
+
+      before do
+        create(
+          :workflow_accrual_directory,
+          workflow_accrual_job: accrual_job,
+          name: 'pdi',
+          count: 1,
+          size: 100.0
+        )
+      end
+
+      it 'ignores historical files and validates only the current accrual file' do
+        expect(result.valid).to eq(true)
+        expect(result.expected_file_count).to eq(1)
+        expect(result.actual_file_count).to eq(1)
+        expect(result.missing_files).to be_empty
+        expect(result.missing_directories).to be_empty
+        expect(result.directory_count_mismatches).to be_empty
+        expect(result.blocking_failures).to be_empty
       end
     end
   end
