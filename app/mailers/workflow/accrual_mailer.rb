@@ -40,6 +40,17 @@ class Workflow::AccrualMailer < MedusaBaseMailer
     mail(to: standard_to_list(workflow_accrual, add_collection_contact: true))
   end
 
+  def validation_failed(workflow_accrual, validation_result)
+    @workflow_accrual = workflow_accrual
+    @validation_result = validation_result
+    @validator_result = validation_result.validator_result
+
+    mail(
+      to: standard_to_list(workflow_accrual),
+      subject: "Accrual final validation failed for job #{@workflow_accrual.id}"
+    )
+  end
+
   protected
 
   def standard_to_list(workflow_accrual, add_collection_contact: false)

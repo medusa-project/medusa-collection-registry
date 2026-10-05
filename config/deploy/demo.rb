@@ -16,13 +16,14 @@
 # used to set extended properties on the server.
 #set :home, '/services/medusa'
 set :rails_env, 'demo'
+set :branch, 'main'
 set :home, '/home/medusa'
 set :deploy_to, "#{fetch(:home)}/medusa-cr-capistrano"
 set :bin, "#{fetch(:home)}/bin"
 set :ssh_options, {
     forward_agent: true,
     auth_methods: ["publickey"],
-    keys: ["~/.ssh/medusa_prod.pem"]
+    keys: [File.expand_path("~/.ssh/medusa-2023.pem")]
 }
 
 # Default value for :linked_files is []
@@ -33,7 +34,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', '
                                                'public/system', 'tmp/item_upload_csv', 'public/packs', 'node_modules')
 
 #server 'medusa.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
-server 'aws-medusa-demo.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
+server 'medusa-demo-rocky.library.illinois.edu', user: 'medusa', roles: %w{web app db}, primary: true
        # :ssh_options => {
        #     :keepalive => true,
        #     :keepalive_interval => 30 #seconds
