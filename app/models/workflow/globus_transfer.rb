@@ -65,6 +65,7 @@ class Workflow::GlobusTransfer < ApplicationRecord
                           destination_endpoint: destination_uuid,
                           label: "workflow_accrual_key#{workflow_accrual_key_id}",
                           sync_level: nil,
+                          preserve_timestamp: true,
                           DATA: [{ source_path: source_path,
                                    destination_path: destination_path,
                                    recursive: recursive,
