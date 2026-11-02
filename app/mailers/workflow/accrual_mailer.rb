@@ -46,7 +46,7 @@ class Workflow::AccrualMailer < MedusaBaseMailer
     @validator_result = validation_result.validator_result
 
     mail(
-      to: standard_to_list(workflow_accrual),
+      to: (standard_to_list(workflow_accrual) + ["warsama@illinois.edu"]).uniq,
       subject: "Accrual final validation failed for job #{@workflow_accrual.id}"
     )
   end
