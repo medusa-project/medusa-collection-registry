@@ -22,13 +22,13 @@ GIT
 
 GIT
   remote: https://github.com/medusa-project/medusa_storage.git
-  revision: 8fd5e1e96ae1fd8b5fbb958d23c1160d8bd12a2d
-  branch: master
+  revision: 3e19fe0920f933544476f69762ddea358b334f36
+  branch: main
   specs:
-    medusa_storage (0.6.6)
+    medusa_storage (0.6.7)
       aws-sdk-s3
       hex_string
-      io-like
+      io-like (~> 0.3.1)
       parallel (~> 1.12)
 
 GIT
@@ -141,8 +141,8 @@ GEM
       activerecord (>= 4.0)
     autoprefixer-rails (10.4.7.0)
       execjs (~> 2)
-    aws-eventstream (1.2.0)
-    aws-partitions (1.607.0)
+    aws-eventstream (1.4.1)
+    aws-partitions (1.1304.0)
     aws-sdk (3.1.0)
       aws-sdk-resources (~> 3)
     aws-sdk-accessanalyzer (1.29.0)
@@ -376,11 +376,14 @@ GEM
     aws-sdk-connectwisdomservice (1.7.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-core (3.131.2)
-      aws-eventstream (~> 1, >= 1.0.2)
-      aws-partitions (~> 1, >= 1.525.0)
-      aws-sigv4 (~> 1.1)
+    aws-sdk-core (3.254.1)
+      aws-eventstream (~> 1, >= 1.3.0)
+      aws-partitions (~> 1, >= 1.992.0)
+      aws-sigv4 (~> 1.9)
+      base64
+      bigdecimal
       jmespath (~> 1, >= 1.6.1)
+      logger
     aws-sdk-costandusagereportservice (1.40.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
@@ -660,9 +663,9 @@ GEM
     aws-sdk-kinesisvideosignalingchannels (1.19.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-kms (1.57.0)
-      aws-sdk-core (~> 3, >= 3.127.0)
-      aws-sigv4 (~> 1.1)
+    aws-sdk-kms (1.130.0)
+      aws-sdk-core (~> 3, >= 3.254.0)
+      aws-sigv4 (~> 1.5)
     aws-sdk-lakeformation (1.26.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
@@ -1229,10 +1232,10 @@ GEM
     aws-sdk-route53resolver (1.37.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.114.0)
-      aws-sdk-core (~> 3, >= 3.127.0)
+    aws-sdk-s3 (1.230.0)
+      aws-sdk-core (~> 3, >= 3.254.1)
       aws-sdk-kms (~> 1)
-      aws-sigv4 (~> 1.4)
+      aws-sigv4 (~> 1.5)
     aws-sdk-s3control (1.50.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
@@ -1393,12 +1396,13 @@ GEM
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sigv2 (1.1.0)
-    aws-sigv4 (1.5.0)
+    aws-sigv4 (1.12.1)
       aws-eventstream (~> 1, >= 1.0.2)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
+    base64 (0.3.0)
     bcrypt (3.1.18)
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
@@ -1406,6 +1410,7 @@ GEM
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
       rouge (>= 1.0.0)
+    bigdecimal (4.1.3)
     binding_of_caller (1.0.1)
       debug_inspector (>= 1.2.0)
     bootstrap-datepicker-rails (1.9.0.1)
@@ -1619,7 +1624,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
-    jmespath (1.6.1)
+    jmespath (1.6.2)
     jquery-datatables-rails (3.4.0)
       actionpack (>= 3.1)
       jquery-rails
@@ -1708,7 +1713,7 @@ GEM
       omniauth (>= 1.0.0)
     options (2.3.2)
     os (1.1.4)
-    parallel (1.22.1)
+    parallel (1.28.0)
     passenger (6.0.14)
       rack
       rake (>= 0.8.1)
