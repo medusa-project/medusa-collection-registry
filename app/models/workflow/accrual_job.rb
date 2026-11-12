@@ -378,19 +378,28 @@ class Workflow::AccrualJob < Workflow::Base
   # efficient. As is it may run over a lot of stuff that is already there unnecessarily.
   # Maybe just assess any workflow_accrual_files keys directly and do the workflow_accrual_directory keys by making the
   # directories if they don't exist and then assessing them.
+
+  # Prevent accruals from stalling when assessment initialization is interrupted.
+  # Use a transactional lock to safely check whether initialization has started.
+  # If not, schedule the assessment and record its start time.
+  # Then transition to await_assessment without duplicating existing work.
+  # This allows retries to recover instead of raising duplicate-assessment errors.
   def perform_assessing
+    with_lock do
+      if state == 'assessing'
+        unless assessment_start_time.present?
+          cfs_directory.make_and_assess_tree
+          self.assessment_start_time = Time.current
+        end
 
-    raise("Directory assessment jobs pending, duplicate attempt to assess.") if has_pending_assessment_jobs?
+        self.assessment_attempt_count ||= 1
 
-    assessor_task_elements_exist = cfs_directory.assessor_task_elements.count.positive?
-    raise("Assessor::TaskElements already created, duplicate attempt assess.") if assessor_task_elements_exist
-
-    cfs_directory.make_and_assess_tree
-    update_attribute(:assessment_start_time, Time.current)
-    update_attribute(:assessment_attempt_count, 1)
-    # sleep to give make_and_assess_tree process time to create records for has_pending_assessments? to detect
-    sleep(30)
-    be_in_state_and_requeue('await_assessment')
+        be_in_state_and_requeue(
+          'await_assessment',
+          run_at: 30.seconds.from_now
+        )
+      end
+    end
   end
 
   def retry_stale_assessments
