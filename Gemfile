@@ -45,6 +45,7 @@ gem 'underscore-string-rails'
 gem 'amq-protocol'
 gem 'amqp_helper', '~>0.2.0', git: 'https://github.com/medusa-project/amqp_helper.git'
 gem 'aws-sdk'
+gem 'aws-sdk-sqs', '1.67.0' # Test compatibility with updated AWS SDK core
 gem 'bcrypt-ruby'
 gem 'bootstrap-sass'
 gem 'bootstrap-datepicker-rails'
